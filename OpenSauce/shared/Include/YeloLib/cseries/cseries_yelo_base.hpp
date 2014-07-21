@@ -302,7 +302,7 @@ namespace Yelo
 	///
 	/// <tparam name="TInterface">	COM interface type. </tparam>
 	template<typename TInterface>
-	class c_auto_release
+	class c_auto_release final
 	{
 		TInterface* m_target_object;
 

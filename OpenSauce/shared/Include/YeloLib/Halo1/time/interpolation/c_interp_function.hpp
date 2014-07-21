@@ -15,7 +15,8 @@ namespace Yelo
 	namespace Time { namespace Interpolation
 	{
 		template<int ValueCount>
-		class c_interp_function : public c_interp_base<ValueCount>
+		class c_interp_function
+			: public c_interp_base<ValueCount>
 		{
 		protected:
 			struct
@@ -27,7 +28,7 @@ namespace Yelo
 		public:
 			c_interp_function() { }
 
-			void Ctor()
+			void Ctor() override
 			{
 				c_interp_base::Ctor();
 
@@ -35,7 +36,7 @@ namespace Yelo
 				m_members_function.animation_time = 0.0f;
 			}
 
-			void Dtor()
+			void Dtor() override
 			{
 				c_interp_base::Dtor();
 
@@ -53,7 +54,7 @@ namespace Yelo
 				return blam::transition_function_evaluate(function, input);
 			}
 
-			void Update(real delta_time) = 0;
+			void Update(real delta_time) override = 0;
 		};
 	};};
 };

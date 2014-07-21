@@ -18,7 +18,7 @@ namespace Scenario
 		for(const auto& modifier : scenario.bsp_modifiers)
 		{
 			// Bsp entries must have a bsp defined
-			YELO_ASSERT_DISPLAY((modifier.bsp_index > -1) && (modifier.bsp_index < scenario.structure_bsps.Count),
+			YELO_ASSERT_DISPLAY(modifier.bsp_index > NONE,
 				"A bsp modifier block has an invalid bsp index");
 		}
 	}
@@ -96,7 +96,7 @@ namespace Scenario
 				for(const auto& sky : sky_set.skies)
 				{
 					// The scenario sky index must be valid
-					YELO_ASSERT_DISPLAY((sky.sky_index > -1) && (sky.sky_index < scenario_sky_count),
+					YELO_ASSERT_DISPLAY(sky.sky_index > NONE,
 						"error: a bsp modifier sky set has a sky with an invalid scenario sky index");
 
 					YELO_ASSERT_DISPLAY(!sky.sky.tag_index.IsNull(),

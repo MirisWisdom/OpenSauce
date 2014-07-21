@@ -9,6 +9,10 @@
 #include <blamlib/Halo1/tag_files/tag_groups_structures_macros.hpp>
 #include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
 
+#include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/scenario/sky_definitions.hpp>
+
 namespace Yelo
 {
 	namespace TagGroups { namespace TagFieldReplacements { namespace Shared
@@ -44,5 +48,19 @@ namespace Yelo
 			for (size_t x = kStartIndex; x <= kEndIndex; x++)
 				strings[x] = k_reserved_flag_string;
 		}
+
+#pragma region Tag Group Reference Definitions
+		TAG_GROUP_REFERENCE_DEFINE(damage_effect, 0,
+			s_damage_effect_definition::k_group_tag
+		);
+
+		TAG_GROUP_REFERENCE_DEFINE(bitmap, 0,
+			s_bitmap_group::k_group_tag
+		);
+
+		TAG_GROUP_REFERENCE_DEFINE(sky, 0,
+			s_sky_definition::k_group_tag
+		);
+#pragma endregion
 	};};}
 };

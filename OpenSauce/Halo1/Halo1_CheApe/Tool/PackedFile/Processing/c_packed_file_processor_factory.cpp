@@ -27,7 +27,7 @@ namespace Yelo
 			}
 			else
 			{
-				YELO_ASSERT_DISPLAY(false, "ERROR: Unknown shader type");
+				YELO_ASSERT_DISPLAY(false, "ERROR: Unknown shader type: %s", type.c_str());
 			}
 
 			return nullptr;

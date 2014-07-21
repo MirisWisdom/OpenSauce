@@ -17,7 +17,8 @@ namespace Yelo
 	namespace Rasterizer { namespace PostProcessing
 	{
 		template<int ValueCount>
-		class c_interp_function_pp_anim : public Time::Interpolation::c_interp_function<ValueCount>
+		class c_interp_function_pp_anim final
+			: public Time::Interpolation::c_interp_function<ValueCount>
 		{
 		protected:
 			struct
@@ -28,19 +29,19 @@ namespace Yelo
 		public:
 			c_interp_function_pp_anim(TagGroups::s_shader_postprocess_value_animation_function* animation) { m_members_pp_anim.animation = animation; }
 
-			void Ctor()
+			void Ctor() override
 			{
 				c_interp_function::Ctor();
 			}
 
-			void Dtor()
+			void Dtor() override
 			{
 				c_interp_function::Dtor();
 
 				m_members_pp_anim.animation = nullptr;
 			}
 
-			void Update(real delta_time)
+			void Update(real delta_time) override
 			{
 				real function_input = 0.0f;
 

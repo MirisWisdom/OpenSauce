@@ -53,7 +53,7 @@ namespace BlamLib.TagInterface
 		private int mValue = 0;
 
 		/// <summary>
-		/// The size of the padding
+		/// The size of the padding in bytes
 		/// </summary>
 		public int Value
 		{

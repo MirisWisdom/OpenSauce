@@ -11,10 +11,6 @@
 
 namespace Yelo
 {
-	namespace Flags
-	{
-	};
-
 	namespace Render { namespace Lightmaps
 	{
 		class c_lightmap_manager final
@@ -37,7 +33,6 @@ namespace Yelo
 			}m_current_lightmaps;
 
 		public:
-			
 			typedef TagGroups::s_bitmap_data* (API_FUNC *proc_get_bitmap_data)(const datum_index, const int32);
 
 			bool HasLightmaps(const renderable_lightmaps_flags flag) const;

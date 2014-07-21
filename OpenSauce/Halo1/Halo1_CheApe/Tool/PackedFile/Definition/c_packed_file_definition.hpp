@@ -15,7 +15,7 @@ namespace Yelo
 {
 	namespace Tool { namespace PackedFile
 	{
-		class c_file_definition_container
+		class c_file_definition_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -26,10 +26,10 @@ namespace Yelo
 			c_file_definition_container();
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers();
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() override;
 		};
 
-		class c_packed_file_definition_container
+		class c_packed_file_definition_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -39,10 +39,10 @@ namespace Yelo
 			c_packed_file_definition_container();
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers();
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() override;
 		};
 
-		class c_packed_file_definition
+		class c_packed_file_definition final
 		{
 		public:
 			c_packed_file_definition_container m_packed_file_defintion;

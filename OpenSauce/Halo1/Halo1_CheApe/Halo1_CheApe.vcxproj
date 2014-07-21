@@ -103,13 +103,6 @@
     <ClCompile Include="Settings\SettingsSapien.cpp" />
     <ClCompile Include="Settings\SettingsTool.cpp" />
     <ClCompile Include="Settings\Settings.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\Bitmap.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\DamageEffect.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\GBXModel.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\Scenario.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\Shader.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\Sound.cpp" />
-    <ClCompile Include="TagGroups\TagFieldReplacements\Unit.cpp" />
     <ClCompile Include="Tool\BuildCacheFile.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp" />

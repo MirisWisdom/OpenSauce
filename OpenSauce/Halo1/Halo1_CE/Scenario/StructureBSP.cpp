@@ -28,16 +28,52 @@ namespace Yelo
 		{
 			struct s_bsp_modifier_state
 			{
-				byte m_lightmap_set;
-				byte m_sky_set;
+				sbyte m_lightmap_set;
+				sbyte m_sky_set;
 			};
 
 			/// <summary>	Gamestate memory for storing the current variant index of each zone. </summary>
 			s_bsp_modifier_state*						m_bsp_modifier_gamestate;
 			TagBlock<const s_scenario_bsp_modifier>*	m_bsp_modifier_list;
-			byte										m_bsp_modifier_bsp_map[Enums::k_maximum_structure_bsps_per_scenario_upgrade];
+			sbyte										m_bsp_modifier_bsp_map[Enums::k_maximum_structure_bsps_per_scenario_upgrade];
 			const s_scenario_bsp_modifier*				m_bsp_modifier;
 			int											m_bsp_modifier_index;
+			
+			/// <summary>	Builds the mapping between bsp index and it's modifier map. </summary>
+			void BuildBSPMap()
+			{
+				const auto& modifier_list = *m_bsp_modifier_list;
+				for(int i = 0; i < modifier_list.Count; i++)
+				{
+					const auto& modifier = modifier_list[i];
+
+					m_bsp_modifier_bsp_map[modifier.bsp_index] = i;
+				}
+			}
+
+			/// <summary>	Resets the per-bsp modifier values. </summary>
+			void ResetForBSP()
+			{
+				m_bsp_modifier_index = NONE;
+				m_bsp_modifier = nullptr;
+			}
+
+			/// <summary>	Resets the per-map modifier values. </summary>
+			void ResetForMap()
+			{
+				ResetForBSP();
+
+				m_bsp_modifier_list = nullptr;
+				memset(&m_bsp_modifier_bsp_map, NONE, sizeof(m_bsp_modifier_bsp_map));
+			}
+			
+			/// <summary>	Resets the modifier gamestate. </summary>
+			void ResetGamestate()
+			{
+				memset(m_bsp_modifier_gamestate
+					, 0
+					, Enums::k_maximum_structure_bsps_per_scenario_upgrade * sizeof(s_bsp_modifier_globals::s_bsp_modifier_state));
+			}
 		};
 
 		/// <summary>	Contains all globals variables for the bsp modifiers. </summary>
@@ -52,7 +88,7 @@ namespace Yelo
 		/// <param name="set_index">	 	Zero-based index of the lightmap set. </param>
 		///
 		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool SetLightmapSet(const byte modifier_index, const byte bsp_index, const byte set_index)
+		static bool SetLightmapSet(const sbyte modifier_index, const sbyte bsp_index, const sbyte set_index)
 		{
 			auto& lightmap_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].lightmap_sets;
 			if((set_index < 0) || (set_index >= lightmap_sets.Count))
@@ -94,7 +130,7 @@ namespace Yelo
 		/// <param name="set_index">	 	Zero-based index of the sky set. </param>
 		///
 		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool SetSkySet(const byte modifier_index, const byte bsp_index, const byte set_index)
+		static bool SetSkySet(const sbyte modifier_index, const sbyte bsp_index, const sbyte set_index)
 		{
 			auto& sky_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].sky_sets;
 			if((set_index < 0) || (set_index >= sky_sets.Count))
@@ -122,83 +158,6 @@ namespace Yelo
 		}
 #pragma endregion
 
-#pragma region BSP Modifier State
-		/// <summary>	Builds the mapping between bsp index and it's modifier map. </summary>
-		static void BuildBSPMap()
-		{
-			const auto& modifier_list = *g_bsp_modifier_globals.m_bsp_modifier_list;
-			for(int i = 0; i < modifier_list.Count; i++)
-			{
-				const auto& modifier = modifier_list[i];
-
-				g_bsp_modifier_globals.m_bsp_modifier_bsp_map[modifier.bsp_index] = i;
-			}
-		}
-
-		/// <summary>	Resets the per-bsp modifier values. </summary>
-		static void ResetForBSP()
-		{
-			g_bsp_modifier_globals.m_bsp_modifier_index = NONE;
-			g_bsp_modifier_globals.m_bsp_modifier = nullptr;
-		}
-
-		/// <summary>	Resets the per-map modifier values. </summary>
-		static void ResetForMap()
-		{
-			ResetForBSP();
-
-			g_bsp_modifier_globals.m_bsp_modifier_list = nullptr;
-			memset(&g_bsp_modifier_globals.m_bsp_modifier_bsp_map, NONE, sizeof(g_bsp_modifier_globals.m_bsp_modifier_bsp_map));
-		}
-
-		/// <summary>	Resets the modifier gamestate. </summary>
-		static void ResetGamestate()
-		{
-			memset(g_bsp_modifier_globals.m_bsp_modifier_gamestate, 0, Enums::k_maximum_structure_bsps_per_scenario_upgrade * sizeof(s_bsp_modifier_globals::s_bsp_modifier_state));
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets current bsp modifier. </summary>
-		///
-		/// <param name="bsp_index">	Zero-based index of the bsp. </param>
-		static void SetCurrentModifier(const int16 bsp_index)
-		{
-			if((bsp_index != NONE) && (g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index] != (byte)NONE))
-			{
-				const int modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
-
-				g_bsp_modifier_globals.m_bsp_modifier_index = modifier_index;
-				g_bsp_modifier_globals.m_bsp_modifier = &(*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index];
-			}
-			else
-			{
-				ResetForBSP();
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets the current game state. </summary>
-		///
-		/// <param name="bsp_index">	Zero-based index of the bsp. </param>
-		static void SetToCurrentGameState(const int16 bsp_index)
-		{
-			if((bsp_index != NONE) && (g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index] != (byte)NONE))
-			{
-				const byte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
-
-				const auto& gamestate = g_bsp_modifier_globals.m_bsp_modifier_gamestate[modifier_index];
-
-				SetLightmapSet(modifier_index, (byte)bsp_index, gamestate.m_lightmap_set);
-				SetSkySet(modifier_index, (byte)bsp_index, gamestate.m_sky_set);
-			}
-			else
-			{
-				Render::Sky::Reset();
-				SetStockLightmap();
-			}
-		}
-#pragma endregion
-
 #pragma region Lightmap Scripting
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets a bsp's lightmap set by name. </summary>
@@ -207,15 +166,15 @@ namespace Yelo
 		/// <param name="set_name"> 	Name of the lightmap set. </param>
 		///
 		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool SetLightmapSetByName(const byte bsp_index, cstring set_name)
+		static bool SetLightmapSetByName(const sbyte bsp_index, cstring set_name)
 		{
 			if((bsp_index < 0) || (bsp_index >= Enums::k_maximum_structure_bsps_per_scenario_upgrade))
 			{
 				return false;
 			}
 			
-			const byte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
-			if(modifier_index == (byte)NONE)
+			const sbyte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
+			if(modifier_index == NONE)
 			{
 				return false;
 			}
@@ -243,7 +202,7 @@ namespace Yelo
 			}* args = CAST_PTR(s_arguments*, arguments);
 			TypeHolder result; result.pointer = nullptr;
 
-			result.boolean = SetLightmapSetByName((byte)args->bsp_index, args->set_name);
+			result.boolean = SetLightmapSetByName((sbyte)args->bsp_index, args->set_name);
 
 			return result.pointer;
 		}
@@ -257,14 +216,14 @@ namespace Yelo
 		/// <param name="set_name"> 	Name of the sky set. </param>
 		///
 		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool SetSkySetByName(const byte bsp_index, cstring set_name)
+		static bool SetSkySetByName(const sbyte bsp_index, cstring set_name)
 		{
 			if((bsp_index < 0) || (bsp_index >= Enums::k_maximum_structure_bsps_per_scenario_upgrade))
 			{
 				return false;
 			}
 
-			const byte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
+			const sbyte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
 			if(modifier_index == NONE)
 			{
 				return false;
@@ -293,12 +252,55 @@ namespace Yelo
 			}* args = CAST_PTR(s_arguments*, arguments);
 			TypeHolder result; result.pointer = nullptr;
 
-			result.boolean = SetSkySetByName((byte)args->bsp_index, args->set_name);
+			result.boolean = SetSkySetByName((sbyte)args->bsp_index, args->set_name);
 
 			return result.pointer;
 		}
 #pragma endregion
-		
+
+#pragma region BSP Modifier State
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets current bsp modifier. </summary>
+		///
+		/// <param name="bsp_index">	Zero-based index of the bsp. </param>
+		void SetCurrentModifier(const int16 bsp_index)
+		{
+			if((bsp_index != NONE) && (g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index] != NONE))
+			{
+				const int modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
+
+				g_bsp_modifier_globals.m_bsp_modifier_index = modifier_index;
+				g_bsp_modifier_globals.m_bsp_modifier = &(*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index];
+			}
+			else
+			{
+				g_bsp_modifier_globals.ResetForBSP();
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets the current game state. </summary>
+		///
+		/// <param name="bsp_index">	Zero-based index of the bsp. </param>
+		void SetToCurrentGameState(const int16 bsp_index)
+		{
+			if((bsp_index != NONE) && (g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index] != NONE))
+			{
+				const sbyte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
+
+				const auto& gamestate = g_bsp_modifier_globals.m_bsp_modifier_gamestate[modifier_index];
+
+				SetLightmapSet(modifier_index, (sbyte)bsp_index, gamestate.m_lightmap_set);
+				SetSkySet(modifier_index, (sbyte)bsp_index, gamestate.m_sky_set);
+			}
+			else
+			{
+				Render::Sky::Reset();
+				SetStockLightmap();
+			}
+		}
+#pragma endregion
+
 #pragma region Scripting
 		/// <summary>	Initializes the bsp modifier script functions. </summary>
 		static void InitializeScripting()
@@ -324,13 +326,13 @@ namespace Yelo
 		/// <summary>	Initializes for a new map. </summary>
 		void InitializeForNewMap()
 		{
-			ResetForMap();
-			ResetGamestate();
+			g_bsp_modifier_globals.ResetForMap();
+			g_bsp_modifier_globals.ResetGamestate();
 
 			auto& scenario = *Scenario::Scenario();
 			g_bsp_modifier_globals.m_bsp_modifier_list = &scenario.bsp_modifiers;
 
-			BuildBSPMap();
+			g_bsp_modifier_globals.BuildBSPMap();
 
 			// InitializeForNewMap is called after the first InitializeForBSPLoad so re-call here to set up for the first BSP
 			InitializeForNewBSP();
@@ -339,7 +341,7 @@ namespace Yelo
 		/// <summary>	Resets the bsp modifier system. </summary>
 		void DisposeFromOldMap()
 		{
-			ResetForMap();
+			g_bsp_modifier_globals.ResetForMap();
 		}
 
 		/// <summary>	Initializes for new bsp. </summary>
@@ -354,7 +356,7 @@ namespace Yelo
 		/// <summary>	Resets the bsp modifier variables. </summary>
 		void DisposeFromOldBSP()
 		{
-			ResetForBSP();
+			g_bsp_modifier_globals.ResetForBSP();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +371,7 @@ namespace Yelo
 				break;
 			case Enums::_project_game_state_component_life_cycle_before_load:
 				// reset the gamestate to default values
-				ResetGamestate();
+				g_bsp_modifier_globals.ResetGamestate();
 				break;
 			case Enums::_project_game_state_component_life_cycle_after_load:
 				SetToCurrentGameState(Scenario::StructureBspIndex());
@@ -385,7 +387,7 @@ namespace Yelo
 
 			YELO_ASSERT_DISPLAY(g_bsp_modifier_globals.m_bsp_modifier_gamestate, "Failed to allocate bsp modifier gamestate memory");
 
-			ResetGamestate();
+			g_bsp_modifier_globals.ResetGamestate();
 		}
 #pragma endregion
 	};

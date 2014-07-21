@@ -14,7 +14,7 @@ namespace Yelo
 	{
 		class c_sky_manager final
 		{
-			class s_sky_entry
+			class s_sky_entry final
 			{
 				datum_index m_sky_tag_index;
 				bool m_is_override;
