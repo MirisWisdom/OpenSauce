@@ -2,7 +2,7 @@
 #define VARS_SCREENPROJ2
 #include "include/rasterizer_dx9_vertex_shaders_defs2.h"
 
-//#define USE_ASM
+#define USE_ASM
 
 struct VS_OUTPUT {
 	float4 Pos : POSITION;
