@@ -117,12 +117,13 @@ namespace OpenSauceIDE.ModelExtractor.UI
 				throw new ArgumentNullException("No source object to bind to");
 			}
 
-			var memberInfo = sourceObject.GetType().GetMember(memberName)[0];
-			if (memberInfo == null)
+			var memberInfos = sourceObject.GetType().GetMember(memberName);
+			if (memberInfos.Length == 0)
 			{
 				throw new ArgumentException(String.Format("Attempted to bind not a non existant member {0} in {1}", memberName, sourceObject.GetType().Name));
 			}
 
+			var memberInfo = memberInfos[0];
 			if ((memberInfo.MemberType != MemberTypes.Field) && (memberInfo.MemberType != MemberTypes.Property))
 			{
 				throw new ArgumentException(String.Format("Attempted to bind to member {0} in {1}, when it is not a field or property", memberName, sourceObject.GetType().Name));
