@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Reflection;
 
 namespace OpenSauceIDE.ModelExtractor.UI
 {
@@ -20,6 +21,8 @@ namespace OpenSauceIDE.ModelExtractor.UI
 	{
 		private string mTitle;
 		private string mSelectedPath;
+		private MemberInfo mBindingMember;
+		private object mBindingObject;
 
 		[Category("Path Control")]
 		public string Title
@@ -108,8 +111,29 @@ namespace OpenSauceIDE.ModelExtractor.UI
 		/// <param name="sourceObject">	Source object. </param>
 		public void BindPath(string memberName, object sourceObject)
 		{
-			var binding = mPathTextBox.DataBindings["Text"];
+			// Validate the arguments
+			if(sourceObject == null)
+			{
+				throw new ArgumentNullException("No source object to bind to");
+			}
 
+			var memberInfos = sourceObject.GetType().GetMember(memberName);
+			if (memberInfos.Length == 0)
+			{
+				throw new ArgumentException(String.Format("Attempted to bind not a non existant member {0} in {1}", memberName, sourceObject.GetType().Name));
+			}
+
+			var memberInfo = memberInfos[0];
+			if ((memberInfo.MemberType != MemberTypes.Field) && (memberInfo.MemberType != MemberTypes.Property))
+			{
+				throw new ArgumentException(String.Format("Attempted to bind to member {0} in {1}, when it is not a field or property", memberName, sourceObject.GetType().Name));
+			}
+
+			mBindingMember = memberInfo;
+			mBindingObject = sourceObject;
+
+			// Replace the text binding
+			var binding = mPathTextBox.DataBindings["Text"];
 			if(binding != null)
 			{
 				mPathTextBox.DataBindings.Remove(binding);
@@ -133,6 +157,19 @@ namespace OpenSauceIDE.ModelExtractor.UI
 			if (browser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
 				SelectedPath = browser.SelectedPath;
+
+				if((mBindingMember != null) && (mBindingObject != null))
+				{
+					switch(mBindingMember.MemberType)
+					{
+						case MemberTypes.Field:
+							(mBindingMember as FieldInfo).SetValue(mBindingObject, SelectedPath);
+							break;
+						case MemberTypes.Property:
+							(mBindingMember as PropertyInfo).SetValue(mBindingObject, SelectedPath, null);
+							break;
+					}
+				}
 			}
 		}
 
