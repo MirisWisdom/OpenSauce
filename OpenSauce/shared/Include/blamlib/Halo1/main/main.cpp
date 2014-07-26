@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/main/main.hpp>
 
+#include <blamlib/Halo1/main/levels.hpp>
 #include <blamlib/Halo1/main/main_structures.hpp>
 
 namespace Yelo
@@ -29,6 +30,19 @@ namespace Yelo
 
 	namespace Main
 	{
+		cstring k_halo1_campaign_level_names[Enums::k_number_of_halo1_campaign_levels] = {
+			R"(levels\a10\a10)",
+			R"(levels\a30\a30)",
+			R"(levels\a50\a50)",
+			R"(levels\b30\b30)",
+			R"(levels\b40\b40)",
+			R"(levels\c10\c10)",
+			R"(levels\c20\c20)",
+			R"(levels\c40\c40)",
+			R"(levels\d20\d20)",
+			R"(levels\4d0\d40)",
+		};
+
 		const std::string& RegistryGetGameExePath()
 		{
 			static std::string g_exe_path = std::string();
@@ -67,9 +81,46 @@ namespace Yelo
 
 	namespace blam
 	{
-#if !PLATFORM_IS_EDITOR
 		Enums::game_connection game_connection()	{ return GameState::MainGlobals()->game_connection; }
-#endif
+
+		cstring main_get_map_name()					{ return GameState::MainGlobals()->scenario_tag_path; }
+
+		int32 PLATFORM_API main_get_campaign_level_from_name(cstring level_name)
+		{
+			char name[128] = { };
+
+			// NOTE: engine doesn't do this, but level_name is usually a scenario path
+			if (cstring last_slash = strrchr(level_name, '\\'))
+				level_name = last_slash+1;
+
+			strncpy_s(name, level_name, NUMBEROF(name)-1);
+			name[NUMBEROF(name)-1] = '\0';
+
+			_strlwr(name);
+
+			using namespace Enums;
+
+				 if (strstr(name, "a10"))	return _halo1_campaign_level_a10;
+			else if (strstr(name, "a30"))	return _halo1_campaign_level_a30;
+			else if (strstr(name, "a50"))	return _halo1_campaign_level_a50;
+			else if (strstr(name, "b30"))	return _halo1_campaign_level_b30;
+			else if (strstr(name, "b40"))	return _halo1_campaign_level_b40;
+			else if (strstr(name, "c10"))	return _halo1_campaign_level_c10;
+			else if (strstr(name, "c20"))	return _halo1_campaign_level_c20;
+			else if (strstr(name, "c40"))	return _halo1_campaign_level_c40;
+			else if (strstr(name, "d20"))	return _halo1_campaign_level_d20;
+			else if (strstr(name, "d40"))	return _halo1_campaign_level_d40;
+
+			return NONE;
+		}
+
+		cstring PLATFORM_API main_get_campaign_level_name(_enum level_index)
+		{
+			if (level_index >= 0 && level_index < NUMBEROF(Main::k_halo1_campaign_level_names))
+				return Main::k_halo1_campaign_level_names[level_index];
+
+			return nullptr;
+		}
 	};
 };
 

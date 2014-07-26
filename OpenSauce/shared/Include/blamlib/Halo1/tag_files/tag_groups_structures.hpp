@@ -198,6 +198,8 @@ namespace Yelo
 		// with [name] characters. Optionally starts at a specific field index.
 		// Returns NONE if this fails.
 		int32 FindFieldIndex(_enum field_type, cstring name, int32 start_index = NONE) const;
+		tag_field* FindField(_enum field_type, cstring name, int32 start_index = NONE);
+		tag_block_definition* FindBlockField(cstring name, int32 start_index = NONE);
 
 		size_t GetAlignmentBit() const;
 		TagGroups::s_tag_field_set_runtime_data* GetRuntimeInfo() const;

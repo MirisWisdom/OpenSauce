@@ -47,6 +47,10 @@ namespace Yelo
 		// Gets the current connection type
 		Enums::game_connection game_connection();
 
+		// Gets the name of the current map. Actually the scenario path usually.
+		// If map_name was specified via the console, it of course won't be the scenario path.
+		cstring main_get_map_name();
+
 		// Connect to a multiplayer server using it's ip:port and password
 		bool PLATFORM_API main_connect(cstring address, cstring password);
 
