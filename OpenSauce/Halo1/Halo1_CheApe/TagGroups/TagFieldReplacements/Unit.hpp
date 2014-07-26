@@ -123,11 +123,8 @@ namespace Yelo
 			g_unit_header_block_postprocess_proc = unit_header_block->postprocess_proc;
 			unit_header_block->postprocess_proc = UnitHeaderBlockPostprocessOverload;
 
-			int unit_seats_field_index = unit_header_block->FindFieldIndex(Enums::_field_block, "seats");
-			assert(unit_seats_field_index != NONE);
-
-			InitializeUnitSeat(
-				unit->header_block_definition->fields[unit_seats_field_index].DefinitionCast<tag_block_definition*>());
+			auto& unit_seats_field = Shared::GetTagField(*unit_header_block, Enums::_field_block, "seats");
+			InitializeUnitSeat(unit_seats_field.DefinitionCast<tag_block_definition*>());
 		}
 	};};};
 };

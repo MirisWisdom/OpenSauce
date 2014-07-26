@@ -1574,6 +1574,91 @@ namespace BlamLib.Blam.Halo1.Tags
 		};
 		#endregion
 
+		#region scenario_bsp_lightmap_set_block
+		[TI.Definition(-1, 124)]
+		public class scenario_bsp_lightmap_set_block : TI.Definition
+		{
+			#region Fields
+			public TI.String Name;
+			public TI.TagReference StandardLightmap;
+			public TI.TagReference DirectionalLightmap1;
+			public TI.TagReference DirectionalLightmap2;
+			public TI.TagReference DirectionalLightmap3;
+			#endregion
+
+			public scenario_bsp_lightmap_set_block()
+				: base(7)
+			{
+				Add(Name = new TI.String());
+				Add(new TI.Pad(4));
+				Add(StandardLightmap = new TI.TagReference(this, TagGroups.bitm));
+				Add(DirectionalLightmap1 = new TI.TagReference(this, TagGroups.bitm));
+				Add(DirectionalLightmap2 = new TI.TagReference(this, TagGroups.bitm));
+				Add(DirectionalLightmap3 = new TI.TagReference(this, TagGroups.bitm));
+				Add(new TI.Pad(4 * 6));
+			}
+		}
+		#endregion
+
+		#region scenario_bsp_sky_set_sky_block
+		[TI.Definition(-1, 20)]
+		public class scenario_bsp_sky_set_sky_block : TI.Definition
+		{
+			#region Fields
+			public TI.BlockIndex SkyIndex;
+			public TI.TagReference Sky;
+			#endregion
+
+			public scenario_bsp_sky_set_sky_block()
+				: base(3)
+			{
+				Add(new TI.Pad(2));
+				Add(SkyIndex = new TI.BlockIndex(TI.FieldType.ShortBlockIndex));
+				Add(Sky = new TI.TagReference(this, TagGroups.sky_));
+			}
+		}
+		#endregion
+
+		#region scenario_bsp_sky_set_block
+		[TI.Definition(-1, 44)]
+		public class scenario_bsp_sky_set_block : TI.Definition
+		{
+			#region Fields
+			public TI.String Name;
+			public TI.Block<scenario_bsp_sky_set_sky_block> Skies;
+			#endregion
+
+			public scenario_bsp_sky_set_block()
+				: base(2)
+			{
+				Add(Name = new TI.String());
+				Add(Skies = new TI.Block<scenario_bsp_sky_set_sky_block>(this, 8));
+			}
+		}
+		#endregion
+
+		#region scenario_bsp_sky_set_block
+		[TI.Definition(-1, 64)]
+		public class scenario_bsp_modifier_block : TI.Definition
+		{
+			#region Fields
+			public TI.BlockIndex BSPIndex;
+			public TI.Block<scenario_bsp_lightmap_set_block> LightmapSets;
+			public TI.Block<scenario_bsp_sky_set_block> SkySets;
+			#endregion
+
+			public scenario_bsp_modifier_block()
+				: base(5)
+			{
+				Add(new TI.Pad(2));
+				Add(BSPIndex = new TI.BlockIndex(TI.FieldType.ShortBlockIndex));
+				Add(LightmapSets = new TI.Block<scenario_bsp_lightmap_set_block>(this, 64));
+				Add(SkySets = new TI.Block<scenario_bsp_sky_set_block>(this, 64));
+				Add(new TI.Pad(4 * 9));
+			}
+		}
+		#endregion
+
 		#region Fields
 		private TI.TagReference DontUse;
 		private TI.TagReference WontUse;
@@ -1639,6 +1724,8 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Block<scenario_cutscene_flag_block> CutsceneFlags;
 		public TI.Block<scenario_cutscene_camera_point_block> CutsceneCameraPoints;
 		public TI.Block<scenario_cutscene_title_block> CutsceneTitles;
+
+		public TI.Block<scenario_bsp_modifier_block> BSPModifiers;
 
 		public TI.TagReference CustomObjectNames;
 		public TI.TagReference IngameHelpText;
@@ -1717,7 +1804,10 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(CutsceneFlags = new TI.Block<scenario_cutscene_flag_block>(this, 512));
 			Add(CutsceneCameraPoints = new TI.Block<scenario_cutscene_camera_point_block>(this, 512));
 			Add(CutsceneTitles = new TI.Block<scenario_cutscene_title_block>(this, 64));
-			Add(new TI.Pad(108));
+
+			Add(BSPModifiers = new TI.Block<scenario_bsp_modifier_block>(this, 32));
+
+			Add(new TI.Pad(96));
 
 			Add(CustomObjectNames = new TI.TagReference(this, TagGroups.ustr));
 			Add(IngameHelpText = new TI.TagReference(this, TagGroups.ustr));

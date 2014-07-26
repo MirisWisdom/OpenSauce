@@ -37,7 +37,6 @@ namespace Yelo
 		);
 
 
-		static const uint32 k_sky_block_reference_index = 1;
 		TAG_GROUP_BLOCK_FIELDS_DEFINE(scenario_bsp_sky_set_sky) =
 		{
 			TAG_FIELD_ENTRY_PAD(sizeof(int16)),
@@ -61,7 +60,6 @@ namespace Yelo
 		);
 
 
-		static const uint32 k_bsp_block_reference_index = 1;
 		TAG_GROUP_BLOCK_FIELDS_DEFINE(scenario_bsp_modifier) =
 		{
 			TAG_FIELD_ENTRY_PAD(sizeof(int16)),
@@ -81,17 +79,8 @@ namespace Yelo
 			tag_group* scnr = blam::tag_group_get<scenario>();
 			auto* header_block = scnr->header_block_definition;
 
-			// Set up the skies tag block index
-			int skies_field_index = header_block->FindFieldIndex(Enums::_field_block, "skies");
-			auto* skies_block_definition = header_block->fields[skies_field_index].DefinitionCast<tag_block_definition*>();
-			assert(skies_block_definition);
-			TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set_sky).fields[k_sky_block_reference_index].definition = skies_block_definition;
-			
-			// Set up the bsp tag block index
-			int bsps_field_index = header_block->FindFieldIndex(Enums::_field_block, "structure bsps");
-			auto* bsp_block_definition = header_block->fields[bsps_field_index].DefinitionCast<tag_block_definition*>();
-			assert(bsp_block_definition);
-			TAG_GROUP_BLOCK_GET(scenario_bsp_modifier).fields[k_bsp_block_reference_index].definition = bsp_block_definition;
+			Shared::LinkBlockIndex<Enums::_field_short_block_index>(*scnr->header_block_definition, "skies", TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set_sky), "sky index");
+			Shared::LinkBlockIndex<Enums::_field_short_block_index>(*scnr->header_block_definition, "structure bsps", TAG_GROUP_BLOCK_GET(scenario_bsp_modifier), "bsp index");
 
 			FIELDSET_REPLACEMENT_BEGIN(scenario, 71 + 1, header_block)
 				FIELDSET_SEEK_AFTER_WITH_COPY("cutscene titles")
