@@ -45,6 +45,8 @@ namespace Yelo
 			void SetLightmapSamplers(LPDIRECT3DDEVICE9 device
 				, const int32 lightmap_index
 				, const proc_get_bitmap_data get_bitmap_data);
+
+			datum_index GetStandardLightmapTagIndex();
 		};
 	};};
 };

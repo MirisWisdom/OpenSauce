@@ -81,6 +81,32 @@ namespace Yelo
 			API_FUNC_NAKED_END_();
 		}
 
+		/// <summary>	Hooks the lightmap tag index for the objects render state cache update. </summary>
+		static API_FUNC_NAKED void ObjectRenderCacheLightmapTagIndexHook()
+		{
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(OBJECT_RENDER_CACHE_LIGHTMAP_TAG_INDEX_RETN);
+			static datum_index LIGHTMAP_TAG_INDEX;
+
+			_asm
+			{
+				push	edx
+				push	ecx
+				
+				lea		edx, [LIGHTMAP_TAG_INDEX]
+				push	edx
+				lea		ecx, g_lightmap_globals.m_lightmap_manager
+				call	Yelo::Render::Lightmaps::c_lightmap_manager::GetStandardLightmapTagIndex
+				mov		eax, [LIGHTMAP_TAG_INDEX]
+
+				pop		ecx
+				pop		edx
+
+				cmp		eax, 0FFFFFFFFh
+
+				jmp		RETN_ADDRESS
+			}
+		}
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Returns true if directional lightmaps are in use. </summary>
 		///
@@ -96,6 +122,7 @@ namespace Yelo
 			// Hook lightmap set code
 			Memory::WriteRelativeJmp(&Hook_BSPLightmapIndex,	GET_FUNC_VPTR(BSP_LIGHTMAP_INDEX_HOOK), true);
 			Memory::WriteRelativeCall(&SetLightmapSamplerHook,	GET_FUNC_VPTR(SET_LIGHTMAP_SAMPLER_CALL), true);
+			Memory::WriteRelativeJmp(&ObjectRenderCacheLightmapTagIndexHook, GET_FUNC_VPTR(OBJECT_RENDER_CACHE_LIGHTMAP_TAG_INDEX_HOOK), true);
 		}
 
 		/// <summary>	Unused. </summary>

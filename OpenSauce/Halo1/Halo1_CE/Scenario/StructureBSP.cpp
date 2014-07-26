@@ -10,6 +10,8 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/Halo1/objects/object_structures.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 
 #include "Common/GameSystemDefinitions.hpp"
@@ -104,6 +106,23 @@ namespace Yelo
 					, lightmap_set.directional_lightmap_1
 					, lightmap_set.directional_lightmap_2
 					, lightmap_set.directional_lightmap_3);
+			}
+
+			// Update the object render state cache for all objects
+			auto& object_iterator = Objects::c_object_iterator::all();
+			for(const auto& object : object_iterator)
+			{
+				auto* object_data = blam::object_get(object.index);
+				real level_of_detail_pixels = blam::object_get_level_of_detail_pixels(object.index);
+
+				if(!object_data->cached_render_state_index.IsNull())
+				{
+					blam::object_render_state_refresh(object_data->cached_render_state_index, object.index, level_of_detail_pixels, 1);
+				}
+				else
+				{
+					blam::object_render_state_refresh(object_data->cached_render_state_index, object.index, level_of_detail_pixels, 0);
+				}
 			}
 
 			// Store the bsps current lightmap sequence
