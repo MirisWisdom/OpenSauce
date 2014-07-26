@@ -161,6 +161,23 @@ namespace Yelo
 		return NONE;
 	}
 
+	tag_field* tag_block_definition::FindField(_enum field_type, cstring name, int32 start_index)
+	{
+		int32 index = FindFieldIndex(field_type, name, start_index);
+
+		YELO_ASSERT_DISPLAY(index != NONE, "failed to find a %s field named %s in %s",
+			TagGroups::k_tag_field_definitions[field_type].name, name, this->name);
+
+		return &this->fields[index];
+	}
+
+	tag_block_definition* tag_block_definition::FindBlockField(cstring name, int32 start_index)
+	{
+		tag_field* block_field = FindField(Enums::_field_block, name, start_index);
+
+		return block_field->Definition<tag_block_definition>();
+	}
+
 	bool tag_reference_definition::s_group_tag_iterator::operator!=(const tag_reference_definition::s_group_tag_iterator& other) const
 	{
 		if(other.IsEndHack())
