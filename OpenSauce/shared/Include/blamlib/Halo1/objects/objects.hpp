@@ -241,6 +241,10 @@ namespace Yelo
 
 		// Sets the scale of an object over a duration of time (game ticks)
 		void PLATFORM_API objects_scripting_set_scale(datum_index object_index, real scale, int32 ticks);
+		
+		real PLATFORM_API object_get_level_of_detail_pixels(datum_index object_index);
+
+		void PLATFORM_API object_render_state_refresh(datum_index object_render_state_index, datum_index object_index, real level_of_detail_pixels, byte arg4);
 
 
 		s_object_data* object_get(datum_index object_index);

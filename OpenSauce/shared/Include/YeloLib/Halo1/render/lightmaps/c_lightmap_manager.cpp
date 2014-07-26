@@ -108,5 +108,14 @@ namespace Yelo
 				m_used_lightmaps = _renderable_lightmaps_flags_standard_bit;
 			}
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets standard lightmap tag index. </summary>
+		///
+		/// <returns>	The standard lightmap tag index. </returns>
+		datum_index c_lightmap_manager::GetStandardLightmapTagIndex()
+		{
+			return m_current_lightmaps.standard_tag_index;
+		}
 	};};
 };

@@ -1155,6 +1155,14 @@ namespace Yelo
 		void PLATFORM_API objects_scripting_set_scale(datum_index object_index, real scale, int32 ticks)
 		{
 			Engine::Objects::SetScale(object_index, scale, ticks);
+		}		
+		real PLATFORM_API object_get_level_of_detail_pixels(datum_index object_index)
+		{
+			return Engine::Objects::GetLevelOfDetailPixels(object_index);
+		}
+		void PLATFORM_API object_render_state_refresh(datum_index object_render_state_index, datum_index object_index, real level_of_detail_pixels, byte arg4)
+		{
+			Engine::Objects::ObjectRenderStateRefresh(object_render_state_index, object_index, level_of_detail_pixels, arg4);
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////

@@ -337,18 +337,27 @@
 			<arg type="string" name="filename" help="" />
 		</function>
 
-		<function name="scenario_faux_zones_reset" returnType="void" help="reset the current bsp's lightmap to the default lightmap-set" internal="true" />
-		<function name="scenario_faux_zone_current_switch_variant" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
+		<function name="scenario_faux_zones_reset" returnType="void" help="depreceated, do not use" internal="true" />
+		<function name="scenario_faux_zone_current_switch_variant" returnType="boolean" help="depreceated, do not use" internal="true" >
 			<arg type="string" name="variant-name" />
 		</function>
-		<function name="scenario_faux_zone_switch_variant" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
+		<function name="scenario_faux_zone_switch_variant" returnType="boolean" help="depreceated, do not use" internal="true" >
 			<arg type="string" name="zone-name" />
 			<arg type="string" name="variant-name" />
 		</function>
-		<function name="scenario_faux_zone_switch_sky" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
+		<function name="scenario_faux_zone_switch_sky" returnType="boolean" help="depreceated, do not use" internal="true" >
 			<arg type="string" name="zone-sky-name" />
 		</function>
-		
+
+		<function name="structure_bsp_set_lightmap_set" returnType="boolean" help="Sets a bsp's lightmap set, returns true if successful" internal="true">
+			<arg type="short" name="bsp-index" />
+			<arg type="string" name="set-name" />
+		</function>
+		<function name="structure_bsp_set_sky_set" returnType="boolean" help="Sets a bsp's sky set, returns true if successful" internal="true" >
+			<arg type="short" name="bsp-index" />
+			<arg type="string" name="set-name" />
+		</function>
+
 	</scriptFunctions>
 
 	<scriptGlobals>

@@ -503,3 +503,27 @@ API_FUNC_NAKED void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3
 		add		esp, 4 * 4
 	API_FUNC_NAKED_END(4)
 }
+
+API_FUNC_NAKED real GetLevelOfDetailPixels(datum_index object_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_GET_LEVEL_OF_DETAIL_PIXELS);
+
+	API_FUNC_NAKED_START()
+		mov		eax, object_index
+		call	FUNCTION
+	API_FUNC_NAKED_END(1)
+}
+
+API_FUNC_NAKED void ObjectRenderStateRefresh(datum_index object_render_state_index, datum_index object_index, real level_of_detail_pixels, int arg4)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_RENDER_STATE_REFRESH);
+
+	API_FUNC_NAKED_START()
+		push	arg4
+		push	level_of_detail_pixels
+		push	object_index
+		push	object_render_state_index
+		call	FUNCTION
+		add		esp, 4 * 4
+	API_FUNC_NAKED_END(4)
+}

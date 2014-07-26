@@ -42,7 +42,7 @@ namespace Yelo
 			int seperator_index = 0;
 			while(field_name.length() != 0)
 			{
-				int seperator_index = field_name.find(".");
+				int seperator_index = field_name.find(":");
 				if(seperator_index == std::string::npos)
 				{
 					break;
