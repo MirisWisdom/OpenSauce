@@ -35,6 +35,11 @@ namespace Yelo
 			bitmaps.PreprocessForSave();
 		}
 
+		DWORD s_build_cache_file_globals::GetFileSize() const
+		{
+			return ::GetFileSize(file_handle, nullptr);
+		}
+
 		void s_build_cache_file_globals::TemporaryFileOpen(cstring filename)
 		{
 			file_handle = CreateFileA(filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);

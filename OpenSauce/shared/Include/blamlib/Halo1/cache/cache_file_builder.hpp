@@ -27,6 +27,8 @@ namespace Yelo
 			uint32 cache_stream_size;
 			s_data_file_globals data_files;
 
+			DWORD GetFileSize() const;
+
 			void TemporaryFileOpen(cstring filename = k_temp_cache_file_name);
 			void TemporaryFileClose(cstring filename = k_temp_cache_file_name);
 			void TemporaryFileCopy(cstring new_filename, cstring filename = k_temp_cache_file_name);
