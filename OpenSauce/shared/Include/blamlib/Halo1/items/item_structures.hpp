@@ -13,6 +13,11 @@ namespace Yelo
 	{
 		enum item_flags : long_flags {
 			_item_in_unit_inventory_bit,
+			_item_hidden_in_unit_inventory_bit, // I think? this bit is either/or with the above bit. name taken from H2
+			_item_unk2_bit,
+			_item_collided_with_bsp_bit,
+			_item_collided_with_object_bit,
+			_item_at_reset_bit, // see _object_at_reset_bit
 		};
 	};
 
@@ -21,14 +26,18 @@ namespace Yelo
 		struct s_item_data
 		{
 			long_flags flags;					// 0x1F4
-			int16 detonation_countdown;			// 0x1F8
-			UNKNOWN_TYPE(int16);				// 0x1FA collision surface index
-			UNKNOWN_TYPE(int16);				// 0x1FC structure bsp index
+			game_time_t detonation_countdown;	// 0x1F8
+			struct {
+				int16 surface_index;			// 0x1FA
+				int16 bsp_reference_index;		// 0x1FC
+			}bsp_collision;
 			PAD16;								// 0x1FE
-			UNKNOWN_TYPE(datum_index);			// 0x200 object index
-			int32 last_update_time;				// 0x204
-			UNKNOWN_TYPE(datum_index);			// 0x208 object index
-			UNKNOWN_TYPE(real_point3d);			// 0x20C
+			datum_index dropped_by_unit_index;	// 0x200 set when the unit who had this item drops it
+			game_ticks_t last_update_time;		// 0x204
+			struct {
+				datum_index object_index;		// 0x208
+				real_point3d object_position;	// 0x20C
+			}object_collision;
 			UNKNOWN_TYPE(real_vector3d);		// 0x218
 			UNKNOWN_TYPE(real_euler_angles2d);	// 0x224
 		}; BOOST_STATIC_ASSERT( sizeof(s_item_data) == (Enums::k_object_size_item - Enums::k_object_size_object) );
@@ -36,7 +45,7 @@ namespace Yelo
 
 		struct s_garbage_data
 		{
-			int16 ticks_until_gc;
+			game_time_t ticks_until_gc;
 			PAD16;
 			int32 _unused[5];
 		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_data) == (Enums::k_object_size_garbage - Enums::k_object_size_item) );

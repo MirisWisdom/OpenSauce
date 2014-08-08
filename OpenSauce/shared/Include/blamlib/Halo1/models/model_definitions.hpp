@@ -30,9 +30,9 @@ namespace Yelo
 	{
 		struct model_marker_instance
 		{
-			TAG_FIELD(byte, region_index);
-			TAG_FIELD(byte, permutation_index);
-			TAG_FIELD(byte, node_index);
+			TAG_FIELD(sbyte, region_index);
+			TAG_FIELD(sbyte, permutation_index);
+			TAG_FIELD(sbyte, node_index);
 			PAD8;
 			TAG_FIELD(real_point3d, translation);
 			TAG_FIELD(real_quaternion, rotation);
@@ -108,8 +108,8 @@ namespace Yelo
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(int16, shader_index);
-			TAG_FIELD(byte, prev_filthy_part_index);
-			TAG_FIELD(byte, next_filthy_part_index);
+			TAG_FIELD(sbyte, prev_filthy_part_index);
+			TAG_FIELD(sbyte, next_filthy_part_index);
 			TAG_FIELD(int16, centroid_primary_node);
 			TAG_FIELD(int16, centroid_secondary_node);
 			TAG_FIELD(real_fraction, centroid_primary_weight);

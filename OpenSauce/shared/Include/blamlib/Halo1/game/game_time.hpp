@@ -17,6 +17,16 @@ namespace Yelo
 
 	namespace blam
 	{
+		real game_time_get_seconds_per_tick();
+
+		real game_ticks_to_seconds(int32 ticks);
+
+		int32 game_seconds_to_ticks(int32 seconds);
+
+		real game_seconds_to_ticks(real seconds);
+
+		int32 game_seconds_to_ticks_round(real seconds);
+
 		game_ticks_t game_time_get();
 
 		game_time_t game_time_get_elapsed();

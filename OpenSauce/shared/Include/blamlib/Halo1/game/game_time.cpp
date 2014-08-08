@@ -12,6 +12,31 @@ namespace Yelo
 {
 	namespace blam
 	{
+		real game_time_get_seconds_per_tick()
+		{
+			return K_SECONDS_PER_TICK;
+		}
+
+		real game_ticks_to_seconds(int32 ticks)
+		{
+			return CAST(real, ticks) * K_SECONDS_PER_TICK;
+		}
+
+		int32 game_seconds_to_ticks(int32 seconds)
+		{
+			return seconds * K_TICKS_PER_SECOND;
+		}
+
+		real game_seconds_to_ticks(real seconds)
+		{
+			return seconds * CAST(real, K_TICKS_PER_SECOND);
+		}
+
+		int32 game_seconds_to_ticks_round(real seconds)
+		{
+			return CAST(int32, game_seconds_to_ticks(seconds));
+		}
+
 		game_ticks_t game_time_get()
 		{
 			auto game_time_globals = GameState::GameTimeGlobals();

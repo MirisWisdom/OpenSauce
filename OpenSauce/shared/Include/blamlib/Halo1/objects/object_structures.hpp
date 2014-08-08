@@ -64,7 +64,7 @@ namespace Yelo
 		{
 			// --- 0x10
 
-			_object_unk0_bit = 0,
+			_object_hidden_bit = 0,
 			_object_is_on_the_ground_bit,
 			_object_unk2_bit,
 			_object_is_in_water_bit,
