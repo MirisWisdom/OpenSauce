@@ -86,6 +86,10 @@ namespace Yelo
 		// Tests to see if [object_index] is inside [trigger_volume_index] (index to a definition in the current scenario)
 		bool PLATFORM_API scenario_trigger_volume_test_object(int32 trigger_volume_index, datum_index object_index);
 
+		datum_index PLATFORM_API scenario_tags_load(cstring scenario_name);
+
+		void PLATFORM_API scenario_tags_unload();
+
 		void scenario_structure_bsp_unload(TagGroups::scenario_structure_bsp_reference* reference);
 
 		bool scenario_structure_bsp_load(TagGroups::scenario_structure_bsp_reference* reference);

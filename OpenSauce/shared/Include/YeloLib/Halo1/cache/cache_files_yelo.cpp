@@ -8,6 +8,7 @@
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
+#include <blamlib/Halo1/cache/data_file.hpp>
 #include <blamlib/Halo1/main/main.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <YeloLib/Halo1/cache/cache_files_structures_yelo.hpp>
@@ -127,6 +128,41 @@ namespace Yelo
 			}
 
 			return file_found;
+		}
+
+		s_cache_file_data_load_state::s_cache_file_data_load_state(s_cache_header* cache_header, s_cache_tag_header* tag_header)
+			: base_address(CAST_PTR(byte*, tag_header) + cache_header->tag_memory_size)
+			, memory_available(Enums::k_tag_allocation_size_upgrade - cache_header->tag_memory_size)
+		{
+		}
+
+		byte* s_cache_file_data_load_state::Alloc(s_cache_tag_instance* tag_instance, size_t bytes)
+		{
+			byte* address = base_address;
+			if (bytes > memory_available)
+			{
+				YELO_ASSERT_DISPLAY(false, "need to log the tag which we can't load here");
+			}
+
+			memory_available -= bytes;
+			base_address += bytes;
+			return address;
+		}
+
+		byte* s_cache_file_data_load_state::ReadExternalData(s_cache_tag_instance* tag_instance, Enums::data_file_reference_type data_file)
+		{
+			int32 data_offset, data_size;
+			if (!DataFileGetItemDataInfo(data_file, tag_instance->index_in_data_file, data_offset, data_size))
+				return nullptr;
+
+			size_t buffer_size = CAST(size_t, data_size);
+			byte* buffer = Alloc(tag_instance, buffer_size);
+
+			if (buffer != nullptr &&
+				!DataFileReadItemData(data_file, CAST(uint32, data_offset), buffer, buffer_size))
+				return nullptr;
+
+			return buffer;
 		}
 
 		e_map_path_file_type GetMapNameFromPath(_Out_ char (&map_name)[_MAX_FNAME], cstring map_path)

@@ -36,6 +36,13 @@ namespace Yelo
 
 		s_data_file& DataFileGet(Enums::data_file_reference_type data_file);
 
+		// utility for blam::cache_file_data_load
+		bool DataFileGetItemDataInfo(Enums::data_file_reference_type data_file, int32 item_index,
+			int32& out_data_offset, int32& out_data_size);
+		// utility for blam::cache_file_data_load
+		bool DataFileReadItemData(Enums::data_file_reference_type data_file,
+			uint32 position, void* buffer, size_t buffer_size);
+
 		bool DataFilesOpen(cstring bitmaps_path, cstring sounds_path, cstring locale_path,
 			bool store_resources = false);
 	};

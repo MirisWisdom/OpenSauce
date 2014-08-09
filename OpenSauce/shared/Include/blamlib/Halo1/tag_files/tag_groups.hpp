@@ -73,7 +73,7 @@ namespace Yelo
 		{
 			return tag_block_delete_all_elements(block.to_tag_block());
 		}
-
+#endif
 		// Note: when used in range based for loops this will create an unnecessary copy operation, but with SSE2 it shouldn't be that bad
 		class c_tag_iterator {
 			s_tag_iterator m_state;
@@ -118,13 +118,14 @@ namespace Yelo
 				return c_tag_iterator(nullptr);
 			}
 		};
-#endif
 	};
 
 	namespace blam
 	{
 		void PLATFORM_API tag_groups_initialize();
 		void PLATFORM_API tag_groups_dispose();
+		void PLATFORM_API tag_groups_initialize_for_new_map();
+		void PLATFORM_API tag_groups_dispose_from_old_map();
 
 
 		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name);

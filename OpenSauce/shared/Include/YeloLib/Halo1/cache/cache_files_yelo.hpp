@@ -7,9 +7,16 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum data_file_reference_type : _enum;
+	};
+
 	namespace Cache
 	{
 		struct s_cache_header;
+		struct s_cache_tag_header;
+		struct s_cache_tag_instance;
 
 		// The type of cache file which a map_path refers to
 		enum class e_map_path_file_type : long_enum
@@ -69,6 +76,20 @@ namespace Yelo
 			// Should the finder search for .yelo files before .map?
 			// This should be set when the user settings are loaded, else it is always false
 			static bool g_search_for_yelo_first;
+		};
+
+		// utility for blam::cache_file_data_load
+		struct s_cache_file_data_load_state
+		{
+			byte* base_address;
+			size_t memory_available;
+
+			s_cache_file_data_load_state(s_cache_header* cache_header, s_cache_tag_header* tag_header);
+
+		private:
+			byte* Alloc(s_cache_tag_instance* tag_instance, size_t bytes);
+		public:
+			byte* ReadExternalData(s_cache_tag_instance* tag_instance, Enums::data_file_reference_type data_file);
 		};
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////

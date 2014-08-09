@@ -269,6 +269,16 @@ namespace Yelo
 			destroy_group_byte_swap_codes();
 			destroy_group_parents();
 		}
+
+		void PLATFORM_API tag_groups_initialize_for_new_map()
+		{
+		}
+
+		void PLATFORM_API tag_groups_dispose_from_old_map()
+		{
+			for (auto kv : TagGroups::TagInstances())
+				tag_unload(kv.index);
+		}
 	};
 };
 

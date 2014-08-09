@@ -6,17 +6,17 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
-#if PLATFORM_IS_EDITOR
-	#include <blamlib/Halo1/models/model_definitions.hpp>
-	#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
-	#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
-	#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
-	#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
+#include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
+#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
+#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
+#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
+#if PLATFORM_IS_EDITOR
 		bool g_gbxmodel_group_enabled = true;
 
 		int32 StringFieldGetLength(const tag_field* field)
@@ -61,7 +61,7 @@ namespace Yelo
 				? blam::tag_block_resize(block, 0)
 				: true;
 		}
-
+#endif
 		//////////////////////////////////////////////////////////////////////////
 		// c_tag_iterator
 		c_tag_iterator::c_tag_iterator(const void* endHackDummy) //:
@@ -89,6 +89,7 @@ namespace Yelo
 		}
 	};
 
+#if PLATFORM_IS_EDITOR
 	size_t tag_block::get_element_size() const
 	{
 		return definition->element_size;
@@ -674,8 +675,9 @@ namespace Yelo
 
 		return true;
 	}
+#endif
 };
 
+#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_groups.field_definitions.inl>
-
 #endif

@@ -63,6 +63,22 @@ namespace Yelo
 #endif
 		}
 
+		bool DataFileGetItemDataInfo(Enums::data_file_reference_type data_file, int32 item_index,
+			int32& out_data_offset, int32& out_data_size)
+		{
+			auto& df = DataFileGet(data_file);
+
+			return df.GetItemDataInfo(item_index, out_data_offset, out_data_size);
+		}
+
+		bool DataFileReadItemData(Enums::data_file_reference_type data_file,
+			uint32 position, void* buffer, size_t buffer_size)
+		{
+			auto& df = DataFileGet(data_file);
+
+			return df.ReadItemData(position, buffer, buffer_size);
+		}
+
 		bool DataFilesOpen(cstring bitmaps_path, cstring sounds_path, cstring locale_path,
 			bool store_resources)
 		{
@@ -248,6 +264,26 @@ namespace Yelo
 			memset(&header, 0, sizeof(header));
 			file_handle = INVALID_HANDLE_VALUE; // engine doesn't do this
 			return true;
+		}
+
+		bool s_data_file::GetItemDataInfo(int32 item_index,
+				int32& out_data_offset, int32& out_data_size) const
+		{
+			if (item_index < 0 || item_index >= file_index_table.count)
+				return false;
+
+			s_data_file_item* item = &file_index_table.address[item_index];
+			out_data_offset = item->data_offset;
+			out_data_size = item->size;
+
+			return true;
+		}
+
+		bool s_data_file::ReadItemData(uint32 position, void* buffer, size_t buffer_size)
+		{
+			YELO_ASSERT(file_handle != INVALID_HANDLE_VALUE);
+
+			return Read(position, buffer, buffer_size);
 		}
 
 #if PLATFORM_TYPE == PLATFORM_TOOL

@@ -121,7 +121,8 @@ namespace Yelo
 			TAG_ENUM(game_types, Enums::scenario_netgame_type)[4];
 			TAG_FIELD(int16, team_index);
 			TAG_FIELD(int16, respawn_time);
-			TAG_PAD(int32, 12);
+			datum_index runtime_object_index; // initialized to NONE in scenario_load
+			TAG_PAD(int32, 11);
 			TAG_FIELD(real_point3d, position);
 			TAG_FIELD(angle, facing_degrees);
 			TAG_FIELD(tag_reference, item_collection, 'itmc');
