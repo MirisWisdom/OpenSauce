@@ -64,6 +64,11 @@ namespace Yelo
 
 			bool Close();
 
+			bool GetItemDataInfo(int32 item_index,
+				int32& out_data_offset, int32& out_data_size) const;
+
+			bool ReadItemData(uint32 position, void* buffer, size_t buffer_size);
+
 #if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 		private:
 			int32 AddItemName(cstring item_name);

@@ -4,10 +4,10 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
-#if PLATFORM_IS_EDITOR
 
 namespace Yelo
 {
+#if PLATFORM_IS_EDITOR
 	struct s_file_reference;
 	struct tag_group;
 
@@ -37,9 +37,10 @@ namespace Yelo
 
 		bool TagFileRequiresByteSwap();
 	};
-
+#endif
 	namespace blam
 	{
+#if PLATFORM_IS_EDITOR
 		void PLATFORM_API tag_files_flush();
 
 
@@ -72,9 +73,8 @@ namespace Yelo
 
 		bool PLATFORM_API tag_file_get_file_reference(_Out_ s_file_reference& reference,
 			tag group_tag, _In_opt_ cstring name);
+#endif
 
-		cstring tag_name_strip_name(cstring name);
+		cstring tag_name_strip_path(cstring name);
 	};
 };
-
-#endif

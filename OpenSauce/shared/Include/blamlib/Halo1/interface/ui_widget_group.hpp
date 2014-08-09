@@ -211,4 +211,9 @@ namespace Yelo
 			TAG_TBLOCK(child_widgets, ui_child_widget_reference);
 		}; BOOST_STATIC_ASSERT( sizeof(ui_widget_definition) == 0x3EC );
 	};
+
+	namespace blam
+	{
+		void PLATFORM_API ui_load_tags_for_scenario(datum_index scenario_index);
+	};
 };

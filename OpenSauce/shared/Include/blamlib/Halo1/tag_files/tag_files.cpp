@@ -4,20 +4,22 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 
+#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files_structures.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+#endif
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
+#if PLATFORM_IS_EDITOR
 		cstring K_TAG_FILES_DIRECTORY = "tags\\";
 		cstring K_DATA_FILES_DIRECTORY = "data\\";
 
@@ -310,10 +312,12 @@ namespace Yelo
 		{
 			return true; // TODO: reference tag_file_globals
 		}
+#endif
 	};
 
 	namespace blam
 	{
+#if PLATFORM_IS_EDITOR
 		bool PLATFORM_API tag_file_open_impl(tag group_tag, cstring filename,
 			_Out_opt_ bool* is_readonly, _Out_opt_ uint32* crc, bool from_file_system)
 		{
@@ -333,8 +337,9 @@ namespace Yelo
 
 			return true;
 		}
+#endif
 
-		cstring tag_name_strip_name(cstring name)
+		cstring tag_name_strip_path(cstring name)
 		{
 			YELO_ASSERT(name);
 
@@ -346,5 +351,3 @@ namespace Yelo
 		}
 	};
 };
-
-#endif

@@ -63,10 +63,14 @@ namespace Yelo
 		///
 		/// <returns>	. </returns>
 		cstring MapsDirectory();
+
+		// if true, data which is in a data file won't be loaded during the cache_file's tags load process
+		bool DontLoadExternalData();
 	};
 
 	namespace TagGroups
 	{
+		struct structure_bsp_header;
 		struct scenario_structure_bsp_reference;
 
 		Cache::s_cache_tag_header* Index();
@@ -78,6 +82,18 @@ namespace Yelo
 		bool PLATFORM_API cache_file_read_request(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
 			uint32 offset, uint32 size, void* buffer, const Cache::s_cache_file_request_params& params, 
 			bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
+
+		// made up names; H1 didn't have a "geometry_cache" like it does for textures and sounds
+		void PLATFORM_API cache_file_geometry_cache_for_models_open(Cache::s_cache_tag_header* tag_header);
+		void PLATFORM_API cache_file_geometry_cache_for_models_close();
+		void PLATFORM_API cache_file_geometry_cache_for_bsp_open(TagGroups::structure_bsp_header* bsp_header);
+		void PLATFORM_API cache_file_geometry_cache_for_bsp_close(TagGroups::structure_bsp_header* bsp_header);
+
+		bool PLATFORM_API cache_file_header_verify(Cache::s_cache_header* header, cstring scenario_name, bool critical);
+
+		datum_index cache_file_tags_load(cstring scenario_name);
+
+		void cache_file_tags_unload();
 
 		void cache_file_structure_bsp_unload(TagGroups::scenario_structure_bsp_reference* reference);
 

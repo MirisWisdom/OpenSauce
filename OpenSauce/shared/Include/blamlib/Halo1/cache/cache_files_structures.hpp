@@ -61,14 +61,17 @@ namespace Yelo
 			tag parent_groups[2];	// 0x4
 			datum_index handle;		// 0xC
 			cstring name;			// 0x10
-			void* base_address;		// 0x14
+			union {
+				void* base_address;	// 0x14
+				int32 index_in_data_file;
+			};
 			BOOL bool_in_data_file;	// 0x18
 			uint32 _unused;			// 0x1C
 
-			template<typename T> inline
+			template<typename T>
 			T* Definition() const { return CAST_PTR(T*, base_address); }
 
-			inline int32 GetAbsoluteIndex() const { return handle.index; }
+			int32 GetAbsoluteIndex() const { return handle.index; }
 
 			// Is this an instance of a certain tag group?
 			// If this instance a child of a certain tag group?
@@ -77,6 +80,10 @@ namespace Yelo
 
 		struct s_cache_tag_header
 		{
+			enum {
+				k_signature = 'tags'
+			};
+
 			void* tags_address;			// 0x0
 			datum_index scenario_index;	// 0x4
 			uint32 checksum;			// 0x8

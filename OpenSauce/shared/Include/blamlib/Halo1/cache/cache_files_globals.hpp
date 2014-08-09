@@ -27,13 +27,25 @@ namespace Yelo
 			uint32 size;
 			void* address;
 			bool block;
-			UNKNOWN_TYPE(bool); // initialized?
+			bool reading;
 			bool running;
 			PAD8;
 			Enums::cache_file_request_source source;
 			PAD24;
 			s_cache_file_request_params params;
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_request) == 0x30 );
+		struct s_cached_map_file
+		{
+			HANDLE file_handle;
+			FILETIME file_time;
+			s_cache_header header;
+
+			void Close()
+			{
+				CloseHandle(file_handle);
+				file_handle = INVALID_HANDLE_VALUE; // NOT: engine doesn't actually do this
+			}
+		}; BOOST_STATIC_ASSERT( sizeof(s_cached_map_file) == 0x80C );
 		struct s_cache_file_globals
 		{
 			// reversed engineered based on halo xbox code...PC code seems to have some slight differences, but it doesn't really use this anyway so who cares
@@ -90,13 +102,7 @@ namespace Yelo
 			PAD32;
 			s_decompression_state decompression_state;
 
-			struct {
-				struct {
-					HANDLE file_handle;
-					FILETIME time;
-				}runtime;
-				s_cache_header header;
-			}map_files[Enums::k_number_of_cached_map_files];
+			s_cached_map_file map_files[Enums::k_number_of_cached_map_files];
 
 			bool copy_in_progress;
 			PAD8;
@@ -112,10 +118,26 @@ namespace Yelo
 
 			s_data_file_globals data_files;
 
-			inline s_cache_file_request* Requests()
+			int16 FindMapFileIndexByName(cstring scenario_name);
+
+			s_cached_map_file* OpenMapFile()
+			{
+				return open_map_file_index != NONE
+					? &map_files[open_map_file_index]
+					: nullptr;
+			}
+
+			bool OpenMapFileOpen(cstring scenario_name, s_cache_header* header);
+
+			void OpenMapFileClose();
+
+			s_cache_file_request* Requests()
 			{
 				return CAST_PTR(s_cache_file_request*, requests);
 			}
+
+			// blocks the thread until all read requests have finished
+			void RequestsWaitAll();
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_globals) == 0x4418 );
 	};
 };

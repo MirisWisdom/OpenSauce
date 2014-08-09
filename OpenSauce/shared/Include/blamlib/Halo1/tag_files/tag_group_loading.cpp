@@ -35,6 +35,7 @@ namespace Yelo
 	namespace blam
 	{
 		// To be defined in TagGroups.cpp
+		// tags are terminated by a new line character
 		extern char* tag_group_loading_error_string; // [k_tag_group_loading_error_string_length+1]
 		extern char** tag_group_loading_error_string_cursor;
 
@@ -50,6 +51,38 @@ namespace Yelo
 				"\t%s.%s\n", name, tag_group_get(group_tag)->name);
 
 			*tag_group_loading_error_string_cursor += chars;
+		}
+
+		cstring tag_load_error_string_get()
+		{
+			return tag_group_loading_error_string;
+		}
+
+		void tag_load_error_string_clear()
+		{
+			*tag_group_loading_error_string_cursor = tag_group_loading_error_string;
+			*tag_group_loading_error_string = '\0';
+		}
+
+		void tag_load_error_string_print()
+		{
+			YELO_WARN("need to get the following tags:");
+			// print the problem tags by changing the new line char to a NULL char, then back again when finished printing
+			for (char* error_string = tag_group_loading_error_string; error_string; )
+			{
+				char* new_line = strchr(error_string, '\n');
+				if (new_line != nullptr)
+					*new_line = '\0';
+
+				YELO_WARN("%s", error_string);
+
+				// no more new lines means no more tags are listed, stop printing
+				if (new_line == nullptr)
+					break;
+
+				error_string = new_line + 1;
+				*new_line = '\n';
+			}
 		}
 
 		bool tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
