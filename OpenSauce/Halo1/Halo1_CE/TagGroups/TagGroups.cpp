@@ -28,6 +28,8 @@ namespace Yelo
 		Cache::s_cache_tag_header* Index()					{ return Cache::CacheFileGlobals()->tag_index; }
 		Cache::s_cache_tag_instance const* Instances()		DPTR_IMP_GET(tag_instances);
 
+		Cache::s_cache_tag_instance** GlobalTagInstancesReference()	DPTR_IMP_GET2(tag_instances);
+
 
 		void Initialize()
 		{

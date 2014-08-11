@@ -26,8 +26,8 @@ namespace Yelo
 			tag header_signature;
 
 			int32 version;
-			int32 size; // file size
-			uint32 compressed_file_length;
+			int32 file_length;
+			int32 compressed_file_length;
 
 			uint32 offset_to_index;
 			uint32 tag_memory_size;
