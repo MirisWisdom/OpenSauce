@@ -332,6 +332,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+		API_FUNC_NAKED void PLATFORM_API tag_groups_dump_memory()
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUPS_DUMP_MEMORY);
+
+			__asm	jmp	FUNCTION
+		}
 
 		API_FUNC_NAKED uint32 PLATFORM_API tag_block_size(tag_block* block)
 		{

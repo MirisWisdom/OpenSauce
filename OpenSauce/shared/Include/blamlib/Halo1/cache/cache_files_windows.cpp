@@ -55,6 +55,11 @@ namespace Yelo
 			return CopyFileA(filename, new_filename, FALSE) != FALSE;
 		}
 
+		bool BuildCacheFileForYelo()
+		{
+			return BuildCacheFileGlobals()->building_yelo;
+		}
+
 		void s_build_cache_file_globals::ScenarioNameToCacheFilePath(_Out_ std::string& cache_file_path)
 		{
 			cache_file_path.reserve(MAX_PATH);
