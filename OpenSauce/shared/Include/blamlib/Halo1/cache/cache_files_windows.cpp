@@ -71,6 +71,16 @@ namespace Yelo
 #if PLATFORM_TYPE == PLATFORM_TOOL
 		using namespace Cache;
 
+		int32 build_cache_file_size()
+		{
+			return Cache::BuildCacheFileGlobals()->GetFileSize();
+		}
+
+		uint32 build_cache_file_checksum()
+		{
+			return Cache::BuildCacheFileGlobals()->crc;
+		}
+
 		static bool compress_cache_file_data(cstring filename, cstring cache_file_path)
 		{
 			return true;
@@ -171,7 +181,8 @@ namespace Yelo
 
 			std::string cache_file_path;
 			build_cache_file_globals.ScenarioNameToCacheFilePath(cache_file_path);
-			if (!build_cache_file_globals.TemporaryFileCopy(cache_file_path.c_str()))
+			if (!compress_cache_file_data(s_build_cache_file_globals::k_temp_cache_file_name, cache_file_path.c_str()) ||
+				!build_cache_file_globals.TemporaryFileCopy(cache_file_path.c_str()))
 			{
 				build_cache_file_error("couldn't output new cache file");
 				return false;

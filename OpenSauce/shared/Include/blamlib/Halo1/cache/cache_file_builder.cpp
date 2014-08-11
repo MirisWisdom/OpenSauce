@@ -83,6 +83,8 @@ namespace Yelo
 
 	namespace blam
 	{
+		typedef std::array<datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade> build_cache_file_tag_handles_t;
+
 		static bool building_single_player_scenario;
 		static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
 
@@ -232,6 +234,122 @@ namespace Yelo
 
 		using namespace Cache;
 
+		static API_FUNC_NAKED bool PLATFORM_API build_cache_file_cull_tags()
+		{
+			static const uintptr_t FUNCTION = 0x453260;
+
+			__asm	jmp	FUNCTION
+		}
+
+		static API_FUNC_NAKED bool PLATFORM_API build_cache_file_last_minute_changes()
+		{
+			static const uintptr_t FUNCTION = 0x454280;
+
+			__asm	jmp	FUNCTION
+		}
+
+		static API_FUNC_NAKED bool PLATFORM_API build_object_predicted_resources()
+		{
+			static const uintptr_t FUNCTION = 0x453680;
+
+			__asm	jmp	FUNCTION
+		}
+		static API_FUNC_NAKED bool PLATFORM_API build_first_person_weapon_predicted_resources()
+		{
+			static const uintptr_t FUNCTION = 0x453700;
+
+			__asm	jmp	FUNCTION
+		}
+		static API_FUNC_NAKED bool PLATFORM_API build_scenario_predicted_resources()
+		{
+			static const uintptr_t FUNCTION = 0x4537A0;
+
+			__asm	jmp	FUNCTION
+		}
+		static API_FUNC_NAKED bool PLATFORM_API build_structure_bsp_predicted_resources()
+		{
+			static const uintptr_t FUNCTION = 0x453860;
+
+			__asm	jmp	FUNCTION
+		}
+		static bool build_cache_file_predicted_resources()
+		{
+			return
+				build_object_predicted_resources() &&
+				build_first_person_weapon_predicted_resources() &&
+				build_scenario_predicted_resources() &&
+				build_structure_bsp_predicted_resources();
+		}
+
+		static API_FUNC_NAKED bool PLATFORM_API build_cache_file_add_tags(
+			s_cache_header& cache_header, void* scratch, build_cache_file_tag_handles_t& tag_indexes, int32 largest_structure_bsp_size)
+		{
+			static const uintptr_t FUNCTION = 0x454D40;
+
+			__asm	jmp	FUNCTION
+		}
+		static API_FUNC_NAKED bool build_cache_file_add_structure_bsps(
+			void* scratch, build_cache_file_tag_handles_t& tag_indexes, int32& largest_structure_bsp_size)
+		{
+			static const uintptr_t FUNCTION = 0x454B70;
+
+			API_FUNC_NAKED_START()
+				push	largest_structure_bsp_size
+				push	tag_indexes
+				mov		eax, scratch
+				call	FUNCTION
+				add		esp, 4 * 2
+			API_FUNC_NAKED_END(3)
+		}
+		static bool build_cache_file_add_tags(build_cache_file_tag_handles_t& tag_indexes,
+			s_cache_header& cache_header, void* scratch)
+		{
+			int32 largest_structure_bsp_size = 0;
+			return
+				build_cache_file_add_tags(cache_header, nullptr, tag_indexes, 0) &&
+				build_cache_file_add_structure_bsps(scratch, tag_indexes, largest_structure_bsp_size) &&
+				build_cache_file_add_tags(cache_header, scratch, tag_indexes, largest_structure_bsp_size);
+		}
+
+		static bool build_cache_file_write_header_and_compress(s_cache_header& cache_header)
+		{
+			cache_header.file_length = build_cache_file_size();
+			cache_header.crc = build_cache_file_checksum();
+
+			int32 maximum_cache_file_length = Enums::k_max_cache_size_upgrade;
+			switch (cache_header.cache_type)
+			{
+			case Enums::_cache_file_type_campaign:		maximum_cache_file_length = Enums::k_max_cache_size; break;
+			case Enums::_cache_file_type_multiplayer:	maximum_cache_file_length = 0x8000000; break;
+			case Enums::_cache_file_type_main_menu:		maximum_cache_file_length = 0x2300000; break;
+
+			YELO_ASSERT_CASE_UNREACHABLE();
+			}
+
+			const double k_byte_to_megabyte_fraction = 1.0 / Enums::k_mega;
+
+			if (cache_header.file_length > maximum_cache_file_length)
+			{
+				printf_s("cache file %.2fM too large (should be %.2fM but was %.2fM)\n",
+					CAST(float, k_byte_to_megabyte_fraction * (cache_header.file_length-maximum_cache_file_length)),
+					CAST(float, k_byte_to_megabyte_fraction * maximum_cache_file_length),
+					CAST(float, k_byte_to_megabyte_fraction * cache_header.file_length));
+				return false;
+			}
+
+			printf_s("compressing %.2fM...",
+				CAST(float, k_byte_to_megabyte_fraction * cache_header.file_length));
+			if (!build_cache_file_end(cache_header))
+			{
+				printf_s("FAILED!\n");
+				return false;
+			}
+			else
+				printf_s("done\n");
+
+			return true;
+		}
+
 		void build_cache_file_for_scenario(cstring scenario_path)
 		{
 			cstring scenario_name = tag_name_strip_path(scenario_path);
@@ -267,19 +385,26 @@ namespace Yelo
 				cache_header.footer_signature = s_cache_header::k_footer_signature;
 				cache_header.version = s_cache_header::k_version;
 
-				cache_header.cache_type = CAST(Enums::cache_file_type, global_scenario_get()->type);
 				strncpy_s(cache_header.name, scenario_name, Enums::k_tag_string_length);
 				strncpy_s(cache_header.build_string, "01.00.00.0609", Enums::k_tag_string_length);
+				cache_header.cache_type = CAST(Enums::cache_file_type, global_scenario_get()->type);
 
-				std::array<datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade> tag_indexes;
+				build_cache_file_tag_handles_t tag_indexes;
 				tag_indexes.fill(datum_index::null); // NOTE: engine actually fills with 0
 
 				if (!build_cache_file_begin(scenario_name) ||
-					!false) // TODO
+					!build_cache_file_cull_tags() ||
+					!build_cache_file_last_minute_changes() ||
+					!build_cache_file_predicted_resources() ||
+					!build_cache_file_add_tags(tag_indexes, cache_header, scratch) ||
+					!build_cache_file_write_header_and_compress(cache_header))
 				{
+					build_cache_file_cancel();
 					printf_s("### FAILED TO BUILD CACHE FILE.\n\n");
 					break;
 				}
+
+				printf_s("successfully built cache file.\n");
 
 			} while (false);
 

@@ -103,6 +103,10 @@ namespace Yelo
 
 	namespace blam
 	{
+		int32 build_cache_file_size();
+
+		uint32 build_cache_file_checksum();
+
 		bool build_cache_file_begin(cstring scenario_name);
 
 		bool build_cache_file_add_resource(const void* buffer, int32 buffer_size,

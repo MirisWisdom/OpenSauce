@@ -56,7 +56,7 @@ namespace Yelo
 
 		bool s_cache_header::ValidFileSize(int32 max) const
 		{
-			return size >= 0 && size <= max;
+			return file_length >= 0 && file_length <= max;
 		}
 
 		bool s_cache_header::ValidName() const
@@ -160,6 +160,10 @@ namespace Yelo
 #if PLATFORM_USES_CACHE_FILES
 	namespace TagGroups
 	{
+		// defined by the implementing shell
+		Cache::s_cache_tag_instance** GlobalTagInstancesReference();
+#define blam_global_tag_instances	*(TagGroups::GlobalTagInstancesReference())
+
 		bool TagIsInstanceOf(datum_index tag_index, tag group_tag)
 		{
 			if (!tag_index.IsNull() && tag_index.index < Index()->count)
@@ -381,8 +385,7 @@ namespace Yelo
 				TagGroups::group_tag_to_string{ Cache::s_cache_tag_header::k_signature }.ToString());
 			cache_file_globals.tag_index = tag_header;
 
-			YELO_ASSERT_DISPLAY(false, "this isn't implemented yet");
-			//global_tag_instances = CAST_PTR(s_cache_tag_instance*, tag_header->tags_address);
+			blam_global_tag_instances = CAST_PTR(s_cache_tag_instance*, tag_header->tags_address);
 			cache_file_globals.tags_loaded = true;
 
 			if (!Cache::DontLoadExternalData())
@@ -413,8 +416,7 @@ namespace Yelo
 			cache_file_geometry_cache_for_models_close();
 			cache_file_globals.tags_loaded = false;
 
-			YELO_ASSERT_DISPLAY(false, "this isn't implemented yet");
-			//global_tag_instances = nullptr;
+			blam_global_tag_instances = nullptr;
 		}
 
 		void cache_file_structure_bsp_unload(TagGroups::scenario_structure_bsp_reference* reference)
