@@ -60,6 +60,7 @@ namespace Yelo
 
 
 		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
+		TagGroups::s_game_globals** GlobalGameGlobalsReference()		PTR_IMP_GET2(global_game_globals);
 		s_physics_globals* Physics()									PTR_IMP_GET2(global_physics);
 		s_point_physics_globals* PointPhysics()							PTR_IMP_GET2(global_point_physics);
 

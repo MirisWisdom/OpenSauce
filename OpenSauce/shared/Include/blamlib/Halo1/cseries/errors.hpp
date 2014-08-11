@@ -25,6 +25,8 @@ namespace Yelo
 		typedef void (PLATFORM_API* proc_error)(Enums::error_message_priority priority, cstring format, ...);
 
 		extern proc_error error;
+
+		bool PLATFORM_API errors_handle();
 	};
 };
 

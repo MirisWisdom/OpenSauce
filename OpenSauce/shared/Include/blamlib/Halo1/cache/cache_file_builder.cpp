@@ -9,12 +9,18 @@
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
+#include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
+#include <blamlib/Halo1/main/levels.hpp>
+#include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
+#include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <YeloLib/memory/memory_interface_base.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
+
+#include <direct.h> // fucking _mkdir
 
 namespace Yelo
 {
@@ -77,6 +83,7 @@ namespace Yelo
 
 	namespace blam
 	{
+		static bool building_single_player_scenario;
 		static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
 
 		template<typename T>
@@ -221,6 +228,62 @@ namespace Yelo
 			void* return_stream = stream_tag_block_to_buffer(block, stream, CAST_PTR(uintptr_t, stream), virtual_base_address, tag_names);
 
 			return CAST_PTR(uintptr_t, return_stream) - CAST_PTR(uintptr_t, stream);
+		}
+
+		using namespace Cache;
+
+		void build_cache_file_for_scenario(cstring scenario_path)
+		{
+			cstring scenario_name = tag_name_strip_path(scenario_path);
+
+			void* scratch = YELO_MALLOC(0x2000000, false);
+			YELO_ASSERT(scratch);
+			YELO_ASSERT(!((uint32)scratch & 31));
+
+			building_single_player_scenario =
+				_stricmp(scenario_name, "ui")==0 || main_get_campaign_level_from_name(scenario_name) != NONE;
+
+			_mkdir(K_MAP_FILES_DIRECTORY);
+			memset(scratch, 0x11, 4); // yeah, IDK why they used these parameters. sizeof typo?
+
+			do {
+				if (!ScenarioLoadForCacheBuild(scenario_path, Scenario::K_GAME_GLOBALS_TAG_NAME) ||
+					!scenario_load_all_structure_bsps() ||
+					!errors_handle())
+				{
+					printf_s("### FAILED TO LOAD SCENARIO.\n\n");
+					break;
+				}
+
+				if (!hs_scenario_postprocess(true))
+				{
+					printf_s("### FAILED TO COMPILE SCRIPTS FOR SCENARIO.\n\n");
+					break;
+				}
+
+				s_cache_header cache_header;
+				memset(&cache_header, 0, sizeof(cache_header));
+				cache_header.header_signature = s_cache_header::k_header_signature;
+				cache_header.footer_signature = s_cache_header::k_footer_signature;
+				cache_header.version = s_cache_header::k_version;
+
+				cache_header.cache_type = CAST(Enums::cache_file_type, global_scenario_get()->type);
+				strncpy_s(cache_header.name, scenario_name, Enums::k_tag_string_length);
+				strncpy_s(cache_header.build_string, "01.00.00.0609", Enums::k_tag_string_length);
+
+				std::array<datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade> tag_indexes;
+				tag_indexes.fill(datum_index::null); // NOTE: engine actually fills with 0
+
+				if (!build_cache_file_begin(scenario_name) ||
+					!false) // TODO
+				{
+					printf_s("### FAILED TO BUILD CACHE FILE.\n\n");
+					break;
+				}
+
+			} while (false);
+
+			YELO_FREE(scratch);
 		}
 	};
 };

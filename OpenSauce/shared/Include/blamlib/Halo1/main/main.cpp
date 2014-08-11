@@ -85,7 +85,7 @@ namespace Yelo
 
 		cstring main_get_map_name()					{ return GameState::MainGlobals()->scenario_tag_path; }
 
-		int32 PLATFORM_API main_get_campaign_level_from_name(cstring level_name)
+		int16 PLATFORM_API main_get_campaign_level_from_name(cstring level_name)
 		{
 			char name[128] = { };
 

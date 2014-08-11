@@ -77,7 +77,8 @@ namespace Yelo
 		TagGroups::structure_bsp* global_structure_bsp_get();
 		TagGroups::collision_bsp* global_collision_bsp_get();
 
-		// Switches the bsp being used to the bsp at [index] in the scenario structure bsps block
+		// Switches the bsp being used to the bsp at [bsp_index] in the scenario structure bsps block
+		// returns true if the switch executed. if [bsp_index] is invalid or equal to the current index, returns false
 		bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index);
 
 		// Tests to see if [point] exists inside [trigger_volume_index] (index to a definition in the current scenario)
@@ -85,6 +86,10 @@ namespace Yelo
 
 		// Tests to see if [object_index] is inside [trigger_volume_index] (index to a definition in the current scenario)
 		bool PLATFORM_API scenario_trigger_volume_test_object(int32 trigger_volume_index, datum_index object_index);
+
+		bool PLATFORM_API scenario_load(cstring scenario_name);
+
+		void PLATFORM_API scenario_unload();
 
 		datum_index PLATFORM_API scenario_tags_load(cstring scenario_name);
 

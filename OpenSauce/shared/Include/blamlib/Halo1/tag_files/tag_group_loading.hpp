@@ -25,5 +25,10 @@ namespace Yelo
 			int32 *position_reference, long_flags read_flags,
 			// NOTE: nonstandard parameters
 			datum_index tag_index);
+
+#if PLATFORM_USES_CACHE_FILES
+		inline void tag_load_error_string_clear() { }
+		inline void tag_load_error_string_print() { }
+#endif
 	};
 };

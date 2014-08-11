@@ -52,4 +52,9 @@ namespace Yelo
 			TAG_FIELD(tag_data, source);
 		}; BOOST_STATIC_ASSERT( sizeof(hs_source_file) == 0x34 );
 	};
+
+	namespace blam
+	{
+		bool PLATFORM_API hs_scenario_postprocess(bool for_runtime);
+	};
 };

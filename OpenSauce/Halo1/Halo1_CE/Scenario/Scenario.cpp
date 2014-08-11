@@ -35,6 +35,13 @@ namespace Yelo
 		datum_index ScenarioIndex()									PTR_IMP_GET(global_scenario_index);
 		int16 StructureBspIndex()									PTR_IMP_GET(structure_bsp_index);
 
+		datum_index* GlobalScenarioIndexReference()					PTR_IMP_GET2(global_scenario_index);
+		TagGroups::scenario** GlobalScenarioReference()				PTR_IMP_GET2(global_scenario);
+		int16* GlobalStructureBspIndexReference()					PTR_IMP_GET2(structure_bsp_index);
+		TagGroups::structure_bsp** GlobalStructureBspReference()	PTR_IMP_GET2(global_structure_bsp);
+		TagGroups::collision_bsp** GlobalBspReference()				PTR_IMP_GET2(global_bsp3d);
+		TagGroups::collision_bsp** GlobalCollisionBspReference()	PTR_IMP_GET2(global_collision_bsp);
+
 		static void InitializeMaximumStructureBspsPerScenarioUpgrade()
 		{
 			void* asm_bytes;
