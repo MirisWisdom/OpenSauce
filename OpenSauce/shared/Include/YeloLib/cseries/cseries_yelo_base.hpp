@@ -23,6 +23,9 @@ namespace Yelo
 	{
 		enum {
 			k_uuid_buffer_size = 16,
+
+			k_kilo = 1024,
+			k_mega = k_kilo * k_kilo,
 		};
 	};
 

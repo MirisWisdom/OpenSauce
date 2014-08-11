@@ -102,6 +102,7 @@ namespace Yelo
 #if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
 #else
+			YELO_ASSERT(index >= 0 && index < Count);
 			return this->Definitions[index];
 #endif
 		}
@@ -111,6 +112,7 @@ namespace Yelo
 #if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
 #else
+			YELO_ASSERT(index >= 0 && index < Count);
 			return this->Definitions[index];
 #endif
 		}
