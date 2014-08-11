@@ -7,7 +7,7 @@
 #include <Common/Precompile.hpp>
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
-#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
+#include <blamlib/Halo1/cache/texture_cache.hpp>
 
 namespace Yelo
 {

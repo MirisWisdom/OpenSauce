@@ -28,15 +28,4 @@ namespace Yelo
 			IDirect3DBaseTexture9* hardware_format; // the address of this field is returned by the texture request function
 		}; BOOST_STATIC_ASSERT( sizeof(s_texture_cache_datum) == 0x10 );
 	};
-
-	namespace blam
-	{
-		void PLATFORM_API texture_cache_open();
-		void PLATFORM_API texture_cache_close();
-
-		// Setting [block_thread] to true causes the engine to immediately create the rasterizer (D3D) data for it
-		IDirect3DBaseTexture9** PLATFORM_API texture_cache_bitmap_get_hardware_format(TagGroups::s_bitmap_data* bitmap, 
-			// block
-			bool block_thread = false, bool load = true);
-	};
 };

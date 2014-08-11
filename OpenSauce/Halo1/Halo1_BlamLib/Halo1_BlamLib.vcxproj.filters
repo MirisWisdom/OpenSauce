@@ -960,6 +960,15 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.hpp">
       <Filter>hs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\sound_cache.hpp">
+      <Filter>cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\texture_cache.hpp">
+      <Filter>cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map_structures.hpp">
+      <Filter>cache</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1075,6 +1084,15 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.cpp">
       <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.cpp">
+      <Filter>cache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_texture_cache.cpp">
+      <Filter>cache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.cpp">
+      <Filter>cache</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

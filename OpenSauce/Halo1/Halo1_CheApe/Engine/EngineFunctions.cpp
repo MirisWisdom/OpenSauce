@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Engine/EngineFunctions.hpp"
 
+#include <blamlib/Halo1/cache/physical_memory_map.hpp>
 #include <blamlib/Halo1/cseries/profile.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
