@@ -41,7 +41,7 @@ namespace Yelo
 
 	namespace blam
 	{
-		int32 PLATFORM_API main_get_campaign_level_from_name(cstring level_name);
+		int16 PLATFORM_API main_get_campaign_level_from_name(cstring level_name);
 
 		cstring PLATFORM_API main_get_campaign_level_name(_enum level_index);
 	};

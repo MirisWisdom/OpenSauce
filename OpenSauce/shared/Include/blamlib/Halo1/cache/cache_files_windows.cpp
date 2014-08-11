@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/cache/cache_files_globals.hpp>
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/cache/data_file_structures.hpp>
+#include <YeloLib/memory/memory_interface_base.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo

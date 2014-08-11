@@ -11,16 +11,21 @@
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_ENGINE_FUNCTIONS
 	namespace GameState
 	{
+		ENGINE_PTR(s_main_globals, main_globals,						0xAA6D40, 0xFC9B40, 0xBD7E28);
+
 		ENGINE_PTR(s_physical_memory_map_globals, physical_memory_globals,	0xCBF510, 0xFC9010, 0xDB4688);
 
 		ENGINE_PTR(s_game_state_globals, game_state_globals,			0xCB2888, 0xFC9038, 0xBD7D24);
 		ENGINE_PTR(TagGroups::s_game_globals*, global_game_globals,		PTR_NULL, 0x12E577C, 0x107EDC8);
 
 
+		s_main_globals* MainGlobals()									PTR_IMP_GET2(main_globals);
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals()		PTR_IMP_GET2(physical_memory_globals);
 
 		s_game_state_globals* GameStateGlobals()						PTR_IMP_GET2(game_state_globals);
 		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
+
+		TagGroups::s_game_globals** GlobalGameGlobalsReference()		PTR_IMP_GET2(global_game_globals);
 	};
 
 	namespace GameUI
@@ -51,6 +56,13 @@
 
 		datum_index ScenarioIndex()									PTR_IMP_GET(global_scenario_index);
 		int16 StructureBspIndex()									PTR_IMP_GET(structure_bsp_index);
+
+		datum_index* GlobalScenarioIndexReference()					PTR_IMP_GET2(global_scenario_index);
+		TagGroups::scenario** GlobalScenarioReference()				PTR_IMP_GET2(global_scenario);
+		int16* GlobalStructureBspIndexReference()					PTR_IMP_GET2(structure_bsp_index);
+		TagGroups::structure_bsp** GlobalStructureBspReference()	PTR_IMP_GET2(global_structure_bsp);
+		TagGroups::collision_bsp** GlobalBspReference()				PTR_IMP_GET2(global_bsp3d);
+		TagGroups::collision_bsp** GlobalCollisionBspReference()	PTR_IMP_GET2(global_collision_bsp);
 	};
 
 	namespace blam
@@ -66,12 +78,19 @@
 		FUNC_PTR(DEBUG_REALLOC,		0x446B50, 0x43E890, 0x502130);
 		//////////////////////////////////////////////////////////////////////////
 		// cseries/errors
-		proc_error error = CAST_PTR(proc_error, PLATFORM_VALUE(0x4206B0, 0x42CB90, 0x417500));
+		proc_error error = PLATFORM_PTR(proc_error, 0x4206B0, 0x42CB90, 0x417500);
+		FUNC_PTR(ERRORS_HANDLE,					0x4209F0, 0x42CE40, 0x417850);
 		//////////////////////////////////////////////////////////////////////////
 		// cseries/profile
 		ENGINE_PTR(bool, g_profiling_enabled,	0xC81CB1, 0xFC9009, 0xDB2D21);
 		FUNC_PTR(PROFILE_ENTER_PRIVATE,			0x475F30, 0x452970, 0x535490);
 		FUNC_PTR(PROFILE_EXIT_PRIVATE,			0x475FB0, 0x4529F0, 0x535510);
+		//////////////////////////////////////////////////////////////////////////
+		// hs/hs_scenario_definitions
+		FUNC_PTR(HS_SCENARIO_POSTPROCESS,		0x4F26B0, 0x4C27C0, 0x584890);
+		//////////////////////////////////////////////////////////////////////////
+		// interface/ui_widget_group
+		FUNC_PTR(UI_LOAD_TAGS_FOR_SCENARIO,		0x48ADA0, 0x488960, 0x5A37E0);
 		//////////////////////////////////////////////////////////////////////////
 		// math/periodic_functions
 		FUNC_PTR(PERIODIC_FUNCTION_EVALUATE,	0x4DC780, 0x490250, 0x61A620);
@@ -104,6 +123,12 @@
 		FUNC_PTR(MEMORY_POOL_BLOCK_FREE,		0x5E3F30, 0x4EBE40, 0x618850);
 		FUNC_PTR(MEMORY_POOL_DEFRAGMENT,		0x5E3FD0, 0x4EBEE0, 0x6188F0);
 		FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE,	0x5E4030, 0x4EBF40, 0x618950);
+		//////////////////////////////////////////////////////////////////////////
+		// scenario/scenario
+		FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP, 0x45FD30, 0x443A50, 0x516D40);
+		FUNC_PTR(SCENARIO_LOAD,					0x4604D0, 0x443C50, 0x5174E0);
+		FUNC_PTR(SCENARIO_UNLOAD,				0x45F820, 0x463840, 0x516830);
+		FUNC_PTR(SCENARIO_TAGS_LOAD,			0x45F720, 0x4434A0, 0x516730);
 		//////////////////////////////////////////////////////////////////////////
 		// shell/shell_windows
 		FUNC_PTR(SHELL_GET_COMMAND_LINE_ARGUMENT, 0x421ED0, 0x42DC70, 0x492E60);

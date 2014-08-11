@@ -933,9 +933,6 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state_structures.hpp">
       <Filter>saved_games</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
-      <Filter>cache</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cryptography\md5.hpp">
       <Filter>cryptography</Filter>
     </ClInclude>
@@ -975,6 +972,9 @@
       <Filter>.Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp">
+      <Filter>cache</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
       <Filter>cache</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp">

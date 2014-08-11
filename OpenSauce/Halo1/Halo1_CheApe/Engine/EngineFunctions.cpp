@@ -21,6 +21,10 @@
 
 namespace Yelo
 {
+	namespace GameState
+	{
+		struct s_main_globals;
+	};
 	namespace GameUI
 	{
 		struct s_first_person_weapons;
@@ -95,6 +99,14 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 		//////////////////////////////////////////////////////////////////////////
+		// errrors.c
+		API_FUNC_NAKED bool PLATFORM_API errors_handle()
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(ERRORS_HANDLE);
+
+			__asm	jmp	FUNCTION
+		}
+		//////////////////////////////////////////////////////////////////////////
 		// cseries/profile
 		bool profiling_enabled()	PTR_IMP_GET(g_profiling_enabled);
 		API_FUNC_NAKED void PLATFORM_API profile_enter_private(Debug::s_profile_section& section)
@@ -115,6 +127,16 @@ namespace Yelo
 	namespace blam
 	{
 		//////////////////////////////////////////////////////////////////////////
+		// cache_file_builder.c
+#if PLATFORM_TYPE == PLATFORM_TOOL
+		API_FUNC_NAKED bool PLATFORM_API scenario_load_all_structure_bsps()
+		{
+			static const uintptr_t FUNCTION = 0x454090;
+
+			__asm	jmp	FUNCTION
+		}
+#endif
+		//////////////////////////////////////////////////////////////////////////
 		// predicted_resources.c
 #if PLATFORM_TYPE == PLATFORM_TOOL
 		void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources,
@@ -128,6 +150,32 @@ namespace Yelo
 			add_predicted_resource(predicted_resources, resource_type, tag_index, resource_index);
 		}
 #endif
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// hs
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// hs/hs_scenario_definitions.c
+		API_FUNC_NAKED bool PLATFORM_API hs_scenario_postprocess(bool for_runtime)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(HS_SCENARIO_POSTPROCESS);
+
+			__asm	jmp	FUNCTION
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// interface
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// interface/ui_widget_group.c
+		API_FUNC_NAKED void PLATFORM_API ui_load_tags_for_scenario(datum_index scenario_index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(UI_LOAD_TAGS_FOR_SCENARIO);
+
+			__asm	jmp	FUNCTION
+		}
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// math
@@ -305,6 +353,37 @@ namespace Yelo
 		API_FUNC_NAKED bool PLATFORM_API memory_pool_block_reallocate(Memory::s_memory_pool* pool, _Inout_ s_memory_pool_block::reference_t reference, int32 new_size)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE);
+
+			__asm	jmp	FUNCTION
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// scenario
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// scenario/scenario
+		API_FUNC_NAKED bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API scenario_load(cstring scenario_name)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(SCENARIO_LOAD);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED void PLATFORM_API scenario_unload()
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(SCENARIO_UNLOAD);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED datum_index PLATFORM_API scenario_tags_load(cstring scenario_name)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(SCENARIO_TAGS_LOAD);
 
 			__asm	jmp	FUNCTION
 		}

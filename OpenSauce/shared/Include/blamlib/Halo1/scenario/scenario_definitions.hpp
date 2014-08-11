@@ -288,7 +288,7 @@ namespace Yelo
 			TAG_TBLOCK(trigger_volumes, scenario_trigger_volume);
 			TAG_TBLOCK(recorded_animations, recorded_animation_definition);
 			TAG_TBLOCK(netgame_flags, scenario_netpoint);
-			TAG_TBLOCK(netgame_equipment, scenario_netgame_equipment);
+			TAG_TBLOCK_(netgame_equipment, scenario_netgame_equipment);
 			TAG_TBLOCK(starting_equipment, scenario_starting_equipment);
 			TAG_PAD(tag_block,
 				1 + // scenario_bsp_switch_trigger_volume
