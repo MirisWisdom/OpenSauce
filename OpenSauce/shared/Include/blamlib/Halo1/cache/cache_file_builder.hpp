@@ -13,25 +13,39 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_cache_file_page_alignment_bit = Flags::k_alignment_4096bit,
+			k_cache_file_page_size = FLAG(k_cache_file_page_alignment_bit),
+			k_cache_file_page_size_mask = FLAG(k_cache_file_page_alignment_bit) - 1,
+		};
+	};
+
 	namespace Cache
 	{
 		struct s_build_cache_file_globals
 		{
 			static cstring k_temp_cache_file_name;
+			static cstring k_cache_file_extension;
 
 			bool building;
 			char scenario_name[Enums::k_max_tag_name_length+1];
 			PAD24;
 			uint32 crc;
 			HANDLE file_handle;
-			uint32 cache_stream_size;
+			int32 cache_stream_size;
 			s_data_file_globals data_files;
 
 			DWORD GetFileSize() const;
 
-			void TemporaryFileOpen(cstring filename = k_temp_cache_file_name);
+			bool WriteToFile(const void* buffer, int32 buffer_size);
+
+			bool TemporaryFileOpen(cstring filename = k_temp_cache_file_name);
 			void TemporaryFileClose(cstring filename = k_temp_cache_file_name);
-			void TemporaryFileCopy(cstring new_filename, cstring filename = k_temp_cache_file_name);
+			bool TemporaryFileCopy(cstring new_filename, cstring filename = k_temp_cache_file_name);
+
+			void ScenarioNameToCacheFilePath(_Out_ std::string& cache_file_path);
 		};
 
 		//////////////////////////////////////////////////////////////////////////
@@ -89,6 +103,15 @@ namespace Yelo
 
 	namespace blam
 	{
+		bool build_cache_file_begin(cstring scenario_name);
+
+		bool build_cache_file_add_resource(const void* buffer, int32 buffer_size,
+			int32* return_file_offset = nullptr, bool include_in_crc = true);
+
+		void build_cache_file_cancel();
+
+		bool build_cache_file_end(Cache::s_cache_header& header);
+
 		size_t stream_tag_to_buffer(datum_index tag_index, void* stream, size_t& return_stream_offset, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names);
 	};
 };

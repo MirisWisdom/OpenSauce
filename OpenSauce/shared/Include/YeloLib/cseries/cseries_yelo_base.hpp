@@ -41,6 +41,7 @@ namespace Yelo
 			k_alignment_512bit,
 			k_alignment_1024bit,
 			k_alignment_2048bit,
+			k_alignment_4096bit,
 		};
 	};
 

@@ -20,8 +20,6 @@ namespace Yelo
 {
 	namespace Cache
 	{
-		cstring s_build_cache_file_globals::k_temp_cache_file_name = "temporary uncompressed cache file.bin";
-
 		void s_data_file_globals::Save()
 		{
 			sounds.Save();
@@ -33,31 +31,6 @@ namespace Yelo
 			sounds.PreprocessForSave();
 			locale.PreprocessForSave();
 			bitmaps.PreprocessForSave();
-		}
-
-		DWORD s_build_cache_file_globals::GetFileSize() const
-		{
-			return ::GetFileSize(file_handle, nullptr);
-		}
-
-		void s_build_cache_file_globals::TemporaryFileOpen(cstring filename)
-		{
-			file_handle = CreateFileA(filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-		}
-		void s_build_cache_file_globals::TemporaryFileClose(cstring filename)
-		{
-			if(file_handle != INVALID_HANDLE_VALUE)
-			{
-				CloseHandle(file_handle);
-				file_handle = INVALID_HANDLE_VALUE;
-			}
-
-			if(file_handle != nullptr)
-				DeleteFileA(filename);
-		}
-		void s_build_cache_file_globals::TemporaryFileCopy(cstring new_filename, cstring filename)
-		{
-			CopyFileA(filename, new_filename, FALSE);
 		}
 
 		static void FixGameGlobals(datum_index globals_index, Enums::scenario_type scenario_type)
