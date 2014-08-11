@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameState.hpp"
 
+#include <blamlib/Halo1/cache/physical_memory_map_structures.hpp>
 #include <blamlib/Halo1/game/game_allegiance_structures.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals_structures.hpp>
@@ -174,7 +175,7 @@ namespace Yelo
 			byte* base_addr = CAST_PTR(byte*, gsg->base_address) + gsg->cpu_allocation_size;
 
 			// Debug check that we don't allocate more memory than the game state has available
-			YELO_ASSERT_DISPLAY((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address,
+			YELO_ASSERT_DISPLAY((base_addr + size_of) <= blam::physical_memory_map_get_tag_cache_address(),
 				"Bit off more game-state than the game could chew!");
 
 			gsg->cpu_allocation_size += size_of;

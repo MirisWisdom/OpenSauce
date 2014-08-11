@@ -366,7 +366,7 @@ namespace Yelo
 				return datum_index::null;
 			}
 
-			auto* tag_header = CAST_PTR(Cache::s_cache_tag_header*, GameState::PhysicalMemoryMapGlobals()->tag_cache_base_address);
+			auto* tag_header = CAST_PTR(Cache::s_cache_tag_header*, physical_memory_map_get_tag_cache_address());
 
 			bool read_finished = false;
 			s_cache_file_request_params read_params = { &read_finished };

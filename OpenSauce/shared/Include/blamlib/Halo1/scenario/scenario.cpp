@@ -7,8 +7,9 @@
 #include <blamlib/Halo1/scenario/scenario.hpp>
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/cache/pc_sound_cache.hpp>
-#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
+#include <blamlib/Halo1/cache/sound_cache.hpp>
+#include <blamlib/Halo1/cache/texture_cache.hpp>
+#include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/interface/ui_widget_group.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -58,8 +59,7 @@ namespace Yelo
 		}
 
 
-#if FALSE // TODO: need to implement or wrap the engine's texture and sound cache APIs
-		datum_index PLATFORM_API scenario_tags_load(cstring scenario_name)
+		datum_index PLATFORM_API scenario_tags_load_impl(cstring scenario_name)
 		{
 			datum_index scenario_index = datum_index::null;
 
@@ -68,7 +68,7 @@ namespace Yelo
 #if PLATFORM_USES_CACHE_FILES
 			scenario_index = cache_file_tags_load(scenario_name);
 #else
-			datum_index scenario_index = tag_load<TagGroups::scenario>(scenario_name, 0);
+			scenario_index = tag_load<TagGroups::scenario>(scenario_name, 0);
 			if (scenario_index.IsNull())
 				return datum_index::null;
 
@@ -101,7 +101,6 @@ namespace Yelo
 			}
 #endif
 		}
-#endif
 
 		void scenario_structure_bsp_unload(scenario_structure_bsp_reference* reference)
 		{

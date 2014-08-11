@@ -11,9 +11,13 @@
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_ENGINE_FUNCTIONS
 	namespace GameState
 	{
+		ENGINE_PTR(s_physical_memory_map_globals, physical_memory_globals,	0xCBF510, 0xFC9010, 0xDB4688);
+
 		ENGINE_PTR(s_game_state_globals, game_state_globals,			0xCB2888, 0xFC9038, 0xBD7D24);
 		ENGINE_PTR(TagGroups::s_game_globals*, global_game_globals,		PTR_NULL, 0x12E577C, 0x107EDC8);
 
+
+		s_physical_memory_map_globals* PhysicalMemoryMapGlobals()		PTR_IMP_GET2(physical_memory_globals);
 
 		s_game_state_globals* GameStateGlobals()						PTR_IMP_GET2(game_state_globals);
 		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
