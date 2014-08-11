@@ -457,4 +457,17 @@ namespace Yelo
 
 		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size);
 	};
+
+	namespace blam
+	{
+		inline void crc_new(uint32& crc_reference)
+		{
+			crc_reference = std::numeric_limits<uint32>::max();
+		}
+
+		inline uint32 crc_checksum_buffer(uint32& crc_reference, const void* buffer, int32 size)
+		{
+			return Memory::CRC(crc_reference, buffer, size);
+		}
+	};
 };
