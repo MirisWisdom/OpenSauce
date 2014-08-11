@@ -31,7 +31,9 @@ namespace Yelo
 
 			bool building;
 			char scenario_name[Enums::k_max_tag_name_length+1];
-			PAD24;
+			bool building_yelo;
+			PAD8;
+			PAD8;
 			uint32 crc;
 			HANDLE file_handle;
 			int32 cache_stream_size;
@@ -97,6 +99,8 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 
 		s_build_cache_file_globals* BuildCacheFileGlobals();
+
+		bool BuildCacheFileForYelo();
 
 		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name);
 	};

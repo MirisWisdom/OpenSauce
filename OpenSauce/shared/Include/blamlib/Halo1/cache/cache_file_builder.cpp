@@ -83,7 +83,7 @@ namespace Yelo
 
 	namespace blam
 	{
-		typedef std::array<datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade> build_cache_file_tag_handles_t;
+		typedef std::array<char*, Enums::k_maximum_simultaneous_tag_instances_upgrade> build_cache_file_tag_names_t;
 
 		static bool building_single_player_scenario;
 		static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
@@ -281,27 +281,68 @@ namespace Yelo
 				build_structure_bsp_predicted_resources();
 		}
 
+		static char* build_cache_file_add_tag_to_header(datum_index tag_index,
+			uintptr_t stream_base_address,
+			s_cache_tag_instance* tag_instances, int32 tag_instance_index,
+			char* tag_name, build_cache_file_tag_names_t& tag_names)
+		{
+			char* tag_name_address = RebasePointer(tag_name, stream_base_address, Enums::k_tag_base_address);
+			int32 absolute_tag_index = tag_index.index;
+
+			if (stream_base_address != NULL)
+			{
+				auto* tag_instance = &tag_instances[tag_instance_index];
+				tag_group* group = TagGroups::TagGetGroup(tag_index);
+				tag_instance->group_tag = group->group_tag;
+				tag_instance->parent_groups[0] = group->parent_group_tag;
+				tag_instance->parent_groups[1] = group->parent_group_tag == NONE
+					? NONE
+					: tag_group_get(group->parent_group_tag)->group_tag;
+
+				YELO_ASSERT_DISPLAY(tag_names[absolute_tag_index] != nullptr,
+					"the quarter isn't under any of the cups you fuckin cheater i kill you");
+
+				tag_instance->name = tag_name_address;
+				strcpy(tag_name, tag_get_name(tag_index));
+			}
+			else
+			{
+				const int32 MAXIMUM_SIMULTANEOUS_TAG_INSTANCES = BuildCacheFileForYelo()
+					? Enums::k_maximum_simultaneous_tag_instances_upgrade
+					: Enums::k_maximum_simultaneous_tag_instances;
+				YELO_ASSERT(absolute_tag_index >= 0 && absolute_tag_index < MAXIMUM_SIMULTANEOUS_TAG_INSTANCES);
+
+				tag_names[absolute_tag_index] = tag_name_address;
+			}
+
+			return tag_name + strlen(tag_get_name(tag_index)) + 1;
+		}
+		static bool PLATFORM_API build_cache_file_add_tags_impl(
+			s_cache_header& cache_header, void* scratch, build_cache_file_tag_names_t& tag_names, int32 largest_structure_bsp_size)
+		{
+			return false;
+		}
 		static API_FUNC_NAKED bool PLATFORM_API build_cache_file_add_tags(
-			s_cache_header& cache_header, void* scratch, build_cache_file_tag_handles_t& tag_indexes, int32 largest_structure_bsp_size)
+			s_cache_header& cache_header, void* scratch, build_cache_file_tag_names_t& tag_names, int32 largest_structure_bsp_size)
 		{
 			static const uintptr_t FUNCTION = 0x454D40;
 
 			__asm	jmp	FUNCTION
 		}
 		static API_FUNC_NAKED bool build_cache_file_add_structure_bsps(
-			void* scratch, build_cache_file_tag_handles_t& tag_indexes, int32& largest_structure_bsp_size)
+			void* scratch, build_cache_file_tag_names_t& tag_names, int32& largest_structure_bsp_size)
 		{
 			static const uintptr_t FUNCTION = 0x454B70;
 
 			API_FUNC_NAKED_START()
 				push	largest_structure_bsp_size
-				push	tag_indexes
+				push	tag_names
 				mov		eax, scratch
 				call	FUNCTION
 				add		esp, 4 * 2
 			API_FUNC_NAKED_END(3)
 		}
-		static bool build_cache_file_add_tags(build_cache_file_tag_handles_t& tag_indexes,
+		static bool build_cache_file_add_tags(build_cache_file_tag_names_t& tag_indexes,
 			s_cache_header& cache_header, void* scratch)
 		{
 			int32 largest_structure_bsp_size = 0;
@@ -317,13 +358,16 @@ namespace Yelo
 			cache_header.crc = build_cache_file_checksum();
 
 			int32 maximum_cache_file_length = Enums::k_max_cache_size_upgrade;
-			switch (cache_header.cache_type)
+			if (!BuildCacheFileForYelo())
 			{
-			case Enums::_cache_file_type_campaign:		maximum_cache_file_length = Enums::k_max_cache_size; break;
-			case Enums::_cache_file_type_multiplayer:	maximum_cache_file_length = 0x8000000; break;
-			case Enums::_cache_file_type_main_menu:		maximum_cache_file_length = 0x2300000; break;
+				switch (cache_header.cache_type)
+				{
+				case Enums::_cache_file_type_campaign:		maximum_cache_file_length = Enums::k_max_cache_size; break;
+				case Enums::_cache_file_type_multiplayer:	maximum_cache_file_length = 0x8000000; break;
+				case Enums::_cache_file_type_main_menu:		maximum_cache_file_length = 0x2300000; break;
 
-			YELO_ASSERT_CASE_UNREACHABLE();
+					YELO_ASSERT_CASE_UNREACHABLE();
+				}
 			}
 
 			const double k_byte_to_megabyte_fraction = 1.0 / Enums::k_mega;
@@ -389,14 +433,14 @@ namespace Yelo
 				strncpy_s(cache_header.build_string, "01.00.00.0609", Enums::k_tag_string_length);
 				cache_header.cache_type = CAST(Enums::cache_file_type, global_scenario_get()->type);
 
-				build_cache_file_tag_handles_t tag_indexes;
-				tag_indexes.fill(datum_index::null); // NOTE: engine actually fills with 0
+				build_cache_file_tag_names_t tag_names;
+				tag_names.fill(nullptr);
 
 				if (!build_cache_file_begin(scenario_name) ||
 					!build_cache_file_cull_tags() ||
 					!build_cache_file_last_minute_changes() ||
 					!build_cache_file_predicted_resources() ||
-					!build_cache_file_add_tags(tag_indexes, cache_header, scratch) ||
+					!build_cache_file_add_tags(tag_names, cache_header, scratch) ||
 					!build_cache_file_write_header_and_compress(cache_header))
 				{
 					build_cache_file_cancel();
@@ -408,6 +452,7 @@ namespace Yelo
 
 			} while (false);
 
+			tag_groups_dump_memory();
 			YELO_FREE(scratch);
 		}
 	};

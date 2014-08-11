@@ -126,6 +126,7 @@ namespace Yelo
 		void PLATFORM_API tag_groups_dispose();
 		void PLATFORM_API tag_groups_initialize_for_new_map();
 		void PLATFORM_API tag_groups_dispose_from_old_map();
+		void PLATFORM_API tag_groups_dump_memory();
 
 
 		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name);
