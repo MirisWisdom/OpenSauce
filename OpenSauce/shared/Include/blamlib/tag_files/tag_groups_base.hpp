@@ -330,8 +330,6 @@ namespace Yelo
 		template<typename T> inline
 		T* TagGetForModify(datum_index tag_index)
 		{
-			extern void* TagGetImpl(datum_index tag_index, tag group_tag);
-
 			return CAST_QUAL(T*, blam::tag_get<T>(tag_index));
 		}
 
