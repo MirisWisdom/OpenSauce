@@ -33,6 +33,11 @@ namespace Environment
 	static uint32			g_current_shader_offset = 0;
 	static _enum			g_extension_usage_mask;
 
+	const bool DirectionalLightmapsEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps);
+	}
+
 	/// <summary>	Hook to change the used pixel shader to a custom one. </summary>
 	API_FUNC_NAKED void Hook_ShaderEnvironmentLightmapPS()
 	{

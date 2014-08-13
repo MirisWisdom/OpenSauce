@@ -159,6 +159,16 @@
 			</Directory>
 		</Directory>
 
+		<Directory Id='Halo1_CE_MaxScripts_DIR' Name='MaxScripts'>
+			<Component Id='Halo1_CE_RenderLightmaps_MS_COMP' Guid='449AA291-BD92-4BE2-BA8D-7F89C9E72890'>
+				<File Id='Halo1_CE_RenderLightmaps_MS_FILE' Name='RenderLightmaps.ms' DiskId='1' Source='$(var.ResourceFolder)Halo1_CheApe\HEK_InstallDir\MaxScripts\RenderLightmaps.ms' KeyPath='yes' />
+			</Component>
+
+			<Component Id='Halo1_CE_MaterialFixer_MS_COMP' Guid='C3617C5A-3FCF-4CBE-AFA0-BEC6DA639C63'>
+				<File Id='Halo1_CE_MaterialFixer_MS_FILE' Name='MaterialFixer.ms' DiskId='1' Source='$(var.ResourceFolder)Halo1_CheApe\HEK_InstallDir\MaxScripts\MaterialFixer.ms' KeyPath='yes' />
+			</Component>
+		</Directory>
+
 		<!-- DLLs for extending the HEK-->
 		<Component Id='Halo1_CE_CheApeDLLG_COMP' Guid='B8C6DFF9-6CF7-4571-8A7E-3082D16548BE'>
 			<File Id='Halo1_CE_CheApeDLLG_FILE' Name='CheApeDLLG.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Win32\Halo1_CheApe\CheApeDLLG.dll' KeyPath='yes' />
@@ -170,13 +180,9 @@
 			<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Win32\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
 		</Component>
 
-    <Component Id='Halo1_CE_RenderLightmaps_MS_COMP' Guid='449AA291-BD92-4BE2-BA8D-7F89C9E72890'>
-      <File Id='Halo1_CE_RenderLightmaps_MS_FILE' Name='RenderLightmaps.ms' DiskId='1' Source='$(var.ResourceFolder)Halo1_CheApe\HEK_InstallDir\RenderLightmaps.ms' KeyPath='yes' />
-    </Component>
-
-    <Component Id='Halo1_CE_CheApe_Readme_COMP' Guid='8A7C9ADD-1298-4329-9BE6-EC5306748823'>
-      <File Id='Halo1_CE_CheApe_Readme_FILE' Name='Halo1_CheApe_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CheApe\Halo1_CheApe_Readme.txt' KeyPath='yes' />
-    </Component>
+		<Component Id='Halo1_CE_CheApe_Readme_COMP' Guid='8A7C9ADD-1298-4329-9BE6-EC5306748823'>
+			<File Id='Halo1_CE_CheApe_Readme_FILE' Name='Halo1_CheApe_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CheApe\Halo1_CheApe_Readme.txt' KeyPath='yes' />
+		</Component>
 
 		<?ifdef SYMBOLS?>
 		<Component Id='Halo1_CE_CheApeDLLG_PDB_COMP' Guid='0074F5F4-C0CB-407f-9D93-716759472D4D'>

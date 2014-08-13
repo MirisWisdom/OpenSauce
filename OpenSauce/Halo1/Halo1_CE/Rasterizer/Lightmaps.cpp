@@ -141,7 +141,7 @@ namespace Yelo
 			, const datum_index directional_2_tag_index
 			, const datum_index directional_3_tag_index)
 		{
-			if(Rasterizer::ShaderExtension::ExtensionsEnabled())
+			if(Rasterizer::ShaderExtension::ExtensionsEnabled() && Rasterizer::ShaderExtension::Environment::DirectionalLightmapsEnabled())
 			{
 				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard_tag_index, directional_1_tag_index, directional_2_tag_index, directional_3_tag_index);
 			}
