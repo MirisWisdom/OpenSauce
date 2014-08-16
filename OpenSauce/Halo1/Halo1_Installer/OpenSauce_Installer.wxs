@@ -272,10 +272,16 @@
 		<Binary Id='FilePatcher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\FilePatcher\FilePatcher.CA.dll'/>
 		<Binary Id='WebLauncher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\WebLauncher\WebLauncher.CA.dll'/>
     <Binary Id='SetPathProperties_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\SetPathProperties\SetPathProperties.CA.dll'/>
-
+    <Binary Id='CPUQuery_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\CPUQuery\CPUQuery.CA.dll'/>
+    
 		<CustomAction Id='Newer_Found_CACT' Error='A later version of [ProductName] is already installed.' />
 		<CustomAction Id='DirectX_Install_CACT' FileKey='DirectX_dxsetup_FILE' ExeCommand='/silent' Execute='deferred' Impersonate='no' Return='check'/>
 		<CustomAction Id='OSLaunchWebSite_CACT' BinaryKey='WebLauncher_BIN' DllEntry='LaunchWebsite' Execute='immediate' Return='ignore'/>
+
+		<!-- Set the CPU support properties -->
+		<CustomAction Id='SetSSE2CPUSupportPropertyData_CACT' Property='CPUQUERYDATA' Value='IsProcessorFeaturePresent=InstructionsXMMI64Available;OutputProp=SSE2Supported_PROP'/>
+		<CustomAction Id='SetCPUSupportProperty_CACT' BinaryKey='CPUQuery_BIN' DllEntry='CPUQueryCA' Execute='immediate' Return='check'/>
+		<CustomAction Id='ErrorCPUNotSupported_CACT' Error='Your CPU is unable to run OpenSauce, installation cannot continue.'/>
 
 		<!-- Game specific custom actions are included here-->
 		<?ifdef Halo1_CE?>
@@ -283,7 +289,13 @@
 		<?endif?>
 
 		<InstallExecuteSequence>
+      <Custom Action='SetSSE2CPUSupportPropertyData_CACT' After='FindRelatedProducts'/>
+			<Custom Action='SetCPUSupportProperty_CACT' After='SetSSE2CPUSupportPropertyData_CACT'/>
+			<Custom Action='ErrorCPUNotSupported_CACT' After='SetCPUSupportProperty_CACT'>
+				<![CDATA[SSE2Supported_PROP ~= "false"]]>
+			</Custom>
 			<Custom Action='Newer_Found_CACT' After='FindRelatedProducts'>NEWERFOUND</Custom>
+
 			<Custom Action='DirectX_Install_CACT' Before='InstallFinalize'>
 				<![CDATA[NOT REMOVE]]>
 			</Custom>

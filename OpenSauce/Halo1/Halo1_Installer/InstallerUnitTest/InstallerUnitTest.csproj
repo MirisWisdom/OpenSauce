@@ -44,11 +44,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CPUQuery.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test_FilePatcher.cs" />
-    <Compile Include="Test_InstallValidator.cs" />
+    <Compile Include="FilePatcher.Tests.cs" />
+    <Compile Include="InstallValidator.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CPUQuery\CPUQuery.csproj">
+      <Project>{838d0fa5-36fa-4cfb-a4f5-4df748b6d0c1}</Project>
+      <Name>CPUQuery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FilePatcher\FilePatcher.csproj">
       <Project>{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}</Project>
       <Name>FilePatcher</Name>

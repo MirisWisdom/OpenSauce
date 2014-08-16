@@ -846,29 +846,29 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// periodic_functions.c
-		real PLATFORM_API periodic_function_evaluate(Enums::periodic_function function_type, real input)
+		API_FUNC_NAKED real PLATFORM_API periodic_function_evaluate(Enums::periodic_function function_type, real input)
 		{
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
-
-			__asm {
+			
+			API_FUNC_NAKED_START()
 				fld		input
 				sub		esp, 4 * 2			// allocate space for the 'input' parameter
 				fstp	qword ptr [esp]		// store the input on the stack
 				movzx	eax, function_type
 				call	FUNCTION
 				add		esp, 4 * 2			// deallocate. double type consumes two DWORDs of stack
-			}
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
-		real PLATFORM_API transition_function_evaluate(Enums::transition_function function_type, real input)
+		API_FUNC_NAKED real PLATFORM_API transition_function_evaluate(Enums::transition_function function_type, real input)
 		{
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
 
-			__asm {
+			API_FUNC_NAKED_START()
 				push	input
 				movzx	ecx, function_type
 				call	FUNCTION
 				add		esp, 4 * 1
-			}
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
