@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+	Yelo: Open Sauce SDK
+		Installer
+
+	See license\OpenSauce\OpenSauce for specific license information
+*/
+using System;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Deployment.WindowsInstaller;

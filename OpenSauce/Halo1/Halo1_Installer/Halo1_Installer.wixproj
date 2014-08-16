@@ -94,6 +94,14 @@
     <Folder Include="Dialogs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="CPUQuery\CPUQuery.csproj">
+      <Name>CPUQuery</Name>
+      <Project>{838d0fa5-36fa-4cfb-a4f5-4df748b6d0c1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="FilePatcher\FilePatcher.csproj">
       <Name>FilePatcher</Name>
       <Project>{226cbe41-df44-4baa-bcfa-0602d8864af4}</Project>
