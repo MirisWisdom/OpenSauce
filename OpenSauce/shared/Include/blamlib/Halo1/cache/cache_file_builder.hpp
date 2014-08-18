@@ -22,6 +22,17 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum {
+			_build_cache_file_begin_building_yelo_bit,
+			_build_cache_file_begin_mod_sets_create_anew_bit,
+			_build_cache_file_begin_mod_sets_store_scenario_resources_bit,
+
+			k_number_of_build_cache_file_begin_flags
+		}; BOOST_STATIC_ASSERT(k_number_of_build_cache_file_begin_flags <= BIT_COUNT(byte));
+	}
+
 	namespace Cache
 	{
 		struct s_build_cache_file_globals
@@ -31,7 +42,7 @@ namespace Yelo
 
 			bool building;
 			char scenario_name[Enums::k_max_tag_name_length+1];
-			bool building_yelo;
+			byte_flags begin_flags;
 			PAD8;
 			PAD8;
 			uint32 crc;
@@ -111,7 +122,8 @@ namespace Yelo
 
 		uint32 build_cache_file_checksum();
 
-		bool build_cache_file_begin(cstring scenario_name);
+		bool build_cache_file_begin(cstring scenario_name,
+			byte_flags flags);
 
 		bool build_cache_file_add_resource(const void* buffer, int32 buffer_size,
 			int32* return_file_offset = nullptr, bool include_in_crc = true);
@@ -124,7 +136,8 @@ namespace Yelo
 
 		bool PLATFORM_API scenario_load_all_structure_bsps();
 
-		void build_cache_file_for_scenario(cstring scenario_path);
+		void build_cache_file_for_scenario(cstring scenario_path,
+			byte_flags begin_flags);
 	};
 };
 #endif

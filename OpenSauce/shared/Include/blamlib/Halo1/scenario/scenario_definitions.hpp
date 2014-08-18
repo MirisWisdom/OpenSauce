@@ -214,7 +214,7 @@ namespace Yelo
 		struct structure_bsp_header;
 		struct scenario_structure_bsp_reference
 		{
-			uint32 cache_offset;
+			int32 cache_offset;
 			TAG_FIELD(int32, bsp_data_size);
 			structure_bsp_header* header;
 			PAD32;

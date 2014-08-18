@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/cache/data_file_structures.hpp>
 #include <YeloLib/memory/memory_interface_base.hpp>
+#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
@@ -57,7 +58,7 @@ namespace Yelo
 
 		bool BuildCacheFileForYelo()
 		{
-			return BuildCacheFileGlobals()->building_yelo;
+			return TEST_FLAG(BuildCacheFileGlobals()->begin_flags, Flags::_build_cache_file_begin_building_yelo_bit);
 		}
 
 		void s_build_cache_file_globals::ScenarioNameToCacheFilePath(_Out_ std::string& cache_file_path)
@@ -123,10 +124,28 @@ namespace Yelo
 			return true;
 		}
 
-		bool build_cache_file_begin(cstring scenario_name)
+		bool build_cache_file_begin(cstring scenario_name,
+			byte_flags flags)
 		{
 			auto& build_cache_file_globals = *Cache::BuildCacheFileGlobals();
 			YELO_ASSERT(!build_cache_file_globals.building);
+
+			bool invalid_parameters = false;
+			cstring invalid_parameters_message = "specified parameters are invalid";
+
+			bool building_yelo = TEST_FLAG(flags, Flags::_build_cache_file_begin_building_yelo_bit);
+
+			// TODO: validate flags
+			
+			if (invalid_parameters)
+			{
+				build_cache_file_error(invalid_parameters_message);
+				return false;
+			}
+
+			s_build_cache_file_globals::k_cache_file_extension = building_yelo
+				? K_MAP_FILE_EXTENSION_YELO
+				: K_MAP_FILE_EXTENSION;
 
 			if (!build_cache_file_globals.TemporaryFileOpen())
 			{
@@ -135,6 +154,7 @@ namespace Yelo
 			}
 
 			build_cache_file_globals.building = true;
+			build_cache_file_globals.begin_flags = flags;
 			build_cache_file_globals.cache_stream_size = 0;
 			crc_new(build_cache_file_globals.crc);
 			strcpy_s(build_cache_file_globals.scenario_name, scenario_name);
