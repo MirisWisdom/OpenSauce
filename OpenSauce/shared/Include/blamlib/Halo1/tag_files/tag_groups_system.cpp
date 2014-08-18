@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_verification.hpp>
+#include <YeloLib/memory/memory_interface_base.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
@@ -278,6 +279,23 @@ namespace Yelo
 		{
 			for (auto kv : TagGroups::TagInstances())
 				tag_unload(kv.index);
+		}
+
+		uint32 PLATFORM_API tag_groups_checksum()
+		{
+			uint32 crc;
+			crc_new(crc);
+
+			for (auto kv : TagGroups::TagInstances())
+			{
+				if (kv->is_orphan ||
+					!TEST_FLAG(tag_group_get(kv->group_tag)->flags, Flags::_tag_group_include_in_tags_checksum_bit))
+					continue;
+
+				crc_checksum_buffer(crc, &kv->file_checksum, sizeof(kv->file_checksum));
+			}
+
+			return crc;
 		}
 	};
 };

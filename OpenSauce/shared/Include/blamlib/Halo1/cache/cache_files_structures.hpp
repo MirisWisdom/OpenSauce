@@ -29,8 +29,8 @@ namespace Yelo
 			int32 file_length;
 			int32 compressed_file_length;
 
-			uint32 offset_to_index;
-			uint32 tag_memory_size;
+			int32 offset_to_index;
+			int32 tag_memory_size;
 			PAD64; // ?
 			tag_string name;
 			tag_string build_string;
@@ -92,7 +92,7 @@ namespace Yelo
 				int32 count;
 				int32 offset;
 			}vertices, indices;			// 0x10, 0x18
-			uint32 model_data_size;		// 0x20
+			int32 model_data_size;		// 0x20
 			tag signature;				// 0x24
 
 			// nasty hack assumption

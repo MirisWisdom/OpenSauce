@@ -94,17 +94,13 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 			CAST_PTR(uint32*, 0x454EBE),
 			CAST_PTR(uint32*, 0x4551DB),
 		};
-		// Addresses of the value used for the structure_bsp tag memory's base address
-		static uint32* TagMemoryBaseAddressStructureBsp[] = {
-			CAST_PTR(uint32*, 0x454BCC),	// Same address as [TagMaxAddress]
-		};
 	};
 
 	#pragma region Interceptor system
 	//////////////////////////////////////////////////////////////////////////
 	// Interceptor system
 	static const uintptr_t BUILD_CACHE_FILE_ADD_TAGS = 0x454D40;
-	static datum_index new_tag_handles[Enums::k_maximum_simultaneous_tag_instances_upgrade];
+	static char* cache_tag_names_array_upgraded[Enums::k_maximum_simultaneous_tag_instances_upgrade];
 
 	static const uintptr_t INTERCEPTOR1_HOOK_ADDR = 0x455583;
 	API_FUNC_NAKED static void Interceptor1()
@@ -114,7 +110,7 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 		__asm {
 			push	0
 
-			lea		edx, new_tag_handles
+			lea		edx, cache_tag_names_array_upgraded
 			//lea		edx, [esp+0x14]
 
 			push	edx
@@ -138,7 +134,7 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 			lea		ecx, [esp+0xC]				// largest bsp size reference
 			push	ecx
 
-			lea		edx, new_tag_handles
+			lea		edx, cache_tag_names_array_upgraded
 			//lea		edx, [esp+0x14]
 
 			push	edx
@@ -158,7 +154,7 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 			lea		eax, [esp+0xC]				// largest bsp size reference
 			push	eax
 
-			lea		ecx, new_tag_handles
+			lea		ecx, cache_tag_names_array_upgraded
 			//lea		ecx, [esp+0x14]
 
 			push	ecx
