@@ -778,7 +778,6 @@ static void WriteEnumDefinition(FILE* file,
 {
 	auto& references = instance.GetReferencesVector();
 
-	std::string field_name_raw;
 	std::string field_name;			
 
 	// print the enum entries
@@ -927,12 +926,12 @@ static void WriteFlagsDefinition(FILE* file,
 	};
 
 	// loop through the string lists element
-	std::string element_name_raw;
 	std::string element_name;
 	std::string element_description;
 
-	cstring* element = instance.GetList()->strings;
-	for(int32 i = 0; i < instance.GetList()->count; i++, element++)
+	const string_list* enum_names_table = instance.GetList();
+	cstring* element = enum_names_table->strings;
+	for (int32 i = 0; i < enum_names_table->count; i++, element++)
 	{
 		// names need to be unique withing the scope of the flags struct
 		GetName(element_name, *element, instance.GetUsedNamesVector(), false);
@@ -946,7 +945,7 @@ static void WriteFlagsDefinition(FILE* file,
 	}
 	// it is possible that a flags value is defined but has no entries
 	// so in that case, add a single entry to ensure the size of the struct is correct
-	if(instance.GetList()->count == 0)
+	if (enum_names_table->count == 0)
 		fprintf(file, "\t\t\t\t%s(unused);\n", flag_type);
 
 	fputs("\t\t\t};", file);
@@ -1038,7 +1037,7 @@ static void WriteBlockDefinition(FILE* file,
 		fprintf_s(file, "\t\t}; BOOST_STATIC_ASSERT( sizeof(%s) == 0x%X ); // max count: %i\n",
 			block_name.c_str(), block_definition->element_size, block_definition->maximum_element_count);
 	else
-		fprintf_s(file, "\t\t}; // size: %i bytes, max count: %i\n",
+		fprintf_s(file, "\t\t}; // size: %u bytes, max count: %i\n",
 			block_definition->element_size, block_definition->maximum_element_count);
 	// if this is the base definition struct, it's at the end of the file
 	// so we don't want a lines space

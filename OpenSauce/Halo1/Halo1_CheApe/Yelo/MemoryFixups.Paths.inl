@@ -49,7 +49,7 @@ void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 		size_t length = strlen(_override_paths.data.path);
 		char& last_char = _override_paths.data.path[length-1];
 
-		if(last_char == '\\' || last_char == '//')
+		if(last_char == '\\' || last_char == '/')
 			last_char = '\0';
 	}
 
@@ -81,7 +81,7 @@ void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
 		size_t length = strlen(_override_paths.maps.path);
 		char& last_char = _override_paths.maps.path[length-1];
 
-		if(last_char == '\\' || last_char == '//')
+		if(last_char == '\\' || last_char == '/')
 			last_char = '\0';
 	}
 
