@@ -15,7 +15,7 @@ c_obj_file::~c_obj_file()
 	m_texcoords.clear();
 }
 
-HRESULT c_obj_file::LoadFromFile(std::string obj_path)
+HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 {
 	fputs("loading lightmaps obj file...", stdout);
 
@@ -96,8 +96,8 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 
 	fputs("\n", stdout);
 	fputs("obj file stats\n", stdout);
-	printf_s("\tgroups: %d\n", m_groups.size());
-	printf_s("\ttexture coordinates: %d\n", m_texcoords.size());
+	printf_s("\tgroups: %u\n", m_groups.size());
+	printf_s("\ttexture coordinates: %u\n", m_texcoords.size());
 	fputs("\n", stdout);
 
 	return S_OK;

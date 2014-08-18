@@ -63,7 +63,7 @@ namespace Yelo
 			}
 			~c_obj_file();
 
-			HRESULT LoadFromFile(std::string obj_path);
+			HRESULT LoadFromFile(const std::string& obj_path);
 			HRESULT CheckBspCompatibility(TagGroups::structure_bsp* bsp);
 			HRESULT ReplaceVertexUVs(TagGroups::structure_bsp* bsp);
 		};

@@ -84,7 +84,8 @@ namespace Yelo
 			}
 			void MarkForChildResolving(datum_index tag_index)
 			{
-				if (resolved_tag_indexes->count(tag_index) == 0 && to_resolve_tag_indexes->count(tag_index) == 0)
+				if (resolved_tag_indexes->find(tag_index) == resolved_tag_indexes->end() &&
+					to_resolve_tag_indexes->find(tag_index) == to_resolve_tag_indexes->end())
 				{
 					auto* group = blam::tag_group_get(blam::tag_get_group_tag(tag_index));
 

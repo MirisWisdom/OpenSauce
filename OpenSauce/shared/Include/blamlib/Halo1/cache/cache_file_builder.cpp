@@ -674,7 +674,7 @@ default_case:
 
 			void* scratch = YELO_MALLOC(k_build_cache_file_scratch_buffer_size, false);
 			YELO_ASSERT(scratch);
-			YELO_ASSERT(!((uint32)scratch & 31));
+			YELO_ASSERT(!((uintptr_t)scratch & 31));
 
 			building_single_player_scenario =
 				_stricmp(scenario_name, "ui")==0 || main_get_campaign_level_from_name(scenario_name) != NONE;

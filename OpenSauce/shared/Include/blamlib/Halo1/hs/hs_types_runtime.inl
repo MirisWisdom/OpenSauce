@@ -177,9 +177,9 @@ namespace Yelo
 		}
 		static s_hs_value_union hs_string_to_real(s_hs_value_union value)
 		{
-			value.int32 = strlen(value.string);
+			value.real = CAST(real, std::atof(value.string));
 
-			return hs_long_to_boolean(value);
+			return value;
 		}
 		static void hs_inspect_string(Enums::hs_type type, s_hs_value_union value, char* buffer, size_t buffer_size)
 		{
