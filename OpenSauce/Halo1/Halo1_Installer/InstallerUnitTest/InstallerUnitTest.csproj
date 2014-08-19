@@ -42,11 +42,17 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CPUQuery.Tests.cs" />
+    <Compile Include="CPUQueryUnitTests\CPUQuery.Tests.cs" />
+    <Compile Include="CPUQueryUnitTests\QueryFunctions\IsProcessorFeaturePresentQuery.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\Patcher\PatchApplier.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\PatchTests\Halo1_CE.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\Utilities\Parse.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\Utilities\StreamIO.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FilePatcher.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\FilePatcher.Tests.cs" />
     <Compile Include="InstallValidator.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +68,44 @@
       <Project>{A7DEC09C-D521-48BB-A564-E039D3E9F850}</Project>
       <Name>InstallValidator</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileOne.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexByte.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidByte.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexBytes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidBytes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.OutOfBoundsString.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidString.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
