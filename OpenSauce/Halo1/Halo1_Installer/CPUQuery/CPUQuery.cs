@@ -33,6 +33,11 @@ namespace CPUQuery
 			, Action<string> onLog
 			, Action<string> onError)
 		{
+			if ((setProperty == null) || (onLog == null) || (onError == null))
+			{
+				throw new ArgumentNullException("One or more required callbacks have not been supplied");
+			}
+
 			onLog("Begin CPUQuery");
 			onLog(String.Format("Action data: {0}", actionData));
 

@@ -34,7 +34,7 @@
 	<CustomAction Id='Halo1_CE_AppendFilePatcherDataSapien_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HEK_Sapien;[HALO1_CE_HEK_SAPIENPATH_PROP];[HALO1_CE_HEK_INSTALLDIR_PROP];'/>
 
 	<!-- Patch all queued files -->
-	<CustomAction Id='Halo1_CE_PatchFiles_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='deferred' Return='check' Impersonate='no'/>
+	<CustomAction Id='Halo1_CE_PatchFiles_CACT' BinaryKey='FilePatcher_BIN' DllEntry='FilePatcherCA' Execute='deferred' Return='check' Impersonate='no'/>
 
 	<!-- Open the OS Client readme-->
 	<CustomAction Id='Halo1_CE_SetReadmeTarget_CACT' Property='WixShellExecTarget' Value='[#Halo1_CE_Readme_FILE]'/>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FilePatch inputfile="DummyFileTwo.txt" outputfile="DummyFileTwo.Patched.txt" peaddressmask="0" md5_pre="bfaf8ae957937af5b8652a2137f1d95a" md5_post="05d46e7dfccd84c7767dede05a04ec4e">
+	<Patch id="PTCH_dummyfiletwo_uint32">
+		<Data id="VAL_uint32" type="uint32" length="4"><![CDATA[30303030]]></Data>
+
+		<Address ptr="5" value="VAL_uint32"/>
+	</Patch>
+</FilePatch>
