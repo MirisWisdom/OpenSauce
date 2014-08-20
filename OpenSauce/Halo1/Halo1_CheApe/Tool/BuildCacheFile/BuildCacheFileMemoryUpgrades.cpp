@@ -85,6 +85,9 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 		// the campaign case
 		static uint32* CacheSizeMax = CAST_PTR(uint32*, 0x4531B7); // build_cache_file_write_header_and_compress
 
+		// Fix up the scratch buffer tool uses when streaming the cache's tag header & instances & data
+		static uint32* BuildCacheFileScratchBufferSize = CAST_PTR(uint32*, 0x4553D0);
+
 		// Fix up the scratch buffer tool uses when streaming out the vertex and index data
 		// * This buffer is actually never free'd in tool...and add_tags is called twice. Memory leak!
 		static uint32* VertexAndIndexBufferSizeMax = CAST_PTR(uint32*, 0x454D57); // build_cache_file_add_tags
@@ -315,20 +318,30 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 	#pragma region Cache Memory Upgrades
 	static void CacheMemoryInitialize()
 	{
+		const size_t k_scratch_buffer_size_upgrade = 40 * Enums::k_mega;
+		static_assert(k_scratch_buffer_size_upgrade >= Enums::k_tag_allocation_size_upgrade,
+			"Scratch buffer upgrade is still too small to properly fit the tag cache data");
+
 		*AddressOf::CacheSizeJmpAddress = Enums::_x86_opcode_jmp_short;
 
 		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size_upgrade;
 
 		*AddressOf::VertexAndIndexBufferSizeMax = Yelo::Enums::k_max_cache_vertex_y_index_buffer_size_upgrade;
+
+		*AddressOf::BuildCacheFileScratchBufferSize = k_scratch_buffer_size_upgrade;
 	}
 
 	static void CacheMemoryDispose()
 	{
+		const size_t k_scratch_buffer_size = 32 * Enums::k_mega;
+
 		*AddressOf::CacheSizeJmpAddress = Enums::_x86_opcode_jz_short;
 
 		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size;
 
 		*AddressOf::VertexAndIndexBufferSizeMax = Yelo::Enums::k_max_cache_vertex_y_index_buffer_size;
+
+		*AddressOf::BuildCacheFileScratchBufferSize = k_scratch_buffer_size;
 	}
 	#pragma endregion
 
