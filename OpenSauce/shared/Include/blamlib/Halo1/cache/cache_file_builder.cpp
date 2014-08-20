@@ -90,9 +90,15 @@ namespace Yelo
 		typedef std::array<char*, Enums::k_maximum_simultaneous_tag_instances_upgrade> build_cache_file_tag_names_t;
 
 		static bool building_single_player_scenario;
-		static const size_t k_build_cache_file_scratch_buffer_size = 0x2000000;
+		static const size_t k_build_cache_file_scratch_buffer_size = 40 * Enums::k_mega;
 		static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
 		static const double k_byte_to_megabyte_fraction = 1.0 / Enums::k_mega;
+
+		static const size_t k_cache_file_minimum_fixed_size =
+			sizeof(TagGroups::structure_bsp_header) +
+			Enums::k_tag_allocation_size_upgrade;
+		BOOST_STATIC_ASSERT(k_build_cache_file_scratch_buffer_size >= k_cache_file_minimum_fixed_size);
+
 
 		// "return_stream" - the new stream pointer, positioned after the data which was written to it/"stream" before the stream operation started
 
