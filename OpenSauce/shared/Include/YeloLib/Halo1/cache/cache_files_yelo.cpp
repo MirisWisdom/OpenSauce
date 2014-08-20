@@ -354,6 +354,24 @@ namespace Yelo
 			this->version = k_version;
 		}
 
+		void s_cache_header_yelo::InitializeForCacheBuild(bool using_mod_sets, cstring mod_name, bool use_memory_upgrades)
+		{
+			//////////////////////////////////////////////////////////////////////////
+			// Setup the core tag versions
+			this->tag_versioning.project_yellow = TagGroups::project_yellow::k_version;
+			this->tag_versioning.project_yellow_globals = TagGroups::project_yellow_globals::k_version;
+			//////////////////////////////////////////////////////////////////////////
+			
+			if (flags.uses_mod_data_files = using_mod_sets)
+			{
+				YELO_ASSERT(mod_name);
+				strcpy_s(this->mod_name, mod_name);
+			}
+
+			if (this->flags.uses_memory_upgrades = use_memory_upgrades)
+				this->k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;
+		}
+
 		void s_cache_header_yelo::InitializeBuildInfo(_enum stage, uint32 revision, const byte (&uuid_buffer)[Enums::k_uuid_buffer_size])
 		{
 			build_info.stage = stage;
@@ -386,6 +404,15 @@ namespace Yelo
 			build_info.cheape.build = CAST(uint16, K_OPENSAUCE_VERSION_BUILD);
 
 			ArrayCopy(build_info.uuid_buffer, uuid_buffer);
+		}
+		void s_cache_header_yelo::InitializeBuildInfo()
+		{
+			byte nil_uuid[Enums::k_uuid_buffer_size] = {};
+			this->InitializeBuildInfo(Enums::_production_build_stage_ship, 0, nil_uuid);
+		}
+		void s_cache_header_yelo::InitializeBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info)
+		{
+			this->InitializeBuildInfo(build_info.build_stage, build_info.revision, build_info.uuid_buffer);
 		}
 #endif
 

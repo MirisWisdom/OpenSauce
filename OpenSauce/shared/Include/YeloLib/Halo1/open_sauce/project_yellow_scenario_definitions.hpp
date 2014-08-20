@@ -169,6 +169,12 @@ namespace Yelo
 			/// <returns>	Returns the loaded yelo global's handle or datum_index::null. </returns>
 			datum_index LoadYeloGlobals(const bool for_build_cache);
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Loads the game_globals reference and renames it to K_GAME_GLOBALS_TAG_NAME. </summary>
+			///
+			/// <returns>	false if game_globals is NONE (ie, no override) or failed to load. </returns>
+			bool LoadGameGlobalsOverride();
+
 			static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 		};
 

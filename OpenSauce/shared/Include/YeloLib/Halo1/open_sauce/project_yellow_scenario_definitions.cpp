@@ -78,6 +78,27 @@ namespace Yelo
 			return yelo_globals_index;
 		}
 
+		bool project_yellow::LoadGameGlobalsOverride()
+		{
+			if (game_globals.name_length == 0)
+				return false;
+
+			if (!blam::tag_reference_resolve(&game_globals))
+				return false;
+
+			// if there is a globals tag override, rename it to K_GAME_GLOBALS_TAG_NAME so
+			// we avoid further hacks in the runtime engine code as it also explicitly 
+			// looks for K_GAME_GLOBALS_TAG_NAME
+
+			blam::tag_rename(game_globals.tag_index, Scenario::K_GAME_GLOBALS_TAG_NAME);
+
+			// re-set the reference just for good measure
+			blam::tag_reference_set(game_globals,
+				game_globals.group_tag, Scenario::K_GAME_GLOBALS_TAG_NAME);
+
+			return true;
+		}
+
 		bool PLATFORM_API project_yellow::GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
 			auto* def = blam::tag_get<project_yellow>(tag_index);

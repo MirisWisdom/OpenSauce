@@ -36,6 +36,17 @@ namespace Yelo
 
 	namespace Cache
 	{
+		s_cache_header_yelo& BuildCacheFileYeloCacheHeader();
+
+		// Ran before blam::build_cache_file_begin, preprocesses OS-specific tags for use by the runtime
+		bool BuildCacheFilePreprocessTagsForRuntime();
+		// Ran after blam::build_cache_file_cull_tags, culls OS-specific tag data
+		bool BuildCacheFileCullTagsYelo();
+		// Ran after blam::build_cache_file_predicted_resources, for OS-specific tag data
+		bool BuildCacheFilePredicatedResourcesYelo();
+		// Ran before blam::build_cache_file_write_header_and_compress code is executed
+		bool BuildCacheFileWriteHeaderPreprocess(s_cache_header& cache_header);
+
 		class c_cache_file_builder_base
 		{
 			size_t BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size);

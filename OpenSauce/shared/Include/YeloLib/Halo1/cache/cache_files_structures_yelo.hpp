@@ -10,6 +10,11 @@
 
 namespace Yelo
 {
+	namespace TagGroups
+	{
+		struct s_project_yellow_scenario_build_info;
+	};
+
 	namespace Cache
 	{
 		struct s_cache_file_resource_strings_storage_header
@@ -114,7 +119,14 @@ namespace Yelo
 
 #if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 			void InitializeForNewMap();
+			void InitializeForCacheBuild(bool using_mod_sets, cstring mod_name, bool use_memory_upgrades);
+		public://private: // TODO: this should be private once the BCF code is rewritten
 			void InitializeBuildInfo(_enum stage, uint32 revision, const byte (&uuid_buffer)[Enums::k_uuid_buffer_size]);
+		public:
+			// Initializes the yelo header with the default build info settings
+			void InitializeBuildInfo();
+			// Initializes the build info with a scenario's yelo build info
+			void InitializeBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info);
 #endif
 
 			// Is there a yelo header present?
