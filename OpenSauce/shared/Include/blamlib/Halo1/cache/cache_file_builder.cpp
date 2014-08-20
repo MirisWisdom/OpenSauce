@@ -22,6 +22,8 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <YeloLib/memory/memory_interface_base.hpp>
+#include <YeloLib/Halo1/cache/cache_file_builder_yelo.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 #include <direct.h> // fucking _mkdir
@@ -66,19 +68,60 @@ namespace Yelo
 			// not done in the stock code, but it's unused anyway so fuck it
 			globals->playlist_members.resize(0);
 		}
-		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name)
+		static void FixScenarioYelo(datum_index project_yellow_index)
+		{
+			if (project_yellow_index.IsNull())
+				return;
+
+			auto* yelo = blam::tag_get<TagGroups::project_yellow>(project_yellow_index);
+
+			bool has_globals_override = yelo->LoadGameGlobalsOverride();
+		}
+
+		static void InitializeYeloCacheHeaderForNewScenario(TagGroups::scenario* scnr, datum_index project_yellow_index)
+		{
+			if (project_yellow_index.IsNull())
+				return;
+
+			auto* yelo = blam::tag_get<TagGroups::project_yellow>(project_yellow_index);
+
+			// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
+			if (yelo->build_info.Count > 0)
+			{
+				const TagGroups::s_project_yellow_scenario_build_info& build_info = yelo->build_info[0];
+
+				BuildCacheFileYeloCacheHeader().InitializeBuildInfo(build_info);
+			}
+			else
+				BuildCacheFileYeloCacheHeader().InitializeBuildInfo();
+		}
+
+		bool ScenarioLoadForCacheBuild(cstring scenario_name)
 		{
 			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, 
 				FLAG(Flags::_tag_load_from_file_system_bit));
-			datum_index globals_index = blam::tag_load<TagGroups::s_game_globals>(globals_name, 
-				FLAG(Flags::_tag_load_from_file_system_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
-
 			// the engine code returns true even if the tags fail to load
-			if(scenario_index.IsNull() || globals_index.IsNull())
+			if (scenario_index.IsNull())
 				return true;
 
-			auto* scnr = blam::tag_get<TagGroups::scenario>(scenario_index);
-			FixGameGlobals(globals_index, scnr->type);
+			auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
+
+			// perform the initial project_yellow fixups and associated changes here
+			if (BuildCacheFileForYelo())
+			{
+				const tag_reference& yelo_reference = scenario->GetYeloReferenceHack();
+
+				FixScenarioYelo(yelo_reference.tag_index);
+				InitializeYeloCacheHeaderForNewScenario(scenario, yelo_reference.tag_index);
+			}
+
+			datum_index globals_index = blam::tag_load<TagGroups::s_game_globals>(Scenario::K_GAME_GLOBALS_TAG_NAME, 
+				FLAG(Flags::_tag_load_from_file_system_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
+			// the engine code returns true even if the tags fail to load
+			if(globals_index.IsNull())
+				return true;
+
+			FixGameGlobals(globals_index, scenario->type);
 			blam::tag_load_children(globals_index);
 
 			return true;
@@ -689,7 +732,7 @@ default_case:
 			memset(scratch, 0x11, 4); // yeah, IDK why they used these parameters. sizeof typo?
 
 			do {
-				if (!ScenarioLoadForCacheBuild(scenario_path, Scenario::K_GAME_GLOBALS_TAG_NAME) ||
+				if (!ScenarioLoadForCacheBuild(scenario_path) ||
 					!scenario_load_all_structure_bsps() ||
 					!errors_handle())
 				{
@@ -716,11 +759,15 @@ default_case:
 				build_cache_file_tag_names_t tag_names;
 				tag_names.fill(nullptr);
 
-				if (!build_cache_file_begin(scenario_name, begin_flags) ||
+				if (!BuildCacheFilePreprocessTagsForRuntime() ||
+					!build_cache_file_begin(scenario_name, begin_flags) ||
 					!build_cache_file_cull_tags() ||
+					!BuildCacheFileCullTagsYelo() ||
 					!build_cache_file_last_minute_changes() ||
 					!build_cache_file_predicted_resources() ||
+					!BuildCacheFilePredicatedResourcesYelo() ||
 					!build_cache_file_add_tags(tag_names, cache_header, scratch) ||
+					!BuildCacheFileWriteHeaderPreprocess(cache_header) ||
 					!build_cache_file_write_header_and_compress(cache_header))
 				{
 					build_cache_file_cancel();

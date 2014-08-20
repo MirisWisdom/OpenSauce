@@ -473,12 +473,6 @@
     <None Include="Tool\BuildCacheFile\PredictedResources.inl">
       <Filter>Tool\BuildCacheFile</Filter>
     </None>
-    <None Include="Tool\BuildCacheFile\PredictedResources_PostProcessing.inl">
-      <Filter>Tool\BuildCacheFile</Filter>
-    </None>
-    <None Include="Tool\BuildCacheFile\PredictedResources_ShaderExtension.inl">
-      <Filter>Tool\BuildCacheFile</Filter>
-    </None>
     <None Include="Tool\BuildCacheFile\TagPreprocess.inl">
       <Filter>Tool\BuildCacheFile</Filter>
     </None>

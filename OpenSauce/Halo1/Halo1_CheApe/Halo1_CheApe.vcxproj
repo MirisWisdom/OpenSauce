@@ -230,8 +230,6 @@
     <None Include="Tool\RuntimeCacheView.inl" />
     <None Include="Tool\BuildCacheFile\CullTags.inl" />
     <None Include="Tool\BuildCacheFile\PredictedResources.inl" />
-    <None Include="Tool\BuildCacheFile\PredictedResources_PostProcessing.inl" />
-    <None Include="Tool\BuildCacheFile\PredictedResources_ShaderExtension.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_PostProcessing.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_ShaderExtension.inl" />

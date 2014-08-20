@@ -19,15 +19,11 @@ namespace BuildCacheFileEx
 {
 	namespace TagPreprocess
 	{
-		static void PLATFORM_API preprocess_tags_for_build()
+		void preprocess_tags_for_build()
 		{
-			TagGroups::s_tag_iterator tag_iter;
-			blam::tag_iterator_new(tag_iter);
-
 			printf_s("pre-processing custom tag instances...\n");
 
- 			datum_index tag_index;
- 			while( !(tag_index = blam::tag_iterator_next(tag_iter)).IsNull() )
+			for (auto tag_index : TagGroups::c_tag_iterator::all())
  			{
 				switch( blam::tag_get_group_tag(tag_index) )
 				{

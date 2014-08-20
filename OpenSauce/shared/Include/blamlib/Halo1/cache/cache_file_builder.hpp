@@ -28,6 +28,7 @@ namespace Yelo
 			_build_cache_file_begin_building_yelo_bit,
 			_build_cache_file_begin_mod_sets_create_anew_bit,
 			_build_cache_file_begin_mod_sets_store_scenario_resources_bit,
+			_build_cache_file_begin_use_memory_upgrades_bit,
 
 			k_number_of_build_cache_file_begin_flags
 		}; BOOST_STATIC_ASSERT(k_number_of_build_cache_file_begin_flags <= BIT_COUNT(byte));
@@ -111,9 +112,10 @@ namespace Yelo
 
 		s_build_cache_file_globals* BuildCacheFileGlobals();
 
+		// Is the cache file that is being built in the .yelo format?
 		bool BuildCacheFileForYelo();
 
-		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name);
+		bool ScenarioLoadForCacheBuild(cstring scenario_name);
 	};
 
 	namespace blam
