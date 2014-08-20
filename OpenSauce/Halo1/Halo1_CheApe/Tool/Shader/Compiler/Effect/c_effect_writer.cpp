@@ -106,7 +106,7 @@ namespace Yelo
 #pragma endregion
 
 #pragma region c_effect_writer
-		void c_effect_writer::WriteEffect(path output_file, const std::string effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect)
+		void c_effect_writer::WriteEffect(const path& output_file, const std::string& effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect)
 		{
 			// Create the effect file
 			FileIO::s_file_info effect_file;
@@ -114,7 +114,7 @@ namespace Yelo
 				, output_file.string().c_str()
 				, Enums::_file_io_open_access_type_write
 				, Enums::_file_io_open_create_option_new);
-			YELO_ASSERT_DISPLAY(open_result == Enums::_file_io_write_error_none, "ERROR: Failed to open an effect file for writing. [%s]", output_file.string().c_str());
+			YELO_ASSERT_DISPLAY(open_result == Enums::_file_io_open_error_none, "ERROR: Failed to open an effect file for writing. [%s]", output_file.string().c_str());
 
 			WriteHeader(effect_file, effect_name);
 			WriteShaders(effect_file, shader_target, effect);

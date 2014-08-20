@@ -115,7 +115,7 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass,
 	// should the buffer be cleared on this pass
 	BOOL clear_buffer_texture;
 	if(handle = compiler->GetAnnotationByName(pass, "clear_buffer_texture"))
-		compiler->GetBool(handle, &render_chain);
+		compiler->GetBool(handle, &clear_buffer_texture);
 	else
 		clear_buffer_texture = false;
 

@@ -32,7 +32,7 @@ namespace Yelo
 			///
 			/// <param name="output_file">	[in] The output file. </param>
 			/// <param name="effect_name">	Name of the effect. </param>
-			void WriteHeader(FileIO::s_file_info& output_file, const std::string effect_name) override;
+			void WriteHeader(FileIO::s_file_info& output_file, const std::string& effect_name) override;
 		};
 	};};};
 };

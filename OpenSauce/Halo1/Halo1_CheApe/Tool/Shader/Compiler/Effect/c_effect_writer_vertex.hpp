@@ -21,7 +21,7 @@ namespace Yelo
 				, const std::string& shader_target
 				, const LPD3DXEFFECT& effect) override;
 
-			void WriteHeader(FileIO::s_file_info& output_file, const std::string effect_name) override;
+			void WriteHeader(FileIO::s_file_info& output_file, const std::string& effect_name) override;
 		};
 	};};};
 };

@@ -69,15 +69,15 @@ namespace Yelo
 		///
 		/// <param name="output_file">	[in] The output file. </param>
 		/// <param name="effect_name">	Name of the effect. </param>
-		void c_effect_writer_pixel::WriteHeader(s_file_info& output_file, const std::string effect_name)
+		void c_effect_writer_pixel::WriteHeader(s_file_info& output_file, const std::string& effect_name)
 		{
 			// Write the effect name
 			DWORD name_length = effect_name.size();
 			auto write_result = WriteToFile(output_file, CAST_PTR(char*, &name_length), sizeof(name_length));
-			YELO_ASSERT_DISPLAY(write_result == Enums::_file_io_open_error_none, "ERROR: Failed to write to a pixel shader file");
+			YELO_ASSERT_DISPLAY(write_result == Enums::_file_io_write_error_none, "ERROR: Failed to write to a pixel shader file");
 
 			write_result = WriteToFile(output_file, effect_name.c_str(), name_length);
-			YELO_ASSERT_DISPLAY(write_result == Enums::_file_io_open_error_none, "ERROR: Failed to write to a pixel shader file");
+			YELO_ASSERT_DISPLAY(write_result == Enums::_file_io_write_error_none, "ERROR: Failed to write to a pixel shader file");
 		}
 	};};};
 };

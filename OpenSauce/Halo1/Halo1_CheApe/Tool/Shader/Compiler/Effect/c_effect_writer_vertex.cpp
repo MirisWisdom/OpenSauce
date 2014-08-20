@@ -34,7 +34,7 @@ namespace Yelo
 			YELO_ASSERT_DISPLAY(write_result == Enums::_file_io_write_error_none, "ERROR: Failed to write the shader byte code to a vertex shader effect file");
 		}
 
-		void c_effect_writer_vertex::WriteHeader(s_file_info& output_file, const std::string effect_name)
+		void c_effect_writer_vertex::WriteHeader(s_file_info& output_file, const std::string& effect_name)
 		{ }
 	};};};
 };

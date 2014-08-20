@@ -34,7 +34,7 @@ namespace Yelo
 			///
 			/// <param name="node_name"> 	Name of the node. </param>
 			/// <param name="create_new">	The function use when creating a new instance of T. </param>
-			c_configuration_list(const std::string& node_name, const std::function<T()> create_new)
+			c_configuration_list(const std::string& node_name, const std::function<T()>& create_new)
 				: m_node_name(node_name)
 				, m_values()
 				, m_create_new(create_new)

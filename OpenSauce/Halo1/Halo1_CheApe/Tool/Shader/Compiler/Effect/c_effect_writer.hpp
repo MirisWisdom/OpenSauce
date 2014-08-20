@@ -64,10 +64,10 @@ namespace Yelo
 
 		private:
 			virtual void WriteShaders(FileIO::s_file_info& output_file, const std::string& shader_target, const LPD3DXEFFECT& effect) = 0;
-			virtual void WriteHeader(FileIO::s_file_info& output_file, const std::string effect_name) = 0;
+			virtual void WriteHeader(FileIO::s_file_info& output_file, const std::string& effect_name) = 0;
 
 		public:
-			void WriteEffect(boost::filesystem::path output_file, const std::string effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect) final override;
+			void WriteEffect(const boost::filesystem::path& output_file, const std::string& effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect) final override;
 		};};};
 	};
 };

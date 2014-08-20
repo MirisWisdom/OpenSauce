@@ -15,7 +15,7 @@ namespace Yelo
 			abstract
 		{
 		public:
-			virtual void WriteEffect(boost::filesystem::path output_file, const std::string effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect) = 0;
+			virtual void WriteEffect(const boost::filesystem::path& output_file, const std::string& effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect) = 0;
 		};
 	};};};
 };

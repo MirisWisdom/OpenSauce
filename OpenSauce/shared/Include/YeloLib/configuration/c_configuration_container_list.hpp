@@ -28,7 +28,7 @@ namespace Yelo
 			///
 			/// <param name="node_name">   	Name of the containers node. </param>
 			/// <param name="create_entry">	The function to use when creating a new container. </param>
-			c_configuration_container_list(const std::string& node_name, const std::function<T()> create_entry)
+			c_configuration_container_list(const std::string& node_name, const std::function<T()>& create_entry)
 				: c_configuration_list<T>(node_name, create_entry)
 			{ }
 		};
