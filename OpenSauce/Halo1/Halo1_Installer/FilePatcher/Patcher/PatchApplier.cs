@@ -61,7 +61,7 @@ namespace FilePatcher.Patcher
 		/// <param name="xmlStream">	The XML stream. </param>
 		///
 		/// <returns>	A PatchDefinition. </returns>
-		public PatchDefinition DeserializeDefinition(XmlReader xmlStream)
+		public static PatchDefinition DeserializeDefinition(XmlReader xmlStream)
 		{
 			if (xmlStream == null)
 			{

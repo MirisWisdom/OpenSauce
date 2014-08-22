@@ -13,17 +13,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 {
 	[TestClass]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.txt")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidString.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt32.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt16.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidByte.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidBytes.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt32.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt16.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexByte.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexBytes.xml")]
-	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.OutOfBoundsString.xml")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.txt", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidString.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt32.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt16.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidByte.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.ValidBytes.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt32.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt16.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexByte.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexBytes.xml", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\Resources\DummyFileTwo.OutOfBoundsString.xml", "Resources")]
 	public class PatchApplierTests
 	{
 		public TestContext TestContext { get; set; }
@@ -32,8 +32,8 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		{
 			using (var xmlReader = XmlReader.Create(patchFile))
 			{
+				var definition = PatchApplier.DeserializeDefinition(xmlReader);
 				var patcher = new PatchApplier();
-				var definition = patcher.DeserializeDefinition(xmlReader);
 
 				return patcher.Patch(definition, targetFile, TestContext.DeploymentDirectory);
 			}
@@ -43,7 +43,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithAValidStringPatch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.ValidString.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.ValidString.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsTrue(result, "Failed to patch a file with a valid patch");
 		}
@@ -51,7 +51,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithAValidUInt32Patch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.ValidUInt32.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.ValidUInt32.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsTrue(result, "Failed to patch a file with a valid patch");
 		}
@@ -59,7 +59,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithAValidUInt16Patch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.ValidUInt16.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.ValidUInt16.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsTrue(result, "Failed to patch a file with a valid patch");
 		}
@@ -67,7 +67,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithAValidBytePatch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.ValidByte.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.ValidByte.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsTrue(result, "Failed to patch a file with a valid patch");
 		}
@@ -75,7 +75,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithAValidBytesPatch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.ValidBytes.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.ValidBytes.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsTrue(result, "Failed to patch a file with a valid patch");
 		}
@@ -85,7 +85,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithAnOutOfBoundsPatch_ReturnsFalse()
 		{
-			var result = TryApplyPatch("DummyFileTwo.OutOfBoundsString.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.OutOfBoundsString.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsFalse(result, "Returned true for a patch that is invalid");
 		}
@@ -93,7 +93,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithInvalidHexForAUInt32Patch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.InvalidHexUInt32.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.InvalidHexUInt32.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsFalse(result, "Returned true for a patch that is invalid");
 		}
@@ -101,7 +101,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithInvalidHexForAUInt16Patch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.InvalidHexUInt16.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.InvalidHexUInt16.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsFalse(result, "Returned true for a patch that is invalid");
 		}
@@ -109,7 +109,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithInvalidHexForABytePatch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.InvalidHexByte.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.InvalidHexByte.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsFalse(result, "Returned true for a patch that is invalid");
 		}
@@ -117,7 +117,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		[TestMethod]
 		public void Patch_WithInvalidHexForAMultiBytePatch_PatchesTheFile()
 		{
-			var result = TryApplyPatch("DummyFileTwo.InvalidHexBytes.xml", "DummyFileTwo.txt");
+			var result = TryApplyPatch(@"Resources\DummyFileTwo.InvalidHexBytes.xml", @"Resources\DummyFileTwo.txt");
 
 			Assert.IsFalse(result, "Returned true for a patch that is invalid");
 		}
@@ -129,7 +129,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		{
 			var patcher = new PatchApplier();
 
-			patcher.Patch((PatchDefinition)null, "DummyFileTwo.txt", TestContext.DeploymentDirectory);
+			patcher.Patch((PatchDefinition)null, @"Resources\DummyFileTwo.txt", TestContext.DeploymentDirectory);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException), "Did not throw an exception when no target file was supplied")]
@@ -163,7 +163,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		{
 			var patcher = new PatchApplier();
 
-			patcher.Patch(new PatchDefinition(), "DummyFileTwo.txt", null);
+			patcher.Patch(new PatchDefinition(), @"Resources\DummyFileTwo.txt", null);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentException), "Did not throw an exception when no output directory was supplied")]
@@ -171,7 +171,7 @@ namespace InstallerUnitTest.FilePatcherUnitTests.Patcher
 		{
 			var patcher = new PatchApplier();
 
-			patcher.Patch(new PatchDefinition(), "DummyFileTwo.txt", "");
+			patcher.Patch(new PatchDefinition(), @"Resources\DummyFileTwo.txt", "");
 		}
 		#endregion
 	}
