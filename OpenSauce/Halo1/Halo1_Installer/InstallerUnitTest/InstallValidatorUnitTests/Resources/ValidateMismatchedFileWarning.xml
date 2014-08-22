@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="MismatchedFileWarning">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<File id="FILE_TestFileOne" name="TestFileOne.txt">
+			<Version md5="NOTAMATCHINGMD5" ondiff="MSG_TestFileOne_diffwarning">
+				<Message id="MSG_TestFileOne_diffwarning" type="warn">Mismatched file warning</Message>
+			</Version>
+		</File>
+	</Directory>
+</Installation>

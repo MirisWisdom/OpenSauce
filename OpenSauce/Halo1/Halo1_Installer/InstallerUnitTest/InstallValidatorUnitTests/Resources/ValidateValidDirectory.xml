@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="ValidDirectory">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne" onmissing="MSG_TestDirectoryOne_misserror">
+		<Directory id="DIR_TestDirectoryTwo" name="TestDirectoryTwo" onmissing="MSG_TestDirectoryTwo_misserror">
+			<File id="FILE_TestFileTwo" name="TestFileTwo.txt" onmissing="MSG_TestFileTwo_misserror">
+				<Version md5="bfaf8ae957937af5b8652a2137f1d95a" ondiff="MSG_TestFileTwo_differror">
+					<Message id="MSG_TestFileTwo_matcherror" type="error">Mismatched file error</Message>
+				</Version>
+
+				<Message id="MSG_TestFileTwo_misserror" type="error">Missing file error</Message>
+			</File>
+
+			<Message id="MSG_TestDirectoryTwo_misserror" type="error">Missing directory error</Message>
+		</Directory>
+
+		<File id="FILE_TestFileOne" name="TestFileOne.txt" onmissing="MSG_TestFileOne_misserror">
+			<Version md5="bfaf8ae957937af5b8652a2137f1d95a" ondiff="MSG_TestFileOne_differror">
+				<Message id="MSG_TestFileOne_matcherror" type="error">Mismatched file error</Message>
+			</Version>
+
+			<Message id="MSG_TestFileOne_misserror" type="error">Missing file error</Message>
+		</File>
+
+		<Message id="MSG_TestDirectoryOne_misserror" type="error">Missing directory error</Message>
+	</Directory>
+</Installation>

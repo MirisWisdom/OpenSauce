@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="MismatchedFileError">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<File id="FILE_TestFileOne" name="TestFileOne.txt">
+			<Version md5="NOTAMATCHINGMD5" ondiff="MSG_TestFileOne_differror">
+				<Message id="MSG_TestFileOne_differror" type="error">Mismatched file error</Message>
+			</Version>
+		</File>
+	</Directory>
+</Installation>

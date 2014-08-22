@@ -5,102 +5,84 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using InstallValidator.Validator;
 using Microsoft.Deployment.WindowsInstaller;
 
 namespace InstallValidator
 {
-	public class CustomActions
+	public class InstallValidatorCustomAction
 	{
-		private static Validator g_validator = null;
-
-		public static void ValidateInstallPath(string install_definition, string installation_path)
+		public enum MessageType
 		{
-			g_validator = new Validator(install_definition);
-
-			g_validator.Validate(installation_path);
+			WarningOK,
+			WarningYesNo,
+			ErrorOK
 		}
 
-		[CustomAction]
-		public static ActionResult ValidateInstall(Session session)
+		public static bool InstallValidator(string validatorDefinition
+			, string validatorPath
+			, Action<string> onLog
+			, Func<string, MessageType, bool> onMessageUser
+			, Action<string, bool> onError)
 		{
-			session.Log("Begin ValidateInstall");
-
-			// check the required properties have been set
-			string definition_to_use = session["INSTALLVALIDATORDEF"];
-			string path_to_validate = session["INSTALLVALIDATORPATH"];
-
-			if ((definition_to_use == null) || (definition_to_use.Length == 0))
+			if ((onLog == null) || (onMessageUser == null) || (onError == null))
 			{
-				session.Log("InstallValidator: ERROR : INSTALLVALIDATORDEF not set");
-				return ActionResult.Failure;
-			}
-			if ((path_to_validate == null) || (path_to_validate.Length == 0))
-			{
-				session.Log("InstallValidator: ERROR : INSTALLVALIDATORPATH not set");
-				return ActionResult.Failure;
+				throw new ArgumentNullException("A required callback delegate was not supplied");
 			}
 
-			// log the properties for debugging if necessary
-			session.Log("LOG: INSTALLVALIDATORDEF : " + definition_to_use);
-			session.Log("LOG: INSTALLVALIDATORPATH : " + path_to_validate);
+			onLog("Begin InstallValidator");
 
-			// validate the installation path
-			ValidateInstallPath(definition_to_use, path_to_validate);
-
-			// show warning messages
-			if (g_validator.WarningMessages.Count != 0)
+			// Check the custom action arguments have been set
+			if (String.IsNullOrEmpty(validatorDefinition) || String.IsNullOrEmpty(validatorPath))
 			{
-				Record message_record = new Record(1);
-				MessageResult view_warnings_result;
+				onError("InstallValidator: ERROR : Action data not set", false);
+				return false;
+			}
 
-				// ask the user if they want to see the warnings that were raised
-				message_record.SetString(0, String.Format("{0} warnings were raised when validating your installation.\n\nDo you want to view them (Recommended)?",
-					g_validator.WarningMessages.Count));
-				view_warnings_result = session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.YesNo, message_record);
-				if(MessageResult.Yes == view_warnings_result)
+			// Log the properties for debugging if necessary
+			onLog("LOG: INSTALLVALIDATORDEF : " + validatorDefinition);
+			onLog("LOG: INSTALLVALIDATORPATH : " + validatorPath);
+
+			// Validate the installation path
+			var validator = new PathValidator();
+
+			validator.Validate(validatorDefinition, validatorPath);
+
+			// Show warning messages
+			if (validator.WarningMessages.Count != 0)
+			{
+				// Ask the user if they want to see the warnings that were raised
+				var displayMessages = onMessageUser(String.Format("{0} warnings were raised when validating your installation.\n\nDo you want to view them (Recommended)?", validator.WarningMessages.Count)
+					, MessageType.WarningYesNo);
+
+				if (displayMessages)
 				{
-					// display each warning in a seperate dialog
-					foreach (var message in g_validator.WarningMessages)
+					// Display each warning in a separate dialog
+					foreach (var message in validator.WarningMessages)
 					{
-						session.Log("InstallValidator: {0}", message);
-						message_record.SetString(0, message);
-						session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.OK, message_record);
+						onLog(String.Format("InstallValidator: {0}", message));
+						onMessageUser(message, MessageType.WarningOK);
 					}
 
-					// see if the user still wants to continue the installation
-					message_record.SetString(0, "Do you want to continue the installation?");
-					view_warnings_result = session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.YesNo, message_record);
+					// See if the user still wants to continue the installation
+					var continueInstallation = onMessageUser("Do you want to continue the installation?", MessageType.WarningYesNo);
 
-					// if the user wants to cancel the installation return user exit
-					if (view_warnings_result == MessageResult.No)
-						return ActionResult.UserExit;
+					// If the user wants to cancel the installation return user exit
+					if (!continueInstallation)
+					{
+						return false;
+					}
 				}
 			}
 
-			// show error messages
-			if (g_validator.ErrorMessages.Count != 0)
+			// Show error message
+			if (validator.ErrorMessages.Count != 0)
 			{
-				Record record = new Record(g_validator.ErrorMessages.Count);
-				
-				// there should only ever be one error message since it returns immediately after finding one
-				// but just in case, log and display all in the list
-				int index = 0;
-				foreach (var message in g_validator.ErrorMessages)
-				{
-					session.Log("InstallValidator: {0}", message);
-					record.SetString(index, message);
-					index++;
-				}
-
-				// present an error message to the user
-				session.Message(InstallMessage.Error | (InstallMessage)(MessageIcon.Error) | (InstallMessage)MessageButtons.OK, record);
-				return ActionResult.Failure;
+				onError(validator.ErrorMessages[0], true);
+				return false;
 			}
 
-			return ActionResult.Success;
+			return true;
 		}
 	}
 }

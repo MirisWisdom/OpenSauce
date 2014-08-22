@@ -47,11 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Validator.cs" />
+    <Compile Include="Validator\ValidatorDefinition.cs" />
+    <Compile Include="InstallValidatorCA.cs" />
+    <Compile Include="Validator\Validator.cs" />
     <Compile Include="InstallValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="InstallationDefinitions\Halo1_CE.xml" />
-    <EmbeddedResource Include="InstallationDefinitions\Halo1_HEK.xml" />
+    <EmbeddedResource Include="Definitions\Halo1_CE.xml" />
+    <EmbeddedResource Include="Definitions\Halo1_HEK.xml" />
     <Content Include="CustomAction.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

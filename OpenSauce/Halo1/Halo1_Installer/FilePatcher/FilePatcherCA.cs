@@ -35,8 +35,11 @@ namespace FilePatcher
 
 					if(showError)
 					{
+						var record = new Record(1);
+						record.SetString(0, value);
+
 						// Present an error message to the user
-						session.Message(InstallMessage.Error | (InstallMessage)(MessageIcon.Error) | (InstallMessage)MessageButtons.OK, new Record(value));
+						session.Message(InstallMessage.Error | (InstallMessage)(MessageIcon.Error) | (InstallMessage)MessageButtons.OK, record);
 					}
 
 					errorOccurred = true;

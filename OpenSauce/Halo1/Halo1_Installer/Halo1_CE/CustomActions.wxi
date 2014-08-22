@@ -4,15 +4,15 @@
 	<!-- Validate Halo CE Installation -->
 	<CustomAction Id='Halo1_CE_SetValidationDefHCE_CACT' Property='INSTALLVALIDATORDEF' Value='Halo1_CE'/>
 	<CustomAction Id='Halo1_CE_SetValidationPathHCE_CACT' Property='INSTALLVALIDATORPATH' Value='[HALO1_CE_HCE_INSTALLDIR_PROP]'/>
-	<CustomAction Id='Halo1_CE_ValidateInstallHCE_CACT' BinaryKey='InstallValidator_BIN' DllEntry='ValidateInstall' Execute='immediate' Return='check'/>
+	<CustomAction Id='Halo1_CE_ValidateInstallHCE_CACT' BinaryKey='InstallValidator_BIN' DllEntry='InstallValidatorCA' Execute='immediate' Return='check'/>
 
 	<!-- Validate Halo Editing Kit Installation -->
 	<CustomAction Id='Halo1_CE_SetValidationDefHEK_CACT' Property='INSTALLVALIDATORDEF' Value='Halo1_HEK'/>
 	<CustomAction Id='Halo1_CE_SetValidationPathHEK_CACT' Property='INSTALLVALIDATORPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
-	<CustomAction Id='Halo1_CE_ValidateInstallHEK_CACT' BinaryKey='InstallValidator_BIN' DllEntry='ValidateInstall' Execute='immediate' Return='check'/>
+	<CustomAction Id='Halo1_CE_ValidateInstallHEK_CACT' BinaryKey='InstallValidator_BIN' DllEntry='InstallValidatorCA' Execute='immediate' Return='check'/>
 
 
-  <!-- Set the Halo CE installation proerties -->
+  <!-- Set the Halo CE installation properties -->
   <CustomAction Id='Halo1_CE_SetPathPropertiesDefHCE_CACT' Property='SETPATHPROPERTIESDEF' Value='Halo1_CE'/>
   <CustomAction Id='Halo1_CE_SetPathPropertiesHCE_CACT' BinaryKey='SetPathProperties_BIN' DllEntry='SetPathProperties' Execute='immediate' Return='check'/>
 

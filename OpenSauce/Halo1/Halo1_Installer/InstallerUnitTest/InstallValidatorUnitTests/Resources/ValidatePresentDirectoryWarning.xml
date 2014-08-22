@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="PresentDirectoryWarning">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<Directory id="DIR_TestDirectoryTwo" name="TestDirectoryTwo" onpresent="MSG_TestDirectoryTwo_presentwarning">
+			<Message id="MSG_TestDirectoryTwo_presentwarning" type="warn">Present directory warning</Message>
+		</Directory>
+	</Directory>
+</Installation>

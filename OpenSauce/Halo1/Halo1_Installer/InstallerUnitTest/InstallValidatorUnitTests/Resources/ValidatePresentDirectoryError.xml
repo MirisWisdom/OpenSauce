@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="PresentDirectoryError">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<Directory id="DIR_TestDirectoryTwo" name="TestDirectoryTwo" onpresent="MSG_TestDirectoryTwo_presenterror">
+			<Message id="MSG_TestDirectoryTwo_presenterror" type="error">Present directory error</Message>
+		</Directory>
+	</Directory>
+</Installation>
