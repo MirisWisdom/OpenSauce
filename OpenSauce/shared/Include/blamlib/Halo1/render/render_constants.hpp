@@ -13,6 +13,10 @@ namespace Yelo
 		enum {
 			k_maximum_rendered_objects = 256,
 
+			k_maximum_rendered_clusters = 0x80,
+
+			k_maximum_rendered_triangles = 0x4000,
+
 			k_maximum_rendered_distant_lights = 2,
 			k_maximum_rendered_point_lights = 2,
 		};

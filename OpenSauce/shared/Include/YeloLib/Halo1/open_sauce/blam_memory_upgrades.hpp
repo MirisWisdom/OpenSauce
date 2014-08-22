@@ -115,13 +115,13 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_rastizer_maximum_dynamic_triangles = 0x4000,
+			k_rasterizer_maximum_dynamic_triangles = 0x400,
 
-			k_rastizer_maximum_dynamic_triangles_upgrade = 
-				CAST(uint32, k_rastizer_maximum_dynamic_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+//			k_rasterizer_maximum_dynamic_triangles_upgrade = 
+//				CAST(uint32, k_rasterizer_maximum_dynamic_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
-		BOOST_STATIC_ASSERT( k_rastizer_maximum_dynamic_triangles_upgrade >= k_rastizer_maximum_dynamic_triangles );
+//		BOOST_STATIC_ASSERT( k_rasterizer_maximum_dynamic_triangles_upgrade >= k_rasterizer_maximum_dynamic_triangles );
 	};
 
 
@@ -132,6 +132,9 @@ namespace Yelo
 		enum {
 			k_maximum_rendered_objects_upgrade = 
 				k_maximum_rendered_objects + k_maximum_rendered_objects_upgrade_amount,
+
+			k_maximum_rendered_triangles_upgrade =
+				CAST(uint32, k_maximum_rendered_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 	};
 

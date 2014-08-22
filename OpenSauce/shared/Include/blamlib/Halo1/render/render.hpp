@@ -58,7 +58,7 @@ namespace Yelo
 
 			struct {
 				long_flags cluster_pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];
-				byte clusters[0x1A0][0x80];
+				byte clusters[0x1A0][Enums::k_maximum_rendered_clusters];
 				int16 count;
 				PAD16;
 			}rendered_clusters;
@@ -66,8 +66,8 @@ namespace Yelo
 			struct {
 				uint32 visibility_bitvector[0x20000];
 				int32 count;
-				uint32 triangles[Enums::k_rastizer_maximum_dynamic_triangles];
-			}dynamic_triangles;
+				uint32 triangles[Enums::k_maximum_rendered_triangles];
+			}rendered_triangles;
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_globals) == 0x9D298 );
 		s_render_globals* RenderGlobals(); // defined in the implementing extension's code
 	};

@@ -9,19 +9,20 @@ class c_render_upgrades
 {
 public:
 	// If we're not compiling with any upgrades, then don't waste space in the compiled code
-	uint32 dynamic_triangles[Enums::k_rastizer_maximum_dynamic_triangles_upgrade <= Enums::k_rastizer_maximum_dynamic_triangles ? 1 :
-							Enums::k_rastizer_maximum_dynamic_triangles_upgrade];
+	uint32 rendered_triangles[
+							Enums::k_maximum_rendered_triangles_upgrade <= Enums::k_maximum_rendered_triangles ? 1 :
+							Enums::k_maximum_rendered_triangles_upgrade];
 
-	void InitializeDynamicTrianglesUpgrade()
+	void InitializeRenderedTrianglesUpgrade()
 	{
-		if(NUMBEROF(dynamic_triangles) > 1)
+		if (NUMBEROF(rendered_triangles) > 1)
 		{
-			// redirect all dynamic triangle pointers to the new array
-			for(auto ptr : K_DYNAMIC_TRIANGLE_ARRAY_UPGRADE_ADDRESS_LIST)
-				*ptr = dynamic_triangles;
-			// change all references to the dynamic triangle array to our new size
-			for(auto ptr : K_MAXIMUM_DYNAMIC_TRIANGLES_UPGRADE_ADDRESS_LIST)
-				*ptr = Enums::k_rastizer_maximum_dynamic_triangles_upgrade;
+			// redirect all rendered triangle pointers to the new array
+			for (auto ptr : K_RENDERED_TRIANGLE_ARRAY_UPGRADE_ADDRESS_LIST)
+				*ptr = rendered_triangles;
+			// change all references to the rendered triangle array to our new size
+			for (auto ptr : K_MAXIMUM_RENDERED_TRIANGLES_UPGRADE_ADDRESS_LIST)
+				*ptr = Enums::k_maximum_rendered_triangles_upgrade;
 		}
 	}
 
