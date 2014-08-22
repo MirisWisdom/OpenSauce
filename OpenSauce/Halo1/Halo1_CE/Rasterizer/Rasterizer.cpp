@@ -195,7 +195,7 @@ namespace Yelo
 				
 				if(settings_instance.m_upgrades.m_dynamic_triangles)
 				{
-					g_render_upgrades.InitializeDynamicTrianglesUpgrade();
+					g_render_upgrades.InitializeRenderedTrianglesUpgrade();
 				}
 			}
 		};

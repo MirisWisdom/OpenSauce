@@ -40,7 +40,7 @@ namespace Yelo
 		void Initialize()
 		{
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-			g_render_upgrades.InitializeDynamicTrianglesUpgrade();
+			g_render_upgrades.InitializeRenderedTrianglesUpgrade();
 			g_render_upgrades.InitializeMaximumNodesPerModelFixes();
 			// TODO: remove this once/if we renable effects rendering in sapien
 #if !PLATFORM_DISABLE_UNUSED_CODE
