@@ -12,6 +12,8 @@ using Microsoft.Win32;
 namespace InstallerUnitTest.FilePatcherUnitTests.PatchTests
 {
 	[TestClass]
+	[DeploymentItem(@"FilePatcherUnitTests\PatchTests\Resources\OS_haloce.exe", "Resources")]
+	[DeploymentItem(@"FilePatcherUnitTests\PatchTests\Resources\OS_haloceded.exe", "Resources")]
 	public class Halo1_CE
 	{
 		public TestContext TestContext { get; set; }
@@ -30,12 +32,27 @@ namespace InstallerUnitTest.FilePatcherUnitTests.PatchTests
 		}
 
 		[TestMethod]
-		public void FilePatcher_WithHCEDediPatch_PatchesTheExe()
+		public void FilePatcher_WithHCEClientPatch_PatchesTheExe()
 		{
-			var filePath = Path.Combine(mHCEInstallationDir, "haloceded.exe");
 			var errorOccurred = false;
 
-			FilePatcher.FilePatcherCustomAction.FilePatcher(String.Join(";", "Halo1_HCE_Dedi", filePath, TestContext.TestRunResultsDirectory),
+			FilePatcher.FilePatcherCustomAction.FilePatcher(String.Join(";", "Halo1_HCE_Client", @"Resources\OS_haloce.exe", TestContext.TestRunResultsDirectory),
+				(value) => { },
+				(value, showMessage) =>
+				{
+					errorOccurred = true;
+				}
+			);
+
+			Assert.IsFalse(errorOccurred, "Failed to patch the HCE client");
+		}
+
+		[TestMethod]
+		public void FilePatcher_WithHCEDediPatch_PatchesTheExe()
+		{
+			var errorOccurred = false;
+
+			FilePatcher.FilePatcherCustomAction.FilePatcher(String.Join(";", "Halo1_HCE_Dedi", @"Resources\OS_haloceded.exe", TestContext.TestRunResultsDirectory),
 				(value) => { },
 				(value, showMessage) =>
 				{

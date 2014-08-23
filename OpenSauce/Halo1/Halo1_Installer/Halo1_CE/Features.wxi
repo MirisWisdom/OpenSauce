@@ -9,13 +9,15 @@
 		ConfigurableDirectory='HALO1_CE_HCE_INSTALLDIR_PROP'
 		AllowAdvertise='no'>
 
+		<ComponentRef Id='Halo1_CE_oshaloce109_COMP' />
+		<ComponentRef Id='Halo1_CE_oshaloceded109_COMP' />
 		<ComponentRef Id='Halo1_CE_dinput8109_COMP' />
 		<ComponentRef Id='Halo1_CE_vsh_OS_COMP' />
 		<ComponentRef Id='Halo1_CE_EffectCollection_ps_2_a_COMP' />
 		<ComponentRef Id='Halo1_CE_EffectCollection_ps_2_b_COMP' />
 
 		<ComponentRef Id='Halo1_CE_OpenSauceDedi_COMP'/>
-		<ComponentRef Id='Halo1_CE_DediExeRemove_COMP'/>
+		<ComponentRef Id='Halo1_CE_ExeRemove_COMP'/>
 
 		<ComponentRef Id='Halo1_CE_Readme_COMP' />
 
@@ -41,7 +43,9 @@
 		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
 		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
-		
+
+		<ComponentRef Id='Halo1_CE_OSHCEClientDesktopShortcut_COMP' />
+
 	</Feature>
 	<Feature Id='Halo1_CE_HEK_FEAT'
 		Title='Halo Editing Kit'

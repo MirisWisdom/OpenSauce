@@ -19,6 +19,20 @@ namespace InstallValidator
 			ErrorOK
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Validates an installation. </summary>
+		///
+		/// <exception cref="ArgumentNullException">
+		/// 	Thrown when one or more required arguments are null.
+		/// </exception>
+		///
+		/// <param name="validatorDefinition">	The validator definition. </param>
+		/// <param name="validatorPath">	  	The path to validate. </param>
+		/// <param name="onLog">			  	The logging callback. </param>
+		/// <param name="onMessageUser">	  	The message user callback. </param>
+		/// <param name="onError">			  	The error callback. </param>
+		///
+		/// <returns>	true if it succeeds, false if it fails. </returns>
 		public static bool InstallValidator(string validatorDefinition
 			, string validatorPath
 			, Action<string> onLog

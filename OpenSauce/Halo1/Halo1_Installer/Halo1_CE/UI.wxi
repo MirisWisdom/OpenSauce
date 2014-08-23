@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesDefHCE_CACT' Order='1'>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesDefHCE_CACT' Order='1'>
 		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
 	</Publish>
-	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesHCE_CACT' Order='2'>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesHCE_CACT' Order='2'>
 		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
 	</Publish>
 	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='3'>
-		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed) AND NOT (SETPATHPROPERTIESRESULT = "PASS")]]>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed) AND NOT (SETPROPERTIESRESULT = "PASS")]]>
 	</Publish>
-  
-	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesDefHEK_CACT' Order='4'>
+	
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesDefHEK_CACT' Order='4'>
 		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
 	</Publish>
-	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesHEK_CACT' Order='5'>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesHEK_CACT' Order='5'>
 		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
 	</Publish>
 	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='6'>
-		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT Installed) AND NOT (SETPATHPROPERTIESRESULT = "PASS")]]>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT Installed) AND NOT (SETPROPERTIESRESULT = "PASS")]]>
 	</Publish>
-  
-  
+	
+	
 	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_SetReadmeTarget_CACT'>
 		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed AND HALO1_CE_README_LAUNCH_PROP]]>
 	</Publish>

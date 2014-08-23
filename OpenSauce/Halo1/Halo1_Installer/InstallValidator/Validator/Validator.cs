@@ -50,7 +50,7 @@ namespace InstallValidator.Validator
 		/// <returns>	The validator definition. </returns>
 		private ValidatorDefinition GetDefinition(string definitionId)
 		{
-			// Build the location of the patch definition resource
+			// Build the location of the validator definition resource
 			// Open the resource for reading
 			var definitionResourceId = String.Format("InstallValidator.Definitions.{0}.xml", definitionId);
 
@@ -300,6 +300,10 @@ namespace InstallValidator.Validator
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Validates a path according to the provided validation definition. </summary>
+		///
+		/// <exception cref="ArgumentNullException">
+		/// 	Thrown when one or more required arguments are null.
+		/// </exception>
 		///
 		/// <param name="validatorDefinitionID">	The validator definition id. </param>
 		/// <param name="validatorPath">			The path to validate. </param>

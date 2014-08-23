@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
+	<!-- Desktop shortcuts to the OS HCE Client -->
+	<Component Id='Halo1_CE_OSHCEClientDesktopShortcut_COMP' Guid='7D822997-A3D4-4F9D-A5DC-3DAC6049242F'>
+		<Condition>
+			<![CDATA[CREATEDESKTOPSHORTCUTS]]>
+		</Condition>
+		<Shortcut Id='Halo1_CE_OSHCEClientDesktop_SCUT'
+			Target='[HALO1_CE_HCE_INSTALLDIR_PROP]OS_haloce.exe'
+			Name='OS Halo CE'
+			Description='OpenSauce enabled Halo Custom Edition'
+			WorkingDirectory='HALO1_CE_HCE_INSTALLDIR_PROP'/>
+		<RegistryValue Id='Halo1_CE_OSHCEClientDesktop_REG'
+			Root='HKCU'
+			Key='Software\KornnerStudios\OpenSauce'
+			Name='KeyPathsDesktop'
+			Type='multiString'
+			Action='append'
+			Value='OS_HCEClientDesktop'
+			KeyPath='yes'/>
+	</Component>
 	
 	<!-- Desktop shortcuts to the OS HEK -->
 	<Component Id='Halo1_CE_OSGuerillaDesktopShortcut_COMP' Guid='06CBD7FA-D288-4bbb-AB63-9D958530789B'>
