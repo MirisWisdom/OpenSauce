@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FilePatch inputfile="OS_haloce.exe" outputfile="OS_haloce.exe" peaddressmask="400000" md5_pre="149f685e50c11da1a8c516f3bd9c8aff" md5_post="7aa05e57b73df71d0d652e14683d34df">
+	<Patch id="PTCH_haloce_opensauce">
+		<Data id="VAL_disablechecksum" type="bytes"><![CDATA[B801000000C3]]></Data>
+
+		<Address ptr="544AC0" value="VAL_disablechecksum"/>
+	</Patch>
+</FilePatch>

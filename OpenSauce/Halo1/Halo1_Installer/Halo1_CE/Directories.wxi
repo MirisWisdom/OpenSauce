@@ -16,7 +16,16 @@
 			</Component>
 		</Directory>
 
-		<!-- Extension DLLs for the client and server-->		
+		<!-- Extension EXEs for the client and server-->
+		<Component Id='Halo1_CE_oshaloce109_COMP' Guid='6B908AA1-28C5-486A-BFC9-835C2281F61D'>
+			<File Id='Halo1_CE_oshaloce109_FILE' Name='OS_haloce.exe' DiskId='1' Source='$(var.ResourceFolder)Halo1_CE\HCE_InstallDir\OS_haloce.exe' KeyPath='yes' />
+		</Component>
+		
+		<Component Id='Halo1_CE_oshaloceded109_COMP' Guid='DDCFE0E0-2FD1-45CB-B151-E630E6FB053A'>
+			<File Id='Halo1_CE_oshaloceded109_FILE' Name='OS_haloceded.exe' DiskId='1' Source='$(var.ResourceFolder)Halo1_CE\HCE_InstallDir\OS_haloceded.exe' KeyPath='yes' />
+		</Component>
+
+		<!-- Extension DLLs for the client and server-->
 		<Component Id='Halo1_CE_dinput8109_COMP' Guid='4FFDA1C3-BE47-4349-A4EF-7612D3A7FC54'>
 			<File Id='Halo1_CE_dinput8109_FILE' Name='dinput8.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\dinput8.dll' KeyPath='yes' />
 		</Component>
@@ -55,8 +64,9 @@
 		</Component>
 		<?endif?>
 
-		<!-- Component for removing the modified server exe -->
-		<Component Id='Halo1_CE_DediExeRemove_COMP' Guid='0094261B-9163-49e2-8276-1F7BC26D0DD2'>
+		<!-- Component for removing the modified exes -->
+		<Component Id='Halo1_CE_ExeRemove_COMP' Guid='0094261B-9163-49e2-8276-1F7BC26D0DD2'>
+			<RemoveFile Id='Halo1_CE_OS_haloce_REM' Name='OS_haloce.exe' On='uninstall' />
 			<RemoveFile Id='Halo1_CE_OS_haloceded_REM' Name='OS_haloceded.exe' On='uninstall' />
 		</Component>
 	</Directory>

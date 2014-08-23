@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FilePatcherUnitTests\FilePatcher.Tests.cs" />
     <Compile Include="InstallValidatorUnitTests\InstallValidator.Tests.cs" />
+    <Compile Include="SetPropertiesUnitTests\SetProperties.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CPUQuery\CPUQuery.csproj">
@@ -68,8 +69,18 @@
       <Project>{A7DEC09C-D521-48BB-A564-E039D3E9F850}</Project>
       <Name>InstallValidator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SetPathProperties\SetProperties.csproj">
+      <Project>{c335f888-5d39-4635-b257-27f7295a4a71}</Project>
+      <Name>SetProperties</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FilePatcherUnitTests\PatchTests\Resources\OS_haloce.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\PatchTests\Resources\OS_haloceded.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -152,11 +163,20 @@
     <Content Include="InstallValidatorUnitTests\Resources\ValidateValidDirectory.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetValidPath.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetValidString.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="SetPropertiesUnitTests\PropertySetter\PropertySetter.Tests.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="InstallValidatorUnitTests\Validator\Validator.Tests.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

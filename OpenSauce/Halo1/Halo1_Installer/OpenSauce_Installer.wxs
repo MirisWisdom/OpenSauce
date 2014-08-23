@@ -271,9 +271,9 @@
 		<Binary Id='InstallValidator_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\InstallValidator\InstallValidator.CA.dll'/>
 		<Binary Id='FilePatcher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\FilePatcher\FilePatcher.CA.dll'/>
 		<Binary Id='WebLauncher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\WebLauncher\WebLauncher.CA.dll'/>
-    <Binary Id='SetPathProperties_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\SetPathProperties\SetPathProperties.CA.dll'/>
-    <Binary Id='CPUQuery_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\CPUQuery\CPUQuery.CA.dll'/>
-    
+		<Binary Id='SetProperties_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\SetProperties\SetProperties.CA.dll'/>
+		<Binary Id='CPUQuery_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\CPUQuery\CPUQuery.CA.dll'/>
+		
 		<CustomAction Id='Newer_Found_CACT' Error='A later version of [ProductName] is already installed.' />
 		<CustomAction Id='DirectX_Install_CACT' FileKey='DirectX_dxsetup_FILE' ExeCommand='/silent' Execute='deferred' Impersonate='no' Return='check'/>
 		<CustomAction Id='OSLaunchWebSite_CACT' BinaryKey='WebLauncher_BIN' DllEntry='LaunchWebsite' Execute='immediate' Return='ignore'/>
@@ -289,7 +289,7 @@
 		<?endif?>
 
 		<InstallExecuteSequence>
-      <Custom Action='SetSSE2CPUSupportPropertyData_CACT' After='FindRelatedProducts'/>
+			<Custom Action='SetSSE2CPUSupportPropertyData_CACT' After='FindRelatedProducts'/>
 			<Custom Action='SetCPUSupportProperty_CACT' After='SetSSE2CPUSupportPropertyData_CACT'/>
 			<Custom Action='ErrorCPUNotSupported_CACT' After='SetCPUSupportProperty_CACT'>
 				<![CDATA[SSE2Supported_PROP ~= "false"]]>
@@ -343,13 +343,13 @@
 				<MergeRef Id='VCRedist120_MERGE'/>
 			</Feature>
 
-      <Feature Id='SlimDX_Redist_FEAT'
+			<Feature Id='SlimDX_Redist_FEAT'
 							 Title='SlimDX Runtime Redist'
 							 AllowAdvertise='no'
 							 Display='hidden'
 							 Level='1'>
-        <MergeRef Id='SlimDXRedist_MERGE'/>
-      </Feature>
+				<MergeRef Id='SlimDXRedist_MERGE'/>
+			</Feature>
 			
 			<!-- Game specific features are included here-->
 			<?ifdef Halo1_CE?>

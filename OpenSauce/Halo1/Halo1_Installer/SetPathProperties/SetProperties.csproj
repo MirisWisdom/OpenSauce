@@ -7,9 +7,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C335F888-5D39-4635-B257-27F7295A4A71}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SetPathProperties</RootNamespace>
-    <AssemblyName>SetPathProperties</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>SetProperties</RootNamespace>
+    <AssemblyName>SetProperties</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <WixCATargetsPath Condition=" '$(WixCATargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets</WixCATargetsPath>
@@ -38,16 +38,19 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.Deployment.WindowsInstaller" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PathSet.cs" />
-    <Compile Include="SetPathProperties.cs" />
+    <Compile Include="PropertySetter\PropertySetDefinition.cs" />
+    <Compile Include="PropertySetter\PropertySetter.cs" />
+    <Compile Include="SetProperties.cs" />
+    <Compile Include="SetPropertiesCA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="PathDefinitions\Halo1_CE.xml" />
-    <EmbeddedResource Include="PathDefinitions\Halo1_HEK.xml" />
+    <EmbeddedResource Include="Definitions\Halo1_CE.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Definitions\Halo1_HEK.xml" />
     <Content Include="CustomAction.config" />
   </ItemGroup>
   <ItemGroup />

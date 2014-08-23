@@ -12,16 +12,19 @@
 	<CustomAction Id='Halo1_CE_ValidateInstallHEK_CACT' BinaryKey='InstallValidator_BIN' DllEntry='InstallValidatorCA' Execute='immediate' Return='check'/>
 
 
-  <!-- Set the Halo CE installation properties -->
-  <CustomAction Id='Halo1_CE_SetPathPropertiesDefHCE_CACT' Property='SETPATHPROPERTIESDEF' Value='Halo1_CE'/>
-  <CustomAction Id='Halo1_CE_SetPathPropertiesHCE_CACT' BinaryKey='SetPathProperties_BIN' DllEntry='SetPathProperties' Execute='immediate' Return='check'/>
+	<!-- Set the Halo CE installation properties -->
+	<CustomAction Id='Halo1_CE_SetPropertiesDefHCE_CACT' Property='SETPROPERTIESDEF' Value='Halo1_CE'/>
+	<CustomAction Id='Halo1_CE_SetPropertiesHCE_CACT' BinaryKey='SetProperties_BIN' DllEntry='SetPropertiesCA' Execute='immediate' Return='check'/>
 
-  <!-- Set the Halo Editing Kit installation properties -->
-  <CustomAction Id='Halo1_CE_SetPathPropertiesDefHEK_CACT' Property='SETPATHPROPERTIESDEF' Value='Halo1_HEK'/>
-  <CustomAction Id='Halo1_CE_SetPathPropertiesHEK_CACT' BinaryKey='SetPathProperties_BIN' DllEntry='SetPathProperties' Execute='immediate' Return='check'/>
+	<!-- Set the Halo Editing Kit installation properties -->
+	<CustomAction Id='Halo1_CE_SetPropertiesDefHEK_CACT' Property='SETPROPERTIESDEF' Value='Halo1_HEK'/>
+	<CustomAction Id='Halo1_CE_SetPropertiesHEK_CACT' BinaryKey='SetProperties_BIN' DllEntry='SetPropertiesCA' Execute='immediate' Return='check'/>
 
 
-  <!-- Queue patching OS_haloceded -->
+	<!-- Queue patching OS_haloce -->
+	<CustomAction Id='Halo1_CE_AppendFilePatcherDataHaloCE_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HCE_Client;[HALO1_CE_HCECLIENT_VERSION_109_PROP];[HALO1_CE_HCE_INSTALLDIR_PROP];'/>
+
+	<!-- Queue patching OS_haloceded -->
 	<CustomAction Id='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HCE_Dedi;[HALO1_CE_HCEDEDI_VERSION_109_PROP];[HALO1_CE_HCE_INSTALLDIR_PROP];'/>
 
 	<!-- Queue patching OS_Guerilla -->
