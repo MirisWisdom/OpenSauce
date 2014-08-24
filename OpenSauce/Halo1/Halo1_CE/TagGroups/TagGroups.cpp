@@ -43,6 +43,7 @@ namespace Yelo
 
 		void InitializeForNewMap()
 		{
+			// TODO: this will need to be changed/removed once our rewritten scenario_load code is in place
 			Scenario::ProjectYellowInitializeForNewMap();
 		}
 	};

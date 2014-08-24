@@ -33,46 +33,53 @@ namespace Yelo
 			FLAG(Flags::_project_yellow_invalid_version_bit),
 		};
 
-		static project_yellow_globals* g_py_globals;
-		static project_yellow* g_project_yellow;
+		static project_yellow_globals* g_py_globals = &null_yelo_globals;
+		static project_yellow* g_project_yellow = &null_yelo;
 
-		static void FindYeloDefinitions()
+		static void InitializeForNewYeloDefinitions(datum_index yelo_index, datum_index yelo_globals_index)
 		{
-			// Reset first, in case scenario has no definitions
-			g_project_yellow = &null_yelo;
-			g_py_globals = &null_yelo_globals;
-
-			s_tag_iterator iter;
-
-			// find the yelo scenario tag
-			blam::tag_iterator_new(iter, project_yellow::k_group_tag);
-			datum_index tag_index = blam::tag_iterator_next(iter); // there should only be one yelo tag so we only need to call this once
-			if (!tag_index.IsNull())
+			if (!yelo_index.IsNull())
 			{
 #if PLATFORM_USES_CACHE_FILES
-				g_project_yellow = TagGetUnsafe<project_yellow>(tag_index);
+				g_project_yellow = TagGetForModify<project_yellow>(yelo_index);
 #else
-				g_project_yellow = blam::tag_get<project_yellow>(tag_index);
+				g_project_yellow = blam::tag_get<project_yellow>(yelo_index);
 #endif
 
 				if (g_project_yellow->version != project_yellow::k_version)
 					g_project_yellow = &null_yelo_invalid;
 			}
+			else
+				g_project_yellow = &null_yelo;
 
-			// find the yelo globals tag
-			blam::tag_iterator_new(iter, project_yellow_globals::k_group_tag);
-			tag_index = blam::tag_iterator_next(iter);
-			if (!tag_index.IsNull())
+			if (!yelo_globals_index.IsNull())
 			{
 #if PLATFORM_USES_CACHE_FILES
-				g_py_globals = TagGetUnsafe<project_yellow_globals>(tag_index);
+				g_py_globals = TagGetForModify<project_yellow_globals>(yelo_globals_index);
 #else
-				g_py_globals = blam::tag_get<project_yellow_globals>(tag_index);
+				g_py_globals = blam::tag_get<project_yellow_globals>(yelo_globals_index);
 #endif
 
 				if (g_py_globals->version != project_yellow_globals::k_version)
 					g_py_globals = &null_yelo_globals;
 			}
+			else
+				g_py_globals = &null_yelo_globals;
+		}
+
+		static void FindYeloDefinitions()
+		{
+			s_tag_iterator iter;
+
+			// find the yelo scenario tag
+			blam::tag_iterator_new(iter, project_yellow::k_group_tag);
+			datum_index yelo_index = blam::tag_iterator_next(iter); // there should only be one yelo tag so we only need to call this once
+
+			// find the yelo globals tag
+			blam::tag_iterator_new(iter, project_yellow_globals::k_group_tag);
+			datum_index yelo_globals_index = blam::tag_iterator_next(iter);
+
+			InitializeForNewYeloDefinitions(yelo_index, yelo_globals_index);
 		}
 		static bool VerifyYeloScriptDefinitions()
 		{
@@ -136,6 +143,10 @@ namespace Yelo
 			}
 #endif
 		}
+		void ProjectYellowDisposeFromOldMap()
+		{
+			InitializeForNewYeloDefinitions(datum_index::null, datum_index::null);
+		}
 
 		const project_yellow_globals_cv* GetYeloCvGlobals()
 		{
@@ -162,6 +173,19 @@ namespace Yelo
 		}
 
 #if PLATFORM_IS_EDITOR
+		TagGroups::project_yellow_globals* TryGetYeloGlobalsForModification()
+		{			
+			return g_py_globals != &null_yelo_globals
+				? g_py_globals
+				: nullptr;
+		}
+		TagGroups::project_yellow* TryGetYeloForModification()
+		{
+			return !g_project_yellow->IsNull()
+				? g_project_yellow
+				: nullptr;
+		}
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
 		/// 	Process a tag reference to a yelo scenario for the current operating mode (editing or cache building).
@@ -194,7 +218,9 @@ namespace Yelo
 				if (!yelo_isnt_new)
 					blam::tag_reference_set<project_yellow>(yelo_reference, project_yellow::k_default_name);
 
-				yelo->LoadYeloGlobals(for_build_cache);
+				datum_index yelo_globals_index = yelo->LoadYeloGlobals(for_build_cache);
+
+				InitializeForNewYeloDefinitions(yelo_index, yelo_globals_index);
 			}
 
 			return yelo_index;

@@ -15,6 +15,7 @@
 #include <blamlib/Halo1/scenario/scenario_structures.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <Yelolib/Halo1/open_sauce/project_yellow_scenario.hpp>
 
 namespace Yelo
 {
@@ -85,6 +86,7 @@ namespace Yelo
 
 
 		datum_index PLATFORM_API scenario_tags_load_impl(cstring scenario_name); // temp setup
+		// TODO: once this is in use, remove the scenario_yelo_load related code in CheApe
 		bool PLATFORM_API scenario_load_impl(cstring scenario_name)
 		{
 			tag_load_error_string_clear();
@@ -170,6 +172,9 @@ namespace Yelo
 			blam_global_game_globals = tag_get<TagGroups::s_game_globals>(game_globals_index);
 			ui_load_tags_for_scenario(scenario_index);
 #endif
+
+			Scenario::ProjectYellowInitializeForNewMap();
+
 			return scenario_index;
 		}
 
@@ -177,6 +182,9 @@ namespace Yelo
 		{
 			texture_cache_close();
 			sound_cache_close();
+
+			Scenario::ProjectYellowDisposeFromOldMap();
+
 #if PLATFORM_USES_CACHE_FILES
 			cache_file_tags_unload();
 #else
