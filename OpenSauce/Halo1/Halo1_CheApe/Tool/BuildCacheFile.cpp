@@ -14,6 +14,7 @@
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
@@ -65,49 +66,27 @@ namespace Yelo { namespace Tool {
 			printf_s("\tFound tag(s) which require OS-modified game-states to (fully) function\n");
 	}
 
+	static void BuildCacheFileInitializeForNewProjectYellow()
+	{
+		// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
+		if (Scenario::GetYelo()->build_info.Count > 0)
+		{
+			const TagGroups::s_project_yellow_scenario_build_info& build_info = Scenario::GetYelo()->build_info[0];
+
+			BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsBuildInfo(build_info);
+		}
+		else
+			BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsBuildInfo();
+
+		// default definitions won't specify a game_globals override
+		if (auto* yelo = Scenario::TryGetYeloForModification())
+			yelo->LoadGameGlobalsOverride();
+	}
 	void build_cache_file_begin_preprocess(cstring scenario_name)
 	{
-		static cstring k_stock_globals_tag_name = "globals\\globals";
+		BuildCacheFileInitializeForNewProjectYellow();
 
-		datum_index scenario_index = blam::tag_load<TagGroups::scenario>(build_cache_file_for_scenario_internals.scenario_path, 0);
-		if (!scenario_index.IsNull())
-		{
-			auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
-			const tag_reference& yelo_reference = scenario->GetYeloReferenceHack();
-
-			if (!yelo_reference.tag_index.IsNull())
-			{
-				auto* yelo = blam::tag_get<TagGroups::project_yellow>(yelo_reference.tag_index);
-
-				// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
-				if (yelo->build_info.Count > 0)
-				{
-					const TagGroups::s_project_yellow_scenario_build_info& build_info = yelo->build_info[0];
-
-					BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsBuildInfo(build_info);
-				}
-				else
-					BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsBuildInfo();
-
-				// if there is a globals tag override, rename it to "globals/globals" so 
-				// we avoid further hacks in the runtime engine code as it also explicitly 
-				// looks for "globals/globals"
-				if (yelo->game_globals.name_length > 0)
-				{
-					yelo->game_globals.tag_index =
-						blam::tag_load(yelo->game_globals.group_tag, yelo->game_globals.name, 0);
-
-					if (!yelo->game_globals.tag_index.IsNull())
-						blam::tag_rename(yelo->game_globals.tag_index, k_stock_globals_tag_name);
-
-					// re-set the reference just for good measure
-					blam::tag_reference_set(yelo->game_globals,
-						yelo->game_globals.group_tag, k_stock_globals_tag_name);
-				}
-			}
-
-			BuildCacheFileEx::TagPreprocess::preprocess_tags_for_build();
-		}
+		BuildCacheFileEx::TagPreprocess::preprocess_tags_for_build();
 	}
 
 	void PLATFORM_API build_cache_file_for_scenario_stock_override(char* arguments[])

@@ -24,11 +24,15 @@ namespace Yelo
 	{
 		void ProjectYellowInitialize();
 		void ProjectYellowDispose();
-		void ProjectYellowInitializeForNewMap();
+		void ProjectYellowInitializeForNewMap();// should be called in scenario_tags_load
+		void ProjectYellowDisposeFromOldMap();	// should be called in scenario_tags_unload
 
 		const TagGroups::project_yellow_globals_cv* GetYeloCvGlobals();
 		const TagGroups::project_yellow_globals* GetYeloGlobals();
 		const TagGroups::project_yellow* GetYelo();
+
+		TagGroups::project_yellow_globals* TryGetYeloGlobalsForModification();
+		TagGroups::project_yellow* TryGetYeloForModification();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Process a blam scenario for the current operating mode (editing or cache building). </summary>

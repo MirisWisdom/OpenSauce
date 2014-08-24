@@ -98,6 +98,8 @@ namespace Yelo
 
 		bool ScenarioLoadForCacheBuild(cstring scenario_name)
 		{
+			// NOTE: the Scenario::GetYelo(), etc APIs won't be valid until the call to scenario_load
+			
 			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, 
 				FLAG(Flags::_tag_load_from_file_system_bit));
 			// the engine code returns true even if the tags fail to load
@@ -124,7 +126,7 @@ namespace Yelo
 			FixGameGlobals(globals_index, scenario->type);
 			blam::tag_load_children(globals_index);
 
-			return true;
+			return blam::scenario_load(scenario_name);
 		}
 	};
 
