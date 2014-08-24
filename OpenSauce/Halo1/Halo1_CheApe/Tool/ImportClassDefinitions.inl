@@ -9,6 +9,10 @@
 			5, "<mod-name> <create-anew> <store-resources> <use-memory-upgrades> <scenario-name>", 
 		&build_cache_file_for_scenario_extended),
 
+	IMPORT_CLASS_DEFINITION("build-cache-file-new", 
+			4, "<create-anew> <store-resources> <use-memory-upgrades> <scenario-name>", 
+		&build_cache_file_for_scenario_new),
+
 	IMPORT_CLASS_DEFINITION("compile-scripts", 
 			1, "<scenario-name>", 
 		&scenario_compile_scripts),

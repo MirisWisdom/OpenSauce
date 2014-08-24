@@ -112,6 +112,53 @@ namespace Yelo { namespace Tool {
 
 		Scripting::InitializeScriptNodeUpgrades();
 	}
+
+	void PLATFORM_API build_cache_file_for_scenario_new(char* arguments[])
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// Initialize arguments
+		struct s_arguments {
+			cstring copy_data_files_first_str;
+			cstring store_resources_str;
+			cstring use_memory_upgrades_str;
+			char* scenario_name;
+		}* args = CAST_PTR(s_arguments*, arguments);
+
+		bool copy_data_files_first, store_resources, use_memory_upgrades;
+		copy_data_files_first = Settings::ParseBoolean(args->copy_data_files_first_str);
+		store_resources = Settings::ParseBoolean(args->store_resources_str);
+		use_memory_upgrades = Settings::ParseBoolean(args->use_memory_upgrades_str);
+		//////////////////////////////////////////////////////////////////////////
+		
+		if (!use_memory_upgrades)
+		{
+			bool abort_build = false;
+
+			if (abort_build = store_resources)
+				printf_s("CheApe: store-resources was set, but use-memory-upgrades wasn't! Aborting build\n");
+
+			if (!abort_build && copy_data_files_first)
+			{
+				printf_s("CheApe: ignoring meaningless create-anew argument when no memory upgrades are active\n");
+				copy_data_files_first = false;
+			}
+
+			if (abort_build)
+				return;
+		}
+
+		if (copy_data_files_first == true && store_resources == false)
+			printf_s("CheApe: creating mod-set files, but not storing anything in them (is this intentional?)\n");
+
+		long_flags begin_flags = 0;
+		// TODO: we're just gonna assume that use-memory-upgrades is our .yelo switch, right?
+		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_building_yelo_bit, use_memory_upgrades);
+		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_mod_sets_create_anew_bit, copy_data_files_first);
+		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_mod_sets_store_scenario_resources_bit, store_resources);
+		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_use_memory_upgrades_bit, use_memory_upgrades);
+
+		blam::build_cache_file_for_scenario(args->scenario_name, CAST(byte_flags, begin_flags));
+	}
 }; };
 
 #endif
