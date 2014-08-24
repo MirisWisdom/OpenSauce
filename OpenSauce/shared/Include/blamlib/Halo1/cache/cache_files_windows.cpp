@@ -185,6 +185,7 @@ namespace Yelo
 				return;
 
 			build_cache_file_globals.TemporaryFileClose();
+			build_cache_file_globals.canceled = true;
 		}
 
 		bool build_cache_file_end(Cache::s_cache_header& header)

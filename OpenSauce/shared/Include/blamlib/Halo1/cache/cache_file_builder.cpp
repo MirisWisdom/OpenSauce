@@ -25,6 +25,7 @@
 #include <YeloLib/Halo1/cache/cache_file_builder_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
+#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 #include <direct.h> // fucking _mkdir
 
@@ -692,7 +693,7 @@ default_case:
 				case Enums::_cache_file_type_multiplayer:	maximum_cache_file_length = 0x8000000; break;
 				case Enums::_cache_file_type_main_menu:		maximum_cache_file_length = 0x2300000; break;
 
-					YELO_ASSERT_CASE_UNREACHABLE();
+				YELO_ASSERT_CASE_UNREACHABLE();
 				}
 			}
 
@@ -781,8 +782,26 @@ default_case:
 
 			} while (false);
 
-			tag_groups_dump_memory();
 			YELO_FREE(scratch);
+
+			if (!BuildCacheFileGlobals()->canceled)
+			{
+				tag_groups_dump_memory();
+
+				if (TEST_FLAG(begin_flags, Flags::_build_cache_file_begin_dump_tag_group_allocation_stats_bit))
+				{
+					using namespace TagGroups;
+
+					c_tag_group_allocation_statistics::Initialize();
+					// assume all tags that are loaded were used in the cache file
+					for (datum_index tag_index : c_tag_iterator::all())
+					{
+						c_tag_group_allocation_statistics::BuildStatsForTag(tag_index);
+					}
+					c_tag_group_allocation_statistics::DumpToFile();
+					c_tag_group_allocation_statistics::Dispose();
+				}
+			}
 		}
 	};
 };

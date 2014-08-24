@@ -29,6 +29,7 @@ namespace Yelo
 			_build_cache_file_begin_mod_sets_create_anew_bit,
 			_build_cache_file_begin_mod_sets_store_scenario_resources_bit,
 			_build_cache_file_begin_use_memory_upgrades_bit,
+			_build_cache_file_begin_dump_tag_group_allocation_stats_bit,
 
 			k_number_of_build_cache_file_begin_flags
 		}; BOOST_STATIC_ASSERT(k_number_of_build_cache_file_begin_flags <= BIT_COUNT(byte));
@@ -43,8 +44,8 @@ namespace Yelo
 
 			bool building;
 			char scenario_name[Enums::k_max_tag_name_length+1];
-			byte_flags begin_flags;
-			PAD8;
+			byte_flags begin_flags; // NOTE: non-standard member
+			bool canceled; // NOTE: non-standard member
 			PAD8;
 			uint32 crc;
 			HANDLE file_handle;

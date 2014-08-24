@@ -27,6 +27,8 @@ namespace Yelo
 		/// <param name="arguments">	. </param>
 		void PLATFORM_API build_cache_file_for_scenario_stock_override(char* arguments[]);
 
+		void PLATFORM_API build_cache_file_for_scenario_new(char* arguments[]);
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>Code to execute before we commit the yelo header and the tool's code finishes building the cache.
 		/// </summary>
