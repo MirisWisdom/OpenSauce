@@ -156,6 +156,8 @@
 		_hs_function_sv_mapdownload_set_host,
 		_hs_function_sv_mapdownload_reload_map_part_definitions,
 
+		_hs_function_data_array_info,
+
 	// debug functions
 	#ifdef API_DEBUG
 		_hs_function_dump_view_state,
@@ -265,6 +267,11 @@
 
 	HS_FUNCTION_WITH_PARAMS(vehicle_remapper_enabled, bool, "returns the remapper state before the function call", 
 			"state_name", 1,
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(data_array_info, void, "", 
+			"<data-array-name>", 1,
 		HS_TYPE(string)
 	);
 
@@ -423,6 +430,8 @@
 		&GET_HS_FUNCTION(sv_mapdownload_set_part_definitions_path),
 		&GET_HS_FUNCTION(sv_mapdownload_set_host),
 		&GET_HS_FUNCTION(sv_mapdownload_reload_map_part_definitions),
+
+		&GET_HS_FUNCTION(data_array_info),
 
 	// debug functions
 	#ifdef API_DEBUG

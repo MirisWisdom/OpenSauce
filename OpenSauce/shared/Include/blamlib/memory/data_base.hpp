@@ -32,8 +32,8 @@ namespace Yelo
 		private:
 			datum_index::salt_t header; // salt for this datum
 		public:
-			inline datum_index::salt_t GetHeader() const	{ return header; }
-			inline bool IsNull() const						{ return header == 0; }
+			datum_index::salt_t GetHeader() const	{ return header; }
+			bool IsNull() const						{ return header == 0; }
 		}; BOOST_STATIC_ASSERT( sizeof(s_datum_base) == 2 );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,9 @@ namespace Yelo
 
 			datum_index::salt_t GetInitialSalt() const;
 			datum_index::salt_t GetNextSalt(datum_index::salt_t cursor) const;
+
+			int16 NumberOfInvalidDatums() const;
+			int16 NumberOfValidDatums() const;
 		}; BOOST_STATIC_ASSERT(sizeof(s_data_array) == 0x38);
 
 		struct s_data_iterator

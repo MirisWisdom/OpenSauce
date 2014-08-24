@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals_structures.hpp>
 #include <blamlib/Halo1/game/game_time_structures.hpp>
+#include <blamlib/Halo1/main/console.hpp> // for data_array_info only
 #include <blamlib/Halo1/main/main_structures.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
@@ -25,9 +26,11 @@
 #include "Common/GameSystems.hpp"
 #include "Settings/Settings.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Game/Effects.hpp" // for data_array_info only
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
 #include "Networking/GameSpyApi.hpp"
+#include "Objects/Objects.hpp" // for data_array_info only
 #include "Objects/Units.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
@@ -35,6 +38,8 @@ namespace Yelo
 {
 	namespace GameState
 	{
+		void DataArrayInfoDumpToConsole(cstring);
+
 #include "Game/GameState.EventLog.inl"
 #include "Game/GameState.Scripting.inl"
 
@@ -312,6 +317,32 @@ namespace Yelo
 			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_after_load);
 		}
 
+		static void DataArrayInfoDumpToConsole(cstring data_array_name)
+		{
+#if PLATFORM_IS_USER // no printing for dedis
+			std::string name(data_array_name);
+			const Memory::s_data_array* array = nullptr;
+
+				 if (!name.compare("part"))			array = &Effects::Particles().Header;
+			else if (!name.compare("partsys"))		array = &Effects::ParticleSystems().Header;
+			else if (!name.compare("partsysparts"))	array = &Effects::ParticleSystemParticles().Header;
+			else if (!name.compare("effe"))			array = &Effects::Effects().Header;
+			else if (!name.compare("effelocs"))		array = &Effects::EffectLocations().Header;
+			else if (!name.compare("cont"))			array = &Effects::Contrails().Header;
+			else if (!name.compare("contpoints"))	array = &Effects::ContrailPoints().Header;
+			else if (!name.compare("lightvol"))		array = &Objects::LightVolumes().Header;
+			else if (!name.compare("obje"))			array = &Objects::ObjectHeader().Header;
+			else return; // user gave an unrecognized name
+
+			int active_count = array->NumberOfValidDatums();
+			float active_percentage = CAST(float, active_count);
+			active_percentage /= array->max_datum;
+			active_percentage *= 100.f;
+			blam::console_response_printf(false, "%3.2f full; %d / %d",
+				active_percentage, active_count, array->max_datum);
+#endif
+		}
+
 		void InitializeScripting()
 		{
 			Scripting::InitializeScriptFunction(Enums::_hs_function_physics_get_gravity, 
@@ -320,6 +351,9 @@ namespace Yelo
 				scripting_physics_set_gravity_evaluate);
 			Scripting::InitializeScriptFunction(Enums::_hs_function_physics_constants_reset, 
 				scripting_physics_constants_reset_evaluate);
+
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_data_array_info,
+				scripting_data_array_info_evaluate);
 		}
 	};
 };
