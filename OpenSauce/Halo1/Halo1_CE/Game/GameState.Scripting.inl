@@ -5,6 +5,17 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+static void* scripting_data_array_info_evaluate(void** arguments)
+{
+	struct s_arguments {
+		cstring data_array_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	DataArrayInfoDumpToConsole(args->data_array_name);
+
+	return nullptr;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // physics constants
 

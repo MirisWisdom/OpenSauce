@@ -31,6 +31,24 @@ namespace Yelo
 				: k_datum_index_salt_msb;
 		}
 
+		int16 s_data_array::NumberOfInvalidDatums() const
+		{
+			assert(base_address);
+
+			auto* datum_address = CAST_PTR(const byte*, base_address);
+			int16 invalid_count = 0;
+
+			for (int x = 0, max_count = max_datum; x < max_count; x++, datum_address += datum_size)
+				if (CAST_PTR(const s_datum_base*, datum_address)->IsNull())
+					invalid_count++;
+
+			return invalid_count;
+		}
+		int16 s_data_array::NumberOfValidDatums() const
+		{
+			return max_datum - NumberOfInvalidDatums();
+		}
+
 		bool s_data_iterator::operator!=(const s_data_iterator& other) const
 		{
 			auto last_datum = this->data->last_datum;
