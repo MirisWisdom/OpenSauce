@@ -10,7 +10,7 @@
 	<Rasterizer>
 		<UseNvidiaCamo>false</UseNvidiaCamo>
 		<Upgrades>
-			<DynamicTriangles>true</DynamicTriangles>
+			<MaximumRenderedTriangles>true</MaximumRenderedTriangles>
 			<MaximumModelNodes>true</MaximumModelNodes>
 		</Upgrades>
 		<ShaderExtensions>

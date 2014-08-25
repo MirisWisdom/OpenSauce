@@ -137,12 +137,12 @@ namespace Yelo
 				: public Configuration::c_configuration_container
 			{
 			public:
-				Configuration::c_configuration_value<bool> m_dynamic_triangles;
+				Configuration::c_configuration_value<bool> m_maximum_rendered_triangles;
 				Configuration::c_configuration_value<bool> m_model_node_stretching_fix;
 	
 				c_upgrades_container()
 					: Configuration::c_configuration_container("Upgrades")
-					, m_dynamic_triangles("DynamicTriangles", true)
+					, m_maximum_rendered_triangles("MaximumRenderedTriangles", true)
 					, m_model_node_stretching_fix("MaximumModelNodes", true)
 				{ }
 
@@ -151,7 +151,7 @@ namespace Yelo
 				{
 					return std::vector<Configuration::i_configuration_value* const>
 					{
-						&m_dynamic_triangles,
+						&m_maximum_rendered_triangles,
 						&m_model_node_stretching_fix,
 					};
 				}
@@ -193,7 +193,7 @@ namespace Yelo
 				}
 #endif
 				
-				if(settings_instance.m_upgrades.m_dynamic_triangles)
+				if(settings_instance.m_upgrades.m_maximum_rendered_triangles)
 				{
 					g_render_upgrades.InitializeRenderedTrianglesUpgrade();
 				}
