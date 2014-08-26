@@ -64,7 +64,11 @@ namespace Yelo
 			c_version_display_manager::g_instance.Initialize3D(pDevice, pParameters);
 
 			wchar_t current_string[32];
-			swprintf_s(current_string, L"v%i.%i.%i", m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
+			swprintf_s(current_string, L"v%i.%i.%i (%S)",
+				m_current_version.m_major,
+				m_current_version.m_minor,
+				m_current_version.m_build,
+				m_current_version.m_build_date);
 			c_version_display_manager::g_instance.SetCurrentVersionString(current_string);
 
 			c_version_display_manager::g_instance.SetAvailableVersionString(L"");
@@ -157,8 +161,22 @@ namespace Yelo
 
 			if(!m_states.is_new_version_available) return;
 
-			wchar_t available_string[32];
-			swprintf_s(available_string, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
+			wchar_t available_string[36];
+			if(is_null_or_empty(m_available_version.m_build_date))
+			{
+				swprintf_s(available_string, L"v%i.%i.%i available!",
+					m_available_version.m_major,
+					m_available_version.m_minor,
+					m_available_version.m_build);
+			}
+			else
+			{
+				swprintf_s(available_string, L"v%i.%i.%i (%S) available!",
+					m_available_version.m_major,
+					m_available_version.m_minor,
+					m_available_version.m_build,
+					m_available_version.m_build_date);
+			}
 			c_version_display_manager::g_instance.SetAvailableVersionString(available_string);
 
 			c_version_display_manager::g_instance.StartUpdateDisplay(20);
@@ -197,7 +215,7 @@ namespace Yelo
 			// set the text blocks initial values
 			m_textblocks.current_version->SetFade(false);
 			m_textblocks.current_version->SetFont("Lucida Sans Unicode", 14, FW_NORMAL, false, 6);
-			m_textblocks.current_version->SetDimensions(96, 32);
+			m_textblocks.current_version->SetDimensions(160, 32);
 			m_textblocks.current_version->SetTextAlign(DT_LEFT);
 			m_textblocks.current_version->SetBackColor(0);
 			m_textblocks.current_version->SetTextColor(D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.75f));
@@ -206,7 +224,7 @@ namespace Yelo
 
 			m_textblocks.available_version->SetFade(false);
 			m_textblocks.available_version->SetFont("Lucida Sans Unicode", 14, FW_NORMAL, false, 6);
-			m_textblocks.available_version->SetDimensions(96, 32);
+			m_textblocks.available_version->SetDimensions(160, 32);
 			m_textblocks.available_version->SetTextAlign(DT_LEFT);
 			m_textblocks.available_version->SetBackColor(0);
 			m_textblocks.available_version->SetTextColor(D3DXCOLOR(0.7f, 0.7f, 0.7f, 0.75f));

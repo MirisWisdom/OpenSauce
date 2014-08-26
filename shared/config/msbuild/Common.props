@@ -8,6 +8,8 @@
 
 	<!-- Ensure user defined paths have a trailing slash, so they can be concatenated -->
 	<OSRootDir		Condition=" !HasTrailingSlash('$(OSRootDir)') ">$(OSRootDir)\</OSRootDir>
+	
+	<OSBuildDate>$([System.DateTime]::Now.ToString("yyyy.MM.dd"))</OSBuildDate>
   </PropertyGroup>
 
   <Import           Project="$(OSRootDir)user\config\msbuild\OpenSauceUserConfig.props" 

@@ -87,10 +87,27 @@ namespace Yelo
 				// need to see how the console looks though to make sure we dont
 				// mess up anything, could make it colourful too
 				blam::console_printf(false, "New version of OpenSauce available!");
-				blam::console_printf(false, "Current version:\t\t%i.%i.%i",
-					m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
-				blam::console_printf(false, "Available version:\t\t%i.%i.%i",
-					m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
+				blam::console_printf(false, "Current version:\t\t%i.%i.%i (%s)",
+					m_current_version.m_major,
+					m_current_version.m_minor,
+					m_current_version.m_build,
+					m_current_version.m_build_date);
+
+				if(is_null_or_empty(m_available_version.m_build_date))
+				{
+					blam::console_printf(false, "Available version:\t\t%i.%i.%i",
+						m_available_version.m_major,
+						m_available_version.m_minor,
+						m_available_version.m_build);
+				}
+				else
+				{
+					blam::console_printf(false, "Available version:\t\t%i.%i.%i (%s)",
+						m_available_version.m_major,
+						m_available_version.m_minor,
+						m_available_version.m_build,
+						m_available_version.m_build_date);
+				}
 			}
 			else
 			{

@@ -10,7 +10,7 @@
 	<?ifdef Halo1_CE?>
 	<?define ProductName='OpenSauce for Halo CE'?>
 	<?define GameTarget='Halo CE'?>
-	<?define ConfigVersion='3.1.1'?>
+	<?define ConfigVersion='4.0.0'?>
 	<?endif?>
 
 	<!-- Define whether to pack debug or release binaries -->
@@ -307,8 +307,8 @@
 		</InstallExecuteSequence>
 
 		<Feature Id='OpenSauce_Complete_FEAT'
-			Title='OS V$(var.ConfigVersion)'
-			Description='Installs OpenSauce. If OpenSauce IDE is the only option you need to reinstall Halo CE v1.09 and/or the HEK.'
+			Title='OS v$(var.ConfigVersion)'
+			Description='Installs OpenSauce v$(var.ConfigVersion)'
 			Display='expand'
 			Level='1'
 			AllowAdvertise='no'

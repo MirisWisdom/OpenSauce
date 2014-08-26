@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>GSI_NO_THREADS;HALO1_CE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GSI_NO_THREADS;HALO1_CE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;OPENSAUCE_BUILD_DATE=$(OSBuildDate);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;dbghelp.lib;Halo1_YeloLib.lib;Halo1_BlamLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -72,7 +72,7 @@
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Client' ">
     <TargetName>dinput8</TargetName>
-    <OSDebugExecutableName>haloce.exe</OSDebugExecutableName>
+    <OSDebugExecutableName>OS_haloce.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Dedi' ">
     <TargetName>OpenSauceDedi</TargetName>
