@@ -62,34 +62,6 @@ namespace Yelo
 					};
 				}
 			};
-
-			class c_version_check_version
-				: public Configuration::c_configuration_container
-			{
-			public:
-				Configuration::c_configuration_value<int32> m_major;
-				Configuration::c_configuration_value<int32> m_minor;
-				Configuration::c_configuration_value<int32> m_build;
-
-				c_version_check_version()
-					: Configuration::c_configuration_container("Version")
-					, m_major("Major", K_OPENSAUCE_VERSION_BUILD_MAJ)
-					, m_minor("Minor", K_OPENSAUCE_VERSION_BUILD_MIN)
-					, m_build("Build", K_OPENSAUCE_VERSION_BUILD)
-				{ }
-				
-			protected:
-				const std::vector<i_configuration_value* const> GetMembers() final override
-				{
-					return std::vector<i_configuration_value* const>
-					{
-						&m_major,
-						&m_minor,
-						&m_build
-					};
-				}
-			};
-
 			class c_version_check_server_list
 				: public Configuration::c_configuration_container
 			{
@@ -114,13 +86,11 @@ namespace Yelo
 				}
 			};
 
-			c_version_check_version m_version;
 			c_version_check_date m_last_checked;
 			c_version_check_server_list m_server_list;
 
 			c_settings_container()
 				: Configuration::c_configuration_container("Networking.VersionCheck")
-				, m_version()
 				, m_last_checked()
 				, m_server_list()
 			{ }
@@ -130,7 +100,6 @@ namespace Yelo
 			{
 				return std::vector<i_configuration_value* const>
 				{
-					&m_version,
 					&m_last_checked,
 					&m_server_list
 				};
@@ -258,7 +227,9 @@ namespace Yelo
 		void		c_version_check_manager_base::Initialize()
 		{
 			m_current_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
+			m_current_version.SetBuildDate(K_OPENSAUCE_BUILD_DATE_STR);
 			m_available_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
+			m_available_version.SetBuildDate("");
 
 			// when no requests are made and a new map is loaded GS asserts as 0 is a valid connection id
 			// -1 is not so we check against this later to avoid trying to close a non existent request

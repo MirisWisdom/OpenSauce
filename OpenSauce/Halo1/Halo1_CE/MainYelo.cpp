@@ -53,28 +53,6 @@ namespace Yelo
 			return _main_globals.module_handle;
 		}
 
-		static bool IsVersionInfoValid()
-		{
-			DOC_TODO_DEBUG("Update these if you change the platform version OS targets")
-			// TODO: the file offset is the same in 1.10 as it is in 1.09...do we need to update these?
-			ENGINE_PTR(VS_FIXEDFILEINFO, version_info, 0x81D598, 0x6E9598);
-
-			const __int64 version = 
-#if PLATFORM_VERSION == 0x1080
-			0x0008026800010000 // 01.00.08.0616
-#elif PLATFORM_VERSION == 0x1090
-			0x0009026C00010000 // 01.00.09.0620
-#elif PLATFORM_VERSION == 0x10A0
-			0x000A026D00010000 // 01.00.10.0621
-#endif
-			;
-
-			if (!memcmp(CAST_PTR(__int64*, &GET_PTR2(version_info)->dwFileVersionMS), 
-				&version, sizeof(version))) return true;
-
-			return false;
-		}
-
 		static Enums::version_result_code GetVersionResultCode()
 		{
 			Enums::version_result_code result_code = Enums::_version_result_code_invalid;
@@ -91,58 +69,10 @@ namespace Yelo
 				 strstr(name,"tool") != nullptr )
 				return Enums::_version_result_code_dx9_app;
 
-			char warning[MAX_PATH*3]; // we print a buffer with MAX_PATH twice, so just in case...
+			// Enable OS if the exe name is OS_haloce/ded
+			_main_globals.enabled = (strcmp(name, PLATFORM_VALUE("os_haloce.exe","os_haloceded.exe")) == 0);
 
-			// if the application name doesn't include the game name in it, assume the worst
-			if ( strstr(name,PLATFORM_VALUE("haloce","haloceded")) == nullptr )
-			{
-#if PLATFORM_IS_USER && defined(DX_WRAPPER)
-				sprintf_s(warning,
-					"An application (%s) tried to run Open Sauce which is a plugin that is only compatible with Halo (CE) "
-					"v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". \n"
-					"The plugin's interface to DirectX 9 will continue to run, but note that this is a kludge."
-					"\n\n"
-					"If you don't wish to see this message anymore, then remove this file to uninstall the plugin: \n"
-					"%s\\dinput8.dll",
-					name, dir);
-#elif PLATFORM_IS_DEDI
-				sprintf_s(warning,
-					"An application (%s) tried to run Open Sauce which is a plugin that is only compatible with Halo Dedi (CE) "
-					"v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". \n"
-					"Plugin will not be loaded, this is just warning.",
-					name);
-#endif
-			}
-			else if(IsVersionInfoValid())
-			{
-				_main_globals.enabled = true;
-				result_code = Enums::_version_result_code_valid;
-			}
-			else
-			{
-#if PLATFORM_IS_USER && defined(DX_WRAPPER)
-				sprintf_s(warning,
-					"Open Sauce is a plugin that is only compatible with Halo (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
-					"\n\n"
-					"If you wish to use OS, you must update or downgrade your haloce.exe file"
-					"\n\n"
-					"If you don't wish to use OS, then remove this file to disable it: \n"
-					"%s\\dinput8.dll",
-					dir);
-#elif PLATFORM_IS_DEDI
-				sprintf_s(warning,
-					"Open Sauce is a plugin that is only compatible with Halo Dedi (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
-					"\n\n"
-					"If you wish to use OS, you must update or downgrade your haloded.exe file");
-#else
-	#error "What build platform is this? What do you expect me to prompt the user with?"
-#endif
-			}
-
-			if(result_code == Enums::_version_result_code_invalid)
-				MessageBox(nullptr, warning, "Notice", MB_OK | MB_ICONWARNING);
-
-			return result_code;
+			return Enums::_version_result_code_valid;
 		}
 	};
 };

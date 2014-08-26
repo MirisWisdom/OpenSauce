@@ -42,6 +42,7 @@ namespace Yelo
 			int	m_major;
 			int	m_minor;
 			int	m_build;
+			char m_build_date[32];
 
 			void SetBuild(const int major, const int minor, const int build)
 			{
@@ -55,6 +56,23 @@ namespace Yelo
 				m_major = other.m_major;
 				m_minor = other.m_minor;
 				m_build = other.m_build;
+			}
+
+			void SetBuildDate(const char* build_date)
+			{
+				if(strlen(build_date) >= NUMBEROF(m_build_date))
+				{
+					m_build_date[0] = 0;
+				}
+				else
+				{
+					strcpy_s(m_build_date, build_date);
+				}
+			}
+
+			void SetBuildDate(const s_version& other)
+			{
+				SetBuildDate(other.m_build_date);
 			}
 
 			int CompareTo(const s_version& other) const
@@ -128,6 +146,7 @@ namespace Yelo
 				m_version_downloader.m_version.m_major = 0;
 				m_version_downloader.m_version.m_minor = 0;
 				m_version_downloader.m_version.m_build = 0;
+				m_version_downloader.m_version.m_build_date[0] = 0;
 
 				m_version_downloader.m_servers.version_url_list = nullptr;
 				m_version_downloader.m_servers.list_version = 0;
@@ -140,6 +159,7 @@ namespace Yelo
 				m_version_downloader.m_version.m_major = 0;
 				m_version_downloader.m_version.m_minor = 0;
 				m_version_downloader.m_version.m_build = 0;
+				m_version_downloader.m_version.m_build_date[0] = 0;
 
 				if(m_version_downloader.m_servers.version_url_list)
 					DeleteLinkedList(m_version_downloader.m_servers.version_url_list);
@@ -169,6 +189,12 @@ namespace Yelo
 					if(!version->Attribute("major", &m_version_downloader.m_version.m_major)) break;
 					if(!version->Attribute("minor", &m_version_downloader.m_version.m_minor)) break;
 					if(!version->Attribute("build", &m_version_downloader.m_version.m_build)) break;
+
+					const char* build_date = version->GetText();
+					if(!is_null_or_empty(build_date))
+					{
+						m_version_downloader.m_version.SetBuildDate(build_date);
+					}
 
 					// update the server list
 					server_list = root->FirstChildElement("server_list");
