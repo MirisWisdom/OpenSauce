@@ -16,7 +16,7 @@ namespace Yelo
 	{
 		c_settings_container::c_settings_container()
 			: Configuration::c_configuration_container("Rasterizer.PostProcessing.MotionBlur")
-			, m_enabled("Enabled", true)
+			, m_enabled("Enabled", false)
 			, m_blur_amount("BlurAmount", 1.0f)
 		{ }
 

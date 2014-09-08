@@ -24,18 +24,21 @@
 						<SpecularLighting>true</SpecularLighting>
 					</Object>
 				</ShaderExtensions>
+                <Environment>
+                    <DiffuseDirectionalLightmaps>true</DiffuseDirectionalLightmaps>
+                </Environment>
 			</Rasterizer>
 		</ShaderExtensions>
 		<PostProcessing>
 			<MotionBlur>
-				<Enabled>true</Enabled>
+				<Enabled>false</Enabled>
 				<BlurAmount>1</BlurAmount>
 			</MotionBlur>
 			<Bloom>
 				<Enabled>true</Enabled>
 			</Bloom>
 			<AntiAliasing>
-				<Enabled>true</Enabled>
+				<Enabled>false</Enabled>
 			</AntiAliasing>
 			<ExternalEffects>
 				<Enabled>true</Enabled>

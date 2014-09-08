@@ -16,7 +16,7 @@ namespace Yelo
 	{
 		c_settings_container::c_settings_container()
 			: Configuration::c_configuration_container("Rasterizer.PostProcessing.AntiAliasing")
-			, m_enabled("Enabled", true)
+			, m_enabled("Enabled", false)
 		{ }
 
 		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
