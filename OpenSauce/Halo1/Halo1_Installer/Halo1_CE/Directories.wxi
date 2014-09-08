@@ -66,8 +66,8 @@
 
 		<!-- Component for removing the modified exes -->
 		<Component Id='Halo1_CE_ExeRemove_COMP' Guid='0094261B-9163-49e2-8276-1F7BC26D0DD2'>
-			<RemoveFile Id='Halo1_CE_OS_haloce_REM' Name='OS_haloce.exe' On='uninstall' />
-			<RemoveFile Id='Halo1_CE_OS_haloceded_REM' Name='OS_haloceded.exe' On='uninstall' />
+			<RemoveFile Id='Halo1_CE_OS_haloce_REM' Name='OS_haloce.exe' On='both' />
+			<RemoveFile Id='Halo1_CE_OS_haloceded_REM' Name='OS_haloceded.exe' On='both' />
 		</Component>
 	</Directory>
 

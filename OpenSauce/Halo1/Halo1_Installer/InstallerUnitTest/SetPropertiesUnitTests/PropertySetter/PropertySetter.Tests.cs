@@ -14,6 +14,8 @@ namespace InstallerUnitTest.SetPropertiesUnitTests.PropertySetter
 	[TestClass]
 	[DeploymentItem(@"SetPropertiesUnitTests\Resources\PropertySetValidPath.xml", "Resources")]
 	[DeploymentItem(@"SetPropertiesUnitTests\Resources\PropertySetValidString.xml", "Resources")]
+	[DeploymentItem(@"SetPropertiesUnitTests\Resources\PropertySetFileExists.xml", "Resources")]
+	[DeploymentItem(@"SetPropertiesUnitTests\Resources\PropertySetDirectoryExists.xml", "Resources")]
 	public class PropertySetterTests
 	{
 		private enum ExpectedResult
@@ -134,6 +136,78 @@ namespace InstallerUnitTest.SetPropertiesUnitTests.PropertySetter
 			);
 
 			Assert.IsTrue(result, "Failed to set a valid string property");
+		}
+
+		[TestMethod]
+		public void SetProperties_WithAFileExistsPropertyAndAnExistingFile_SetsThePropertyToTrue()
+		{
+			var result = TestSetProperties(@"Resources\PropertySetFileExists.xml",
+				new Dictionary<string, string>()
+				{
+					{ "PROPERTYSOURCE", @"%windir%\system32\notepad.exe" }
+				},
+				new Dictionary<string, string>()
+				{
+					{ "EXISTS_PROPERTY", "True" }
+				},
+				ExpectedResult.Success
+			);
+
+			Assert.IsTrue(result, "Failed to set a file exists property");
+		}
+
+		[TestMethod]
+		public void SetProperties_WithAFileExistsPropertyAndAMissingFile_SetsThePropertyToFalse()
+		{
+			var result = TestSetProperties(@"Resources\PropertySetFileExists.xml",
+				new Dictionary<string, string>()
+				{
+					{ "PROPERTYSOURCE", @"%windir%\system32\nopepad.exe" }
+				},
+				new Dictionary<string, string>()
+				{
+					{ "EXISTS_PROPERTY", "False" }
+				},
+				ExpectedResult.Success
+			);
+
+			Assert.IsTrue(result, "Failed to set a file exists property");
+		}
+
+		[TestMethod]
+		public void SetProperties_WithADirectoryExistsPropertyAndAnExistingDirectory_SetsThePropertyToTrue()
+		{
+			var result = TestSetProperties(@"Resources\PropertySetDirectoryExists.xml",
+				new Dictionary<string, string>()
+				{
+					{ "PROPERTYSOURCE", @"%windir%\system32" }
+				},
+				new Dictionary<string, string>()
+				{
+					{ "EXISTS_PROPERTY", "True" }
+				},
+				ExpectedResult.Success
+			);
+
+			Assert.IsTrue(result, "Failed to set a directory exists property");
+		}
+
+		[TestMethod]
+		public void SetProperties_WithADirectoryExistsPropertyAndAMissingDirectory_SetsThePropertyToFalse()
+		{
+			var result = TestSetProperties(@"Resources\PropertySetDirectoryExists.xml",
+				new Dictionary<string, string>()
+				{
+					{ "PROPERTYSOURCE", @"%windir%\sistem32" }
+				},
+				new Dictionary<string, string>()
+				{
+					{ "EXISTS_PROPERTY", "False" }
+				},
+				ExpectedResult.Success
+			);
+
+			Assert.IsTrue(result, "Failed to set a directory exists property");
 		}
 	}
 }

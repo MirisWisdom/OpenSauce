@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PropertySet Id="PROPERTYSET_FILEEXISTS">
+	<Property Name="EXISTS_PROPERTY" Type="fileexists" Value="[PROPERTYSOURCE]"/>
+</PropertySet>

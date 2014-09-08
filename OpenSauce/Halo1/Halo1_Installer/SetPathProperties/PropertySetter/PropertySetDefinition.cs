@@ -16,7 +16,11 @@ namespace SetProperties
 		[XmlEnum("string")]
 		String,
 		[XmlEnum("path")]
-		Path
+		Path,
+		[XmlEnum("fileexists")]
+		FileExists,
+		[XmlEnum("directoryexists")]
+		DirectoryExists
 	}
 
 	[XmlRoot(ElementName = "PropertySet")]

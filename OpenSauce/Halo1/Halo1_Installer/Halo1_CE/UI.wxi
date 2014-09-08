@@ -7,7 +7,12 @@
 		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
 	</Publish>
 	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='3'>
-		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed) AND NOT (SETPROPERTIESRESULT = "PASS")]]>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed) AND NOT
+			(
+				(SETPROPERTIESRESULT = "PASS") AND
+				(HALO1_CE_HCE_INSTALLDIR_EXISTS_PROP ~= "True")
+			)
+		]]>
 	</Publish>
 	
 	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesDefHEK_CACT' Order='4'>
@@ -17,7 +22,15 @@
 		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
 	</Publish>
 	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='6'>
-		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT Installed) AND NOT (SETPROPERTIESRESULT = "PASS")]]>
+		<![CDATA[
+			((&Halo1_CE_HEK_FEAT = 3) AND NOT Installed) AND NOT
+			(
+				(SETPROPERTIESRESULT = "PASS") AND
+				(HALO1_CE_HEK_GUERILLAPATH_EXISTS_PROP ~= "True") AND
+				(HALO1_CE_HEK_TOOLPATH_EXISTS_PROP ~= "True") AND
+				(HALO1_CE_HEK_SAPIENPATH_EXISTS_PROP ~= "True")
+			)
+		]]>
 	</Publish>
 	
 	

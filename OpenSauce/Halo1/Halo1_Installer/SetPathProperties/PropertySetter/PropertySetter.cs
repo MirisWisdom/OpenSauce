@@ -142,6 +142,20 @@ namespace SetProperties.PropertySetter
 							onSetProperty(property.Name, pathResult);
 						}
 						break;
+					case PropertyType.FileExists:
+						{
+							var expandedPath = Environment.ExpandEnvironmentVariables(splitValues[0]);
+							var exists = File.Exists(expandedPath);
+							onSetProperty(property.Name, exists.ToString());
+						}
+						break;
+					case PropertyType.DirectoryExists:
+						{
+							var expandedPath = Environment.ExpandEnvironmentVariables(splitValues[0]);
+							var exists = Directory.Exists(expandedPath);
+							onSetProperty(property.Name, exists.ToString());
+						}
+						break;
 				}
 			}
 
