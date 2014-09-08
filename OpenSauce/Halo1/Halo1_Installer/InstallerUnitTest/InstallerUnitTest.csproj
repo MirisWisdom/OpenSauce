@@ -163,6 +163,12 @@
     <Content Include="InstallValidatorUnitTests\Resources\ValidateValidDirectory.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetDirectoryExists.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetFileExists.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SetPropertiesUnitTests\Resources\PropertySetValidPath.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
