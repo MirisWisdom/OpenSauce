@@ -186,7 +186,7 @@ BOOL GetHaloHandle()
 	DWORD process_count = bytes_written / sizeof(DWORD);
 
 	Console::ColorPrintF(k_color_default, "%i processes found\n", process_count);
-	Console::ColorPrint(k_color_default, "searching for haloce.exe...", true);
+	Console::ColorPrint(k_color_default, "searching for os_haloce.exe...", true);
 
 	bool found_halo = false;
 	// loop through all of the processes
@@ -222,8 +222,8 @@ BOOL GetHaloHandle()
 
 					_strlwr(process_name);
 
-					// determine whether the process is an instance of haloce
-					if(!strcmp(process_name, "haloce.exe"))
+					// determine whether the process is an instance of os_haloce
+					if(!strcmp(process_name, "os_haloce.exe"))
 					{
 						g_cache_view_globals.m_halo_handle = process;
 						found_halo = true;
@@ -237,9 +237,9 @@ BOOL GetHaloHandle()
 	}
 
 	if(found_halo)
-		Console::ColorPrint(k_color_default, "haloce.exe process found!", true);
+		Console::ColorPrint(k_color_default, "os_haloce.exe process found!", true);
 	else
-		Console::ColorPrint(k_color_default, "unable to find a running instance of haloce.exe", true);
+		Console::ColorPrint(k_color_default, "unable to find a running instance of os_haloce.exe", true);
 
 	free(processes);
 
