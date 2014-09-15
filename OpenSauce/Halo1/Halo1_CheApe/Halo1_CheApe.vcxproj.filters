@@ -444,6 +444,9 @@
     <ClInclude Include="TagGroups\TagFieldReplacements\Scenario.hpp">
       <Filter>TagGroups\TagFieldReplacements</Filter>
     </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Object.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">

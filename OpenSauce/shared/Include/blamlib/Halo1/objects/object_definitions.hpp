@@ -91,6 +91,23 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum object_definition_flags : word_flags
+		{
+			_object_definition_does_not_cast_shadow_bit,
+			_object_definition_transparent_self_occlusion_bit,
+			_object_definition_brighter_than_it_should_bit,
+			_object_definition_not_pathfinding_obstacle_bit,
+
+			k_number_of_object_definition_flags,
+
+			_object_definition_cast_shadow_by_default_bit = k_number_of_object_definition_flags,
+
+			k_number_of_object_definition_flags_yelo,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct object_attachment_definition
@@ -163,6 +180,7 @@ namespace Yelo
 				TAG_FLAG16(transparent_self_occlusion);
 				TAG_FLAG16(brighter_than_it_should);
 				TAG_FLAG16(not_pathfinding_obstacle);
+				TAG_FLAG16(cast_shadow_by_default);
 			}flags; BOOST_STATIC_ASSERT( sizeof(_object_definition_flags) == sizeof(word_flags) );
 
 			real bounding_radius;
