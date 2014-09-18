@@ -164,6 +164,7 @@
     <ClInclude Include="TagGroups\TagFieldReplacements\Bitmap.hpp" />
     <ClInclude Include="TagGroups\TagFieldReplacements\DamageEffect.hpp" />
     <ClInclude Include="TagGroups\TagFieldReplacements\GBXModel.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Object.hpp" />
     <ClInclude Include="TagGroups\TagFieldReplacements\Scenario.hpp" />
     <ClInclude Include="TagGroups\TagFieldReplacements\Shader.hpp" />
     <ClInclude Include="TagGroups\TagFieldReplacements\Shared.hpp" />

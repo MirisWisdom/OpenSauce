@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/interface/hud_messaging_definitions.hpp>
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"
+#include "TagGroups/TagFieldReplacements/Object.hpp"
 #include "TagGroups/TagFieldReplacements/Unit.hpp"
 #include "TagGroups/TagFieldReplacements/Bitmap.hpp"
 #include "TagGroups/TagFieldReplacements/Sound.hpp"
@@ -46,7 +47,8 @@ namespace Yelo
 		void InitializeFieldSetReplacements()
 		{
 			// NOTE: call tag_field_set_replacement_builder's here
-
+			
+			TagFieldReplacements::Object::Initialize();
 			TagFieldReplacements::Unit::Initialize();
 			TagFieldReplacements::Bitmap::Initialize();
 			TagFieldReplacements::Sound::Initialize();
