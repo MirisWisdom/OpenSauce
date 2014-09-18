@@ -25,13 +25,13 @@ namespace render_objects_mods
 			case Enums::_object_type_light_fixture:
 			case Enums::_object_type_placeholder:
 			case Enums::_object_type_sound_scenery:
-				cast_shadow = object_definition->object.flags.cast_shadow_by_default_bit;
+				cast_shadow = TEST_FLAG(object_definition->object.flags, Flags::_object_definition_cast_shadow_by_default_yelo_bit);
 				break;
 			default:
 				cast_shadow = true;
 		}
 
-		return (cast_shadow && !object_definition->object.flags.does_not_cast_shadow_bit);
+		return (cast_shadow && !TEST_FLAG(object_definition->object.flags, Flags::_object_definition_does_not_cast_shadow_bit));
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
