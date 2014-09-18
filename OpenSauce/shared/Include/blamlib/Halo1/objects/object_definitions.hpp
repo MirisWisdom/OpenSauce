@@ -102,7 +102,7 @@ namespace Yelo
 
 			k_number_of_object_definition_flags,
 
-			_object_definition_cast_shadow_by_default_bit = k_number_of_object_definition_flags,
+			_object_definition_cast_shadow_by_default_yelo_bit = k_number_of_object_definition_flags,
 
 			k_number_of_object_definition_flags_yelo,
 		};
@@ -175,13 +175,7 @@ namespace Yelo
 		struct _object_definition
 		{
 			TAG_ENUM(runtime_object_type, Enums::object_type);
-			struct _object_definition_flags {
-				TAG_FLAG16(does_not_cast_shadow);
-				TAG_FLAG16(transparent_self_occlusion);
-				TAG_FLAG16(brighter_than_it_should);
-				TAG_FLAG16(not_pathfinding_obstacle);
-				TAG_FLAG16(cast_shadow_by_default);
-			}flags; BOOST_STATIC_ASSERT( sizeof(_object_definition_flags) == sizeof(word_flags) );
+			word_flags flags;
 
 			real bounding_radius;
 			real_point3d bounding_offset, origin_offset;

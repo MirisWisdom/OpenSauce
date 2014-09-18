@@ -21,7 +21,7 @@ namespace Yelo
 			for (int x = 0; x < Flags::k_number_of_object_definition_flags; x++)
 				object_definition_flags_yelo_strings[x] = flags_list->strings[x];
 
-			object_definition_flags_yelo_strings[Flags::_object_definition_cast_shadow_by_default_bit] =
+			object_definition_flags_yelo_strings[Flags::_object_definition_cast_shadow_by_default_yelo_bit] =
 				"cast shadow by default";
 
 			flags_list->strings = object_definition_flags_yelo_strings;
