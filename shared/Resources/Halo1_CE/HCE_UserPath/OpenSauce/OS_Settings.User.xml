@@ -23,10 +23,10 @@
 						<SpecularMaps>true</SpecularMaps>
 						<SpecularLighting>true</SpecularLighting>
 					</Object>
+                    <Environment>
+                        <DiffuseDirectionalLightmaps>true</DiffuseDirectionalLightmaps>
+                    </Environment>
 				</ShaderExtensions>
-                <Environment>
-                    <DiffuseDirectionalLightmaps>true</DiffuseDirectionalLightmaps>
-                </Environment>
 			</Rasterizer>
 		</ShaderExtensions>
 		<PostProcessing>
