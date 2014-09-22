@@ -11,7 +11,7 @@ struct VS_OUTPUT {
 	float4 Pos : POSITION;
 	float4 D0 : COLOR0;
 	float4 T0 : TEXCOORD0;
-	float3 T1 : TEXCOORD1;
+	float4 T1 : TEXCOORD1;
 };
 
 // PASS: matches asm
@@ -27,9 +27,7 @@ VS_OUTPUT main(float4 v9 : COLOR0, float4 v0 : POSITION0, float4 v4 : TEXCOORD0)
 	// (4) output homogeneous point ----------------------------------------------------------
 	o.Pos = mul(R_POSITION, c_world_view_projection);
 	
-	o.T1.z = o.Pos.z;
-	o.T1.xy = ((o.Pos.xy / o.Pos.w) * 0.5f) - 0.5f;
-	o.T1.y *= -1.0f;
+	o.T1 = o.Pos;
 	
 	// (3) output texcoords ------------------------------------------------------------------
 	o.T0.xy = V_TEXCOORD;	

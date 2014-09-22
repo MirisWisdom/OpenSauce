@@ -501,6 +501,7 @@
     <None Include="Objects\Units.Animations.inl" />
     <None Include="Objects\Units.Boarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
+    <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl" />
     <None Include="TagGroups\CacheFiles.CRC.inl" />
     <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />

@@ -26,6 +26,9 @@
                     <Environment>
                         <DiffuseDirectionalLightmaps>true</DiffuseDirectionalLightmaps>
                     </Environment>
+                    <Effect>
+                        <DepthFade>true</DepthFade>
+                    </Effect>
 				</ShaderExtensions>
 			</Rasterizer>
 		</ShaderExtensions>

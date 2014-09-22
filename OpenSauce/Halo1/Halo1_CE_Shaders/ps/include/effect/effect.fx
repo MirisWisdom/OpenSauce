@@ -1,7 +1,7 @@
 #ifndef EFFECT_EFFECT_FX
 #define EFFECT_EFFECT_FX
 
-//#define INCLUDE_SOFT
+#define INCLUDE_SOFT
 
 sampler TexS0 : register(s[0]);
 sampler TexS1 : register(s[1]);
@@ -18,6 +18,10 @@ static const int effect_blend_multiply = 4;
 static const int effect_blend_multiply_add = 5;
 
 float4 c_soft_particle_vars	: register(c[8]);
+#define c_far_clip_distance c_soft_particle_vars.x
+#define c_near_clip_distance c_soft_particle_vars.y
+#define c_depth_fade_distance c_soft_particle_vars.z
+#define c_camera_fade_distance c_soft_particle_vars.w
 
 float4 PS_Effect(uniform const bool bMultiTexture,
 	uniform const int nTintType,
@@ -25,7 +29,7 @@ float4 PS_Effect(uniform const bool bMultiTexture,
 	uniform const bool bSoft,
 	float4 v0 : COLOR0,
 	float4 TextureCoords : TEXCOORD0,
-	float3 Position : TEXCOORD1) : COLOR0
+	float4 Position : TEXCOORD1) : COLOR0
 {
 	half4 r0 = 0;
 	
@@ -35,8 +39,15 @@ float4 PS_Effect(uniform const bool bMultiTexture,
 	float Softness = 1.0f;	
 	if(bSoft)
 	{
-		float ScreenDepth = tex2D(TexS4, Position.xy).r * c_soft_particle_vars.x;
-		Softness = saturate((ScreenDepth - Position.z) * c_soft_particle_vars.y);
+		float2 ScreenUV = ((Position.xy / Position.w) * 0.5) + 0.5;
+		ScreenUV.y *= -1.0f;
+		
+		float ScreenDepth = tex2D(TexS4, ScreenUV).r * c_far_clip_distance;
+		
+		float DepthFade = (c_depth_fade_distance > 0.0f 	? saturate((ScreenDepth - Position.z) / c_depth_fade_distance) : 1.0f);
+		float CameraFade = (c_camera_fade_distance > 0.0f 	? saturate((Position.z - c_near_clip_distance) / c_camera_fade_distance) : 1.0f);
+		
+		Softness = DepthFade * CameraFade;
 	}
 	
 	if(nTintType == effect_tint_nonlinear)
