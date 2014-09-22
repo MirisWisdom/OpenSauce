@@ -966,6 +966,18 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map_structures.hpp">
       <Filter>cache</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\contrail_definitions.hpp">
+      <Filter>effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\particle_definitions.hpp">
+      <Filter>effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\weather_particle_system_definitions.hpp">
+      <Filter>effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\particle_system_definitions.hpp">
+      <Filter>effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">

@@ -8,6 +8,10 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+#include <blamlib/Halo1/effects/contrail_definitions.hpp>
+#include <blamlib/Halo1/effects/particle_definitions.hpp>
+#include <blamlib/Halo1/effects/weather_particle_system_definitions.hpp>
+#include <blamlib/Halo1/effects/particle_system_definitions.hpp>
 
 #include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
 #include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"
@@ -41,6 +45,18 @@ namespace BuildCacheFileEx
 					break;
 				case TagGroups::s_shader_environment_definition::k_group_tag:
 					ShaderExtension::shader_environment_extension_process(tag_index);
+					break;
+				case TagGroups::s_contrail_definition::k_group_tag:
+					ShaderExtension::shader_effect_extension_process<TagGroups::s_contrail_definition>(tag_index);
+					break;
+				case TagGroups::s_particle_definition::k_group_tag:
+					ShaderExtension::shader_effect_extension_process<TagGroups::s_particle_definition>(tag_index);
+					break;
+				case TagGroups::s_weather_particle_system_definition::k_group_tag:
+					ShaderExtension::shader_effect_extension_process<TagGroups::s_weather_particle_system_definition>(tag_index);
+					break;
+				case TagGroups::s_particle_system_definition::k_group_tag:
+					ShaderExtension::shader_effect_extension_process<TagGroups::s_particle_system_definition>(tag_index);
 					break;
 				case TagGroups::scenario::k_group_tag:
 					Scenario::scenario_preprocess(tag_index);

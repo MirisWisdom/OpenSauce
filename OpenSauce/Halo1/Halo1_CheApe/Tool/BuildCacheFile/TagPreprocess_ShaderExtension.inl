@@ -7,6 +7,7 @@
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/effects/weather_particle_system_definitions.hpp>
 
 namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
 
@@ -95,6 +96,62 @@ namespace ShaderExtension
 		}
 
 		return true;
+	}
+
+	static bool shader_effect_extension_process(TagGroups::s_shader_effect& shader)
+	{
+		if(shader.effect.shader_extension.Count != 1)
+		{
+			return true;
+		}
+
+		auto& extension = shader.effect.shader_extension[0];
+		auto& base_shader = shader.shader;
+
+		// If using camera distance fade or depth fade set the depth fade flag
+		if((extension.depth_fade_distance > 0) || (extension.camera_fade_distance > 0))
+		{
+			base_shader.extension_usage |= Flags::_shader_extension_usage_depth_fade;
+		}
+
+		return true;
+	}
+	
+	template<typename T>
+	static bool shader_effect_extension_process(datum_index tag_index)
+	{
+		auto* container_tag = blam::tag_get<T>(tag_index);
+
+		return shader_effect_extension_process(container_tag->shader_effect);
+	}
+	
+	template<>
+	static bool shader_effect_extension_process<TagGroups::s_weather_particle_system_definition>(datum_index tag_index)
+	{
+		auto* container_tag = blam::tag_get<TagGroups::s_weather_particle_system_definition>(tag_index);
+
+		bool success = false;
+		for(auto& particle : container_tag->particle_types)
+		{
+			success &= shader_effect_extension_process(particle.shader_effect);
+		}
+		return success;
+	}
+	
+	template<>
+	static bool shader_effect_extension_process<TagGroups::s_particle_system_definition>(datum_index tag_index)
+	{
+		auto* container_tag = blam::tag_get<TagGroups::s_particle_system_definition>(tag_index);
+
+		bool success = false;
+		for(auto& particle_type : container_tag->particle_types)
+		{
+			for(auto& particle_state : particle_type.particle_states)
+			{
+				success &= shader_effect_extension_process(particle_state.shader_effect);
+			}
+		}
+		return success;
 	}
 };
 }; }; }; };

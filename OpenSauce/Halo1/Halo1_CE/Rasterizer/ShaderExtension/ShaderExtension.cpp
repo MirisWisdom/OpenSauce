@@ -14,6 +14,7 @@
 #include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
 #include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/render/render.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
@@ -79,6 +80,7 @@ namespace Yelo
 
 #include "Rasterizer/ShaderExtension/ShaderExtension_Model.inl"
 #include "Rasterizer/ShaderExtension/ShaderExtension_Environment.inl"
+#include "Rasterizer/ShaderExtension/ShaderExtension_Effect.inl"
 
 			API_FUNC_NAKED static void Hook_RenderObject_ForceInvertBackfaceNormals()
 			{
@@ -129,10 +131,10 @@ namespace Yelo
 			}
 
 #pragma region Settings
-			class c_shader_extension_container
+			class c_shader_extension_container final
 				: public c_configuration_container
 			{
-				class c_shader_model_settings
+				class c_shader_model_settings final 
 					: public c_configuration_container
 				{
 				public:
@@ -150,7 +152,7 @@ namespace Yelo
 					{ }
 		
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers() final override
+					const std::vector<i_configuration_value* const> GetMembers() override
 					{
 						return std::vector<i_configuration_value* const>
 						{
@@ -162,7 +164,7 @@ namespace Yelo
 					}
 				};
 
-				class c_shader_environment_settings
+				class c_shader_environment_settings final
 					: public c_configuration_container
 				{
 				public:
@@ -174,7 +176,7 @@ namespace Yelo
 					{ }
 		
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers() final override
+					const std::vector<i_configuration_value* const> GetMembers() override
 					{
 						return std::vector<i_configuration_value* const>
 						{
@@ -183,31 +185,55 @@ namespace Yelo
 					}
 				};
 
+				class c_shader_effect_settings final
+					: public c_configuration_container
+				{
+				public:
+					c_configuration_value<bool> m_depth_fade;
+
+					c_shader_effect_settings()
+						: c_configuration_container("Effect")
+						, m_depth_fade("DepthFade", true)
+					{ }
+		
+				protected:
+					const std::vector<i_configuration_value* const> GetMembers() override
+					{
+						return std::vector<i_configuration_value* const>
+						{
+							&m_depth_fade
+						};
+					}
+				};
+
 			public:
 				c_configuration_value<bool> m_enabled;
 				c_shader_model_settings m_shader_model;
 				c_shader_environment_settings m_shader_environment;
+				c_shader_effect_settings m_shader_effect;
 
 				c_shader_extension_container()
 					: c_configuration_container("Rasterizer.ShaderExtensions")
 					, m_enabled("Enabled", true)
 					, m_shader_model()
 					, m_shader_environment()
+					, m_shader_effect()
 				{ }
 				
 			protected:
-				const std::vector<i_configuration_value* const> GetMembers() final override
+				const std::vector<i_configuration_value* const> GetMembers() override
 				{
 					return std::vector<i_configuration_value* const>
 					{
 						&m_enabled,
 						&m_shader_model,
 						&m_shader_environment,
+						&m_shader_effect,
 					};
 				}
 			};
 
-			class c_settings_shaderextension
+			class c_settings_shaderextension final
 				: public Settings::c_settings_singleton<c_shader_extension_container, c_settings_shaderextension>
 			{
 #pragma region Model
@@ -255,17 +281,37 @@ namespace Yelo
 				}
 #pragma endregion
 
+#pragma region Effect
+				void SetEffectUsage()
+				{
+					Effect::g_extension_usage_mask = Flags::_shader_extension_usage_depth_fade;
+
+					int32 usage_mask = Flags::_shader_extension_usage_none;
+
+					usage_mask |= (Get().m_shader_effect.m_depth_fade ? Flags::_shader_extension_usage_depth_fade : Flags::_shader_extension_usage_none);
+
+					Effect::g_extension_usage_mask &= usage_mask;
+				}
+
+				void GetEffectUsage()
+				{
+					Get().m_shader_effect.m_depth_fade = TEST_FLAG(Effect::g_extension_usage_mask, Flags::_shader_extension_usage_bit_depth_fade);
+				}
+#pragma endregion
+
 			public:
-				void PostLoad() final override
+				void PostLoad() override
 				{
 					SetModelUsage();
 					SetEnvironmentUsage();
+					SetEffectUsage();
 				}
 
-				void PreSave() final override
+				void PreSave() override
 				{
 					GetModelUsage();
 					GetEnvironmentUsage();
+					GetEffectUsage();
 				}
 			};
 #pragma endregion
@@ -397,6 +443,7 @@ namespace Yelo
 					ApplyHooks();
 					Model::ApplyHooks();
 					Environment::ApplyHooks();
+					Effect::ApplyHooks();
 				}
 			}
 			void		OnLostDevice(){}
