@@ -1343,6 +1343,9 @@
     <None Include="Memory\1.10\_EngineLayout.Scenario.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
+    <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
+      <Filter>Rasterizer\ShaderExtension\Impl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />

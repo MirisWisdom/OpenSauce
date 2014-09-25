@@ -258,6 +258,7 @@ namespace Yelo
 			_shader_extension_usage_specular_map			= 1 << 2,
 			_shader_extension_usage_specular_lighting		= 1 << 3,
 			_shader_extension_usage_directional_lightmaps	= 1 << 4,
+			_shader_extension_usage_depth_fade				= 1 << 5,
 
 			_shader_extension_usage,
 		};
@@ -269,6 +270,7 @@ namespace Yelo
 			_shader_extension_usage_bit_specular_map,
 			_shader_extension_usage_bit_specular_lighting,
 			_shader_extension_usage_bit_directional_lightmaps,
+			_shader_extension_usage_bit_depth_fade,
 
 			_shader_extension_usage_bit,
 		};
@@ -381,6 +383,16 @@ namespace Yelo
 			_shader_definition shader;
 		}; BOOST_STATIC_ASSERT( sizeof(_shader_definition) == 0x28 );
 		//////////////////////////////////////////////////////////////////////////
+		struct s_shader_effect_extension
+		{
+			TAG_PAD(byte, 4);
+
+			// Depth fade
+			TAG_FIELD(real, depth_fade_distance);
+			TAG_FIELD(real, camera_fade_distance);
+			
+			TAG_PAD(tag_block, 3);
+		};
 		struct _shader_effect_definition
 		{
 			struct _flags
@@ -398,7 +410,9 @@ namespace Yelo
 			TAG_ENUM(blend_function, Enums::shader_framebuffer_blend_function);
 			TAG_ENUM(fade_mode, Enums::shader_framebuffer_fade_mode);
 			TAG_FIELD(_map_flags, map_flags);
-			PAD128; PAD64; PAD32;
+			TAG_TBLOCK(shader_extension, s_shader_effect_extension);
+			PAD128;
+
 			struct {
 				TAG_FIELD(tag_reference, bitmap, 'bitm');
 				TAG_ENUM(anchor, Enums::shader_effect_secondary_map_anchor);
@@ -419,6 +433,7 @@ namespace Yelo
 
 			_shader_effect_definition effect;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
+
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_environment_extension
 		{
