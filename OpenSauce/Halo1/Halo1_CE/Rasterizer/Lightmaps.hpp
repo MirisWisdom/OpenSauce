@@ -13,14 +13,15 @@ namespace Yelo
 	{
 		void Initialize();
 		void Dispose();
-
-		bool UsingDirectionalLightmaps();
 		
 		void SetLightmaps(const datum_index standard_tag_index);
 		void SetLightmaps(const datum_index standard_tag_index
 			, const datum_index directional_1_tag_index
 			, const datum_index directional_2_tag_index
 			, const datum_index directional_3_tag_index);
+
+		void SetLightmapSamplers(const bool use_directional);
+		const bool HasDirectional();
 	};};
 };
 #endif

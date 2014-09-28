@@ -71,6 +71,7 @@
 	{
 		ENGINE_PTR(s_render_globals, render_globals,					0x75E020, PTR_NULL);
 		ENGINE_PTR(s_render_target, global_render_targets,				0x638A20, PTR_NULL);
+		ENGINE_PTR(s_structure_render_globals, structure_render_globals,0x67E9D0, PTR_NULL);
 
 		FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL,							0x50F9E0, FUNC_PTR_NULL);
 		FUNC_PTR(RENDER_WINDOW,											0x50FC20, FUNC_PTR_NULL);

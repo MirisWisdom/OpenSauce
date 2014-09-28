@@ -82,7 +82,7 @@ namespace Yelo
 			IDirect3DBaseTexture9** default_texture_2d_texture;
 			IDirect3DBaseTexture9** default_texture_3d_texture; // engine actually uses 2d for 3d cases
 			IDirect3DBaseTexture9** default_texture_cubemap;
-			UNKNOWN_TYPE(int16);
+			int16 lightmap_mode;
 			int16 maximum_nodes_per_model;
 			bool using_software_vertex_processing;
 			PAD8;
