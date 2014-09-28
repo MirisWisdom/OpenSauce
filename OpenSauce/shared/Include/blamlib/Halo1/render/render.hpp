@@ -70,5 +70,14 @@ namespace Yelo
 			}rendered_triangles;
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_globals) == 0x9D298 );
 		s_render_globals* RenderGlobals(); // defined in the implementing extension's code
+
+		struct s_structure_render_globals
+		{
+			bool render_bsp; PAD24;
+			int32 dynamic_triangle_buffer_index;
+			UNKNOWN_TYPE(bool); PAD24;
+			UNKNOWN_TYPE(real_vector3d);
+		}; BOOST_STATIC_ASSERT( sizeof(s_structure_render_globals) == 0x18 );
+		s_structure_render_globals* StructureRenderGlobals(); // defined in the implementing extension's code
 	};
 };

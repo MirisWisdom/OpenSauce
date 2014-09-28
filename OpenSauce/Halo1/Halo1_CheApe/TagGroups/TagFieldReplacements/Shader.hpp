@@ -89,16 +89,36 @@ namespace Yelo
 		static void InitializeShaderEnvironment()
 		{
 			tag_group* senv = blam::tag_group_get<s_shader_environment_definition>();
-
+			
 			TAG_GROUP_STRING_TABLE_DEFINE(shader_environment_extension_flags, 1, "do not use dlms");
+
+			TAG_GROUP_STRING_TABLE_DEFINE(shader_environment_extension_specular_flags, 1, "alpha as exponent mask");
 
 			TAG_GROUP_BLOCK_FIELDS_DEFINE(shader_environment_extension) =
 			{
 				TAG_FIELD_ENTRY(_field_explanation, "directional lightmaps", "" ),
 				TAG_FIELD_ENTRY(_field_word_flags, "flags", &shader_environment_extension_flags),
-				TAG_FIELD_ENTRY_PAD(sizeof(int16) * 1),
+				TAG_FIELD_ENTRY_PAD(sizeof(int16)),
 				TAG_FIELD_ENTRY(_field_real, "bump amount", nullptr),
-				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 4),
+
+				TAG_FIELD_ENTRY(_field_explanation, "specular DLM color map", "" ),
+				TAG_FIELD_ENTRY(_field_tag_reference, "specular color map", &Shared::TAG_GROUP_REFERENCE_GET(bitmap)),
+				TAG_FIELD_ENTRY(_field_real, "specular color exponent", nullptr),
+				TAG_FIELD_ENTRY(_field_real, "specular color coefficient", nullptr),
+				TAG_FIELD_ENTRY(_field_word_flags, "specular color flags", &shader_environment_extension_specular_flags),
+				TAG_FIELD_ENTRY_PAD(sizeof(int16)),
+				
+				TAG_FIELD_ENTRY(_field_explanation, "specular DLM tint and brightness", "" ),
+				TAG_FIELD_ENTRY(_field_real_fraction, "perpendicular brightness", nullptr),
+				TAG_FIELD_ENTRY(_field_real_rgb_color, "perpendicular tint color", nullptr),
+				TAG_FIELD_ENTRY(_field_real_fraction, "parallel brightness", nullptr),
+				TAG_FIELD_ENTRY(_field_real_rgb_color, "parallel tint color", nullptr),
+				
+				TAG_FIELD_ENTRY(_field_explanation, "specular DLM intensity", "" ),
+				TAG_FIELD_ENTRY(_field_real, "specular lighting exponent", nullptr),
+				TAG_FIELD_ENTRY(_field_real, "specular lighting coefficient", nullptr),
+				
+				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),
 				TAG_FIELD_ENTRY_END()
 			};
 

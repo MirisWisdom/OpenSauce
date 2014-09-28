@@ -25,6 +25,7 @@
 					</Object>
                     <Environment>
                         <DiffuseDirectionalLightmaps>true</DiffuseDirectionalLightmaps>
+                        <SpecularDirectionalLightmaps>true</SpecularDirectionalLightmaps>
                     </Environment>
                     <Effect>
                         <DepthFade>true</DepthFade>
