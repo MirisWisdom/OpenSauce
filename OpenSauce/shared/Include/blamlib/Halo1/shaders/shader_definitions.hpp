@@ -252,13 +252,14 @@ namespace Yelo
 	{
 		enum shader_extension_usage : word_flags
 		{
-			_shader_extension_usage_none					= 0,
-			_shader_extension_usage_normal_map				= 1 << 0,
-			_shader_extension_usage_detail_normal			= 1 << 1,
-			_shader_extension_usage_specular_map			= 1 << 2,
-			_shader_extension_usage_specular_lighting		= 1 << 3,
-			_shader_extension_usage_directional_lightmaps	= 1 << 4,
-			_shader_extension_usage_depth_fade				= 1 << 5,
+			_shader_extension_usage_none						= 0,
+			_shader_extension_usage_normal_map					= 1 << 0,
+			_shader_extension_usage_detail_normal				= 1 << 1,
+			_shader_extension_usage_specular_map				= 1 << 2,
+			_shader_extension_usage_specular_lighting			= 1 << 3,
+			_shader_extension_usage_directional_lightmaps_diff	= 1 << 4,
+			_shader_extension_usage_directional_lightmaps_spec	= 1 << 5,
+			_shader_extension_usage_depth_fade					= 1 << 6,
 
 			_shader_extension_usage,
 		};
@@ -269,7 +270,8 @@ namespace Yelo
 			_shader_extension_usage_bit_detail_normal,
 			_shader_extension_usage_bit_specular_map,
 			_shader_extension_usage_bit_specular_lighting,
-			_shader_extension_usage_bit_directional_lightmaps,
+			_shader_extension_usage_bit_directional_lightmaps_diff,
+			_shader_extension_usage_bit_directional_lightmaps_spec,
 			_shader_extension_usage_bit_depth_fade,
 
 			_shader_extension_usage_bit,
@@ -442,10 +444,30 @@ namespace Yelo
 				TAG_FLAG16(do_not_use_dlms);
 			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 
+			struct __specular_color_flags
+			{
+				TAG_FLAG16(alpha_as_exponent_mask);
+			}; BOOST_STATIC_ASSERT( sizeof(__specular_color_flags) == sizeof(word_flags) );	
+
 			TAG_FIELD(_flags, flags);
 			TAG_PAD(byte, 2);
 			TAG_FIELD(real, bump_amount);
-			TAG_PAD(tag_block, 4);
+
+			TAG_FIELD(tag_reference, specular_color_map);
+			TAG_FIELD(real, specular_color_coefficient);
+			TAG_FIELD(real, specular_color_exponent);
+			TAG_FIELD(__specular_color_flags, specular_color_flags);
+			TAG_PAD(byte, 2);
+			
+			TAG_FIELD(real_fraction, perpendicular_brightness, "[0,1]", "reflection brightness when viewed perpendicularly");
+			TAG_FIELD(real_rgb_color, perpendicular_tint_color, "", "reflection tint color when viewed perpendicularly");
+			TAG_FIELD(real_fraction, parallel_brightness, "[0,1]", "reflection brightness when viewed at a glancing angle");
+			TAG_FIELD(real_rgb_color, parallel_tint_color, "", "reflection tint color when viewed at a glancing angle");
+
+			TAG_FIELD(real, specular_lighting_exponent);
+			TAG_FIELD(real, specular_lighting_coefficient);
+
+			TAG_PAD(tag_block, 2);
 		};
 		struct _shader_environment_definition
 		{
