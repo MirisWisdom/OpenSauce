@@ -31,13 +31,13 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	/// <param name="arg4">			 	[in,out] The fourth stock argument. </param>
 	/// <param name="arg5">			 	[in,out] The fifth stock argument. </param>
 	/// <param name="arg6">			 	[in,out] The sixth stock argument. </param>
-	static void PLATFORM_API Environment_ShaderLightmapDraw(const TagGroups::s_shader_definition* shader, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6)
+	static void PLATFORM_API Environment_ShaderLightmapDiffuseDraw(const TagGroups::s_shader_definition* shader, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6)
 	{
 		typedef void (PLATFORM_API *shader_draw_func_t)(const TagGroups::s_shader_definition*, void*, void*, void*, void*, void*);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = true;
 
-		Rasterizer::ShaderExtension::Environment::SetEnvironmentLightmapVariables((TagGroups::s_shader_definition*)shader);
+		ShaderExtension::Environment::SetupLightmapShader(shader, Flags::_shader_extension_usage_bit_directional_lightmaps_diff);
 
 		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP));
 		STOCK_DRAW_FUNC(shader, arg2, arg3, arg4, arg5, arg6);
@@ -96,7 +96,7 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	/// <summary>	Hooks the shader draw functions. </summary>
 	void Initialize()
 	{
-		GET_PTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP_SHADER_DRAW__DRAW_SHADER_LIGHTMAP_PTR) = &Environment_ShaderLightmapDraw;
+		GET_PTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP_SHADER_DRAW__DRAW_SHADER_LIGHTMAP_PTR) = &Environment_ShaderLightmapDiffuseDraw;
 
 		GET_PTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_DRAW__DRAW_SHADER_ENVIRONMENT_PTR) = &Model_ShaderEnvironmentDraw;
 		GET_PTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_DRAW__DRAW_SHADER_MODEL_PTR) = &Model_ShaderModelDraw;

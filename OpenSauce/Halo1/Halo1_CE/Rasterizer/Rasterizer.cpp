@@ -332,8 +332,9 @@ namespace Yelo
 
 	namespace Render
 	{
-		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
-		s_render_target* GlobalRenderTargets()		PTR_IMP_GET2(global_render_targets);
+		s_render_globals* RenderGlobals()						PTR_IMP_GET2(render_globals);
+		s_render_target* GlobalRenderTargets()					PTR_IMP_GET2(global_render_targets);
+		s_structure_render_globals* StructureRenderGlobals()	PTR_IMP_GET2(structure_render_globals);
 
 		static bool g_is_rendering_reflection = false;
 		bool IsRenderingReflection() { return g_is_rendering_reflection; }

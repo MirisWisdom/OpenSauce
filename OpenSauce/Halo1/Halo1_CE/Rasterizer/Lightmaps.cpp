@@ -52,31 +52,12 @@ namespace Yelo
 			};
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets lightmap sampler. </summary>
-		///
-		/// <param name="sampler_index">	Zero-based index of the sampler. </param>
-		static void SetLightmapSampler(const int32 sampler_index)
-		{
-			g_lightmap_globals.m_lightmap_manager.SetLightmapSamplers(
-				DX9::Direct3DDevice(),
-				g_lightmap_globals.m_lightmap_index,
-				[](const datum_index tag_index, const int32 index) -> TagGroups::s_bitmap_data*
-				{				
-					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(tag_index);
-					auto bitmap_data = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[index]);
-
-					return bitmap_data;
-				}
-			);
-		}
-
 		/// <summary>	Lightmap sampler call hook. </summary>
 		static API_FUNC_NAKED void SetLightmapSamplerHook()
 		{
 			API_FUNC_NAKED_START()
-				push	esi
-				call	SetLightmapSampler
+				push	edi
+				call	Rasterizer::ShaderExtension::Environment::SetLightmapSampler
 				pop		ebp
 			API_FUNC_NAKED_END_();
 		}
@@ -107,15 +88,6 @@ namespace Yelo
 			}
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Returns true if directional lightmaps are in use. </summary>
-		///
-		/// <returns>	true if directional lightmaps are in use, otherwise false. </returns>
-		bool UsingDirectionalLightmaps()
-		{
-			return g_lightmap_globals.m_lightmap_manager.HasLightmaps(c_lightmap_manager::_renderable_lightmaps_flags_directional_bit);
-		}
-
 		/// <summary>	Inserts hooks to override the stock lightmap management. </summary>
 		void Initialize()
 		{
@@ -141,14 +113,7 @@ namespace Yelo
 			, const datum_index directional_2_tag_index
 			, const datum_index directional_3_tag_index)
 		{
-			if(Rasterizer::ShaderExtension::ExtensionsEnabled() && Rasterizer::ShaderExtension::Environment::DirectionalLightmapsEnabled())
-			{
-				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard_tag_index, directional_1_tag_index, directional_2_tag_index, directional_3_tag_index);
-			}
-			else
-			{
-				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard_tag_index, datum_index::null, datum_index::null, datum_index::null);
-			}
+			g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard_tag_index, directional_1_tag_index, directional_2_tag_index, directional_3_tag_index);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,6 +123,35 @@ namespace Yelo
 		void SetLightmaps(const datum_index standard_tag_index)
 		{
 			SetLightmaps(standard_tag_index, datum_index::null, datum_index::null, datum_index::null);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets the lightmap samplers. </summary>
+		///
+		/// <param name="use_directional">	The use directional lightmaps when true. </param>
+		void SetLightmapSamplers(const bool use_directional)
+		{
+			g_lightmap_globals.m_lightmap_manager.SetLightmapSamplers(
+				DX9::Direct3DDevice(),
+				g_lightmap_globals.m_lightmap_index,
+				use_directional,
+				[](const datum_index tag_index, const int32 index) -> TagGroups::s_bitmap_data*
+				{
+					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(tag_index);
+					auto bitmap_data = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[index]);
+
+					return bitmap_data;
+				}
+			);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Query if directional lightmaps are available. </summary>
+		///
+		/// <returns>	true if directional lightmaps are available, false if not. </returns>
+		const bool HasDirectional()
+		{
+			return g_lightmap_globals.m_lightmap_manager.HasLightmaps(c_lightmap_manager::_lightmap_type_flags_directional_bit);
 		}
 	};};
 };

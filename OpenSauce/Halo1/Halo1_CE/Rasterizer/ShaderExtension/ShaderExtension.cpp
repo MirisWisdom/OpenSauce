@@ -28,6 +28,7 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
+#include "Scenario/Scenario.hpp"
 
 using namespace Yelo::Configuration;
 
@@ -169,10 +170,12 @@ namespace Yelo
 				{
 				public:
 					c_configuration_value<bool> m_diffuse_directional_lightmaps;
+					c_configuration_value<bool> m_specular_directional_lightmaps;
 
 					c_shader_environment_settings()
 						: c_configuration_container("Environment")
 						, m_diffuse_directional_lightmaps("DiffuseDirectionalLightmaps", true)
+						, m_specular_directional_lightmaps("SpecularDirectionalLightmaps", true)
 					{ }
 		
 				protected:
@@ -180,7 +183,8 @@ namespace Yelo
 					{
 						return std::vector<i_configuration_value* const>
 						{
-							&m_diffuse_directional_lightmaps
+							&m_diffuse_directional_lightmaps,
+							&m_specular_directional_lightmaps
 						};
 					}
 				};
@@ -266,18 +270,20 @@ namespace Yelo
 #pragma region Environment
 				void SetEnvironmentUsage()
 				{
-					Environment::g_extension_usage_mask = Flags::_shader_extension_usage_directional_lightmaps;
+					Environment::g_extension_usage_mask = Flags::_shader_extension_usage_directional_lightmaps_diff | Flags::_shader_extension_usage_directional_lightmaps_spec;
 
 					int32 usage_mask = Flags::_shader_extension_usage_none;
-
-					usage_mask |= (Get().m_shader_environment.m_diffuse_directional_lightmaps ? Flags::_shader_extension_usage_directional_lightmaps : Flags::_shader_extension_usage_none);
+					
+					usage_mask |= (Get().m_shader_environment.m_diffuse_directional_lightmaps ? Flags::_shader_extension_usage_directional_lightmaps_diff : Flags::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_environment.m_specular_directional_lightmaps ? Flags::_shader_extension_usage_directional_lightmaps_spec : Flags::_shader_extension_usage_none);
 
 					Environment::g_extension_usage_mask &= usage_mask;
 				}
 
 				void GetEnvironmentUsage()
 				{
-					Get().m_shader_environment.m_diffuse_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps);
+					Get().m_shader_environment.m_diffuse_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps_diff);
+					Get().m_shader_environment.m_specular_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps_spec);
 				}
 #pragma endregion
 

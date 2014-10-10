@@ -16,15 +16,14 @@ namespace Yelo
 		class c_lightmap_manager final
 		{
 		public:
-			enum renderable_lightmaps_flags : word_flags
+			enum lightmap_type_flags : word_flags
 			{
-				_renderable_lightmaps_flags_standard_bit = 1,
-				_renderable_lightmaps_flags_directional_bit = 2,
+				_lightmap_type_flags_standard_bit = 1,
+				_lightmap_type_flags_directional_bit = 2,
 			};
 
 		private:
-			renderable_lightmaps_flags m_available_lightmaps;
-			renderable_lightmaps_flags m_used_lightmaps;
+			lightmap_type_flags m_available_lightmaps;
 
 			struct s_lightmap_tag_indices
 			{
@@ -35,8 +34,7 @@ namespace Yelo
 		public:
 			typedef TagGroups::s_bitmap_data* (API_FUNC *proc_get_bitmap_data)(const datum_index, const int32);
 
-			bool HasLightmaps(const renderable_lightmaps_flags flag) const;
-			bool UsingLightmaps(const renderable_lightmaps_flags flag) const;
+			bool HasLightmaps(const lightmap_type_flags flag) const;
 
 			void SetLightmapDatums(const datum_index standard_tag_index
 				, const datum_index directional_1_tag_index
@@ -44,6 +42,7 @@ namespace Yelo
 				, const datum_index directional_3_tag_index);
 			void SetLightmapSamplers(LPDIRECT3DDEVICE9 device
 				, const int32 lightmap_index
+				, const bool use_directional
 				, const proc_get_bitmap_data get_bitmap_data);
 
 			datum_index GetStandardLightmapTagIndex();

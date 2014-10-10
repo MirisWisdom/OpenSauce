@@ -58,8 +58,8 @@ namespace Yelo
 
 			namespace Environment
 			{
-				const bool DirectionalLightmapsEnabled();
-				void SetEnvironmentLightmapVariables(const TagGroups::s_shader_definition* shader);
+				void SetLightmapSampler(const TagGroups::s_shader_definition* shader);
+				void SetupLightmapShader(const TagGroups::s_shader_definition* shader, const _enum extension_type);
 			}
 		};
 	};
