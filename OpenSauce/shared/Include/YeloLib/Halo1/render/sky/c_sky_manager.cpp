@@ -134,6 +134,10 @@ namespace Yelo
 			{
 				return datum_index::null;
 			}
+			if(sky_index >= m_sky_list.size())
+			{
+				return datum_index::null;
+			}
 			return m_sky_list[sky_index]->GetTagIndex();
 		}
 #pragma endregion c_sky_manager
