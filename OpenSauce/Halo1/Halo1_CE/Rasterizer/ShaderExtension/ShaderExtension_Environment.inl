@@ -371,8 +371,6 @@ namespace Environment
 			auto* structure_bsp = Scenario::StructureBsp();
 			if(!structure_bsp->lightmap_bitmaps.tag_index.IsNull() && Render::Lightmaps::HasDirectional())
 			{
-				RasterizerGlobals()->lightmap_mode = 1;
-
 				StructureRenderSpecularDirectionalLightmapsBegin();
 
 				StructureRenderPass(
