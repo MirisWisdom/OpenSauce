@@ -201,7 +201,15 @@ namespace Yelo
 		};
 #pragma endregion
 
-		void SetupResolutions()
+		static void InitializeRasterizerGeometryUpgrades()
+		{
+			return; // TODO: WIP code
+
+			GET_PTR(RASTERIZER_DYNAMIC_GEOMETRY_INITIALIZE__CreateIndexBuffer_Length_ARG) =
+				sizeof(struct rasterizer_triangle)*Enums::k_rasterizer_maximum_dynamic_triangles;
+		}
+
+		static void SetupResolutions()
 		{
 			if(!DX9::Direct3D9())
 				return;
@@ -238,7 +246,7 @@ namespace Yelo
 		}
 
 		// release direct3D resources before the device is destroyed
-		void RasterizerDisposeHook()
+		static void RasterizerDisposeHook()
 		{			
 			Yelo::Main::s_dx_component* components;
 			const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
@@ -339,7 +347,7 @@ namespace Yelo
 		static bool g_is_rendering_reflection = false;
 		bool IsRenderingReflection() { return g_is_rendering_reflection; }
 
-		API_FUNC_NAKED void RenderWindowReflectionHook()
+		API_FUNC_NAKED static void RenderWindowReflectionHook()
 		{
 			static const uintptr_t CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
 			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL_RETN);
