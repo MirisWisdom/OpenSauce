@@ -115,8 +115,6 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_rasterizer_maximum_dynamic_triangles = 0x400,
-
 //			k_rasterizer_maximum_dynamic_triangles_upgrade = 
 //				CAST(uint32, k_rasterizer_maximum_dynamic_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};

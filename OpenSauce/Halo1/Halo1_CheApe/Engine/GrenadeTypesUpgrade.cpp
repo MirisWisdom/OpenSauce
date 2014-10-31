@@ -119,7 +119,9 @@ namespace Yelo
 			// jz      short 48D579
 			byte* game_globals_postprocess_jmp_mod = CAST_PTR(byte*, GET_FUNC_VPTR(GAME_GLOBALS_POSTPROCESS_GRENADE_COUNT_MOD));
 			// jge : jz
-			*game_globals_postprocess_jmp_mod = enabled ? 0x7D : 0x74;
+			*game_globals_postprocess_jmp_mod = enabled
+				? Enums::_x86_opcode_jge_short
+				: Enums::_x86_opcode_jz_short;
 			//////////////////////////////////////////////////////////////////////////
 
 			string_list* global_grenade_type_enum = GET_PTR2(global_grenade_type_enum);

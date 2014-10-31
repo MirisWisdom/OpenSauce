@@ -118,13 +118,16 @@ namespace Yelo
 				InitializeYeloCacheHeaderForNewScenario(scenario, yelo_reference.tag_index);
 			}
 
+			// they use non-resolving references as FixGameGlobals clears select tag blocks for certain scenario types,
+			// thus any references the blocks have wouldn't need to be used
 			datum_index globals_index = blam::tag_load<TagGroups::s_game_globals>(Scenario::K_GAME_GLOBALS_TAG_NAME, 
 				FLAG(Flags::_tag_load_from_file_system_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
 			// the engine code returns true even if the tags fail to load
-			if(globals_index.IsNull())
+			if (globals_index.IsNull())
 				return true;
 
 			FixGameGlobals(globals_index, scenario->type);
+			// the child of the globals tags can now be loaded, as all unnecessary references have been cleared
 			blam::tag_load_children(globals_index);
 
 			return blam::scenario_load(scenario_name);

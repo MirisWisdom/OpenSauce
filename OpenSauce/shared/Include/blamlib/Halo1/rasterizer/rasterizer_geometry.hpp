@@ -11,6 +11,12 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
+			k_rasterizer_maximum_dynamic_triangles = 0x8000,
+
+			k_max_dynamic_vertex_buffers = 0x100,
+		};
+
+		enum {
 			_geometry_detail_level_super_low,
 			_geometry_detail_level_low,
 			_geometry_detail_level_medium,
@@ -63,6 +69,13 @@ namespace Yelo
 
 	namespace Rasterizer
 	{
+		struct rasterizer_triangle
+		{
+			int16 vertex0_index;
+			int16 vertex1_index;
+			int16 vertex2_index;
+		}; BOOST_STATIC_ASSERT(sizeof(rasterizer_triangle) == 0x6);
+
 		struct rasterizer_triangle_buffer
 		{
 			Enums::triangle_buffer_type type;
