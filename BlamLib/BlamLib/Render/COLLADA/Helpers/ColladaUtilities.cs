@@ -228,13 +228,12 @@ namespace BlamLib.Render
 				LowLevel.Math.real_matrix3x3 transformMatrix)
 			{
 				List<ColladaElement> return_array = new List<ColladaElement>();
-				return_array.Add(new Core.ColladaRotate(transformMatrix.Forward.I, transformMatrix.Forward.J, transformMatrix.Forward.K, y));
-				return_array.Add(new Core.ColladaRotate(transformMatrix.Left.I, transformMatrix.Left.J, transformMatrix.Left.K, p));
-				return_array.Add(new Core.ColladaRotate(transformMatrix.Up.I, transformMatrix.Up.J, transformMatrix.Up.K, r));
-
-				(return_array[0] as Core.ColladaRotate).sID = "rotateY";
-				(return_array[1] as Core.ColladaRotate).sID = "rotateP";
-				(return_array[2] as Core.ColladaRotate).sID = "rotateR";
+				return_array.Add(new Core.ColladaRotate(transformMatrix.Forward.I, transformMatrix.Forward.J, transformMatrix.Forward.K, p)
+					{ sID = "rotateP" });
+				return_array.Add(new Core.ColladaRotate(transformMatrix.Left.I, transformMatrix.Left.J, transformMatrix.Left.K, r)
+					{ sID = "rotateR" });
+				return_array.Add(new Core.ColladaRotate(transformMatrix.Up.I, transformMatrix.Up.J, transformMatrix.Up.K, y)
+					{ sID = "rotateY" });
 
 				return return_array;
 			}
