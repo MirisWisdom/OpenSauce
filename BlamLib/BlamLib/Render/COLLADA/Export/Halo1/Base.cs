@@ -15,9 +15,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 	{
 		#region Class Members
 		protected static readonly LowLevel.Math.real_matrix3x3 mTransformMatrix = new LowLevel.Math.real_matrix3x3(
+			new LowLevel.Math.real_vector3d(1, 0, 0),
 			new LowLevel.Math.real_vector3d(0, 1, 0),
-			new LowLevel.Math.real_vector3d(0, 0, 1),
-			new LowLevel.Math.real_vector3d(1, 0, 0)
+			new LowLevel.Math.real_vector3d(0, 0, 1)
 		);
 		#endregion
 
