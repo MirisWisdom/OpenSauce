@@ -245,15 +245,43 @@ namespace BlamLib.Blam.Halo1.Tags
             #region Fields
             public TI.Flags Flags;
             public TI.Real BumpAmount;
+
+			public TI.TagReference SpecularColorMap;
+			public TI.Real SpecularColorCoefficient;
+			public TI.Real SpecularColorExponent;
+			public TI.Flags SpecularColorFlags;
+
+			public TI.Real PerpendicularBrightness;
+			public TI.RealColor PerpendicularTintColor;
+			public TI.Real ParallelBrightness;
+			public TI.RealColor ParallelTintColor;
+
+			public TI.Real SpecularLightingExponent;
+			public TI.Real SpecularLightingCoefficient;
 			#endregion
 
 			public shader_environment_extension_block()
-				: base(4)
+				: base(15)
             {
                 Add(Flags = TI.Flags.Word);
-                Add(new TI.Pad(2));
+				Add(new TI.Pad(2));
 				Add(BumpAmount = new TI.Real());
-				Add(new TI.Pad(12 * 4));
+
+				Add(SpecularColorMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(SpecularColorCoefficient = new TI.Real());
+				Add(SpecularColorExponent = new TI.Real());
+				Add(SpecularColorFlags = TI.Flags.Word);
+				Add(new TI.Pad(2));
+
+				Add(PerpendicularBrightness = TI.Real.Fraction);
+				Add(PerpendicularTintColor = new TI.RealColor());
+				Add(ParallelBrightness = TI.Real.Fraction);
+				Add(ParallelTintColor = new TI.RealColor());
+
+				Add(SpecularLightingExponent = new TI.Real());
+				Add(SpecularLightingCoefficient = new TI.Real());
+
+				Add(new TI.Pad(24));
 			}
 		}
 		#endregion

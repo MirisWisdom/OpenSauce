@@ -69,7 +69,11 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.Scenario
 		{
 			var data = new ScenarioData();
 
+			data.MessageSent += MessageRedirect;
+
 			data.CollectData(tagIndex, tagManager);
+
+			data.MessageSent -= MessageRedirect;
 
 			return data;
 		}
