@@ -5,32 +5,27 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-///////////////////////////////////////////////////////////
-// Forward declarations
+#pragma region Forward declarations
 int32 PrintBlock(const uintptr_t address, const Yelo::tag_block_definition* block_definition);
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// User interface functions
-/*!
- * \brief
- * Requests a command from the user.
- * 
- * \param command_list
- * A semi-colon delimited list of commands the user can input.
- * 
- * \param arguments_string
- * A pointer to a std::string that arguments will be copied to.
- * 
- * \param line_start
- * The text string to use at the start of the command line, defaults to "command".
- * 
- * \returns
- * Returns the index of the command entered, or -1 if the command did not match.
- * 
- * Requests a command from the user and returns the command index if the user enters a matching command.
- * Otherwise -1 is returned if no matches are found.
- */
+#pragma region User interface functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Requests a command from the user. </summary>
+///
+/// <param name="command_list">
+/// 	A semi-colon delimited list of commands the user can input.
+/// </param>
+/// <param name="arguments_string">
+/// 	[out] A pointer to a std::string that arguments will be copied to.
+/// </param>
+/// <param name="line_start">
+/// 	(Optional) The text string to use at the start of the command line, defaults to "command".
+/// </param>
+///
+/// <returns>
+/// 	Returns the index of the command entered, or -1 if the command did not match.
+/// </returns>
 int32 EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_string, const char* line_start = "command")
 {
 	std::vector<std::string> command_array;
@@ -97,15 +92,11 @@ int32 EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_st
 	// return the index of the matching command, or -1 if it did not match
 	return command_found ? index : -1;
 }
-/*!
- * \brief
- * Prints a human friendly string response to a commands status.
- * 
- * \param status_error
- * The status error to print a string for.
- * 
- * Prints a human friendly string response to a commands status.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Prints a human friendly string response to a commands status. </summary>
+///
+/// <param name="status_error">	The status error to print a string for. </param>
 void PrintStatus(const int32 status_error)
 {
 	puts("");
@@ -131,20 +122,13 @@ void PrintStatus(const int32 status_error)
 		break;
 	}
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Runtime memory I/O
-/*!
- * \brief
- * Gets the handle of a running instance of Halo.
- * 
- * \returns
- * The commands end status.
- * 
- * Enumerates through all the systems processes, looking for an instance of Halo CE, 
- * and stores a handle to it once found.
- */
+#pragma region Runtime memory I/O
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Gets the handle of a running instance of Halo. </summary>
+///
+/// <returns>	The commands end status. </returns>
 int32 GetHaloHandle()
 {
 	// this is mostly refactored from MSDN
@@ -245,24 +229,15 @@ int32 GetHaloHandle()
 
 	return found_halo ? k_status_ok : k_status_failed;
 }
-/*!
- * \brief
- * Reads a number of bytes from an address in Halos memory.
- * 
- * \param address
- * The memory address to read from.
- * 
- * \param destination
- * The buffer to read to.
- * 
- * \param destination_size
- * the size of the destination buffer.
- * 
- * \returns
- * The commands end status.
- * 
- * Reads a number of bytes from an address in Halos memory.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Reads a number of bytes from an address in Halos memory. </summary>
+///
+/// <param name="address">		   	The memory address to read from. </param>
+/// <param name="destination">	   	[in] The buffer to read to. </param>
+/// <param name="destination_size">	Size of the destination. </param>
+///
+/// <returns>	The commands end status. </returns>
 int32 ReadHaloMemory(const void* address, void* destination, const size_t destination_size)
 {
 	SIZE_T bytes_read;
@@ -276,24 +251,17 @@ int32 ReadHaloMemory(const void* address, void* destination, const size_t destin
 		return k_status_failed_to_read_runtime_memory;
 	return k_status_ok; // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 }
-/*!
- * \brief
- * Writes a number of bytes to Halos memory.
- * 
- * \param destination
- * The destination address in Halo.
- * 
- * \param source
- * The source buffer to write.
- * 
- * \param size
- * The number of bytes to write.
- * 
- * \returns
- * k_status_ok if successful, otherwise k_status_failed_to_write_runtime_memory.
- *
- * Writes a block of bytes to Halo's memory.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Writes a number of bytes to Halos memory. </summary>
+///
+/// <param name="destination">	[in] The destination address in Halo. </param>
+/// <param name="source">	  	[in] The source buffer to write. </param>
+/// <param name="size">		  	The number of bytes to write. </param>
+///
+/// <returns>
+/// 	k_status_ok if successful, otherwise k_status_failed_to_write_runtime_memory.
+/// </returns>
 int32 WriteHaloMemory(void* destination, void* source, const size_t size)
 {
 	SIZE_T bytes_written;
@@ -308,22 +276,19 @@ int32 WriteHaloMemory(void* destination, void* source, const size_t size)
 	return k_status_ok; // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 }
 
-/*!
- * \brief
- * Reads a NULL terminated string from Halos memory.
- * 
- * \param address
- * The start address of the string.
- * 
- * \param destination
- * A char& reference that will be allocated with memory for the string.
- * 
- * \returns
- * The commands end status.
- * 
- * Reads a null terminated string from Halos memory and copies it into a char array in tool.
- * The memory allocated for "destination" must be deleted by the calling application.
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Reads a NULL terminated string from Halos memory. </summary>
+///
+/// <remarks>
+/// 	The memory allocated for "destination" must be deleted by the calling application.
+/// </remarks>
+///
+/// <param name="address">	  	The start address of the string. </param>
+/// <param name="destination">
+/// 	[out] A char*&amp; reference that will be allocated with memory for the string.
+/// </param>
+///
+/// <returns>	The commands end status. </returns>
 int32 ReadHaloString(const cstring address, cstring& destination)
 {
 	// allocate the buffer
@@ -388,19 +353,13 @@ int32 ReadHaloString(const cstring address, cstring& destination)
 
 	return status;
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Halo cache functions
-/*!
- * \brief
- * Creates a local copy of Halos tag index and tag instance array.
- * 
- * \returns
- * The commands end status.
- * 
- * Creates a local copy of Halos tag index and tag instance array.
- */
+#pragma region Halo cache functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Creates a local copy of Halos tag index and tag instance array. </summary>
+///
+/// <returns>	The commands end status. </returns>
 int32 LoadTagIndex()
 {
 	Console::ColorPrint(k_color_default, "\nreading cache file globals...", true);
@@ -481,12 +440,8 @@ int32 LoadTagIndex()
 
 	return k_status_ok;
 }
-/*!
- * \brief
- * Deletes the local copy of the runtime tag index.
- * 
- * Deletes the local copy of the runtime tag index.
- */
+
+/// <summary>	Deletes the local copy of the runtime tag index. </summary>
 void UnloadTagIndex()
 {
 	if(!g_cache_view_globals.m_is_loaded)
@@ -506,17 +461,19 @@ void UnloadTagIndex()
 
 	g_cache_view_globals.m_is_loaded = false;
 }
-/*!
- * \brief
- * Determines if the runtime cache has changed
- * 
- * \returns
- * k_status_index_changed if the cache is different otherwise k_status_index_matches.
- * If an error occurred when reading the cache globals the status id will be returned instead.
- * 
- * Creates a temporary copy of the runtime's cache header and compares the crc with the local
- * copy.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Determines if the runtime cache has changed. </summary>
+///
+/// <remarks>
+/// 	Creates a temporary copy of the runtime's cache header and compares the crc with the
+/// 	local copy.
+/// </remarks>
+///
+/// <returns>
+/// 	k_status_index_changed if the cache is different otherwise k_status_index_matches. If a
+/// 	read error occurs a read error status will be returned.
+/// </returns>
 int32 HasCacheChanged()
 {
 	Console::ColorPrint(k_color_default, "seeing if the cache has changed", true);	
@@ -534,15 +491,14 @@ int32 HasCacheChanged()
 	// Compare the cache crc's
 	return (g_cache_view_globals.m_cache_file_header.crc != comparison_header.crc) ? k_status_index_changed : k_status_index_matches;
 }
-/*!
- * \brief
- * Finds out if the cache has changed and reloads the index if it has.
- * 
- * \returns
- * k_change_index_reloaded if the index is reloaded, otherwise k_status_ok if nothings changed.
- * 
- * Finds out if the cache has changed and reloads the index if it has.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Finds out if the cache has changed and reloads the index if it has. </summary>
+///
+/// <returns>
+/// 	k_change_index_reloaded if the index is reloaded, otherwise k_status_ok if nothings
+/// 	changed.
+/// </returns>
 int32 ReloadCacheCheck()
 {
 	// has the cache changed
@@ -558,17 +514,19 @@ int32 ReloadCacheCheck()
 	}
 	return (status == k_status_index_matches ? k_status_ok : status);
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Edit command functions
-/*!
- * \brief
- * Informs the user of possible unexpected results.
- * 
- * Informs the user that bad things can happen if they mess with the runtime memory incorrectly.
- * They must accept responsibility before continuing. They will only be asked this once per session.
- */
+#pragma region Edit command functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>
+/// 	Informs the user that bad things can happen if they mess with the runtime memory
+/// 	incorrectly.
+/// </summary>
+///
+/// <remarks>
+/// 	The user must accept responsibility before continuing. They will only be asked this once
+/// 	per session.
+/// </remarks>
 void DisplayEditWarning()
 {
 	if(g_cache_view_globals.m_accepted_edit_warning)
@@ -581,24 +539,19 @@ void DisplayEditWarning()
 
 	g_cache_view_globals.m_accepted_edit_warning = (answer == 0);
 }
-/*!
- * \brief
- * Writes new values to an address in Halos memory.
- * 
- * \param desc_index
- * The field description index of the type at the memory address.
- * 
- * \param address
- * The runtime memory address to write to.
- * 
- * \param value_string
- * A string containing the new value(s).
- * 
- * \returns
- * The status of the command.
- * 
- * Parses a string of user defined values and writes them to a memory address in the runtime.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>
+/// 	Parses a string of user defined values and writes them to a memory address in the runtime.
+/// </summary>
+///
+/// <param name="desc_index">
+/// 	The field description index of the type at the memory address.
+/// </param>
+/// <param name="address">	   	The runtime memory address to write to. </param>
+/// <param name="value_string">	A string containing the new value(s). </param>
+///
+/// <returns>	The status of the command. </returns>
 int32 WriteField(const int desc_index, const void* address, const char* value_string)
 {
 	union {
@@ -754,19 +707,13 @@ int32 WriteField(const int desc_index, const void* address, const char* value_st
 	// write the new values to the runtime's memory
 	return WriteHaloMemory((void*)address, &value, field_descriptor.Definition().size);
 }
-/*!
- * \brief
- * Gets the users command details and passes them to WriteField.
- * 
- * \param arguments
- * String containing the users command arguments.
- * 
- * \returns
- * The commands end status.
- * 
- * Warns the user of possible problems when messing with memory before breaking
- * the users arguments into an address and values to be passed to WriteField.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Gets the users command details and passes them to WriteField. </summary>
+///
+/// <param name="arguments">	String containing the users command arguments. </param>
+///
+/// <returns>	The commands end status. </returns>
 int32 ChangeFieldValue(const char* arguments)
 {
 	// warn of unexpected consequences
@@ -812,10 +759,15 @@ int32 ChangeFieldValue(const char* arguments)
 	// set the new values
 	return WriteField(index, address, arguments_string.c_str());
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Print tag command functions
+#pragma region Print tag command functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Gets the size of a field in bytes. </summary>
+///
+/// <param name="field">	The field. </param>
+///
+/// <returns>	The field size in bytes. </returns>
 int32 GetFieldSize(const Yelo::tag_field* field)
 {
 	switch(field->type)
@@ -827,18 +779,12 @@ int32 GetFieldSize(const Yelo::tag_field* field)
 		return g_field_descriptions[field->type].Definition().size;
 	};
 }
-/*!
- * \brief
- * Prints a fields value to the console.
- * 
- * \param field_data
- * The local memory address of the field.
- * 
- * \param field_definition
- * The fields definition.
- * 
- * Prints the value of a field in memory to the console.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Prints a fields value to the console. </summary>
+///
+/// <param name="field_data">	   	The local memory address of the field. </param>
+/// <param name="field_definition">	The fields definition. </param>
 void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_definition)
 {
 	union {
@@ -1043,6 +989,13 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Print information about a field to the console. </summary>
+///
+/// <param name="field_name">	Name of the field. </param>
+/// <param name="tag_data">  	The local tag data address for the field. </param>
+/// <param name="address">   	The address of the field in Halo's memory. </param>
+/// <param name="field">	 	The field description. </param>
 void PrintFieldInfo(const std::string& field_name, const void* tag_data, const uintptr_t address, const Yelo::tag_field* field)
 {
 	auto& field_descriptor = g_field_descriptions[field->type];
@@ -1060,6 +1013,12 @@ void PrintFieldInfo(const std::string& field_name, const void* tag_data, const u
 	PrintFieldValue(tag_data, field);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Print's information about a block field. </summary>
+///
+/// <param name="field_name">	Name of the field. </param>
+/// <param name="tag_data">  	The local tag data address for the field. </param>
+/// <param name="field">	 	The field description. </param>
 void PrintBlockInfo(const std::string& field_name, const void* tag_data, const Yelo::tag_field* field)
 {	
 	auto definition = field->Definition<tag_block_definition>();
@@ -1074,24 +1033,14 @@ void PrintBlockInfo(const std::string& field_name, const void* tag_data, const Y
 	PrintFieldValue(tag_data, field);
 }
 
-/*!
- * \brief
- * Prints the fields of a tag block to the console
- * 
- * \param tag_data
- * The local memory pointer where the block resides
- * 
- * \param address
- * The memory address of the block in Halos memory.
- * 
- * \param start_field
- * The first field of the block definition.
- * 
- * \returns
- * The commands end status.
- * 
- * Prints the fields of a tag block to the console
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Prints the fields of a tag block to the console. </summary>
+///
+/// <param name="tag_data">   	[in,out] The local memory pointer where the block resides. </param>
+/// <param name="address">	  	[in,out] The memory address of the block in Halo's memory. </param>
+/// <param name="start_field">	The start field descriptor. </param>
+///
+/// <returns>	The commands end status. </returns>
 int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
 {
 	int count = 0;
@@ -1219,22 +1168,16 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* st
 	}
 	return k_status_ok;
 }
-/*!
- * \brief
- * Prints a tag block to the console.
- * 
- * \param address
- * The address in Halos memory where the block resides.
- * 
- * \param block_definition
- * The tag block definition that describes the blocks contents.
- *
- * \returns
- * The commands end status.
- * 
- * Copies a tag block element from Halo into local memory, then
- * prints its fields to the console.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Prints a tag block to the console. </summary>
+///
+/// <param name="address">		   	The address in Halo's memory where the block resides. </param>
+/// <param name="block_definition">
+/// 	The tag block definition that describes the blocks contents.
+/// </param>
+///
+/// <returns>	The commands end status. </returns>
 int32 PrintBlock(uintptr_t address, const Yelo::tag_block_definition* block_definition)
 {
 	// copy the block into local memory
@@ -1249,15 +1192,13 @@ int32 PrintBlock(uintptr_t address, const Yelo::tag_block_definition* block_defi
 
 	return status;
 }
-/*!
- * \brief
- * Reads a tag from Halos cache and prints its fields.
- * 
- * \param argument
- * A string containing the user's arguments.
- * 
- * Reads a tag from Halos cache and prints its fields.
- */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Reads a tag from Halos cache and prints its fields. </summary>
+///
+/// <param name="arguments">	A string containing the user's arguments. </param>
+///
+/// <returns>	The commands end status. </returns>
 int32 OpenTag(const char* arguments)
 {
 	// read the index from the arguments string
@@ -1307,19 +1248,18 @@ int32 OpenTag(const char* arguments)
 	// print the tags contents
 	return PrintBlock(CAST_PTR(uintptr_t, tag_instance.base_address), root_definition);
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Print tag index functions
-/*!
- * \brief
- * Prints the tag instance index to the command line.
- * 
- * \param filter
- * A tag group string to filter out specific tag types.
- * 
- * Prints the tag instance index to the command line. Can optionally filter a specific tag group type.
- */
+#pragma region Print tag index functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>
+/// 	Prints the tag instance index to the command line. Can optionally filter a specific tag
+/// 	group type.
+/// </summary>
+///
+/// <param name="filter">	A tag group string to filter out specific tag types. </param>
+///
+/// <returns>	An int32. </returns>
 int32 PrintTagIndex(const char* filter)
 {
 	puts("");
@@ -1372,10 +1312,9 @@ int32 PrintTagIndex(const char* filter)
 	}
 	return k_status_ok;
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Find by address functions
+#pragma region Find by address functions
 struct s_field_tree_entry
 {
 	const uintptr_t field_address;
@@ -1386,6 +1325,19 @@ struct s_field_tree_entry
 
 int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, uintptr_t address, const Yelo::tag_block_definition* block_definition);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Searches for the test address in a list of field's. </summary>
+///
+/// <param name="field_tree">  	[in,out] The field tree to add to if the address is found. </param>
+/// <param name="test_address">	The test address to find. </param>
+/// <param name="tag_data">	   	[in,out] The local copy of the block data. </param>
+/// <param name="address">	   	[in,out] The current fields address in Halo's memory. </param>
+/// <param name="start_field"> 	The start field descriptor. </param>
+///
+/// <returns>
+/// 	k_status_ok if the field was found, otherwise a non-zero code if not found or an error
+/// 	occurs.
+/// </returns>
 int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
 {
 	const Yelo::tag_field* current = start_field;
@@ -1477,6 +1429,20 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t tes
 	return k_status_failed;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Searches for the field at an address within a block. </summary>
+///
+/// <param name="field_tree">
+/// 	[in,out] The field tree to add to if the address is found.
+/// </param>
+/// <param name="test_address">	   	The test address to find. </param>
+/// <param name="address">		   	The block's address in Halo's memory. </param>
+/// <param name="block_definition">	The block definition. </param>
+///
+/// <returns>
+/// 	k_status_ok if the field was found, otherwise a non-zero code if not found or an error
+/// 	occurs.
+/// </returns>
 int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, uintptr_t address, const Yelo::tag_block_definition* block_definition)
 {
 	// Copy the block into local memory
@@ -1493,6 +1459,15 @@ int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t t
 	return FindField(field_tree, test_address, data_pointer, address, block_definition->fields);;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Searches for the field at a specified address. </summary>
+///
+/// <param name="address">	The address to find. </param>
+///
+/// <returns>
+/// 	k_status_ok if the field was found, otherwise a non-zero code if not found or an error
+/// 	occurs.
+/// </returns>
 int32 FindFieldByAddress(const char* address)
 {
 	// Parse the address
@@ -1607,10 +1582,10 @@ int32 FindFieldByAddress(const char* address)
 		return k_status_failed;
 	}
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
 
-///////////////////////////////////////////////////////////
-// Print help functions
+#pragma region Print help functions
+/// <summary>	Print's help for all runtime-cache-view commands. </summary>
 void PrintHelp()
 {
 	puts(""); 
@@ -1636,4 +1611,4 @@ void PrintHelp()
 		"quit				: ends the program",
 		true);
 }
-///////////////////////////////////////////////////////////
+#pragma endregion
