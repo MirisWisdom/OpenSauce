@@ -85,6 +85,24 @@ namespace Yelo
 			// reset the console color back to the default
 			SetConsoleTextAttribute(console_handle, 0x07);
 		}
+
+		int32 GetConsoleWidth()
+		{
+			CONSOLE_SCREEN_BUFFER_INFO buffer_info;
+			HANDLE console_out = GetStdHandle(STD_OUTPUT_HANDLE);
+			GetConsoleScreenBufferInfo(console_out, &buffer_info);
+
+			return (buffer_info.srWindow.Right - buffer_info.srWindow.Left) + 1;
+		}
+
+		int32 GetConsoleHeight()
+		{
+			CONSOLE_SCREEN_BUFFER_INFO buffer_info;
+			HANDLE console_out = GetStdHandle(STD_OUTPUT_HANDLE);
+			GetConsoleScreenBufferInfo(console_out, &buffer_info);
+
+			return (buffer_info.srWindow.Bottom - buffer_info.srWindow.Top) + 1;
+		}
 	}; };
 };
 #endif

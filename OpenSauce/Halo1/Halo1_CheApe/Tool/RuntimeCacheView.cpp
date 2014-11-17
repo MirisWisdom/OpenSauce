@@ -17,7 +17,6 @@
 #include "TagGroups/TagGroups.hpp"
 #include "Tool/Console.hpp"
 
-// TODO: I would like to change all instances of DWORD to either size_t or uintptr_t
 // TODO: also, we should now be able to use c_tag_field_scanner, instead of the manual code we have
 // TODO: also, start using k_tag_field_definitions and remove the duplicated data from g_field_descriptions
 
@@ -35,6 +34,7 @@ namespace Yelo
 			_runtime_cache_command_list_filtered,
 			_runtime_cache_command_open,
 			_runtime_cache_command_set,
+			_runtime_cache_command_find_address,
 
 			_runtime_cache_command
 		};
@@ -59,6 +59,7 @@ namespace Yelo
 		};
 
 		
+		static const void* k_runtime_109_cache_header_ptr = CAST_PTR(void*, 0x643060 + 0x4);
 		static const void* k_runtime_109_cache_globals_ptr = CAST_PTR(void*, 0x643060 + 0x804);
 
 		// Last I checked, compiler was initializing with a dynamic initializer.
@@ -102,7 +103,7 @@ namespace Yelo
 			{ Enums::_field_block,					"block",				"count: %i\taddress: 0x%08X",			0,	nullptr },
 			{ Enums::_field_short_block_index,		"short_block_index",	"%i",									0,	nullptr },
 			{ Enums::_field_long_block_index,		"long_block_index",		"%i",									0,	nullptr },
-			{ Enums::_field_data,					"data",					"size: %i,",							0,	nullptr },
+			{ Enums::_field_data,					"data",					"size: %i",								0,	nullptr },
 			{ Enums::_field_array_start,			"array_start",			nullptr,								0,	nullptr },
 			{ Enums::_field_array_end,				"array_end",			nullptr,								0,	nullptr },
 			{ Enums::_field_pad,					"pad",					nullptr,								0,	nullptr },
@@ -118,6 +119,7 @@ namespace Yelo
 			HANDLE m_halo_handle;
 			BOOL m_accepted_edit_warning;
 
+			Cache::s_cache_header m_cache_file_header;
 			Cache::s_cache_tag_instance* m_cache_tag_instances;
 			Cache::s_cache_tag_header m_cache_file_globals;
 		};
@@ -180,7 +182,7 @@ namespace Yelo
 			do
 			{
 				std::string arguments;
-				int index = EnterCommand("quit;load;help;list;open;set", &arguments);
+				int index = EnterCommand("quit;load;help;list;open;set;findaddr", &arguments);
 
 				// determine what command has been issued
 				switch(index)
@@ -223,6 +225,9 @@ namespace Yelo
 						else
 							user_command = _runtime_cache_command_error;
 					}
+					break;
+				case 6:
+					user_command = _runtime_cache_command_find_address;
 					break;
 				}
 
@@ -313,6 +318,23 @@ namespace Yelo
 						}
 
 						status = ChangeFieldValue(arguments.c_str());
+						PrintStatus(status);
+					}
+					break;
+				case _runtime_cache_command_find_address:
+					{
+						user_command = _runtime_cache_command_error;
+
+						// find out if the cache has changed
+						// reload it if it has
+						status = ReloadCacheCheck();
+						if(status != k_status_ok)
+						{
+							PrintStatus(status);
+							break;
+						}
+
+						status = FindFieldByAddress(arguments.c_str());
 						PrintStatus(status);
 					}
 					break;

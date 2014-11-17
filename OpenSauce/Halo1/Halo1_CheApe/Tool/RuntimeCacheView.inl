@@ -7,7 +7,7 @@
 
 ///////////////////////////////////////////////////////////
 // Forward declarations
-BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definition);
+int32 PrintBlock(const uintptr_t address, const Yelo::tag_block_definition* block_definition);
 ///////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definitio
  * Requests a command from the user and returns the command index if the user enters a matching command.
  * Otherwise -1 is returned if no matches are found.
  */
-int EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_string, const char* line_start = "command")
+int32 EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_string, const char* line_start = "command")
 {
 	std::vector<std::string> command_array;
 	std::string commands(command_list);
@@ -106,7 +106,7 @@ int EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_stri
  * 
  * Prints a human friendly string response to a commands status.
  */
-void PrintStatus(BOOL status_error)
+void PrintStatus(const int32 status_error)
 {
 	puts("");
 	switch(status_error)
@@ -145,7 +145,7 @@ void PrintStatus(BOOL status_error)
  * Enumerates through all the systems processes, looking for an instance of Halo CE, 
  * and stores a handle to it once found.
  */
-BOOL GetHaloHandle()
+int32 GetHaloHandle()
 {
 	// this is mostly refactored from MSDN
 
@@ -153,7 +153,7 @@ BOOL GetHaloHandle()
 
 	// create the initial process array
 	DWORD byte_count = 1024 * sizeof(DWORD);
-	DWORD* processes = (DWORD*)malloc(byte_count);
+	DWORD* processes = CAST_PTR(DWORD*, malloc(byte_count));
 
 	if(!processes)
 		return k_status_failed_to_allocate_local_memory;
@@ -168,7 +168,7 @@ BOOL GetHaloHandle()
 		if(bytes_written == byte_count)
 		{
 			byte_count += 1024;
-			processes = (DWORD*)realloc(processes, byte_count);
+			processes = CAST_PTR(DWORD*, realloc(processes, byte_count));
 
 			if(!processes)
 				return k_status_failed_to_allocate_local_memory;
@@ -201,7 +201,7 @@ BOOL GetHaloHandle()
 				FALSE,
 				processes[i] );
 
-			// get the process name.
+			// get the process name
 			if (process)
 			{
 				HMODULE hMod;
@@ -263,7 +263,7 @@ BOOL GetHaloHandle()
  * 
  * Reads a number of bytes from an address in Halos memory.
  */
-BOOL ReadHaloMemory(const void* address, void* destination, const DWORD destination_size)
+int32 ReadHaloMemory(const void* address, void* destination, const size_t destination_size)
 {
 	SIZE_T bytes_read;
 	BOOL success = ReadProcessMemory(g_cache_view_globals.m_halo_handle, 
@@ -294,7 +294,7 @@ BOOL ReadHaloMemory(const void* address, void* destination, const DWORD destinat
  *
  * Writes a block of bytes to Halo's memory.
  */
-BOOL WriteHaloMemory(void* destination, void* source, const DWORD size)
+int32 WriteHaloMemory(void* destination, void* source, const size_t size)
 {
 	SIZE_T bytes_written;
 	BOOL success = WriteProcessMemory(g_cache_view_globals.m_halo_handle, 
@@ -324,16 +324,16 @@ BOOL WriteHaloMemory(void* destination, void* source, const DWORD size)
  * Reads a null terminated string from Halos memory and copies it into a char array in tool.
  * The memory allocated for "destination" must be deleted by the calling application.
  */
-BOOL ReadHaloString(const cstring address, cstring& destination)
+int32 ReadHaloString(const cstring address, cstring& destination)
 {
 	// allocate the buffer
 	int buffer_size = 2048;
-	char* buffer = (char*)malloc(buffer_size);
+	char* buffer = CAST_PTR(char*, malloc(buffer_size));
 
 	if(!buffer)
 		return k_status_failed_to_allocate_local_memory;
 
-	BOOL status = k_status_ok;
+	int32 status = k_status_ok;
 	// read the string
 	int string_index = 0;
 	do
@@ -342,7 +342,7 @@ BOOL ReadHaloString(const cstring address, cstring& destination)
 		if(string_index == buffer_size)
 		{
 			buffer_size += 2048;
-			char* new_buffer = (char*)realloc(buffer, buffer_size);
+			char* new_buffer = CAST_PTR(char*, realloc(buffer, buffer_size));
 
 			if(!new_buffer)
 			{
@@ -386,7 +386,7 @@ BOOL ReadHaloString(const cstring address, cstring& destination)
 	// delete the temporary buffer
 	free(buffer);
 
-	return status; // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+	return status;
 }
 ///////////////////////////////////////////////////////////
 
@@ -401,14 +401,22 @@ BOOL ReadHaloString(const cstring address, cstring& destination)
  * 
  * Creates a local copy of Halos tag index and tag instance array.
  */
-BOOL LoadTagIndex() // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 LoadTagIndex()
 {
-	void* cache_tag_header_ptr;
-
 	Console::ColorPrint(k_color_default, "\nreading cache file globals...", true);
 
+	// read the cache header
+	auto status = ReadHaloMemory(k_runtime_109_cache_header_ptr, 
+		&g_cache_view_globals.m_cache_file_header, 
+		sizeof(Cache::s_cache_header));
+
+	if(status != k_status_ok)
+		return status;
+
 	// read the variable containing the cache file globals pointer
-	BOOL status = ReadHaloMemory(k_runtime_109_cache_globals_ptr, 
+	void* cache_tag_header_ptr;
+
+	status = ReadHaloMemory(k_runtime_109_cache_globals_ptr, 
 		&cache_tag_header_ptr, 
 		sizeof(cache_tag_header_ptr));
 
@@ -448,13 +456,15 @@ BOOL LoadTagIndex() // TODO: k_status_ok is '0'...yet this function returns 'BOO
 	// so that we don't have to later
 	for(int i = 0; i < g_cache_view_globals.m_cache_file_globals.count; i++)
 	{
+		auto& tag_instance = g_cache_view_globals.m_cache_tag_instances[i];
+
 		// swap the tag groups now for later printing
-		TagGroups::TagSwap(g_cache_view_globals.m_cache_tag_instances[i].group_tag);
-		TagGroups::TagSwap(g_cache_view_globals.m_cache_tag_instances[i].parent_groups[0]);
-		TagGroups::TagSwap(g_cache_view_globals.m_cache_tag_instances[i].parent_groups[1]);
+		TagGroups::TagSwap(tag_instance.group_tag);
+		TagGroups::TagSwap(tag_instance.parent_groups[0]);
+		TagGroups::TagSwap(tag_instance.parent_groups[1]);
 
 		// copy the tag name strings into local memory
-		status = ReadHaloString(g_cache_view_globals.m_cache_tag_instances[i].name, g_cache_view_globals.m_cache_tag_instances[i].name);
+		status = ReadHaloString(tag_instance.name, tag_instance.name);
 
 		if(status != k_status_ok)
 			return status;
@@ -504,35 +514,25 @@ void UnloadTagIndex()
  * k_status_index_changed if the cache is different otherwise k_status_index_matches.
  * If an error occurred when reading the cache globals the status id will be returned instead.
  * 
- * Creates a temporary copy of the runtime's cache globals and compares the crc with the local
+ * Creates a temporary copy of the runtime's cache header and compares the crc with the local
  * copy.
  */
-BOOL HasCacheChanged() // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 HasCacheChanged()
 {
-	Console::ColorPrint(k_color_default, "seeing if the cache has changed", true);
+	Console::ColorPrint(k_color_default, "seeing if the cache has changed", true);	
 
-	void* cache_tag_header_ptr;
+	Cache::s_cache_header comparison_header;
 
-	// read the variable containing the cache file globals pointer
-	BOOL status = ReadHaloMemory(k_runtime_109_cache_globals_ptr, 
-		&cache_tag_header_ptr, 
-		sizeof(cache_tag_header_ptr));
-
-	if(status != k_status_ok)
-		return status;
-
-	Cache::s_cache_tag_header comparison_globals;
-
-	// copy cache globals into local memory
-	status = ReadHaloMemory(cache_tag_header_ptr, 
-		&comparison_globals, 
-		sizeof(g_cache_view_globals.m_cache_file_globals));
+	// read the current cache header 
+	auto status = ReadHaloMemory(k_runtime_109_cache_header_ptr, 
+		&comparison_header, 
+		sizeof(Cache::s_cache_header));
 
 	if(status != k_status_ok)
 		return status;
 
-	// TODO: model_data_size used to be crc, but it isn't a crc, should change this to get the crc in the cache header
-	return (g_cache_view_globals.m_cache_file_globals.model_data_size != comparison_globals.model_data_size) ? k_status_index_changed : k_status_index_matches;
+	// Compare the cache crc's
+	return (g_cache_view_globals.m_cache_file_header.crc != comparison_header.crc) ? k_status_index_changed : k_status_index_matches;
 }
 /*!
  * \brief
@@ -543,10 +543,10 @@ BOOL HasCacheChanged() // TODO: k_status_ok is '0'...yet this function returns '
  * 
  * Finds out if the cache has changed and reloads the index if it has.
  */
-BOOL ReloadCacheCheck() // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 ReloadCacheCheck()
 {
 	// has the cache changed
-	BOOL status = HasCacheChanged();
+	auto status = HasCacheChanged();
 	if(status == k_status_index_changed)
 	{
 		Console::ColorPrint(k_color_default, "different map cache present", true);
@@ -599,7 +599,7 @@ void DisplayEditWarning()
  * 
  * Parses a string of user defined values and writes them to a memory address in the runtime.
  */
-BOOL WriteField(const int desc_index, const void* address, const char* value_string)
+int32 WriteField(const int desc_index, const void* address, const char* value_string)
 {
 	union {
 		byte					_byte;
@@ -620,11 +620,14 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
 		short_bounds			_short_bounds;
 	}value;
 
+	auto& field_descriptor = g_field_descriptions[desc_index];
+
 	// get the formatting string to parse the users arguments
 	int count = 0;
-	const char* scan_format = g_field_descriptions[desc_index].m_scan_format;
+	const char* scan_format = field_descriptor.m_scan_format;
+
 	// parse the users arguments
-	switch(g_field_descriptions[desc_index].m_field_type)
+	switch(field_descriptor.m_field_type)
 	{
 	case Enums::_field_byte_flags:
 	case Enums::_field_char_integer:
@@ -741,13 +744,15 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
 		break;
 	}
 
-	// if the user didnt not specify the right about of arguments, the command fails
-	if(count != g_field_descriptions[desc_index].m_scan_count)
+	// if the user did not specify the right about of arguments, the command fails
+	if(count != field_descriptor.m_scan_count)
+	{
+		Console::ColorPrint(k_color_command_line, "incorrent number of arguments supplied", true);
 		return k_status_failed;
+	}
 
 	// write the new values to the runtime's memory
-	BOOL status = WriteHaloMemory((void*)address, &value, g_field_descriptions[desc_index].Definition().size);
-	return status;
+	return WriteHaloMemory((void*)address, &value, field_descriptor.Definition().size);
 }
 /*!
  * \brief
@@ -762,7 +767,7 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
  * Warns the user of possible problems when messing with memory before breaking
  * the users arguments into an address and values to be passed to WriteField.
  */
-BOOL ChangeFieldValue(const char* arguments) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 ChangeFieldValue(const char* arguments)
 {
 	// warn of unexpected consequences
 	DisplayEditWarning();
@@ -805,13 +810,23 @@ BOOL ChangeFieldValue(const char* arguments) // TODO: k_status_ok is '0'...yet t
 	StringEditing::RemoveStringSegment(arguments_string, nullptr, " ");
 
 	// set the new values
-	BOOL status = WriteField(index, address, arguments_string.c_str());
-	return status;
+	return WriteField(index, address, arguments_string.c_str());
 }
 ///////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////
 // Print tag command functions
+int32 GetFieldSize(const Yelo::tag_field* field)
+{
+	switch(field->type)
+	{
+	case Enums::_field_pad:
+	case Enums::_field_skip:
+		return field->DefinitionCast<int32>();
+	default:
+		return g_field_descriptions[field->type].Definition().size;
+	};
+}
 /*!
  * \brief
  * Prints a fields value to the console.
@@ -824,7 +839,7 @@ BOOL ChangeFieldValue(const char* arguments) // TODO: k_status_ok is '0'...yet t
  * 
  * Prints the value of a field in memory to the console.
  */
-void PrintFieldValue(void* field_data, const Yelo::tag_field* field_definition)
+void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_definition)
 {
 	union {
 		byte*					_byte;
@@ -847,7 +862,7 @@ void PrintFieldValue(void* field_data, const Yelo::tag_field* field_definition)
 		tag_block*				_tag_block;
 		tag_data*				_tag_data;
 
-		void*					pointer;
+		const void*					pointer;
 	}value;
 
 	value.pointer = field_data;
@@ -1027,6 +1042,38 @@ void PrintFieldValue(void* field_data, const Yelo::tag_field* field_definition)
 		break;
 	}
 }
+
+void PrintFieldInfo(const std::string& field_name, const void* tag_data, const uintptr_t address, const Yelo::tag_field* field)
+{
+	auto& field_descriptor = g_field_descriptions[field->type];
+
+	// Print the address of the field in Halo
+	Console::ColorPrintF(k_color_address, "0x%08X", address);
+	// Print the field type
+	Console::ColorPrint(k_color_default, " [");
+	Console::ColorPrintF(k_color_fieldtype, "%s", field_descriptor.m_field_type_name);
+	Console::ColorPrintF(k_color_default, "]%*s", 26 - strlen(field_descriptor.m_field_type_name), " ");
+
+	Console::ColorPrint(k_color_name, field_name.c_str(), true);
+
+	// Print the fields value
+	PrintFieldValue(tag_data, field);
+}
+
+void PrintBlockInfo(const std::string& field_name, const void* tag_data, const Yelo::tag_field* field)
+{	
+	auto definition = field->Definition<tag_block_definition>();
+
+	// Print the block fields name and type
+	Console::ColorPrint(k_color_block, "block field:\t\t");
+	Console::ColorPrint(k_color_name, field_name.c_str(), true);
+	Console::ColorPrint(k_color_block, "block definition:\t");
+	Console::ColorPrintF(k_color_block, definition->name, true);
+
+	// Print the fields value
+	PrintFieldValue(tag_data, field);
+}
+
 /*!
  * \brief
  * Prints the fields of a tag block to the console
@@ -1045,10 +1092,11 @@ void PrintFieldValue(void* field_data, const Yelo::tag_field* field_definition)
  * 
  * Prints the fields of a tag block to the console
  */
-BOOL PrintFields(byte*& tag_data, DWORD& address, const Yelo::tag_field* start_field) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
 {
 	int count = 0;
 	const Yelo::tag_field* current = start_field;
+
 	// enumerate through all of the blocks fields
 	while(current->type != Enums::_field_terminator)
 	{
@@ -1060,13 +1108,15 @@ BOOL PrintFields(byte*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 
 				// store the first field in the array list
 				const tag_field* first_array_field = current + 1;
+
 				// print the array
 				for(int i = 0; i < array_count; i++)
 				{
-					BOOL status = PrintFields(tag_data, address, first_array_field);
+					auto status = PrintFields(tag_data, address, first_array_field);
 					if(status != k_status_ok)
 						return status;
 				}
+
 				// move the current field pointer past the array definition
 				while(current->type != Enums::_field_array_end)
 					current++;
@@ -1082,25 +1132,17 @@ BOOL PrintFields(byte*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 			continue;
 		};
 
-		puts("");
-		// print the address of the field in Halo
-		Console::ColorPrintF(k_color_address, "0x%08X", address);
-		// print the field type
-		Console::ColorPrint(k_color_default, " [");
-		Console::ColorPrintF(k_color_fieldtype, "%s", g_field_descriptions[current->type].m_field_type_name);
-		Console::ColorPrintF(k_color_default, "]%*s", 26 - strlen(g_field_descriptions[current->type].m_field_type_name), " ");
-
-		// if the field has a name, print it
+		// Get the field name
 		std::string field_name("");
 		if(current->name)
 		{
 			field_name.assign(current->name);
 			StringEditing::GetStringSegment(field_name, field_name, nullptr, "^:#*");
 		}
-		Console::ColorPrint(k_color_name, field_name.c_str(), true);
 
-		// print the fields value
-		PrintFieldValue(tag_data, current);
+		puts("");
+
+		PrintFieldInfo(field_name, tag_data, address, current);
 
 		// if the field is a tag block, print all of its elements
 		if(current->type == Enums::_field_block)
@@ -1109,63 +1151,55 @@ BOOL PrintFields(byte*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 			auto definition = current->Definition<tag_block_definition>();
 			block->definition = definition; // set the block view's definition so we can use our tag APIs on it
 
-			// clearly separate the block from the parent tag fields
-			puts("\n");
-
-			// print the block fields name and type
-			Console::ColorPrint(k_color_block, "block field:\t\t");
-			Console::ColorPrint(k_color_name, field_name.c_str(), true);
-			Console::ColorPrint(k_color_block, "block definition:\t");
-			Console::ColorPrintF(k_color_block, definition->name, true);
-
-			// print the block elements
-			for(auto element : *block)
+			if(block->count > 0)
 			{
-				puts("");
-				Console::ColorPrint(k_color_name, field_name.c_str());
-				Console::ColorPrintF(k_color_block, " element %i:\n", element.index);
+				// clearly separate the block from the parent tag fields
+				puts("\n");
 
-				BOOL status = PrintBlock(CAST_PTR(DWORD,element.address), definition);
-				if(status != k_status_ok)
-					return status;
+				// print the block fields name and type
+				PrintBlockInfo(field_name, tag_data, current);
 
-				puts("");
-				Console::ColorPrint(k_color_name, field_name.c_str());
-				Console::ColorPrintF(k_color_block, " element %i end\n", element.index);
+				// print the block elements
+				for(auto element : *block)
+				{
+					puts("");
+					Console::ColorPrint(k_color_name, field_name.c_str());
+					Console::ColorPrintF(k_color_block, " element %i:\n", element.index);
 
-				// if the user enters s, skip past the rest of the blocks
-				// if the user enters q, close the tag
-				puts("");
+					auto status = PrintBlock(CAST_PTR(uintptr_t, element.address), definition);
+					if(status != k_status_ok)
+						return status;
+
+					puts("");
+					Console::ColorPrint(k_color_name, field_name.c_str());
+					Console::ColorPrintF(k_color_block, " element %i end\n", element.index);
+
+					// if the user enters s, skip past the rest of the blocks
+					// if the user enters q, close the tag
+					puts("");
 				
-				Console::ColorPrint(k_color_command_line, "press enter to continue, \"s\" to skip this block type, or \"q\" to quit");
+					Console::ColorPrint(k_color_command_line, "press enter to continue, \"s\" to skip this block type, or \"q\" to quit");
 
-				int command = EnterCommand("q;s;\n", nullptr);
+					int command = EnterCommand("q;s;\n", nullptr);
 
-				if(command == 0)
-					return k_action_end_function;
-				else if (command == 1)
-					break;
+					if(command == 0)
+						return k_action_end_function;
+					else if (command == 1)
+						break;
 
-				count = 0;
+					count = 0;
+				}
+
+				puts("");
+				Console::ColorPrint(k_color_block, "block field end:\t");
+				Console::ColorPrint(k_color_name, field_name.c_str(), true);
 			}
-
-			puts("");
-			Console::ColorPrint(k_color_block, "block field end:\t\n");
-			Console::ColorPrint(k_color_name, field_name.c_str(), true);
 		}
-
+		
 		// increment the address'
-		switch(current->type)
-		{
-		case Enums::_field_pad:
-		case Enums::_field_skip:
-			address += current->DefinitionCast<DWORD>();
-			tag_data +=  current->DefinitionCast<DWORD>();
-			break;
-		default:
-			address += g_field_descriptions[current->type].Definition().size;
-			tag_data += g_field_descriptions[current->type].Definition().size;
-		};
+		size_t field_size = GetFieldSize(current);
+		address += field_size;
+		tag_data +=  field_size;
 
 		current++;
 		count++;
@@ -1201,13 +1235,13 @@ BOOL PrintFields(byte*& tag_data, DWORD& address, const Yelo::tag_field* start_f
  * Copies a tag block element from Halo into local memory, then
  * prints its fields to the console.
  */
-BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definition) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 PrintBlock(uintptr_t address, const Yelo::tag_block_definition* block_definition)
 {
 	// copy the block into local memory
 	auto block_data = YELO_NEW_ARRAY_UNIQUE(byte, block_definition->element_size);
 	byte* data_pointer = block_data.get();
 
-	BOOL status = ReadHaloMemory((void*)address, data_pointer, block_definition->element_size);
+	auto status = ReadHaloMemory((void*)address, data_pointer, block_definition->element_size);
 
 	// print the blocks fields to the console
 	if(status == k_status_ok)
@@ -1224,7 +1258,7 @@ BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definitio
  * 
  * Reads a tag from Halos cache and prints its fields.
  */
-BOOL OpenTag(const char* arguments) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 OpenTag(const char* arguments)
 {
 	// read the index from the arguments string
 	int32 index;
@@ -1244,9 +1278,10 @@ BOOL OpenTag(const char* arguments) // TODO: k_status_ok is '0'...yet this funct
 		return k_status_failed;
 	}
 
+	auto& tag_instance = g_cache_view_globals.m_cache_tag_instances[index];
+
 	// get the tag group definition for the tag type
-	TagGroups::group_tag_to_string tag_group = {
-		g_cache_view_globals.m_cache_tag_instances[index].group_tag };
+	TagGroups::group_tag_to_string tag_group = { tag_instance.group_tag };
 	tag_group.Terminate().TagSwap();
 
 	Yelo::tag_group* tag_group_def = blam::tag_group_get(tag_group.group);
@@ -1258,8 +1293,8 @@ BOOL OpenTag(const char* arguments) // TODO: k_status_ok is '0'...yet this funct
 	}
 
 	// modify the tag name string to fit onto the command line
-	std::string tag_name(g_cache_view_globals.m_cache_tag_instances[index].name);
-	StringEditing::StringTruncate(tag_name, 70, 10);
+	std::string tag_name(tag_instance.name);
+	StringEditing::StringTruncate(tag_name, __max(Console::GetConsoleWidth() - 10, 0), 10);
 
 	// print some interesting bits of data
 	Console::ColorPrintF(k_color_block, "tag type: %s\n", tag_group_def->name);
@@ -1270,7 +1305,7 @@ BOOL OpenTag(const char* arguments) // TODO: k_status_ok is '0'...yet this funct
 	Yelo::tag_block_definition* root_definition = tag_group_def->header_block_definition;
 
 	// print the tags contents
-	return PrintBlock((DWORD)g_cache_view_globals.m_cache_tag_instances[index].base_address, root_definition);
+	return PrintBlock(CAST_PTR(uintptr_t, tag_instance.base_address), root_definition);
 }
 ///////////////////////////////////////////////////////////
 
@@ -1285,19 +1320,21 @@ BOOL OpenTag(const char* arguments) // TODO: k_status_ok is '0'...yet this funct
  * 
  * Prints the tag instance index to the command line. Can optionally filter a specific tag group type.
  */
-BOOL PrintTagIndex(const char* filter) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+int32 PrintTagIndex(const char* filter)
 {
 	puts("");
 	// loop through all of the tag instances
 	int count = 0;
 	for(int i = 0; i < g_cache_view_globals.m_cache_file_globals.count; i++)
 	{
+		auto& tag_instance = g_cache_view_globals.m_cache_tag_instances[i];
+
 		TagGroups::group_tag_to_string tags[3];
-		tags[0].group = g_cache_view_globals.m_cache_tag_instances[i].group_tag;
+		tags[0].group = tag_instance.group_tag;
 		tags[0].Terminate();
-		tags[1].group = g_cache_view_globals.m_cache_tag_instances[i].parent_groups[0];
+		tags[1].group = tag_instance.parent_groups[0];
 		tags[1].Terminate();
-		tags[2].group = g_cache_view_globals.m_cache_tag_instances[i].parent_groups[1];
+		tags[2].group = tag_instance.parent_groups[1];
 		tags[2].Terminate();
 
 		// if a filter is used and this tag doesn't match, skip it
@@ -1305,11 +1342,11 @@ BOOL PrintTagIndex(const char* filter) // TODO: k_status_ok is '0'...yet this fu
 			continue;
 
 		// modify the tag name to fit on the command line
-		std::string tag_name(g_cache_view_globals.m_cache_tag_instances[i].name);
-		StringEditing::StringTruncate(tag_name, 70, 10);
+		std::string tag_name(tag_instance.name);
+		StringEditing::StringTruncate(tag_name, __max(Console::GetConsoleWidth() - 10, 0), 10);
 
 		// print the tag instance information
-		Console::ColorPrintF(k_color_index, "%i", g_cache_view_globals.m_cache_tag_instances[i].GetAbsoluteIndex());
+		Console::ColorPrintF(k_color_index, "%i", tag_instance.GetAbsoluteIndex());
 		Console::ColorPrint(k_color_default, ":\t[");
 		Console::ColorPrintF(k_color_tag, "%s", tags[0].str);
 		Console::ColorPrint(k_color_default, ":");
@@ -1317,7 +1354,7 @@ BOOL PrintTagIndex(const char* filter) // TODO: k_status_ok is '0'...yet this fu
 		Console::ColorPrint(k_color_default, ":");
 		Console::ColorPrintF(k_color_tag, "%s", tags[2].str);
 		Console::ColorPrint(k_color_default, "] : ");
-		Console::ColorPrintF(k_color_address, "0x%08X\n", g_cache_view_globals.m_cache_tag_instances[i].base_address);
+		Console::ColorPrintF(k_color_address, "0x%08X\n", tag_instance.base_address);
 		Console::ColorPrintF(k_color_name, "\t%s\n", tag_name.c_str());
 
 		count++;
@@ -1334,6 +1371,241 @@ BOOL PrintTagIndex(const char* filter) // TODO: k_status_ok is '0'...yet this fu
 		}
 	}
 	return k_status_ok;
+}
+///////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////
+// Find by address functions
+struct s_field_tree_entry
+{
+	const uintptr_t field_address;
+	const tag_field* field_definition;
+	const tag_block_definition* block_definition;
+	const int32 block_index;
+};
+
+int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, uintptr_t address, const Yelo::tag_block_definition* block_definition);
+
+int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
+{
+	const Yelo::tag_field* current = start_field;
+
+	// Enumerate through all of the blocks fields
+	while(current->type != Enums::_field_terminator)
+	{
+		// Get the size of the field
+		size_t field_size = GetFieldSize(current);
+
+		// Loop through array types and skip non-value types
+		switch(current->type)
+		{
+		case Enums::_field_array_start:
+			{
+				int array_count = current->DefinitionCast<int32>();
+				const tag_field* first_array_field = current + 1;
+				for(int i = 0; i < array_count; i++)
+				{
+					auto status = FindField(field_tree, test_address, tag_data, address, first_array_field);
+					if(status == k_status_ok)
+					{
+						return status;
+					}
+				}
+				// Move the current field pointer past the array definition
+				while(current->type != Enums::_field_array_end)
+				{
+					current++;
+				}
+				current++;
+				continue;
+			}
+		case Enums::_field_array_end:
+			return k_status_failed;
+		case Enums::_field_explanation:
+		case Enums::_field_custom:
+			current++;
+			continue;
+		};
+
+		// Test whether the address is part of the current field
+		if((test_address >= address) && (test_address < address + field_size))
+		{
+			// Add a tree entry for the field
+			s_field_tree_entry path_entry { address, current, nullptr, -1 };
+			field_tree.push_back(path_entry);
+			return k_status_ok;
+		}
+
+		// If the field is a data field, test whether the address is within the fields data array
+		if(current->type == Enums::_field_data)
+		{
+			auto data = CAST_PTR(Yelo::tag_data*, tag_data);
+			if((test_address >= CAST_PTR(uintptr_t, data->address)) && (test_address < CAST_PTR(uintptr_t, data->address) + data->size))
+			{
+				// Add a tree entry for the field
+				s_field_tree_entry path_entry { address, current, nullptr, -1 };
+				field_tree.push_back(path_entry);
+				return k_status_ok;
+			}
+		}
+
+		// If the field is a tag block, test if the address is within the blocks data
+		if(current->type == Enums::_field_block)
+		{
+			auto block = CAST_PTR(Yelo::tag_block*, tag_data);
+			auto definition = current->Definition<tag_block_definition>();
+			block->definition = definition;
+			
+			for(auto element : *block)
+			{
+				// Find the field in the block
+				auto status = FindInBlock(field_tree, test_address, CAST_PTR(uintptr_t, element.address), definition);
+				if(status == k_status_ok)
+				{
+					// Add a tree entry for the block
+					s_field_tree_entry path_entry { address, current, definition, element.index };
+					field_tree.push_back(path_entry);
+					return status;
+				}
+			}
+		}
+
+		address += field_size;
+		tag_data += field_size;
+		current++;
+	}
+	return k_status_failed;
+}
+
+int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, uintptr_t address, const Yelo::tag_block_definition* block_definition)
+{
+	// Copy the block into local memory
+	auto block_data = YELO_NEW_ARRAY_UNIQUE(byte, block_definition->element_size);
+	byte* data_pointer = block_data.get();
+
+	auto status = ReadHaloMemory((void*)address, data_pointer, block_definition->element_size);
+	if(status != k_status_ok)
+	{
+		return k_status_failed;
+	}
+
+	// Find the field address in the block
+	return FindField(field_tree, test_address, data_pointer, address, block_definition->fields);;
+}
+
+int32 FindFieldByAddress(const char* address)
+{
+	// Parse the address
+	uintptr_t test_address;
+	int value_count = sscanf_s(address, "0x%08x", &test_address);
+	if(!value_count)
+	{
+		return k_status_failed;
+	}
+
+	// Test whether the address is within the tag data bounds
+	uintptr_t tags_address = CAST_PTR(uintptr_t, g_cache_view_globals.m_cache_file_globals.tags_address);
+	if((test_address < tags_address) || (test_address >= (tags_address + g_cache_view_globals.m_cache_file_header.tag_memory_size- 0x28)))
+	{
+		// Display not found
+		Console::ColorPrint(k_color_status_error, "the provided address does not reside in the cache's tag data\n");
+		return k_status_failed;
+	}
+
+	// Find the tag that the address is in
+	Cache::s_cache_tag_instance* found_tag = nullptr;
+	for(auto* instance = &g_cache_view_globals.m_cache_tag_instances[g_cache_view_globals.m_cache_file_globals.count - 1];
+		instance >= g_cache_view_globals.m_cache_tag_instances;
+		--instance)
+	{
+		if(instance->base_address && (test_address >= CAST_PTR(uintptr_t, instance->base_address)))
+		{
+			found_tag = instance;
+			break;
+		}
+	}
+
+	// If no tag was found then the address is not within the tag data
+	if(found_tag == nullptr)
+	{
+		Console::ColorPrint(k_color_status_error, "the provided address does not reside in the cache's tag data\n");
+		return k_status_failed;
+	}
+
+	// Get the tag group definition for the found tag type
+	TagGroups::group_tag_to_string tag_group = { found_tag->group_tag };
+	tag_group.Terminate().TagSwap();
+
+	Yelo::tag_group* tag_group_def = blam::tag_group_get(tag_group.group);
+	if(!tag_group_def)
+	{
+		Console::ColorPrint(k_color_status_error, "invalid tag group definition", true);
+		return k_status_failed;
+	}
+
+	// Modify the tag name string to fit onto the command line
+	std::string tag_name(found_tag->name);
+	StringEditing::StringTruncate(tag_name, __max(Console::GetConsoleWidth() - 10, 0), 10);
+
+	// Print the tag name and type
+	Console::ColorPrintF(k_color_block, "tag type: %s\n", tag_group_def->name);
+	Console::ColorPrint(k_color_block, "tag name:\n");
+	Console::ColorPrintF(k_color_name, "\t%s\n\n", tag_name.c_str());
+	
+	// Find the tag field
+	Yelo::tag_block_definition* root_definition = tag_group_def->header_block_definition;
+	std::vector<s_field_tree_entry> field_tree;
+
+	auto status = FindInBlock(field_tree, test_address, CAST_PTR(uintptr_t, found_tag->base_address), root_definition);
+	if(status == k_status_ok)
+	{
+		// Print the field tree
+		// Tree entries are added in reverse order once a field has been found so print the tree in reverse
+		for(auto iter = field_tree.rbegin(); iter != field_tree.rend(); iter++)
+		{
+			// Get the field name
+			std::string field_name("");
+			if(iter->field_definition->name)
+			{
+				field_name.assign(iter->field_definition->name);
+				StringEditing::GetStringSegment(field_name, field_name, nullptr, "^:#*");
+			}
+
+			// Get the size of the field
+			size_t field_size = GetFieldSize(iter->field_definition);
+
+			// Get the field data from Halo's memory
+			auto tag_data = YELO_NEW_ARRAY_UNIQUE(byte, field_size);
+			status = ReadHaloMemory((void*)iter->field_address, tag_data.get(), field_size);
+			if(status != k_status_ok)
+			{
+				return k_status_failed;
+			}
+
+			byte* tag_data_ptr = tag_data.get();
+
+			// Print the field info
+			PrintFieldInfo(field_name, tag_data_ptr, iter->field_address, iter->field_definition);
+			puts("");
+			
+			// If the path entry is a block definition print the block element info
+			if(iter->block_definition)
+			{
+				puts("");
+				PrintBlockInfo(field_name, tag_data_ptr, iter->field_definition);
+				puts("");
+				Console::ColorPrint(k_color_name, field_name.c_str());
+				Console::ColorPrintF(k_color_block, " element %i:\n", iter->block_index);
+				puts("");
+			}
+		}
+
+		return k_status_ok;
+	}
+	else
+	{
+		return k_status_failed;
+	}
 }
 ///////////////////////////////////////////////////////////
 
@@ -1356,6 +1628,9 @@ void PrintHelp()
 		true);
 	Console::ColorPrint(k_color_command_line, 
 		"set {address} {type} {values}	: sets the value of a memory address in Halo",
+		true);
+	Console::ColorPrint(k_color_command_line, 
+		"findaddr {address}		: finds the tag field that resides at the provided address",
 		true);
 	Console::ColorPrint(k_color_command_line, 
 		"quit				: ends the program",

@@ -41,6 +41,8 @@ namespace Yelo
 			const char* format, ...);
 		void ColorPrint(const WORD color,
 			const char* string, bool new_line = false);
+		int32 GetConsoleWidth();
+		int32 GetConsoleHeight();
 	}; };
 };
 #endif
