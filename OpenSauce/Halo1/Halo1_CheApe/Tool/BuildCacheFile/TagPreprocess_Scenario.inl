@@ -43,16 +43,16 @@ namespace Scenario
 						const auto& bitmap = *blam::tag_get<TagGroups::s_bitmap_group>(bitmap_index);
 
 						YELO_ASSERT_DISPLAY(bitmap.bitmaps.Count == bsp_lightmap_count,
-							"error: a lightmap bitmap referenced in the project_yellow tag does not have the same bitmap count as the bsp has lightmap meshes");
+							"error: a lightmap bitmap referenced in a bsp modifier does not have the same bitmap count as the bsp has lightmap meshes");
 					};
 
 				// Every lightmap set must have a name
 				YELO_ASSERT_DISPLAY(!is_null_or_empty(lightmap_set.name),
-					"error: a lightmap set in the project_yellow tag has no name");
+					"error: a lightmap set in the scenario tag has no name");
 
 				// Every lightmap set must have a standard lightmap
 				YELO_ASSERT_DISPLAY(!lightmap_set.standard_lightmap.tag_index.IsNull(),
-					"error: a lightmap set in the project_yellow tag has no standard lightmap");
+					"error: a lightmap set in the scenario tag has no standard lightmap");
 				
 				// All lightmap bitmaps must have the same bitmap count as the bsp
 				check_bitmap_count_func(lightmap_set.standard_lightmap.tag_index);
@@ -65,7 +65,7 @@ namespace Scenario
 				if(has_dlm1 || has_dlm2 || has_dlm3)
 				{
 					YELO_ASSERT_DISPLAY(has_dlm1 && has_dlm2 && has_dlm3,
-						"error: a lightmap set in the project_yellow tag has a missing directional lightmap");
+						"error: a lightmap set in the scenario tag has a missing directional lightmap");
 					
 					// All lightmap bitmaps must have the same bitmap count as the bsp
 					check_bitmap_count_func(lightmap_set.directional_lightmap_1.tag_index);

@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using BlamLib.Blam;
 using BlamLib.Blam.Halo1;
 using BlamLib.Managers;
+using BlamLib.Messaging;
 using BlamLib.TagInterface;
 
 namespace BlamLib.Render.COLLADA.Halo1
@@ -44,7 +45,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Data collection class for the Halo1 scenario tag. </summary>
 	///-------------------------------------------------------------------------------------------------
-	public class ScenarioData : ITagDataSource, IHalo1ScenarioDataProvider
+	public class ScenarioData : ITagDataSource, IHalo1ScenarioDataProvider, IMessageSource
 	{
 		#region Fields
 		public string TagPath { get; private set; }
@@ -60,6 +61,17 @@ namespace BlamLib.Render.COLLADA.Halo1
 			IncludeSoundScenery = false;
 		}
 		#endregion Constructor
+
+		#region Messaging
+		protected IMessageHandler mMessageHandler = new MessageHandler();
+
+		/// <summary>   Event queue for all listeners interested in MessageSent events. </summary>
+		public event EventHandler<MessageArgs> MessageSent
+		{
+			add { mMessageHandler.MessageSent += value; }
+			remove { mMessageHandler.MessageSent -= value; }
+		}
+		#endregion
 
 		#region Data Classes
 		///-------------------------------------------------------------------------------------------------
@@ -248,20 +260,27 @@ namespace BlamLib.Render.COLLADA.Halo1
 				{
 					if(instance.Name.Value >= ScenarioObjectNames.Count)
 					{
-						throw new ColladaException("An object instance in the current scenario has an out of bounds object name");
+						throw new ColladaException("{0} instance {1} in the current scenario has an out of bounds object name"
+							, Blam.Halo1.TypeEnums.GetObjectTypeString(type)
+							, instances.IndexOf(instance));
 					}
 					objectName = ScenarioObjectNames[instance.Name.Value];
 				}
 
-				// If the objects type is value add a reference to it
+				// If the objects type is valid add a reference to it
 				ScenarioObject objectType = null;
 				if ((instance.Type.Value < 0) || (instance.Type.Value >= ScenarioObjectLists[type].Count))
 				{
-					throw new ColladaException("An object instance in the current scenario has an out of bounds object type");
+					mMessageHandler.SendMessage("WARNING: {0} instance {1} in the current scenario has an out of bounds object type. Instance skipped."
+						, Blam.Halo1.TypeEnums.GetObjectTypeString(type)
+						, instances.IndexOf(instance));
 				}
-				objectType = ScenarioObjectLists[type][instance.Type.Value];
+				else
+				{
+					objectType = ScenarioObjectLists[type][instance.Type.Value];
 
-				ScenarioObjectInstanceLists[type].Add(new ScenarioObjectInstance(instance, objectName, objectType));
+					ScenarioObjectInstanceLists[type].Add(new ScenarioObjectInstance(instance, objectName, objectType));
+				}
 			}
 		}
 		#endregion Add Scenario Objects and Instances
