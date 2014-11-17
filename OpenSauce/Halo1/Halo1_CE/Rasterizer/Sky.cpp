@@ -11,8 +11,10 @@
 
 #include <blamlib/Halo1/render/render.hpp>
 #include <YeloLib/Halo1/render/sky/c_sky_manager.hpp>
+#include <blamlib/Halo1/scenario/sky_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
+#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
@@ -106,12 +108,32 @@ namespace Yelo
 			};
 		}
 
+		/// <summary>	Hooks the sky index for determining whether the sky needs to be rendered. </summary>
+		static API_FUNC_NAKED void VisibleSkyEnable_Hook()
+		{
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(VISIBLE_SKY_ENABLE_SKY_TAG_INDEX_RETN);
+			static datum_index SKY_TAG_INDEX;
+
+			_asm
+			{
+				push	eax
+				lea		ecx, [SKY_TAG_INDEX]
+				push	ecx
+				lea		ecx, g_sky_manager
+				call	Yelo::Render::Sky::c_sky_manager::GetSkyTagIndex
+				mov		ecx, [SKY_TAG_INDEX]
+
+				jmp		RETN_ADDRESS
+			};
+		}
+
 		/// <summary>	Initializes hooks and sky manager. </summary>
 		void Initialize()
 		{
 			Memory::WriteRelativeJmp(&AtmosphericFog_Hook, GET_FUNC_VPTR(FOG_ATMOSPHERIC_SKY_TAG_INDEX_HOOK), true);
 			Memory::WriteRelativeJmp(&PlanarFog_Hook, GET_FUNC_VPTR(FOG_PLANAR_SKY_TAG_INDEX_HOOK), true);
 			Memory::WriteRelativeJmp(&RenderSky_Hook, GET_FUNC_VPTR(RENDER_SKY_SKY_TAG_INDEX_HOOK), true);
+			Memory::WriteRelativeJmp(&VisibleSkyEnable_Hook, GET_FUNC_VPTR(VISIBLE_SKY_ENABLE_SKY_TAG_INDEX_HOOK), true);
 		
 			g_sky_manager.Clear();
 		}

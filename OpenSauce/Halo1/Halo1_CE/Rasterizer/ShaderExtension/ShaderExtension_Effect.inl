@@ -27,22 +27,68 @@ namespace Effect
 
 	void SetShaderEffectVariables(const TagGroups::s_shader_effect* shader);
 
-	API_FUNC_NAKED void Hook_ShaderEffect_DrawEffect()
+	API_FUNC_NAKED void Hook_ShaderEffect_ParticleSystem()
 	{
-		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_EFFECT_DRAW_EFFECT_RETN);
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_EFFECT_PARTICLE_SYSTEM_RETN);
 
 		_asm{
+			mov		eax, [ebx + 8]
+			add		esp, 4
+
+			push	eax
 			push	ecx
 			push	edx
 
-			mov		eax, [ebx + 0Ch]
 			push	eax
 			call	SetShaderEffectVariables;
-			
+
 			pop		edx
 			pop		ecx
+			pop		eax
 
 			jmp		RETN_ADDRESS;
+		};
+	}
+
+	API_FUNC_NAKED void Hook_ShaderEffect_Particle()
+	{
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_EFFECT_PARTICLE_RETN);
+
+		_asm{
+			push	eax
+			push	edx
+
+			push	edi
+			call	SetShaderEffectVariables;
+
+			pop		edx
+			pop		eax
+
+			mov		al, [edi+28h]
+			mov		ecx, [ebx]
+			jmp		RETN_ADDRESS;
+		};
+	}
+
+	API_FUNC_NAKED void Hook_ShaderEffect_Contrail()
+	{
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_EFFECT_CONTRAIL_RETN);
+
+		_asm{
+			push	eax
+			push	ecx
+			push	edx
+
+			push	edi
+			call	SetShaderEffectVariables;
+
+			pop		edx
+			pop		ecx
+			pop		eax
+
+			mov		[eax+8], ecx
+			mov		[eax+0Ch], edi
+			jmp		RETN_ADDRESS
 		};
 	}
 
@@ -89,7 +135,7 @@ namespace Effect
 	{
 		g_current_shader_offset = 0;
 
-		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled)
+		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled || !shader)
 		{
 			return;
 		}
@@ -110,6 +156,8 @@ namespace Effect
 	void ApplyHooks()
 	{
 		Memory::WriteRelativeJmp(&Hook_ShaderEffectPixelShaderOffset, GET_FUNC_VPTR(RASTERIZER_EFFECT_PS_INDEX_NO_HOOK), true);
-		Memory::WriteRelativeJmp(&Hook_ShaderEffect_DrawEffect, GET_FUNC_VPTR(RASTERIZER_EFFECT_DRAW_EFFECT_HOOK), true);
+		Memory::WriteRelativeJmp(&Hook_ShaderEffect_ParticleSystem, GET_FUNC_VPTR(RASTERIZER_EFFECT_PARTICLE_SYSTEM_HOOK), true);
+		Memory::WriteRelativeJmp(&Hook_ShaderEffect_Particle, GET_FUNC_VPTR(RASTERIZER_EFFECT_PARTICLE_HOOK), true);
+		Memory::WriteRelativeJmp(&Hook_ShaderEffect_Contrail, GET_FUNC_VPTR(RASTERIZER_EFFECT_CONTRAIL_HOOK), true);
 	}
 };
