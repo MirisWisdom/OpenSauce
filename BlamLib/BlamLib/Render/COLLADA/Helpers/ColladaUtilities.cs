@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace BlamLib.Render
@@ -15,6 +16,22 @@ namespace BlamLib.Render
 	{
 		public static class ColladaUtilities
 		{
+			public enum ColladaRotationOrder
+			{
+				XYZ,
+				YZX,
+				ZXY,
+				XZY,
+				ZYX,
+				YXZ,
+				ZXZ,
+				XYX,
+				YZY,
+				ZYZ,
+				XZX,
+				YXY
+			}
+
 			///-------------------------------------------------------------------------------------------------
 			/// <summary>	Replace characters in a string according to string find-replace pairs. </summary>
 			/// <exception cref="ColladaException">	Thrown when a Collada error condition occurs. </exception>
@@ -211,45 +228,63 @@ namespace BlamLib.Render
 				return ColladaUtilities.BuildUri("file://", Path.Combine(rootDirectory, externalReference.GetRelativeURL()) + ".dae", id);
 			}
 
-			///-------------------------------------------------------------------------------------------------
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
 			/// 	Creates a list of ColladaRotate elements describing a rotation defined by three floats
-			/// 	(YPR)
+			/// 	(XYZ)
 			/// </summary>
-			/// <param name="y">			  	Yaw. </param>
-			/// <param name="p">			  	Pitch. </param>
-			/// <param name="r">			  	Roll. </param>
-			/// <param name="transformMatrix">	The transform matrix. </param>
+			///
+			/// <param name="x">				The x angle. </param>
+			/// <param name="y">				The y angle. </param>
+			/// <param name="z">				The z angle. </param>
+			/// <param name="xColumnVector">	The x column vector. </param>
+			/// <param name="yColumnVector">	The y column vector. </param>
+			/// <param name="zColumnVector">	The z column vector. </param>
+			/// <param name="order">			The rotation order. </param>
+			///
 			/// <returns>	The new rotation set. </returns>
-			///-------------------------------------------------------------------------------------------------
-			public static List<ColladaElement> CreateRotationSet(float y,
-				float p,
-				float r,
-				LowLevel.Math.real_matrix3x3 transformMatrix)
+			public static List<ColladaElement> CreateRotationSet(float x,
+				float y,
+				float z,
+				LowLevel.Math.real_vector3d xColumnVector,
+				LowLevel.Math.real_vector3d yColumnVector,
+				LowLevel.Math.real_vector3d zColumnVector,
+				ColladaRotationOrder order)
 			{
 				List<ColladaElement> return_array = new List<ColladaElement>();
-				return_array.Add(new Core.ColladaRotate(transformMatrix.Forward.I, transformMatrix.Forward.J, transformMatrix.Forward.K, p)
-					{ sID = "rotateP" });
-				return_array.Add(new Core.ColladaRotate(transformMatrix.Left.I, transformMatrix.Left.J, transformMatrix.Left.K, r)
-					{ sID = "rotateR" });
-				return_array.Add(new Core.ColladaRotate(transformMatrix.Up.I, transformMatrix.Up.J, transformMatrix.Up.K, y)
-					{ sID = "rotateY" });
+
+				Dictionary<ColladaRotationOrder, byte[]> rotation_indices = new Dictionary<ColladaRotationOrder,byte[]>()
+				{
+					{ ColladaRotationOrder.XYZ, new byte[]{ 0, 1, 2 }},
+					{ ColladaRotationOrder.YZX, new byte[]{ 1, 2, 0 }},
+					{ ColladaRotationOrder.ZXY, new byte[]{ 2, 0, 1 }},
+					{ ColladaRotationOrder.XZY, new byte[]{ 0, 2, 1 }},
+					{ ColladaRotationOrder.ZYX, new byte[]{ 2, 1, 0 }},
+					{ ColladaRotationOrder.YXZ, new byte[]{ 1, 0, 2 }},
+					{ ColladaRotationOrder.ZXZ, new byte[]{ 2, 0, 2 }},
+					{ ColladaRotationOrder.XYX, new byte[]{ 0, 1, 0 }},
+					{ ColladaRotationOrder.YZY, new byte[]{ 1, 2, 1 }},
+					{ ColladaRotationOrder.ZYZ, new byte[]{ 2, 1, 2 }},
+					{ ColladaRotationOrder.XZX, new byte[]{ 0, 2, 0 }},
+					{ ColladaRotationOrder.YXY, new byte[]{ 1, 0, 1 }}
+				};
+
+				var values = new[] {
+					new { SID = "rotateX", Column = xColumnVector, Value = x },
+					new { SID = "rotateY", Column = yColumnVector, Value = y },
+					new { SID = "rotateZ", Column = zColumnVector, Value = z }
+				};
+
+				foreach(var index in rotation_indices[order])
+				{
+					var axis = values[index];
+
+					return_array.Add(
+						new Core.ColladaRotate(axis.Column.I, axis.Column.J, axis.Column.K, axis.Value) { sID = axis.SID }
+					);
+				}
 
 				return return_array;
-			}
-
-			///-------------------------------------------------------------------------------------------------
-			/// <summary>
-			/// 	Creates a list of ColladaRotate elements describing a rotation defined a
-			/// 	RealEulerAngles3D field.
-			/// </summary>
-			/// <param name="rotation">		  	A RealEulerAngles3D field. </param>
-			/// <param name="transformMatrix">	The transform matrix. </param>
-			/// <returns>	The new rotation set. </returns>
-			///-------------------------------------------------------------------------------------------------
-			public static List<ColladaElement> CreateRotationSet(LowLevel.Math.real_euler_angles3d rotation, LowLevel.Math.real_matrix3x3 transformMatrix)
-			{
-				return CreateRotationSet(rotation.Yaw, rotation.Pitch, rotation.Roll, transformMatrix);
 			}
 		}
 	}

@@ -377,7 +377,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// create the marker node elements
-			CreateMarkers(markerList, mTransformMatrix);
+			CreateMarkers(markerList
+				, new LowLevel.Math.real_vector3d(1, 0, 0)
+				, new LowLevel.Math.real_vector3d(0, -1, 0)
+				, new LowLevel.Math.real_vector3d(0, 0, 1)
+				, ColladaUtilities.ColladaRotationOrder.XYZ
+			);
 		}
 		#endregion
 		#region Create Nodes
