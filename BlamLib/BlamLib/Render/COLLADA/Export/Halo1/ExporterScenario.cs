@@ -170,14 +170,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 				node.Add(translate);
 
 				// Set the nodes rotation
-				// Have to use a different transform matrix here, Not sure why...
 				node.AddRange(
-					ColladaUtilities.CreateRotationSet(
-						objectInstance.Rotation.Y, objectInstance.Rotation.P, objectInstance.Rotation.R,
-						new LowLevel.Math.real_matrix3x3(
-							new LowLevel.Math.real_vector3d(0, -1, 0),
-							new LowLevel.Math.real_vector3d(1, 0, 0),
-							new LowLevel.Math.real_vector3d(0, 0, 1)))
+					ColladaUtilities.CreateRotationSet(objectInstance.Rotation.R, objectInstance.Rotation.P, objectInstance.Rotation.Y
+						, new LowLevel.Math.real_vector3d(1, 0, 0)
+						, new LowLevel.Math.real_vector3d(0, -1, 0)
+						, new LowLevel.Math.real_vector3d(0, 0, 1)
+						, ColladaUtilities.ColladaRotationOrder.XYZ)
 				);
 
 				var nodeIdList = GetNodeReferences(objectInstance.ObjectType, objectInstance.Permutation.ToString("D2"));

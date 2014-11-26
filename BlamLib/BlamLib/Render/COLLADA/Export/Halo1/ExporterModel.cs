@@ -259,7 +259,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// create the bone node elements
-			CreateBones(bone_list, mTransformMatrix);
+			CreateBones(bone_list
+				, new LowLevel.Math.real_vector3d(1, 0, 0)
+				, new LowLevel.Math.real_vector3d(0, 0, 1)
+				, new LowLevel.Math.real_vector3d(0, 1, 0)
+				, ColladaUtilities.ColladaRotationOrder.ZYX
+			);
 		}
 		#endregion
 		#region Create Nodes
@@ -343,7 +348,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// create the marker node elements
-			CreateMarkers(markerList, mTransformMatrix);
+			CreateMarkers(markerList
+				, new LowLevel.Math.real_vector3d(1, 0, 0)
+				, new LowLevel.Math.real_vector3d(0, 0, 1)
+				, new LowLevel.Math.real_vector3d(0, 1, 0)
+				, ColladaUtilities.ColladaRotationOrder.ZYX
+			);
 		}
 		#endregion
 		#endregion

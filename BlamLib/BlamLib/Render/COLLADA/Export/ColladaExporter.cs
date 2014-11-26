@@ -824,15 +824,19 @@ namespace BlamLib.Render.COLLADA
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Creates nodes from a generic list of markers. </summary>
-		/// <param name="markers">				Generic list of markers to create nodes from. </param>
-		/// <param name="rotation_vector_y">	Y column vector for correct euler rotation. </param>
-		/// <param name="rotation_vector_p">	P column vector for correct euler rotation. </param>
-		/// <param name="rotation_vector_r">	R column vector for correct euler rotation. </param>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <param name="markers">			Generic list of markers to create nodes from. </param>
+		/// <param name="xColumnVector">	X column vector for correct euler rotation. </param>
+		/// <param name="yColumnVector">	Y column vector for correct euler rotation. </param>
+		/// <param name="zColumnVector">	Z column vector for correct euler rotation. </param>
+		/// <param name="order">			The rotation order. </param>
 		protected void CreateMarkers(List<Marker> markers,
-			LowLevel.Math.real_matrix3x3 transformMatrix)
+				LowLevel.Math.real_vector3d xColumnVector,
+				LowLevel.Math.real_vector3d yColumnVector,
+				LowLevel.Math.real_vector3d zColumnVector,
+				ColladaUtilities.ColladaRotationOrder order)
 		{
 			foreach (var marker in markers)
 			{
@@ -845,9 +849,12 @@ namespace BlamLib.Render.COLLADA
 				node.Add(translate);
 
 				// set the nodes rotation
-				node.AddRange(ColladaUtilities.CreateRotationSet(
-					TagInterface.RealQuaternion.ToEuler3D(marker.Rotation),
-					transformMatrix)
+				var rotation = TagInterface.RealQuaternion.ToEuler3D(marker.Rotation);
+				node.AddRange(ColladaUtilities.CreateRotationSet(rotation.Roll, rotation.Pitch, rotation.Yaw
+					, xColumnVector
+					, yColumnVector
+					, zColumnVector
+					, order)
 				);
 
 				// if the bone index is -1 add it to the node list, otherwise add it to a bone
@@ -1372,16 +1379,21 @@ namespace BlamLib.Render.COLLADA
 			return children;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Creates a collada node for a single bone. </summary>
-		/// <param name="bone">					The bone to create a node for. </param>
-		/// <param name="rotation_vector_y">	Y column vector for correct euler rotation. </param>
-		/// <param name="rotation_vector_p">	P column vector for correct euler rotation. </param>
-		/// <param name="rotation_vector_r">	R column vector for correct euler rotation. </param>
+		///
+		/// <param name="bone">				The bone to create a node for. </param>
+		/// <param name="xColumnVector">	X column vector for correct euler rotation. </param>
+		/// <param name="yColumnVector">	Y column vector for correct euler rotation. </param>
+		/// <param name="zColumnVector">	Z column vector for correct euler rotation. </param>
+		/// <param name="order">			The rotation order. </param>
+		///
 		/// <returns>	The new bone. </returns>
-		///-------------------------------------------------------------------------------------------------
 		private Core.ColladaNode CreateBone(Bone bone,
-			LowLevel.Math.real_matrix3x3 transformMatrix)
+			LowLevel.Math.real_vector3d xColumnVector,
+			LowLevel.Math.real_vector3d yColumnVector,
+			LowLevel.Math.real_vector3d zColumnVector,
+			ColladaUtilities.ColladaRotationOrder order)
 		{
 			// create a node
 			var node = CreateNode(bone.Name, bone.Name, bone.Name, Enums.ColladaNodeType.JOINT);
@@ -1392,25 +1404,33 @@ namespace BlamLib.Render.COLLADA
 			node.Add(translation);
 
 			// set the nodes rotation
-			node.AddRange(ColladaUtilities.CreateRotationSet(TagInterface.RealQuaternion.ToEuler3D(bone.Rotation),
-				transformMatrix));
+			var rotation = TagInterface.RealQuaternion.ToEuler3D(bone.Rotation);
+			node.AddRange(ColladaUtilities.CreateRotationSet(rotation.Roll, rotation.Pitch, rotation.Yaw
+				, xColumnVector
+				, yColumnVector
+				, zColumnVector
+				, order));
 
 			return node;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Creates the bone node and bone matrix lists from a generic list of bones. </summary>
-		/// <param name="bones">				A generic list of connected bones. </param>
-		/// <param name="rotation_vector_y">	Y column vector for correct euler rotation. </param>
-		/// <param name="rotation_vector_p">	P column vector for correct euler rotation. </param>
-		/// <param name="rotation_vector_r">	R column vector for correct euler rotation. </param>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <param name="bones">			A generic list of connected bones. </param>
+		/// <param name="xColumnVector">	X column vector for correct euler rotation. </param>
+		/// <param name="yColumnVector">	Y column vector for correct euler rotation. </param>
+		/// <param name="zColumnVector">	Z column vector for correct euler rotation. </param>
+		/// <param name="order">			The rotation order. </param>
 		protected void CreateBones(List<Bone> bones,
-			LowLevel.Math.real_matrix3x3 transformMatrix)
+			LowLevel.Math.real_vector3d xColumnVector,
+			LowLevel.Math.real_vector3d yColumnVector,
+			LowLevel.Math.real_vector3d zColumnVector,
+			ColladaUtilities.ColladaRotationOrder order)
 		{
 			// create the bone nodes
 			foreach (var bone in bones)
-				listBone.Add(CreateBone(bone, transformMatrix));
+				listBone.Add(CreateBone(bone, xColumnVector, yColumnVector, zColumnVector, order));
 
 			// link the bones together
 			for (int i = 0; i < bones.Count; i++)
