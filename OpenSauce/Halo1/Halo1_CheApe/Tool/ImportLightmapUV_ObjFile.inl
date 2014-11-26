@@ -7,10 +7,6 @@
 
 c_obj_file::~c_obj_file()
 {
-	for(std::vector<s_group*>::const_iterator iter = m_groups.begin();
-		iter != m_groups.end(); ++iter)
-		delete *iter;
-
 	m_groups.clear();
 	m_texcoords.clear();
 }
@@ -19,6 +15,7 @@ HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 {
 	fputs("loading lightmaps obj file...", stdout);
 
+	// Open the obj file
 	FILE* file = nullptr;
 	fopen_s(&file, obj_path.c_str(), "r+");
 	if(!file || ferror(file))
@@ -31,10 +28,12 @@ HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 		return E_FAIL;
 	}
 
-	s_group* current_group = nullptr;
+	// Read a line
+	std::shared_ptr<s_group> current_group;
 	char line[256];
 	while (fgets(line, NUMBEROF(line)-1, file) != nullptr)
 	{
+		// Try to read the line as a texture coordinate
 		real floatarr[3];
 		if(sscanf_s(line, "vt %f %f %f[^\n]", &floatarr[0], &floatarr[1], &floatarr[2]))
 		{
@@ -48,25 +47,44 @@ HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 		id[0] = '\0';
 
 		s_face face;
+		// Try to read the line as the start of a group
 		if(sscanf_s(line, "g %s[^\n]", id, NUMBEROF(id)-1))
 		{
 			if(id[0] != '\0')
 			{
+				// If current group is not null, add the current group to the list and start a new one
 				if(current_group)
 				{	
 					m_groups.push_back(current_group);
 					current_group = nullptr;
 				}
-				current_group = new s_group(id);
+
+				// Find the lightmap index at the end of the id
+				std::string group_name(id);
+				auto index_offset = group_name.find_last_of("0123456789");
+				if(index_offset == std::string::npos)
+				{
+					YELO_WARN("OS_tool:import: obj file has a group name that does not end with the lightmap index");
+					return E_FAIL;
+				}
+
+				// Convert the index section of the group name to an int
+				auto index_string = group_name.substr(index_offset);
+				int lightmap_index = atoi(index_string.c_str());
+
+				// Create a new group
+				current_group = std::make_shared<s_group>(id, lightmap_index);
 			}
 		}
-		else if(sscanf_s(line, "f %i/%i/%i %i/%i/%i %i/%i/%i[^\n]", 
+		// Try to read the line as a face in the current group
+		else if(sscanf_s(line, "f %i/%i/%i %i/%i/%i %i/%i/%i[^\n]",
 			&face.vertex_indicies[2].position_index, &face.vertex_indicies[2].texcoord_index, &face.vertex_indicies[2].normals_index, 
 			&face.vertex_indicies[1].position_index, &face.vertex_indicies[1].texcoord_index, &face.vertex_indicies[1].normals_index, 
 			&face.vertex_indicies[0].position_index, &face.vertex_indicies[0].texcoord_index, &face.vertex_indicies[0].normals_index) == 9)
 		{
 			current_group->faces.push_back(face);
 		}
+		// Try to read the line as a face in the current group
 		else if(sscanf_s(line, "f %i/%i %i/%i %i/%i[^\n]", 
 			&face.vertex_indicies[2].position_index, &face.vertex_indicies[2].texcoord_index, 
 			&face.vertex_indicies[1].position_index, &face.vertex_indicies[1].texcoord_index, 
@@ -75,6 +93,8 @@ HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 			current_group->faces.push_back(face);
 		}
 	}
+
+	// Add the last group to the list
 	if(current_group)
 	{	
 		m_groups.push_back(current_group);
@@ -82,18 +102,21 @@ HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 	}
 	fputs("done\n", stdout);
 
+	// Verify that one or more groups/texcoord was read
 	fclose(file);
 	if(m_groups.size() == 0)
 	{
 		YELO_WARN("OS_tool:import: obj file contains no groups");
 		return E_FAIL;
 	}
+
 	if(m_texcoords.size() == 0)
 	{
 		YELO_WARN("OS_tool:import: obj file contains no texture coordinates");
 		return E_FAIL;
 	}
 
+	// Print stats
 	fputs("\n", stdout);
 	fputs("obj file stats\n", stdout);
 	printf_s("\tgroups: %u\n", m_groups.size());
@@ -107,8 +130,10 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 {
 	fputs("checking obj file compatibility with structure bsp...", stdout);
 
+	// Lightmap count does not include the non-uv'd transparent meshes
 	int32 lightmaps_count = bsp->lightmaps.Count - 1;
 
+	// Verify that the lightmap count matches the loaded group count
 	if(lightmaps_count != m_groups.size() )
 	{
 		fputs("failed\n", stdout);
@@ -116,9 +141,10 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 			m_groups.size(), lightmaps_count);
 		return E_FAIL;
 	}
+
 	for(int32 i = 0; i < lightmaps_count; i++)
 	{
-		TagGroups::structure_bsp_lightmap* bsp_lightmap = blam::tag_block_get_element(bsp->lightmaps, i);
+		auto* bsp_lightmap = blam::tag_block_get_element(bsp->lightmaps, i);
 
 		int32 surface_count = 0;
 		for (const auto& bsp_material : bsp_lightmap->materials)
@@ -126,12 +152,27 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 			surface_count += bsp_material.surface_count;
 		}
 
-		if(surface_count != m_groups[i]->faces.size())
+		// Find the group for this lightmap index
+		auto group_iter = std::find_if(m_groups.begin(), m_groups.end(),
+			[i](std::shared_ptr<s_group>& entry)
+			{
+				return i == entry->lightmap_index;
+			}
+		);
+
+		if(group_iter == m_groups.end())
+		{
+			YELO_WARN("OS_tool:import: obj file contains no group for lightmap %i", i);
+			return E_FAIL;
+		}
+
+		// Verify that the group's face count matches the lightmaps
+		if(surface_count != (*group_iter)->faces.size())
 		{
 			printf_s("\nfailed\n");
-			YELO_WARN("lightmap %i surface count (%i) does not match obj group %i face count (%i)",
-				i, surface_count, i, m_groups[i]->faces.size());
-			return E_FAIL;					
+			YELO_WARN("lightmap %i surface count (%i) does not match the obj group face count (%i)",
+				i, surface_count, m_groups[i]->faces.size());
+			return E_FAIL;
 		}
 	}
 
@@ -143,13 +184,28 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 {
 	fputs("replacing lightmap texture coordinates...", stdout);
 
-	size_t group_index = 0;
-	for (auto& bsp_lightmap : bsp->lightmaps)
+	for (int32 i = 0; i < (bsp->lightmaps.Count - 1); ++i)
 	{
-		const auto group = m_groups.at(group_index++);
+		auto& bsp_lightmap = bsp->lightmaps[i];		
 
 		if(bsp_lightmap.bitmap == NONE)
 			continue;
+
+		// Find the group for this lightmap index
+		auto group_iter = std::find_if(m_groups.begin(), m_groups.end(),
+			[i](std::shared_ptr<s_group>& entry)
+			{
+				return i == entry->lightmap_index;
+			}
+		);
+
+		if(group_iter == m_groups.end())
+		{
+			YELO_WARN("OS_tool:import: obj file contains no group for lightmap %i", i);
+			return E_FAIL;
+		}
+
+		const auto& group = *group_iter->get();
 
 		int32 surface_offset = 0;
 		for (auto& bsp_material : bsp_lightmap.materials)
@@ -161,9 +217,9 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 			size_t face_index = surface_offset;
 			for (int32 k = 0; k < bsp_material.surface_count; k++, face_index++)
 			{
-				TagGroups::structure_surface* surface = blam::tag_block_get_element(bsp->surfaces, bsp_material.surfaces + k);
+				auto* surface = blam::tag_block_get_element(bsp->surfaces, bsp_material.surfaces + k);
 
-				const s_face& face = group->faces.at(face_index);
+				const auto& face = group.faces.at(face_index);
 
 				for (int32 x = 0; x < NUMBEROF(surface->a); x++)
 				{
@@ -179,7 +235,7 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 			}
 
 			surface_offset += bsp_material.surface_count;
-		}				
+		}
 	}
 
 	printf_s("done\n");
