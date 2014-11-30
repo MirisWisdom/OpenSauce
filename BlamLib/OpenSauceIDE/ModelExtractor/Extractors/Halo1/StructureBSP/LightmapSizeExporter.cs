@@ -81,7 +81,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 
 				var bitmapInfo = bitmap.Bitmaps[lightmap.Bitmap.Value];
 
-				lightmapSizeList.Add(String.Format("{0}-{1}\t[{2},{3}]"
+				lightmapSizeList.Add(String.Format("{0}_{1}\t[{2},{3}]"
 					, bspName
 					, lightmap.Bitmap.Value
 					, bitmapInfo.Width * sizeMultiplier

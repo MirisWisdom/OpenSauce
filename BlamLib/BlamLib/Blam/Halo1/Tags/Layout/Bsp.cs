@@ -202,11 +202,11 @@ namespace BlamLib.Blam.Halo1.Tags
 					Add(Plane = new TI.RealPlane3D());
 					Add(BreakableSurface = new TI.ShortInteger());
 					Add(new TI.Pad(2 + 4));
-					Add(VertexBuffersCount1 = new TI.LongInteger());
-					Add(VertexBuffersOffset1 = new TI.LongInteger());
+					Add(VerticesCount = new TI.LongInteger());
+					Add(VerticesStartIndex = new TI.LongInteger());
 					Add(new TI.Pad(8 + 4));
-					Add(VertexBuffersCount2 = new TI.LongInteger());
-					Add(VertexBuffersOffset2 = new TI.LongInteger());
+					Add(LightmapVerticesCount = new TI.LongInteger());
+					Add(LightmapVerticesStartIndex = new TI.LongInteger());
 					Add(new TI.Pad(8));
 					Add(UncompressedVertices = new TI.Data(this, TI.DataType.Vertex));
 					Add(CompressedVertices = new TI.Data(this, TI.DataType.VertexCompressed));

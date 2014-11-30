@@ -10,7 +10,6 @@ using BlamLib.Blam.Halo1;
 using BlamLib.Managers;
 using BlamLib.Render.COLLADA;
 using BlamLib.Render.COLLADA.Halo1;
-using OpenSauceIDE.ModelExtractor.TagIO;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.Scenario
 {

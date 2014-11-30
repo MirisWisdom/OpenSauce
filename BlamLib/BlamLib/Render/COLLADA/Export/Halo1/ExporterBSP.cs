@@ -180,7 +180,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
-			Geometry geometryData = new Geometry(ColladaUtilities.FormatName(TagName, " ", "_") + "-" + definition.Lightmaps[index].Bitmap.ToString()
+			Geometry geometryData = new Geometry(ColladaUtilities.FormatName(TagName, " ", "_") + "_" + definition.Lightmaps[index].Bitmap.ToString()
 				, 2
 				, Geometry.VertexComponent.POSITION
 				| Geometry.VertexComponent.NORMAL 
@@ -195,7 +195,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				System.IO.BinaryReader uncompressed_reader = new System.IO.BinaryReader(
 					new System.IO.MemoryStream(material.UncompressedVertices.Value));
 
-				int vertex_count = material.VertexBuffersCount1;
+				int vertex_count = material.VerticesCount;
 
 				for (int vertex_index = 0; vertex_index < vertex_count; vertex_index++)
 				{
@@ -227,10 +227,10 @@ namespace BlamLib.Render.COLLADA.Halo1
 						(uncompressed_reader.ReadSingle() * -1) + 1));
 
 					//RealPoint2D   texcoord1
-					if (material.VertexBuffersCount2 != 0)
+					if (material.LightmapVerticesCount != 0)
 					{
 						int position = (int)uncompressed_reader.BaseStream.Position;
-						uncompressed_reader.BaseStream.Position = (material.VertexBuffersCount1 * 56) + (vertex_index * 20) + 12;
+						uncompressed_reader.BaseStream.Position = (material.VerticesCount * 56) + (vertex_index * 20) + 12;
 
 						common_vertex.AddTexcoord(new LowLevel.Math.real_point2d(
 							uncompressed_reader.ReadSingle(),
@@ -255,7 +255,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				Geometry.Part common_part = new Geometry.Part(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
 				common_part.AddIndices(CreateIndicesBSP(definition, material.Surfaces, material.SurfaceCount, index_offset));
 
-				index_offset += material.VertexBuffersCount1;
+				index_offset += material.VerticesCount;
 
 				geometryData.AddPart(common_part);
 			}

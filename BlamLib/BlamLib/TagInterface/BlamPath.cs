@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OpenSauceIDE.ModelExtractor.TagIO
+namespace BlamLib.TagInterface
 {
 	/// <summary>   A helper class to process paths used in blam. </summary>
 	public class BlamPath
@@ -20,15 +20,15 @@ namespace OpenSauceIDE.ModelExtractor.TagIO
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>   Constructor. </summary>
 		///
-		/// <param name="tagsPath"> Full pathname of the tags file. </param>
-		public BlamPath(string tagsPath)
+		/// <param name="rootPath"> Full pathname of the tags file. </param>
+		public BlamPath(string rootPath)
 		{
-			AbsoluteFolder = Path.GetFullPath(tagsPath);
+			AbsoluteFolder = Path.GetFullPath(rootPath);
 
 			var splitPath = AbsoluteFolder.Split(new char[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
 
 			EndFolder = splitPath.Last();
-			Root = String.Join(Path.DirectorySeparatorChar.ToString(), splitPath.Take(splitPath.Length - 1));
+			Root = System.String.Join(Path.DirectorySeparatorChar.ToString(), splitPath.Take(splitPath.Length - 1));
 		}
 	}
 
@@ -69,7 +69,7 @@ namespace OpenSauceIDE.ModelExtractor.TagIO
 			var tagsRelativeSplit = tagsRelative.Split(new char[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).ToList();
 			tagsRelativeSplit.Add(TagName);
 
-			TagPath = String.Join(Path.DirectorySeparatorChar.ToString(), tagsRelativeSplit);
+			TagPath = System.String.Join(Path.DirectorySeparatorChar.ToString(), tagsRelativeSplit);
 		}
 	}
 }

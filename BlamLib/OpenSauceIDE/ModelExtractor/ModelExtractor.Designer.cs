@@ -34,9 +34,9 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.mJobListControl = new OpenSauceIDE.ModelExtractor.UI.JobListControl();
-			this.mMessageList = new OpenSauceIDE.ModelExtractor.UI.MessageListControl();
-			this.mDataPathControl = new OpenSauceIDE.ModelExtractor.UI.PathControl();
-			this.mTagsPathControl = new OpenSauceIDE.ModelExtractor.UI.PathControl();
+			this.mMessageList = new OpenSauceIDE.Controls.MessageListControl();
+			this.mDataPathControl = new OpenSauceIDE.Controls.PathControl();
+			this.mTagsPathControl = new OpenSauceIDE.Controls.PathControl();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -181,11 +181,11 @@
         #endregion
 
 		private System.Windows.Forms.ComboBox mModelTypeComboBox;
-        private UI.PathControl mTagsPathControl;
-        private UI.PathControl mDataPathControl;
+		private OpenSauceIDE.Controls.PathControl mTagsPathControl;
+		private OpenSauceIDE.Controls.PathControl mDataPathControl;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private UI.MessageListControl mMessageList;
+		private OpenSauceIDE.Controls.MessageListControl mMessageList;
         private System.Windows.Forms.Panel mControlPanel;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private UI.JobListControl mJobListControl;

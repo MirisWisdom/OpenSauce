@@ -9,7 +9,6 @@ using BlamLib.IO;
 using BlamLib.Managers;
 using BlamLib.Messaging;
 using BlamLib.TagInterface;
-using OpenSauceIDE.ModelExtractor.TagIO;
 using H1 = BlamLib.Blam.Halo1;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
@@ -167,7 +166,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
 			H1.TagGroups.yelo
 		};
 
-		private ExtractorTagIndexHandler<BlamLib.Managers.TagIndex> mTagIndexHandler;
+		private BlamLib.Managers.TagIndexHandler<BlamLib.Managers.TagIndex> mTagIndexHandler;
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>   Gets the tag index. </summary>
@@ -195,7 +194,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
 		/// <returns>   true if it succeeds, false if it fails. </returns>
 		protected bool CreateTagIndex(string rootDirectory, string tagsFolder)
 		{
-			mTagIndexHandler = new ExtractorTagIndexHandler<BlamLib.Managers.TagIndex>(BlamLib.BlamVersion.Halo1_CE, rootDirectory, tagsFolder);
+			mTagIndexHandler = new TagIndexHandler<BlamLib.Managers.TagIndex>(BlamLib.BlamVersion.Halo1_CE, rootDirectory, tagsFolder);
 
 			if(mTagIndexHandler == null)
 			{

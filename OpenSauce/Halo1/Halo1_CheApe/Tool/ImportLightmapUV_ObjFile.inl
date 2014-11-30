@@ -61,8 +61,15 @@ HRESULT c_obj_file::LoadFromFile(const std::string& obj_path)
 
 				// Find the lightmap index at the end of the id
 				std::string group_name(id);
-				auto index_offset = group_name.find_last_of("0123456789");
+				auto index_offset = group_name.find_last_not_of("0123456789");
 				if(index_offset == std::string::npos)
+				{
+					YELO_WARN("OS_tool:import: obj file has a group name that does not end with the lightmap index");
+					return E_FAIL;
+				}
+				index_offset++;
+
+				if(index_offset >= group_name.size())
 				{
 					YELO_WARN("OS_tool:import: obj file has a group name that does not end with the lightmap index");
 					return E_FAIL;

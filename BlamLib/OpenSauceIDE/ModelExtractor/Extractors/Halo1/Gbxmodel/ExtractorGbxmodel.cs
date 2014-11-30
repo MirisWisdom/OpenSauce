@@ -6,7 +6,6 @@
 using System;
 using BlamLib;
 using BlamLib.Render.COLLADA;
-using OpenSauceIDE.ModelExtractor.TagIO;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.Gbxmodel
 {
