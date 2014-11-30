@@ -65,6 +65,7 @@
     <Compile Include="Managers\BlamDefinition\GameGen3.cs" />
     <Compile Include="Managers\StringIdCollections.cs" />
     <Compile Include="Managers\TagIndex\TagIndex.Base.cs" />
+    <Compile Include="Managers\TagIndex\TagIndexHandler.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
     <Compile Include="Messaging\MessageHandler.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -329,6 +330,7 @@
     <Compile Include="Scripting\Compiler\Stream.cs" />
     <Compile Include="Scripting\Decompiler\Decompiler.cs" />
     <Compile Include="TagInterface\Attributes.cs" />
+    <Compile Include="TagInterface\BlamPath.cs" />
     <Compile Include="TagInterface\Definition.cs" />
     <Compile Include="TagInterface\Editor.cs" />
     <Compile Include="TagInterface\Exceptions.cs" />

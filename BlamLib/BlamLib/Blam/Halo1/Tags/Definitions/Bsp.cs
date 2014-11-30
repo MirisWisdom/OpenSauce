@@ -178,8 +178,10 @@ namespace BlamLib.Blam.Halo1.Tags
 				public TI.RealPlane3D Plane;
 				public TI.ShortInteger BreakableSurface;
 
-				public TI.LongInteger VertexBuffersCount1, VertexBuffersOffset1;
-				public TI.LongInteger VertexBuffersCount2, VertexBuffersOffset2;
+				public TI.LongInteger VerticesCount;
+				public TI.LongInteger VerticesStartIndex;
+				public TI.LongInteger LightmapVerticesCount;
+				public TI.LongInteger LightmapVerticesStartIndex;
 				public TI.Data UncompressedVertices, CompressedVertices;
 			};
 			#endregion

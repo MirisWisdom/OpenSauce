@@ -37,6 +37,7 @@ local lightmapsOutputFolder = ""
 local lightmapsOutputFolderValid = false
 local platesOutputFolder = ""
 local platesOutputFolderValid = false
+local platePrefix = ""
 	
 local renderOptionsRenderStd = true
 local renderOptionsRenderDlm1 = true
@@ -149,7 +150,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 	checkbox dlm2LightmapChk "Directional Lightmap 2" pos:[16,464] width:144 height:16 checked:true
 	checkbox dlm3LightmapChk "Directional Lightmap 3" pos:[16,480] width:144 height:16 checked:true
 	checkbox buildLightmapPlateChk "Build Lightmap Plates" pos:[176,424] width:120 height:16 checked:true
-	button renderLightmapsBtn "Render" pos:[448,400] width:121 height:104
+	button renderLightmapsBtn "Render" pos:[448,420] width:121 height:84
 	
 	GroupBox perObjectGrp "Per-Object" pos:[16,216] width:544 height:64
 	spinner uvChannelSpn "UV Channel:" pos:[90,256] width:60 height:16 range:[2,10,2] type:#integer scale:1
@@ -163,6 +164,8 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 	button platesOutputBrowseBtn "Browse" pos:[488,312] width:72 height:16
 	label lbl10 "Options:" pos:[176,408] width:144 height:16
 	checkbox showRenderWindowChk "Show Render Window" pos:[176,440] width:136 height:16 checked:false
+	radiobuttons renderChoiceRadio "" pos:[448,400] width:65 height:32 labels:#("All", "Selected")
+	edittext platePrefixTxt "Plate Prefix:" pos:[192,360] width:288 height:16
 	
 	function SetListItems newItems missingBakeCount =
 	(
@@ -335,6 +338,12 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			return 0
 		)
 		
+		objectIndex = 0
+		if (renderChoiceRadio.state == 2) and (lightmapObjectLst.selection != 0) do
+		(
+			objectIndex = lightmapObjectLst.selection
+		)
+		
 		-- Initialise progress dialog values
 		setLightmapsCount = objectBakeList.Count
 		totalLightmapsCount = objectBakeList.Count * renderSetCount
@@ -357,11 +366,11 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering standard set"
-				BakeObjects &cancelled 1
+				BakeObjects &cancelled 1 objectIndex
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
-					BuildLightmapPlate lightmapTypeSuffixes[1]
+					BuildLightmapPlate platePrefix lightmapTypeSuffixes[1]
 				)
 			)
 		)
@@ -377,11 +386,11 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering directional component 1 set"
-				BakeObjects &cancelled 2
+				BakeObjects &cancelled 2 objectIndex
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
-					BuildLightmapPlate lightmapTypeSuffixes[2]
+					BuildLightmapPlate platePrefix lightmapTypeSuffixes[2]
 				)
 			)
 		)
@@ -397,11 +406,11 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering directional component 2 set"
-				BakeObjects &cancelled 3
+				BakeObjects &cancelled 3 objectIndex
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
-					BuildLightmapPlate lightmapTypeSuffixes[3]
+					BuildLightmapPlate platePrefix lightmapTypeSuffixes[3]
 				)
 			)
 		)
@@ -417,11 +426,11 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering directional component 3 set"
-				BakeObjects &cancelled 4
+				BakeObjects &cancelled 4 objectIndex
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
-					BuildLightmapPlate lightmapTypeSuffixes[4]
+					BuildLightmapPlate platePrefix lightmapTypeSuffixes[4]
 				)
 			)
 		)
@@ -461,6 +470,10 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
+	on platePrefixTxt changed txt do
+	(
+		platePrefix = txt
+	)	
 	on platesOutputBrowseBtn pressed do
 	(	
 		outputPath = getSavePath caption:"Plates Output Folder" initialDir:platesOutputFolder
@@ -1015,7 +1028,7 @@ function SetNormalsModifier nodeList &editNormalsMod lightmapType =
 	)
 )
 
-function BakeObjects &cancelled lightmapType =
+function BakeObjects &cancelled lightmapType objectIndex =
 (
 	max modify mode
 	
@@ -1024,9 +1037,12 @@ function BakeObjects &cancelled lightmapType =
 	-- Select all nodes
 	clearNodeSelection()
 	for i=1 to objectBakeList.count while (cancelled != true) do
-	(
-		objectToBake = getNodeByName objectBakeList[i]	
-		selectMore objectToBake
+	(		
+		if (objectIndex == 0) or (i == objectIndex) do
+		(
+			objectToBake = getNodeByName objectBakeList[i]	
+			selectMore objectToBake
+		)
 	)
 	
 	-- Add an edit normals modifier
@@ -1037,7 +1053,7 @@ function BakeObjects &cancelled lightmapType =
 	-- Modify the nodes' normals
 	SetNormalsModifier selection &editNormalsMod lightmapType
 	
-	-- Bake all objects
+	-- Bake single object and build list of filepaths
 	for i=1 to objectBakeList.count while (cancelled != true) do
 	(		
 		-- Update the progress dialog
@@ -1052,7 +1068,10 @@ function BakeObjects &cancelled lightmapType =
 		-- Build the output bitmap path and bake the lightmap
 		filePath = lightmapsOutputFolder + "\\" + objectToBake.name + "_" + lightmapTypeSuffixes[lightmapType] + "." + bitmapTypeExtension
 		
-		BakeNode objectToBake filePath &cancelled
+		if (objectIndex == 0) or (i == objectIndex) do
+		(
+			BakeNode objectToBake filePath &cancelled
+		)
 		
 		-- If the lightmap bake was successful add the path to the bitmap list
 		if (cancelled == false) then
@@ -1069,13 +1088,15 @@ function BakeObjects &cancelled lightmapType =
 	-- Delete edit normals modifiers
 	for i=1 to objectBakeList.count do
 	(
-		objectToBake = getNodeByName objectBakeList[i]
-		
-		deleteModifier objectToBake editNormalsMod
+		if (objectIndex == 0) or (i == objectIndex) do
+		(
+			objectToBake = getNodeByName objectBakeList[i]			
+			deleteModifier objectToBake editNormalsMod
+		)
 	)
 )
 
-function BuildLightmapPlate lightmapSuffix =
+function BuildLightmapPlate lightmapPrefix lightmapSuffix =
 (
 	bitmapWidth = 0
 	bitmapHeight = 0
@@ -1083,6 +1104,12 @@ function BuildLightmapPlate lightmapSuffix =
 	-- Calculate the width and height of the output bitmap
 	for i = 1 to lightmapBitmapPaths.count do
 	(
+		if (doesFileExist lightmapBitmapPaths[i]) == false do
+		(
+			tempBitmap = bitmap 256 256 filename:lightmapBitmapPaths[i] color:(color 255 0 0)
+			save tempBitmap
+		)
+		
 		lightmapBitmap = openBitmap lightmapBitmapPaths[i]
 		
 		if (lightmapBitmap.width > bitmapWidth) then
@@ -1100,7 +1127,15 @@ function BuildLightmapPlate lightmapSuffix =
 	bitmapHeight += lightmapBitmapPaths.count + 1
 	
 	-- Create the bitmap
-	filePath = platesOutputFolder + "\\" + lightmapSuffix + ".tif" 
+	filePath = ""
+	if (lightmapPrefix != "") then
+	(
+		filePath = platesOutputFolder + "\\" + lightmapPrefix + "_" + lightmapSuffix + ".tif"
+	)
+	else
+	(		
+		filePath = platesOutputFolder + "\\" + lightmapSuffix + ".tif"
+	)
 	outputBitmap = bitmap bitmapWidth bitmapHeight filename:filePath color:(color 0 0 255)
 	
 	-- Copy the lightmaps on to the plate
@@ -1154,7 +1189,7 @@ on execute do with undo off
 	local cls = classof LightmapRollout
 	if (cls != RolloutClass) or LightmapRollout.isDisplayed do return false
 	
-	CreateDialog LightmapRollout lockWidth:true lockHeight:true
+	CreateDialog LightmapRollout lockWidth:true lockHeight:true style:#(#style_titlebar, #style_border, #style_sysmenu, #style_minimizebox)
 )
 
 on isChecked return

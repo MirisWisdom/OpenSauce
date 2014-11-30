@@ -11,9 +11,9 @@ using BlamLib;
 using BlamLib.Bitmaps;
 using BlamLib.Messaging;
 using BlamLib.Render.COLLADA;
+using BlamLib.TagInterface;
 using OpenSauceIDE.ModelExtractor.Extractors;
 using OpenSauceIDE.ModelExtractor.Settings;
-using OpenSauceIDE.ModelExtractor.TagIO;
 using OpenSauceIDE.ModelExtractor.UI;
 
 namespace OpenSauceIDE.ModelExtractor
@@ -294,7 +294,7 @@ namespace OpenSauceIDE.ModelExtractor
 			foreach (var modelFile in modelFiles)
 			{
 				var absoluteModelFile = Path.GetFullPath(modelFile);
-				if (String.Compare(absoluteModelFile, 0, tagsDir.AbsoluteFolder, 0, tagsDir.AbsoluteFolder.Length, true) != 0)
+				if (System.String.Compare(absoluteModelFile, 0, tagsDir.AbsoluteFolder, 0, tagsDir.AbsoluteFolder.Length, true) != 0)
 				{
 					System.Windows.Forms.MessageBox.Show("A selected model file is not under the tags directory", "Invalid File Path", System.Windows.Forms.MessageBoxButtons.OK);
 					return;

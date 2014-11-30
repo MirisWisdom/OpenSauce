@@ -8,13 +8,13 @@ using BlamLib;
 using BlamLib.Blam;
 using BlamLib.Managers;
 
-namespace OpenSauceIDE.ModelExtractor.TagIO
+namespace BlamLib.Managers
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Tag index handler. </summary>
 	///
 	/// <typeparam name="T">	The type of tag index. </typeparam>
-	public class ExtractorTagIndexHandler<T> : System.IDisposable
+	public class TagIndexHandler<T> : System.IDisposable
 		where T : TagIndexBase
 	{
 		#region Fields
@@ -42,7 +42,7 @@ namespace OpenSauceIDE.ModelExtractor.TagIO
 		/// <param name="game">     The game engine version. </param>
 		/// <param name="path">     Full pathname of the tags root directory. </param>
 		/// <param name="tags_dir"> (Optional) the tags folder name. </param>
-		public ExtractorTagIndexHandler(BlamVersion game, string path, string tags_dir = "tags")
+		public TagIndexHandler(BlamVersion game, string path, string tags_dir = "tags")
 		{
 			mGameVersion = game;
 			mIndexHandle = BlamLib.Program.GetManager(mGameVersion).OpenTagIndex(game, path, tags_dir);
@@ -72,7 +72,7 @@ namespace OpenSauceIDE.ModelExtractor.TagIO
 		/// <summary>   TagIndex casting operator. </summary>
 		///
 		/// <param name="handler">  The tag index handler. </param>
-		public static implicit operator T(ExtractorTagIndexHandler<T> handler)
+		public static implicit operator T(TagIndexHandler<T> handler)
 		{
 			return handler.IndexInterface;
 		}

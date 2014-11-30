@@ -138,20 +138,40 @@ namespace OpenSauceIDE
 			EventHandler ModelExtractor_handler;
 			var ModelExtractor = BlamLib.Forms.Util.CreateMenuItem("Model Extractor", ModelExtractor_handler = (sender, e) =>
 			{
-                var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC, BlamLib.BlamVersion.Halo2_PC);
+				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC, BlamLib.BlamVersion.Halo2_PC);
 				BlamLib.BlamVersion version;
 				sed.ShowDialogWithResult(this, out version);
 
 				if (version != BlamLib.BlamVersion.Unknown)
 				{
-                    AddMdiChild(new ModelExtractor.ModelExtractor(version));
+					AddMdiChild(new ModelExtractor.ModelExtractor(version));
 				}
 			});
 			ModelExtractor.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			ModelExtractor.ForeColor = System.Drawing.Color.LightGreen;
 
 			ToolsMenu.DropDownItems.Add(ModelExtractor);
-            command_dic.Add("ModelExtractor", ModelExtractor_handler);
+			command_dic.Add("ModelExtractor", ModelExtractor_handler);
+		}
+		void BuildCheApeMenusLightmapImporter(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler LightmapImporter_handler;
+			var LightmapImporter = BlamLib.Forms.Util.CreateMenuItem("Lightmap Importer", LightmapImporter_handler = (sender, e) =>
+			{
+				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC, BlamLib.BlamVersion.Halo2_PC);
+				BlamLib.BlamVersion version;
+				sed.ShowDialogWithResult(this, out version);
+
+				if (version != BlamLib.BlamVersion.Unknown)
+				{
+					AddMdiChild(new LightmapImporter.LightmapImporter(version));
+				}
+			});
+			LightmapImporter.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			LightmapImporter.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(LightmapImporter);
+			command_dic.Add("LightmapImporter", LightmapImporter_handler);
 		}
 		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
 		{
@@ -161,6 +181,7 @@ namespace OpenSauceIDE
 			BuildCheApeMenusXnaPatcher(command_dic);
 			BuildCheApeMenusServerTool(command_dic);
 			BuildCheApeMenusModelExtractor(command_dic);
+			BuildCheApeMenusLightmapImporter(command_dic);
 		}
 		#endregion
 
