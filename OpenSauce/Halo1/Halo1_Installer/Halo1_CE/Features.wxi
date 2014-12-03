@@ -50,7 +50,7 @@
 	<Feature Id='Halo1_CE_HEK_FEAT'
 		Title='Halo Editing Kit'
 		Description='Extensions that add new functionality to the HEK.'
-		Level='1'
+		Level='100'
 		Display='expand'
 		AllowAdvertise='no'
 		ConfigurableDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'>
