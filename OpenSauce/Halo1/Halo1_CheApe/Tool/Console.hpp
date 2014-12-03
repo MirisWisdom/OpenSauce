@@ -35,13 +35,40 @@ namespace Yelo
 	};
 	namespace Tool { namespace Console
 	{
+		/// <summary>	Print's an empty new line. </summary>
 		void PrintNewLine();
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Prints a formatted string to the console in a specified color. </summary>
+		///
+		/// <param name="color"> 	The color to print the string in. </param>
+		/// <param name="format">	The format string to use. </param>
+		/// <param name="...">		Variable list containing the format values. </param>
 		void ColorPrintF(const WORD color,
 			const char* format, ...);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Prints a string to the console in a specified color. </summary>
+		///
+		/// <param name="color">   	The color to print the string in. </param>
+		/// <param name="string">  	The string to print. </param>
+		/// <param name="new_line">
+		/// 	Set to true if you want a newline character added to the end of the string. Defaults to
+		/// 	false.
+		/// </param>
 		void ColorPrint(const WORD color,
 			const char* string, bool new_line = false);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the console width in characters. </summary>
+		///
+		/// <returns>	The console width. </returns>
 		int32 GetConsoleWidth();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the console height in characters. </summary>
+		///
+		/// <returns>	The console height. </returns>
 		int32 GetConsoleHeight();
 	}; };
 };
