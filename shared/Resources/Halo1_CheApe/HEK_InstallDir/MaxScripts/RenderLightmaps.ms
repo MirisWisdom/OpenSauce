@@ -139,7 +139,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 	dropdownList bitmapTypeDdl "" pos:[104,360] width:72 height:21 items:#("tif", "bmp", "png", "jpg", "tga")
 		
 	GroupBox lightmapOptionsGrp "Lightmap Options" pos:[8,8] width:560 height:280
-	listbox lightmapObjectLst "Lightmap Objects" pos:[16,32] width:544 height:10
+	multiListBox lightmapObjectLst "Lightmap Objects" pos:[16,32] width:544 height:10
 	button setupObjectsBtn "Setup Objects" pos:[336,32] width:114 height:16
 	button updateSelectionBtn "Update Selection" pos:[448,32] width:114 height:16
 		
@@ -183,7 +183,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		-- If there is 1 or more items, select the first item
 		if (objectBakeList.count > 0) then
 		(
-			lightmapObjectLst.selection = 1
+			lightmapObjectLst.selection = #{1}
 			UpdateForSelectedBakeObject 1
 		)
 		else
@@ -199,7 +199,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		paddingAmountSpn.enabled = false
 		bakeWidthSpn.enabled = false
 		bakeHeightSpn.enabled = false
-		importSizesBtn.enabled = false
 	)
 	
 	function SetBakeOptionsEnabled =
@@ -209,7 +208,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		paddingAmountSpn.enabled = true
 		bakeWidthSpn.enabled = true
 		bakeHeightSpn.enabled = true
-		importSizesBtn.enabled = true
 	)
 	
 	function SetBakeProperties =
@@ -271,7 +269,15 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 	)
 	on lightmapObjectLst selected sel do
 	(
-		UpdateForSelectedBakeObject sel
+		if lightmapObjectLst.selection.numberSet != 1 then
+		(
+			UpdateForSelectedBakeObject 0
+		)
+		else
+		(
+			selectedIndex = (lightmapObjectLst.selection as Array)[1]
+			UpdateForSelectedBakeObject selectedIndex
+		)
 	)
 	on setupObjectsBtn pressed do
 	(
@@ -338,10 +344,10 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			return 0
 		)
 		
-		objectIndex = 0
-		if (renderChoiceRadio.state == 2) and (lightmapObjectLst.selection != 0) do
+		objectIndices = #{}
+		if (renderChoiceRadio.state == 2) and (lightmapObjectLst.selection.count != 0) do
 		(
-			objectIndex = lightmapObjectLst.selection
+			objectIndices = lightmapObjectLst.selection
 		)
 		
 		-- Initialise progress dialog values
@@ -366,7 +372,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering standard set"
-				BakeObjects &cancelled 1 objectIndex
+				BakeObjects &cancelled 1 objectIndices
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
@@ -386,7 +392,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering directional component 1 set"
-				BakeObjects &cancelled 2 objectIndex
+				BakeObjects &cancelled 2 objectIndices
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
@@ -406,7 +412,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering directional component 2 set"
-				BakeObjects &cancelled 3 objectIndex
+				BakeObjects &cancelled 3 objectIndices
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
@@ -426,7 +432,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 			if (cancelled == false) then
 			(
 				BakeProgressDialog.setSetType "Rendering directional component 3 set"
-				BakeObjects &cancelled 4 objectIndex
+				BakeObjects &cancelled 4 objectIndices
 				
 				if((cancelled == false) and buildLightmapPlates) then
 				(
@@ -459,7 +465,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 	(
 		ImportBitmapSizes()
 		
-		UpdateForSelectedBakeObject lightmapObjectLst.selection
+		lightmapObjectLst.selection = #{1}
 	)
 	on platesOutputTxt changed txt do
 	(
@@ -590,6 +596,8 @@ function UpdateForSelectedBakeObject index =
 	
 	-- Default to disabled UI
 	LightmapRollout.SetBakeOptionsDisabled()
+	
+	LightmapRollout.importSizesBtn.enabled = not (objectBakeList.count == 0)
 	
 	-- Find the selected object
 	if (index == 0) then
@@ -1028,7 +1036,7 @@ function SetNormalsModifier nodeList &editNormalsMod lightmapType =
 	)
 )
 
-function BakeObjects &cancelled lightmapType objectIndex =
+function BakeObjects &cancelled lightmapType objectIndices =
 (
 	max modify mode
 	
@@ -1037,8 +1045,8 @@ function BakeObjects &cancelled lightmapType objectIndex =
 	-- Select all nodes
 	clearNodeSelection()
 	for i=1 to objectBakeList.count while (cancelled != true) do
-	(		
-		if (objectIndex == 0) or (i == objectIndex) do
+	(
+		if (objectIndices.numberSet == 0) or (findItem objectIndices i != 0) do
 		(
 			objectToBake = getNodeByName objectBakeList[i]	
 			selectMore objectToBake
@@ -1068,7 +1076,7 @@ function BakeObjects &cancelled lightmapType objectIndex =
 		-- Build the output bitmap path and bake the lightmap
 		filePath = lightmapsOutputFolder + "\\" + objectToBake.name + "_" + lightmapTypeSuffixes[lightmapType] + "." + bitmapTypeExtension
 		
-		if (objectIndex == 0) or (i == objectIndex) do
+		if (objectIndices.numberSet == 0) or (findItem objectIndices i != 0) do
 		(
 			BakeNode objectToBake filePath &cancelled
 		)
@@ -1088,7 +1096,7 @@ function BakeObjects &cancelled lightmapType objectIndex =
 	-- Delete edit normals modifiers
 	for i=1 to objectBakeList.count do
 	(
-		if (objectIndex == 0) or (i == objectIndex) do
+		if (objectIndices.numberSet == 0) or (findItem objectIndices i != 0) do
 		(
 			objectToBake = getNodeByName objectBakeList[i]			
 			deleteModifier objectToBake editNormalsMod
