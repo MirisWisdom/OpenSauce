@@ -34,11 +34,29 @@ namespace Yelo
 		{
 			assert(field_name);
 
+			int target_length = strlen(field_name);
+
+			// Get the source field name, if the name is empty compare against the length of the target name
 			cstring source_field_name = m_source_scanner.GetTagFieldName();
 			if (source_field_name == nullptr)
-				source_field_name = "";
+			{
+				return target_length == 0;
+			}
 
-			return strcmp(source_field_name, field_name)==0;
+			// Get the length of the source field's name
+			int source_length = 0;
+			cstring name_end = strpbrk(source_field_name, "!*^:#");
+			if(name_end == nullptr)
+			{
+				source_length = strlen(source_field_name);
+			}
+			else
+			{
+				source_length = name_end - source_field_name;
+			}
+
+			// Compare the names by length and characters
+			return (target_length == source_length) && strncmp(source_field_name, field_name, source_length)==0;
 		}
 
 		bool c_tag_field_set_replacement_builder::NotEndOfTargetFields() const
