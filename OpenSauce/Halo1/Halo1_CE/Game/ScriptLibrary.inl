@@ -180,7 +180,14 @@
 		_hs_global_pp_fxaa_enabled,
 		_hs_global_pp_motion_blur_enabled,
 		_hs_global_pp_motion_blur_amount,
-
+		
+		_hs_global_rasterizer_model_normal_mapping,
+		_hs_global_rasterizer_model_detail_normal_mapping,
+		_hs_global_rasterizer_model_specular_lights,
+		_hs_global_rasterizer_model_specular_map,
+		_hs_global_rasterizer_environment_dlm_diffuse,
+		_hs_global_rasterizer_environment_dlm_specular,
+		
 	// debug globals
 	#ifdef API_DEBUG
 	#endif
@@ -299,6 +306,13 @@
 		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_MotionBlur(), nullptr);
 	HS_GLOBAL2(pp_motion_blur_amount, real, 
 		&Rasterizer::PostProcessing::Scripting::Globals::MotionBlur_Amount(), nullptr);
+	
+	HS_GLOBAL2(rasterizer_model_normal_mapping, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_normal_mapping, nullptr);
+	HS_GLOBAL2(rasterizer_model_detail_normal_mapping, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_detail_normal_mapping, nullptr);
+	HS_GLOBAL2(rasterizer_model_specular_lights, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_specular_lights, nullptr);
+	HS_GLOBAL2(rasterizer_model_specular_map, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_specular_map, nullptr);
+	HS_GLOBAL2(rasterizer_environment_dlm_diffuse, bool, &Rasterizer::ShaderExtension::Environment::g_rasterizer_environment_dlm_diffuse, nullptr);
+	HS_GLOBAL2(rasterizer_environment_dlm_specular, bool, &Rasterizer::ShaderExtension::Environment::g_rasterizer_environment_dlm_specular, nullptr);
 
 	// debug globals
 	#ifdef API_DEBUG
@@ -458,6 +472,13 @@
 		&GET_HS_GLOBAL(pp_fxaa_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_amount),
+		
+		&GET_HS_GLOBAL(rasterizer_model_normal_mapping),
+		&GET_HS_GLOBAL(rasterizer_model_detail_normal_mapping),
+		&GET_HS_GLOBAL(rasterizer_model_specular_lights),
+		&GET_HS_GLOBAL(rasterizer_model_specular_map),
+		&GET_HS_GLOBAL(rasterizer_environment_dlm_diffuse),
+		&GET_HS_GLOBAL(rasterizer_environment_dlm_specular),
 
 	// debug globals
 	#ifdef API_DEBUG

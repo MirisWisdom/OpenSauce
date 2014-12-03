@@ -49,6 +49,11 @@ namespace Yelo
 			
 			namespace Model
 			{
+				extern bool g_rasterizer_model_normal_mapping;
+				extern bool g_rasterizer_model_detail_normal_mapping;
+				extern bool g_rasterizer_model_specular_lights;
+				extern bool g_rasterizer_model_specular_map;
+
 				void SetModelNormSpec(void* shader_pointer);
 
 				bool SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
@@ -58,6 +63,9 @@ namespace Yelo
 
 			namespace Environment
 			{
+				extern bool g_rasterizer_environment_dlm_diffuse;
+				extern bool g_rasterizer_environment_dlm_specular;
+
 				void SetLightmapSampler(const TagGroups::s_shader_definition* shader);
 				void SetupLightmapShader(const TagGroups::s_shader_definition* shader, const _enum extension_type);
 			}

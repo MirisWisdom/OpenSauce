@@ -26,6 +26,7 @@
 #include "Networking/MessageDeltas.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingScripting.hpp"
+#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
 #if PLATFORM_IS_DEDI
 #include "Networking/HTTP/HTTPServer.hpp"
