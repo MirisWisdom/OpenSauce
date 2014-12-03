@@ -38,7 +38,9 @@ namespace Environment
 		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 5, // Directional Specular with Specular Map
 		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 6  // Directional Specular with Normal map and Specular Map
 	};
-
+	
+	bool					g_rasterizer_environment_dlm_diffuse = true;
+	bool					g_rasterizer_environment_dlm_specular = true;
 	static uint32			g_current_shader_offset = 0;
 	static _enum			g_extension_usage_mask;
 
@@ -177,13 +179,26 @@ namespace Environment
 	/// <param name="extension_type">	The type of shader extension. </param>
 	void SetupLightmapShader(const TagGroups::s_shader_definition* shader, const _enum lightmap_type)
 	{
-		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled)
+		g_current_shader_offset = 0;
+
+		if(!g_rasterizer_environment_dlm_diffuse && (lightmap_type == Flags::_shader_extension_usage_bit_directional_lightmaps_diff))
+		{
 			return;
+		}
+
+		if(!g_rasterizer_environment_dlm_specular && (lightmap_type == Flags::_shader_extension_usage_bit_directional_lightmaps_spec))
+		{
+			return;
+		}
+
+		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled)
+		{
+			return;
+		}
 		
 		auto& shader_extension_usage = shader->shader.extension_usage; 
 		if(!shader || !TEST_FLAG(shader_extension_usage, lightmap_type) || !Render::Lightmaps::HasDirectional())
 		{
-			g_current_shader_offset = 0;
 			return;
 		}
 		
@@ -364,6 +379,11 @@ namespace Environment
 		// Call the lights render specular function
 		CAST_PTR(void (*)(void), GET_FUNC_VPTR(LIGHTS_RENDER_SPECULAR_FUNC))();
 
+		if(!g_rasterizer_environment_dlm_diffuse || !g_rasterizer_environment_dlm_specular)
+		{
+			return;
+		}
+
 		// Render the DLM specular pass
 		if(TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps_spec) &&
 			Render::StructureRenderGlobals()->render_bsp)
@@ -389,7 +409,7 @@ namespace Environment
 	/// <param name="shader">	The shader. </param>
 	void SetLightmapSampler(const TagGroups::s_shader_definition* shader)
 	{
-		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled)
+		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled || !g_rasterizer_environment_dlm_diffuse)
 		{
 			Render::Lightmaps::SetLightmapSamplers(false);
 			return;

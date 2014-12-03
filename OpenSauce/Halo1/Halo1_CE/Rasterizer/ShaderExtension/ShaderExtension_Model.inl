@@ -199,7 +199,11 @@ namespace Model
 	static IDirect3DPixelShader9* g_reflection_pixel_shaders[NUMBEROF(g_shader_usage_id_list)];
 	static IDirect3DPixelShader9* g_no_pixel_shaders[NUMBEROF(g_shader_usage_id_list) / 2];
 #pragma endregion
-
+	
+	bool								g_rasterizer_model_normal_mapping = true;
+	bool								g_rasterizer_model_detail_normal_mapping = true;
+	bool								g_rasterizer_model_specular_lights = true;
+	bool								g_rasterizer_model_specular_map = true;
 	static s_shader_feature_mix*		g_current_feature_mix = &g_feature_mix_list[0];
 	static s_vertex_shader_variables	g_vertex_shader_variables;
 	static s_pixel_shader_variables		g_pixel_shader_variables;
@@ -479,10 +483,23 @@ no_extension:
 
 		// disable feature as per the users settings
 		_enum feature_usage = shader_base->shader.extension_usage & g_extension_usage_mask;
-
-		// disable specular effects when they are disabled on the environment
-		if(!DebugOptions()->environment_specular_lights)
-			feature_usage &= Flags::_shader_extension_usage_normal_map | Flags::_shader_extension_usage_detail_normal;
+		
+		if(!g_rasterizer_model_normal_mapping)
+		{
+			feature_usage &= ~Flags::_shader_extension_usage_normal_map;
+		}
+		if(!g_rasterizer_model_detail_normal_mapping)
+		{
+			feature_usage &= ~Flags::_shader_extension_usage_detail_normal;
+		}
+		if(!g_rasterizer_model_specular_lights || !DebugOptions()->environment_specular_lights)
+		{
+			feature_usage &= ~Flags::_shader_extension_usage_specular_lighting;
+		}
+		if(!g_rasterizer_model_specular_map)
+		{
+			feature_usage &= ~Flags::_shader_extension_usage_specular_map;
+		}
 
 		g_current_feature_mix = g_shader_feature_map[feature_usage];
 
