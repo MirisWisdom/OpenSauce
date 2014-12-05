@@ -28,6 +28,7 @@
 		#include "Interface/GameUI.hpp"
 		#include "Interface/Controls.hpp"
 		#include "Interface/Keystone.hpp"
+		#include "Interface/OpenSauceUI.hpp"
 	#endif
 //////////////////////////////////////////////////////////////////////////
 
