@@ -20,7 +20,7 @@ namespace Yelo
 		class c_configuration_container_list
 			: public c_configuration_list<T>
 		{
-			static_assert(std::is_base_of<i_configuration_container, T>::value, "Configuration container lists are for types that derive from i_configuration_container only");
+			//static_assert(std::is_base_of<i_configuration_container, T>::value, "Configuration container lists are for types that derive from i_configuration_container only");
 			
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

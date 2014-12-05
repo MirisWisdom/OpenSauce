@@ -9,6 +9,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Memory/MemoryInterface.hpp"
+#include "Interface/OpenSauceUI.hpp"
 
 namespace Yelo
 {
@@ -48,9 +49,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-#if !PLATFORM_DISABLE_UNUSED_CODE
-			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE_HOOK), Enums::_x86_opcode_retn);
-#endif
+			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE_HOOK), Enums::_x86_opcode_ret);
 		}
 
 		void Dispose()
@@ -59,6 +58,7 @@ namespace Yelo
 
 		void Update()
 		{
+			Interface::OpenSauceUI::Update();
 		}
 
 
