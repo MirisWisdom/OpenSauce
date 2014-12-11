@@ -15,7 +15,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
-		c_screen::c_screen(t_control_ptr root_control)
+		c_screen::c_screen(Control::t_control_ptr root_control)
 			: m_root_control(root_control)
 			, m_control_resource_list()
 		{
@@ -23,18 +23,20 @@ namespace Yelo
 		}
 
 #pragma region i_screen
-		t_control_ptr c_screen::GetRootControl() const
+		Control::t_control_ptr c_screen::GetRootControl() const
 		{
 			return m_root_control;
 		}
 
-		t_control_ptr c_screen::GetControl(const uint32 resource_id)
+		Control::t_control_ptr c_screen::GetControl(const uint32 resource_id)
 		{
+			YELO_ASSERT_DISPLAY(m_control_resource_list.find(resource_id) != m_control_resource_list.end(), "Unknown resource ID");
+
 			return m_control_resource_list[resource_id];
 		}
 #pragma endregion
 
-		void c_screen::AddControlResource(t_control_ptr control)
+		void c_screen::AddControlResource(Control::t_control_ptr control)
 		{
 			// If the control has a resource id add it to the resource list
 			if(control->GetResourceID() != RESOURCE_ID_NONE)
@@ -47,6 +49,16 @@ namespace Yelo
 			{
 				AddControlResource(child);
 			}
+		}
+
+		void c_screen::Show()
+		{
+			GetRootControl()->Show();
+		}
+
+		void c_screen::Hide()
+		{
+			GetRootControl()->Hide();
 		}
 	};};};
 };

@@ -12,8 +12,6 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI
 	{
-#ifdef DEBUG
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	CRC's a string. </summary>
 		///
@@ -21,7 +19,8 @@ namespace Yelo
 		///
 		/// <returns>	The CRC for the string. </returns>
 		const uint32 CRCString(const char* str);
-
+		
+#ifdef DEBUG
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Verifies that the CRC for the provided string is correct. </summary>
 		///

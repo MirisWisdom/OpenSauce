@@ -540,6 +540,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp">
       <Filter>time\interpolation</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\value_conversion.hpp">
+      <Filter>cseries</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -814,6 +817,9 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp">
       <Filter>open_sauce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\value_conversion.cpp">
+      <Filter>cseries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

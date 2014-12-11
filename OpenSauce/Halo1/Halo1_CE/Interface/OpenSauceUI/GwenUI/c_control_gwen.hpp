@@ -8,27 +8,97 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Gwen/Gwen.h>
 #include <Gwen/Controls/Base.h>
 
-#include "Interface/OpenSauceUI/c_control_base.hpp"
+#include "Interface/OpenSauceUI/Control/i_control.hpp"
+#include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 
 namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
+		class c_event_handler_gwen;
+
+		/// <summary>	Defines an alias representing an event data transform function. </summary>
+		typedef std::function<void(Gwen::Event::Info&, Control::s_interface_value&)> t_event_data_transform;
+
+		/// <summary>	An event handler for gwen controls. </summary>
+		class c_event_handler_gwen_handler final
+			: public Gwen::Event::Handler
+		{
+		private:
+			const c_event_handler_gwen& m_owner;
+			Gwen::Event::Caller& m_caller;
+			bool is_attached;
+			const t_event_data_transform m_data_transform;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Callback for attaching to a gwen control event. </summary>
+			///
+			/// <param name="info">	[in] The event information. </param>
+			void Callback(Gwen::Event::Info& info);
+
+		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <param name="owner">		 	[in] The handler owner. </param>
+			/// <param name="caller">		 	[in] The caller to attach to. </param>
+			/// <param name="data_transform">	The data transform function. </param>
+			c_event_handler_gwen_handler( const c_event_handler_gwen& owner
+				, Gwen::Event::Caller& caller
+				, const t_event_data_transform& data_transform);
+
+			/// <summary>	Destructor. </summary>
+			~c_event_handler_gwen_handler();
+
+			/// <summary>	Attaches the handler to the gwen event caller. </summary>
+			void Attach();
+
+			/// <summary>	Detaches the handler from the gwen event caller. </summary>
+			void Detach();
+		};
+
+		/// <summary>	An event handler for gwen. </summary>
+		class c_event_handler_gwen final
+			: public Control::c_event_handler
+		{
+		private:
+			c_event_handler_gwen_handler m_handler_thunk;
+
+		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <param name="caller">		 	[in] The caller to attach to. </param>
+			/// <param name="data_transform">	(Optional) the data transform function. </param>
+			c_event_handler_gwen(Gwen::Event::Caller& caller, const t_event_data_transform& data_transform = nullptr);
+
+		private:
+			/// <summary>	Attaches the handler to the event. </summary>
+			void Attach() override;
+
+			/// <summary>	Detaches the handler from the event. </summary>
+			void Detach() override;
+		};
+
 		/// <summary>	An OpenSauceUI control using Gwen. </summary>
 		class c_control_gwen final
-			: public c_control_base
+			: public Control::c_control_base
 		{
+		private:
 			Gwen::Controls::Base* m_control;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Constructor. </summary>
 			///
-			/// <param name="control">	[in] The Gwen control. </param>
-			c_control_gwen(Gwen::Controls::Base* control);
+			/// <param name="gwen_control">		  	[in] The Gwen control. </param>
+			/// <param name="property_interfaces">	[in] The control's property interfaces. </param>
+			/// <param name="event_handlers">	  	[in] The control's event handlers. </param>
+			c_control_gwen(Gwen::Controls::Base* gwen_control
+				, const Control::t_property_interface_map& property_interfaces
+				, const Control::t_event_handler_map& event_handlers);
 			
 #pragma region i_control
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +106,12 @@ namespace Yelo
 			///
 			/// <returns>	The Gwen base control pointer. </returns>
 			void* GetControlPtr() const override;
+
+			/// <summary>	Shows the control. </summary>
+			void Show() override;
+
+			/// <summary>	Hides the control. </summary>
+			void Hide() override;
 #pragma endregion
 		};
 	};};};

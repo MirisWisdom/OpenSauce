@@ -9,11 +9,49 @@
 #if !PLATFORM_IS_DEDI
 
 #include <YeloLib/Halo1/rasterizer/rasterizer.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {
 	namespace Rasterizer
 	{
+#pragma region Settings
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+			class c_upgrades_container
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_maximum_rendered_triangles;
+				Configuration::c_configuration_value<bool> m_model_node_stretching_fix;
+	
+				c_upgrades_container();
+
+			protected:
+				const std::vector<Configuration::i_configuration_value* const> GetMembers() final override;
+			};
+
+		public:
+			Configuration::c_configuration_value<bool> m_use_nvidia_camo;
+			c_upgrades_container m_upgrades;
+
+			c_settings_container();
+			
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override;
+		};
+
+		class c_settings_rasterizer
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_rasterizer>
+		{
+		public:
+			void PostLoad() final override;
+		};
+#pragma endregion
+
 		struct s_rasterizer_resolution
 		{
 			DWORD			width;

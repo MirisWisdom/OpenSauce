@@ -160,4 +160,15 @@ namespace Effect
 		Memory::WriteRelativeJmp(&Hook_ShaderEffect_Particle, GET_FUNC_VPTR(RASTERIZER_EFFECT_PARTICLE_HOOK), true);
 		Memory::WriteRelativeJmp(&Hook_ShaderEffect_Contrail, GET_FUNC_VPTR(RASTERIZER_EFFECT_CONTRAIL_HOOK), true);
 	}
+
+	void SetDepthFadeEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_depth_fade;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_depth_fade : 0);
+	}
+
+	bool GetDepthFadeEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_depth_fade);
+	}
 };

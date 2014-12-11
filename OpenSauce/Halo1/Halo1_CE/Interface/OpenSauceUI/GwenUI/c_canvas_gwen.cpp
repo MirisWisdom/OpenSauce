@@ -55,29 +55,41 @@ namespace Yelo
 #pragma region i_control
 			uint32 c_canvas_gwen::GetResourceID() const
 			{
-				return RESOURCE_ID_DEBUG("#canvas_control");
+				return RESOURCE_ID_DEBUG("#CNV_main_canvas");
 			}
-
-			void c_canvas_gwen::SetResourceID(const uint32 resource_id) { }
 
 			void* c_canvas_gwen::GetControlPtr() const
 			{
 				return m_canvas.get();
 			}
 
-			void c_canvas_gwen::AddControl(t_control_ptr control)
+			void c_canvas_gwen::AddControl(Control::t_control_ptr control)
 			{
-				m_child_controls.push_back(control);
-			}
-
-			void c_canvas_gwen::RemoveControl(t_control_ptr control)
-			{
-				//Find the control to remove
+				//Check whether the control already exists
 				auto existing_control = std::find_if(m_child_controls.begin(), m_child_controls.end(),
-					[&](t_control_ptr entry)
+					[&](Control::t_control_ptr entry)
 					{
 						return entry == control;
 					});
+
+				YELO_ASSERT_DISPLAY(existing_control == m_child_controls.end(), "Attempted to add a control instance to the canvas multiple times");
+
+				if(existing_control == m_child_controls.end())
+				{
+					m_child_controls.push_back(control);
+				}
+			}
+
+			void c_canvas_gwen::RemoveControl(Control::t_control_ptr control)
+			{
+				//Find the control to remove
+				auto existing_control = std::find_if(m_child_controls.begin(), m_child_controls.end(),
+					[&](Control::t_control_ptr entry)
+					{
+						return entry == control;
+					});
+
+				YELO_ASSERT_DISPLAY(existing_control != m_child_controls.end(), "Attempted to remove a non-existant control from the canvas");
 
 				if(existing_control != m_child_controls.end())
 				{
@@ -88,11 +100,12 @@ namespace Yelo
 							return CAST_PTR(Gwen::Controls::Base*, control->GetControlPtr()) == child_control;
 						}
 					);
+
 					m_child_controls.erase(existing_control);
 				}
 			}
 
-			t_control_list& c_canvas_gwen::Controls()
+			Control::t_control_list& c_canvas_gwen::Controls()
 			{
 				return m_child_controls;
 			}

@@ -13,8 +13,11 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace ControlFactory
 	{
-		void c_control_builder_base::BuildChildren(c_control_factory& control_registry, Definitions::c_control_definition& control_definition, i_control& parent) const
+		void c_control_builder_base::BuildChildren(c_control_factory& control_registry
+			, Definitions::c_control_definition& control_definition
+			, Control::i_control& parent) const
 		{
+			// Create controls for all of the child control definitions
 			for(auto& child: control_definition.m_controls)
 			{
 				control_registry.BuildControl(parent, child);

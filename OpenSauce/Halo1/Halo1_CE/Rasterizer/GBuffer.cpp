@@ -45,7 +45,7 @@ namespace Yelo
 			Configuration::c_configuration_value<bool> m_enabled;
 
 			c_settings_container()
-				: Configuration::c_configuration_container("GBuffer")
+				: Configuration::c_configuration_container("Rasterizer.GBuffer")
 				, m_enabled("Enabled", true)
 			{ }
 			

@@ -28,7 +28,7 @@ namespace Yelo
 		public:
 			c_property_tree_file(const std::string& file_path);
 
-			void Load() final override;
+			bool Load() final override;
 			void Save() final override;
 			void Clear() final override;
 			
