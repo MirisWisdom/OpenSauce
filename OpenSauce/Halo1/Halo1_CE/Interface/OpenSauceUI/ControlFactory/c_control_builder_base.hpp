@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include "Interface/OpenSauceUI/i_control.hpp"
+#include "Interface/OpenSauceUI/Control/i_control.hpp"
 #include "Interface/OpenSauceUI/ControlFactory/i_control_builder.hpp"
 #include "Interface/OpenSauceUI/Definitions/c_control_definition.hpp"
 
@@ -28,7 +28,9 @@ namespace Yelo
 			/// <param name="control_registry">  	[in] The control registry. </param>
 			/// <param name="control_definition">	[in] The control definition. </param>
 			/// <param name="parent">			 	[in] The parent control. </param>
-			void BuildChildren(c_control_factory& control_registry, Definitions::c_control_definition& control_definition, i_control& parent) const;
+			void BuildChildren(c_control_factory& control_registry
+				, Definitions::c_control_definition& control_definition
+				, Control::i_control& parent) const;
 		};
 	};};};
 };

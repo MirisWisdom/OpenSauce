@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Interface/OpenSauceUI/resource_id.hpp"
 
-#if !PLATFORM_IS_DEDI && defined(DEBUG)
+#if !PLATFORM_IS_DEDI
 
 #include <boost/crc.hpp>
 
@@ -15,6 +15,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI
 	{
+#ifdef DEBUG
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Prints a CRC to the debug output. </summary>
 		///
@@ -32,6 +33,7 @@ namespace Yelo
 			OutputDebugString(crc_str);
 			OutputDebugString("\r\n");
 		}
+#endif
 
 		const uint32 CRCString(const char* str)
 		{
@@ -42,13 +44,17 @@ namespace Yelo
 			// Print the checksum then return it
 			uint32 crc = result.checksum();
 
-#ifdef DUMP_CRCS
-			DumpCRC(str, crc);
+#if defined(DUMP_CRCS) && defined(DEBUG)
+			if(IsDebuggerPresent())
+			{
+				DumpCRC(str, crc);
+			}
 #endif
 
 			return crc;
 		}
 
+#ifdef DEBUG
 		const uint32 VerifyCRC(const char* str, uint32 crc)
 		{
 			// Generate the CRC for the provided string and compare it against the expected crc
@@ -58,6 +64,7 @@ namespace Yelo
 
 			return crc;
 		}
+#endif
 	};};
 };
 #endif

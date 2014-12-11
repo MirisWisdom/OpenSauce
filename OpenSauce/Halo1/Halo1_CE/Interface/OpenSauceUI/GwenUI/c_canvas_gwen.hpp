@@ -11,7 +11,7 @@
 #include <Gwen/Gwen.h>
 #include <Gwen/Skins/TexturedBase.h>
 
-#include "Interface/OpenSauceUI/i_canvas.hpp"
+#include "Interface/OpenSauceUI/Control/i_canvas.hpp"
 #include "Interface/OpenSauceUI/GwenUI/c_gwen_renderer_halo.hpp"
 
 namespace Yelo
@@ -20,16 +20,16 @@ namespace Yelo
 	{
 		/// <summary>	The canvas for rendering the UI with Gwen. </summary>
 		class c_canvas_gwen final
-			: public i_canvas
+			: public Control::i_canvas
 		{
-			std::unique_ptr<c_gwen_renderer_halo>	m_renderer;
+			std::unique_ptr<c_gwen_renderer_halo>		m_renderer;
 			std::unique_ptr<Gwen::Skin::TexturedBase>	m_skin;
 			std::unique_ptr<Gwen::Controls::Canvas>		m_canvas;
 
-			t_control_list m_child_controls;
+			Control::t_control_list m_child_controls;
 
-		public:
 #pragma region i_canvas
+		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Initializes the Gwen DX9 renderer and skin. </summary>
 			///
@@ -57,17 +57,16 @@ namespace Yelo
 #pragma endregion
 
 #pragma region i_control
+		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the resource identifier of the control. </summary>
 			///
 			/// <returns>	The controls resource identifier. </returns>
-			virtual uint32 GetResourceID() const override;
+			uint32 GetResourceID() const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Sets the resource identifier of the control. </summary>
-			///
-			/// <param name="resource_id">	Identifier for the control resource. </param>
-			void SetResourceID(const uint32 resource_id) final override;
+			/// <summary>	Not applicable for a canvas. </summary>
+			void SetResourceID(const uint32 resource_id) override { }
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the Gwen base control pointer. </summary>
@@ -81,7 +80,7 @@ namespace Yelo
 			/// <remarks>	If the specified control has already been added the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to add. </param>
-			void AddControl(t_control_ptr control) override;
+			void AddControl(Control::t_control_ptr control) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes the specified control from the child control list. </summary>
@@ -89,13 +88,35 @@ namespace Yelo
 			/// <remarks>	If the specified control does not exist, the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to remove. </param>
-			void RemoveControl(t_control_ptr control) override;
+			void RemoveControl(Control::t_control_ptr control) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the controls list. </summary>
 			///
 			/// <returns>	A list of controls. </returns>
-			t_control_list& Controls() override;
+			Control::t_control_list& Controls() override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not applicable for a canvas. </summary>
+			Control::i_property_interface* GetPropertyInterface(const uint32 interface_id) const override { return nullptr; };
+			
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not applicable for a canvas. </summary>
+			void AddEventCallback(const uint32 event_id, const uint32 callback_id, const Control::t_event_callback& function, void* userdata) override { }
+			
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not applicable for a canvas. </summary>
+			void RemoveEventCallback(const uint32 event_id, const uint32 callback_id) override { }
+#pragma endregion
+
+#pragma region i_visibility_toggle
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not applicable for a canvas. </summary>
+			void Show() { }
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not applicable for a canvas. </summary>
+			void Hide() { }
 #pragma endregion
 		};
 	};};};

@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include "Interface/OpenSauceUI/i_control.hpp"
+#include "Interface/OpenSauceUI/Control/i_control.hpp"
 #include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
 #include "Interface/OpenSauceUI/Definitions/c_control_definition.hpp"
 
@@ -31,8 +31,13 @@ namespace Yelo
 			/// <param name="parent">			 	[in] The parent control. </param>
 			///
 			/// <returns>	A shared pointer to the new control. </returns>
-			virtual t_control_ptr Build(c_control_factory& control_registry, Definitions::c_control_definition& control_definition, i_control& parent) const = 0;
+			virtual Control::t_control_ptr Build(c_control_factory& control_registry
+				, Definitions::c_control_definition& control_definition
+				, Control::i_control& parent) const = 0;
 		};
+
+		/// <summary>	Defines an alias representing a control builder shared pointer. </summary>
+		typedef std::shared_ptr<i_control_builder> t_control_builder_ptr;
 	};};};
 };
 #endif

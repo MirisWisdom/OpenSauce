@@ -13,9 +13,9 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace ControlFactory
 	{
-		void c_control_factory::AddControl(const std::string& type_name, const i_control_builder* builder)
+		void c_control_factory::AddControl(const std::string& type_name, t_control_builder_ptr builder)
 		{
-			// Test whether an existing control already exists
+			// Test whether an existing control is present
 			auto existing_control = std::find_if(m_controls.begin(), m_controls.end(),
 				[&](s_control_type& entry)
 				{
@@ -24,18 +24,18 @@ namespace Yelo
 			);
 
 			// If a control type already exists, return
-			YELO_ASSERT(existing_control == m_controls.end())
+			YELO_ASSERT_DISPLAY(existing_control == m_controls.end(), "Attempted to add duplicate controls to a control factory");
+
 			if(existing_control != m_controls.end())
 			{
 				return;
 			}
 
 			// Add the control type to the controls list
-			s_control_type control_type = { type_name, builder };
-			m_controls.push_back(control_type);
+			m_controls.push_back(s_control_type { type_name, builder });
 		}
 
-		t_control_ptr c_control_factory::BuildControl(i_control& parent, Definitions::c_control_definition& definition)
+		Control::t_control_ptr c_control_factory::BuildControl(Control::i_control& parent, Definitions::c_control_definition& definition)
 		{
 			// Find the requested control
 			auto control_definition = std::find_if(m_controls.begin(), m_controls.end(),
@@ -44,10 +44,12 @@ namespace Yelo
 					return entry.m_type_name == definition.m_type.Get();
 				}
 			);
-			YELO_ASSERT(control_definition != m_controls.end());
+
+			YELO_ASSERT_DISPLAY(control_definition != m_controls.end(), "Attempted to build a control of an unknown type: %s", definition.m_type.Get().c_str());
 
 			// Build the control and add it to the parent
 			auto& control = control_definition->m_control_builder->Build(*this, definition, parent);
+
 			parent.AddControl(control);
 
 			return control;

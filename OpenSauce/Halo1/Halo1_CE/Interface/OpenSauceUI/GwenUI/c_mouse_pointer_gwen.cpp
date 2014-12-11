@@ -17,7 +17,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
-		void c_mouse_pointer_gwen::Initialize(ControlFactory::c_control_factory& control_factory, i_canvas& canvas)
+		void c_mouse_pointer_gwen::Initialize(ControlFactory::c_control_factory& control_factory, Control::i_canvas& canvas)
 		{
 			// Create the mouse pointer control
 			Definitions::c_control_definition mouse_definition;
@@ -29,8 +29,7 @@ namespace Yelo
 
 			m_mouse_control = control_factory.BuildControl(canvas, mouse_definition);
 
-			auto* gwen_control = CAST_PTR(Gwen::Controls::Base*, m_mouse_control->GetControlPtr());
-			gwen_control->BringToFront();
+			InterfaceChanged();
 		}
 
 		void c_mouse_pointer_gwen::Release()
@@ -51,6 +50,13 @@ namespace Yelo
 			
 			x = position.x;
 			y = position.y;
+		}
+
+		void c_mouse_pointer_gwen::InterfaceChanged()
+		{
+			auto* gwen_control = CAST_PTR(Gwen::Controls::Base*, m_mouse_control->GetControlPtr());
+			gwen_control->BringToFront();
+			gwen_control->SetMouseInputEnabled(false);
 		}
 	};};};
 };
