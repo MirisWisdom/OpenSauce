@@ -46,8 +46,11 @@ namespace Yelo
 			/// <param name="y">	[out] The output y coordinate. </param>
 			void GetPosition(int& x, int& y) override;
 
-			/// <summary>	Brings the pointer control to the front. </summary>
-			void InterfaceChanged() override;
+			/// <summary>	Shows the object. </summary>
+			void Show() override;
+
+			/// <summary>	Hides the object. </summary>
+			void Hide() override;
 		};
 	};};};
 };

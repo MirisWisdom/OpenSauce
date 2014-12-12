@@ -9,49 +9,163 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include "Memory/FunctionInterface.hpp"
+
 namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
-		void c_screen_display_manager::AddScreenController(const uint32 screen_id, t_screen_controller_ptr controller)
+		c_screen_display_manager::c_screen_display_manager(Control::i_canvas& canvas
+			, Control::i_mouse_pointer& mouse_pointer
+			, ControlFactory::c_control_factory& control_factory)
+			: m_canvas(canvas)
+			, m_mouse_pointer(mouse_pointer)
+			, m_control_factory(control_factory)
+			, m_current_state(Flags::_osui_game_state_launching)
+			, m_mouse_show_count(0)
+			, m_screen_instances()
+			, m_current_stage_instances()
+		{ }
+
+		void c_screen_display_manager::AddScreenController(const Flags::osui_game_state game_states
+			, const Flags::osui_screen_flags screen_flags
+			, const Enums::Key toggle_key
+			, const bool is_modal
+			, const bool show_cursor
+			, t_screen_controller_ptr controller)
 		{
-			YELO_ASSERT_DISPLAY(m_screen_controllers.find(screen_id) == m_screen_controllers.end(), "Attempted to add duplicate screen controller to display manager");
-
-			// Add the controller and set it's initial state to hidden
-			m_screen_controllers[screen_id] = s_screen_controller_state { false, controller };
-
-			controller->Hide();
+			m_screen_instances.push_back(s_screen_instance { game_states, screen_flags, toggle_key, is_modal, show_cursor, controller });
 		}
 
-		void c_screen_display_manager::RemoveScreenController(const uint32 screen_id)
+		void c_screen_display_manager::ClearScreenControllers()
 		{
-			YELO_ASSERT_DISPLAY(m_screen_controllers.find(screen_id) != m_screen_controllers.end(), "Attempted to remove non-existant screen controller from display manager");
+			// Destroy all screens and delete all screen instances
+			m_current_stage_instances.clear();
 
-			// Remove the controller
-			m_screen_controllers.erase(screen_id);
-		}
-
-		void c_screen_display_manager::ShowScreen(const uint32 screen_id)
-		{
-			// If the screen is not already visible, show it
-			auto& state = m_screen_controllers[screen_id];
-
-			if(!state.visible)
+			for(auto& instance: m_screen_instances)
 			{
-				state.controller->Show();
-				state.visible = true;
+				instance.m_screen_controller->DestroyScreen(m_canvas);
+			}
+			m_screen_instances.clear();
+		}
+
+		void c_screen_display_manager::SetGameState(const Flags::osui_game_state state)
+		{
+			m_current_state = state;
+
+			// Destroy and screens that are not valid for this stage
+			for(auto* instance : m_current_stage_instances)
+			{
+				if((instance->m_game_states & ~state) && (instance->m_game_states & ~Flags::_osui_game_state_all))
+				{
+					instance->m_screen_controller->Hide();
+					instance->m_screen_controller->DestroyScreen(m_canvas);
+					instance->m_is_visible = false;
+				}
+			}
+
+			m_current_stage_instances.clear();
+
+			// Get all of the screen instances for this state
+			for(auto& instance : m_screen_instances)
+			{
+				if(instance.m_game_states & state)
+				{
+					m_current_stage_instances.push_back(&instance);
+
+					// Build the screen instances
+					instance.m_screen_controller->BuildScreen(m_control_factory, m_canvas);
+
+					// If the screen should always be visible set it to be displayed
+					if(instance.m_screen_flags & Flags::_osui_screen_flags_always_visible)
+					{
+						instance.m_screen_controller->Show();
+						instance.m_is_visible = true;
+					}
+					else
+					{
+						instance.m_screen_controller->Hide();
+						instance.m_is_visible = false;
+					}
+				}
 			}
 		}
 
-		void c_screen_display_manager::HideScreen(const uint32 screen_id)
+		void c_screen_display_manager::Update()
 		{
-			// If the screen is not already hidden, hide it
-			auto& state = m_screen_controllers[screen_id];
-
-			if(state.visible)
+			for(auto* instance : m_current_stage_instances)
 			{
-				state.controller->Hide();
-				state.visible = false;
+				auto& screen_instance = *instance;
+
+				if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_key_toggled)
+				{
+					// If the screen has a toggle key, check whether the key has been pressed and toggle the screen
+					auto state = Yelo::Input::GetKeyState(screen_instance.m_toggle_key);
+					if((state != screen_instance.m_previous_key_state) && (state == 1))
+					{
+						if(screen_instance.m_is_visible)
+						{
+							screen_instance.m_screen_controller->Hide();
+							screen_instance.m_is_visible = false;
+
+							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_is_modal)
+							{
+								Memory::FunctionProcessUpdateUIWidgetsDisabled() = false;
+							}
+
+							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
+							{
+								HideMousePointer();
+							}
+						}
+						else
+						{
+							screen_instance.m_screen_controller->Show();
+							screen_instance.m_is_visible = true;
+
+							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_is_modal)
+							{
+								Memory::FunctionProcessUpdateUIWidgetsDisabled() = true;
+							}
+
+							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
+							{
+								ShowMousePointer();
+							}
+						}
+					}
+					screen_instance.m_previous_key_state = state;
+				}
+
+				// Update screens that are visible or set to always update
+				if((screen_instance.m_screen_flags & Flags::_osui_screen_flags_always_update)
+					|| screen_instance.m_is_visible)
+				{
+					screen_instance.m_screen_controller->Update();
+				}
+			}
+		}
+
+		void c_screen_display_manager::ShowMousePointer()
+		{
+			if(!m_mouse_show_count)
+			{
+				m_mouse_pointer.Show();
+				Memory::FunctionProcessRenderCursorDisabled() = true;
+			}
+
+			m_mouse_show_count++;
+		}
+
+		void c_screen_display_manager::HideMousePointer()
+		{
+			m_mouse_show_count--;
+
+			if(m_mouse_show_count <= 0)
+			{
+				m_mouse_show_count = 0;
+				m_mouse_pointer.Hide();
+				Memory::FunctionProcessRenderCursorDisabled() = false;
 			}
 		}
 	};};};

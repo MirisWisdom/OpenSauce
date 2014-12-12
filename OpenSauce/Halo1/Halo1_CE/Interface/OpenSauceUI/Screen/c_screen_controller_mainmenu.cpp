@@ -83,6 +83,10 @@ namespace Yelo
 #define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID					RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount")
 #define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID	RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount_changed_event")
 #pragma endregion
+		
+		c_screen_controller_mainmenu::c_screen_controller_mainmenu()
+			: c_screen_controller_base()
+		{ }
 
 		void c_screen_controller_mainmenu::SetStaticProperties()
 		{

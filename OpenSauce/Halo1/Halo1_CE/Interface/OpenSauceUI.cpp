@@ -41,8 +41,7 @@ namespace Yelo
 		static Input::c_control_input_halo g_control_input;
 		static GwenUI::c_mouse_pointer_gwen g_mouse_pointer;
 
-		static Screen::c_screen_display_manager g_screen_display_manager;
-		static Screen::t_screen_controller_ptr g_mainmenu_controller;
+		static std::unique_ptr<Screen::c_screen_display_manager> g_screen_display_manager;
 
 		void LoadUI(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* presentation_parameters)
 		{
@@ -51,6 +50,20 @@ namespace Yelo
 			g_control_input.Initialize(CAST_PTR(Gwen::Controls::Canvas*, g_canvas->GetControlPtr()));
 			g_control_input.SetMouseBounds(0, presentation_parameters->BackBufferWidth, 0, presentation_parameters->BackBufferHeight);
 			g_mouse_pointer.Initialize(g_control_factory, *g_canvas);
+
+			g_screen_display_manager->AddScreenController(Flags::_osui_game_state_all
+				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled | Flags::_osui_screen_flags_show_cursor | Flags::_osui_screen_flags_is_modal)
+				, Enums::Key::_KeyF7
+				, false
+				, true
+				, std::make_shared<Screen::c_screen_controller_mainmenu>());
+
+			g_screen_display_manager->SetGameState(Flags::_osui_game_state_main_menu);
+		}
+
+		void UnloadUI()
+		{
+			g_screen_display_manager->ClearScreenControllers();
 		}
 
 		void Initialize()
@@ -65,6 +78,8 @@ namespace Yelo
 			g_control_factory.AddControl("VerticalSlider", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_verticalslider>());
 
 			g_control_factory.AddControl("Pointer", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_rectangle>());
+
+			g_screen_display_manager = std::make_unique<Screen::c_screen_display_manager>(*g_canvas, g_mouse_pointer, g_control_factory);
 		}
 
 		void Dispose()
@@ -81,49 +96,7 @@ namespace Yelo
 			g_control_input.GetMousePosition(x, y);
 			g_mouse_pointer.SetPosition(x, y);
 
-
-			static byte previous_state0;
-			byte state = Yelo::Input::GetKeyState(Enums::_Key0);
-			if((state != previous_state0) && (state == 1))
-			{
-				if(g_mainmenu_controller)
-				{
-					g_screen_display_manager.RemoveScreenController(RESOURCE_ID_DEBUG("#SCN_mainmenu"));
-
-					g_mainmenu_controller->DestroyScreen(*g_canvas);
-					g_mainmenu_controller.reset();
-				}
-
-				g_mainmenu_controller = std::make_unique<Screen::c_screen_controller_mainmenu>();
-				g_mainmenu_controller->BuildScreen(g_control_factory, *g_canvas);
-				g_screen_display_manager.AddScreenController(RESOURCE_ID_DEBUG("#SCN_mainmenu"), g_mainmenu_controller);
-
-				g_mouse_pointer.InterfaceChanged();
-			}
-			previous_state0 = state;
-
-			static byte previous_state9;
-			static bool displayed = false;
-			state = Yelo::Input::GetKeyState(Enums::_Key9);
-			if((state != previous_state9) && (state == 1))
-			{
-				if(displayed)
-				{
-					g_screen_display_manager.HideScreen(RESOURCE_ID_DEBUG("#SCN_mainmenu"));
-					displayed = false;
-				}
-				else
-				{
-					g_screen_display_manager.ShowScreen(RESOURCE_ID_DEBUG("#SCN_mainmenu"));
-					displayed = true;
-				}
-			}
-			previous_state9 = state;
-			
-			if(g_mainmenu_controller)
-			{
-				g_mainmenu_controller->Update();
-			}
+			g_screen_display_manager->Update();
 		}
 
 		void Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* presentation_parameters)
@@ -133,6 +106,7 @@ namespace Yelo
 
 		void OnLostDevice()
 		{
+			UnloadUI();
 			g_mouse_pointer.Release();
 			g_canvas->Release();
 		}
@@ -149,6 +123,7 @@ namespace Yelo
 
 		void Release()
 		{
+			UnloadUI();
 			g_mouse_pointer.Release();
 			g_canvas->Release();
 		}

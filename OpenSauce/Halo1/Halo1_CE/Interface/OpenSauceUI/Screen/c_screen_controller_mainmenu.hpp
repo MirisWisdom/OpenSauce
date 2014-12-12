@@ -18,6 +18,9 @@ namespace Yelo
 		class c_screen_controller_mainmenu final
 			: public c_screen_controller_base
 		{
+		public:
+			c_screen_controller_mainmenu();
+
 		private:
 			/// <summary>	Sets a screens static properties. </summary>
 			void SetStaticProperties() override;
