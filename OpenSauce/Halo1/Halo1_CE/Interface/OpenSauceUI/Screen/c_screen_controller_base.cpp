@@ -16,10 +16,20 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
+		c_screen_controller_base::c_screen_controller_base()
+			: m_target_screen(nullptr)
+		{ }
+
 #pragma region i_screen_controller
 		void c_screen_controller_base::BuildScreen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& target_canvas)
 		{
 			DOC_TODO("PROPER SCREEN LOADING");
+
+			// If the screen has already been built return
+			if(m_target_screen)
+			{
+				return;
+			}
 
 			// Build the screen's root control
 			auto& config_file = Configuration::c_configuration_file_factory::CreateConfigurationFile("D://test.json");
@@ -46,6 +56,12 @@ namespace Yelo
 
 		void c_screen_controller_base::DestroyScreen(Control::i_canvas& target_canvas)
 		{
+			// If the screen has already been destroyed return
+			if(!m_target_screen)
+			{
+				return;
+			}
+
 			// Unbind all properties and events
 			UnbindDynamicProperties();
 			UnbindEvents();

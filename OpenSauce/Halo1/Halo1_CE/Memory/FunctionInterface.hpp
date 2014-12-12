@@ -15,6 +15,7 @@ namespace Yelo
 #if !PLATFORM_IS_DEDI
 		bool& FunctionProcessRenderHudIsDisabled();
 		bool& FunctionProcessUpdateUIWidgetsDisabled();
+		bool& FunctionProcessRenderCursorDisabled();
 #endif
 	};
 };

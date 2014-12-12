@@ -92,3 +92,4 @@ DEFINE_HOOK_BLOCK_PROCESS_NONE(update_ui_widgets, GET_FUNC_VPTR(UPDATE_UI_WIDGET
 
 bool& FunctionProcessRenderHudIsDisabled() { return GET_HOOK_BLOCK_PROCESS(render_hud).g_is_disabled; }
 bool& FunctionProcessUpdateUIWidgetsDisabled() { return GET_HOOK_BLOCK_PROCESS(update_ui_widgets).g_is_disabled; }
+bool& FunctionProcessRenderCursorDisabled() { return GET_HOOK_BLOCK_PROCESS(render_cursor).g_is_disabled; }

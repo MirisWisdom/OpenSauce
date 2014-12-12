@@ -18,6 +18,7 @@ namespace Yelo
 		/// <summary>	The OpenSauceUI mouse pointer interface. </summary>
 		class i_mouse_pointer
 			abstract
+			: public i_visibility_toggle
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,8 +45,13 @@ namespace Yelo
 			/// <param name="y">	[out] The output y coordinate. </param>
 			virtual void GetPosition(int& x, int& y) = 0;
 
-			/// <summary>	Handles logic that has to occur when the UI is changed. </summary>
-			virtual void InterfaceChanged() = 0;
+#pragma region i_visibility_toggle
+			/// <summary>	Shows the object. </summary>
+			virtual void Show() = 0;
+
+			/// <summary>	Hides the object. </summary>
+			virtual void Hide() = 0;
+#pragma endregion
 		};
 
 		/// <summary>	Defines an alias representing a shared mouse pointer pointer. </summary>

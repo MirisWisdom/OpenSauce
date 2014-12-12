@@ -34,6 +34,9 @@ namespace Yelo
 
 		protected:
 			t_screen_ptr m_target_screen;
+
+		public:
+			c_screen_controller_base();
 			
 #pragma region i_screen_controller
 		public:
