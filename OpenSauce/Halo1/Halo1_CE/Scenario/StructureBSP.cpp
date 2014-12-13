@@ -112,16 +112,12 @@ namespace Yelo
 			auto& object_iterator = Objects::c_object_iterator::all();
 			for(const auto& object : object_iterator)
 			{
-				auto* object_data = blam::object_get(object.index);
 				real level_of_detail_pixels = blam::object_get_level_of_detail_pixels(object.index);
 
-				if(!object_data->cached_render_state_index.IsNull())
+				auto* object_data = blam::object_get(object.index);
+				if(object_data && !object_data->cached_render_state_index.IsNull())
 				{
 					blam::object_render_state_refresh(object_data->cached_render_state_index, object.index, level_of_detail_pixels, 1);
-				}
-				else
-				{
-					blam::object_render_state_refresh(object_data->cached_render_state_index, object.index, level_of_detail_pixels, 0);
 				}
 			}
 

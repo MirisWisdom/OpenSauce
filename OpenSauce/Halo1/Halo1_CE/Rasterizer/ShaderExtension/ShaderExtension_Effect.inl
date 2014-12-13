@@ -122,7 +122,14 @@ namespace Effect
 				variables.m_depth_fade_distance = extension.depth_fade_distance;
 				variables.m_camera_fade_distance = extension.camera_fade_distance;
 
-				DX9::Direct3DDevice()->SetTexture(4, DX9::c_gbuffer_system::GBuffer().m_rt_depth.texture);
+				auto& render_device = *DX9::Direct3DDevice();
+				render_device.SetTexture(4, DX9::c_gbuffer_system::GBuffer().m_rt_depth.texture);
+
+				render_device.SetSamplerState(4, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+				render_device.SetSamplerState(4, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+				render_device.SetSamplerState(4, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+				render_device.SetSamplerState(4, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+				render_device.SetSamplerState(4, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
 				return g_feature_mix_list[1];
 			}

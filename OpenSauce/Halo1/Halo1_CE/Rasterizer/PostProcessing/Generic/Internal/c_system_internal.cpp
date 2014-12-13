@@ -638,7 +638,7 @@ namespace Yelo
 		// scripting
 		void c_system_internal::SetEffectInstanceActive(int16 index, bool active)
 		{
-			if(index >= (int16)m_members_internal.m_effect_instances.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return;
 
 			m_members_internal.m_effect_instances.effect_instance_list[index].SetIsActive(active);
@@ -646,7 +646,7 @@ namespace Yelo
 
 		void c_system_internal::SetEffectInstanceFade(int16 index, real start, real end, real time)
 		{
-			if(index >= (int16)m_members_internal.m_effect_instances.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return;
 
 			m_members_internal.m_effect_instances.effect_instance_list[index].SetEffectFade(start, end, time);
@@ -670,7 +670,7 @@ namespace Yelo
 
 		real c_system_internal::GetEffectInstanceCurrentFade(int16 index)
 		{
-			if(index >= (int16)m_members_internal.m_effect_instances.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return false;
 
 			return m_members_internal.m_effect_instances.effect_instance_list[index].GetCurrentFade();
@@ -678,7 +678,7 @@ namespace Yelo
 
 		int16 c_system_internal::GetEffectInstanceFadeDirection(int16 index)
 		{
-			if(index >= (int16)m_members_internal.m_effect_instances.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return false;
 
 			return m_members_internal.m_effect_instances.effect_instance_list[index].GetFadeDirection();
@@ -686,7 +686,7 @@ namespace Yelo
 
 		bool c_system_internal::GetEffectIsValid(int16 index)
 		{
-			if(index >= (int16)m_members_internal.m_effects.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return false;
 
 			return m_members_internal.m_effects.effect_list[index].effect->IsValid();
@@ -694,7 +694,7 @@ namespace Yelo
 
 		int16 c_system_internal::GetEffectShaderVariableIndexByName(int16 index, const char* name)
 		{
-			if(index >= (int16)m_members_internal.m_effects.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return NONE;
 
 			return m_members_internal.m_effects.effect_list[index].effect->GetScriptedVariableIndex(name);
@@ -702,31 +702,31 @@ namespace Yelo
 
 		void c_system_internal::SetEffectShaderVariableBoolean(int16 index, int16 variable_index, bool value, real time)
 		{
-			if(index >= (int16)m_members_internal.m_effects.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return;
 			m_members_internal.m_effects.effect_list[index].effect->SetScriptedVariable(variable_index, time, value);
 		}
 
 		void c_system_internal::SetEffectShaderVariableInteger(int16 index, int16 variable_index, int32 value, real time)
 		{
-			if(index >= (int16)m_members_internal.m_effects.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return;
 			m_members_internal.m_effects.effect_list[index].effect->SetScriptedVariable(variable_index, time, value);
 		}
 
 		void c_system_internal::SetEffectShaderVariableReal(int16 index, int16 variable_index, real value0, real value1, real value2, real value3, real time)
 		{
-			if(index >= (int16)m_members_internal.m_effects.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return;
 			m_members_internal.m_effects.effect_list[index].effect->SetScriptedVariable(variable_index, time, value0, value1, value2, value3);
 		}
 
 		void c_system_internal::SetEffectShaderInstanceActive(int16 index, int16 instance_index, bool active)
 		{
-			if(index >= (int16)m_members_internal.m_effects.count)
+			if((index < 0) || (index >= (int16)m_members_internal.m_effect_instances.count))
 				return;
 
-			if(instance_index >= (int16)m_members_internal.m_effects.effect_list[index].shader_instance_count)
+			if((instance_index < 0) || (instance_index >= (int16)m_members_internal.m_effects.effect_list[index].shader_instance_count))
 				return;
 
 			m_members_internal.m_effects.effect_list[index].shader_instances[instance_index].IsActive() = active;
