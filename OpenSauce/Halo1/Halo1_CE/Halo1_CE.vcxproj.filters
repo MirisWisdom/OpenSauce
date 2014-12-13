@@ -559,6 +559,9 @@
     <ClInclude Include="Interface\OpenSauceUI\Control\s_interface_value.hpp">
       <Filter>Interface\OpenSauceUI\Control</Filter>
     </ClInclude>
+    <ClInclude Include="Rasterizer\Textures\c_packed_texture_loader.hpp">
+      <Filter>Rasterizer\Textures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1140,6 +1143,9 @@
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\Control\s_interface_value.cpp">
       <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Textures\c_packed_texture_loader.cpp">
+      <Filter>Rasterizer\Textures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2071,6 +2077,9 @@
     </Filter>
     <Filter Include="Interface\OpenSauceUI\GwenUI\ControlBuilders">
       <UniqueIdentifier>{2f4fe07f-cd0f-4414-826e-812f6cce3a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\Textures">
+      <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

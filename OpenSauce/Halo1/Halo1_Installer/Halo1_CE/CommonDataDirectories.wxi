@@ -10,6 +10,9 @@
 			<Component Id='Halo1_CE_PPShaders_COMP' Guid='547CFB95-B537-4B3F-A0B1-6EE6671D663C'>
 				<File Id='Halo1_CE_PPShaders_FILE' Name='pp_shaders.shd' KeyPath='yes' />
 			</Component>
+			<Component Id='Halo1_CE_Textures_COMP' Guid='DCEF3588-EB63-495D-98CB-1FD9FF1F27D6'>
+				<File Id='Halo1_CE_Textures_FILE' Name='textures.tpk' KeyPath='yes' />
+			</Component>
 
 			<Component Id='Halo1_CE_ShadersRemove_COMP' Guid='BBA737F2-4BCE-4516-AF07-34CEC2AE47F4'>
 				<RemoveFolder Id='Halo1_CE_Shaders_REMDIR' On='uninstall' />

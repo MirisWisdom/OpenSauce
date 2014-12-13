@@ -14,6 +14,8 @@
 #include <Gwen/Texture.h>
 #include <Gwen/WindowProvider.h>
 
+#include "Rasterizer/Textures/c_packed_texture_loader.hpp"
+
 #define D3DFVF_VERTEXFORMAT2D ( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1 )
 
 struct FontData
@@ -295,18 +297,19 @@ namespace Yelo
 
 		void c_gwen_renderer_halo::LoadTexture( Gwen::Texture* pTexture )
 		{
-			IDirect3DTexture9* ptr = NULL;
-			D3DXIMAGE_INFO ImageInfo;
-			HRESULT hr = D3DXCreateTextureFromFileExW( m_pDevice, pTexture->name.GetUnicode().c_str(), 0, 0, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, &ImageInfo, NULL, &ptr );
+			auto& texture_name_wstring = pTexture->name.GetUnicode();
+			std::string texture_name(texture_name_wstring.begin(), texture_name_wstring.end());
 
-			if ( hr != S_OK )
+			IDirect3DTexture9* texture = nullptr;
+			D3DXIMAGE_INFO image_info;
+			if (!Rasterizer::Textures::GetPackedTextureLoader().LoadTexture(texture_name, &texture, &image_info))
 			{
 				return;
 			}
 
-			pTexture->data = ptr;
-			pTexture->width = ImageInfo.Width;
-			pTexture->height = ImageInfo.Height;
+			pTexture->data = texture;
+			pTexture->width = image_info.Width;
+			pTexture->height = image_info.Height;
 		}
 
 		void c_gwen_renderer_halo::FreeTexture( Gwen::Texture* pTexture )
