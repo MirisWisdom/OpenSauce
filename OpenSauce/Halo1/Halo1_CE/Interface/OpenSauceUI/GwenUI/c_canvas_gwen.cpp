@@ -24,7 +24,7 @@ namespace Yelo
 
 				m_canvas->SetDrawBackground(false);
 				m_skin->SetRender(m_renderer.get());
-				m_skin->Init( "DefaultSkin.png" );
+				m_skin->Init( "OpenSauceUISkin" );
 			}
 
 			void c_canvas_gwen::Release()

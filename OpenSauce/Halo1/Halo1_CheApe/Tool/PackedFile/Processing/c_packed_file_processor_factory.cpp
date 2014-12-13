@@ -10,6 +10,7 @@
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include "Tool/PackedFile/Processing/c_packed_file_processor_archive.hpp"
 #include "Tool/PackedFile/Processing/c_packed_file_processor_shader.hpp"
+#include "Tool/PackedFile/Processing/c_packed_file_processor_texture.hpp"
 
 namespace Yelo
 {
@@ -24,6 +25,10 @@ namespace Yelo
 			else if (type == "Shader")
 			{
 				return std::make_unique<c_packed_file_processor_shader>();
+			}
+			else if (type == "Texture")
+			{
+				return std::make_unique<c_packed_file_processor_texture>();
 			}
 			else
 			{

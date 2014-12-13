@@ -248,6 +248,9 @@
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp">
       <Filter>Tool\PackedFile\Processing</Filter>
     </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -446,6 +449,9 @@
     </ClInclude>
     <ClInclude Include="TagGroups\TagFieldReplacements\Object.hpp">
       <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

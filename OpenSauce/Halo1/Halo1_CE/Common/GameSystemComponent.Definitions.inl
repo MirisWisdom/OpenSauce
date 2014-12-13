@@ -37,7 +37,7 @@
 ??=include BOOST_PP_ITERATE()
 
 #if PLATFORM_IS_USER
-	#define BOOST_PP_ITERATION_LIMITS (1, 17)
+	#define BOOST_PP_ITERATION_LIMITS (1, 18)
 	#define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.Render.inl"
 	??=include BOOST_PP_ITERATE()
 #endif

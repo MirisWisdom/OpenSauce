@@ -23,6 +23,7 @@
 		#include "Rasterizer/PostProcessing/PostProcessing.hpp"
 		#include "Rasterizer/Lightmaps.hpp"
 		#include "Rasterizer/Sky.hpp"
+		#include "Rasterizer/Textures/c_packed_texture_loader.hpp"
 		#include "Game/Camera.hpp"
 
 		#include "Interface/GameUI.hpp"
