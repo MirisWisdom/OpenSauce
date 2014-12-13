@@ -59,6 +59,13 @@ namespace Yelo
 				bool SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetSpecColor(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetVertexLight(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
+
+				void SetNormalMapsEnabled(bool value);
+				bool GetNormalMapsEnabled();
+				void SetSpecularMapsEnabled(bool value);
+				bool GetSpecularMapsEnabled();
+				void SetSpecularLightingEnabled(bool value);
+				bool GetSpecularLightingEnabled();
 			};
 
 			namespace Environment
@@ -68,6 +75,17 @@ namespace Yelo
 
 				void SetLightmapSampler(const TagGroups::s_shader_definition* shader);
 				void SetupLightmapShader(const TagGroups::s_shader_definition* shader, const _enum extension_type);
+
+				void SetDiffuseDLMsEnabled(bool value);
+				bool GetDiffuseDLMsEnabled();
+				void SetSpecularDLMsEnabled(bool value);
+				bool GetSpecularDLMsEnabled();
+			}
+
+			namespace Effect
+			{
+				void SetDepthFadeEnabled(bool value);
+				bool GetDepthFadeEnabled();
 			}
 		};
 	};

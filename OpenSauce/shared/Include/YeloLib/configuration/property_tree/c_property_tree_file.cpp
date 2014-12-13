@@ -20,7 +20,7 @@ namespace Yelo
 			m_property_tree_file.clear();
 		}
 		
-		void c_property_tree_file::Load()
+		bool c_property_tree_file::Load()
 		{
 			try
 			{
@@ -30,10 +30,19 @@ namespace Yelo
 				PrintPropertyTree(m_property_tree_file);
 			#endif
 			}
-			catch(...)
+			catch(boost::property_tree::ptree_error e)
 			{ //-V565
-				// Doesn't really matter that the read failed, default values will be used instead and the settings are re-written when the game closes anyway
+#ifdef DEBUG
+				if(IsDebuggerPresent())
+				{
+					OutputDebugString("Exception occurred when reading a property tree:\n");
+					OutputDebugString(e.what());
+					OutputDebugString("\n");
+				}
+#endif
+				return false;
 			}
+			return true;
 		}
 		
 		void c_property_tree_file::Save()

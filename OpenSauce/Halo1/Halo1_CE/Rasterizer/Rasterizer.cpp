@@ -12,10 +12,6 @@
 #include <blamlib/Halo1/interface/ui_video_screen.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
@@ -130,75 +126,52 @@ namespace Yelo
 		static s_rasterizer_resolution g_resolution_list[64];
 
 #pragma region Settings
-		class c_settings_container
-			: public Configuration::c_configuration_container
-		{
-			class c_upgrades_container
-				: public Configuration::c_configuration_container
-			{
-			public:
-				Configuration::c_configuration_value<bool> m_maximum_rendered_triangles;
-				Configuration::c_configuration_value<bool> m_model_node_stretching_fix;
-	
-				c_upgrades_container()
-					: Configuration::c_configuration_container("Upgrades")
-					, m_maximum_rendered_triangles("MaximumRenderedTriangles", true)
-					, m_model_node_stretching_fix("MaximumModelNodes", true)
-				{ }
+		c_settings_container::c_upgrades_container::c_upgrades_container()
+			: Configuration::c_configuration_container("Upgrades")
+			, m_maximum_rendered_triangles("MaximumRenderedTriangles", true)
+			, m_model_node_stretching_fix("MaximumModelNodes", true)
+		{ }
 
-			protected:
-				const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
-				{
-					return std::vector<Configuration::i_configuration_value* const>
-					{
-						&m_maximum_rendered_triangles,
-						&m_model_node_stretching_fix,
-					};
-				}
+		const std::vector<Configuration::i_configuration_value* const> c_settings_container::c_upgrades_container::GetMembers()
+		{
+			return std::vector<Configuration::i_configuration_value* const>
+			{
+				&m_maximum_rendered_triangles,
+				&m_model_node_stretching_fix,
 			};
+		}
 
-		public:
-			Configuration::c_configuration_value<bool> m_use_nvidia_camo;
-			c_upgrades_container m_upgrades;
+		c_settings_container::c_settings_container()
+			: Configuration::c_configuration_container("Rasterizer")
+			, m_use_nvidia_camo("UseNvidiaCamo", false)
+			, m_upgrades()
+		{ }
 
-			c_settings_container()
-				: Configuration::c_configuration_container("Rasterizer")
-				, m_use_nvidia_camo("UseNvidiaCamo", false)
-				, m_upgrades()
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override
-			{
-				return std::vector<i_configuration_value* const> { &m_use_nvidia_camo, &m_upgrades };
-			}
-		};
-
-		class c_settings_rasterizer
-			: public Settings::c_settings_singleton<c_settings_container, c_settings_rasterizer>
+		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
 		{
-		public:
-			void PostLoad() final override
-			{
-				auto& settings_instance = Get();
+			return std::vector<i_configuration_value* const> { &m_use_nvidia_camo, &m_upgrades };
+		}
+		
+		void c_settings_rasterizer::PostLoad()
+		{
+			auto& settings_instance = Get();
 
 #if PLATFORM_VERSION <= 0x1090
-				// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
-				// if the user changes this in their settings they need to restart the game for it to take effect
-				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = settings_instance.m_use_nvidia_camo;
+			// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
+			// if the user changes this in their settings they need to restart the game for it to take effect
+			GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = settings_instance.m_use_nvidia_camo;
 
-				if(settings_instance.m_upgrades.m_model_node_stretching_fix)
-				{
-					g_render_upgrades.InitializeMaximumNodesPerModelFixes();
-				}
+			if(settings_instance.m_upgrades.m_model_node_stretching_fix)
+			{
+				g_render_upgrades.InitializeMaximumNodesPerModelFixes();
+			}
 #endif
 				
-				if(settings_instance.m_upgrades.m_maximum_rendered_triangles)
-				{
-					g_render_upgrades.InitializeRenderedTrianglesUpgrade();
-				}
+			if(settings_instance.m_upgrades.m_maximum_rendered_triangles)
+			{
+				g_render_upgrades.InitializeRenderedTrianglesUpgrade();
 			}
-		};
+		}
 #pragma endregion
 
 		static void InitializeRasterizerGeometryUpgrades()

@@ -17,7 +17,7 @@ namespace Yelo
 		{
 		public:
 			/// <summary>	Loads the configuration from a file. </summary>
-			virtual void Load() = 0;
+			virtual bool Load() = 0;
 
 			/// <summary>	Saves the configuration to a file. </summary>
 			virtual void Save() = 0;
