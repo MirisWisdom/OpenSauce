@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/Label.h"
@@ -107,3 +108,4 @@ void Label::SetFont( Gwen::UnicodeString strFacename, int iSize, bool bBold )
 	SetFont( m_CreatedFont );
 	m_Text->RefreshSize();
 }
+#endif

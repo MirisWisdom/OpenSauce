@@ -16,9 +16,9 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
 #pragma region i_canvas
-			void c_canvas_gwen::Initialize(IDirect3DDevice9* device)
+			void c_canvas_gwen::Initialize(IDirect3DDevice9* device, c_packed_file& ui_package)
 			{
-				m_renderer = std::make_unique<c_gwen_renderer_halo>(device);
+				m_renderer = std::make_unique<c_gwen_renderer_halo>(device, ui_package);
 				m_skin = std::make_unique<Gwen::Skin::TexturedBase>(nullptr);
 				m_canvas = std::make_unique<Gwen::Controls::Canvas>(m_skin.get());
 

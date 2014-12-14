@@ -562,6 +562,18 @@
     <ClInclude Include="Rasterizer\Textures\c_packed_texture_loader.hpp">
       <Filter>Rasterizer\Textures</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1146,6 +1158,18 @@
     </ClCompile>
     <ClCompile Include="Rasterizer\Textures\c_packed_texture_loader.cpp">
       <Filter>Rasterizer\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2024,6 +2048,9 @@
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
     </None>
+    <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
@@ -2080,6 +2107,9 @@
     </Filter>
     <Filter Include="Rasterizer\Textures">
       <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\ScreenDefinitions">
+      <UniqueIdentifier>{5a449b7a-a389-4345-b7ef-775da5a97ea3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

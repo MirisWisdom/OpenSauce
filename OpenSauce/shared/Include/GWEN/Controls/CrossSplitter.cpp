@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/CrossSplitter.h"
 #include "Gwen/Controls/Button.h"
@@ -180,3 +182,4 @@ void CrossSplitter::UnZoom()
 	Invalidate();
 	ZoomChanged();
 }
+#endif

@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/RadioButtonController.h"
 #include "Gwen/Controls/RadioButton.h"
@@ -72,3 +73,4 @@ LabeledRadioButton* RadioButtonController::AddOption( const Gwen::UnicodeString 
 	Invalidate();
 	return lrb;
 }
+#endif

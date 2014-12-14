@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Gwen.h"
 #include "Gwen/ControlList.h"
 
@@ -84,3 +86,4 @@ void ControlList::SetActionInternal( Gwen::Event::Handler* pObject, void ( Gwen:
 		( *it )->SetAction( pObject, f, packet );
 	}
 }
+#endif

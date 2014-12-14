@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ComboBox.h"
 #include "Gwen/Controls/Menu.h"
@@ -241,3 +242,4 @@ bool ComboBox::OnKeyDown( bool bDown )
 void ComboBox::RenderFocus( Gwen::Skin::Base* /*skin*/ )
 {
 }
+#endif

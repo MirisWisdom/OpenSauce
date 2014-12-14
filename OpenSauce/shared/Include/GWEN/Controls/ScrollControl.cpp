@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ScrollControl.h"
 #include "Gwen/Controls/ScrollBar.h"
@@ -267,3 +268,4 @@ void ScrollControl::Clear()
 {
 	m_InnerPanel->RemoveAllChildren();
 }
+#endif

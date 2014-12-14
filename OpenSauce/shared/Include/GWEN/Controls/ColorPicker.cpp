@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ColorPicker.h"
 #include "Gwen/Controls/HorizontalSlider.h"
@@ -207,3 +208,4 @@ void ColorPicker::SetAlphaVisible( bool visible )
 	groupBox->SetHidden( !visible );
 	Invalidate();
 }
+#endif

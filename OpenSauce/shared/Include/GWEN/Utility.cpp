@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/ToolTip.h"
 #include "Gwen/Utility.h"
 
@@ -198,6 +200,4 @@ void Gwen::Utility::Strings::Strip( Gwen::UnicodeString & str, const Gwen::Unico
 		str += Source[i];
 	}
 }
-
-
-
+#endif

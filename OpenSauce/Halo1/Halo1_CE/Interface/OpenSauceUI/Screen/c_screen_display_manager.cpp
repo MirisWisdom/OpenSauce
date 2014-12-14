@@ -51,6 +51,11 @@ namespace Yelo
 
 		void c_screen_display_manager::SetGameState(const Flags::osui_game_state state)
 		{
+			if(m_current_state == state)
+			{
+				return;
+			}
+
 			m_current_state = state;
 
 			// Destroy and screens that are not valid for this stage

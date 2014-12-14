@@ -3,8 +3,10 @@
 	Copyright (c) 2010 Facepunch Studios
 	See license in Gwen.h
 */
-
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_CONTROLS_TABSTRIP_H
 #define GWEN_CONTROLS_TABSTRIP_H
 
@@ -48,4 +50,5 @@ namespace Gwen
 		};
 	}
 }
+#endif
 #endif

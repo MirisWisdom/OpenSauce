@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Events.h"
 
 using namespace Gwen;
@@ -191,3 +193,4 @@ void Caller::RemoveHandler( Event::Handler* pObject )
 		}
 	}
 }
+#endif

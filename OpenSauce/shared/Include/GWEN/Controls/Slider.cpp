@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include <math.h>
 #include "Gwen/Controls/Slider.h"
@@ -107,3 +108,4 @@ void Slider::OnBoundsChanged(Gwen::Rect oldBounds)
 	BaseClass::OnBoundsChanged( oldBounds );
 	UpdateBarFromValue();
 }
+#endif

@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ImagePanel.h"
 #include "Gwen/Controls/Label.h"
@@ -108,3 +109,4 @@ void ResizableControl::OnResizedInternal( Controls::Base* /*pControl*/ )
 	onResize.Call( this );
 	OnResized();
 }
+#endif

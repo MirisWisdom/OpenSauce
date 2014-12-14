@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/MenuStrip.h"
@@ -44,3 +45,4 @@ bool MenuStrip::ShouldHoverOpenMenu()
 {
 	return IsMenuOpen();
 }
+#endif

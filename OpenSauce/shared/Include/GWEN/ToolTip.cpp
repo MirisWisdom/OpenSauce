@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/ToolTip.h"
 #include "Gwen/Utility.h"
 
@@ -59,3 +61,4 @@ namespace ToolTip
 		Disable( pControl );
 	}
 }
+#endif

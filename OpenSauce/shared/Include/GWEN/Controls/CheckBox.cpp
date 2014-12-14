@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/CheckBox.h"
 
@@ -58,3 +59,4 @@ void CheckBox::SetChecked( bool bChecked )
 	m_bChecked = bChecked;
 	OnCheckStatusChanged();
 }
+#endif

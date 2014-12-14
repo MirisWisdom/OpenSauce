@@ -34,7 +34,8 @@ namespace Yelo
 			/// <summary>	Initializes the Gwen DX9 renderer and skin. </summary>
 			///
 			/// <param name="device">	[in] The current render device. </param>
-			void Initialize(IDirect3DDevice9* device) override;
+			/// <param name="ui_package">	[in] The ui package. </param>
+			void Initialize(IDirect3DDevice9* device, c_packed_file& ui_package) override;
 
 			/// <summary>	Releases the Gwen DX9 renderer. </summary>
 			void Release() override;

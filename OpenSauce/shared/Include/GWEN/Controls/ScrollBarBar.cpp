@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ScrollBar.h"
 #include "Gwen/Controls/ScrollBarBar.h"
@@ -56,3 +57,4 @@ void ScrollBarBar::MoveTo( int x, int y )
 {
 	BaseClass::MoveTo( x, y );
 }
+#endif

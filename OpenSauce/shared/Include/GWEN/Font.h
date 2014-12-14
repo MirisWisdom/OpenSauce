@@ -3,8 +3,10 @@
 	Copyright (c) 2010 Facepunch Studios
 	See license in Gwen.h
 */
-
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_FONT_H
 #define GWEN_FONT_H
 
@@ -45,4 +47,5 @@ namespace Gwen
 	};
 
 } //namespace Gwen
+#endif
 #endif

@@ -9,6 +9,7 @@
 
 #include "Gwen/Gwen.h"
 #include "Gwen/BaseRender.h"
+#include "Rasterizer/Textures/c_packed_texture_loader.hpp"
 
 namespace Yelo
 {
@@ -18,12 +19,15 @@ namespace Yelo
 		class c_gwen_renderer_halo final
 			: public Gwen::Renderer::Base
 		{
+			Rasterizer::Textures::c_packed_texture_loader m_texture_loader;
+
 			public:
 				////////////////////////////////////////////////////////////////////////////////////////////////////
 				/// <summary>	Constructor. </summary>
 				///
-				/// <param name="device">	[in] The current render device. </param>
-				c_gwen_renderer_halo(IDirect3DDevice9* device);
+				/// <param name="device">	 	[in] The current render device. </param>
+				/// <param name="ui_package">	The ui package. </param>
+				c_gwen_renderer_halo(IDirect3DDevice9* device, c_packed_file& ui_package);
 
 				/// <summary>	Destructor. </summary>
 				~c_gwen_renderer_halo();

@@ -8,6 +8,8 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <YeloLib/Halo1/files/packed_file.hpp>
+
 #include "Interface/OpenSauceUI/Control/i_control.hpp"
 
 namespace Yelo
@@ -23,8 +25,9 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Initializes the implementations renderer. </summary>
 			///
-			/// <param name="device">	[in] The current render device. </param>
-			virtual void Initialize(IDirect3DDevice9* device) = 0;
+			/// <param name="device">	 	[in] The current render device. </param>
+			/// <param name="ui_package">	[in] The ui package. </param>
+			virtual void Initialize(IDirect3DDevice9* device, c_packed_file& ui_package) = 0;
 			
 			/// <summary>	Releases the implementations renderer. </summary>
 			virtual void Release() = 0;

@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Slider.h"
 #include "Gwen/Controls/VerticalSlider.h"
@@ -48,3 +49,4 @@ void VerticalSlider::Render( Skin::Base* skin )
 {
 	skin->DrawSlider( this, false, m_bClampToNotches ? m_iNumNotches : 0, m_SliderBar->Height() );
 }
+#endif

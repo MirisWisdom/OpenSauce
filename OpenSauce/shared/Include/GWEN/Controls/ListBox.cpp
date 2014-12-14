@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ListBox.h"
 #include "Gwen/Controls/ScrollControl.h"
@@ -260,3 +261,4 @@ bool ListBox::OnKeyUp( bool bDown )
 
 	return true;
 }
+#endif

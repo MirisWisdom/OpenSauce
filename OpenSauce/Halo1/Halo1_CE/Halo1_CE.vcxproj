@@ -80,6 +80,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
+  <Target Condition="($(Configuration) == 'Release') Or ($(Configuration) == 'Debug')" Name="BuildResources" BeforeTargets="Build;Rebuild">
+    <Exec Command="&quot;$(LocalHaloCustomEdEditDir)\os_tool.exe&quot; build-packed-file &quot;$(SolutionDir)Halo1\Halo1_CE\Resources\OpenSauceUI&quot; &quot;$(SolutionDir)..\bin\Resources\Halo1_CE&quot; Halo1_CE_OpenSauceUI.xml" WorkingDirectory="$(LocalHaloCustomEdEditDir)" />
+    <Exec Command="copy &quot;.\bin\Resources\Halo1_CE\OpenSauceUI.pak&quot; &quot;C:\ProgramData\Kornner Studios\Halo CE\OpenSauceUI.pak&quot;" WorkingDirectory="$(OSRootDir)" />
+  </Target>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
     <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
@@ -400,7 +404,10 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_canvas_gwen.cpp" />
@@ -412,6 +419,7 @@
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.cpp" />
     <ClCompile Include="Interface\TextBlock.cpp" />
     <ClCompile Include="Interface\UIWidgets.cpp" />
@@ -539,7 +547,10 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\i_visibility_toggle.hpp" />
@@ -554,6 +565,7 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Input\c_control_input_halo.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Input\i_control_input.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.hpp" />
@@ -729,6 +741,9 @@
     <None Include="Objects\Units.Boarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl" />
+    <Text Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <FileType>Document</FileType>
+    </Text>
     <None Include="TagGroups\CacheFiles.CRC.inl" />
     <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />

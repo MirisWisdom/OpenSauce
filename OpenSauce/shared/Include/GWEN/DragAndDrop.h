@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_DRAGANDDROP_H
 #define GWEN_DRAGANDDROP_H
 
@@ -32,4 +35,5 @@ namespace Gwen
 	}
 
 }
+#endif
 #endif

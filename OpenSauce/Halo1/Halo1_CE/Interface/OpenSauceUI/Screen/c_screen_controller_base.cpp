@@ -16,36 +16,22 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
-		c_screen_controller_base::c_screen_controller_base()
+		c_screen_controller_base::c_screen_controller_base(Definitions::c_screen_definition& definition)
 			: m_target_screen(nullptr)
+			, m_screen_definition(definition)
 		{ }
 
 #pragma region i_screen_controller
 		void c_screen_controller_base::BuildScreen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& target_canvas)
 		{
-			DOC_TODO("PROPER SCREEN LOADING");
-
 			// If the screen has already been built return
 			if(m_target_screen)
 			{
 				return;
 			}
 
-			// Build the screen's root control
-			auto& config_file = Configuration::c_configuration_file_factory::CreateConfigurationFile("D://test.json");
-			config_file->Load();
-
-			auto& root = config_file->Root()->GetChild("OpenSauceUI");
-			
-			Definitions::c_screen_definition screen;
-			auto& control_iterator = root->GetChildIterator("Screen");
-			if(control_iterator->MoveNext())
-			{
-				screen.GetValue(*control_iterator->Current());
-			}
-
 			// Build the screen instance
-			auto root_ptr = control_factory.BuildControl(target_canvas, screen.m_control_definition);
+			auto root_ptr = control_factory.BuildControl(target_canvas, m_screen_definition.m_control_definition);
 			m_target_screen = std::make_shared<c_screen>(root_ptr);
 
 			// Set up properties and events

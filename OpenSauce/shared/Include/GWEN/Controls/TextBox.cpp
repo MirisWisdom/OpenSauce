@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/TextBox.h"
@@ -747,4 +748,4 @@ void PasswordTextBox::SetPasswordChar(const char c)
 {
 	m_passwordChar = c;
 }
-
+#endif

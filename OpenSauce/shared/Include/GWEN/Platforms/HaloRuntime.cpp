@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Rasterizer/DX9/DX9.hpp"
 
 #include "Gwen/Macros.h"
@@ -153,3 +155,4 @@ void Gwen::Platform::GetCursorPos( Gwen::Point & po )
 {
 	YELO_ERROR_CRITICAL("GetCursorPos not applicable in Halo runtime");
 }
+#endif

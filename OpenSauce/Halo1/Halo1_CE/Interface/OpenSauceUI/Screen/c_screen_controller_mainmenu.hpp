@@ -19,7 +19,7 @@ namespace Yelo
 			: public c_screen_controller_base
 		{
 		public:
-			c_screen_controller_mainmenu();
+			c_screen_controller_mainmenu(Definitions::c_screen_definition& definition);
 
 		private:
 			/// <summary>	Sets a screens static properties. </summary>

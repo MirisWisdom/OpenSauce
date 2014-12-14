@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Skin.h"
@@ -90,3 +91,4 @@ void DockedTabControl::MoveTabsTo( DockedTabControl* pTarget )
 
 	Invalidate();
 }
+#endif

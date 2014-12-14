@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Anim.h"
 #include "Gwen/Utility.h"
 #include <math.h>
@@ -151,4 +153,5 @@ bool Gwen::Anim::TimedAnimation::Finished()
 	return m_bFinished;
 }
 
+#endif
 #endif

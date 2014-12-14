@@ -16,8 +16,8 @@ namespace Yelo
 	namespace Rasterizer { namespace Textures
 	{
 #pragma region c_packed_texture_loader
-		c_packed_texture_loader::c_packed_texture_loader()
-			: m_packed_file()
+		c_packed_texture_loader::c_packed_texture_loader(c_packed_file& packed_file)
+			: m_packed_file(packed_file)
 		{ }
 
 		bool c_packed_texture_loader::LoadTexture(const std::string& texture_id, IDirect3DTexture9** target_texture, D3DXIMAGE_INFO* image_info)
@@ -48,40 +48,7 @@ namespace Yelo
 				, NULL
 				, target_texture);
 		}
-
-		void c_packed_texture_loader::Initialize()
-		{
-			m_packed_file.OpenFile("UI_Textures_TPK", true);
-		}
-
-		void c_packed_texture_loader::Dispose()
-		{
-			m_packed_file.CloseFile();
-		}
 #pragma endregion
-
-		static std::unique_ptr<c_packed_texture_loader> g_packed_texture_loader;
-
-		c_packed_texture_loader& GetPackedTextureLoader()
-		{
-			return *g_packed_texture_loader;
-		}
-
-		/// <summary>	Initializes the packed texture loader. </summary>
-		void Initialize()
-		{
-			g_packed_texture_loader = std::make_unique<c_packed_texture_loader>();
-
-			g_packed_texture_loader->Initialize();
-		}
-
-		/// <summary>	Disposes the packed texture loader. </summary>
-		void Dispose()
-		{
-			g_packed_texture_loader->Dispose();
-
-			g_packed_texture_loader.reset();
-		}
 	};};
 };
 #endif

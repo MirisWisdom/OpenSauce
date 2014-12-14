@@ -36,7 +36,7 @@
 
 		<ComponentRef Id='Halo1_CE_GBufferShaders_COMP' />
 		<ComponentRef Id='Halo1_CE_PPShaders_COMP' />
-		<ComponentRef Id='Halo1_CE_Textures_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceUI_COMP' />
 		<ComponentRef Id='Halo1_CE_ShadersRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_HaloCERemove_COMP' />
 

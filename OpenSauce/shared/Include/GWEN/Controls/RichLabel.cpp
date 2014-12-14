@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/RichLabel.h"
@@ -206,3 +207,4 @@ void RichLabel::Layout( Gwen::Skin::Base* skin )
 		Rebuild();
 	}
 }
+#endif

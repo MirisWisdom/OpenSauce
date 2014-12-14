@@ -80,12 +80,13 @@ namespace Yelo
 #define K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID					RESOURCE_ID_DEBUG("#CHK_postprocessing_motionblur_enabled")
 #define K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_postprocessing_motionblur_toggle_event")
 #define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID					RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount")
+#define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_TEXT_ID				RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount_text")
 #define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID					RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount")
 #define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID	RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount_changed_event")
 #pragma endregion
 		
-		c_screen_controller_mainmenu::c_screen_controller_mainmenu()
-			: c_screen_controller_base()
+		c_screen_controller_mainmenu::c_screen_controller_mainmenu(Definitions::c_screen_definition& definition)
+			: c_screen_controller_base(definition)
 		{ }
 
 		void c_screen_controller_mainmenu::SetStaticProperties()
@@ -227,11 +228,23 @@ namespace Yelo
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().Enabled()));
 				});
-
+			
 			AddDynamicProperty(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_PROPERTY_VALUE_ID,
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().BlurAmount()));
+				});
+
+			AddDynamicProperty(K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_TEXT_ID, K_PROPERTY_TEXT_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					char buffer[10] = "";
+					sprintf_s(buffer, "%.2f", Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().BlurAmount());
+
+					Control::s_interface_value value;
+					value.SetString(buffer);
+
+					property.Set(control, value);
 				});
 		}
 
@@ -330,13 +343,31 @@ namespace Yelo
 			AttachEvent(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
-					Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().Enabled() = event_data.m_bool;
+					auto& motionblur_instance = Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance();
+
+					motionblur_instance.Enabled() = event_data.m_bool;
+
+					if((event_data.m_bool == true) && (motionblur_instance.BlurAmount() == 0.0f))
+					{
+						motionblur_instance.BlurAmount() = 1.0f;
+					}
 				});
 
 			AttachEvent(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_EVENT_VALUE_CHANGED_ID, K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
-					Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().BlurAmount() = event_data.m_real;
+					auto& motionblur_instance = Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance();
+
+					motionblur_instance.BlurAmount() = event_data.m_real;
+
+					if(motionblur_instance.BlurAmount() == 0.0f)
+					{
+						motionblur_instance.Enabled() = false;
+					}
+					else
+					{
+						motionblur_instance.Enabled() = true;
+					}
 				});
 		}
 

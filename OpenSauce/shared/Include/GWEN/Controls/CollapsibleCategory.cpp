@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Controls/CollapsibleCategory.h"
 #include "Gwen/Controls/CollapsibleList.h"
 
@@ -185,3 +187,4 @@ Button* CollapsibleCategory::GetSelected()
 
 	return NULL;
 }
+#endif

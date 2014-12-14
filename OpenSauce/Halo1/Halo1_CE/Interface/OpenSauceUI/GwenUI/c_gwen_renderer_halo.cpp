@@ -28,7 +28,8 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
-		c_gwen_renderer_halo::c_gwen_renderer_halo(IDirect3DDevice9* pDevice)
+		c_gwen_renderer_halo::c_gwen_renderer_halo(IDirect3DDevice9* pDevice, c_packed_file& ui_package)
+			: m_texture_loader(ui_package)
 		{
 			m_pDevice = pDevice;
 			m_iVertNum = 0;
@@ -302,7 +303,7 @@ namespace Yelo
 
 			IDirect3DTexture9* texture = nullptr;
 			D3DXIMAGE_INFO image_info;
-			if (!Rasterizer::Textures::GetPackedTextureLoader().LoadTexture(texture_name, &texture, &image_info))
+			if (!m_texture_loader.LoadTexture(texture_name, &texture, &image_info))
 			{
 				return;
 			}

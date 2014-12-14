@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Rectangle.h"
 
@@ -22,3 +23,4 @@ void Rectangle::Render( Skin::Base* skin )
 	skin->GetRender()->SetDrawColor( m_Color );
 	skin->GetRender()->DrawFilledRect( GetRenderBounds() );
 }
+#endif

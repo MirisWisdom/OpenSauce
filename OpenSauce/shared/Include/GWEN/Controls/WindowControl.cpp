@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/WindowControl.h"
 #include "Gwen/Controls/ImagePanel.h"
@@ -152,3 +153,4 @@ void WindowControl::CloseButtonPressed()
 void WindowControl::RenderFocus( Gwen::Skin::Base* /*skin*/ )
 {
 }
+#endif

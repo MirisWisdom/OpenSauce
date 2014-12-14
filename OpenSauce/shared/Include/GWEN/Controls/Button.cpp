@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Skin.h"
@@ -233,3 +234,4 @@ void Button::SetAction( Event::Handler* pObject, Handler::FunctionWithInformatio
 {
 	onPress.Add( pObject, pFunction, data );
 }
+#endif

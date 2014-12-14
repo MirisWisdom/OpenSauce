@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Utility.h"
 #include "Gwen/Controls/ColorControls.h"
@@ -328,3 +329,4 @@ Gwen::Color ColorSlider::GetSelectedColor()
 {
 	return GetColorAtHeight( m_iSelectedDist );
 }
+#endif

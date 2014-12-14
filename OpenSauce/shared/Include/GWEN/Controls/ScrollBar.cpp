@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ScrollBar.h"
 #include "Gwen/Controls/ScrollBarButton.h"
@@ -72,9 +73,4 @@ bool BaseScrollBar::SetScrolledAmount( float amount, bool forceUpdate )
 	BarMovedNotification();
 	return true;
 }
-
-
-
-
-
-
+#endif
