@@ -543,6 +543,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\value_conversion.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_json.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_xml.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -820,6 +829,15 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\cseries\value_conversion.cpp">
       <Filter>cseries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_json.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_xml.cpp">
+      <Filter>configuration\property_tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

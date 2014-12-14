@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/TreeNode.h"
 #include "Gwen/Controls/TreeControl.h"
@@ -269,3 +270,4 @@ Controls::Base::List & TreeNode::GetChildNodes()
 {
 	return m_InnerPanel->GetChildren();
 }
+#endif

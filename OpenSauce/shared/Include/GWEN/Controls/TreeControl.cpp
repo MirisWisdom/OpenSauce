@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/TreeControl.h"
 #include "Gwen/Controls/ScrollControl.h"
@@ -69,3 +70,4 @@ void TreeControl::OnNodeSelection( Controls::Base* /*control*/ )
 	if ( !m_bAllowMultipleSelection || !Gwen::Input::IsKeyDown( Key::Control ) )
 	{ DeselectAll(); }
 }
+#endif

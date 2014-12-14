@@ -17,11 +17,11 @@ namespace Yelo
 		/// <summary>	Loader for packed textures. </summary>
 		class c_packed_texture_loader final
 		{
-			c_packed_file m_packed_file;
+			c_packed_file& m_packed_file;
 
 		public:
 			/// <summary>	Default constructor. </summary>
-			c_packed_texture_loader();
+			c_packed_texture_loader(c_packed_file& packed_file);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Loads a texture. </summary>
@@ -32,25 +32,7 @@ namespace Yelo
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool LoadTexture(const std::string& texture_id, IDirect3DTexture9** target_texture, D3DXIMAGE_INFO* image_info = nullptr);
-
-			/// <summary>	Initializes the packed file. </summary>
-			void Initialize();
-
-			/// <summary>	Initializes the packed file. </summary>
-			void Dispose();
 		};
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Gets the packed texture loader. </summary>
-		///
-		/// <returns>	The packed texture loader. </returns>
-		c_packed_texture_loader& GetPackedTextureLoader();
-
-		/// <summary>	Initializes the packed texture loader. </summary>
-		void Initialize();
-
-		/// <summary>	Disposes the packed texture loader. </summary>
-		void Dispose();
 	};};
 };
 #endif

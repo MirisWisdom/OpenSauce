@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ScrollBar.h"
 #include "Gwen/Controls/HorizontalScrollBar.h"
@@ -129,3 +130,4 @@ void HorizontalScrollBar::OnBarMoved( Controls::Base* control )
 	else
 	{ InvalidateParent(); }
 }
+#endif

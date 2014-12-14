@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Gwen.h"
 #include <math.h>
 
@@ -118,3 +120,4 @@ namespace Gwen
 		}
 	}
 }
+#endif

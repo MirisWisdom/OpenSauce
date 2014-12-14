@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <OpenSauce>
 	<PackedFile>
-		<Name>textures.tpk</Name>
+		<Name>OpenSauceUI.pak</Name>
 		<File>
 			<ID>OpenSauceUISkin</ID>
 			<Type>Texture</Type>
 			<Path>textures\OpenSauceUISkin.png</Path>
+		</File>
+		<File>
+			<ID>MainMenu</ID>
+			<Type>Archive</Type>
+			<Path>MainMenuDefinition.json</Path>
 		</File>
 	</PackedFile>
 </OpenSauce>

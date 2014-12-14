@@ -10,6 +10,7 @@
 
 #include "Interface/OpenSauceUI/Screen/i_screen.hpp"
 #include "Interface/OpenSauceUI/Screen/i_screen_controller.hpp"
+#include "Interface/OpenSauceUI/Definitions/c_screen_definition.hpp"
 
 namespace Yelo
 {
@@ -34,18 +35,20 @@ namespace Yelo
 
 		protected:
 			t_screen_ptr m_target_screen;
+			Definitions::c_screen_definition m_screen_definition;
 
 		public:
-			c_screen_controller_base();
+			c_screen_controller_base(Definitions::c_screen_definition& definition);
 			
 #pragma region i_screen_controller
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Builds the screen and adds it to the canvas. </summary>
 			///
-			/// <param name="control_factory">	[in,out] The control factory. </param>
-			/// <param name="target_canvas">  	[in,out] Target canvas. </param>
-			void BuildScreen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& target_canvas) final override;
+			/// <param name="control_factory">	  	[in] The control factory. </param>
+			/// <param name="target_canvas">	  	[in] Target canvas. </param>
+			void BuildScreen(ControlFactory::c_control_factory& control_factory
+				, Control::i_canvas& target_canvas) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes the screen from the canvas and destroys it. </summary>

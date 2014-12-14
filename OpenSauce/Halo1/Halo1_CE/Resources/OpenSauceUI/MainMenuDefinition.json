@@ -1,0 +1,662 @@
+{
+	"Screen": {
+		"Control": {
+			"Type": "Rectangle",
+			"Property": {
+				"Name": "Dock",
+				"Value": "Centre"
+			},
+			"Property": {
+				"Name": "Size",
+				"Value": "640 480"
+			},
+			"Property": {
+				"Name": "Color",
+				"Value": "0 0 0 0"
+			},
+			"Control": {
+				"Type": "Rectangle",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Top"
+				},
+				"Property": {
+					"Name": "Size",
+					"Value": "0 40"
+				},
+				"Property": {
+					"Name": "Color",
+					"Value": "160 160 230 255"
+				},
+				"Control": {
+					"IDStr": "#LBL_opensauce_settings_title",
+					"Type": "Label",
+					"Property": {
+						"Name": "Dock",
+						"Value": "Fill"
+					},
+					"Property": {
+						"Name": "Size",
+						"Value": "0 30"
+					},
+					"Property": {
+						"Name": "TextSize",
+						"Value": "28"
+					},
+					"Property": {
+						"Name": "TextVAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextHAlignment",
+						"Value": "Center"
+					}
+				}
+			},
+			"Control": {
+				"Type": "ScrollControl",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Fill"
+				},
+				"Property": {
+					"Name": "InnerSize",
+					"Value": "640 500"
+				},
+				"Property": {
+					"Name": "ScrollV",
+					"Value": "True"
+				},
+				"Property": {
+					"Name": "AutoHideBars",
+					"Value": "False"
+				},
+				"Control": {
+					"Type": "Rectangle",
+					"Property": {
+						"Name": "Size",
+						"Value": "640 500"
+					},
+					"Property": {
+						"Name": "Color",
+						"Value": "100 100 170 255"
+					},
+					"Control": {
+						"IDStr": "#LBL_graphics_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 22"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "18"
+						},
+						"Property": {
+							"Name": "TextBold",
+							"Value": "True"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_general_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_general_gbuffer_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "255 255 255 255"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_general_nvidia_camo_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_engine_upgrades_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_upgrades_max_rendered_triangles_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_upgrades_max_bone_nodes_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_shader_extension_model_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_shader_extension_model_normal_maps_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_shader_extension_model_specular_maps_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_shader_extension_model_specular_lighting_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_shader_extension_environment_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_shader_extension_environment_diffuse_dlm_enabled",
+
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_shader_extension_environment_specular_dlm_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_shader_extension_effect_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_shader_extension_effect_depth_fade_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_postprocessing_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_postprocessing_motionblur_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"Type": "Rectangle",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 16"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "0 0 0 0"
+						},
+						"Control": {
+							"IDStr": "#LBL_postprocessing_motionblur_amount",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "150 14"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "14"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 37 0 0"
+							}
+						},
+						"Control": {
+							"IDStr": "#LBL_postprocessing_motionblur_amount_text",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "40 20"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Right"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "15"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 0 0 10"
+							}
+						},
+						"Control": {
+							"IDStr": "#SLD_postprocessing_motionblur_amount",
+							"Type": "HorizontalSlider",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Fill"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "80 20"
+							},
+							"Property": {
+								"Name": "Min",
+								"Value": "0"
+							},
+							"Property": {
+								"Name": "Max",
+								"Value": "5"
+							},
+							"Property": {
+								"Name": "ClampToNotches",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "NotchCount",
+								"Value": "25"
+							}
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_postprocessing_bloom_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_postprocessing_anti_aliasing_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_postprocessing_external_effects_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_postprocessing_map_effects_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					}
+				}
+			}
+		}
+	}
+}

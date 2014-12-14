@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/GroupBox.h"
 
@@ -37,3 +38,4 @@ void GroupBox::Render( Skin::Base* skin )
 {
 	skin->DrawGroupBox( this, TextX(), TextHeight(), TextWidth() );
 }
+#endif

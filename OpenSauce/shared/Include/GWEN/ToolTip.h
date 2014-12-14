@@ -6,6 +6,9 @@
 
 
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_TOOLTIP_H
 #define GWEN_TOOLTIP_H
 
@@ -28,4 +31,5 @@ namespace ToolTip
 	GWEN_EXPORT void RenderToolTip( Skin::Base* skin );
 }
 
+#endif
 #endif

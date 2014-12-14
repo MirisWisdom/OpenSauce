@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Dragger.h"
 
@@ -69,3 +70,4 @@ void Dragger::OnMouseDoubleClickLeft( int x, int y )
 {
 	onDoubleClickLeft.Call( this );
 }
+#endif

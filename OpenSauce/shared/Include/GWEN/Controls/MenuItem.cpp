@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/MenuItem.h"
@@ -189,3 +190,4 @@ void MenuItem::SizeToContents()
 		SetWidth( Width() + m_Accelerator->Width() );
 	}
 }
+#endif

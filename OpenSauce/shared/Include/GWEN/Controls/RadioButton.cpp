@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/RadioButton.h"
 
@@ -22,4 +23,4 @@ void RadioButton::Render( Skin::Base* skin )
 {
 	skin->DrawRadioButton( this, IsChecked(), IsDepressed() );
 }
-
+#endif

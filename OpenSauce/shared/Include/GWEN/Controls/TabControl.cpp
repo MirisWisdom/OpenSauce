@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Skin.h"
@@ -209,3 +210,4 @@ void TabControl::ScrollPressRight( Base* pFrom )
 {
 	m_iScrollOffset += 120;
 }
+#endif

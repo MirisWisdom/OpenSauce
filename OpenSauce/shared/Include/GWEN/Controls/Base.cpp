@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Base.h"
 #include "Gwen/Controls/Label.h"
@@ -1214,4 +1215,5 @@ void Base::Anim_HeightOut( float fLength, bool bHide, float fDelay, float fEase 
 	Gwen::Anim::Add( this, new Gwen::Anim::Size::Height( Height(), 0, fLength, bHide, fDelay, fEase ) );
 }
 
+#endif
 #endif

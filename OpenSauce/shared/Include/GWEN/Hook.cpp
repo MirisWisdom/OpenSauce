@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Hook.h"
 
 #ifdef GWEN_HOOKSYSTEM
@@ -29,4 +31,5 @@ HookList & Gwen::Hook::GetHookList()
 	return g_HookList;
 }
 
+#endif
 #endif

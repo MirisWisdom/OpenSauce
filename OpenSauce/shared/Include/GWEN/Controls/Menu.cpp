@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/Menu.h"
@@ -177,3 +178,4 @@ void MenuDivider::Render( Gwen::Skin::Base* skin )
 {
 	skin->DrawMenuDivider( this );
 }
+#endif

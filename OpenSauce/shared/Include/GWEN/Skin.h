@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_SKIN_H
 #define GWEN_SKIN_H
 
@@ -255,4 +258,5 @@ namespace Gwen
 		};
 	};
 }
+#endif
 #endif

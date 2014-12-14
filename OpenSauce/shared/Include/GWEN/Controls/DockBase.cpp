@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Skin.h"
@@ -347,3 +348,4 @@ void DockBase::RenderOver( Skin::Base* skin )
 	render->SetDrawColor( Gwen::Color( 255, 100, 255, 200 ) );
 	render->DrawLinedRect( m_HoverRect );
 }
+#endif

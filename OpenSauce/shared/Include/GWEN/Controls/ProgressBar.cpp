@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/ScrollControl.h"
 #include "Gwen/Controls/ProgressBar.h"
@@ -94,3 +95,4 @@ void ProgressBar::SetCycleSpeed( float f )
 {
 	m_fCycleSpeed = f;
 }
+#endif

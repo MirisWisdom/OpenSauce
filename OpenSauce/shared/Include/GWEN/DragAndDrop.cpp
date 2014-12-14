@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Gwen.h"
 #include "Gwen/DragAndDrop.h"
 #include "Gwen/Utility.h"
@@ -232,3 +234,4 @@ void DragAndDrop::RenderOverlay( Gwen::Controls::Canvas* /*pCanvas*/, Skin::Base
 	CurrentPackage->drawcontrol->DoRender( skin );
 	skin->GetRender()->SetRenderOffset( pntOld );
 }
+#endif

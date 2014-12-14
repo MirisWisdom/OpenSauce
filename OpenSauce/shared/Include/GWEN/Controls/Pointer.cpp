@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Pointer.h"
 
@@ -26,3 +27,4 @@ void Pointer::Render( Skin::Base* skin )
 	Gwen::Rect rect = GetRenderBounds();
 	skin->GetRender()->DrawFilledRect( rect );
 }
+#endif

@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/HSVColorPicker.h"
 #include "Gwen/Controls/ColorControls.h"
@@ -160,3 +161,4 @@ void HSVColorPicker::ColorSliderChanged( Gwen::Controls::Base* /*pControl*/ )
 
 	Invalidate();
 }
+#endif

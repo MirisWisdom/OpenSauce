@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Gwen.h"
 #include <stdio.h>
 #include <stdarg.h>
@@ -52,3 +54,4 @@ namespace Gwen
 	}
 
 }
+#endif

@@ -1,3 +1,11 @@
+/*
+	GWEN
+	Copyright (c) 2010 Facepunch Studios
+	See license in Gwen.h
+*/
+#pragma once
+
+#if !PLATFORM_IS_DEDI
 
 // C RunTime Header Files
 #ifndef GWEN_MACROS_H
@@ -83,4 +91,5 @@ namespace Gwen
 	}
 }
 
+#endif
 #endif

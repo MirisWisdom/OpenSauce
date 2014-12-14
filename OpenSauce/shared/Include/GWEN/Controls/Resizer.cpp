@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Resizer.h"
 
@@ -113,3 +114,4 @@ void Resizer::SetResizeDir( int dir )
 	if ( dir & Pos::Top || dir & Pos::Bottom )
 	{ return SetCursor( Gwen::CursorType::SizeNS ); }
 }
+#endif

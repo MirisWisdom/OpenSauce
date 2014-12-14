@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Skin.h"
@@ -184,3 +185,4 @@ void PropertyRow::OnHoverChanged()
 {
 	m_Label->Redraw();
 }
+#endif

@@ -23,8 +23,10 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_GWEN_H
 #define GWEN_GWEN_H
 
@@ -97,4 +99,5 @@ namespace Gwen
 
 } //namespace Gwen
 
+#endif
 #endif

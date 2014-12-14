@@ -3,8 +3,10 @@
 	Copyright (c) 2010 Facepunch Studios
 	See license in Gwen.h
 */
-
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_EXPORTS_H
 #define GWEN_EXPORTS_H
 
@@ -59,3 +61,4 @@
 
 
 #endif // GWEN_EXPORTS_H
+#endif

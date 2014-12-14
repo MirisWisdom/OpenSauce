@@ -1,4 +1,7 @@
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_USERDATA_H
 #define GWEN_USERDATA_H
 
@@ -109,4 +112,5 @@ namespace Gwen
 
 };
 
+#endif
 #endif

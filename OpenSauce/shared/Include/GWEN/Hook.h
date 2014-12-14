@@ -3,8 +3,10 @@
 	Copyright (c) 2010 Facepunch Studios
 	See license in Gwen.h
 */
-
 #pragma once
+
+#if !PLATFORM_IS_DEDI
+
 #ifndef GWEN_HOOK_H
 #define GWEN_HOOK_H
 
@@ -78,5 +80,6 @@ namespace Gwen
 
 }
 
+#endif
 #endif
 #endif

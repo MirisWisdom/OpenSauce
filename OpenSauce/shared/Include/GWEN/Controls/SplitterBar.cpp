@@ -5,6 +5,8 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
+
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/SplitterBar.h"
 
@@ -21,3 +23,4 @@ void SplitterBar::Layout( Skin::Base* /*skin*/ )
 {
 	MoveTo( X(), Y() );
 }
+#endif

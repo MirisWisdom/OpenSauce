@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/Text.h"
@@ -441,3 +442,4 @@ int Text::GetCharPosOnLine( int i )
 	int iStart = GetStartCharFromLine( iLine );
 	return i - iStart;
 }
+#endif

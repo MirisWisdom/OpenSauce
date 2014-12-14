@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 
+#if !PLATFORM_IS_DEDI
 
 #include "Gwen/Gwen.h"
 #include "Gwen/Controls/TextBox.h"
@@ -83,3 +84,4 @@ float TextBoxNumeric::GetFloatFromText()
 	double temp = Gwen::Utility::Strings::To::Float( GetText().GetUnicode() );
 	return temp;
 }
+#endif
