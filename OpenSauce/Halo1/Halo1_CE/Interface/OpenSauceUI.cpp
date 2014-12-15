@@ -10,7 +10,12 @@
 #if !PLATFORM_IS_DEDI
 
 #include <YeloLib/configuration/c_configuration_file_factory.hpp>
+#include <BlamLib/Halo1/game/game_globals.hpp>
+#include <BlamLib/Halo1/game/game_globals_structures.hpp>
+#include <BlamLib/Halo1/cache/cache_files.hpp>
+#include <BlamLib/Halo1/cache/cache_files_globals.hpp>
 
+#include "Game/GameState.hpp"
 #include "Common/FileIO.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Interface/Controls.hpp"
@@ -99,10 +104,40 @@ namespace Yelo
 
 			g_control_input.Update();
 
+			// Update the mouse pointer
+			DOC_TODO("Implement a proper mouse pointer with events, tied to Halo's mouse position");
 			int x;
 			int y;
 			g_control_input.GetMousePosition(x, y);
 			g_mouse_pointer.SetPosition(x, y);
+
+			// Update the UI according to the game's current state
+			bool in_menu =				Yelo::Input::IsInMenu();
+			bool in_chat =				Yelo::Input::IsInChat();
+			bool is_loading =			GameState::GameGlobals()->map_loading_in_progress;
+			bool is_main_menu_cache =	Yelo::Cache::CacheFileGlobals()->cache_header.cache_type == 2;
+
+			_enum game_state = Flags::_osui_game_state_in_game;
+			if(is_loading)
+			{
+				game_state = Flags::_osui_game_state_loading;
+			}
+			// Pause menu if the cache isn't a main menu but we are in a menu
+			else if(!is_main_menu_cache && in_menu)
+			{
+				game_state = Flags::_osui_game_state_pause_menu;
+			}
+			// In game if the cache isn't a main menu and we aren't in a menu
+			else if(!is_main_menu_cache && !in_menu)
+			{
+				game_state = Flags::_osui_game_state_in_game;
+			}
+			// In the main menu if the cache is a main menu and we are in a menu
+			else if(is_main_menu_cache && in_menu)
+			{
+				game_state = Flags::_osui_game_state_main_menu;
+			}
+			g_screen_display_manager->SetGameState((Flags::osui_game_state)game_state);
 
 			g_screen_display_manager->Update();
 		}
@@ -120,7 +155,10 @@ namespace Yelo
 
 			definition_registry.GetScreenDefinition("MainMenu", screen_definition);
 			g_screen_display_manager->AddScreenController((Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
-				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled | Flags::_osui_screen_flags_show_cursor | Flags::_osui_screen_flags_is_modal)
+				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
+					| Flags::_osui_screen_flags_show_cursor
+					| Flags::_osui_screen_flags_is_modal
+					| Flags::_osui_screen_flags_esckey_toggled)
 				, Enums::Key::_KeyF7
 				, false
 				, true

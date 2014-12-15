@@ -293,6 +293,31 @@ namespace Yelo
 			}
 		);
 
+		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_disabled,
+			[](Control::i_control& control)
+			{
+				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
+
+				return Control::s_interface_value(gwen_control.Checkbox()->IsDisabled());
+			},
+			[](Control::i_control& control, const Control::s_interface_value& value)
+			{
+				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
+
+				gwen_control.Checkbox()->SetDisabled(value.m_bool);
+				gwen_control.Checkbox()->SetDisabled(value.m_bool);
+			},
+			[](Control::i_control& control, cstring value_string)
+			{
+				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
+
+				bool value;
+				ValueConversion::FromString(value_string, value);
+				gwen_control.Checkbox()->SetDisabled(value);
+				gwen_control.Checkbox()->SetDisabled(value);
+			}
+		);
+
 		Gwen::Controls::Base* c_control_builder_gwen_checkboxwithlabel::CreateInstance(Gwen::Controls::Base* parent) const
 		{
 			return new Gwen::Controls::CheckBoxWithLabel(parent);
@@ -330,6 +355,7 @@ namespace Yelo
 			property_interfaces[K_PROPERTY_TEXTWRAP_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_wrap);
 			property_interfaces[K_PROPERTY_TEXTPADDING_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_padding);
 			property_interfaces[K_PROPERTY_CHECKED_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_checked);
+			property_interfaces[K_PROPERTY_DISABLED_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_disabled);
 		}
 
 		void c_control_builder_gwen_checkboxwithlabel::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const

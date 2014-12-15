@@ -20,13 +20,10 @@ namespace Yelo
 		enum osui_game_state : uint16
 		{
 			_osui_game_state_none				= 0,
-			_osui_game_state_launching			= 1 << 0,
 			_osui_game_state_main_menu			= 1 << 1,
 			_osui_game_state_loading			= 1 << 2,
 			_osui_game_state_in_game			= 1 << 3,
-			_osui_game_state_pause_menu			= 1 << 4,
-
-			_osui_game_state_all				= 0xFFFF,
+			_osui_game_state_pause_menu			= 1 << 4
 		};
 
 		enum osui_screen_flags : uint16
@@ -35,8 +32,9 @@ namespace Yelo
 			_osui_screen_flags_show_cursor		= 1 << 0,
 			_osui_screen_flags_is_modal			= 1 << 1,
 			_osui_screen_flags_key_toggled		= 1 << 2,
-			_osui_screen_flags_always_visible	= 1 << 3,
-			_osui_screen_flags_always_update	= 1 << 4
+			_osui_screen_flags_esckey_toggled	= 1 << 3,
+			_osui_screen_flags_always_visible	= 1 << 4,
+			_osui_screen_flags_always_update	= 1 << 5
 		};
 	};
 
@@ -61,8 +59,12 @@ namespace Yelo
 			Control::i_canvas& m_canvas;
 			Control::i_mouse_pointer& m_mouse_pointer;
 			ControlFactory::c_control_factory& m_control_factory;
+
 			Flags::osui_game_state m_current_state;
 			int32 m_mouse_show_count;
+			int32 m_modal_screen_count;
+			byte m_previous_esckey_state;
+
 			std::vector<s_screen_instance> m_screen_instances;
 			std::vector<s_screen_instance*> m_current_stage_instances;
 
@@ -106,8 +108,29 @@ namespace Yelo
 			void Update();
 
 		private:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Shows the screen. </summary>
+			///
+			/// <param name="screen">	[in] The screen. </param>
+			void ShowScreen(s_screen_instance& screen);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Hides the screen. </summary>
+			///
+			/// <param name="screen">	[in] The screen. </param>
+			void HideScreen(s_screen_instance& screen);
+
+			/// <summary>	Shows the mouse pointer. </summary>
 			void ShowMousePointer();
+
+			/// <summary>	Hides the mouse pointer. </summary>
 			void HideMousePointer();
+
+			/// <summary>	Enables the halo user interface. </summary>
+			void EnableHaloUI();
+
+			/// <summary>	Disables the halo user interface</summary>
+			void DisableHaloUI();
 		};
 	};};};
 };

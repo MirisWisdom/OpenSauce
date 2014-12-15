@@ -23,6 +23,7 @@ namespace Yelo
 			, m_control_factory(control_factory)
 			, m_current_state(Flags::_osui_game_state_none)
 			, m_mouse_show_count(0)
+			, m_modal_screen_count(0)
 			, m_screen_instances()
 			, m_current_stage_instances()
 		{ }
@@ -44,6 +45,7 @@ namespace Yelo
 
 			for(auto& instance: m_screen_instances)
 			{
+				HideScreen(instance);
 				instance.m_screen_controller->DestroyScreen(m_canvas);
 			}
 			m_screen_instances.clear();
@@ -63,11 +65,11 @@ namespace Yelo
 			// Destroy and screens that are not valid for this stage
 			for(auto* instance : m_current_stage_instances)
 			{
-				if((instance->m_game_states & ~state) && (instance->m_game_states & ~Flags::_osui_game_state_all))
+				bool applicable_state = (instance->m_game_states & state) > 0;
+				if(!applicable_state)
 				{
-					instance->m_screen_controller->Hide();
+					HideScreen(*instance);
 					instance->m_screen_controller->DestroyScreen(m_canvas);
-					instance->m_is_visible = false;
 				}
 			}
 
@@ -86,13 +88,11 @@ namespace Yelo
 					// If the screen should always be visible set it to be displayed
 					if(instance.m_screen_flags & Flags::_osui_screen_flags_always_visible)
 					{
-						instance.m_screen_controller->Show();
-						instance.m_is_visible = true;
+						ShowScreen(instance);
 					}
 					else
 					{
-						instance.m_screen_controller->Hide();
-						instance.m_is_visible = false;
+						HideScreen(instance);
 					}
 				}
 			}
@@ -100,48 +100,47 @@ namespace Yelo
 
 		void c_screen_display_manager::Update()
 		{
+			// Get whether esc has been pressed
+			bool close_all = false;
+			auto esc_state = Yelo::Input::GetKeyState(Enums::_KeyEsc);
+			if((esc_state != m_previous_esckey_state) && (esc_state == 1))
+			{
+				close_all = true;
+			}
+			m_previous_esckey_state = esc_state;
+			
+			// If the screen has a toggle key, check whether the key has been pressed and toggle the screen Also close
 			for(auto* instance : m_current_stage_instances)
 			{
 				auto& screen_instance = *instance;
 
 				if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_key_toggled)
 				{
-					// If the screen has a toggle key, check whether the key has been pressed and toggle the screen
-					auto state = Yelo::Input::GetKeyState(screen_instance.m_toggle_key);
-					if((state != screen_instance.m_previous_key_state) && (state == 1))
+					// If esc was pressed and the screen can be closed with esc, close it
+					if((screen_instance.m_screen_flags & Flags::_osui_screen_flags_esckey_toggled) && close_all)
 					{
 						if(screen_instance.m_is_visible)
 						{
-							screen_instance.m_screen_controller->Hide();
-							screen_instance.m_is_visible = false;
-
-							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_is_modal)
-							{
-								Memory::FunctionProcessUpdateUIWidgetsDisabled() = false;
-							}
-
-							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
-							{
-								HideMousePointer();
-							}
-						}
-						else
-						{
-							screen_instance.m_screen_controller->Show();
-							screen_instance.m_is_visible = true;
-
-							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_is_modal)
-							{
-								Memory::FunctionProcessUpdateUIWidgetsDisabled() = true;
-							}
-
-							if(screen_instance.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
-							{
-								ShowMousePointer();
-							}
+							HideScreen(screen_instance);
 						}
 					}
-					screen_instance.m_previous_key_state = state;
+					else
+					{
+						// If the screen has a toggle key, check whether the key has been pressed and toggle the screen Also close
+						auto state = Yelo::Input::GetKeyState(screen_instance.m_toggle_key);
+						if((state != screen_instance.m_previous_key_state) && (state == 1))
+						{
+							if(screen_instance.m_is_visible)
+							{
+								HideScreen(screen_instance);
+							}
+							else
+							{
+								ShowScreen(screen_instance);
+							}
+						}
+						screen_instance.m_previous_key_state = state;
+					}
 				}
 
 				// Update screens that are visible or set to always update
@@ -150,6 +149,38 @@ namespace Yelo
 				{
 					screen_instance.m_screen_controller->Update();
 				}
+			}
+		}
+		
+		void c_screen_display_manager::ShowScreen(s_screen_instance& screen)
+		{
+			screen.m_screen_controller->Show();
+			screen.m_is_visible = true;
+
+			if(screen.m_screen_flags & Flags::_osui_screen_flags_is_modal)
+			{
+				DisableHaloUI();
+			}
+
+			if(screen.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
+			{
+				ShowMousePointer();
+			}
+		}
+
+		void c_screen_display_manager::HideScreen(s_screen_instance& screen)
+		{
+			screen.m_screen_controller->Hide();
+			screen.m_is_visible = false;
+
+			if(screen.m_screen_flags & Flags::_osui_screen_flags_is_modal)
+			{
+				EnableHaloUI();
+			}
+
+			if(screen.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
+			{
+				HideMousePointer();
 			}
 		}
 
@@ -174,6 +205,27 @@ namespace Yelo
 				m_mouse_pointer.Hide();
 				Memory::FunctionProcessRenderCursorDisabled() = false;
 			}
+		}
+
+		void c_screen_display_manager::EnableHaloUI()
+		{
+			m_modal_screen_count--;
+
+			if(m_modal_screen_count <= 0)
+			{
+				m_modal_screen_count = 0;
+				Memory::FunctionProcessUpdateUIWidgetsDisabled() = false;
+			}
+		}
+
+		void c_screen_display_manager::DisableHaloUI()
+		{
+			if(!m_modal_screen_count)
+			{
+				Memory::FunctionProcessUpdateUIWidgetsDisabled() = true;
+			}
+
+			m_modal_screen_count++;
 		}
 	};};};
 };
