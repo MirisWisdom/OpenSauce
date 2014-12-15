@@ -206,7 +206,7 @@ namespace Yelo
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::ShaderExtension::Effect::GetDepthFadeEnabled()));
 				});
-			
+
 
 			AddDynamicProperty(K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID, K_PROPERTY_CHECKED_ID,
 				[](Control::i_control& control, Control::i_property_interface& property)
@@ -237,7 +237,7 @@ namespace Yelo
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().Enabled()));
 				});
-			
+
 			AddDynamicProperty(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_PROPERTY_VALUE_ID,
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
@@ -264,6 +264,12 @@ namespace Yelo
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					DX9::c_gbuffer_system::g_system_enabled = event_data.m_bool;
+
+					if(!event_data.m_bool)
+					{
+						Rasterizer::ShaderExtension::Effect::SetDepthFadeEnabled(false);
+						Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().Enabled() = false;
+					}
 				});
 			
 			AttachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID, nullptr,
@@ -322,6 +328,11 @@ namespace Yelo
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Effect::SetDepthFadeEnabled(event_data.m_bool);
+
+					if(event_data.m_bool)
+					{
+						DX9::c_gbuffer_system::g_system_enabled = true;
+					}
 				});
 			
 
@@ -355,8 +366,13 @@ namespace Yelo
 					auto& motionblur_instance = Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance();
 
 					motionblur_instance.Enabled() = event_data.m_bool;
+					
+					if(event_data.m_bool)
+					{
+						DX9::c_gbuffer_system::g_system_enabled = true;
+					}
 
-					if((event_data.m_bool == true) && (motionblur_instance.BlurAmount() == 0.0f))
+					if(event_data.m_bool && (motionblur_instance.BlurAmount() == 0.0f))
 					{
 						motionblur_instance.BlurAmount() = 1.0f;
 					}
@@ -376,6 +392,7 @@ namespace Yelo
 					else
 					{
 						motionblur_instance.Enabled() = true;
+						DX9::c_gbuffer_system::g_system_enabled = true;
 					}
 				});
 		}
