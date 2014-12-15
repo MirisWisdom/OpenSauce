@@ -141,6 +141,7 @@ namespace Yelo
 			: public i_control
 		{
 		private:
+			i_control& m_parent;
 			uint32 m_resource_id;
 			t_control_list m_child_controls;
 			t_property_interface_map m_property_interfaces;
@@ -170,8 +171,11 @@ namespace Yelo
 			void AddEventHandler(const uint32 event_id, const t_event_handler_ptr& event_handler);
 
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Default constructor. </summary>
-			c_control_base();
+			///
+			/// <param name="parent">	[in] The parent. </param>
+			c_control_base(i_control& parent);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for the a property interface. </summary>
@@ -182,6 +186,12 @@ namespace Yelo
 			i_property_interface* FindPropertyInterface(const uint32 interface_id) const;
 			
 #pragma region i_control
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the controls parent. </summary>
+			///
+			/// <returns>	The controls parent. </returns>
+			i_control* Parent() final override;
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the resource identifier of the control. </summary>
 			///

@@ -69,10 +69,22 @@ namespace Yelo
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the controls parent. </summary>
+			///
+			/// <returns>	The controls parent. </returns>
+			virtual i_control* Parent() = 0;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the resource identifier of the control. </summary>
 			///
 			/// <returns>	The controls resource identifier. </returns>
 			virtual uint32 GetResourceID() const = 0;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the controls bounds. </summary>
+			///
+			/// <returns>	The controls bounds. </returns>
+			virtual rectangle2d GetBounds() const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets the resource identifier of the control. </summary>

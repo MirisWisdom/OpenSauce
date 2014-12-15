@@ -535,6 +535,8 @@
     <ClInclude Include="Interface\OpenSauceUI\ControlFactory\c_control_factory.hpp" />
     <ClInclude Include="Interface\OpenSauceUI.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\ControlFactory\i_control_builder.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_event_ids.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_property_ids.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\c_control_base.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\s_interface_value.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\i_canvas.hpp" />

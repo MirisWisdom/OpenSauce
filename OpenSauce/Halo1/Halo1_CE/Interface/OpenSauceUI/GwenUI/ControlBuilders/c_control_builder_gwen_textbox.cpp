@@ -12,7 +12,8 @@
 #include <Gwen/Controls/TextBox.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
+#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 
 namespace Yelo
@@ -55,7 +56,7 @@ namespace Yelo
 		{
 			c_control_builder_gwen_label::GetPropertyInterfaces(property_interfaces);
 			
-			property_interfaces[RESOURCE_ID_DEBUG("Editable")] = GET_PROPERTY_INTERFACE(textbox_editable);
+			property_interfaces[K_PROPERTY_EDITABLE_ID] = GET_PROPERTY_INTERFACE(textbox_editable);
 		}
 
 		void c_control_builder_gwen_textbox::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
@@ -64,8 +65,8 @@ namespace Yelo
 			
 			auto& gwen_control = GWEN_CTRL_REF(TextBox, control);
 			
-			event_handlers[RESOURCE_ID_DEBUG("TextChanged")] = std::make_unique<c_event_handler_gwen>(gwen_control.onTextChanged);
-			event_handlers[RESOURCE_ID_DEBUG("ReturnPressed")] = std::make_unique<c_event_handler_gwen>(gwen_control.onReturnPressed);
+			event_handlers[K_EVENT_TEXTCHANGED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onTextChanged);
+			event_handlers[K_EVENT_RETURNPRESSED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onReturnPressed);
 		}
 	};};};};
 };

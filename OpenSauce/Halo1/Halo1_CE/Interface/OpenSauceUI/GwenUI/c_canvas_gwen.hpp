@@ -60,10 +60,22 @@ namespace Yelo
 #pragma region i_control
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the controls parent. </summary>
+			///
+			/// <returns>	The controls parent. </returns>
+			Control::i_control* Parent() override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the resource identifier of the control. </summary>
 			///
 			/// <returns>	The controls resource identifier. </returns>
 			uint32 GetResourceID() const override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the controls bounds. </summary>
+			///
+			/// <returns>	The controls bounds. </returns>
+			rectangle2d GetBounds() const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Not applicable for a canvas. </summary>

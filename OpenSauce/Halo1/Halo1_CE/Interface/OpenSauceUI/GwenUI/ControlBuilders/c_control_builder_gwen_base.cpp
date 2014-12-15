@@ -12,7 +12,8 @@
 #include <Gwen/Controls/Base.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
+#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 
 namespace Yelo
@@ -101,21 +102,9 @@ namespace Yelo
 				{
 					value = Gwen::Pos::Bottom;
 				}
-				else if(str_value == "CenterV")
-				{
-					value = Gwen::Pos::CenterV;
-				}
-				else if(str_value == "CenterH")
-				{
-					value = Gwen::Pos::CenterH;
-				}
 				else if(str_value == "Fill")
 				{
 					value = Gwen::Pos::Fill;
-				}
-				else if((str_value == "Center") || (str_value == "Centre"))
-				{
-					value = Gwen::Pos::Center;
 				}
 
 				gwen_control.Dock(value);
@@ -225,19 +214,19 @@ namespace Yelo
 
 		void c_control_builder_gwen_base::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
 		{
-			property_interfaces[RESOURCE_ID_DEBUG("Position")] = GET_PROPERTY_INTERFACE(base_position);
-			property_interfaces[RESOURCE_ID_DEBUG("Size")] = GET_PROPERTY_INTERFACE(base_size);
-			property_interfaces[RESOURCE_ID_DEBUG("Dock")] = GET_PROPERTY_INTERFACE(base_dock);
-			property_interfaces[RESOURCE_ID_DEBUG("Margin")] = GET_PROPERTY_INTERFACE(base_margin);
-			property_interfaces[RESOURCE_ID_DEBUG("Padding")] = GET_PROPERTY_INTERFACE(base_padding);
-			property_interfaces[RESOURCE_ID_DEBUG("Hidden")] = GET_PROPERTY_INTERFACE(base_hidden);
-			property_interfaces[RESOURCE_ID_DEBUG("Disabled")] = GET_PROPERTY_INTERFACE(base_disabled);
+			property_interfaces[K_PROPERTY_POSITION_ID] = GET_PROPERTY_INTERFACE(base_position);
+			property_interfaces[K_PROPERTY_SIZE_ID] = GET_PROPERTY_INTERFACE(base_size);
+			property_interfaces[K_PROPERTY_DOCK_ID] = GET_PROPERTY_INTERFACE(base_dock);
+			property_interfaces[K_PROPERTY_MARGIN_ID] = GET_PROPERTY_INTERFACE(base_margin);
+			property_interfaces[K_PROPERTY_PADDING_ID] = GET_PROPERTY_INTERFACE(base_padding);
+			property_interfaces[K_PROPERTY_HIDDEN_ID] = GET_PROPERTY_INTERFACE(base_hidden);
+			property_interfaces[K_PROPERTY_DISABLED_ID] = GET_PROPERTY_INTERFACE(base_disabled);
 		}
 
 		void c_control_builder_gwen_base::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
 		{
-			event_handlers[RESOURCE_ID_DEBUG("HoverEnter")] = std::make_unique<c_event_handler_gwen>(control->onHoverEnter);
-			event_handlers[RESOURCE_ID_DEBUG("HoverLeave")] = std::make_unique<c_event_handler_gwen>(control->onHoverLeave);
+			event_handlers[K_EVENT_HOVERENTER_ID] = std::make_unique<c_event_handler_gwen>(control->onHoverEnter);
+			event_handlers[K_EVENT_HOVERLEAVE_ID] = std::make_unique<c_event_handler_gwen>(control->onHoverLeave);
 		}
 	};};};};
 };

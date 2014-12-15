@@ -12,7 +12,7 @@
 #include <Gwen/Controls/Label.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/gwen_control_util_label.hpp"
 
@@ -253,15 +253,15 @@ namespace Yelo
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
-			property_interfaces[RESOURCE_ID_DEBUG("Text")] = GET_PROPERTY_INTERFACE(label_text);
-			property_interfaces[RESOURCE_ID_DEBUG("TextTypeface")] = GET_PROPERTY_INTERFACE(label_text_typeface);
-			property_interfaces[RESOURCE_ID_DEBUG("TextSize")] = GET_PROPERTY_INTERFACE(label_text_size);
-			property_interfaces[RESOURCE_ID_DEBUG("TextBold")] = GET_PROPERTY_INTERFACE(label_text_bold);
-			property_interfaces[RESOURCE_ID_DEBUG("TextColor")] = GET_PROPERTY_INTERFACE(label_text_color);
-			property_interfaces[RESOURCE_ID_DEBUG("TextVAlignment")] = GET_PROPERTY_INTERFACE(label_text_vertical_alignment);
-			property_interfaces[RESOURCE_ID_DEBUG("TextHAlignment")] = GET_PROPERTY_INTERFACE(label_text_horizontal_alignment);
-			property_interfaces[RESOURCE_ID_DEBUG("TextWrap")] = GET_PROPERTY_INTERFACE(label_text_wrap);
-			property_interfaces[RESOURCE_ID_DEBUG("TextPadding")] = GET_PROPERTY_INTERFACE(label_text_padding);
+			property_interfaces[K_PROPERTY_TEXT_ID] = GET_PROPERTY_INTERFACE(label_text);
+			property_interfaces[K_PROPERTY_TEXTTYPEFACE_ID] = GET_PROPERTY_INTERFACE(label_text_typeface);
+			property_interfaces[K_PROPERTY_TEXTSIZE_ID] = GET_PROPERTY_INTERFACE(label_text_size);
+			property_interfaces[K_PROPERTY_TEXTBOLD_ID] = GET_PROPERTY_INTERFACE(label_text_bold);
+			property_interfaces[K_PROPERTY_TEXTCOLOR_ID] = GET_PROPERTY_INTERFACE(label_text_color);
+			property_interfaces[K_PROPERTY_TEXTVALIGNMENT_ID] = GET_PROPERTY_INTERFACE(label_text_vertical_alignment);
+			property_interfaces[K_PROPERTY_TEXTHALIGNMENT_ID] = GET_PROPERTY_INTERFACE(label_text_horizontal_alignment);
+			property_interfaces[K_PROPERTY_TEXTWRAP_ID] = GET_PROPERTY_INTERFACE(label_text_wrap);
+			property_interfaces[K_PROPERTY_TEXTPADDING_ID] = GET_PROPERTY_INTERFACE(label_text_padding);
 		}
 	};};};};
 };

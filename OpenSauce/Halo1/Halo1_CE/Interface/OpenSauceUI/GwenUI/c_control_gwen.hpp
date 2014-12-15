@@ -93,14 +93,22 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Constructor. </summary>
 			///
+			/// <param name="parent">			  	[in] The parent control. </param>
 			/// <param name="gwen_control">		  	[in] The Gwen control. </param>
 			/// <param name="property_interfaces">	[in] The control's property interfaces. </param>
 			/// <param name="event_handlers">	  	[in] The control's event handlers. </param>
-			c_control_gwen(Gwen::Controls::Base* gwen_control
+			c_control_gwen(Control::i_control& parent
+				, Gwen::Controls::Base* gwen_control
 				, const Control::t_property_interface_map& property_interfaces
 				, const Control::t_event_handler_map& event_handlers);
 			
 #pragma region i_control
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the controls bounds. </summary>
+			///
+			/// <returns>	The controls bounds. </returns>
+			rectangle2d GetBounds() const override;
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the Gwen base control pointer. </summary>
 			///
