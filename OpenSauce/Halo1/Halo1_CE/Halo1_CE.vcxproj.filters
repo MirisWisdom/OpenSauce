@@ -574,6 +574,12 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_property_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_event_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1728,6 +1734,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
+    <Text Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Common\GameSystemComponents.Startup.inl">
@@ -2048,9 +2057,6 @@
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
     </None>
-    <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
-      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
@@ -2109,7 +2115,7 @@
       <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interface\OpenSauceUI\ScreenDefinitions">
-      <UniqueIdentifier>{5a449b7a-a389-4345-b7ef-775da5a97ea3}</UniqueIdentifier>
+      <UniqueIdentifier>{dc17517c-5dcb-4061-9bb0-3a41ed40d7b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

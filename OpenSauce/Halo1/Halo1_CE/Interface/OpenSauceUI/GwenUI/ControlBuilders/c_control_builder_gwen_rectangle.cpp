@@ -12,7 +12,7 @@
 #include <Gwen/Controls/Rectangle.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 
 namespace Yelo
@@ -61,7 +61,7 @@ namespace Yelo
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 
-			property_interfaces[RESOURCE_ID_DEBUG("Color")] = GET_PROPERTY_INTERFACE(rectangle_color);
+			property_interfaces[K_PROPERTY_COLOR_ID] = GET_PROPERTY_INTERFACE(rectangle_color);
 		}
 	};};};};
 };

@@ -12,7 +12,8 @@
 #include <Gwen/Controls/Label.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
+#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/gwen_control_util_label.hpp"
 
@@ -319,16 +320,16 @@ namespace Yelo
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
-			property_interfaces[RESOURCE_ID_DEBUG("Text")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text);
-			property_interfaces[RESOURCE_ID_DEBUG("TextTypeface")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_typeface);
-			property_interfaces[RESOURCE_ID_DEBUG("TextSize")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_size);
-			property_interfaces[RESOURCE_ID_DEBUG("TextBold")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_bold);
-			property_interfaces[RESOURCE_ID_DEBUG("TextColor")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_color);
-			property_interfaces[RESOURCE_ID_DEBUG("TextVAlignment")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_vertical_alignment);
-			property_interfaces[RESOURCE_ID_DEBUG("TextHAlignment")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_horizontal_alignment);
-			property_interfaces[RESOURCE_ID_DEBUG("TextWrap")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_wrap);
-			property_interfaces[RESOURCE_ID_DEBUG("TextPadding")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_padding);
-			property_interfaces[RESOURCE_ID_DEBUG("Checked")] = GET_PROPERTY_INTERFACE(checkboxwithlabel_checked);
+			property_interfaces[K_PROPERTY_TEXT_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text);
+			property_interfaces[K_PROPERTY_TEXTTYPEFACE_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_typeface);
+			property_interfaces[K_PROPERTY_TEXTSIZE_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_size);
+			property_interfaces[K_PROPERTY_TEXTBOLD_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_bold);
+			property_interfaces[K_PROPERTY_TEXTCOLOR_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_color);
+			property_interfaces[K_PROPERTY_TEXTVALIGNMENT_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_vertical_alignment);
+			property_interfaces[K_PROPERTY_TEXTHALIGNMENT_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_horizontal_alignment);
+			property_interfaces[K_PROPERTY_TEXTWRAP_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_wrap);
+			property_interfaces[K_PROPERTY_TEXTPADDING_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_text_padding);
+			property_interfaces[K_PROPERTY_CHECKED_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_checked);
 		}
 
 		void c_control_builder_gwen_checkboxwithlabel::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
@@ -338,9 +339,9 @@ namespace Yelo
 			auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control);
 			auto& checkbox = *gwen_control.Checkbox();
 
-			event_handlers[RESOURCE_ID_DEBUG("Checked")] = std::make_unique<c_event_handler_gwen>(checkbox.onChecked);
-			event_handlers[RESOURCE_ID_DEBUG("UnChecked")] = std::make_unique<c_event_handler_gwen>(checkbox.onUnChecked);
-			event_handlers[RESOURCE_ID_DEBUG("CheckChanged")] = std::make_unique<c_event_handler_gwen>(checkbox.onCheckChanged,
+			event_handlers[K_EVENT_CHECKED_ID] = std::make_unique<c_event_handler_gwen>(checkbox.onChecked);
+			event_handlers[K_EVENT_UNCHECKED_ID] = std::make_unique<c_event_handler_gwen>(checkbox.onUnChecked);
+			event_handlers[K_EVENT_CHECKCHANGED_ID] = std::make_unique<c_event_handler_gwen>(checkbox.onCheckChanged,
 				[](Gwen::Event::Info& info, Control::s_interface_value& output)
 				{
 					auto& gwen_control = GWEN_CTRL_REF(CheckBox, info.ControlCaller);

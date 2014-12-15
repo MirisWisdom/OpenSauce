@@ -12,7 +12,7 @@
 #include <Gwen/Controls/ScrollControl.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 
 namespace Yelo
@@ -121,10 +121,10 @@ namespace Yelo
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
-			property_interfaces[RESOURCE_ID_DEBUG("InnerSize")] = GET_PROPERTY_INTERFACE(scrollcontrol_innersize);
-			property_interfaces[RESOURCE_ID_DEBUG("ScrollH")] = GET_PROPERTY_INTERFACE(scrollcontrol_scrollh);
-			property_interfaces[RESOURCE_ID_DEBUG("ScrollV")] = GET_PROPERTY_INTERFACE(scrollcontrol_scrollv);
-			property_interfaces[RESOURCE_ID_DEBUG("AutoHideBars")] = GET_PROPERTY_INTERFACE(scrollcontrol_autohidebars);
+			property_interfaces[K_PROPERTY_INNERSIZE_ID] = GET_PROPERTY_INTERFACE(scrollcontrol_innersize);
+			property_interfaces[K_PROPERTY_SCROLLH_ID] = GET_PROPERTY_INTERFACE(scrollcontrol_scrollh);
+			property_interfaces[K_PROPERTY_SCROLLV_ID] = GET_PROPERTY_INTERFACE(scrollcontrol_scrollv);
+			property_interfaces[K_PROPERTY_AUTOHIDEBARS_ID] = GET_PROPERTY_INTERFACE(scrollcontrol_autohidebars);
 		}
 	};};};};
 };

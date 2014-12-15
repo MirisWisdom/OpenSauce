@@ -12,7 +12,8 @@
 #include <Gwen/Controls/Checkbox.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
+#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/gwen_control_util_label.hpp"
 
@@ -61,7 +62,7 @@ namespace Yelo
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
-			property_interfaces[RESOURCE_ID_DEBUG("Checked")] = GET_PROPERTY_INTERFACE(checkbox_checked);
+			property_interfaces[K_PROPERTY_CHECKED_ID] = GET_PROPERTY_INTERFACE(checkbox_checked);
 		}
 
 		void c_control_builder_gwen_checkbox::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
@@ -70,9 +71,9 @@ namespace Yelo
 
 			auto& gwen_control = GWEN_CTRL_REF(CheckBox, control);
 
-			event_handlers[RESOURCE_ID_DEBUG("Checked")] = std::make_unique<c_event_handler_gwen>(gwen_control.onChecked);
-			event_handlers[RESOURCE_ID_DEBUG("UnChecked")] = std::make_unique<c_event_handler_gwen>(gwen_control.onUnChecked);
-			event_handlers[RESOURCE_ID_DEBUG("CheckChanged")] = std::make_unique<c_event_handler_gwen>(gwen_control.onCheckChanged);
+			event_handlers[K_EVENT_CHECKED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onChecked);
+			event_handlers[K_EVENT_UNCHECKED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onUnChecked);
+			event_handlers[K_EVENT_CHECKCHANGED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onCheckChanged);
 		}
 	};};};};
 };

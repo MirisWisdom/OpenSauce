@@ -53,9 +53,21 @@ namespace Yelo
 #pragma endregion
 
 #pragma region i_control
+			Control::i_control* c_canvas_gwen::Parent()
+			{
+				return this;
+			}
+
 			uint32 c_canvas_gwen::GetResourceID() const
 			{
 				return RESOURCE_ID_DEBUG("#CNV_main_canvas");
+			}
+
+			rectangle2d c_canvas_gwen::GetBounds() const
+			{
+				auto& bounds = m_canvas->GetBounds();
+
+				return rectangle2d { bounds.x, bounds.y, bounds.h, bounds.w };
 			}
 
 			void* c_canvas_gwen::GetControlPtr() const

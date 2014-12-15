@@ -80,10 +80,11 @@ namespace Yelo
 #pragma endregion
 
 #pragma region c_control_gwen
-		c_control_gwen::c_control_gwen(Gwen::Controls::Base* gwen_control
+		c_control_gwen::c_control_gwen(Control::i_control& parent
+			, Gwen::Controls::Base* gwen_control
 			, const Control::t_property_interface_map& property_interfaces
 			, const Control::t_event_handler_map& event_handlers)
-			: c_control_base()
+			: c_control_base(parent)
 			, m_control(gwen_control)
 		{
 			// Add all property interfaces
@@ -100,6 +101,13 @@ namespace Yelo
 		}
 
 #pragma region i_control
+		rectangle2d c_control_gwen::GetBounds() const
+		{
+			auto& bounds = m_control->GetBounds();
+
+			return rectangle2d { bounds.x, bounds.y, bounds.h, bounds.w };
+		}
+
 		void* c_control_gwen::GetControlPtr() const
 		{
 			return m_control;

@@ -32,7 +32,10 @@ namespace Yelo
 			GetEventHandlers(gwen_control, event_handlers);
 
 			// Build the control
-			Control::t_control_ptr control = std::make_unique<c_control_gwen>(gwen_control, property_interfaces, event_handlers);
+			Control::t_control_ptr control = std::make_unique<c_control_gwen>(parent
+				, gwen_control
+				, property_interfaces
+				, event_handlers);
 			control->SetResourceID(control_definition.GetID());
 
 			// Set the control's properties from the control definition

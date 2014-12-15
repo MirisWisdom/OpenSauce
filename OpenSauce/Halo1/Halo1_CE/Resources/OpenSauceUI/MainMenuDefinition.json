@@ -3,10 +3,6 @@
 		"Control": {
 			"Type": "Rectangle",
 			"Property": {
-				"Name": "Dock",
-				"Value": "Centre"
-			},
-			"Property": {
 				"Name": "Size",
 				"Value": "640 480"
 			},
@@ -26,7 +22,7 @@
 				},
 				"Property": {
 					"Name": "Color",
-					"Value": "160 160 230 255"
+					"Value": "66 68 99 255"
 				},
 				"Control": {
 					"IDStr": "#LBL_opensauce_settings_title",
@@ -42,6 +38,10 @@
 					"Property": {
 						"Name": "TextSize",
 						"Value": "28"
+					},
+					"Property": {
+						"Name": "TextColor",
+						"Value": "200 200 200 255"
 					},
 					"Property": {
 						"Name": "TextVAlignment",
@@ -79,7 +79,7 @@
 					},
 					"Property": {
 						"Name": "Color",
-						"Value": "100 100 170 255"
+						"Value": "71 72 77 240"
 					},
 					"Control": {
 						"IDStr": "#LBL_graphics_title",
@@ -91,6 +91,10 @@
 						"Property": {
 							"Name": "Size",
 							"Value": "0 22"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -122,6 +126,10 @@
 							"Value": "0 20"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -142,6 +150,10 @@
 							"Value": "Top"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -152,10 +164,6 @@
 						"Property": {
 							"Name": "Margin",
 							"Value": "0 20 0 0"
-						},
-						"Property": {
-							"Name": "TextColor",
-							"Value": "255 255 255 255"
 						}
 					},
 					"Control": {
@@ -164,6 +172,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -191,6 +203,10 @@
 							"Value": "0 20"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -211,6 +227,10 @@
 							"Value": "Top"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -229,6 +249,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -256,6 +280,10 @@
 							"Value": "0 20"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -274,6 +302,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -296,6 +328,10 @@
 							"Value": "Top"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -314,6 +350,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -341,6 +381,10 @@
 							"Value": "0 20"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -355,11 +399,14 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_environment_diffuse_dlm_enabled",
-
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -380,6 +427,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -407,6 +458,10 @@
 							"Value": "0 20"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -425,6 +480,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -452,6 +511,10 @@
 							"Value": "0 20"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -470,6 +533,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -510,6 +577,10 @@
 								"Value": "150 14"
 							},
 							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
 								"Name": "TextHAlignment",
 								"Value": "Left"
 							},
@@ -534,6 +605,10 @@
 								"Value": "40 20"
 							},
 							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
 								"Name": "TextHAlignment",
 								"Value": "Right"
 							},
@@ -551,11 +626,11 @@
 							"Type": "HorizontalSlider",
 							"Property": {
 								"Name": "Dock",
-								"Value": "Fill"
+								"Value": "Left"
 							},
 							"Property": {
 								"Name": "Size",
-								"Value": "80 20"
+								"Value": "300 20"
 							},
 							"Property": {
 								"Name": "Min",
@@ -583,6 +658,10 @@
 							"Value": "Top"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -601,6 +680,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",
@@ -623,6 +706,10 @@
 							"Value": "Top"
 						},
 						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
 							"Name": "TextHAlignment",
 							"Value": "Left"
 						},
@@ -641,6 +728,10 @@
 						"Property": {
 							"Name": "Dock",
 							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
 						},
 						"Property": {
 							"Name": "TextHAlignment",

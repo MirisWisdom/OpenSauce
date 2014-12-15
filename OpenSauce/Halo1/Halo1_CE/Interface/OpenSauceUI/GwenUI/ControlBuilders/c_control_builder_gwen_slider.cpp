@@ -12,7 +12,8 @@
 #include <Gwen/Controls/Slider.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
+#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
 
 namespace Yelo
@@ -145,11 +146,11 @@ namespace Yelo
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 
-			property_interfaces[RESOURCE_ID_DEBUG("ClampToNotches")] = GET_PROPERTY_INTERFACE(slider_clamp_to_notches);
-			property_interfaces[RESOURCE_ID_DEBUG("NotchCount")] = GET_PROPERTY_INTERFACE(slider_notch_count);
-			property_interfaces[RESOURCE_ID_DEBUG("Min")] = GET_PROPERTY_INTERFACE(slider_min);
-			property_interfaces[RESOURCE_ID_DEBUG("Max")] = GET_PROPERTY_INTERFACE(slider_max);
-			property_interfaces[RESOURCE_ID_DEBUG("Value")] = GET_PROPERTY_INTERFACE(slider_value);
+			property_interfaces[K_PROPERTY_CLAMPTONOTCHES_ID] = GET_PROPERTY_INTERFACE(slider_clamp_to_notches);
+			property_interfaces[K_PROPERTY_NOTCHCOUNT_ID] = GET_PROPERTY_INTERFACE(slider_notch_count);
+			property_interfaces[K_PROPERTY_MIN_ID] = GET_PROPERTY_INTERFACE(slider_min);
+			property_interfaces[K_PROPERTY_MAX_ID] = GET_PROPERTY_INTERFACE(slider_max);
+			property_interfaces[K_PROPERTY_VALUE_ID] = GET_PROPERTY_INTERFACE(slider_value);
 		}
 
 		void c_control_builder_gwen_slider::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
@@ -158,7 +159,7 @@ namespace Yelo
 			
 			auto& gwen_control = GWEN_CTRL_REF(Slider, control);
 
-			event_handlers[RESOURCE_ID_DEBUG("ValueChanged")] = std::make_unique<c_event_handler_gwen>(gwen_control.onValueChanged,
+			event_handlers[K_EVENT_VALUECHANGED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onValueChanged,
 				[](Gwen::Event::Info& info, Control::s_interface_value& output)
 				{
 					auto& gwen_control = GWEN_CTRL_REF(Slider, info.ControlCaller);

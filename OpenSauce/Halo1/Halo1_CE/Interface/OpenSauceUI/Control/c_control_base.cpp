@@ -129,8 +129,9 @@ namespace Yelo
 #pragma endregion
 
 #pragma region c_control_base
-		c_control_base::c_control_base()
-			: m_resource_id(RESOURCE_ID_NONE)
+		c_control_base::c_control_base(i_control& parent)
+			: m_parent(parent)
+			, m_resource_id(RESOURCE_ID_NONE)
 			, m_child_controls()
 			, m_property_interfaces()
 		{ }
@@ -173,6 +174,11 @@ namespace Yelo
 		}
 
 #pragma region i_control
+		i_control* c_control_base::Parent()
+		{
+			return &m_parent;
+		}
+
 		uint32 c_control_base::GetResourceID() const
 		{
 			return m_resource_id;

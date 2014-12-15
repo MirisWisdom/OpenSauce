@@ -21,7 +21,7 @@ namespace Yelo
 			: m_canvas(canvas)
 			, m_mouse_pointer(mouse_pointer)
 			, m_control_factory(control_factory)
-			, m_current_state(Flags::_osui_game_state_launching)
+			, m_current_state(Flags::_osui_game_state_none)
 			, m_mouse_show_count(0)
 			, m_screen_instances()
 			, m_current_stage_instances()
@@ -47,6 +47,8 @@ namespace Yelo
 				instance.m_screen_controller->DestroyScreen(m_canvas);
 			}
 			m_screen_instances.clear();
+
+			m_current_state = Flags::_osui_game_state_none;
 		}
 
 		void c_screen_display_manager::SetGameState(const Flags::osui_game_state state)

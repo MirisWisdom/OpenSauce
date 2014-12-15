@@ -9,8 +9,10 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
+#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 
+#include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_system_motionblur.hpp"
@@ -24,31 +26,21 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
 #pragma region Resource ID Defines
-// TEMP
-#define K_PROPERTY_TEXT_ID RESOURCE_ID_DEBUG("Text")
-#define K_PROPERTY_CHECKED_ID RESOURCE_ID_DEBUG("Checked")
-#define K_PROPERTY_DISABLED_ID RESOURCE_ID_DEBUG("Disabled")
-#define K_PROPERTY_VALUE_ID RESOURCE_ID_DEBUG("Value")
+#define K_LBL_GRAPHICS_TITLE_ID											RESOURCE_ID_DEBUG("#LBL_graphics_title")
 
-#define K_EVENT_CHECK_CHANGED_ID RESOURCE_ID_DEBUG("CheckChanged")
-#define K_EVENT_VALUE_CHANGED_ID RESOURCE_ID_DEBUG("ValueChanged")
-// TEMP
+#define K_LBL_OPENSAUCE_SETTINGS_TITLE_ID								RESOURCE_ID_DEBUG("#LBL_opensauce_settings_title")
 
-#define K_LBL_GRAPHICS_TITLE_ID									RESOURCE_ID_DEBUG("#LBL_graphics_title")
+#define K_LBL_GENERAL_TITLE_ID											RESOURCE_ID_DEBUG("#LBL_general_title")
+#define K_CHK_GENERAL_GBUFFER_ENABLED_ID								RESOURCE_ID_DEBUG("#CHK_general_gbuffer_enabled")
+#define K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID							RESOURCE_ID_DEBUG("#CHK_general_gbuffer_toggle_event")
+#define K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID							RESOURCE_ID_DEBUG("#CHK_general_nvidia_camo_enabled")
+#define K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID						RESOURCE_ID_DEBUG("#CHK_general_nvidia_camo_toggle_event")
 
-#define K_LBL_OPENSAUCE_SETTINGS_TITLE_ID						RESOURCE_ID_DEBUG("#LBL_opensauce_settings_title")
-
-#define K_LBL_GENERAL_TITLE_ID									RESOURCE_ID_DEBUG("#LBL_general_title")
-#define K_CHK_GENERAL_GBUFFER_ENABLED_ID						RESOURCE_ID_DEBUG("#CHK_general_gbuffer_enabled")
-#define K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID					RESOURCE_ID_DEBUG("#CHK_general_gbuffer_toggle_event")
-#define K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID					RESOURCE_ID_DEBUG("#CHK_general_nvidia_camo_enabled")
-#define K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID				RESOURCE_ID_DEBUG("#CHK_general_nvidia_camo_toggle_event")
-
-#define K_LBL_ENGINE_UPGRADES_TITLE_ID							RESOURCE_ID_DEBUG("#LBL_engine_upgrades_title")
-#define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID		RESOURCE_ID_DEBUG("#CHK_upgrades_max_rendered_triangles_enabled")
-#define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID	RESOURCE_ID_DEBUG("#CHK_upgrades_max_rendered_triangles_toggle_event")
-#define K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_upgrades_max_bone_nodes_enabled")
-#define K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_upgrades_max_bone_nodes_toggle_event")
+#define K_LBL_ENGINE_UPGRADES_TITLE_ID									RESOURCE_ID_DEBUG("#LBL_engine_upgrades_title")
+#define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_upgrades_max_rendered_triangles_enabled")
+#define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_upgrades_max_rendered_triangles_toggle_event")
+#define K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID						RESOURCE_ID_DEBUG("#CHK_upgrades_max_bone_nodes_enabled")
+#define K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID					RESOURCE_ID_DEBUG("#CHK_upgrades_max_bone_nodes_toggle_event")
 
 #define K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID							RESOURCE_ID_DEBUG("#LBL_shader_extension_model_title")
 #define K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_shader_extension_model_normal_maps_enabled")
@@ -68,21 +60,21 @@ namespace Yelo
 #define K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_shader_extension_effect_depth_fade_enabled")
 #define K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_TOGGLE_EVENT_ID		RESOURCE_ID_DEBUG("#CHK_shader_extension_effect_depth_fade_toggle_event")
 
-#define K_LBL_POST_PROCESSING_EFFECT_TITLE_ID						RESOURCE_ID_DEBUG("#LBL_postprocessing_title")
-#define K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID						RESOURCE_ID_DEBUG("#CHK_postprocessing_bloom_enabled")
-#define K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID					RESOURCE_ID_DEBUG("#CHK_postprocessing_bloom_toggle_event")
-#define K_CHK_POST_PROCESSING_ANTI_ALIASING_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_postprocessing_anti_aliasing_enabled")
-#define K_CHK_POST_PROCESSING_ANTI_ALIASING_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_postprocessing_anti_aliasing_toggle_event")
-#define K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_ENABLED_ID			RESOURCE_ID_DEBUG("#CHK_postprocessing_external_effects_enabled")
-#define K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_TOGGLE_EVENT_ID		RESOURCE_ID_DEBUG("#CHK_postprocessing_external_effects_toggle_event")
-#define K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_postprocessing_map_effects_enabled")
-#define K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_postprocessing_map_effects_toggle_event")
-#define K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID					RESOURCE_ID_DEBUG("#CHK_postprocessing_motionblur_enabled")
-#define K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_postprocessing_motionblur_toggle_event")
-#define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID					RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount")
-#define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_TEXT_ID				RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount_text")
-#define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID					RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount")
-#define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID	RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount_changed_event")
+#define K_LBL_POST_PROCESSING_EFFECT_TITLE_ID							RESOURCE_ID_DEBUG("#LBL_postprocessing_title")
+#define K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID							RESOURCE_ID_DEBUG("#CHK_postprocessing_bloom_enabled")
+#define K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID						RESOURCE_ID_DEBUG("#CHK_postprocessing_bloom_toggle_event")
+#define K_CHK_POST_PROCESSING_ANTI_ALIASING_ENABLED_ID					RESOURCE_ID_DEBUG("#CHK_postprocessing_anti_aliasing_enabled")
+#define K_CHK_POST_PROCESSING_ANTI_ALIASING_TOGGLE_EVENT_ID				RESOURCE_ID_DEBUG("#CHK_postprocessing_anti_aliasing_toggle_event")
+#define K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_postprocessing_external_effects_enabled")
+#define K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_postprocessing_external_effects_toggle_event")
+#define K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID					RESOURCE_ID_DEBUG("#CHK_postprocessing_map_effects_enabled")
+#define K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID				RESOURCE_ID_DEBUG("#CHK_postprocessing_map_effects_toggle_event")
+#define K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID						RESOURCE_ID_DEBUG("#CHK_postprocessing_motionblur_enabled")
+#define K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID				RESOURCE_ID_DEBUG("#CHK_postprocessing_motionblur_toggle_event")
+#define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID						RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount")
+#define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_TEXT_ID					RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount_text")
+#define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID						RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount")
+#define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID		RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount_changed_event")
 #pragma endregion
 		
 		c_screen_controller_mainmenu::c_screen_controller_mainmenu(Definitions::c_screen_definition& definition)
@@ -91,6 +83,23 @@ namespace Yelo
 
 		void c_screen_controller_mainmenu::SetStaticProperties()
 		{
+			// Set the screen's position to be central
+			auto& root_control = *m_target_screen->GetRootControl();
+			auto& screen_parent = *root_control.Parent();
+			auto& position_prop = *root_control.GetPropertyInterface(K_PROPERTY_POSITION_ID);
+			auto& size_prop = *root_control.GetPropertyInterface(K_PROPERTY_SIZE_ID);
+
+			auto parent_bounds = screen_parent.GetBounds();
+			point2d parent_size { parent_bounds.right - parent_bounds.left, parent_bounds.bottom - parent_bounds.top };
+
+			auto root_size = size_prop.Get(root_control, Control::s_interface_value(point2d { 0, 0 }));
+			position_prop.Set(root_control, Control::s_interface_value(
+				point2d
+				{
+					parent_bounds.left + ((parent_size.x - root_size.m_point2d.x) / 2),
+					parent_bounds.top + ((parent_size.y - root_size.m_point2d.y) / 2),
+				}));
+
 			// Set all static text strings in the screen
 			SetControlProperty(K_LBL_OPENSAUCE_SETTINGS_TITLE_ID,							K_PROPERTY_TEXT_ID, "OpenSauce Settings");
 
@@ -251,96 +260,96 @@ namespace Yelo
 		void c_screen_controller_mainmenu::BindEvents()
 		{
 			// Attach all events that the screen has to react to
-			AttachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					DX9::c_gbuffer_system::g_system_enabled = event_data.m_bool;
 				});
 			
-			AttachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::c_settings_rasterizer::Instance().Get().m_use_nvidia_camo = event_data.m_bool;
 				});
 			
 
-			AttachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_maximum_rendered_triangles = event_data.m_bool;
 				});
 
-			AttachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_model_node_stretching_fix = event_data.m_bool;
 				});
 			
 
-			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Model::SetNormalMapsEnabled(event_data.m_bool);
 				});
 
-			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Model::SetSpecularMapsEnabled(event_data.m_bool);
 				});
 
-			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Model::SetSpecularLightingEnabled(event_data.m_bool);
 				});
 
 
-			AttachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Environment::SetDiffuseDLMsEnabled(event_data.m_bool);
 				});
 			
-			AttachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Environment::SetSpecularDLMsEnabled(event_data.m_bool);
 				});
 
 
-			AttachEvent(K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Effect::SetDepthFadeEnabled(event_data.m_bool);
 				});
 			
 
-			AttachEvent(K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::PostProcessing::Bloom::c_system_bloom::Instance().Enabled() = event_data.m_bool;
 				});
 
-			AttachEvent(K_CHK_POST_PROCESSING_ANTI_ALIASING_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_ANTI_ALIASING_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_POST_PROCESSING_ANTI_ALIASING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_ANTI_ALIASING_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::PostProcessing::FXAA::c_system_fxaa::Instance().Enabled() = event_data.m_bool;
 				});
 
-			AttachEvent(K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::PostProcessing::Generic::External::c_system_external::Instance().Enabled() = event_data.m_bool;
 				});
 
-			AttachEvent(K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::PostProcessing::Generic::Internal::c_system_internal::Instance().Enabled() = event_data.m_bool;
 				});
 
-			AttachEvent(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID, nullptr,
+			AttachEvent(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					auto& motionblur_instance = Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance();
@@ -353,7 +362,7 @@ namespace Yelo
 					}
 				});
 
-			AttachEvent(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_EVENT_VALUE_CHANGED_ID, K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID, nullptr,
+			AttachEvent(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_EVENT_VALUECHANGED_ID, K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					auto& motionblur_instance = Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance();
@@ -373,28 +382,28 @@ namespace Yelo
 
 		void c_screen_controller_mainmenu::UnbindEvents()
 		{
-			// Remove all bounds events
-			DetachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID);
+			// Remove all bound events
+			DetachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID);
 
-			DetachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID);
 
-			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_TOGGLE_EVENT_ID);
 
-			DetachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_DIFFUSE_DLM_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_TOGGLE_EVENT_ID);
 
-			DetachEvent(K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_EFFECT_DEPTH_FADE_TOGGLE_EVENT_ID);
 
-			DetachEvent(K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_POST_PROCESSING_ANTI_ALIASING_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_ANTI_ALIASING_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID, K_EVENT_CHECK_CHANGED_ID, K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID);
-			DetachEvent(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_EVENT_VALUE_CHANGED_ID, K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID);
+			DetachEvent(K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_POST_PROCESSING_ANTI_ALIASING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_ANTI_ALIASING_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_EXTERNAL_EFFECTS_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID);
+			DetachEvent(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_EVENT_VALUECHANGED_ID, K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID);
 		}
 	};};};
 };

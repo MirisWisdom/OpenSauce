@@ -19,6 +19,7 @@ namespace Yelo
 	{
 		enum osui_game_state : uint16
 		{
+			_osui_game_state_none				= 0,
 			_osui_game_state_launching			= 1 << 0,
 			_osui_game_state_main_menu			= 1 << 1,
 			_osui_game_state_loading			= 1 << 2,
