@@ -60,6 +60,14 @@ namespace Yelo
 			if(write_time_stamp)
 				strncpy_s(time_buffer, time_str+11, 9); // copy the time only, leave out the date and year
 
+			if(IsDebuggerPresent())
+			{
+				OutputDebugString("DEBUG: ");
+				OutputDebugString(time_buffer);
+				OutputDebugString(str);
+				OutputDebugString("\r\n");
+			}
+
 			if(write_time_stamp)
 				fprintf_s(debug_file, format, time_buffer, str, '\n');
 			else

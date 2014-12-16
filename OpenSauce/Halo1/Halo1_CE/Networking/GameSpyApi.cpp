@@ -7,10 +7,6 @@
 #include "Common/Precompile.hpp"
 #include "Networking/GameSpyApi.hpp"
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
 
@@ -128,36 +124,23 @@ _return:
 			}
 
 #pragma region Settings
-			class c_settings_container
-				: public Configuration::c_configuration_container
-			{
-			public:
-				Configuration::c_configuration_value<bool> m_no_update_check;
+			c_settings_container::c_settings_container()
+				: Configuration::c_configuration_container("Networking.GameSpy")
+				, m_no_update_check("NoUpdateCheck", true)
+			{ }
 
-				c_settings_container()
-					: Configuration::c_configuration_container("Networking.GameSpy")
-					, m_no_update_check("NoUpdateCheck", true)
-				{ }
-				
-			protected:
-				const std::vector<i_configuration_value* const> GetMembers() final override
-				{
-					return std::vector<i_configuration_value* const> { &m_no_update_check };
-				}
-			};
-
-			class c_settings_gamespy
-				: public Settings::c_settings_singleton<c_settings_container, c_settings_gamespy>
+			const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
 			{
-			public:
-				void PostLoad() final override
+				return std::vector<i_configuration_value* const> { &m_no_update_check };
+			}
+
+			void c_settings_gamespy::PostLoad()
+			{
+				if(Get().m_no_update_check)
 				{
-					if(Get().m_no_update_check)
-					{
-						TurnOffUpdateCheck();
-					}
+					TurnOffUpdateCheck();
 				}
-			};
+			}
 #pragma endregion
 
 			static void InitializeForNewQr2()

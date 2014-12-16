@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Memory/FunctionInterface.hpp"
+#include "Interface/Controls.hpp"
 
 namespace Yelo
 {
@@ -24,6 +25,7 @@ namespace Yelo
 			, m_current_state(Flags::_osui_game_state_none)
 			, m_mouse_show_count(0)
 			, m_modal_screen_count(0)
+			, m_disable_movement_count(0)
 			, m_screen_instances()
 			, m_current_stage_instances()
 		{ }
@@ -31,11 +33,9 @@ namespace Yelo
 		void c_screen_display_manager::AddScreenController(const Flags::osui_game_state game_states
 			, const Flags::osui_screen_flags screen_flags
 			, const Enums::Key toggle_key
-			, const bool is_modal
-			, const bool show_cursor
 			, t_screen_controller_ptr controller)
 		{
-			m_screen_instances.push_back(s_screen_instance { game_states, screen_flags, toggle_key, is_modal, show_cursor, controller });
+			m_screen_instances.push_back(s_screen_instance { game_states, screen_flags, toggle_key, controller });
 		}
 
 		void c_screen_display_manager::ClearScreenControllers()
@@ -166,6 +166,11 @@ namespace Yelo
 			{
 				ShowMousePointer();
 			}
+
+			if(screen.m_screen_flags & Flags::_osui_screen_flags_disable_movement)
+			{
+				DisableMovement();
+			}
 		}
 
 		void c_screen_display_manager::HideScreen(s_screen_instance& screen)
@@ -181,6 +186,11 @@ namespace Yelo
 			if(screen.m_screen_flags & Flags::_osui_screen_flags_show_cursor)
 			{
 				HideMousePointer();
+			}
+
+			if(screen.m_screen_flags & Flags::_osui_screen_flags_disable_movement)
+			{
+				EnableMovement();
 			}
 		}
 
@@ -226,6 +236,27 @@ namespace Yelo
 			}
 
 			m_modal_screen_count++;
+		}
+
+		void c_screen_display_manager::EnableMovement()
+		{		
+			m_disable_movement_count--;
+
+			if(m_disable_movement_count <= 0)
+			{
+				m_disable_movement_count = 0;
+				Input::AllowMovement(true);
+			}
+		}
+
+		void c_screen_display_manager::DisableMovement()
+		{
+			if(!m_disable_movement_count)
+			{
+				Input::AllowMovement(false);
+			}
+
+			m_disable_movement_count++;
 		}
 	};};};
 };

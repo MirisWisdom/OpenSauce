@@ -22,15 +22,12 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 				auto text = Label_GetText(*gwen_control.Label());
 
-				auto property_value = Control::s_interface_value();
-				property_value.SetString(text);
-
-				return property_value;
+				output.SetString(text);
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -47,15 +44,12 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_typeface,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 				auto text = Label_GetTextTypeface(*gwen_control.Label());
 
-				auto property_value = Control::s_interface_value();
-				property_value.SetString(text);
-
-				return property_value;
+				output.SetString(text.c_str());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -72,11 +66,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_size,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetTextSize(*gwen_control.Label()));
+				output.m_int32 = Label_GetTextSize(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -95,11 +89,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_bold,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetTextBold(*gwen_control.Label()));
+				output.m_bool = Label_GetTextBold(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -118,11 +112,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_vertical_align,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetVerticalAlignment(*gwen_control.Label()));
+				output.m_int32 = Label_GetVerticalAlignment(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -139,11 +133,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_horizontal_align,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetHorizontalAlignment(*gwen_control.Label()));
+				output.m_int32 = Label_GetHorizontalAlignment(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -160,11 +154,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_color,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetTextColor(*gwen_control.Label()));
+				output.m_argb_color = Label_GetTextColor(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -183,11 +177,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_vertical_alignment,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetVerticalAlignment(*gwen_control.Label()));
+				output.m_int32 = Label_GetVerticalAlignment(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -204,11 +198,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_horizontal_alignment,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetHorizontalAlignment(*gwen_control.Label()));
+				output.m_int32 = Label_GetHorizontalAlignment(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -225,11 +219,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_wrap,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetWrap(*gwen_control.Label()));
+				output.m_bool = Label_GetWrap(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -248,11 +242,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_text_padding,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(Label_GetTextPadding(*gwen_control.Label()));
+				output.m_rectangle2d = Label_GetTextPadding(*gwen_control.Label());
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -271,11 +265,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_checked,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.Checkbox()->IsChecked());
+				output.m_bool = gwen_control.Checkbox()->IsChecked();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -294,11 +288,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(checkboxwithlabel_disabled,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBoxWithLabel, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.Checkbox()->IsDisabled());
+				output.m_bool = gwen_control.Checkbox()->IsDisabled();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{

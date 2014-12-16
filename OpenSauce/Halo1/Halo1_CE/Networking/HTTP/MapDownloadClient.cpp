@@ -15,9 +15,6 @@
 #include <YeloLib/memory/compression/7zip_codec.hpp>
 #include <YeloLib/memory/compression/zip_codec.hpp>
 #include <YeloLib/memory/security/xxtea.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
@@ -1074,27 +1071,15 @@ namespace Yelo
 		static HANDLE					g_globals_access_mutex;
 
 #pragma region Settings
-		class c_settings_container
-			: public Configuration::c_configuration_container
+		c_settings_container::c_settings_container()
+			: Configuration::c_configuration_container("Networking.MapDownload")
+			, m_enabled("Enabled", true)
+		{ }
+
+		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
 		{
-		public:
-			Configuration::c_configuration_value<bool> m_enabled;
-
-			c_settings_container()
-				: Configuration::c_configuration_container("Networking.MapDownload")
-				, m_enabled("Enabled", true)
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override
-			{
-				return std::vector<i_configuration_value* const> { &m_enabled };
-			}
-		};
-
-		class c_settings_mapdownload
-			: public Settings::c_settings_singleton<c_settings_container, c_settings_mapdownload>
-		{ };
+			return std::vector<i_configuration_value* const> { &m_enabled };
+		}
 #pragma endregion
 
 		/*!

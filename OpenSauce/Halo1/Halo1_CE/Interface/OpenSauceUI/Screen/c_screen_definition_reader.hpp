@@ -19,23 +19,16 @@ namespace Yelo
 		/// <summary>	A screen definition registry. </summary>
 		class c_screen_definition_registry final
 		{
-			c_packed_file& m_ui_packages;
-
 		public:
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Constructor. </summary>
-			///
-			/// <param name="ui_package">	[in] The ui package. </param>
-			c_screen_definition_registry(c_packed_file& ui_package);
-
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a screen definition. </summary>
 			///
-			/// <param name="screen_id">	Identifier for the screen. </param>
-			/// <param name="output">   	[out] The output definition. </param>
+			/// <param name="ui_package">	[in] The ui package. </param>
+			/// <param name="screen_id"> 	Identifier for the screen. </param>
+			/// <param name="output">	 	[out] The output definition. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
-			bool GetScreenDefinition(const std::string& screen_id, Definitions::c_screen_definition& output);
+			static bool GetScreenDefinition(c_packed_file& ui_package, const std::string& screen_id, Definitions::c_screen_definition& output);
 		};
 	};};};
 };

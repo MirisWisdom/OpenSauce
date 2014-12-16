@@ -61,7 +61,7 @@
 				},
 				"Property": {
 					"Name": "InnerSize",
-					"Value": "640 500"
+					"Value": "640 600"
 				},
 				"Property": {
 					"Name": "ScrollV",
@@ -75,7 +75,7 @@
 					"Type": "Rectangle",
 					"Property": {
 						"Name": "Size",
-						"Value": "640 500"
+						"Value": "640 600"
 					},
 					"Property": {
 						"Name": "Color",
@@ -724,6 +724,144 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_postprocessing_map_effects_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_internet_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 22"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "18"
+						},
+						"Property": {
+							"Name": "TextBold",
+							"Value": "True"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_check_for_game_updates_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_map_downloading_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
+						"IDStr": "#LBL_map_files_title",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 22"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "18"
+						},
+						"Property": {
+							"Name": "TextBold",
+							"Value": "True"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_check_for_yelo_first_enabled",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",

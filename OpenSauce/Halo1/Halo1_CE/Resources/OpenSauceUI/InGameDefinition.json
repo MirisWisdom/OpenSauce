@@ -1,0 +1,15 @@
+{
+	"Screen": {
+		"Control": {
+			"Type": "Rectangle",
+			"Property": {
+				"Name": "Size",
+				"Value": "200 200"
+			},
+			"Property": {
+				"Name": "Color",
+				"Value": "66 68 99 255"
+			}
+		}
+	}
+}

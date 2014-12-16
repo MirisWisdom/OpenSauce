@@ -21,11 +21,12 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
 		DEFINE_PROPERTY_INTERFACE(base_position,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
-				return Control::s_interface_value(point2d { gwen_control.X(), gwen_control.Y() });
+				output.m_point2d.x = gwen_control.X();
+				output.m_point2d.y = gwen_control.Y();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -44,11 +45,12 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(base_size,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
-				return Control::s_interface_value(point2d { gwen_control.Width(), gwen_control.Height() });
+				output.m_point2d.x = gwen_control.Width();
+				output.m_point2d.y = gwen_control.Height();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -67,11 +69,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(base_dock,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
-				return Control::s_interface_value((int32)gwen_control.GetDock());
+				output.m_int32 = gwen_control.GetDock();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -112,12 +114,15 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(base_margin,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
 				auto& margin = gwen_control.GetMargin();
-				return Control::s_interface_value(rectangle2d { margin.top, margin.left, margin.bottom, margin.right });
+				output.m_rectangle2d.top = margin.top;
+				output.m_rectangle2d.left = margin.left;
+				output.m_rectangle2d.bottom = margin.bottom;
+				output.m_rectangle2d.right = margin.right;
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -136,12 +141,15 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(base_padding,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
 				auto& padding = gwen_control.GetPadding();
-				return Control::s_interface_value(rectangle2d { padding.top, padding.left, padding.bottom, padding.right });
+				output.m_rectangle2d.top = padding.top;
+				output.m_rectangle2d.left = padding.left;
+				output.m_rectangle2d.bottom = padding.bottom;
+				output.m_rectangle2d.right = padding.right;
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -160,11 +168,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(base_hidden,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.Hidden());
+				output.m_bool = gwen_control.Hidden();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -183,11 +191,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(base_disabled,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Base, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.IsDisabled());
+				output.m_bool = gwen_control.IsDisabled();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{

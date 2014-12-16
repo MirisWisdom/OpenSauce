@@ -20,11 +20,11 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
 		DEFINE_PROPERTY_INTERFACE(textboxnumeric_value,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(TextBoxNumeric, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.GetFloatFromText());
+				output.m_real = gwen_control.GetFloatFromText();
 			},
 			nullptr,
 			nullptr

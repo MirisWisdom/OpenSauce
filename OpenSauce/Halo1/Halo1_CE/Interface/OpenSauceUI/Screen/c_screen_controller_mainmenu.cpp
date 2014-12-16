@@ -9,6 +9,8 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <YeloLib/files/files.hpp>
+
 #include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 
@@ -20,6 +22,9 @@
 #include "Rasterizer/PostProcessing/FXAA/c_system_fxaa.hpp"
 #include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
 #include "Rasterizer/PostProcessing/Generic/External/c_system_external.hpp"
+#include "Networking/HTTP/MapDownloadClient.hpp"
+#include "Networking/GameSpyApi.hpp"
+#include "TagGroups/CacheFiles.hpp"
 
 namespace Yelo
 {
@@ -75,6 +80,18 @@ namespace Yelo
 #define K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_TEXT_ID					RESOURCE_ID_DEBUG("#LBL_postprocessing_motionblur_amount_text")
 #define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID						RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount")
 #define K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID		RESOURCE_ID_DEBUG("#SLD_postprocessing_motionblur_amount_changed_event")
+
+#define K_LBL_INTERNET_TITLE_ID											RESOURCE_ID_DEBUG("#LBL_internet_title")
+		
+#define K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_check_for_game_updates_enabled")
+#define K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_check_for_game_updates_toggle_event")
+#define K_CHK_INTERNET_MAP_DOWNLOADING_ENABLED_ID						RESOURCE_ID_DEBUG("#CHK_map_downloading_enabled")
+#define K_CHK_INTERNET_MAP_DOWNLOADING_TOGGLE_EVENT_ID					RESOURCE_ID_DEBUG("#CHK_map_downloading_toggle_event")
+
+#define K_LBL_MAP_FILES_TITLE_ID										RESOURCE_ID_DEBUG("#LBL_map_files_title")
+
+#define K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID					RESOURCE_ID_DEBUG("#CHK_check_for_yelo_first_enabled")
+#define K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_TOGGLE_EVENT_ID			RESOURCE_ID_DEBUG("#CHK_check_for_yelo_first_toggle_event")
 #pragma endregion
 		
 		c_screen_controller_mainmenu::c_screen_controller_mainmenu(Definitions::c_screen_definition& definition)
@@ -92,7 +109,8 @@ namespace Yelo
 			auto parent_bounds = screen_parent.GetBounds();
 			point2d parent_size { parent_bounds.right - parent_bounds.left, parent_bounds.bottom - parent_bounds.top };
 
-			auto root_size = size_prop.Get(root_control, Control::s_interface_value(point2d { 0, 0 }));
+			Control::s_interface_value root_size(point2d { 800, 600 });
+			size_prop.Get(root_control, root_size);
 			position_prop.Set(root_control, Control::s_interface_value(
 				point2d
 				{
@@ -132,6 +150,15 @@ namespace Yelo
 			SetControlProperty(K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID,				K_PROPERTY_TEXT_ID, "Map Effects");
 			SetControlProperty(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Motion Blur");
 			SetControlProperty(K_LBL_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID,					K_PROPERTY_TEXT_ID, "Motion Blur Amount");
+
+			SetControlProperty(K_LBL_INTERNET_TITLE_ID,										K_PROPERTY_TEXT_ID, "Internet");
+
+			SetControlProperty(K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Check for game updates (requires restart)");
+			SetControlProperty(K_CHK_INTERNET_MAP_DOWNLOADING_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Map Downloading");
+
+			SetControlProperty(K_LBL_MAP_FILES_TITLE_ID,									K_PROPERTY_TEXT_ID, "Map Files (Requires Restart)");
+
+			SetControlProperty(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID,				K_PROPERTY_TEXT_ID, "Look for .yelo maps first");
 		}
 
 		void c_screen_controller_mainmenu::BindDynamicProperties()
@@ -187,7 +214,7 @@ namespace Yelo
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::ShaderExtension::Environment::GetDiffuseDLMsEnabled()));
 				});
-			
+
 			AddDynamicProperty(K_CHK_SHADER_EXTENSION_ENVIRONMENT_SPECULAR_DLM_ENABLED_ID, K_PROPERTY_CHECKED_ID,
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
@@ -250,10 +277,27 @@ namespace Yelo
 					char buffer[10] = "";
 					sprintf_s(buffer, "%.2f", Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().BlurAmount());
 
-					Control::s_interface_value value;
-					value.SetString(buffer);
+					property.Set(control, Control::s_interface_value(buffer));
+				});
 
-					property.Set(control, value);
+
+			AddDynamicProperty(K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_ENABLED_ID, K_PROPERTY_CHECKED_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(!Networking::GameSpy::c_settings_gamespy::Instance()->m_no_update_check));
+				});
+
+			AddDynamicProperty(K_CHK_INTERNET_MAP_DOWNLOADING_ENABLED_ID, K_PROPERTY_CHECKED_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(Networking::HTTP::Client::MapDownload::c_settings_mapdownload::Instance()->m_enabled));
+				});
+
+
+			AddDynamicProperty(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID, K_PROPERTY_CHECKED_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(Cache::c_settings_cache::Instance()->m_check_yelo_files_first));
 				});
 		}
 
@@ -334,7 +378,7 @@ namespace Yelo
 						DX9::c_gbuffer_system::g_system_enabled = true;
 					}
 				});
-			
+
 
 			AttachEvent(K_CHK_POST_PROCESSING_BLOOM_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_BLOOM_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
@@ -395,6 +439,26 @@ namespace Yelo
 						DX9::c_gbuffer_system::g_system_enabled = true;
 					}
 				});
+
+
+			AttachEvent(K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_TOGGLE_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Networking::GameSpy::c_settings_gamespy::Instance()->m_no_update_check = !event_data.m_bool;
+				});
+
+			AttachEvent(K_CHK_INTERNET_MAP_DOWNLOADING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_INTERNET_MAP_DOWNLOADING_TOGGLE_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Networking::HTTP::Client::MapDownload::c_settings_mapdownload::Instance()->m_enabled = event_data.m_bool;
+				});
+
+
+			AttachEvent(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_TOGGLE_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Cache::c_settings_cache::Instance()->m_check_yelo_files_first = event_data.m_bool;
+				});
 		}
 
 		void c_screen_controller_mainmenu::UnbindEvents()
@@ -421,6 +485,11 @@ namespace Yelo
 			DetachEvent(K_CHK_POST_PROCESSING_MAP_EFFECTS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_MAP_EFFECTS_TOGGLE_EVENT_ID);
 			DetachEvent(K_CHK_POST_PROCESSING_MOTIONBLUR_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_POST_PROCESSING_MOTIONBLUR_TOGGLE_EVENT_ID);
 			DetachEvent(K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_ID, K_EVENT_VALUECHANGED_ID, K_SLD_POST_PROCESSING_MOTIONBLUR_AMOUNT_CHANGED_EVENT_ID);
+
+			DetachEvent(K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_INTERNET_MAP_DOWNLOADING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_INTERNET_MAP_DOWNLOADING_TOGGLE_EVENT_ID);
+
+			DetachEvent(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_TOGGLE_EVENT_ID);
 		}
 	};};};
 };

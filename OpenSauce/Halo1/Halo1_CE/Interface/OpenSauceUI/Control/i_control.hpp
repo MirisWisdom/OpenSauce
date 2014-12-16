@@ -46,11 +46,11 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the value of a property. </summary>
 			///
-			/// <param name="control">	[in] The control to get the value from. </param>
-			/// <param name="default">	The default value. </param>
+			/// <param name="control">	   	[in] The control to get the value from. </param>
+			/// <param name="output_value">	[out] The output value. </param>
 			///
-			/// <returns>	The properties value. </returns>
-			virtual s_interface_value Get(i_control& control, const s_interface_value& default_value) const = 0;
+			/// <returns>	true if the get function was executed. </returns>
+			virtual bool Get(i_control& control, s_interface_value& output_value) const = 0;
 		};
 		
 		/// <summary>	Defines an alias representing a property interface map. </summary>

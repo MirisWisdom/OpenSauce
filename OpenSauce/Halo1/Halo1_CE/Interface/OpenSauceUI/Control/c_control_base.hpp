@@ -85,7 +85,7 @@ namespace Yelo
 			: public i_property_interface
 		{
 			/// <summary>	Defines an alias representing the property get function. </summary>
-			typedef std::function<s_interface_value(i_control&)> t_property_get_func;
+			typedef std::function<void(i_control&, s_interface_value&)> t_property_get_func;
 
 			/// <summary>	Defines an alias representing the property set function. </summary>
 			typedef std::function<void(i_control&, const s_interface_value&)> t_property_set_func;
@@ -125,11 +125,11 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the value of a property. </summary>
 			///
-			/// <param name="control">	[in] The control to get the value from. </param>
-			/// <param name="default">	The default value. </param>
+			/// <param name="control">	   	[in] The control to get the value from. </param>
+			/// <param name="output_value">	[out] The output value. </param>
 			///
-			/// <returns>	The properties value of the default value. </returns>
-			s_interface_value Get(i_control& control, const s_interface_value& default_value) const override;
+			/// <returns>	true if the get function was executed. </returns>
+			bool Get(i_control& control, s_interface_value& output_value) const override;
 		};
 		
 #define DEFINE_PROPERTY_INTERFACE(name, get, set, set_string) static Control::c_property_interface g_property_interface_##name ((get), (set), (set_string))

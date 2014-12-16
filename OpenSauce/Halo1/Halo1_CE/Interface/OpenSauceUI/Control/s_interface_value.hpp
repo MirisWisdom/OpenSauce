@@ -46,7 +46,8 @@ namespace Yelo
 		private:
 			bool is_cstring;
 			bool is_wstring;
-			PAD16;
+			bool is_string_owner;
+			PAD8;
 
 #pragma region String Handling
 			/// <summary>	Deletes the string value data if present. </summary>
@@ -87,6 +88,8 @@ namespace Yelo
 			s_interface_value(uint64 value);
 			s_interface_value(int64 value);
 			s_interface_value(real value);
+			s_interface_value(cstring value);
+			s_interface_value(wstring value);
 			s_interface_value(point2d value);
 			s_interface_value(rectangle2d value);
 			s_interface_value(real_vector2d value);

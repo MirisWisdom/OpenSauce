@@ -117,14 +117,15 @@ namespace Yelo
 			}
 		}
 
-		s_interface_value c_property_interface::Get(i_control& control, const s_interface_value& default_value) const
+		bool c_property_interface::Get(i_control& control, s_interface_value& output_value) const
 		{
 			if(m_get)
 			{
-				return m_get(control);
+				m_get(control, output_value);
+				return true;
 			}
 
-			return default_value;
+			return false;
 		}
 #pragma endregion
 

@@ -39,11 +39,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(slider_notch_count,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Slider, control.GetControlPtr());
 
-				return Control::s_interface_value((int32)gwen_control.GetNotchCount());
+				output.m_int32 = gwen_control.GetNotchCount();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -62,11 +62,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(slider_min,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Slider, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.GetMin());
+				output.m_int32 = gwen_control.GetMin();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -85,11 +85,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(slider_max,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Slider, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.GetMax());
+				output.m_int32 = gwen_control.GetMax();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -108,11 +108,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(slider_value,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Slider, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.GetFloatValue());
+				output.m_real = gwen_control.GetFloatValue();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{

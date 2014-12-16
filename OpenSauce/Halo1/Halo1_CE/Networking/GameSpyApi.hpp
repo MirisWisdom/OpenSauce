@@ -6,6 +6,10 @@
 */
 #pragma once
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+
 #include "Game/GameBuildNumber.hpp"
 
 namespace Yelo
@@ -444,6 +448,27 @@ namespace Yelo
 
 		namespace GameSpy
 		{
+#pragma region Settings
+			class c_settings_container
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_no_update_check;
+
+				c_settings_container();
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers() final override;
+			};
+
+			class c_settings_gamespy
+				: public Settings::c_settings_singleton<c_settings_container, c_settings_gamespy>
+			{
+			public:
+				void PostLoad() final override;
+			};
+#pragma endregion
+
 			game_build_string_t& GetGameVer();
 
 			void Initialize();

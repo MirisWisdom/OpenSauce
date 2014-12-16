@@ -33,7 +33,6 @@ namespace Yelo
 		#define RESOURCE_ID_DEBUG(str) CRCString( (str) )
 		#define RESOURCE_ID(str, crc) VerifyCRC( (str), (crc) )
 #else
-		#define RESOURCE_ID_DEBUG(str) static_assert(false, "Resource ID used that hasn't been set up with a hash value yet")
 		#define RESOURCE_ID(str, crc) crc
 #endif
 		#define RESOURCE_ID_NONE 0xFFFFFFFF

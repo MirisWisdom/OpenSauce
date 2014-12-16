@@ -26,9 +26,11 @@
 #include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
 #include "Interface/OpenSauceUI/Input/c_control_input_halo.hpp"
 
-#include "Interface/OpenSauceUI/Screen/c_screen_definition_registry.hpp"
+#include "Interface/OpenSauceUI/Screen/c_screen_definition_reader.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_display_manager.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_controller_mainmenu.hpp"
+#include "Interface/OpenSauceUI/Screen/c_screen_controller_mainmenubottombar.hpp"
+#include "Interface/OpenSauceUI/Screen/c_screen_controller_ingame.hpp"
 
 #include "Interface/OpenSauceUI/GwenUI/c_canvas_gwen.hpp"
 #include "Interface/OpenSauceUI/GwenUI/c_mouse_pointer_gwen.hpp"
@@ -142,6 +144,20 @@ namespace Yelo
 			g_screen_display_manager->Update();
 		}
 
+		template<typename ControllerType>
+		void AddScreenController(cstring definition_name
+			, Flags::osui_game_state game_states
+			, Flags::osui_screen_flags screen_flags
+			, Enums::Key toggle_key = Enums::_Key)
+		{
+			Definitions::c_screen_definition screen_definition;
+			Screen::c_screen_definition_registry::GetScreenDefinition(g_ui_package, definition_name, screen_definition);
+			g_screen_display_manager->AddScreenController(game_states
+				, screen_flags
+				, toggle_key
+				, std::make_shared<ControllerType>(screen_definition));
+		}
+
 		void LoadUI(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* presentation_parameters)
 		{
 			g_canvas->Initialize(device, g_ui_package);
@@ -150,19 +166,26 @@ namespace Yelo
 			g_control_input.SetMouseBounds(0, presentation_parameters->BackBufferWidth, 0, presentation_parameters->BackBufferHeight);
 			g_mouse_pointer.Initialize(g_control_factory, *g_canvas);
 
-			Screen::c_screen_definition_registry definition_registry(g_ui_package);
-			Definitions::c_screen_definition screen_definition;
-
-			definition_registry.GetScreenDefinition("MainMenu", screen_definition);
-			g_screen_display_manager->AddScreenController((Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
+			AddScreenController<Screen::c_screen_controller_mainmenu>("MainMenu"
+				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
 				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
 					| Flags::_osui_screen_flags_show_cursor
 					| Flags::_osui_screen_flags_is_modal
 					| Flags::_osui_screen_flags_esckey_toggled)
-				, Enums::Key::_KeyF7
-				, false
-				, true
-				, std::make_shared<Screen::c_screen_controller_mainmenu>(screen_definition));
+				, Enums::Key::_KeyF7);
+
+			AddScreenController<Screen::c_screen_controller_mainmenubottombar>("MainMenuBottomBar"
+				, Flags::_osui_game_state_main_menu
+				, Flags::_osui_screen_flags_always_visible);
+
+			AddScreenController<Screen::c_screen_controller_ingame>("InGame"
+				, Flags::_osui_game_state_in_game
+				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
+				| Flags::_osui_screen_flags_esckey_toggled
+				| Flags::_osui_screen_flags_is_modal
+				| Flags::_osui_screen_flags_show_cursor
+				| Flags::_osui_screen_flags_disable_movement)
+				, Enums::_KeyF7);
 
 			g_screen_display_manager->SetGameState(Flags::_osui_game_state_main_menu);
 		}

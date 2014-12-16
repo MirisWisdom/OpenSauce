@@ -12,5 +12,15 @@
 			<Type>Archive</Type>
 			<Path>MainMenuDefinition.json</Path>
 		</File>
+		<File>
+			<ID>MainMenuBottomBar</ID>
+			<Type>Archive</Type>
+			<Path>MainMenuBottomBarDefinition.json</Path>
+		</File>
+		<File>
+			<ID>InGame</ID>
+			<Type>Archive</Type>
+			<Path>InGameDefinition.json</Path>
+		</File>
 	</PackedFile>
 </OpenSauce>
