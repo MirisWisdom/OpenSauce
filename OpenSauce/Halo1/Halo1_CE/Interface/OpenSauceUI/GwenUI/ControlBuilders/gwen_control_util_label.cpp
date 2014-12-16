@@ -152,15 +152,15 @@ namespace Yelo
 		{
 			if(value == "Top")
 			{
-				Label_SetHorizontalAlignment(label, Gwen::Pos::Top);
+				Label_SetVerticalAlignment(label, Gwen::Pos::Top);
 			}
 			else if((value == "Center") || (value == "Centre"))
 			{
-				Label_SetHorizontalAlignment(label, Gwen::Pos::CenterV);
+				Label_SetVerticalAlignment(label, Gwen::Pos::CenterV);
 			}
 			else if(value == "Bottom")
 			{
-				Label_SetHorizontalAlignment(label, Gwen::Pos::Bottom);
+				Label_SetVerticalAlignment(label, Gwen::Pos::Bottom);
 			}
 		}
 

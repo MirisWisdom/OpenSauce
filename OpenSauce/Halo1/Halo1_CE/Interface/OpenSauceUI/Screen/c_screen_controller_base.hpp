@@ -60,12 +60,31 @@ namespace Yelo
 			void Update() final override;
 
 		private:
+			/// <summary>	Sets a screens static properties. </summary>
+			void SetStaticProperties() override { };
+
+			/// <summary>	Binds a screens dynamic properties. </summary>
+			void BindDynamicProperties() override { };
+
+			/// <summary>	Binds a screens events. </summary>
+			void BindEvents() override { };
+
+			/// <summary>	Unbinds a screens events. </summary>
+			void UnbindEvents() override { };
+
 			/// <summary>	Unbinds a screens dynamic properties. </summary>
 			void UnbindDynamicProperties() final override;
 #pragma endregion
 
 #pragma region Property Setup
-		private:
+		protected:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for a control. </summary>
+			///
+			/// <param name="control_id"> 	Identifier for the control. </param>
+			/// <param name="control_out">	[out] The found control. </param>
+			void FindControl(const uint32 control_id, Control::t_control_ptr& control_out);
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for a control and property. </summary>
 			///
@@ -75,6 +94,7 @@ namespace Yelo
 			/// <param name="property_out">	[out] The found property. </param>
 			void FindControlAndProperty(const uint32 control_id, const uint32 property_id, Control::t_control_ptr& control_out, Control::i_property_interface*& property_out);
 
+		private:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Set control property implementation. </summary>
 			///

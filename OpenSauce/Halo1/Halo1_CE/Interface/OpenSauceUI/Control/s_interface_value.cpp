@@ -16,12 +16,12 @@ namespace Yelo
 #pragma region String Handling
 		void s_interface_value::DeleteString()
 		{
-			if(is_cstring && m_cstring)
+			if(is_cstring && m_cstring && is_string_owner)
 			{
 				delete [] m_cstring;
 				m_cstring = nullptr;
 			}
-			else if(is_wstring && m_wstring)
+			else if(is_wstring && m_wstring && is_string_owner)
 			{
 				delete [] m_wstring;
 				m_wstring = nullptr;
@@ -29,6 +29,7 @@ namespace Yelo
 
 			is_cstring = false;
 			is_wstring = false;
+			is_string_owner = false;
 		}
 
 		void s_interface_value::SetString(const std::string& value)
@@ -41,6 +42,7 @@ namespace Yelo
 
 			strcpy_s(m_cstring, length, value.c_str());
 			is_cstring = true;
+			is_string_owner = true;
 		}
 
 		void s_interface_value::SetString(const std::wstring& value)
@@ -53,12 +55,14 @@ namespace Yelo
 
 			wcscpy_s(m_wstring, length, value.c_str());
 			is_wstring = true;
+			is_string_owner = true;
 		}
 #pragma endregion
 
 		s_interface_value::s_interface_value()
 			: is_cstring(false)
 			, is_wstring(false)
+			, is_string_owner(false)
 		{
 			ZeroMemory(&m_real_argb_color, sizeof(real_argb_color));
 		}
@@ -94,6 +98,10 @@ namespace Yelo
 			: s_interface_value(&value, sizeof(int64)) { }
 		s_interface_value::s_interface_value(real value)
 			: s_interface_value(&value, sizeof(real)) { }
+		s_interface_value::s_interface_value(cstring value)
+			: s_interface_value(&value, sizeof(cstring)) { }
+		s_interface_value::s_interface_value(wstring value)
+			: s_interface_value(&value, sizeof(wstring)) { }
 		s_interface_value::s_interface_value(point2d value)
 			: s_interface_value(&value, sizeof(point2d)) { }
 		s_interface_value::s_interface_value(rectangle2d value)

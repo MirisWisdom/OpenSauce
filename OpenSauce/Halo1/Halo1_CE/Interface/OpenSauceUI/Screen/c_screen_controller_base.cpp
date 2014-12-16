@@ -73,20 +73,26 @@ namespace Yelo
 #pragma endregion
 		
 #pragma region Property Setup
+		void c_screen_controller_base::FindControl(const uint32 control_id, Control::t_control_ptr& control_out)
+		{
+			// Get the control from the screen by it's resource id
+			auto control = m_target_screen->GetControl(control_id);
+			YELO_ASSERT_DISPLAY(control, "Failed to find a required control");
+
+			control_out = control;
+		}
+
 		void c_screen_controller_base::FindControlAndProperty(const uint32 control_id
 			, const uint32 property_id
 			, Control::t_control_ptr& control_out
 			, Control::i_property_interface*& property_out)
 		{
-			// Get the control from the screen by it's resource id
-			auto control = m_target_screen->GetControl(control_id);
-			YELO_ASSERT_DISPLAY(control, "Failed to find a required control");
-			
-			// Get the property from the control by it's resource id
-			auto property = control->GetPropertyInterface(property_id);
-			YELO_ASSERT_DISPLAY(control, "Failed to find a control property");
+			FindControl(control_id, control_out);
 
-			control_out = control;
+			// Get the property from the control by it's resource id
+			auto property = control_out->GetPropertyInterface(property_id);
+			YELO_ASSERT_DISPLAY(property, "Failed to find a control property");
+
 			property_out = property;
 		}
 
@@ -110,24 +116,8 @@ namespace Yelo
 			Control::i_property_interface* property;
 			FindControlAndProperty(control_id, property_id, control, property);
 
-			// Send a copy of the input string to the property
-			auto property_value = Control::s_interface_value();
-			property_value.SetString(value);
-			property->Set(*control, property_value);
-		}
-
-		template<>
-		void c_screen_controller_base::SetControlPropertyImpl<wstring>(uint32 control_id, uint32 property_id, wstring value)
-		{
-			// Get the property and control
-			Control::t_control_ptr control;
-			Control::i_property_interface* property;
-			FindControlAndProperty(control_id, property_id, control, property);
-			
-			// Send a copy of the input string to the property
-			auto property_value = Control::s_interface_value();
-			property_value.SetString(value);
-			property->Set(*control, property_value);
+			// Set the property's value
+			property->Set(*control, value);
 		}
 
 		void c_screen_controller_base::SetControlProperty(uint32 control_id, uint32 property_id, bool value)
@@ -180,12 +170,18 @@ namespace Yelo
 #pragma region i_visibility_toggle
 		void c_screen_controller_base::Show()
 		{
-			m_target_screen->Show();
+			if(m_target_screen)
+			{
+				m_target_screen->Show();
+			}
 		}
 
 		void c_screen_controller_base::Hide()
 		{
-			m_target_screen->Hide();
+			if(m_target_screen)
+			{
+				m_target_screen->Hide();
+			}
 		}
 #pragma endregion
 	};};};

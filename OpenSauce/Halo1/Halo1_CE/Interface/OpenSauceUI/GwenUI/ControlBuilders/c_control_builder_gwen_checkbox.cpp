@@ -22,11 +22,11 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
 		DEFINE_PROPERTY_INTERFACE(checkbox_checked,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(CheckBox, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.IsChecked());
+				output.m_bool = gwen_control.IsChecked();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{

@@ -80,10 +80,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
-  <Target Condition="($(Configuration) == 'Release') Or ($(Configuration) == 'Debug')" Name="BuildResources" BeforeTargets="Build;Rebuild">
-    <Exec Command="&quot;$(LocalHaloCustomEdEditDir)\os_tool.exe&quot; build-packed-file &quot;$(SolutionDir)Halo1\Halo1_CE\Resources\OpenSauceUI&quot; &quot;$(SolutionDir)..\bin\Resources\Halo1_CE&quot; Halo1_CE_OpenSauceUI.xml" WorkingDirectory="$(LocalHaloCustomEdEditDir)" />
-    <Exec Command="copy &quot;.\bin\Resources\Halo1_CE\OpenSauceUI.pak&quot; &quot;C:\ProgramData\Kornner Studios\Halo CE\OpenSauceUI.pak&quot;" WorkingDirectory="$(OSRootDir)" />
-  </Target>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
     <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
@@ -418,8 +414,10 @@
     <ClCompile Include="Interface\OpenSauceUI\resource_id.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.cpp" />
-    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.cpp" />
     <ClCompile Include="Interface\TextBlock.cpp" />
     <ClCompile Include="Interface\UIWidgets.cpp" />
@@ -567,7 +565,9 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Input\c_control_input_halo.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Input\i_control_input.hpp" />
-    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.hpp" />
@@ -743,9 +743,13 @@
     <None Include="Objects\Units.Boarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl" />
-    <Text Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+    <None Include="Resources\OpenSauceUI\InGameDefinition.json" />
+    <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
       <FileType>Document</FileType>
-    </Text>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuBottomBarDefinition.json">
+      <FileType>Document</FileType>
+    </None>
     <None Include="TagGroups\CacheFiles.CRC.inl" />
     <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />

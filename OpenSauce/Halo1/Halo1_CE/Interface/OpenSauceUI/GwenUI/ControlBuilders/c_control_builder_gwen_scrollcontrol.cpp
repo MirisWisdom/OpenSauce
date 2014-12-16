@@ -38,11 +38,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(scrollcontrol_scrollh,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(ScrollControl, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.CanScrollH());
+				output.m_bool = gwen_control.CanScrollH();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{
@@ -61,11 +61,11 @@ namespace Yelo
 		);
 
 		DEFINE_PROPERTY_INTERFACE(scrollcontrol_scrollv,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(ScrollControl, control.GetControlPtr());
 
-				return Control::s_interface_value(gwen_control.CanScrollV());
+				output.m_bool = gwen_control.CanScrollV();
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{

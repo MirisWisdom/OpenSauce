@@ -20,12 +20,15 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
 		DEFINE_PROPERTY_INTERFACE(rectangle_color,
-			[](Control::i_control& control)
+			[](Control::i_control& control, Control::s_interface_value& output)
 			{
 				auto& gwen_control = GWEN_CTRL_REF(Rectangle, control.GetControlPtr());
 
 				auto color = gwen_control.GetColor();
-				return Control::s_interface_value(argb_color { color.a, color.r, color.g, color.b });
+				output.m_argb_color.alpha = color.a;
+				output.m_argb_color.red = color.r;
+				output.m_argb_color.green = color.g;
+				output.m_argb_color.blue = color.b;
 			},
 			[](Control::i_control& control, const Control::s_interface_value& value)
 			{

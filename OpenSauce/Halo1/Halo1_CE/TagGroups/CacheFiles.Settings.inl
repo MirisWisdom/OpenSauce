@@ -5,45 +5,29 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-class c_settings_container
-	: public Configuration::c_configuration_container
-{
-public:
-	Configuration::c_configuration_value<bool> m_check_yelo_files_first;
+c_settings_container::c_settings_container()
+	: Configuration::c_configuration_container("CacheFiles")
+	, m_check_yelo_files_first("CheckYeloFilesFirst", true)
 #if !PLATFORM_IS_DEDI
-	Configuration::c_configuration_value<std::string> m_mainmenu_scenario;
+	, m_mainmenu_scenario("MainMenuScenario", "")
 #endif
+{ }
 
-	c_settings_container()
-		: Configuration::c_configuration_container("CacheFiles")
-		, m_check_yelo_files_first("CheckYeloFilesFirst", true)
-#if !PLATFORM_IS_DEDI
-		, m_mainmenu_scenario("MainMenuScenario", "")
-#endif
-	{ }
-			
-protected:
-	const std::vector<i_configuration_value* const> GetMembers() final override
-	{
-		return std::vector<i_configuration_value* const>
-		{
-			&m_check_yelo_files_first,
-#if !PLATFORM_IS_DEDI
-			&m_mainmenu_scenario
-#endif
-		};
-	}
-};
-
-class c_settings_cache
-	: public Settings::c_settings_singleton<c_settings_container, c_settings_cache>
+const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
 {
-public:
-	void PostLoad() final override
+	return std::vector<i_configuration_value* const>
 	{
-		c_map_file_finder::g_search_for_yelo_first = Get().m_check_yelo_files_first;
+		&m_check_yelo_files_first,
 #if !PLATFORM_IS_DEDI
-		g_yelo_settings.InitializeMainmenuOverride(Get().m_mainmenu_scenario);
+		&m_mainmenu_scenario
 #endif
-	}
-};
+	};
+}
+
+void c_settings_cache::PostLoad()
+{
+	c_map_file_finder::g_search_for_yelo_first = Get().m_check_yelo_files_first;
+#if !PLATFORM_IS_DEDI
+	g_yelo_settings.InitializeMainmenuOverride(Get().m_mainmenu_scenario);
+#endif
+}

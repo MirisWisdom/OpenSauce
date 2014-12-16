@@ -562,9 +562,6 @@
     <ClInclude Include="Rasterizer\Textures\c_packed_texture_loader.hpp">
       <Filter>Rasterizer\Textures</Filter>
     </ClInclude>
-    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.hpp">
-      <Filter>Interface\OpenSauceUI\Screen</Filter>
-    </ClInclude>
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClInclude>
@@ -579,6 +576,15 @@
     </ClInclude>
     <ClInclude Include="Interface\OpenSauceUI\Control\control_event_ids.hpp">
       <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1165,9 +1171,6 @@
     <ClCompile Include="Rasterizer\Textures\c_packed_texture_loader.cpp">
       <Filter>Rasterizer\Textures</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_registry.cpp">
-      <Filter>Interface\OpenSauceUI\Screen</Filter>
-    </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClCompile>
@@ -1176,6 +1179,15 @@
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1734,9 +1746,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
-    <Text Include="Resources\OpenSauceUI\MainMenuDefinition.json">
-      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Common\GameSystemComponents.Startup.inl">
@@ -2056,6 +2065,15 @@
     </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\InGameDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuBottomBarDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

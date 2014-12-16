@@ -34,7 +34,8 @@ namespace Yelo
 			_osui_screen_flags_key_toggled		= 1 << 2,
 			_osui_screen_flags_esckey_toggled	= 1 << 3,
 			_osui_screen_flags_always_visible	= 1 << 4,
-			_osui_screen_flags_always_update	= 1 << 5
+			_osui_screen_flags_always_update	= 1 << 5,
+			_osui_screen_flags_disable_movement	= 1 << 6
 		};
 	};
 
@@ -48,8 +49,6 @@ namespace Yelo
 				const Flags::osui_game_state m_game_states;
 				const Flags::osui_screen_flags m_screen_flags;
 				const Enums::Key m_toggle_key;
-				const bool m_is_modal;
-				const bool m_show_cursor;
 				t_screen_controller_ptr m_screen_controller;
 
 				bool m_is_visible;
@@ -63,6 +62,7 @@ namespace Yelo
 			Flags::osui_game_state m_current_state;
 			int32 m_mouse_show_count;
 			int32 m_modal_screen_count;
+			int32 m_disable_movement_count;
 			byte m_previous_esckey_state;
 
 			std::vector<s_screen_instance> m_screen_instances;
@@ -91,8 +91,6 @@ namespace Yelo
 			void AddScreenController(const Flags::osui_game_state game_states
 				, const Flags::osui_screen_flags screen_flags
 				, const Enums::Key toggle_key
-				, const bool is_modal
-				, const bool show_cursor
 				, t_screen_controller_ptr controller);
 
 			/// <summary>	Destroys all screens and controllers. </summary>
@@ -131,6 +129,12 @@ namespace Yelo
 
 			/// <summary>	Disables the halo user interface</summary>
 			void DisableHaloUI();
+
+			/// <summary>	Enables player movement. </summary>
+			void EnableMovement();
+
+			/// <summary>	Disables player movement</summary>
+			void DisableMovement();
 		};
 	};};};
 };
