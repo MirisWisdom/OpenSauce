@@ -55,6 +55,11 @@ namespace Yelo
 #pragma region TextBox
 #define K_PROPERTY_EDITABLE_ID			RESOURCE_ID_DEBUG("Editable")
 #pragma endregion
+
+#pragma region Page Control
+#define K_PROPERTY_PAGECOUNT_ID			RESOURCE_ID_DEBUG("PageCount")
+#define K_PROPERTY_USEFINISHBUTTON_ID	RESOURCE_ID_DEBUG("UseFinishButton")
+#pragma endregion
 		
 #pragma region General
 #define K_PROPERTY_VALUE_ID				RESOURCE_ID_DEBUG("Value")

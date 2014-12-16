@@ -25,11 +25,11 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Builds the child controls in the specified definition. </summary>
 			///
-			/// <param name="control_registry">  	[in] The control registry. </param>
-			/// <param name="control_definition">	[in] The control definition. </param>
-			/// <param name="parent">			 	[in] The parent control. </param>
+			/// <param name="control_registry">   	[in] The control registry. </param>
+			/// <param name="control_definitions">	[in] The control definition. </param>
+			/// <param name="parent">			  	[in] The parent control. </param>
 			void BuildChildren(c_control_factory& control_registry
-				, Definitions::c_control_definition& control_definition
+				, std::vector<Definitions::c_control_definition>& control_definitions
 				, Control::i_control& parent) const;
 		};
 	};};};

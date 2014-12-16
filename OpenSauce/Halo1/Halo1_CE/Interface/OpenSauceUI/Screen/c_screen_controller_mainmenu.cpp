@@ -100,23 +100,10 @@ namespace Yelo
 
 		void c_screen_controller_mainmenu::SetStaticProperties()
 		{
-			// Set the screen's position to be central
-			auto& root_control = *m_target_screen->GetRootControl();
-			auto& screen_parent = *root_control.Parent();
-			auto& position_prop = *root_control.GetPropertyInterface(K_PROPERTY_POSITION_ID);
-			auto& size_prop = *root_control.GetPropertyInterface(K_PROPERTY_SIZE_ID);
-
-			auto parent_bounds = screen_parent.GetBounds();
-			point2d parent_size { parent_bounds.right - parent_bounds.left, parent_bounds.bottom - parent_bounds.top };
-
-			Control::s_interface_value root_size(point2d { 800, 600 });
-			size_prop.Get(root_control, root_size);
-			position_prop.Set(root_control, Control::s_interface_value(
-				point2d
-				{
-					parent_bounds.left + ((parent_size.x - root_size.m_point2d.x) / 2),
-					parent_bounds.top + ((parent_size.y - root_size.m_point2d.y) / 2),
-				}));
+			// Set the screen to be central
+			AnchorScreen(
+				(screen_anchor)(_screen_anchor_center_v | _screen_anchor_center_h),
+				(screen_anchor)(_screen_anchor_center_v | _screen_anchor_center_h));
 
 			// Set all static text strings in the screen
 			SetControlProperty(K_LBL_OPENSAUCE_SETTINGS_TITLE_ID,							K_PROPERTY_TEXT_ID, "OpenSauce Settings");

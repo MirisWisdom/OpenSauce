@@ -10,37 +10,28 @@
 
 #include <Gwen/Controls/Base.h>
 
-#include "Interface/OpenSauceUI/resource_id.hpp"
-#include "Interface/OpenSauceUI/Control/i_control.hpp"
-#include "Interface/OpenSauceUI/ControlFactory/c_control_builder_base.hpp"
-#include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
-#include "Interface/OpenSauceUI/Definitions/c_control_definition.hpp"
-#include "Interface/OpenSauceUI/GwenUI/c_control_gwen.hpp"
+#include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_base.hpp"
 
 namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
-#define GWEN_CTRL_PTR(type, ptr) (CAST_PTR(Gwen::Controls::##type##*, ptr##))
-#define GWEN_CTRL_REF(type, ptr) (*CAST_PTR(Gwen::Controls::##type##*, ptr##))
-
-		/// <summary>	A Gwen control builder for OpenSauceUI. </summary>
-		class c_control_builder_gwen
-			abstract
-			: public ControlFactory::c_control_builder_base
+		/// <summary>	A Gwen page control builder for OpenSauceUI. </summary>
+		class c_control_builder_gwen_pagecontrol
+			: public c_control_builder_gwen_base
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates an instance of a control. </summary>
 			///
 			/// <returns>	null if it fails, else the new instance. </returns>
-			virtual Gwen::Controls::Base* CreateInstance(Gwen::Controls::Base* parent) const = 0;
+			Gwen::Controls::Base* CreateInstance(Gwen::Controls::Base* parent) const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets a controls default values. </summary>
 			///
 			/// <param name="control">	[in] The gwen control. </param>
-			virtual void SetDefaultValues(Gwen::Controls::Base* control) const = 0;
+			void SetDefaultValues(Gwen::Controls::Base* control) const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the property interfaces for the control type. </summary>
@@ -48,7 +39,7 @@ namespace Yelo
 			/// <remarks>	Derived overrides of this function must call the base function as well. </remarks>
 			///
 			/// <param name="property_interfaces">	[out] The property interfaces. </param>
-			virtual void GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const = 0;
+			void GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the event handlers for the control type. </summary>
@@ -57,7 +48,7 @@ namespace Yelo
 			///
 			/// <param name="control">		 	[in] The control. </param>
 			/// <param name="event_handlers">	[out] The event handlers. </param>
-			virtual void GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const = 0;
+			void GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Builds a Gwen control from the specified definition. </summary>

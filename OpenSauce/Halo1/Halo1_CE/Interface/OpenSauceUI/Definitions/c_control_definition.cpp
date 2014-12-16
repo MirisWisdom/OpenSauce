@@ -25,14 +25,13 @@ namespace Yelo
 #endif
 			, m_type("Type", "")
 			, m_properties("Property", [](){ return c_control_property_definition(); })
-			, m_events("Event", [](){ return c_control_event_definition(); })
-			, m_controls("Control",
-			[](){ return c_control_definition(); })
+			, m_controls("Control", [](){ return c_control_definition(); })
+			, m_pages("Page", [](){ return c_page_definition(); })
 		{ }
 
 		const std::vector<Configuration::i_configuration_value* const> c_control_definition::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_type, &m_properties, &m_events, &m_controls };
+			return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_type, &m_properties, &m_controls, &m_pages };
 		}
 
 		const uint32 c_control_definition::GetID()

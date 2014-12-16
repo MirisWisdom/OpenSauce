@@ -52,7 +52,7 @@ namespace Yelo
 			}
 
 			// Build the control's children
-			BuildChildren(control_registry, control_definition, *control);
+			BuildChildren(control_registry, control_definition.m_controls.Get(), *control);
 
 			return control;
 		}

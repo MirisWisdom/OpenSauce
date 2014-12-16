@@ -4,11 +4,75 @@
 			"Type": "Rectangle",
 			"Property": {
 				"Name": "Size",
-				"Value": "200 200"
+				"Value": "400 200"
 			},
 			"Property": {
 				"Name": "Color",
-				"Value": "66 68 99 255"
+				"Value": "66 68 99 200"
+			},
+			"Control": {
+				"IDStr": "#PDG_ingame_page_control",
+				"Type": "PageControl",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Fill"
+				},
+				"Property": {
+					"Name": "TextColor",
+					"Value": "200 200 200 255"
+				},
+				"Property": {
+					"Name": "TextHAlignment",
+					"Value": "Left"
+				},
+				"Property": {
+					"Name": "TextVAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "TextSize",
+					"Value": "18"
+				},
+				"Property": {
+					"Name": "TextBold",
+					"Value": "True"
+				},
+				"Page": {
+					"Control": {
+						"Type": "Label",
+						"Property": {
+							"Name": "Text",
+							"Value": "Page 1"
+						}
+					}
+				},
+				"Page": {
+					"Control": {
+						"Type": "Label",
+						"Property": {
+							"Name": "Text",
+							"Value": "Page 2"
+						}
+					}
+				},
+				"Page": {
+					"Control": {
+						"Type": "Label",
+						"Property": {
+							"Name": "Text",
+							"Value": "Page 3"
+						}
+					}
+				},
+				"Page": {
+					"Control": {
+						"Type": "Label",
+						"Property": {
+							"Name": "Text",
+							"Value": "Page 4"
+						}
+					}
+				}
 			}
 		}
 	}
