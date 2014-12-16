@@ -13,12 +13,14 @@
 #include <YeloLib/configuration/c_configuration_value.hpp>
 
 #include "Interface/OpenSauceUI/Definitions/c_control_property_definition.hpp"
-#include "Interface/OpenSauceUI/Definitions/c_control_event_definition.hpp"
+#include "Interface/OpenSauceUI/Definitions/c_page_definition.hpp"
 
 namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace Definitions
 	{
+		class c_page_definition;
+
 		/// <summary>	A control definition. </summary>
 		class c_control_definition
 			: public Configuration::c_configuration_container
@@ -31,8 +33,8 @@ namespace Yelo
 #endif
 			Configuration::c_configuration_value<std::string> m_type;
 			Configuration::c_configuration_container_list<c_control_property_definition> m_properties;
-			Configuration::c_configuration_container_list<c_control_event_definition> m_events;
 			Configuration::c_configuration_container_list<c_control_definition> m_controls;
+			Configuration::c_configuration_container_list<c_page_definition> m_pages;
 
 			/// <summary>	Default constructor. </summary>
 			c_control_definition();

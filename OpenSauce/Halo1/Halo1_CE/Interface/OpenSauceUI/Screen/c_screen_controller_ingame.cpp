@@ -25,7 +25,10 @@ namespace Yelo
 
 		void c_screen_controller_ingame::SetStaticProperties()
 		{
-			// Set all static text strings in the screen
+			// Set the screen to be central
+			AnchorScreen(
+				(screen_anchor)(_screen_anchor_center_v | _screen_anchor_center_h),
+				(screen_anchor)(_screen_anchor_center_v | _screen_anchor_center_h));
 		}
 
 		void c_screen_controller_ingame::BindDynamicProperties()

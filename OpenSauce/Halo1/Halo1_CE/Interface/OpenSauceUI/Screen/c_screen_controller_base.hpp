@@ -21,6 +21,18 @@ namespace Yelo
 			abstract
 			: public i_screen_controller
 		{
+		protected:
+			enum screen_anchor
+			{
+				_screen_anchor_top		= 1 << 0,
+				_screen_anchor_center_v = 1 << 1,
+				_screen_anchor_bottom	= 1 << 2,
+				_screen_anchor_left		= 1 << 3,
+				_screen_anchor_center_h = 1 << 4,
+				_screen_anchor_right	= 1 << 5
+			};
+
+		private:
 			/// <summary>	Defines an alias representing a dynamic property update function. </summary>
 			typedef std::function<void(Control::i_control&, Control::i_property_interface&)> t_dynamic_property_update;
 
@@ -36,6 +48,9 @@ namespace Yelo
 		protected:
 			t_screen_ptr m_target_screen;
 			Definitions::c_screen_definition m_screen_definition;
+
+			point2d GetControlAnchorPoint(Control::i_control& control, const screen_anchor anchor);
+			void AnchorScreen(const screen_anchor parent_anchor, const screen_anchor child_anchor);
 
 		public:
 			c_screen_controller_base(Definitions::c_screen_definition& definition);

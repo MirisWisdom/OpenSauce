@@ -16,7 +16,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
-		/// <summary>	A Gwen slider control builder for OpenSauceUI. </summary>
+		/// <summary>	A Gwen horizontal slider control builder for OpenSauceUI. </summary>
 		class c_control_builder_gwen_horizontalslider
 			: public c_control_builder_gwen_slider
 		{

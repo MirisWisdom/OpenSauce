@@ -466,9 +466,6 @@
     <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_definition.hpp">
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClInclude>
-    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_event_definition.hpp">
-      <Filter>Interface\OpenSauceUI\Definitions</Filter>
-    </ClInclude>
     <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.hpp">
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClInclude>
@@ -585,6 +582,12 @@
     </ClInclude>
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.hpp">
       <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_page_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1096,9 +1099,6 @@
     <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_definition.cpp">
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_event_definition.cpp">
-      <Filter>Interface\OpenSauceUI\Definitions</Filter>
-    </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.cpp">
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClCompile>
@@ -1188,6 +1188,12 @@
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.cpp">
       <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_page_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

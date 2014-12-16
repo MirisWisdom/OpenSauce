@@ -22,7 +22,7 @@ namespace Yelo
 			abstract
 			: public i_configuration_value
 		{
-			static_assert(std::is_convertible<T, i_configuration_value>::value, "c_configuration_list can only be used with types that derive from i_configuration_value");
+			//static_assert(std::is_convertible<T, i_configuration_value>::value, "c_configuration_list can only be used with types that derive from i_configuration_value");
 
 			const std::string m_node_name;
 			std::vector<T> m_values;

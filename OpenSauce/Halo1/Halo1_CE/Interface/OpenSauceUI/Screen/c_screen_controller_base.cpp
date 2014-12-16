@@ -9,6 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Definitions/c_screen_definition.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen.hpp"
 
@@ -20,6 +21,60 @@ namespace Yelo
 			: m_target_screen(nullptr)
 			, m_screen_definition(definition)
 		{ }
+
+		point2d c_screen_controller_base::GetControlAnchorPoint(Control::i_control& control, const screen_anchor anchor)
+		{
+			// Get the control's position and size
+			auto control_bounds = control.GetBounds();
+			point2d control_size { control_bounds.right - control_bounds.left, control_bounds.bottom - control_bounds.top };
+
+			point2d anchor_point { 0, 0 };
+			if(anchor & _screen_anchor_top)
+			{
+				anchor_point.y = control_bounds.top;
+			}
+			else if(anchor & _screen_anchor_center_v)
+			{
+				anchor_point.y = control_bounds.top + (control_size.y / 2);
+			}
+			else if(anchor & _screen_anchor_bottom)
+			{
+				anchor_point.y = control_bounds.bottom;
+			}
+
+			if(anchor & _screen_anchor_left)
+			{
+				anchor_point.x = control_bounds.left;
+			}
+			else if(anchor & _screen_anchor_center_h)
+			{
+				anchor_point.x = control_bounds.left + (control_size.x / 2);
+			}
+			else if(anchor & _screen_anchor_right)
+			{
+				anchor_point.x = control_bounds.right;
+			}
+
+			return anchor_point;
+		}
+
+		void c_screen_controller_base::AnchorScreen(const screen_anchor parent_anchor, const screen_anchor child_anchor)
+		{
+			auto& root_control = *m_target_screen->GetRootControl();
+			auto& screen_parent = *root_control.Parent();
+			
+			point2d parent_anchor_point = GetControlAnchorPoint(screen_parent, parent_anchor);
+			point2d child_anchor_point = GetControlAnchorPoint(root_control, child_anchor);
+
+			// Get the screen's position property
+			auto& position_prop = *root_control.GetPropertyInterface(K_PROPERTY_POSITION_ID);
+			position_prop.Set(root_control, Control::s_interface_value(
+				point2d
+				{
+					parent_anchor_point.x - child_anchor_point.x,
+					parent_anchor_point.y - child_anchor_point.y
+				}));
+		}
 
 #pragma region i_screen_controller
 		void c_screen_controller_base::BuildScreen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& target_canvas)
