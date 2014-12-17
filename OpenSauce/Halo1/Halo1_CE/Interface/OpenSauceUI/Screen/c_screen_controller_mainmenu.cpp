@@ -146,9 +146,9 @@ namespace Yelo
 			SetControlProperty(K_CHK_INTERNET_CHECK_FOR_GAME_UPDATES_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Check for game updates (requires restart)");
 			SetControlProperty(K_CHK_INTERNET_MAP_DOWNLOADING_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Map Downloading");
 
-			SetControlProperty(K_LBL_MAP_FILES_TITLE_ID,									K_PROPERTY_TEXT_ID, "Map Files (Requires Restart)");
+			SetControlProperty(K_LBL_MAP_FILES_TITLE_ID,									K_PROPERTY_TEXT_ID, "Map Files");
 
-			SetControlProperty(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID,				K_PROPERTY_TEXT_ID, "Look for .yelo maps first");
+			SetControlProperty(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID,				K_PROPERTY_TEXT_ID, "Look for .yelo maps first (Requires Restart)");
 		}
 
 		void c_screen_controller_mainmenu::BindDynamicProperties()
@@ -428,6 +428,11 @@ namespace Yelo
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					auto& motionblur_instance = Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance();
+
+					if(motionblur_instance.BlurAmount() == event_data.m_real)
+					{
+						return;
+					}
 
 					motionblur_instance.BlurAmount() = event_data.m_real;
 

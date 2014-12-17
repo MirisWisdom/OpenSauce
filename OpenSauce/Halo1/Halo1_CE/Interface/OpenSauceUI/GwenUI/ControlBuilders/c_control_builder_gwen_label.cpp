@@ -240,7 +240,7 @@ namespace Yelo
 			Label_SetVerticalAlignment(gwen_control, Gwen::Pos::CenterV);
 			Label_SetWrap(gwen_control, false);
 			Label_SetTextPadding(gwen_control, rectangle2d { 0, 0, 0, 0 });
-			Label_SetTextColor(gwen_control, argb_color { 255, 255, 255, 255 });
+			Label_SetTextColor(gwen_control, argb_color { 255, 0, 0, 0 });
 		}
 
 		void c_control_builder_gwen_label::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const

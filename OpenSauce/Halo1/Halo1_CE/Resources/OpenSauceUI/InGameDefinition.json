@@ -33,6 +33,30 @@
 					"Name": "TextSize",
 					"Value": "16"
 				},
+				"Property": {
+					"Name": "BackButtonTextVAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "BackButtonTextHAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "BackButtonTextSize",
+					"Value": "14"
+				},
+				"Property": {
+					"Name": "NextButtonTextVAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "NextButtonTextHAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "NextButtonTextSize",
+					"Value": "14"
+				},
 				"Page": {
 					"Control": {
 						"Type": "Rectangle",
@@ -421,6 +445,10 @@
 									"Value": "0 30"
 								},
 								"Property": {
+									"Name": "TextColor",
+									"Value": "200 200 200 255"
+								},
+								"Property": {
 									"Name": "TextSize",
 									"Value": "30"
 								},
@@ -557,6 +585,10 @@
 										"Value": "30 0"
 									},
 									"Property": {
+										"Name": "TextColor",
+										"Value": "200 200 200 255"
+									},
+									"Property": {
 										"Name": "TextSize",
 										"Value": "30"
 									},
@@ -647,6 +679,10 @@
 								"Value": "0 20"
 							},
 							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
 								"Name": "TextSize",
 								"Value": "18"
 							},
@@ -706,6 +742,10 @@
 								"Property": {
 									"Name": "Size",
 									"Value": "30 0"
+								},
+								"Property": {
+									"Name": "TextColor",
+									"Value": "200 200 200 255"
 								},
 								"Property": {
 									"Name": "TextSize",
@@ -770,6 +810,10 @@
 									"Value": "30 0"
 								},
 								"Property": {
+									"Name": "TextColor",
+									"Value": "200 200 200 255"
+								},
+								"Property": {
 									"Name": "TextSize",
 									"Value": "30"
 								},
@@ -830,6 +874,10 @@
 								"Property": {
 									"Name": "Size",
 									"Value": "30 0"
+								},
+								"Property": {
+									"Name": "TextColor",
+									"Value": "200 200 200 255"
 								},
 								"Property": {
 									"Name": "TextSize",

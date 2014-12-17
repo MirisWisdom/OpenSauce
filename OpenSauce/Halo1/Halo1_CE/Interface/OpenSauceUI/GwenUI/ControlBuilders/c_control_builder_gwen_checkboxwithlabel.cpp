@@ -332,7 +332,7 @@ namespace Yelo
 			Label_SetVerticalAlignment(label, Gwen::Pos::CenterV);
 			Label_SetWrap(label, false);
 			Label_SetTextPadding(label, rectangle2d { 0, 0, 0, 0 });
-			Label_SetTextColor(label, argb_color { 255, 255, 255, 255 });
+			Label_SetTextColor(label, argb_color { 255, 0, 0, 0 });
 		}
 
 		void c_control_builder_gwen_checkboxwithlabel::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
