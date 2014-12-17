@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Gwen/Controls/Label.h>
+#include <Gwen/Controls/Base.h>
 
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_textbox.hpp"
 

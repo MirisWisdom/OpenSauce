@@ -73,7 +73,13 @@ namespace Yelo
 
 			event_handlers[K_EVENT_CHECKED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onChecked);
 			event_handlers[K_EVENT_UNCHECKED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onUnChecked);
-			event_handlers[K_EVENT_CHECKCHANGED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onCheckChanged);
+			event_handlers[K_EVENT_CHECKCHANGED_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onCheckChanged,
+				[](Gwen::Event::Info& info, Control::s_interface_value& output)
+				{
+					auto& gwen_control = GWEN_CTRL_REF(CheckBox, info.ControlCaller);
+
+					output.m_bool = gwen_control.IsChecked();
+				});
 		}
 	};};};};
 };

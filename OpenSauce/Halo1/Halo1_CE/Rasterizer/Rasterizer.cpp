@@ -313,6 +313,7 @@ namespace Yelo
 
 	namespace Render
 	{
+		s_render_window* RenderWindow()							PTR_IMP_GET2(render_window);
 		s_render_globals* RenderGlobals()						PTR_IMP_GET2(render_globals);
 		s_render_target* GlobalRenderTargets()					PTR_IMP_GET2(global_render_targets);
 		s_structure_render_globals* StructureRenderGlobals()	PTR_IMP_GET2(structure_render_globals);

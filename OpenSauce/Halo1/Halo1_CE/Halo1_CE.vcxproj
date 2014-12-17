@@ -395,6 +395,7 @@
     <ClCompile Include="Interface\OpenSauceUI\Definitions\c_screen_definition.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_base.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkbox.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkboxwithlabel.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.cpp" />
@@ -544,6 +545,7 @@
     <ClInclude Include="Interface\OpenSauceUI\Definitions\c_page_definition.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_base.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkbox.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkboxwithlabel.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.hpp" />
@@ -578,7 +580,6 @@
     <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen_controller.hpp" />
     <ClInclude Include="Interface\TextBlock.hpp" />
     <ClInclude Include="Interface\UIWidgets.hpp" />
-    <ClInclude Include="Interface\YeloSettingsInterface.hpp" />
     <ClInclude Include="Memory\FunctionInterface.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />
     <ClInclude Include="Networking\GameSpyApi.hpp" />
@@ -603,7 +604,6 @@
     <ClInclude Include="Objects\Equipment.hpp" />
     <ClInclude Include="Objects\ObjectFieldDefinitions.hpp" />
     <ClInclude Include="Objects\Objects.hpp" />
-    <ClInclude Include="Objects\Objects.VehicleSettings.hpp" />
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
     <ClInclude Include="Rasterizer\Lightmaps.hpp" />
@@ -724,7 +724,6 @@
     <None Include="Game\Players.NetworkPlayerUnit.inl" />
     <None Include="Game\Players.Scripting.inl" />
     <None Include="Interface\GameUI_Hud.inl" />
-    <None Include="Interface\GameUI_Menu.inl" />
     <None Include="Memory\1.10\_EngineLayout.Game.EngineFunctions.inl" />
     <None Include="Memory\1.10\_EngineLayout.Game.inl" />
     <None Include="Memory\1.10\_EngineLayout.Interface.inl" />

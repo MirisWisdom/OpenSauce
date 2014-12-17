@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Gwen/Controls/CheckBox.h>
+#include <Gwen/Controls/Base.h>
 
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_base.hpp"
 
@@ -16,7 +16,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
-		/// <summary>	A Gwen checkbox with label control builder for OpenSauceUI. </summary>
+		/// <summary>	A Gwen checkbox control builder for OpenSauceUI. </summary>
 		class c_control_builder_gwen_checkbox
 			: public c_control_builder_gwen_base
 		{

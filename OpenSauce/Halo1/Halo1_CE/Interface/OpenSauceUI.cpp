@@ -45,6 +45,7 @@
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_textboxnumeric.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_scrollcontrol.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_pagecontrol.hpp"
+#include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_button.hpp"
 
 namespace Yelo
 {
@@ -90,6 +91,7 @@ namespace Yelo
 			g_control_factory.AddControl("TextBoxNumeric", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_textboxnumeric>());
 			g_control_factory.AddControl("ScrollControl", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_scrollcontrol>());
 			g_control_factory.AddControl("PageControl", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_pagecontrol>());
+			g_control_factory.AddControl("Button", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_button>());
 
 			g_control_factory.AddControl("Pointer", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_rectangle>());
 		}

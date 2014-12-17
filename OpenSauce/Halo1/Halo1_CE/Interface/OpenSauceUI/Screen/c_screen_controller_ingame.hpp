@@ -33,6 +33,9 @@ namespace Yelo
 
 			/// <summary>	Unbinds a screens events. </summary>
 			void UnbindEvents() override;
+
+			/// <summary>	Hides the screen. </summary>
+			void Hide() override;
 		};
 	};};};
 };

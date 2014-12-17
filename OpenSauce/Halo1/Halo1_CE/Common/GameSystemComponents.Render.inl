@@ -72,16 +72,7 @@
 #		define __GS_COMPONENT_DX9_RENDER				Rasterizer::PostProcessing::Render
 #		define __GS_COMPONENT_DX9_RELEASE				Rasterizer::PostProcessing::Release
 #	endif
-
 #elif	BOOST_PP_ITERATION() == 8
-#	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
-#		define __GS_COMPONENT_DX9_INITIALIZE		Menu::Initialize3D
-#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Menu::OnLostDevice
-#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Menu::OnResetDevice
-#		define __GS_COMPONENT_DX9_RENDER			Menu::Render
-#		define __GS_COMPONENT_DX9_RELEASE			Menu::Release
-#	endif
-#elif	BOOST_PP_ITERATION() == 9
 #	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
 #		define __GS_COMPONENT_DX9_INITIALIZE		Fov::Initialize3D
 #		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Fov::OnLostDevice
@@ -89,7 +80,7 @@
 #		define __GS_COMPONENT_DX9_RENDER			Fov::Render
 #		define __GS_COMPONENT_DX9_RELEASE			Fov::Release
 #	endif
-#elif	BOOST_PP_ITERATION() == 10
+#elif	BOOST_PP_ITERATION() == 9
 #	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
 #		define __GS_COMPONENT_DX9_INITIALIZE		Hud::Initialize3D
 #		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Hud::OnLostDevice
@@ -97,23 +88,7 @@
 #		define __GS_COMPONENT_DX9_RENDER			Hud::Render
 #		define __GS_COMPONENT_DX9_RELEASE			Hud::Release
 #	endif
-#elif	BOOST_PP_ITERATION() == 11
-#	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
-#		define __GS_COMPONENT_DX9_INITIALIZE		Objects::Weapon::Initialize3D
-#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Objects::Weapon::OnLostDevice
-#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Objects::Weapon::OnResetDevice
-#		define __GS_COMPONENT_DX9_RENDER			Objects::Weapon::Render
-#		define __GS_COMPONENT_DX9_RELEASE			Objects::Weapon::Release
-#	endif
-#elif	BOOST_PP_ITERATION() == 12
-#	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
-#		define __GS_COMPONENT_DX9_INITIALIZE		Objects::Vehicle::Initialize3D
-#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Objects::Vehicle::OnLostDevice
-#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Objects::Vehicle::OnResetDevice
-#		define __GS_COMPONENT_DX9_RENDER			Objects::Vehicle::Render
-#		define __GS_COMPONENT_DX9_RELEASE			Objects::Vehicle::Release
-#	endif
-#elif	BOOST_PP_ITERATION() == 13
+#elif	BOOST_PP_ITERATION() == 10
 #	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
 #		define __GS_COMPONENT_DX9_INITIALIZE		Networking::HTTP::Client::MapDownload::Initialize3D
 #		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Networking::HTTP::Client::MapDownload::OnLostDevice
@@ -121,12 +96,12 @@
 #		define __GS_COMPONENT_DX9_RENDER			Networking::HTTP::Client::MapDownload::Render
 #		define __GS_COMPONENT_DX9_RELEASE			Networking::HTTP::Client::MapDownload::Release
 #	endif
-#elif	BOOST_PP_ITERATION() == 14
+#elif	BOOST_PP_ITERATION() == 11
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Lightmaps::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Lightmaps::Dispose
 #	endif
-#elif	BOOST_PP_ITERATION() == 15
+#elif	BOOST_PP_ITERATION() == 12
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Sky::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Sky::Dispose
@@ -134,7 +109,7 @@
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		Render::Sky::InitializeForNewMap
 #		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			Render::Sky::DisposeFromOldMap
 #	endif
-#elif	BOOST_PP_ITERATION() == 16
+#elif	BOOST_PP_ITERATION() == 13
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					StructureBSP::Initialize
 #		define __GS_COMPONENT_DISPOSE						StructureBSP::Dispose

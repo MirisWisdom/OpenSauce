@@ -387,10 +387,12 @@ namespace Yelo
 
 				// Create a new osui control for the page base control
 				auto* page_base = gwen_control.GetPage(i);
-				auto page_control = std::make_unique<c_control_gwen>(*control
+				Control::t_control_ptr page_control = std::make_unique<c_control_gwen>(*control
 					, page_base
 					, Control::t_property_interface_map()
 					, Control::t_event_handler_map());
+
+				control->AddControl(page_control);
 
 				// Create the page's children and add them to the base
 				BuildChildren(control_registry, page.m_controls.Get(), *page_control);

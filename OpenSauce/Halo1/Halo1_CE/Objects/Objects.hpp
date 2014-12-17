@@ -191,4 +191,3 @@ namespace Yelo
 };
 
 #include "Objects/Objects.WeaponSettings.hpp"
-#include "Objects/Objects.VehicleSettings.hpp"
