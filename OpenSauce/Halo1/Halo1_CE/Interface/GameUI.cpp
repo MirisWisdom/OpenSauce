@@ -27,7 +27,6 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"
-#include "Interface/YeloSettingsInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"
 #include "Networking/MessageDeltas.hpp"
@@ -138,7 +137,6 @@ namespace Yelo
 
 		void Initialize()
 		{
-			Menu::Initialize();
 			Hud::Initialize();
 
 			Memory::WriteRelativeCall(GameUI::Update, GET_FUNC_VPTR(HUD_UPDATE_CALL));
@@ -149,7 +147,6 @@ namespace Yelo
 		void Dispose()
 		{
 			Hud::Dispose();
-			Menu::Dispose();
 		}
 
 		API_FUNC_NAKED void PLATFORM_API Update()
@@ -281,6 +278,4 @@ namespace Yelo
 };
 
 #include "Interface/GameUI_Hud.inl"
-#include "Interface/GameUI_Menu.inl"
-
 #endif

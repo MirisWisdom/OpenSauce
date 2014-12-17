@@ -91,6 +91,12 @@ namespace Yelo
 
 #pragma region Properties
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets whether to show the HUD. </summary>
+		///
+		/// <returns>	A bool reference. </returns>
+		bool& ShowHUD();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets or sets whether to scale the HUD. </summary>
 		///
 		/// <returns>	A bool reference. </returns>
@@ -103,10 +109,25 @@ namespace Yelo
 		bool& ShowCrosshair();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets the HUD X scale. </summary>
+		///
+		/// <returns>	A real reference. </returns>
+		real& HUDScaleY();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets the HUD Y scale. </summary>
+		///
+		/// <returns>	A real reference. </returns>
+		real& HUDScaleX();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets a pointer to the games HUD globals. </summary>
 		///
 		/// <returns>	void* to the games HUD globals. </returns>
 		void* HudGlobals();
+
+		/// <summary>	Updates the hud scale changes. </summary>
+		void UpdateChanges();
 #pragma endregion
 
 #pragma region Component Settings
@@ -160,21 +181,6 @@ namespace Yelo
 		void Release();
 #endif
 #pragma endregion
-	};
-
-
-	namespace Menu
-	{
-		void Initialize();
-		void Dispose();
-
-#if defined(DX_WRAPPER) // TODO: Need fallback initialization for when we're not using the DX_WRAPPER
-		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
-		void OnLostDevice();
-		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
-		void Render();
-		void Release();
-#endif
 	};
 };
 #endif

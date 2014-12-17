@@ -44,7 +44,12 @@ namespace Yelo
 						, m_name("Name", "")
 						, m_position("Position")
 					{ }
-					
+
+					bool HasOffset()
+					{
+						return m_position.Get().Magnitude() > 0.0f;
+					}
+
 				protected:
 					const std::vector<i_configuration_value* const> GetMembers() final override
 					{
@@ -62,7 +67,7 @@ namespace Yelo
 					: Configuration::c_configuration_container("Objects.Weapon.Positions")
 					, m_weapon_positions("Weapon", [](){ return c_weapon_position(); })
 				{ }
-				
+
 			protected:
 				const std::vector<i_configuration_value* const> GetMembers() final override
 				{
@@ -80,19 +85,9 @@ namespace Yelo
 			void Dispose()		{}
 #else
 
-			struct weapon_globals {
-				TextBlock* menu;
-
+			struct s_weapon_globals
+			{
 				datum_index weapon_index_from_last_update;
-
-				void Dispose()
-				{
-					if(menu != nullptr)
-					{
-						delete menu;
-						menu = nullptr;
-					}
-				}
 
 				c_settings_container::c_weapon_position* AddPreset(cstring name)
 				{
@@ -150,6 +145,7 @@ namespace Yelo
 
 					return nullptr;
 				}
+
 			public:
 				c_settings_container::c_weapon_position* GetCurrentPreset(datum_index& return_weapon_index, cstring& return_name)
 				{
@@ -176,10 +172,9 @@ namespace Yelo
 
 					return nullptr;
 				}
-			}_weapon_globals = {
-				nullptr,
-				datum_index::null,
 			};
+
+			static s_weapon_globals g_weapon_globals = { datum_index::null };
 
 			static void PLATFORM_API ApplyWeaponPreset()
 			{
@@ -187,7 +182,7 @@ namespace Yelo
 
 				datum_index weapon_index;
 				cstring name;
-				c_settings_container::c_weapon_position* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
+				c_settings_container::c_weapon_position* preset = g_weapon_globals.GetCurrentPreset(weapon_index, name);
 
 				if(preset != nullptr)
 				{
@@ -219,90 +214,44 @@ namespace Yelo
 
 			void Dispose()
 			{
-				_weapon_globals.Dispose();
-				
 				c_settings_weapons::Unregister(Settings::Manager());
 			}
 
-			Enums::settings_adjustment_result AdjustSettings()
+			real_vector3d GetWeaponPosition()
 			{
 				datum_index weapon_index;
-				cstring name;
-				c_settings_container::c_weapon_position* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
+				cstring weapon_name;
 
-				if(	name == nullptr ||
-					(!_weapon_globals.weapon_index_from_last_update.IsNull() && 
-					  _weapon_globals.weapon_index_from_last_update != weapon_index)
-					)
+				auto* preset = g_weapon_globals.GetCurrentPreset(weapon_index, weapon_name);
+				if(preset)
 				{
-					_weapon_globals.weapon_index_from_last_update = datum_index::null;
-					return Enums::_settings_adjustment_result_cancel;
+					return preset->m_position;
+				}
+
+				return real_vector3d { 0.0f, 0.0f, 0.0f };
+			}
+
+			void SetWeaponPosition(const real_vector3d& position)
+			{
+				datum_index weapon_index;
+				cstring weapon_name;
+
+				auto* preset = g_weapon_globals.GetCurrentPreset(weapon_index, weapon_name);
+				if(preset)
+				{
+					// If a preset is available update the position
+					preset->m_position.Get() = position;
 				}
 				else
-					_weapon_globals.weapon_index_from_last_update = weapon_index;
-
-				if(preset == nullptr && (preset = _weapon_globals.AddPreset(name)) == nullptr)
-					return Enums::_settings_adjustment_result_cancel;
-
-				auto& weapon_position = preset->m_position.Get();
-
-				if(Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
-					weapon_position.Set(.0f,.0f,.0f);
-
-				const real factor = 3000.f;
-
-				if(Input::GetKeyState(Enums::_KeyLShift) || Input::GetKeyState(Enums::_KeyRShift))
 				{
-					weapon_position.j += Input::GetMouseAxisState(Enums::_MouseAxisX)/factor;
-					weapon_position.k += Input::GetMouseAxisState(Enums::_MouseAxisY)/factor;
+					// If no preset is available but their is an offset, add a new preset for the current weapon
+					if(position.Magnitude() > 0.0f)
+					{
+						preset = g_weapon_globals.AddPreset(weapon_name);
+						preset->m_position.Get() = position;
+					}
 				}
-				else
-					weapon_position.i += Input::GetMouseAxisState(Enums::_MouseAxisY)/factor;
-
-				_weapon_globals.menu->Render();
-
-				return Enums::_settings_adjustment_result_not_finished;
 			}
-
-#if defined(DX_WRAPPER)
-			void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
-			{
-				_weapon_globals.menu = new TextBlock(pDevice,pPP);
-				_weapon_globals.menu->ApplyScheme();
-				_weapon_globals.menu->SetDimensions(350,0);
-				_weapon_globals.menu->Attach(Enums::_attach_method_center, 0,0,0,0);
-				_weapon_globals.menu->SetTextAlign(DT_CENTER);
-
-				_weapon_globals.menu->SetText(
-					L"Mouse \x2195 = Distance\n"
-					L"Shift+Mouse \x21BA = Axis\n"
-					L"\n"
-					L"Left-Click to Save.\n"
-					L"Right-Click to Reset.");
-				_weapon_globals.menu->Refresh();
-			}
-
-			void OnLostDevice()
-			{
-				_weapon_globals.menu->OnLostDevice();
-			}
-
-			void OnResetDevice(D3DPRESENT_PARAMETERS *pPP)
-			{
-				_weapon_globals.menu->OnResetDevice(pPP);
-				_weapon_globals.menu->Refresh();
-			}
-
-			void Render() {}
-			void Release() 
-			{
-				_weapon_globals.menu->Release();
-			}
-
-#elif PLATFORM_IS_USER
-			// TODO: Need fallback initialization for when we're not using the DX_WRAPPER
-#endif
-
 #endif
 		};
 	};

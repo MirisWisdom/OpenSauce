@@ -24,7 +24,7 @@ namespace Yelo
 #define K_PROPERTY_DISABLED_ID			RESOURCE_ID_DEBUG("Disabled")
 #pragma endregion
 
-#pragma region CheckBox
+#pragma region Check Box
 #define K_PROPERTY_CHECKED_ID			RESOURCE_ID_DEBUG("Checked")
 #pragma endregion
 		
@@ -52,13 +52,21 @@ namespace Yelo
 #define K_PROPERTY_NOTCHCOUNT_ID		RESOURCE_ID_DEBUG("NotchCount")
 #pragma endregion
 
-#pragma region TextBox
+#pragma region Text Box
 #define K_PROPERTY_EDITABLE_ID			RESOURCE_ID_DEBUG("Editable")
 #pragma endregion
 
 #pragma region Page Control
 #define K_PROPERTY_PAGECOUNT_ID			RESOURCE_ID_DEBUG("PageCount")
 #define K_PROPERTY_USEFINISHBUTTON_ID	RESOURCE_ID_DEBUG("UseFinishButton")
+#pragma endregion
+
+#pragma region Button
+#define K_PROPERTY_DEPRESSED_ID			RESOURCE_ID_DEBUG("Depressed")
+#define K_PROPERTY_ISTOGGLE_ID			RESOURCE_ID_DEBUG("IsToggle")
+#define K_PROPERTY_TOGGLESTATE_ID		RESOURCE_ID_DEBUG("ToggleState")
+#define K_PROPERTY_IMAGE_ID				RESOURCE_ID_DEBUG("Image")
+#define K_PROPERTY_IMAGEALPHA_ID		RESOURCE_ID_DEBUG("ImageAlpha")
 #pragma endregion
 		
 #pragma region General

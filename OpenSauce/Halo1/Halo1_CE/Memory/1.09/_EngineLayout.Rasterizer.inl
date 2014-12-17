@@ -83,6 +83,7 @@
 	};
 	namespace Render
 	{
+		ENGINE_PTR(s_render_window, render_window,						0x6B4C20, PTR_NULL);
 		ENGINE_PTR(s_render_globals, render_globals,					0x75E100, PTR_NULL);
 		ENGINE_PTR(s_render_target, global_render_targets,				0x638A20, PTR_NULL);
 		ENGINE_PTR(s_structure_render_globals, structure_render_globals,0x67EAB8, PTR_NULL);

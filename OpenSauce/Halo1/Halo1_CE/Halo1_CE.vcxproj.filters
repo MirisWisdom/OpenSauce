@@ -589,6 +589,9 @@
     <ClInclude Include="Interface\OpenSauceUI\Definitions\c_page_definition.hpp">
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1195,6 +1198,9 @@
     <ClCompile Include="Interface\OpenSauceUI\Definitions\c_page_definition.cpp">
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
@@ -1467,9 +1473,6 @@
     <ClInclude Include="Interface\UIWidgets.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Interface\YeloSettingsInterface.hpp">
-      <Filter>Interface\Impl</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\FunctionInterface.hpp">
       <Filter>Memory</Filter>
     </ClInclude>
@@ -1728,9 +1731,6 @@
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp">
       <Filter>Objects\Impl</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Objects.VehicleSettings.hpp">
-      <Filter>Objects\Impl</Filter>
-    </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp">
       <Filter>Rasterizer\PostProcessing\Bloom</Filter>
     </ClInclude>
@@ -1878,9 +1878,6 @@
       <Filter>Game\Impl\Players</Filter>
     </None>
     <None Include="Interface\GameUI_Hud.inl">
-      <Filter>Interface\Impl</Filter>
-    </None>
-    <None Include="Interface\GameUI_Menu.inl">
       <Filter>Interface\Impl</Filter>
     </None>
     <None Include="Memory\FunctionInterface.Client.inl">

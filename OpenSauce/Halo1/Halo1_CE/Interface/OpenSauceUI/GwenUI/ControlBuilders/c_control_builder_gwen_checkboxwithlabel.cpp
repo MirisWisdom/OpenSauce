@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Gwen/Controls/Label.h>
+#include <Gwen/Controls/CheckBox.h>
 #include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Interface/OpenSauceUI/Control/control_property_ids.hpp"

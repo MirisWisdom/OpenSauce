@@ -159,6 +159,12 @@ namespace Yelo
 
 #pragma region Properties
 		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets or sets whether to show the HUD. </summary>
+		/// <returns>	A bool reference. </returns>
+		///-------------------------------------------------------------------------------------------------
+		bool& ShowHUD() { return g_hud_globals.m_flags.show_hud; }
+
+		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets or sets whether to scale the HUD. </summary>
 		/// <returns>	A bool reference. </returns>
 		///-------------------------------------------------------------------------------------------------
@@ -169,6 +175,18 @@ namespace Yelo
 		/// <returns>	A bool reference. </returns>
 		///-------------------------------------------------------------------------------------------------
 		bool& ShowCrosshair() { return g_hud_globals.m_flags.show_crosshair; }
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets or sets the HUD X scale. </summary>
+		/// <returns>	A real reference. </returns>
+		///-------------------------------------------------------------------------------------------------
+		real& HUDScaleX() { return g_hud_globals.m_hud_screen.scale.x; }
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets or sets the HUD Y scale. </summary>
+		/// <returns>	A real reference. </returns>
+		///-------------------------------------------------------------------------------------------------
+		real& HUDScaleY() { return g_hud_globals.m_hud_screen.scale.y; }
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets a pointer to the games HUD globals. </summary>
@@ -481,6 +499,12 @@ namespace Yelo
 				}
 			}
 		}
+
+		void UpdateChanges()
+		{
+			UpdateScreenScale();
+			UpdateAnchorScale();
+		}
 #pragma endregion
 
 #pragma region Component Interface
@@ -550,95 +574,6 @@ namespace Yelo
 		}
 #pragma endregion
 
-#pragma region Component Settings
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Renders the HUD settings menu. </summary>
-		///-------------------------------------------------------------------------------------------------
-		static void AdjustSettings_Render()
-		{
-			wchar_t text[256];
-			size_t current_length = 0;
-			wchar_t* itr = text;
-
-#define ADD_MENU_ITEM(format,...)													\
-				swprintf_s(itr,NUMBEROF(text)-current_length,format,__VA_ARGS__);	\
-				current_length = wcslen(text);										\
-				itr = text + current_length;
-
-			ADD_MENU_ITEM(L"\x2081. HUD				(%s)\n",	g_hud_globals.m_flags.show_hud ?	L"On" : L"Off");
-			ADD_MENU_ITEM(L"\x2082. HUD Scaling		(%s)\n",	g_hud_globals.m_flags.scale_hud ?	L"On" : L"Off");
-			ADD_MENU_ITEM(L"\nLeft-Click to Save");
-			g_hud_globals.m_menu_text->SetText(text);
-			g_hud_globals.m_menu_text->Refresh();
-			g_hud_globals.m_menu_text->Render();
-#undef ADD_MENU_ITEM
-		}
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Updates the UI scaling globals according to user input. </summary>
-		/// <returns>	An Enums::settings_adjustment_result. </returns>
-		///-------------------------------------------------------------------------------------------------
-		static Enums::settings_adjustment_result AdjustSettings()
-		{
-			if (Input::GetKeyState(Enums::_Key1) == 1)
-			{
-				g_hud_globals.m_flags.show_hud = !g_hud_globals.m_flags.show_hud;
-			}
-
-			if (Input::GetKeyState(Enums::_Key2) == 1)
-			{
-				g_hud_globals.m_flags.scale_hud = !g_hud_globals.m_flags.scale_hud;
-				UpdateScreenScale();
-				UpdateAnchorScale();
-			}
-
-			AdjustSettings_Render();
-
-			return Enums::_settings_adjustment_result_not_finished;
-		}
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Updates the HUD scale according to user input. </summary>
-		/// <returns>	An Enums::settings_adjustment_result. </returns>
-		///-------------------------------------------------------------------------------------------------
-		static Enums::settings_adjustment_result AdjustHUDScale()
-		{
-			// reset the scaling if the right mouse button is pressed
-			if (Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
-			{
-				g_hud_globals.m_hud_screen.scale.x = 1.0f;
-				g_hud_globals.m_hud_screen.scale.y = 1.0f;
-			}
-
-			// change the X/Y scale using the mouse axes
-			g_hud_globals.m_hud_screen.scale.x += Input::GetMouseAxisState(Enums::_MouseAxisX) / 2000.0f;
-			g_hud_globals.m_hud_screen.scale.y += Input::GetMouseAxisState(Enums::_MouseAxisY) / 2000.0f;
-
-			g_hud_globals.m_hud_screen.scale.x = __min(1.0f, g_hud_globals.m_hud_screen.scale.x);
-			g_hud_globals.m_hud_screen.scale.x = __max(0.0f, g_hud_globals.m_hud_screen.scale.x);
-			g_hud_globals.m_hud_screen.scale.y = __min(1.0f, g_hud_globals.m_hud_screen.scale.y);
-			g_hud_globals.m_hud_screen.scale.y = __max(0.0f, g_hud_globals.m_hud_screen.scale.y);
-
-			// render the scale input options
-			wchar_t text[128];
-			swprintf_s(text,
-				L"HUD Scale (%0.3f, %0.3f)\n"
-				L"\nLeft-Click to Save"
-				L"\nRight-Click to Reset",
-				g_hud_globals.m_hud_screen.scale.x,
-				g_hud_globals.m_hud_screen.scale.y
-				);
-			g_hud_globals.m_menu_text->SetText(text);
-			g_hud_globals.m_menu_text->Refresh();
-			g_hud_globals.m_menu_text->Render();
-
-			// update the UI scaling variables
-			UpdateAnchorScale();
-
-			return Enums::_settings_adjustment_result_not_finished;
-		}
-#pragma endregion
-
 #pragma region Component DirectX Interface
 #if defined(DX_WRAPPER)
 		///-------------------------------------------------------------------------------------------------
@@ -662,25 +597,12 @@ namespace Yelo
 			g_hud_globals.m_screen_size.y = (int16)pPP->BackBufferHeight;
 			UpdateScreenScale();
 			UpdateAnchorScale();
-
-			// allocate the text block for drawing the settings menu
-			g_hud_globals.m_menu_text = new TextBlock(pDevice, pPP);
-			g_hud_globals.m_menu_text->ApplyScheme();
-			g_hud_globals.m_menu_text->SetDimensions(200,0);
-			g_hud_globals.m_menu_text->Attach(Enums::_attach_method_center, 0,0,0,0);
-			g_hud_globals.m_menu_text->SetTextAlign(DT_LEFT);
-
-			g_hud_globals.m_menu_text->SetText(L"dumb");
-			g_hud_globals.m_menu_text->Refresh();
 		}
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Informs the menu text block that the device was lost. </summary>
 		///-------------------------------------------------------------------------------------------------
-		void OnLostDevice()
-		{
-			g_hud_globals.m_menu_text->OnLostDevice();
-		}
+		void OnLostDevice() { }
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>
@@ -696,9 +618,6 @@ namespace Yelo
 			g_hud_globals.m_screen_size.y = (int16)pPP->BackBufferHeight;
 			UpdateScreenScale();
 			UpdateAnchorScale();
-
-			g_hud_globals.m_menu_text->OnResetDevice(pPP);
-			g_hud_globals.m_menu_text->Refresh();
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -709,13 +628,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Releases the menu text block. </summary>
 		///-------------------------------------------------------------------------------------------------
-		void Release()
-		{
-			g_hud_globals.m_menu_text->Release();
-
-			delete g_hud_globals.m_menu_text;
-			g_hud_globals.m_menu_text = nullptr;
-		}
+		void Release() { }
 #endif
 #pragma endregion
 	};

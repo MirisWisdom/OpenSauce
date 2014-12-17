@@ -4,11 +4,11 @@
 			"Type": "Rectangle",
 			"Property": {
 				"Name": "Size",
-				"Value": "400 200"
+				"Value": "300 300"
 			},
 			"Property": {
 				"Name": "Color",
-				"Value": "66 68 99 200"
+				"Value": "71 72 77 240"
 			},
 			"Control": {
 				"IDStr": "#PDG_ingame_page_control",
@@ -31,45 +31,851 @@
 				},
 				"Property": {
 					"Name": "TextSize",
-					"Value": "18"
-				},
-				"Property": {
-					"Name": "TextBold",
-					"Value": "True"
+					"Value": "16"
 				},
 				"Page": {
 					"Control": {
-						"Type": "Label",
+						"Type": "Rectangle",
 						"Property": {
-							"Name": "Text",
-							"Value": "Page 1"
+							"Name": "Size",
+							"Value": "0 34"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "66 68 99 255"
+						},
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Control": {
+							"IDStr": "#LBL_camera_title",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Fill"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "28"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "2 5 0 0"
+							}
+						}
+					},
+					"Control": {
+						"Type": "Rectangle",
+						"Property": {
+							"Name": "Size",
+							"Value": "230 0"
+						},
+						"Property": {
+							"Name": "Dock",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "0 0 0 0"
+						},
+						"Control": {
+							"IDStr": "#LBL_camera_fov",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 80"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "30"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Bottom"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							}
+						},
+						"Control": {
+							"IDStr": "#LBL_camera_fov_value",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 40"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "30"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							}
+						},
+						"Control": {
+							"IDStr": "#BTN_camera_fov_reset",
+							"Type": "Button",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 24"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "20"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "0 0 0 255"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 30 0 30"
+							}
+						}
+					},
+					"Control": {
+						"Type": "Rectangle",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Fill"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "0 0 0 0"
+						},
+						"Control": {
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 20"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "16"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Bottom"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "Text",
+								"Value": "140"
+							}
+						},
+						"Control": {
+							"IDStr": "#SLD_camera_fov_value",
+							"Type": "VerticalSlider",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 150"
+							},
+							"Property": {
+								"Name": "Min",
+								"Value": "40"
+							},
+							"Property": {
+								"Name": "Max",
+								"Value": "140"
+							}
+						},
+						"Control": {
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 20"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "16"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "Text",
+								"Value": "40"
+							}
 						}
 					}
 				},
 				"Page": {
 					"Control": {
-						"Type": "Label",
+						"Type": "Rectangle",
 						"Property": {
-							"Name": "Text",
-							"Value": "Page 2"
+							"Name": "Size",
+							"Value": "0 34"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "66 68 99 255"
+						},
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Control": {
+							"IDStr": "#LBL_hud_title",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Fill"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "28"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "2 5 0 0"
+							}
+						}
+					},
+					"Control": {
+						"Type": "Rectangle",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Fill"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "0 0 0 0"
+						},
+						"Control": {
+							"Type": "Rectangle",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "50 0"
+							},
+							"Property": {
+								"Name": "Color",
+								"Value": "0 0 0 0"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 30 0 0"
+							},
+							"Control": {
+								"IDStr": "#SLD_hud_scale_y_amount",
+								"Type": "VerticalSlider",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Fill"
+								},
+								"Property": {
+									"Name": "Min",
+									"Value": "0"
+								},
+								"Property": {
+									"Name": "Max",
+									"Value": "1"
+								}
+							},
+							"Control": {
+								"IDStr": "#BTN_hud_scale_reset",
+								"Type": "Button",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Bottom"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "50 50"
+								},
+								"Property": {
+									"Name": "TextColor",
+									"Value": "0 0 0 255"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								}
+							},
+							"Control": {
+								"Type": "Label",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Bottom"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "0 30"
+								},
+								"Property": {
+									"Name": "TextSize",
+									"Value": "30"
+								},
+								"Property": {
+									"Name": "Text",
+									"Value": "Y"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								}
+							}
+						},
+						"Control": {
+							"Type": "Rectangle",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Fill"
+							},
+							"Property": {
+								"Name": "Color",
+								"Value": "0 0 0 0"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 0 0 30"
+							},
+							"Control": {
+								"IDStr": "#CHK_hud_show_hud_enabled",
+								"Type": "CheckBoxWithLabel",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Top"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "0 20"
+								},
+								"Property": {
+									"Name": "TextColor",
+									"Value": "200 200 200 255"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Left"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextSize",
+									"Value": "16"
+								},
+								"Property": {
+									"Name": "Margin",
+									"Value": "10 20 0 0"
+								}
+							},
+							"Control": {
+								"IDStr": "#CHK_hud_scale_hud_enabled",
+								"Type": "CheckBoxWithLabel",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Top"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "0 20"
+								},
+								"Property": {
+									"Name": "TextColor",
+									"Value": "200 200 200 255"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Left"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextSize",
+									"Value": "16"
+								},
+								"Property": {
+									"Name": "Margin",
+									"Value": "10 20 0 0"
+								}
+							},
+							"Control": {
+								"Type": "Rectangle",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Bottom"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "0 50"
+								},
+								"Property": {
+									"Name": "Color",
+									"Value": "0 0 0 0"
+								},
+								"Control": {
+									"IDStr": "#SLD_hud_scale_x_amount",
+									"Type": "HorizontalSlider",
+									"Property": {
+										"Name": "Dock",
+										"Value": "Fill"
+									},
+									"Property": {
+										"Name": "Min",
+										"Value": "0"
+									},
+									"Property": {
+										"Name": "Max",
+										"Value": "1"
+									}
+								},
+								"Control": {
+									"Type": "Label",
+									"Property": {
+										"Name": "Dock",
+										"Value": "Left"
+									},
+									"Property": {
+										"Name": "Size",
+										"Value": "30 0"
+									},
+									"Property": {
+										"Name": "TextSize",
+										"Value": "30"
+									},
+									"Property": {
+										"Name": "Text",
+										"Value": "X"
+									},
+									"Property": {
+										"Name": "TextHAlignment",
+										"Value": "Center"
+									},
+									"Property": {
+										"Name": "TextVAlignment",
+										"Value": "Center"
+									}
+								}
+							}
 						}
 					}
 				},
 				"Page": {
 					"Control": {
-						"Type": "Label",
+						"Type": "Rectangle",
 						"Property": {
-							"Name": "Text",
-							"Value": "Page 3"
+							"Name": "Size",
+							"Value": "0 34"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "66 68 99 255"
+						},
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Control": {
+							"IDStr": "#LBL_weapon_title",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Fill"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "28"
+							},
+							"Property": {
+								"Name": "TextBold",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "2 5 0 0"
+							}
 						}
-					}
-				},
-				"Page": {
+					},
 					"Control": {
-						"Type": "Label",
+						"Type": "Rectangle",
 						"Property": {
-							"Name": "Text",
-							"Value": "Page 4"
+							"Name": "Dock",
+							"Value": "Fill"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "0 0 0 0"
+						},
+						"Control": {
+							"IDStr": "#LBL_weapon_position_title",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 20"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "18"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "20 30 0 30"
+							}
+						},
+						"Control": {
+							"Type": "Rectangle",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 50"
+							},
+							"Property": {
+								"Name": "Color",
+								"Value": "0 0 0 0"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 30 0 30"
+							},
+							"Control": {
+								"IDStr": "#SLD_weapon_position_x_offset",
+								"Type": "HorizontalSlider",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Fill"
+								},
+								"Property": {
+									"Name": "Min",
+									"Value": "-1"
+								},
+								"Property": {
+									"Name": "Max",
+									"Value": "1"
+								}
+							},
+							"Control": {
+								"Type": "Label",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Left"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "30 0"
+								},
+								"Property": {
+									"Name": "TextSize",
+									"Value": "30"
+								},
+								"Property": {
+									"Name": "Text",
+									"Value": "X"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								}
+							}
+						},
+						"Control": {
+							"Type": "Rectangle",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 50"
+							},
+							"Property": {
+								"Name": "Color",
+								"Value": "0 0 0 0"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 30 0 30"
+							},
+							"Control": {
+								"IDStr": "#SLD_weapon_position_y_offset",
+								"Type": "HorizontalSlider",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Fill"
+								},
+								"Property": {
+									"Name": "Min",
+									"Value": "-1"
+								},
+								"Property": {
+									"Name": "Max",
+									"Value": "1"
+								}
+							},
+							"Control": {
+								"Type": "Label",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Left"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "30 0"
+								},
+								"Property": {
+									"Name": "TextSize",
+									"Value": "30"
+								},
+								"Property": {
+									"Name": "Text",
+									"Value": "Y"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								}
+							}
+						},
+						"Control": {
+							"Type": "Rectangle",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Top"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 50"
+							},
+							"Property": {
+								"Name": "Color",
+								"Value": "0 0 0 0"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 30 0 30"
+							},
+							"Control": {
+								"IDStr": "#SLD_weapon_position_z_offset",
+								"Type": "HorizontalSlider",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Fill"
+								},
+								"Property": {
+									"Name": "Min",
+									"Value": "-1"
+								},
+								"Property": {
+									"Name": "Max",
+									"Value": "1"
+								}
+							},
+							"Control": {
+								"Type": "Label",
+								"Property": {
+									"Name": "Dock",
+									"Value": "Left"
+								},
+								"Property": {
+									"Name": "Size",
+									"Value": "30 0"
+								},
+								"Property": {
+									"Name": "TextSize",
+									"Value": "30"
+								},
+								"Property": {
+									"Name": "Text",
+									"Value": "Z"
+								},
+								"Property": {
+									"Name": "TextHAlignment",
+									"Value": "Center"
+								},
+								"Property": {
+									"Name": "TextVAlignment",
+									"Value": "Center"
+								}
+							}
+						},
+						"Control": {
+							"IDStr": "#BTN_weapon_position_reset",
+							"Type": "Button",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Bottom"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "0 20"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "0 0 0 255"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "TextVAlignment",
+								"Value": "Center"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "10 30 0 30"
+							}
 						}
 					}
 				}

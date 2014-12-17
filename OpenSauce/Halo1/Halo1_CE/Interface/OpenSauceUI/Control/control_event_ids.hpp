@@ -35,6 +35,17 @@ namespace Yelo
 #define K_EVENT_FINISH_ID				RESOURCE_ID_DEBUG("Finish")
 #pragma endregion
 
+#pragma region Button
+#define K_EVENT_PRESS_ID				RESOURCE_ID_DEBUG("Press")
+#define K_EVENT_RIGHTPRESS_ID			RESOURCE_ID_DEBUG("RightPress")
+#define K_EVENT_DOWN_ID					RESOURCE_ID_DEBUG("Down")
+#define K_EVENT_UP_ID					RESOURCE_ID_DEBUG("Up")
+#define K_EVENT_DOUBLECLICK_ID			RESOURCE_ID_DEBUG("DoubleClick")
+#define K_EVENT_TOGGLE_ID				RESOURCE_ID_DEBUG("Toggle")
+#define K_EVENT_TOGGLEON_ID				RESOURCE_ID_DEBUG("ToggleOn")
+#define K_EVENT_TOGGLEOFF_ID			RESOURCE_ID_DEBUG("ToggleOff")
+#pragma endregion
+
 #pragma region Misc
 #define K_EVENT_VALUECHANGED_ID			RESOURCE_ID_DEBUG("ValueChanged")
 #pragma endregion
