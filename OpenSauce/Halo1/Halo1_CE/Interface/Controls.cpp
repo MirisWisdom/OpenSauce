@@ -43,6 +43,16 @@ namespace Yelo
 
 			int32 GamepadDpad[Enums::_GamepadDpad];
 		};
+		
+		struct PositionState
+		{
+			//PAD16;
+			//bool Moving; // true during mouse movement
+			//PAD8;
+			PAD32;
+			int32 Position[2]; // menu space coordinates (0,0) to (640,480)
+		};
+
 #define __EL_INCLUDE_ID			__EL_INCLUDE_INTERFACE
 #define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_CONTROLS
 #include "Memory/_EngineLayout.inl"
@@ -127,6 +137,9 @@ namespace Yelo
 
 		int32 GetMouseAxisState(Enums::MouseAxis axis)					{ return GET_PTR2(ControlState)->MouseAxis[axis]; }
 		void SetMouseAxisState(Enums::MouseAxis axis, int32 state)		{ GET_PTR2(ControlState)->MouseAxis[axis] = state; }
+
+		int32 GetMousePositionState(Enums::MouseAxis axis)				{ if(axis > Enums::_MouseAxisY) return 0; return GET_PTR2(MousePositionState)->Position[axis]; }
+		void SetMousePositionState(Enums::MouseAxis axis, int32 position) { if(axis > Enums::_MouseAxisY) return; GET_PTR2(MousePositionState)->Position[axis] = position; }
 
 
 		byte GetGamepadButtonState(Enums::GamepadButton button)				{ return GET_PTR2(ControlState)->GamepadButton[button]; }

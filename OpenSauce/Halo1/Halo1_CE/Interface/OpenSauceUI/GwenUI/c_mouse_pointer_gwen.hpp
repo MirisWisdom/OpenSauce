@@ -18,39 +18,50 @@ namespace Yelo
 		/// <summary>	A mouse pointer using gwen. </summary>
 		class c_mouse_pointer_gwen final
 			: public Control::i_mouse_pointer
+			, public Input::i_control_mouse_handler
 		{
+			ControlFactory::c_control_factory& m_control_factory;
+			Control::i_canvas& m_canvas;
 			Control::t_control_ptr m_mouse_control;
+			Control::i_property_interface* m_position_property;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Initializes the mouse pointer. </summary>
+			/// <summary>	Builds the mouse. </summary>
+			///
+			/// <param name="control_input">	[in] The control input manager. </param>
+			void BuildMouse(Input::i_control_input& control_input) override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Destroys the mouse. </summary>
+			///
+			/// <param name="control_input">	[in] The control input manager. </param>
+			void DestroyMouse(Input::i_control_input& control_input) override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
 			///
 			/// <param name="control_factory">	[in] The control factory to create the pointer with. </param>
 			/// <param name="canvas">		  	[in] The target canvas. </param>
-			void Initialize(ControlFactory::c_control_factory& control_factory, Control::i_canvas& canvas) override;
-
-			/// <summary>	Releases the mouse pointer. </summary>
-			void Release() override;
-			
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Sets the pointer's position. </summary>
-			///
-			/// <param name="x">	The x screen coordinate. </param>
-			/// <param name="y">	The y screen coordinate. </param>
-			void SetPosition(const int x, const int y) override;
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Gets the pointer's position. </summary>
-			///
-			/// <param name="x">	[out] The output x coordinate. </param>
-			/// <param name="y">	[out] The output y coordinate. </param>
-			void GetPosition(int& x, int& y) override;
+			c_mouse_pointer_gwen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& canvas);
 
 			/// <summary>	Shows the object. </summary>
 			void Show() override;
 
 			/// <summary>	Hides the object. </summary>
 			void Hide() override;
+
+#pragma region i_control_mouse_handler
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the mouse position update action. </summary>
+			///
+			/// <param name="absolute">	The absolute position. </param>
+			/// <param name="relative">	The relative position. </param>
+			void OnMousePositionUpdate(const point2d& absolute, const point2d& relative) override;
+
+			void OnMouseButtonUpdate(const int button, bool value) { }
+			void OnMouseWheelUpdate(const int value) { }
+#pragma endregion
 		};
 	};};};
 };

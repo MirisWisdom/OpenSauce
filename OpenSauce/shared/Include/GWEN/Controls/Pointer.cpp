@@ -8,6 +8,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Gwen/Controls/Pointer.h"
+#include "Gwen/inputhandler.h"
 
 using namespace Gwen;
 using namespace Gwen::Controls;
@@ -17,14 +18,11 @@ using namespace Gwen::Controls;
 GWEN_CONTROL_CONSTRUCTOR( Pointer )
 {
 	SetMouseInputEnabled( false );
-	SetSize( 15, 15 );
+	SetSize( 30, 30);
 }
 
 void Pointer::Render( Skin::Base* skin )
 {
-	skin->GetRender()->SetDrawColor( m_Color );
-
-	Gwen::Rect rect = GetRenderBounds();
-	skin->GetRender()->DrawFilledRect( rect );
+	skin->DrawPointer(this, Input::IsLeftMouseDown());
 }
 #endif

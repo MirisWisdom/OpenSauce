@@ -46,6 +46,7 @@
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_scrollcontrol.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_pagecontrol.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_button.hpp"
+#include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_pointer.hpp"
 
 namespace Yelo
 {
@@ -53,10 +54,12 @@ namespace Yelo
 	{
 		static bool g_ui_package_present;
 		static c_packed_file g_ui_package;
-		static Control::t_canvas_ptr g_canvas;
+
 		static ControlFactory::c_control_factory g_control_factory;
 		static Input::c_control_input_halo g_control_input;
-		static GwenUI::c_mouse_pointer_gwen g_mouse_pointer;
+		static Control::t_canvas_ptr g_canvas;
+		static Control::t_mouse_pointer_ptr g_mouse_pointer;
+
 		static std::unique_ptr<Screen::c_screen_display_manager> g_screen_display_manager;
 
 		void Initialize()
@@ -79,7 +82,8 @@ namespace Yelo
 			g_ui_package.OpenFile("UI_OpenSauceUI_PAK", true);
 
 			g_canvas = std::make_unique<GwenUI::c_canvas_gwen>();
-			g_screen_display_manager = std::make_unique<Screen::c_screen_display_manager>(*g_canvas, g_mouse_pointer, g_control_factory);
+			g_mouse_pointer = std::make_unique<GwenUI::c_mouse_pointer_gwen>(g_control_factory, *g_canvas);
+			g_screen_display_manager = std::make_unique<Screen::c_screen_display_manager>(*g_canvas, *g_mouse_pointer, g_control_factory);
 			
 			g_control_factory.AddControl("Label", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_label>());
 			g_control_factory.AddControl("CheckBox", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_checkbox>());
@@ -92,13 +96,15 @@ namespace Yelo
 			g_control_factory.AddControl("ScrollControl", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_scrollcontrol>());
 			g_control_factory.AddControl("PageControl", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_pagecontrol>());
 			g_control_factory.AddControl("Button", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_button>());
-
-			g_control_factory.AddControl("Pointer", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_rectangle>());
+			g_control_factory.AddControl("Pointer", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_pointer>());
 		}
 
 		void Dispose()
 		{
+			g_screen_display_manager.reset();
+			g_mouse_pointer.reset();
 			g_canvas.reset();
+			g_ui_package.CloseFile();
 		}
 
 		void Update()
@@ -109,13 +115,6 @@ namespace Yelo
 			}
 
 			g_control_input.Update();
-
-			// Update the mouse pointer
-			DOC_TODO("Implement a proper mouse pointer with events, tied to Halo's mouse position");
-			int x;
-			int y;
-			g_control_input.GetMousePosition(x, y);
-			g_mouse_pointer.SetPosition(x, y);
 
 			// Update the UI according to the game's current state
 			bool in_menu =				Yelo::Input::IsInMenu();
@@ -164,11 +163,11 @@ namespace Yelo
 
 		void LoadUI(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* presentation_parameters)
 		{
-			g_canvas->Initialize(device, g_ui_package);
-			g_canvas->SetSize(presentation_parameters->BackBufferWidth, presentation_parameters->BackBufferHeight);
-			g_control_input.Initialize(CAST_PTR(Gwen::Controls::Canvas*, g_canvas->GetControlPtr()));
 			g_control_input.SetMouseBounds(0, presentation_parameters->BackBufferWidth, 0, presentation_parameters->BackBufferHeight);
-			g_mouse_pointer.Initialize(g_control_factory, *g_canvas);
+
+			g_canvas->Initialize(device, g_ui_package, g_control_input);
+			g_canvas->SetSize(presentation_parameters->BackBufferWidth, presentation_parameters->BackBufferHeight);
+			g_mouse_pointer->BuildMouse(g_control_input);
 
 			AddScreenController<Screen::c_screen_controller_mainmenu>("MainMenu"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
@@ -197,6 +196,8 @@ namespace Yelo
 		void UnloadUI()
 		{
 			g_screen_display_manager->ClearScreenControllers();
+			g_mouse_pointer->DestroyMouse(g_control_input);
+			g_canvas->Release(g_control_input);
 		}
 
 		void Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* presentation_parameters)
@@ -217,8 +218,6 @@ namespace Yelo
 			}
 
 			UnloadUI();
-			g_mouse_pointer.Release();
-			g_canvas->Release();
 		}
 
 		void OnResetDevice(D3DPRESENT_PARAMETERS* presentation_parameters)
@@ -249,8 +248,6 @@ namespace Yelo
 			}
 
 			UnloadUI();
-			g_mouse_pointer.Release();
-			g_canvas->Release();
 		}
 	};};
 };

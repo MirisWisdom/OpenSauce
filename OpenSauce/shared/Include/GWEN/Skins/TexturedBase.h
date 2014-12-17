@@ -292,6 +292,12 @@ namespace Gwen
 
 					} CategoryList;
 
+					struct  Pointer_t
+					{
+						Texturing::Bordered NotDepressed;
+						Texturing::Bordered Depressed;
+					} Pointer;
+
 					Texturing::Bordered GroupBox;
 
 				} Textures;
@@ -461,6 +467,8 @@ namespace Gwen
 					Textures.CategoryList.Outer.Init( &m_Texture, 256,			384, 63, 63, Margin( 8, 8, 8, 8 ) );
 					Textures.CategoryList.Inner.Init( &m_Texture, 256 + 64,	384, 63, 63, Margin( 8, 21, 8, 8 ) );
 					Textures.CategoryList.Header.Init( &m_Texture, 320,			352, 63, 31, Margin( 8, 8, 8, 8 ) );
+					Textures.Pointer.NotDepressed.Init( &m_Texture, 320, 450, 30, 30, Margin( 0, 0, 0, 0 ));
+					Textures.Pointer.Depressed.Init( &m_Texture, 320 + 30, 450, 30, 30, Margin( 0, 0, 0, 0 ));
 					Textures.GroupBox.Init( &m_Texture, 0,			448, 31, 31, Margin( 8, 8, 8, 8 ) );
 				}
 
@@ -1024,6 +1032,16 @@ namespace Gwen
 					{ return Textures.CategoryList.Header.Draw( GetRender(), ctrl->GetRenderBounds() ); }
 
 					Textures.CategoryList.Inner.Draw( GetRender(), ctrl->GetRenderBounds() );
+				}
+
+				void DrawPointer( Controls::Base* ctrl, bool bDepressed )
+				{
+					Gwen::Rect rect = ctrl->GetRenderBounds();
+
+					if ( bDepressed )
+					{ Textures.Pointer.Depressed.Draw( GetRender(), rect ); }
+					else
+					{ Textures.Pointer.NotDepressed.Draw( GetRender(), rect ); }
 				}
 		};
 	}

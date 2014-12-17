@@ -10,9 +10,10 @@
 #if __EL_INCLUDE_FILE_ID == __EL_INTERFACE_CONTROLS
 	FUNC_PTR(INPUT_UPDATE_HOOK,				0x493A16, FUNC_PTR_NULL);
 
-	ENGINE_PTR(ControlSettings, Settings,	0x6AD822, PTR_NULL);
-	ENGINE_PTR(ControlStates, ControlState,	0x64C570, PTR_NULL);
-	ENGINE_PTR(byte, InputStateFlags,		0x6AD592, PTR_NULL);
+	ENGINE_PTR(ControlSettings, Settings,			0x6AD822, PTR_NULL);
+	ENGINE_PTR(ControlStates, ControlState,			0x64C570, PTR_NULL);
+	ENGINE_PTR(PositionState, MousePositionState,	0x6B4028, PTR_NULL);
+	ENGINE_PTR(byte, InputStateFlags,				0x6AD592, PTR_NULL);
 
 #pragma region GameUI
 //////////////////////////////////////////////////////////////////////////

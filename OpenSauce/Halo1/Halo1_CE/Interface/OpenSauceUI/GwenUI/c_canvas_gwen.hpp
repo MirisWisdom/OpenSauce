@@ -12,6 +12,7 @@
 #include <Gwen/Skins/TexturedBase.h>
 
 #include "Interface/OpenSauceUI/Control/i_canvas.hpp"
+#include "Interface/OpenSauceUI/Input/i_control_input.hpp"
 #include "Interface/OpenSauceUI/GwenUI/c_gwen_renderer_halo.hpp"
 
 namespace Yelo
@@ -21,6 +22,8 @@ namespace Yelo
 		/// <summary>	The canvas for rendering the UI with Gwen. </summary>
 		class c_canvas_gwen final
 			: public Control::i_canvas
+			, public Input::i_control_mouse_handler
+			, public Input::i_control_keyboard_handler
 		{
 			std::unique_ptr<c_gwen_renderer_halo>		m_renderer;
 			std::unique_ptr<Gwen::Skin::TexturedBase>	m_skin;
@@ -33,12 +36,13 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Initializes the Gwen DX9 renderer and skin. </summary>
 			///
-			/// <param name="device">	[in] The current render device. </param>
-			/// <param name="ui_package">	[in] The ui package. </param>
-			void Initialize(IDirect3DDevice9* device, c_packed_file& ui_package) override;
+			/// <param name="device">			[in] The current render device. </param>
+			/// <param name="ui_package">   	[in] The ui package. </param>
+			/// <param name="control_input">	The control input. </param>
+			void Initialize(IDirect3DDevice9* device, c_packed_file& ui_package, Input::i_control_input& control_input) override;
 
 			/// <summary>	Releases the Gwen DX9 renderer. </summary>
-			void Release() override;
+			void Release(Input::i_control_input& control_input) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets the size of the canvas. </summary>
@@ -130,6 +134,43 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Not applicable for a canvas. </summary>
 			void Hide() { }
+#pragma endregion
+
+#pragma region i_control_mouse_handler
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the mouse position update action. </summary>
+			///
+			/// <param name="absolute">	The absolute position. </param>
+			/// <param name="relative">	The relative position. </param>
+			void OnMousePositionUpdate(const point2d& absolute, const point2d& relative) override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the mouse button update action. </summary>
+			///
+			/// <param name="button">	The button. </param>
+			/// <param name="value"> 	The button state. </param>
+			void OnMouseButtonUpdate(const int button, bool value) override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the mouse wheel update action. </summary>
+			///
+			/// <param name="value">	The wheel value. </param>
+			void OnMouseWheelUpdate(const int value) override;
+#pragma endregion
+
+#pragma region i_control_keyboard_handler
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the keyboard character pressed action. </summary>
+			///
+			/// <param name="character">	The pressed character. </param>
+			void OnKeyboardCharacterPressed(const wchar_t character) override;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the keyboard button update action. </summary>
+			///
+			/// <param name="key">  	The key. </param>
+			/// <param name="value">	The button state. </param>
+			void OnKeyboardButtonUpdate(const Enums::Key key, const bool value) override;
 #pragma endregion
 		};
 	};};};
