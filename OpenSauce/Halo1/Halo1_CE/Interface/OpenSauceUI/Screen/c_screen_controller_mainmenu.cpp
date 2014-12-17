@@ -50,6 +50,8 @@ namespace Yelo
 #define K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID							RESOURCE_ID_DEBUG("#LBL_shader_extension_model_title")
 #define K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID				RESOURCE_ID_DEBUG("#CHK_shader_extension_model_normal_maps_enabled")
 #define K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID		RESOURCE_ID_DEBUG("#CHK_shader_extension_model_normal_maps_toggle_event")
+#define K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID		RESOURCE_ID_DEBUG("#CHK_shader_extension_model_detail_normal_maps_enabled")
+#define K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_TOGGLE_EVENT_ID	RESOURCE_ID_DEBUG("#CHK_shader_extension_model_detail_normal_maps_toggle_event")
 #define K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID			RESOURCE_ID_DEBUG("#CHK_shader_extension_model_specular_maps_enabled")
 #define K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID		RESOURCE_ID_DEBUG("#CHK_shader_extension_model_specular_maps_toggle_event")
 #define K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID		RESOURCE_ID_DEBUG("#CHK_shader_extension_model_specular_lighting_enabled")
@@ -120,6 +122,7 @@ namespace Yelo
 
 			SetControlProperty(K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID,						K_PROPERTY_TEXT_ID, "Shader Extension - Models");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Normal Maps Enabled");
+			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID,	K_PROPERTY_TEXT_ID, "Detail Normal Maps Enabled");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID,		K_PROPERTY_TEXT_ID, "Specular Maps Enabled");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID,	K_PROPERTY_TEXT_ID, "Specular Lighting Enabled");
 
@@ -181,6 +184,12 @@ namespace Yelo
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::ShaderExtension::Model::GetNormalMapsEnabled()));
+				});
+
+			AddDynamicProperty(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID, K_PROPERTY_CHECKED_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(Rasterizer::ShaderExtension::Model::GetDetailNormalMapsEnabled()));
 				});
 
 			AddDynamicProperty(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_PROPERTY_CHECKED_ID,
@@ -321,12 +330,18 @@ namespace Yelo
 				{
 					Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_model_node_stretching_fix = event_data.m_bool;
 				});
-			
+
 
 			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::ShaderExtension::Model::SetNormalMapsEnabled(event_data.m_bool);
+				});
+
+			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_TOGGLE_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Rasterizer::ShaderExtension::Model::SetDetailNormalMapsEnabled(event_data.m_bool);
 				});
 
 			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID, nullptr,
@@ -456,8 +471,9 @@ namespace Yelo
 
 			DetachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID);
 			DetachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID);
-
+			
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_TOGGLE_EVENT_ID);
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_MAPS_TOGGLE_EVENT_ID);
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_SPECULAR_LIGHTING_TOGGLE_EVENT_ID);
 

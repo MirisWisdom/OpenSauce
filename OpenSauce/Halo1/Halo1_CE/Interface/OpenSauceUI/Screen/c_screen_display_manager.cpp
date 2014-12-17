@@ -108,7 +108,9 @@ namespace Yelo
 				close_all = true;
 			}
 			m_previous_esckey_state = esc_state;
-			
+
+			bool screen_esc_hidden = false;
+
 			// If the screen has a toggle key, check whether the key has been pressed and toggle the screen Also close
 			for(auto* instance : m_current_stage_instances)
 			{
@@ -122,6 +124,8 @@ namespace Yelo
 						if(screen_instance.m_is_visible)
 						{
 							HideScreen(screen_instance);
+
+							screen_esc_hidden = true;
 						}
 					}
 					else
@@ -149,6 +153,12 @@ namespace Yelo
 				{
 					screen_instance.m_screen_controller->Update();
 				}
+			}
+
+			// If the escape button triggered a screen to be closed, reset it's state so that Halo doesn't react to it
+			if(screen_esc_hidden)
+			{
+				Input::SetKeyState(Enums::_KeyEsc, 0);
 			}
 		}
 		

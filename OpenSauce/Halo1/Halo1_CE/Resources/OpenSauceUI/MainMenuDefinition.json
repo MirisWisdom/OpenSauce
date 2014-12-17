@@ -321,6 +321,30 @@
 						}
 					},
 					"Control": {
+						"IDStr": "#CHK_shader_extension_model_detail_normal_maps_enabled",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
 						"IDStr": "#CHK_shader_extension_model_specular_maps_enabled",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
