@@ -66,6 +66,10 @@ namespace Yelo
 				(screen_anchor)(_screen_anchor_center_v | _screen_anchor_center_h),
 				(screen_anchor)(_screen_anchor_center_v | _screen_anchor_center_h));
 			
+			SetControlProperty(K_PDG_INGAME_PAGE_CONTROL_ID, K_PROPERTY_TEXTFORMAT_ID, "Page %i to %i");
+			SetControlProperty(K_PDG_INGAME_PAGE_CONTROL_ID, K_PROPERTY_BACKBUTTONTEXT_ID, "< Back");
+			SetControlProperty(K_PDG_INGAME_PAGE_CONTROL_ID, K_PROPERTY_NEXTBUTTONTEXT_ID, "Next >");
+
 			SetControlProperty(K_LBL_CAMERA_TITLE_ID, K_PROPERTY_TEXT_ID, "Camera");
 			SetControlProperty(K_LBL_CAMERA_FOV_ID, K_PROPERTY_TEXT_ID, "Field Of View");
 			SetControlProperty(K_BTN_CAMERA_FOV_RESET_ID, K_PROPERTY_TEXT_ID, "Reset");

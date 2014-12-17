@@ -35,7 +35,7 @@ namespace Yelo
 			auto& version = version_checker.CurrentVersion();
 
 			char version_string[36];
-			sprintf_s(version_string, "v%i.%i.%i (%s)",
+			sprintf_s(version_string, "OpenSauce v%i.%i.%i (%s)",
 				version.m_major,
 				version.m_minor,
 				version.m_build,

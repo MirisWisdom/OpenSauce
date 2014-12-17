@@ -26,6 +26,9 @@ namespace Gwen
 				virtual void SetPageCount( unsigned int i );
 				virtual unsigned int GetPageCount() { return m_iPages; }
 
+				virtual void SetPageFormatString( const TextObject & str );
+				virtual const TextObject & GetPageFormatString() { return m_PageFormatString; }
+
 				virtual void ShowPage( unsigned int i );
 				virtual unsigned int GetPageNumber() { return m_iCurrentPage; }
 				virtual Controls::Base* GetPage( unsigned int i );
@@ -53,6 +56,8 @@ namespace Gwen
 				unsigned int			m_iCurrentPage;
 				unsigned int			m_iPages;
 				Controls::Base*			m_pPages[MaxPages];
+
+				Gwen::TextObject		m_PageFormatString;
 
 				Controls::Button*		m_Next;
 				Controls::Button*		m_Back;

@@ -54,6 +54,7 @@ GWEN_CONTROL_CONSTRUCTOR( PageControl )
 	m_Label->Dock( Pos::Fill );
 	m_Label->SetAlignment( Pos::Left | Pos::CenterV );
 	m_Label->SetText( "Page 1 or 2" );
+	m_PageFormatString.m_Unicode = L"Page %i of %i";
 }
 
 void PageControl::SetPageCount( unsigned int iNum )
@@ -74,6 +75,12 @@ void PageControl::SetPageCount( unsigned int iNum )
 	m_iCurrentPage = -1;
 	HideAll();
 	ShowPage( 0 );
+}
+
+void PageControl::SetPageFormatString( const TextObject & str )
+{
+	m_PageFormatString = str;
+	m_Label->SetText( Utility::Format( m_PageFormatString.GetUnicode().c_str(), m_iCurrentPage + 1, m_iPages ) );
 }
 
 void PageControl::HideAll()
@@ -99,7 +106,7 @@ void PageControl::ShowPage( unsigned int i )
 	m_iCurrentPage = i;
 	m_Back->SetDisabled( m_iCurrentPage == 0 );
 	m_Next->SetDisabled( m_iCurrentPage >= m_iPages );
-	m_Label->SetText( Utility::Format( L"Page %i of %i", m_iCurrentPage + 1, m_iPages ) );
+	m_Label->SetText( Utility::Format( m_PageFormatString.GetUnicode().c_str(), m_iCurrentPage + 1, m_iPages ) );
 
 	if ( GetUseFinishButton() )
 	{
