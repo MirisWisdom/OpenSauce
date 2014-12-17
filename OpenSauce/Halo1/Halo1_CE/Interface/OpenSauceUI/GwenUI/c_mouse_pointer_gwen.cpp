@@ -11,69 +11,72 @@
 
 #include <Gwen/Gwen.h>
 
+#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Definitions/c_control_definition.hpp"
 
 namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
-		void c_mouse_pointer_gwen::Initialize(ControlFactory::c_control_factory& control_factory, Control::i_canvas& canvas)
-		{
+		c_mouse_pointer_gwen::c_mouse_pointer_gwen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& canvas)
+			: m_control_factory(control_factory)
+			, m_canvas(canvas)
+		{ }
+
+		void c_mouse_pointer_gwen::BuildMouse(Input::i_control_input& control_input)
+		{		
 			// Create the mouse pointer control
 			Definitions::c_control_definition mouse_definition;
 			mouse_definition.m_type = "Pointer";
 
-			auto& color = mouse_definition.m_properties.AddEntry();
-			color.m_name = "Color";
-			color.m_value = "255 255 0 255";
+			m_mouse_control = m_control_factory.BuildControl(m_canvas, mouse_definition);
+			m_position_property = m_mouse_control->GetPropertyInterface(K_PROPERTY_POSITION_ID);
 
-			auto& size = mouse_definition.m_properties.AddEntry();
-			size.m_name = "Size";
-			size.m_value = "30 30";
-
-			m_mouse_control = control_factory.BuildControl(canvas, mouse_definition);
 			Hide();
+
+			control_input.AttachMouseInputHandler(this);
 		}
 
-		void c_mouse_pointer_gwen::Release()
+		void c_mouse_pointer_gwen::DestroyMouse(Input::i_control_input& control_input)
 		{
+			control_input.DetachMouseInputHandler(this);
+			m_position_property = nullptr;
 			m_mouse_control.reset();
-		}
-
-		void c_mouse_pointer_gwen::SetPosition(const int x, const int y)
-		{
-			auto& gwen_control = *CAST_PTR(Gwen::Controls::Base*, m_mouse_control->GetControlPtr());
-
-			gwen_control.SetPos(x, y);
-		}
-
-		void c_mouse_pointer_gwen::GetPosition(int& x, int& y)
-		{
-			auto& gwen_control = *CAST_PTR(Gwen::Controls::Base*, m_mouse_control->GetControlPtr());
-
-			auto position = gwen_control.GetPos();
-			
-			x = position.x;
-			y = position.y;
 		}
 
 		void c_mouse_pointer_gwen::Show()
 		{
+			if(!m_mouse_control)
+			{
+				return;
+			}
+
 			auto& gwen_control = *CAST_PTR(Gwen::Controls::Base*, m_mouse_control->GetControlPtr());
 
 			gwen_control.SetDisabled(false);
 			gwen_control.Show();
 			gwen_control.BringToFront();
-			gwen_control.SetMouseInputEnabled(false);
 		}
 
 		void c_mouse_pointer_gwen::Hide()
 		{
+			if(!m_mouse_control)
+			{
+				return;
+			}
+
 			auto& gwen_control = *CAST_PTR(Gwen::Controls::Base*, m_mouse_control->GetControlPtr());
 
 			gwen_control.Hide();
 			gwen_control.SetDisabled(true);
 		}
+		
+#pragma region i_control_mouse_handler
+		void c_mouse_pointer_gwen::OnMousePositionUpdate(const point2d& absolute, const point2d& relative)
+		{
+			m_position_property->Set(*m_mouse_control, Control::s_interface_value(absolute));
+		}
+#pragma endregion
 	};};};
 };
 #endif

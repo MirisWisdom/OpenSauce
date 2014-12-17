@@ -115,6 +115,7 @@ namespace Gwen
 				virtual void DrawCategoryHolder( Controls::Base* ctrl ) = 0;
 				virtual void DrawCategoryInner( Controls::Base* ctrl, bool bCollapsed ) = 0;
 
+				virtual void DrawPointer( Controls::Base* ctrl, bool bDepressed ) = 0;
 
 				virtual void SetRender( Gwen::Renderer::Base* renderer )
 				{

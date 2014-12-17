@@ -229,9 +229,7 @@
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\ImagePanel.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Label.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\LabelClickable.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Position.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Table.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Tile.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\ListBox.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Menu.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuItem.h" />
@@ -285,7 +283,6 @@
     <ClInclude Include="..\..\shared\Include\GWEN\Macros.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Platform.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Skin.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Skins\Simple.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Skins\TexturedBase.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Skins\Texturing.h" />
     <ClInclude Include="..\..\shared\Include\GWEN\Structures.h" />
@@ -401,6 +398,7 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.cpp" />
@@ -551,6 +549,7 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.hpp" />
@@ -558,6 +557,8 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_keyboard_handler.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_mouse_handler.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\i_visibility_toggle.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\resource_id.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_definition.hpp" />

@@ -16,7 +16,7 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
 #pragma region i_canvas
-			void c_canvas_gwen::Initialize(IDirect3DDevice9* device, c_packed_file& ui_package)
+			void c_canvas_gwen::Initialize(IDirect3DDevice9* device, c_packed_file& ui_package, Input::i_control_input& control_input)
 			{
 				m_renderer = std::make_unique<c_gwen_renderer_halo>(device, ui_package);
 				m_skin = std::make_unique<Gwen::Skin::TexturedBase>(nullptr);
@@ -25,10 +25,16 @@ namespace Yelo
 				m_canvas->SetDrawBackground(false);
 				m_skin->SetRender(m_renderer.get());
 				m_skin->Init( "OpenSauceUISkin" );
+
+				control_input.AttachMouseInputHandler(this);
+				control_input.AttachKeyboardInputHandler(this);
 			}
 
-			void c_canvas_gwen::Release()
+			void c_canvas_gwen::Release(Input::i_control_input& control_input)
 			{
+				control_input.DetachMouseInputHandler(this);
+				control_input.DetachKeyboardInputHandler(this);
+
 				m_canvas.reset();
 				m_skin.reset();
 
@@ -120,6 +126,88 @@ namespace Yelo
 			Control::t_control_list& c_canvas_gwen::Controls()
 			{
 				return m_child_controls;
+			}
+#pragma endregion
+			
+#pragma region i_control_mouse_handler
+			void c_canvas_gwen::OnMousePositionUpdate(const point2d& absolute, const point2d& relative)
+			{
+				m_canvas->InputMouseMoved(absolute.x, absolute.y, relative.x, relative.y);
+			}
+
+			void c_canvas_gwen::OnMouseButtonUpdate(const int button, bool value)
+			{
+				m_canvas->InputMouseButton(button, value);
+			}
+
+			void c_canvas_gwen::OnMouseWheelUpdate(const int value)
+			{
+				m_canvas->InputMouseWheel(value);
+			}
+#pragma endregion
+
+#pragma region i_control_keyboard_handler
+			void c_canvas_gwen::OnKeyboardCharacterPressed(const wchar_t character)
+			{
+				m_canvas->InputCharacter(character);
+			}
+
+			void c_canvas_gwen::OnKeyboardButtonUpdate(const Enums::Key key, const bool value)
+			{
+				// Map special keys to gwens key enum values
+				int gwen_key = -1;
+				switch(key)
+				{
+					case Enums::_KeyLShift:
+					case Enums::_KeyRShift:
+						gwen_key = Gwen::Key::Shift;
+						break;
+					case Enums::_KeyEnter:
+					case Enums::_KeyNumEnter:
+						gwen_key = Gwen::Key::Return;
+						break;
+					case Enums::_KeyBackspace:
+						gwen_key = Gwen::Key::Backspace;
+						break;
+					case Enums::_KeyDelete:
+						gwen_key = Gwen::Key::Delete;
+						break;
+					case Enums::_KeyLeft:
+						gwen_key = Gwen::Key::Left;
+						break;
+					case Enums::_KeyRight:
+						gwen_key = Gwen::Key::Right;
+						break;
+					case Enums::_KeyTab:
+						gwen_key = Gwen::Key::Tab;
+						break;
+					case Enums::_KeyHome:
+						gwen_key = Gwen::Key::Home;
+						break;
+					case Enums::_KeyEnd:
+						gwen_key = Gwen::Key::End;
+						break;
+					case Enums::_KeyLCtrl:
+					case Enums::_KeyRCtrl:
+						gwen_key = Gwen::Key::Control;
+						break;
+					case Enums::_KeyLAlt:
+					case Enums::_KeyRAlt:
+						gwen_key = Gwen::Key::Alt;
+						break;
+					case Enums::_KeyUp:
+						gwen_key = Gwen::Key::Up;
+						break;
+					case Enums::_KeyDown:
+						gwen_key = Gwen::Key::Down;
+						break;
+					case Enums::_KeyEsc:
+						gwen_key = Gwen::Key::Escape;
+						break;
+					YELO_ASSERT_CASE_UNREACHABLE();
+				};
+
+				m_canvas->InputKey(gwen_key, value);
 			}
 #pragma endregion
 	};};};

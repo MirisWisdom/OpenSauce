@@ -22,12 +22,13 @@ namespace Yelo
 		{
 			bool m_ignore_caps_lock;
 			PAD24;
-			Gwen::UnicodeChar m_lowercase;
-			Gwen::UnicodeChar m_uppercase;
+			wchar_t m_lowercase;
+			wchar_t m_uppercase;
 		};
 
-		static const s_wchar_case g_gwen_character_map[Enums::_Key] =
+		static const s_wchar_case g_character_map[Enums::_Key] =
 		{
+			{ true, 0, 0 },				// 0
 			{ true, 0, 0 },
 			{ true, 0, 0 },
 			{ true, 0, 0 },
@@ -37,8 +38,7 @@ namespace Yelo
 			{ true, 0, 0 },
 			{ true, 0, 0 },
 			{ true, 0, 0 },
-			{ true, 0, 0 },
-			{ true, 0, 0 },
+			{ true, 0, 0 },				// 10
 			{ true, 0, 0 },
 			{ true, 0, 0 },
 			{ true, 0, 0 },
@@ -50,7 +50,7 @@ namespace Yelo
 			{ true, L'1', L'!' },
 			{ true, L'2', L'"' },
 			{ true, L'3', L'#' },
-			{ true, L'4', L'$' },
+			{ true, L'4', L'$' },		// 20
 			{ true, L'5', L'%' },
 			{ true, L'6', L'^' },
 			{ true, L'7', L'&' },
@@ -61,7 +61,7 @@ namespace Yelo
 			{ true, L'=', L'+' },
 			{ true, 0, 0 },
 
-			{ true, 0, 0 },
+			{ true, 0, 0 },				// 30
 			{ false, L'q', L'Q' },
 			{ false, L'w', L'W' },
 			{ false, L'e', L'E' },
@@ -71,7 +71,7 @@ namespace Yelo
 			{ false, L'u', L'U' },
 			{ false, L'i', L'I' },
 			{ false, L'o', L'O' },
-			{ false, L'p', L'P' },
+			{ false, L'p', L'P' },		// 40
 			{ true, L'[', L'{' },
 			{ true, L']', L'}' },
 			{ true, L'\\', L'|' },
@@ -82,7 +82,7 @@ namespace Yelo
 			{ false, L'd', L'D' },
 			{ false, L'f', L'F' },
 			{ false, L'g', L'G' },
-			{ false, L'h', L'H' },
+			{ false, L'h', L'H' },		// 50
 			{ false, L'j', L'J' },
 			{ false, L'k', L'K' },
 			{ false, L'l', L'L' },
@@ -93,7 +93,7 @@ namespace Yelo
 			{ true, 0, 0 },
 			{ false, L'z', L'Z' },
 			{ false, L'x', L'X' },
-			{ false, L'c', L'C' },
+			{ false, L'c', L'C' },		// 60
 			{ false, L'v', L'V' },
 			{ false, L'b', L'B' },
 			{ false, L'n', L'N' },
@@ -104,7 +104,7 @@ namespace Yelo
 			{ true, 0, 0 },
 
 			{ true, 0, 0 },
-			{ true, 0, 0 },
+			{ true, 0, 0 },				// 70
 			{ true, 0, 0 },
 			{ true, L' ', L' ' },
 			{ true, 0, 0 },
@@ -115,7 +115,7 @@ namespace Yelo
 			{ true, 0, 0 },
 			{ true, 0, 0 },
 			{ true, 0, 0 },
-			{ true, 0, 0 },
+			{ true, 0, 0 },				// 80
 
 			{ true, 0, 0 },
 			{ true, 0, 0 },
@@ -127,7 +127,7 @@ namespace Yelo
 			{ true, 0, 0 },
 			{ true, L'/', L'/' },
 			{ true, L'*', L'+' },
-			{ true, L'0', L'0' },
+			{ true, L'0', L'0' },		// 90
 			{ true, L'1', L'1' },
 			{ true, L'2', L'2' },
 			{ true, L'3', L'3' },
@@ -137,59 +137,117 @@ namespace Yelo
 			{ true, L'7', L'7' },
 			{ true, L'8', L'8' },
 			{ true, L'9', L'9' },
-			{ true, L'-', L'-' },
+			{ true, L'-', L'-' },		// 100
 			{ true, L'+', L'+' },
 			{ true, 0, 0 },
 			{ true, L'.', L'.' },
 		};
 #pragma endregion
 
-		void c_control_input_halo::Initialize(Gwen::Controls::Canvas* canvas)
-		{
-			m_canvas = canvas;
-		}
+		c_control_input_halo::c_control_input_halo()
+			: m_mouse_input_handlers()
+			, m_keyboard_input_handlers()
+			, m_mouse_bounds()
+			, m_mouse_position()
+		{ }
 
 		void c_control_input_halo::SetMouseBounds(const int min_x, const int max_x, const int min_y, const int max_y)
 		{
-			m_mouse.bounds.left = min_x;
-			m_mouse.bounds.right = max_x;
-			m_mouse.bounds.bottom = min_y;
-			m_mouse.bounds.top = max_y;
-		}
-
-		void c_control_input_halo::SetMousePosition(const int pos_x, const int pos_y)
-		{
-			m_mouse.position.x = pos_x;
-			m_mouse.position.y = pos_y;
-		}
-
-		void c_control_input_halo::GetMousePosition(int& pos_x, int& pos_y)
-		{
-			pos_x = m_mouse.position.x;
-			pos_y = m_mouse.position.y;
+			m_mouse_bounds.left = min_x;
+			m_mouse_bounds.right = max_x;
+			m_mouse_bounds.bottom = min_y;
+			m_mouse_bounds.top = max_y;
 		}
 
 		void c_control_input_halo::Update()
 		{
-			if (!m_canvas)
+			//UpdateMouseMovement();
+			//UpdateMouseButtons();
+			UpdateKeyboardButtons();
+		}
+
+		void c_control_input_halo::AttachMouseInputHandler(i_control_mouse_handler* handler)
+		{
+			auto existing_entry = std::find_if(m_mouse_input_handlers.begin(), m_mouse_input_handlers.end(),
+				[handler](i_control_mouse_handler* entry)
+				{
+					return entry == handler;
+				});
+
+			if(existing_entry == m_mouse_input_handlers.end())
 			{
-				return;
+				m_mouse_input_handlers.push_back(handler);
 			}
+		}
 
+		void c_control_input_halo::DetachMouseInputHandler(const i_control_mouse_handler* handler)
+		{
+			auto existing_entry = std::find_if(m_mouse_input_handlers.begin(), m_mouse_input_handlers.end(),
+				[handler](const i_control_mouse_handler* entry)
+				{
+					return entry == handler;
+				});
+
+			if(existing_entry != m_mouse_input_handlers.end())
+			{
+				m_mouse_input_handlers.erase(existing_entry);
+			}
+		}
+
+		void c_control_input_halo::AttachKeyboardInputHandler(i_control_keyboard_handler* handler)
+		{
+			auto existing_entry = std::find_if(m_keyboard_input_handlers.begin(), m_keyboard_input_handlers.end(),
+				[handler](i_control_keyboard_handler* entry)
+				{
+					return entry == handler;
+				});
+
+			if(existing_entry == m_keyboard_input_handlers.end())
+			{
+				m_keyboard_input_handlers.push_back(handler);
+			}
+		}
+
+		void c_control_input_halo::DetachKeyboardInputHandler(const i_control_keyboard_handler* handler)
+		{
+			auto existing_entry = std::find_if(m_keyboard_input_handlers.begin(), m_keyboard_input_handlers.end(),
+				[handler](const i_control_keyboard_handler* entry)
+				{
+					return entry == handler;
+				});
+
+			if(existing_entry != m_keyboard_input_handlers.end())
+			{
+				m_keyboard_input_handlers.erase(existing_entry);
+			}
+		}
+
+		void c_control_input_halo::UpdateMouseMovement()
+		{
 			// Update the mouse position
-			int x = m_mouse.position.x + Yelo::Input::GetMouseAxisState(Enums::_MouseAxisX);
-			int y = m_mouse.position.y + -Yelo::Input::GetMouseAxisState(Enums::_MouseAxisY);
-			int dx = x - m_mouse.position.x;
-			int dy = y - m_mouse.position.y;
+			int x = m_mouse_position.x + Yelo::Input::GetMouseAxisState(Enums::_MouseAxisX);
+			int y = m_mouse_position.y + -Yelo::Input::GetMouseAxisState(Enums::_MouseAxisY);
+			int dx = x - m_mouse_position.x;
+			int dy = y - m_mouse_position.y;
 
-			m_mouse.position.x = __min(x,					m_mouse.bounds.right);
-			m_mouse.position.x = __max(m_mouse.position.x,	m_mouse.bounds.left);
-			m_mouse.position.y = __min(y,					m_mouse.bounds.top);
-			m_mouse.position.y = __max(m_mouse.position.y,	m_mouse.bounds.bottom);
+			m_mouse_position.x = __min(x,					m_mouse_bounds.right);
+			m_mouse_position.x = __max(m_mouse_position.x,	m_mouse_bounds.left);
+			m_mouse_position.y = __min(y,					m_mouse_bounds.top);
+			m_mouse_position.y = __max(m_mouse_position.y,	m_mouse_bounds.bottom);
 
-			m_canvas->InputMouseMoved(m_mouse.position.x, m_mouse.position.y, dx, dy);
-#ifdef WM_MOUSEWHEEL 
-			m_canvas->InputMouseWheel(Yelo::Input::GetMouseAxisState(Enums::_MouseAxisWheel));
+			for(auto handler : m_mouse_input_handlers)
+			{
+				handler->OnMousePositionUpdate(m_mouse_position, point2d { dx, dy });
+			}
+		}
+
+		void c_control_input_halo::UpdateMouseButtons()
+		{
+#ifdef WM_MOUSEWHEEL
+			for(auto handler : m_mouse_input_handlers)
+			{
+				handler->OnMouseWheelUpdate(Yelo::Input::GetMouseAxisState(Enums::_MouseAxisWheel));
+			}
 #endif
 
 			// Update the mouse button's
@@ -198,17 +256,24 @@ namespace Yelo
 				{
 					auto value = Yelo::Input::GetMouseButtonState(Enums::_MouseButton1) > 0;
 
-					if(value != m_mouse.mouse_button_states[index])
+					if(value != m_mouse_button_states[index])
 					{
-						m_canvas->InputMouseButton( index, value);
-						m_mouse.mouse_button_states[index] = value;
+						for(auto handler : m_mouse_input_handlers)
+						{
+							handler->OnMouseButtonUpdate(index, value);
+						}
+
+						m_mouse_button_states[index] = value;
 					}
 				};
 			
 			get_mouse_input(Enums::_MouseButton1, 0);
 			get_mouse_input(Enums::_MouseButton2, 1);
 			get_mouse_input(Enums::_MouseButton3, 2);
+		}
 
+		void c_control_input_halo::UpdateKeyboardButtons()
+		{
 			// Update the keyboard key's
 			for(int i = 0; i < Enums::_Key; i++)
 			{
@@ -216,50 +281,83 @@ namespace Yelo
 
 				// Only process a keys input if it has changed since the last update
 				bool key_state = (Yelo::Input::GetKeyState(key) > 0);
-				if(m_keyboard.key_states[i] == key_state)
-					continue;
-				m_keyboard.key_states[i] = key_state;
-
-				// These keys are not supported/handled by gwen so skip them
-				if(Enums::_KeyCaps == key) continue;
-				else if(Enums::_KeyInsert == key) continue;
-				else if(Enums::_KeyPgUp == key) continue;
-				else if(Enums::_KeyPgDown == key) continue;
-				else if(Enums::_KeyAppsMenu == key) continue;
-				else if(Enums::_KeyLWin == key) continue;
-				else if(Enums::_KeyNumsLock == key) continue;
-				else if((key >= Enums::_KeyF1) && (key <= Enums::_KeyPause)) continue;
-
-				// Map special keys to gwens key enum values
-				int gwen_key = -1;
-				if((Enums::_KeyLShift == i) || (Enums::_KeyRShift == i)) gwen_key = Gwen::Key::Shift;
-				else if((Enums::_KeyEnter == i) || (Enums::_KeyNumEnter == i)) gwen_key = Gwen::Key::Return;
-				else if(Enums::_KeyBackspace == i) gwen_key = Gwen::Key::Backspace;
-				else if(Enums::_KeyDelete == i) gwen_key = Gwen::Key::Delete;
-				else if(Enums::_KeyLeft == i) gwen_key = Gwen::Key::Left;
-				else if(Enums::_KeyRight == i) gwen_key = Gwen::Key::Right;
-				else if(Enums::_KeyTab == i) gwen_key = Gwen::Key::Tab;
-				else if(Enums::_KeySpace == i) gwen_key = Gwen::Key::Space;
-				else if(Enums::_KeyHome == i) gwen_key = Gwen::Key::Home;
-				else if(Enums::_KeyEnd == i) gwen_key = Gwen::Key::End;
-				else if((Enums::_KeyLCtrl == i) || (Enums::_KeyRCtrl == i)) gwen_key = Gwen::Key::Control;
-				else if((Enums::_KeyLAlt == i) || (Enums::_KeyRAlt == i)) gwen_key = Gwen::Key::Alt;
-				else if(Enums::_KeySpace == i) gwen_key = Gwen::Key::Space;
-				else if(Enums::_KeyUp == i) gwen_key = Gwen::Key::Up;
-				else if(Enums::_KeyDown == i) gwen_key = Gwen::Key::Down;
-				else if(Enums::_KeyEsc == i) gwen_key = Gwen::Key::Escape;
-
-				// If the key is a letter, or if it is the space bar, send a character to gwen
-				if((gwen_key == -1) || (gwen_key == Gwen::Key::Space))
+				if(m_keyboard_states[i] == key_state)
 				{
-					auto& mapped_character = g_gwen_character_map[i];
+					continue;
+				}
+				m_keyboard_states[i] = key_state;
+
+				// These keys are not supported/handled so skip them
+				
+				bool is_handled = true;
+				switch(key)
+				{
+					case Enums::_KeyCaps:
+					case Enums::_KeyInsert:
+					case Enums::_KeyPgUp:
+					case Enums::_KeyPgDown:
+					case Enums::_KeyAppsMenu:
+					case Enums::_KeyLWin:
+					case Enums::_KeyNumsLock:
+					case Enums::_KeyF1:
+					case Enums::_KeyF2:
+					case Enums::_KeyF3:
+					case Enums::_KeyF4:
+					case Enums::_KeyF5:
+					case Enums::_KeyF6:
+					case Enums::_KeyF7:
+					case Enums::_KeyF8:
+					case Enums::_KeyF9:
+					case Enums::_KeyF10:
+					case Enums::_KeyF11:
+					case Enums::_KeyF12:
+					case Enums::_KeyPrntScrn:
+					case Enums::_KeyScrollLock:
+					case Enums::_KeyPause:
+						is_handled = false;
+				};
+
+				if(!is_handled)
+				{
+					continue;
+				}
+
+				bool is_character = true;
+				switch(key)
+				{
+					case Enums::_KeyLShift:
+					case Enums::_KeyRShift:
+					case Enums::_KeyEnter:
+					case Enums::_KeyNumEnter:
+					case Enums::_KeyBackspace:
+					case Enums::_KeyDelete:
+					case Enums::_KeyLeft:
+					case Enums::_KeyRight:
+					case Enums::_KeyTab:
+					case Enums::_KeyHome:
+					case Enums::_KeyEnd:
+					case Enums::_KeyLCtrl:
+					case Enums::_KeyRCtrl:
+					case Enums::_KeyLAlt:
+					case Enums::_KeyRAlt:
+					case Enums::_KeyUp:
+					case Enums::_KeyDown:
+					case Enums::_KeyEsc:
+						is_character = false;
+						break;
+				};
+
+				// If the key is a character
+				if(is_character)
+				{
+					auto& mapped_character = g_character_map[i];
 
 					YELO_ASSERT(mapped_character.m_lowercase != 0);
 
 					// Only send a character when the key is pressed
 					if(key_state)
 					{
-						Gwen::UnicodeChar character;
+						wchar_t character;
 
 						// Manually handle toggling between upper and lower case
 						bool use_capslock = ((GetKeyState(VK_CAPITAL) & 0x0001) > 0) && !mapped_character.m_ignore_caps_lock;
@@ -274,15 +372,20 @@ namespace Yelo
 						else
 							character = mapped_character.m_lowercase;
 
-						// Send the character to gwen
-						m_canvas->InputCharacter( character );
+						// Send the character to the handlers
+						for(auto handler : m_keyboard_input_handlers)
+						{
+							handler->OnKeyboardCharacterPressed(character);
+						}
 					}
 				}
-
-				// If the key is not a letter key, send it to gwen
-				if(gwen_key != -1)
+				else
 				{
-					m_canvas->InputKey(gwen_key, key_state);
+					// Send the character to the handlers
+					for(auto handler : m_keyboard_input_handlers)
+					{
+						handler->OnKeyboardButtonUpdate(key, key_state);
+					}
 				}
 			}
 		}

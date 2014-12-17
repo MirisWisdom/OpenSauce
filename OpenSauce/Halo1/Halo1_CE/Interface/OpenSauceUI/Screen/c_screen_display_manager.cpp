@@ -158,7 +158,7 @@ namespace Yelo
 			// If the escape button triggered a screen to be closed, reset it's state so that Halo doesn't react to it
 			if(screen_esc_hidden)
 			{
-				Input::SetKeyState(Enums::_KeyEsc, 0);
+				Yelo::Input::SetKeyState(Enums::_KeyEsc, 0);
 			}
 		}
 		
@@ -255,7 +255,7 @@ namespace Yelo
 			if(m_disable_movement_count <= 0)
 			{
 				m_disable_movement_count = 0;
-				Input::AllowMovement(true);
+				Yelo::Input::AllowMovement(true);
 			}
 		}
 
@@ -263,7 +263,7 @@ namespace Yelo
 		{
 			if(!m_disable_movement_count)
 			{
-				Input::AllowMovement(false);
+				Yelo::Input::AllowMovement(false);
 			}
 
 			m_disable_movement_count++;

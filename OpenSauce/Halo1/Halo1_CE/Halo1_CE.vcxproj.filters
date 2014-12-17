@@ -412,13 +412,7 @@
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Label.h">
       <Filter>Common\Shared\GWEN\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Position.h">
-      <Filter>Common\Shared\GWEN\Controls\Layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Table.h">
-      <Filter>Common\Shared\GWEN\Controls\Layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Tile.h">
       <Filter>Common\Shared\GWEN\Controls\Layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\BaseProperty.h">
@@ -435,9 +429,6 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Text.h">
       <Filter>Common\Shared\GWEN\Controls\Property</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GWEN\Skins\Simple.h">
-      <Filter>Common\Shared\GWEN\Skins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\GWEN\Skins\TexturedBase.h">
       <Filter>Common\Shared\GWEN\Skins</Filter>
@@ -591,6 +582,15 @@
     </ClInclude>
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_mouse_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_keyboard_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1199,6 +1199,9 @@
       <Filter>Interface\OpenSauceUI\Definitions</Filter>
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClCompile>
   </ItemGroup>

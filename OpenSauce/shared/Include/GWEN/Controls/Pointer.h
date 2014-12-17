@@ -26,13 +26,6 @@ namespace Gwen
 				GWEN_CONTROL( Pointer, Controls::Base );
 
 				virtual void Render( Skin::Base* skin );
-				
-				const Gwen::Color & GetColor() { return m_Color; }
-				void SetColor( const Gwen::Color & col ) { m_Color = col; }
-
-			protected:
-				
-				Gwen::Color		m_Color;
 		};
 	}
 }

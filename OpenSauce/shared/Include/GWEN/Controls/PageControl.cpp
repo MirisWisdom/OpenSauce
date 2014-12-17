@@ -105,7 +105,7 @@ void PageControl::ShowPage( unsigned int i )
 
 	m_iCurrentPage = i;
 	m_Back->SetDisabled( m_iCurrentPage == 0 );
-	m_Next->SetDisabled( m_iCurrentPage >= m_iPages );
+	m_Next->SetDisabled( m_iCurrentPage >= m_iPages - 1 );
 	m_Label->SetText( Utility::Format( m_PageFormatString.GetUnicode().c_str(), m_iCurrentPage + 1, m_iPages ) );
 
 	if ( GetUseFinishButton() )

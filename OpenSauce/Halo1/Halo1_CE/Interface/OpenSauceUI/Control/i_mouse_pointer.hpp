@@ -8,6 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include "Interface/OpenSauceUI/Input/i_control_input.hpp"
 #include "Interface/OpenSauceUI/Control/i_canvas.hpp"
 #include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
 
@@ -22,28 +23,16 @@ namespace Yelo
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Initializes the mouse pointer. </summary>
+			/// <summary>	Builds the mouse. </summary>
 			///
-			/// <param name="control_factory">	[in] The control factory to create the pointer with. </param>
-			/// <param name="canvas">		  	[in] The target canvas. </param>
-			virtual void Initialize(ControlFactory::c_control_factory& control_factory, i_canvas& canvas) = 0;
-
-			/// <summary>	Releases the mouse pointer. </summary>
-			virtual void Release() = 0;
+			/// <param name="control_input">	[in] The control input manager. </param>
+			virtual void BuildMouse(Input::i_control_input& control_input) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Sets the pointer's position. </summary>
+			/// <summary>	Destroys the mouse. </summary>
 			///
-			/// <param name="x">	The x screen coordinate. </param>
-			/// <param name="y">	The y screen coordinate. </param>
-			virtual void SetPosition(const int x, const int y) = 0;
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Gets the pointer's position. </summary>
-			///
-			/// <param name="x">	[out] The output x coordinate. </param>
-			/// <param name="y">	[out] The output y coordinate. </param>
-			virtual void GetPosition(int& x, int& y) = 0;
+			/// <param name="control_input">	[in] The control input manager. </param>
+			virtual void DestroyMouse(Input::i_control_input& control_input) = 0;
 
 #pragma region i_visibility_toggle
 			/// <summary>	Shows the object. </summary>

@@ -10,10 +10,16 @@
 
 #include <YeloLib/Halo1/files/packed_file.hpp>
 
+#include "Interface/OpenSauceUI/Input/i_control_input.hpp"
 #include "Interface/OpenSauceUI/Control/i_control.hpp"
 
 namespace Yelo
 {
+	namespace Interface { namespace OpenSauceUI { namespace Input
+	{
+		class i_control_input;
+	};};};
+
 	namespace Interface { namespace OpenSauceUI { namespace Control
 	{
 		/// <summary>	Interface for an OpenSauceUI canvas. </summary>
@@ -25,12 +31,13 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Initializes the implementations renderer. </summary>
 			///
-			/// <param name="device">	 	[in] The current render device. </param>
-			/// <param name="ui_package">	[in] The ui package. </param>
-			virtual void Initialize(IDirect3DDevice9* device, c_packed_file& ui_package) = 0;
+			/// <param name="device">			[in] The current render device. </param>
+			/// <param name="ui_package">   	[in] The ui package. </param>
+			/// <param name="control_input">	[in] The control input. </param>
+			virtual void Initialize(IDirect3DDevice9* device, c_packed_file& ui_package, Input::i_control_input& control_input) = 0;
 			
 			/// <summary>	Releases the implementations renderer. </summary>
-			virtual void Release() = 0;
+			virtual void Release(Input::i_control_input& control_input) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets the size of the canvas. </summary>
