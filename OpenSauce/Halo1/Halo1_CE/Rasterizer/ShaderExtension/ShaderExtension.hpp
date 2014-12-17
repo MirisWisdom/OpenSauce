@@ -59,9 +59,11 @@ namespace Yelo
 				bool SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetSpecColor(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetVertexLight(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
-
+				
 				void SetNormalMapsEnabled(bool value);
 				bool GetNormalMapsEnabled();
+				void SetDetailNormalMapsEnabled(bool value);
+				bool GetDetailNormalMapsEnabled();
 				void SetSpecularMapsEnabled(bool value);
 				bool GetSpecularMapsEnabled();
 				void SetSpecularLightingEnabled(bool value);
