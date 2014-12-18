@@ -27,7 +27,7 @@ namespace Yelo
 		struct ControlStates
 		{
 			// key states (how long its been pressed until 0xFF, 0 if not pressed)
-			byte Keys[Enums::_Key];
+			byte Keys[Enums::k_number_of_keys];
 
 			PAD(0, sizeof(byte)*383);
 
@@ -82,7 +82,7 @@ namespace Yelo
 		{
 			int32 state = 0;
 
-			if(device == Enums::_ControlDeviceKeyboard)		state = GetKeyState( (Enums::Key)index );
+			if(device == Enums::_ControlDeviceKeyboard)		state = GetKeyState( (Enums::key_code)index );
 			else if(device == Enums::_ControlDeviceMouse)
 			{
 				if(type == Enums::_ControlTypeButton)		state = GetMouseButtonState( (Enums::MouseButton)index );
@@ -109,7 +109,7 @@ namespace Yelo
 
 		void SetControlState(int16 device, int16 type, int16 index, int32 state)
 		{
-			if(device == Enums::_ControlDeviceKeyboard)		SetKeyState( (Enums::Key)index, (byte)state);
+			if(device == Enums::_ControlDeviceKeyboard)		SetKeyState( (Enums::key_code)index, (byte)state);
 			else if(device == Enums::_ControlDeviceMouse)
 			{
 				if(type == Enums::_ControlTypeButton)		SetMouseButtonState( (Enums::MouseButton)index, (byte)state);
@@ -128,8 +128,8 @@ namespace Yelo
 		int16 SettingsGetIndex(Enums::PlayerControl control)			{ return GET_PTR2(Settings)[control].Index; }
 		int16 SettingsGetDirection(Enums::PlayerControl control)		{ return GET_PTR2(Settings)[control].Direction; }
 
-		byte GetKeyState(Enums::Key key)								{ return GET_PTR2(ControlState)->Keys[key]; }
-		void SetKeyState(Enums::Key key, byte state)					{ GET_PTR2(ControlState)->Keys[key] = state; }
+		byte GetKeyState(Enums::key_code key)							{ return GET_PTR2(ControlState)->Keys[key]; }
+		void SetKeyState(Enums::key_code key, byte state)				{ GET_PTR2(ControlState)->Keys[key] = state; }
 
 
 		byte GetMouseButtonState(Enums::MouseButton button)				{ return GET_PTR2(ControlState)->MouseButton[button]; }

@@ -19,6 +19,7 @@
 #include "Common/FileIO.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Interface/Controls.hpp"
+#include "Interface/Keystone.hpp"
 
 #include "Interface/OpenSauceUI/resource_id.hpp"
 #include "Interface/OpenSauceUI/Control/i_canvas.hpp"
@@ -84,7 +85,9 @@ namespace Yelo
 			g_canvas = std::make_unique<GwenUI::c_canvas_gwen>();
 			g_mouse_pointer = std::make_unique<GwenUI::c_mouse_pointer_gwen>(g_control_factory, *g_canvas);
 			g_screen_display_manager = std::make_unique<Screen::c_screen_display_manager>(*g_canvas, *g_mouse_pointer, g_control_factory);
-			
+
+			Keystone::AttachWindowsMessageHandler(&g_control_input);
+
 			g_control_factory.AddControl("Label", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_label>());
 			g_control_factory.AddControl("CheckBox", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_checkbox>());
 			g_control_factory.AddControl("CheckBoxWithLabel", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_checkboxwithlabel>());
@@ -101,6 +104,8 @@ namespace Yelo
 
 		void Dispose()
 		{
+			Keystone::DetachWindowsMessageHandler(&g_control_input);
+
 			g_screen_display_manager.reset();
 			g_mouse_pointer.reset();
 			g_canvas.reset();
@@ -114,7 +119,10 @@ namespace Yelo
 				return;
 			}
 
-			g_control_input.Update();
+			if(g_screen_display_manager->ScreenActive())
+			{
+				g_control_input.Update();
+			}
 
 			// Update the UI according to the game's current state
 			bool in_menu =				Yelo::Input::IsInMenu();
@@ -143,7 +151,6 @@ namespace Yelo
 				game_state = Flags::_osui_game_state_main_menu;
 			}
 			g_screen_display_manager->SetGameState((Flags::osui_game_state)game_state);
-
 			g_screen_display_manager->Update();
 		}
 
@@ -151,7 +158,7 @@ namespace Yelo
 		void AddScreenController(cstring definition_name
 			, Flags::osui_game_state game_states
 			, Flags::osui_screen_flags screen_flags
-			, Enums::Key toggle_key = Enums::_Key)
+			, Enums::key_code toggle_key = Enums::k_number_of_keys)
 		{
 			Definitions::c_screen_definition screen_definition;
 			Screen::c_screen_definition_registry::GetScreenDefinition(g_ui_package, definition_name, screen_definition);
@@ -175,7 +182,7 @@ namespace Yelo
 					| Flags::_osui_screen_flags_show_cursor
 					| Flags::_osui_screen_flags_is_modal
 					| Flags::_osui_screen_flags_esckey_toggled)
-				, Enums::Key::_KeyF7);
+				, Enums::_key_code_f7);
 
 			AddScreenController<Screen::c_screen_controller_mainmenubottombar>("MainMenuBottomBar"
 				, Flags::_osui_game_state_main_menu
@@ -188,7 +195,7 @@ namespace Yelo
 				| Flags::_osui_screen_flags_is_modal
 				| Flags::_osui_screen_flags_show_cursor
 				| Flags::_osui_screen_flags_disable_movement)
-				, Enums::_KeyF7);
+				, Enums::_key_code_f7);
 
 			g_screen_display_manager->SetGameState(Flags::_osui_game_state_main_menu);
 		}

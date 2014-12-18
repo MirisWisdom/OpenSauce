@@ -30,7 +30,7 @@ namespace Yelo
 			///
 			/// <param name="key">  	The key. </param>
 			/// <param name="value">	The button state. </param>
-			virtual void OnKeyboardButtonUpdate(const Enums::Key key, const bool value) = 0;
+			virtual void OnKeyboardButtonUpdate(const Enums::key_code key, const bool value) = 0;
 		};
 	};};};
 };

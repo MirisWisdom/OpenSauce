@@ -10,6 +10,7 @@
 
 #include "Interface/OpenSauceUI/Input/i_control_input.hpp"
 #include "Interface/Controls.hpp"
+#include "Interface/Keystone.hpp"
 
 namespace Yelo
 {
@@ -18,6 +19,7 @@ namespace Yelo
 		/// <summary>	The control input class for the halo runtime. </summary>
 		class c_control_input_halo final
 			: public i_control_input
+			, public Keystone::i_windows_message_handler
 		{
 			std::vector<i_control_mouse_handler*> m_mouse_input_handlers;
 			std::vector<i_control_keyboard_handler*> m_keyboard_input_handlers;
@@ -26,8 +28,6 @@ namespace Yelo
 			Yelo::point2d m_mouse_position;
 			bool m_mouse_button_states[3];
 			PAD8;
-
-			bool m_keyboard_states[Enums::_Key];
 
 		public:
 			/// <summary>	Default constructor. </summary>
@@ -69,6 +69,15 @@ namespace Yelo
 			/// <param name="handler">	[in,out] If non-null, the handler. </param>
 			void DetachKeyboardInputHandler(const i_control_keyboard_handler* handler) override;
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Handles the message described by message. </summary>
+			///
+			/// <param name="message">	   	The windows message. </param>
+			/// <param name="been_handled">	Set to true if the message has been handled previously. </param>
+			///
+			/// <returns>	true if the message was handled, false if not. </returns>
+			bool HandleMessage(const MSG* message, const bool been_handled) override;
+
 		private:
 			/// <summary>	Updates the mouse movement. </summary>
 			void UpdateMouseMovement();
@@ -76,8 +85,18 @@ namespace Yelo
 			/// <summary>	Updates the mouse buttons. </summary>
 			void UpdateMouseButtons();
 
-			/// <summary>	Updates the keyboard buttons. </summary>
-			void UpdateKeyboardButtons();
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Sends a keyboard button. </summary>
+			///
+			/// <param name="key">  	The key. </param>
+			/// <param name="state">	The key state. </param>
+			void SendKeyboardButton(const Enums::key_code key, const bool state);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Sends a keyboard character. </summary>
+			///
+			/// <param name="character">	The character. </param>
+			void SendKeyboardCharacter(const wchar_t character);
 		};
 	};};};
 };
