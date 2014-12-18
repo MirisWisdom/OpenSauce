@@ -34,6 +34,35 @@ namespace Yelo
 
 		// should only be called by the unhandled exception filter
 		void ReleaseKeystone();
+
+#pragma region Message Pump
+		/// <summary>	The windows message handler interface. </summary>
+		class i_windows_message_handler
+			abstract
+		{
+		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Handles the message described by message. </summary>
+			///
+			/// <param name="message">	   	The windows message. </param>
+			/// <param name="been_handled">	Set to true if the message has been handled previously. </param>
+			///
+			/// <returns>	true if the message was handled, false if not. </returns>
+			virtual bool HandleMessage(const MSG* message, const bool been_handled) = 0;
+		};
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Attaches a windows message handler to the message pump. </summary>
+		///
+		/// <param name="handler">	[in] If non-null, the handler to attach. </param>
+		void AttachWindowsMessageHandler(i_windows_message_handler* handler);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Detaches a windows message handler from the message pump. </summary>
+		///
+		/// <param name="handler">	[in] If non-null, the handler to detach. </param>
+		void DetachWindowsMessageHandler(i_windows_message_handler* handler);
+#pragma endregion
 	};
 };
 #endif

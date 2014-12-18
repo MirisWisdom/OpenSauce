@@ -2353,7 +2353,7 @@ namespace Yelo
 			// cancel the map download if the player presses esc
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)
 			{
-				if(Input::GetKeyState(Enums::_KeyEsc))
+				if(Input::GetKeyState(Enums::_key_code_escape))
 					g_map_download_globals.m_map_download_update_stage = _map_download_update_stage_cancelled;
 			}
 

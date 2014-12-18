@@ -87,9 +87,9 @@ namespace Yelo
 
 		// Gets the current state of [key]
 		// The larger the return value, the longer its been held down
-		byte GetKeyState(Enums::Key key);
+		byte GetKeyState(Enums::key_code key);
 		// The larger the value of [state], the longer its been held down
-		void SetKeyState(Enums::Key key, byte state);
+		void SetKeyState(Enums::key_code key, byte state);
 
 
 		// Gets the current state of mouse [button]

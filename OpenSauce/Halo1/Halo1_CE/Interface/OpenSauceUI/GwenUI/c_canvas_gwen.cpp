@@ -152,60 +152,67 @@ namespace Yelo
 				m_canvas->InputCharacter(character);
 			}
 
-			void c_canvas_gwen::OnKeyboardButtonUpdate(const Enums::Key key, const bool value)
+			void c_canvas_gwen::OnKeyboardButtonUpdate(const Enums::key_code key, const bool value)
 			{
 				// Map special keys to gwens key enum values
 				int gwen_key = -1;
 				switch(key)
 				{
-					case Enums::_KeyLShift:
-					case Enums::_KeyRShift:
-						gwen_key = Gwen::Key::Shift;
-						break;
-					case Enums::_KeyEnter:
-					case Enums::_KeyNumEnter:
-						gwen_key = Gwen::Key::Return;
-						break;
-					case Enums::_KeyBackspace:
-						gwen_key = Gwen::Key::Backspace;
-						break;
-					case Enums::_KeyDelete:
-						gwen_key = Gwen::Key::Delete;
-						break;
-					case Enums::_KeyLeft:
-						gwen_key = Gwen::Key::Left;
-						break;
-					case Enums::_KeyRight:
-						gwen_key = Gwen::Key::Right;
-						break;
-					case Enums::_KeyTab:
-						gwen_key = Gwen::Key::Tab;
-						break;
-					case Enums::_KeyHome:
-						gwen_key = Gwen::Key::Home;
-						break;
-					case Enums::_KeyEnd:
-						gwen_key = Gwen::Key::End;
-						break;
-					case Enums::_KeyLCtrl:
-					case Enums::_KeyRCtrl:
-						gwen_key = Gwen::Key::Control;
-						break;
-					case Enums::_KeyLAlt:
-					case Enums::_KeyRAlt:
-						gwen_key = Gwen::Key::Alt;
-						break;
-					case Enums::_KeyUp:
-						gwen_key = Gwen::Key::Up;
-						break;
-					case Enums::_KeyDown:
-						gwen_key = Gwen::Key::Down;
-						break;
-					case Enums::_KeyEsc:
+					case Enums::_key_code_escape:
 						gwen_key = Gwen::Key::Escape;
 						break;
-					YELO_ASSERT_CASE_UNREACHABLE();
+					case Enums::_key_code_shift:
+					case Enums::_key_code_left_shift:
+					case Enums::_key_code_right_shift:
+						gwen_key = Gwen::Key::Shift;
+						break;
+					case Enums::_key_code_enter:
+					case Enums::_key_code_num_enter:
+						gwen_key = Gwen::Key::Return;
+						break;
+					case Enums::_key_code_backspace:
+						gwen_key = Gwen::Key::Backspace;
+						break;
+					case Enums::_key_code_delete:
+						gwen_key = Gwen::Key::Delete;
+						break;
+					case Enums::_key_code_tab:
+						gwen_key = Gwen::Key::Tab;
+						break;
+					case Enums::_key_code_home:
+						gwen_key = Gwen::Key::Home;
+						break;
+					case Enums::_key_code_end:
+						gwen_key = Gwen::Key::End;
+						break;
+					case Enums::_key_code_ctrl:
+					case Enums::_key_code_left_ctrl:
+					case Enums::_key_code_right_ctrl:
+						gwen_key = Gwen::Key::Control;
+						break;
+					case Enums::_key_code_alt:
+					case Enums::_key_code_left_alt:
+					case Enums::_key_code_right_alt:
+						gwen_key = Gwen::Key::Alt;
+						break;
+					case Enums::_key_code_up:
+						gwen_key = Gwen::Key::Up;
+						break;
+					case Enums::_key_code_down:
+						gwen_key = Gwen::Key::Down;
+						break;
+					case Enums::_key_code_left:
+						gwen_key = Gwen::Key::Left;
+						break;
+					case Enums::_key_code_right:
+						gwen_key = Gwen::Key::Right;
+						break;
 				};
+
+				if(gwen_key == -1)
+				{
+					return;
+				}
 
 				m_canvas->InputKey(gwen_key, value);
 			}

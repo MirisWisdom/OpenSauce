@@ -48,7 +48,7 @@ namespace Yelo
 			{
 				const Flags::osui_game_state m_game_states;
 				const Flags::osui_screen_flags m_screen_flags;
-				const Enums::Key m_toggle_key;
+				const Enums::key_code m_toggle_key;
 				t_screen_controller_ptr m_screen_controller;
 
 				bool m_is_visible;
@@ -60,10 +60,12 @@ namespace Yelo
 			ControlFactory::c_control_factory& m_control_factory;
 
 			Flags::osui_game_state m_current_state;
-			int32 m_mouse_show_count;
-			int32 m_modal_screen_count;
-			int32 m_disable_movement_count;
+			int16 m_active_screen_count;
+			int16 m_mouse_show_count;
+			int16 m_modal_screen_count;
+			int16 m_disable_movement_count;
 			byte m_previous_esckey_state;
+			PAD24;
 
 			std::vector<s_screen_instance> m_screen_instances;
 			std::vector<s_screen_instance*> m_current_stage_instances;
@@ -79,6 +81,8 @@ namespace Yelo
 				, Control::i_mouse_pointer& mouse_pointer
 				, ControlFactory::c_control_factory& control_factory);
 
+			bool ScreenActive();
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Adds a screen controller. </summary>
 			///
@@ -90,7 +94,7 @@ namespace Yelo
 			/// <param name="controller">  	The screen controller. </param>
 			void AddScreenController(const Flags::osui_game_state game_states
 				, const Flags::osui_screen_flags screen_flags
-				, const Enums::Key toggle_key
+				, const Enums::key_code toggle_key
 				, t_screen_controller_ptr controller);
 
 			/// <summary>	Destroys all screens and controllers. </summary>

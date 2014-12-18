@@ -170,7 +170,7 @@ namespace Yelo
 			///
 			/// <param name="key">  	The key. </param>
 			/// <param name="value">	The button state. </param>
-			void OnKeyboardButtonUpdate(const Enums::Key key, const bool value) override;
+			void OnKeyboardButtonUpdate(const Enums::key_code key, const bool value) override;
 #pragma endregion
 		};
 	};};};

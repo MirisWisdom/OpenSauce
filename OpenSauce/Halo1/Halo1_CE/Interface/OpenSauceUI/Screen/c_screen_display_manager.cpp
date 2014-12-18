@@ -23,6 +23,7 @@ namespace Yelo
 			, m_mouse_pointer(mouse_pointer)
 			, m_control_factory(control_factory)
 			, m_current_state(Flags::_osui_game_state_none)
+			, m_active_screen_count(0)
 			, m_mouse_show_count(0)
 			, m_modal_screen_count(0)
 			, m_disable_movement_count(0)
@@ -30,9 +31,14 @@ namespace Yelo
 			, m_current_stage_instances()
 		{ }
 
+		bool c_screen_display_manager::ScreenActive()
+		{
+			return m_active_screen_count > 0;
+		}
+
 		void c_screen_display_manager::AddScreenController(const Flags::osui_game_state game_states
 			, const Flags::osui_screen_flags screen_flags
-			, const Enums::Key toggle_key
+			, const Enums::key_code toggle_key
 			, t_screen_controller_ptr controller)
 		{
 			m_screen_instances.push_back(s_screen_instance { game_states, screen_flags, toggle_key, controller });
@@ -102,7 +108,7 @@ namespace Yelo
 		{
 			// Get whether esc has been pressed
 			bool close_all = false;
-			auto esc_state = Yelo::Input::GetKeyState(Enums::_KeyEsc);
+			auto esc_state = Yelo::Input::GetKeyState(Enums::_key_code_escape);
 			if((esc_state != m_previous_esckey_state) && (esc_state == 1))
 			{
 				close_all = true;
@@ -158,7 +164,7 @@ namespace Yelo
 			// If the escape button triggered a screen to be closed, reset it's state so that Halo doesn't react to it
 			if(screen_esc_hidden)
 			{
-				Yelo::Input::SetKeyState(Enums::_KeyEsc, 0);
+				Yelo::Input::SetKeyState(Enums::_key_code_escape, 0);
 			}
 		}
 		
@@ -181,6 +187,8 @@ namespace Yelo
 			{
 				DisableMovement();
 			}
+
+			m_active_screen_count++;
 		}
 
 		void c_screen_display_manager::HideScreen(s_screen_instance& screen)
@@ -202,6 +210,8 @@ namespace Yelo
 			{
 				EnableMovement();
 			}
+
+			m_active_screen_count = __max(0, m_active_screen_count--);
 		}
 
 		void c_screen_display_manager::ShowMousePointer()
