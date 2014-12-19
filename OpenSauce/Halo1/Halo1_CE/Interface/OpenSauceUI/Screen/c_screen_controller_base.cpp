@@ -89,6 +89,8 @@ namespace Yelo
 			auto root_ptr = control_factory.BuildControl(target_canvas, m_screen_definition.m_control_definition);
 			m_target_screen = std::make_shared<c_screen>(root_ptr);
 
+			Hide();
+
 			// Set up properties and events
 			SetStaticProperties();
 			BindDynamicProperties();

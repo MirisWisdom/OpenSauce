@@ -46,7 +46,8 @@ namespace Yelo
 		{
 			struct s_screen_instance
 			{
-				const Flags::osui_game_state m_game_states;
+				const Flags::osui_game_state m_loaded_game_states;
+				const Flags::osui_game_state m_active_game_states;
 				const Flags::osui_screen_flags m_screen_flags;
 				const Enums::key_code m_toggle_key;
 				t_screen_controller_ptr m_screen_controller;
@@ -86,13 +87,13 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Adds a screen controller. </summary>
 			///
-			/// <param name="game_states"> 	The states that the screen is valid in. </param>
-			/// <param name="screen_flags">	The screens flags. </param>
-			/// <param name="toggle_key">  	The toggle key. </param>
-			/// <param name="is_modal">	   	When true the screen will disable Halo's input whilst displayed. </param>
-			/// <param name="show_cursor"> 	When true the OpenSauceUI cursor will be displayed and Halo's will be hidden. </param>
-			/// <param name="controller">  	The screen controller. </param>
-			void AddScreenController(const Flags::osui_game_state game_states
+			/// <param name="loaded_game_states">	The states that the screen is loaded for. </param>
+			/// <param name="active_game_states">	The states that the screen can be displayed in. </param>
+			/// <param name="screen_flags">		 	The screens flags. </param>
+			/// <param name="toggle_key">		 	The toggle key. </param>
+			/// <param name="controller">		 	The screen controller. </param>
+			void AddScreenController(const Flags::osui_game_state loaded_game_states
+				, const Flags::osui_game_state active_game_states
 				, const Flags::osui_screen_flags screen_flags
 				, const Enums::key_code toggle_key
 				, t_screen_controller_ptr controller);
