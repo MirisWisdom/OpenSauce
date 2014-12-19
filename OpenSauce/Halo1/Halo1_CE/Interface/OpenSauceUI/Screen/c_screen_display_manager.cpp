@@ -36,12 +36,15 @@ namespace Yelo
 			return m_active_screen_count > 0;
 		}
 
-		void c_screen_display_manager::AddScreenController(const Flags::osui_game_state game_states
+		void c_screen_display_manager::AddScreenController(const Flags::osui_game_state loaded_game_states
+			, const Flags::osui_game_state active_game_states
 			, const Flags::osui_screen_flags screen_flags
 			, const Enums::key_code toggle_key
 			, t_screen_controller_ptr controller)
 		{
-			m_screen_instances.push_back(s_screen_instance { game_states, screen_flags, toggle_key, controller });
+			YELO_ASSERT_DISPLAY((loaded_game_states & active_game_states) == active_game_states, "Screens must be loaded in the states where they can be displayed");
+
+			m_screen_instances.push_back(s_screen_instance { loaded_game_states, active_game_states, screen_flags, toggle_key, controller });
 		}
 
 		void c_screen_display_manager::ClearScreenControllers()
@@ -67,39 +70,39 @@ namespace Yelo
 			}
 
 			m_current_state = state;
-
-			// Destroy and screens that are not valid for this stage
-			for(auto* instance : m_current_stage_instances)
-			{
-				bool applicable_state = (instance->m_game_states & state) > 0;
-				if(!applicable_state)
-				{
-					HideScreen(*instance);
-					instance->m_screen_controller->DestroyScreen(m_canvas);
-				}
-			}
-
 			m_current_stage_instances.clear();
 
-			// Get all of the screen instances for this state
+			// Load the screen instances that are valid for this state and destroy those that aren't
 			for(auto& instance : m_screen_instances)
 			{
-				if(instance.m_game_states & state)
+				if(instance.m_loaded_game_states & state)
 				{
-					m_current_stage_instances.push_back(&instance);
-
 					// Build the screen instances
 					instance.m_screen_controller->BuildScreen(m_control_factory, m_canvas);
 
-					// If the screen should always be visible set it to be displayed
-					if(instance.m_screen_flags & Flags::_osui_screen_flags_always_visible)
+					if(instance.m_active_game_states & state)
 					{
-						ShowScreen(instance);
+						m_current_stage_instances.push_back(&instance);
+
+						// If the screen should always be visible set it to be displayed
+						if(instance.m_screen_flags & Flags::_osui_screen_flags_always_visible)
+						{
+							ShowScreen(instance);
+						}
+						else
+						{
+							HideScreen(instance);
+						}
 					}
 					else
 					{
 						HideScreen(instance);
 					}
+				}
+				else
+				{
+					HideScreen(instance);
+					instance.m_screen_controller->DestroyScreen(m_canvas);
 				}
 			}
 		}
@@ -170,6 +173,11 @@ namespace Yelo
 		
 		void c_screen_display_manager::ShowScreen(s_screen_instance& screen)
 		{
+			if(screen.m_is_visible)
+			{
+				return;
+			}
+
 			screen.m_screen_controller->Show();
 			screen.m_is_visible = true;
 
@@ -193,6 +201,11 @@ namespace Yelo
 
 		void c_screen_display_manager::HideScreen(s_screen_instance& screen)
 		{
+			if(!screen.m_is_visible)
+			{
+				return;
+			}
+
 			screen.m_screen_controller->Hide();
 			screen.m_is_visible = false;
 

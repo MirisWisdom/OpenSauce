@@ -156,13 +156,15 @@ namespace Yelo
 
 		template<typename ControllerType>
 		void AddScreenController(cstring definition_name
-			, Flags::osui_game_state game_states
+			, Flags::osui_game_state loaded_states
+			, Flags::osui_game_state active_states
 			, Flags::osui_screen_flags screen_flags
 			, Enums::key_code toggle_key = Enums::k_number_of_keys)
 		{
 			Definitions::c_screen_definition screen_definition;
 			Screen::c_screen_definition_registry::GetScreenDefinition(g_ui_package, definition_name, screen_definition);
-			g_screen_display_manager->AddScreenController(game_states
+			g_screen_display_manager->AddScreenController(loaded_states
+				, active_states
 				, screen_flags
 				, toggle_key
 				, std::make_shared<ControllerType>(screen_definition));
@@ -176,7 +178,9 @@ namespace Yelo
 			g_canvas->SetSize(presentation_parameters->BackBufferWidth, presentation_parameters->BackBufferHeight);
 			g_mouse_pointer->BuildMouse(g_control_input);
 
+
 			AddScreenController<Screen::c_screen_controller_mainmenu>("MainMenu"
+				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
 				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
 					| Flags::_osui_screen_flags_show_cursor
@@ -186,9 +190,11 @@ namespace Yelo
 
 			AddScreenController<Screen::c_screen_controller_mainmenubottombar>("MainMenuBottomBar"
 				, Flags::_osui_game_state_main_menu
+				, Flags::_osui_game_state_main_menu
 				, Flags::_osui_screen_flags_always_visible);
 
 			AddScreenController<Screen::c_screen_controller_ingame>("InGame"
+				, (Flags::osui_game_state)(Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
 				, Flags::_osui_game_state_in_game
 				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
 				| Flags::_osui_screen_flags_esckey_toggled
@@ -196,6 +202,7 @@ namespace Yelo
 				| Flags::_osui_screen_flags_show_cursor
 				| Flags::_osui_screen_flags_disable_movement)
 				, Enums::_key_code_f7);
+
 
 			g_screen_display_manager->SetGameState(Flags::_osui_game_state_main_menu);
 		}
