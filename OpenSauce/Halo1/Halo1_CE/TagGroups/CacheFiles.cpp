@@ -254,7 +254,7 @@ namespace Yelo
 					Engine::GatherException(map_path, 0x89, 0x7E, 1);
 				}
 			}
-			else if (!result && !exception_on_fail && out_header.cache_type == Enums::_cache_file_type_multiplayer)
+			else if (!result && !exception_on_fail)
 			{
 #if !PLATFORM_IS_DEDI
 				// insert map download here as this is probably only reached on multiplayer

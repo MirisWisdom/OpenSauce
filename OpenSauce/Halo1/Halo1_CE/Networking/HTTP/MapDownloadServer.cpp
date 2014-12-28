@@ -8,6 +8,7 @@
 #include "Networking/HTTP/MapDownloadServer.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <map>
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
@@ -27,7 +28,6 @@ namespace Yelo
 		{
 			k_max_mutex_wait = 5000,		// maximum amount of time to wait for a mutex request (milliseconds)
 			k_max_host_url_length = 1500,	// ~2000 is the  max for IE, and we could have two MAX_PATH length names in the request URL
-			k_definition_list_count = 27,	// a-z and misc
 		};
 
 		class c_part_element : public LinkedListNode<c_part_element>
@@ -238,7 +238,7 @@ namespace Yelo
 			volatile uint32			m_requests_in_progress; // TODO: why not move this to after m_flags and get rid of the PAD8?
 		};
 		static c_map_download_globals		g_map_download_globals;
-		static c_map_part_definition_list	g_map_part_definition_lists[k_definition_list_count];
+		static std::map<char, c_map_part_definition_list>	g_map_part_definition_lists;
 
 		bool ServiceStarted() { return g_map_download_globals.m_flags.system_active; }
 
@@ -341,31 +341,27 @@ namespace Yelo
 		 * The first character of the map name.
 		 * 
 		 * \returns
-		 * Returns the definition list index for the specified character.
+		 * Returns the definition list for the specified character.
 		 * 
 		 * Gets the definition list index for a specific map name.
 		 */
-		static int32 GetListIndex(int character)
+		static c_map_part_definition_list* GetList(const char character, const bool create = false)
 		{
-			// could do character - a to get the distance of character from a, but that feels hacky
-			static const char* char_index_string = "abcdefghijklmnopqrstuvwxyz";
-
-			int32 lower_character = tolower(character);
-
-			// get the list index from the alphanumeric index of the first character in the map name
-			int32 list_index = 0;
-			char list_char = '\0';
-			while((list_char = char_index_string[list_index]) != '\0')
+			char lower_char = tolower(character);
+			if(g_map_part_definition_lists.find(lower_char) == g_map_part_definition_lists.end())
 			{
-				if(list_char == lower_character)
-					break;
-				list_index++;
+				if(create)
+				{
+					g_map_part_definition_lists[lower_char] = c_map_part_definition_list();
+					g_map_part_definition_lists[lower_char].Ctor();
+				}
+				else
+				{
+					return nullptr;
+				}
 			}
 
-			// if the character was not in the index string, search the misc map list (maps that dont start with a-z)
-			if(!list_char) list_index++;
-
-			return list_index;
+			return &g_map_part_definition_lists[lower_char];
 		}
 
 		/*!
@@ -382,12 +378,12 @@ namespace Yelo
 		 */
 		static c_map_element* FindMap(const char* map_name)
 		{
-			int32 list_index = GetListIndex(map_name[0]);
+			auto* list = GetList(map_name[0]);
 
-			if(!g_map_part_definition_lists[list_index].HasEntries())
+			if(!list || !list->HasEntries())
 				return nullptr;
 
-			return g_map_part_definition_lists[list_index].FindDefinition(map_name);
+			return list->FindDefinition(map_name);
 		}
 
 		/*!
@@ -433,8 +429,8 @@ namespace Yelo
 		 */
 		static bool AddMapToList(c_map_element* map_element)
 		{
-			int32 list_index = GetListIndex(map_element->m_name[0]);
-			if(!g_map_part_definition_lists[list_index].AddDefinition(map_element))
+			auto* list = GetList(map_element->m_name[0], true);
+			if(!list->AddDefinition(map_element))
 			{
 				blam::console_printf(false, "failed to add a map definition to the definition list");
 				return false;
@@ -710,15 +706,15 @@ namespace Yelo
 		static void UnloadMapPartDefinitions()
 		{
 			// loop through all of the map part definition lists
-			for(int i = 0; i < k_definition_list_count; i++)
+			for(auto& list : g_map_part_definition_lists)
 			{
-				c_map_part_definition_list& list = g_map_part_definition_lists[i];
-
 				// delete the first element in the lists until they are empty
 				c_map_element* current_element = nullptr;
-				while(current_element = list.GetDefinitionByIndex(0))
-					RemoveMapDefinition(list, current_element);
+				while(current_element = list.second.GetDefinitionByIndex(0))
+					RemoveMapDefinition(list.second, current_element);
 			}
+
+			g_map_part_definition_lists.clear();
 		}
 
 		/*!
@@ -1160,9 +1156,6 @@ namespace Yelo
 		void Initialize()
 		{
 			ResetGlobals();
-
-			for(int i = 0; i < k_definition_list_count; i++)
-				g_map_part_definition_lists[i].Ctor();
 		}
 
 		/*!
@@ -1176,8 +1169,10 @@ namespace Yelo
 			// stop the server if it is running
 			StopMapServer();
 
-			for(int i = 0; i < k_definition_list_count; i++)
-				g_map_part_definition_lists[i].Dtor();
+			for(auto& list : g_map_part_definition_lists)
+				list.second.Dtor();
+
+			g_map_part_definition_lists.clear();
 		}
 
 		/*!
