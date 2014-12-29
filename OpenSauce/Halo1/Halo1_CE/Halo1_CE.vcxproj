@@ -582,6 +582,7 @@
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen_controller.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Screen\screen_ids.hpp" />
     <ClInclude Include="Interface\UIWidgets.hpp" />
     <ClInclude Include="Memory\FunctionInterface.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />

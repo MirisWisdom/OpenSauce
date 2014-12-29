@@ -16,6 +16,7 @@
 			},
 			"Control": {
 				"IDStr": "#LBL_opensauce_new_version",
+				"ID": "2274080402",
 				"Type": "Label",
 				"Property": {
 					"Name": "Dock",
@@ -48,6 +49,7 @@
 			},
 			"Control": {
 				"IDStr": "#LBL_opensauce_current_version",
+				"ID": "2897289841",
 				"Type": "Label",
 				"Property": {
 					"Name": "Dock",
@@ -76,6 +78,7 @@
 			},
 			"Control": {
 				"IDStr": "#LBL_opensauce_settings_button_text",
+				"ID": "1833966503",
 				"Type": "Label",
 				"Property": {
 					"Name": "Dock",

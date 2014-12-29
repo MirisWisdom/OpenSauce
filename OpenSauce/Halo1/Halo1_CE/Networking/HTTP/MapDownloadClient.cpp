@@ -24,7 +24,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
 #include "Interface/Controls.hpp"
-#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI/Screen/screen_ids.hpp"
 #include "Interface/OpenSauceUI.hpp"
 #include "Networking/Networking.hpp"
 #include "Networking/Server.hpp"
@@ -2279,7 +2279,7 @@ namespace Yelo
 				break;
 			case _map_download_update_stage_start_download:
 				// Display the download UI
-				Interface::OpenSauceUI::ShowScreen(RESOURCE_ID_DEBUG("#SCN_map_download"));
+				Interface::OpenSauceUI::ShowScreen(K_SCREEN_MAP_DOWNLOAD);
 
 				// start a new thread for downloading the map
 				if(!StartDownloadThread())
@@ -2312,7 +2312,7 @@ namespace Yelo
 				g_map_download_globals.m_map_download_update_stage = _map_download_update_stage_idle;
 
 				// Hide the download UI
-				Interface::OpenSauceUI::HideScreen(RESOURCE_ID_DEBUG("#SCN_map_download"));
+				Interface::OpenSauceUI::HideScreen(K_SCREEN_MAP_DOWNLOAD);
 				break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();

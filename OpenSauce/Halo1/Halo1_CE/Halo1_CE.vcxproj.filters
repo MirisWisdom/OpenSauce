@@ -598,6 +598,9 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\screen_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">

@@ -26,6 +26,7 @@
 				},
 				"Control": {
 					"IDStr": "#LBL_map_download_title",
+					"ID": "4069627371",
 					"Type": "Label",
 					"Property": {
 						"Name": "Dock",
@@ -69,6 +70,7 @@
 				},
 				"Control": {
 					"IDStr": "#LBL_map_name",
+					"ID": "1003050133",
 					"Type": "Label",
 					"Property": {
 						"Name": "Dock",
@@ -101,6 +103,7 @@
 				},
 				"Control": {
 					"IDStr": "#PRG_map_progress",
+					"ID": "1798879359",
 					"Type": "ProgressBar",
 					"Property": {
 						"Name": "Dock",
@@ -133,6 +136,7 @@
 				},
 				"Control": {
 					"IDStr": "#LBL_esc_to_cancel_text",
+					"ID": "2482515410",
 					"Type": "Label",
 					"Property": {
 						"Name": "Dock",
@@ -166,6 +170,7 @@
 			},
 			"Control": {
 				"IDStr": "#LBL_download_source_title",
+				"ID": "3450916249",
 				"Type": "Label",
 				"Property": {
 					"Name": "Dock",
@@ -198,6 +203,7 @@
 			},
 			"Control": {
 				"IDStr": "#LBL_download_source_description",
+				"ID": "2294561445",
 				"Type": "Label",
 				"Property": {
 					"Name": "Dock",

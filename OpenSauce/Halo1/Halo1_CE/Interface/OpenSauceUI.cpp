@@ -27,6 +27,7 @@
 #include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
 #include "Interface/OpenSauceUI/Input/c_control_input_halo.hpp"
 
+#include "Interface/OpenSauceUI/Screen/screen_ids.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_definition_reader.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_display_manager.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_controller_mainmenu.hpp"
@@ -194,7 +195,7 @@ namespace Yelo
 			g_mouse_pointer->BuildMouse(g_control_input);
 
 
-			AddScreenController<Screen::c_screen_controller_mainmenu>(RESOURCE_ID_DEBUG("#SCN_main_menu")
+			AddScreenController<Screen::c_screen_controller_mainmenu>(K_SCREEN_MAIN_MENU
 				, "MainMenu"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
@@ -204,19 +205,19 @@ namespace Yelo
 					| Flags::_osui_screen_flags_esckey_toggled)
 				, Enums::_key_code_f7);
 
-			AddScreenController<Screen::c_screen_controller_mainmenubottombar>(RESOURCE_ID_DEBUG("#SCN_main_menu_bottom")
+			AddScreenController<Screen::c_screen_controller_mainmenubottombar>(K_SCREEN_MAIN_MENU_BOTTOM
 				, "MainMenuBottomBar"
 				, Flags::_osui_game_state_main_menu
 				, Flags::_osui_game_state_main_menu
 				, Flags::_osui_screen_flags_always_visible);
 
-			AddScreenController<Screen::c_screen_controller_mapdownload>(RESOURCE_ID_DEBUG("#SCN_map_download")
+			AddScreenController<Screen::c_screen_controller_mapdownload>(K_SCREEN_MAP_DOWNLOAD
 				, "MapDownload"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_loading | Flags::_osui_game_state_in_game)
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_loading | Flags::_osui_game_state_in_game)
 				, Flags::_osui_screen_flags_is_modal);
 
-			AddScreenController<Screen::c_screen_controller_ingame>(RESOURCE_ID_DEBUG("#SCN_in_game")
+			AddScreenController<Screen::c_screen_controller_ingame>(K_SCREEN_IN_GAME
 				, "InGame"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
 				, Flags::_osui_game_state_in_game

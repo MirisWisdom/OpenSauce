@@ -19,7 +19,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_KEYSTONE
 #include "Memory/_EngineLayout.inl"
 
-		bool PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message);
+		uint32 PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message);
 
 		void OnChatAddString(wcstring string); // forward declare
 
@@ -235,7 +235,7 @@ namespace Yelo
 			API_FUNC_NAKED_END_CDECL(4)
 		}
 
-		API_FUNC_NAKED bool KsTranslateAccelerator(void* arg0, HANDLE window_handle, void* arg2, const MSG* message)
+		API_FUNC_NAKED uint32 KsTranslateAccelerator(void* arg0, HANDLE window_handle, void* arg2, const MSG* message)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(KS_TRANSLATEACCELERATOR);
 
@@ -275,21 +275,22 @@ namespace Yelo
 		}
 
 #pragma region Message Pump
-		struct s_message_pump_globals {
+		struct s_message_pump_globals
+		{
 			std::vector<i_windows_message_handler*> m_message_handlers;
 		};
 		static s_message_pump_globals g_message_pump_globals;
 
-		static bool PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message)
+		static uint32 PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message)
 		{
-			bool handled = KsTranslateAccelerator(arg0, window_handle, arg2, message);
+			uint32 value = KsTranslateAccelerator(arg0, window_handle, arg2, message);
 
 			for(auto entry : g_message_pump_globals.m_message_handlers)
 			{
-				handled &= entry->HandleMessage(message, handled);
+				entry->HandleMessage(message);
 			}
 
-			return handled;
+			return value;
 		}
 
 		void AttachWindowsMessageHandler(i_windows_message_handler* handler)

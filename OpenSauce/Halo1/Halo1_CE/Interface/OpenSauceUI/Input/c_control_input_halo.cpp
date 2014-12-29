@@ -202,7 +202,7 @@ namespace Yelo
 			}
 		}
 
-		bool c_control_input_halo::HandleMessage(const MSG* message, const bool been_handled)
+		void c_control_input_halo::HandleMessage(const MSG* message)
 		{
 			switch(message->message)
 			{
@@ -229,10 +229,7 @@ namespace Yelo
 					}
 					break;
 				}
-				default:
-					return false;
 			}
-			return true;
 		}
 	};};};
 };
