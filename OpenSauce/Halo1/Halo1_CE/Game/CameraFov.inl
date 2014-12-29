@@ -5,7 +5,6 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Interface/Controls.hpp"
-#include "Interface/TextBlock.hpp"
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>

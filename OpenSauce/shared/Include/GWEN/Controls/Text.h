@@ -40,6 +40,9 @@ namespace Gwen
 				Gwen::Rect GetCharacterPosition( int iChar );
 				int GetClosestCharacter( Gwen::Point p );
 
+				virtual void SetAlignment( int iAlign );
+				virtual int GetAlignment();
+
 				/// return the encapsulating box of the given line
 				// @remark this function is necessary to implement multiline selection
 				virtual Gwen::Rect GetLineBox( int i ); 
@@ -80,6 +83,7 @@ namespace Gwen
 
 				bool				m_bWrap;
 				bool				m_bTextChanged;
+				int					m_iAlign;
 
 				typedef std::list<Text*> TextLines;
 				TextLines		m_Lines;

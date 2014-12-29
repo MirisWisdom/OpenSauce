@@ -46,6 +46,7 @@ namespace Yelo
 		{
 			struct s_screen_instance
 			{
+				const uint32 m_screen_id;
 				const Flags::osui_game_state m_loaded_game_states;
 				const Flags::osui_game_state m_active_game_states;
 				const Flags::osui_screen_flags m_screen_flags;
@@ -82,6 +83,10 @@ namespace Yelo
 				, Control::i_mouse_pointer& mouse_pointer
 				, ControlFactory::c_control_factory& control_factory);
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Determines if a screen is active. </summary>
+			///
+			/// <returns>	true if a screen is active, false if not. </returns>
 			bool ScreenActive();
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +97,8 @@ namespace Yelo
 			/// <param name="screen_flags">		 	The screens flags. </param>
 			/// <param name="toggle_key">		 	The toggle key. </param>
 			/// <param name="controller">		 	The screen controller. </param>
-			void AddScreenController(const Flags::osui_game_state loaded_game_states
+			void AddScreenController(const uint32 screen_id
+				, const Flags::osui_game_state loaded_game_states
 				, const Flags::osui_game_state active_game_states
 				, const Flags::osui_screen_flags screen_flags
 				, const Enums::key_code toggle_key
@@ -109,6 +115,18 @@ namespace Yelo
 
 			/// <summary>	Updates the active screen controllers. </summary>
 			void Update();
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Shows a particular screen. </summary>
+			///
+			/// <param name="screen_id">	Identifier for the screen. </param>
+			void ShowScreen(const uint32 screen_id);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Hides a particular screen. </summary>
+			///
+			/// <param name="screen_id">	Identifier for the screen. </param>
+			void HideScreen(const uint32 screen_id);
 
 		private:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,6 @@
 */
 
 #include "Game/Players.hpp"
-#include "Interface/TextBlock.hpp"
 
 namespace Yelo
 {

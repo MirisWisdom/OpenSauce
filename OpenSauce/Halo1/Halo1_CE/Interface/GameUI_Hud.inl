@@ -5,7 +5,6 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Interface/Controls.hpp"
-#include "Interface/TextBlock.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Memory/FunctionInterface.hpp"
 
@@ -30,8 +29,6 @@ namespace Yelo
 				bool show_crosshair;
 				PAD8;
 			}m_flags;
-
-			TextBlock*		m_menu_text;
 
 			point2d			m_screen_size;
 

@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/main/main.hpp>
 #include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
+#include <blamlib/Halo1/interface/map_list.hpp>
 
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/memory/compression/7zip_codec.hpp>
@@ -22,8 +23,9 @@
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
-#include "Interface/TextBlock.hpp"
 #include "Interface/Controls.hpp"
+#include "Interface/OpenSauceUI/resource_id.hpp"
+#include "Interface/OpenSauceUI.hpp"
 #include "Networking/Networking.hpp"
 #include "Networking/Server.hpp"
 #include "Memory/FunctionInterface.hpp"
@@ -722,7 +724,7 @@ namespace Yelo
 				delete request_data;
 
 				// process the part definition
-				if((Status() == Enums::_http_file_download_status_succeeded) && !ProcessMapPartDefinition())
+				if((Status() == Enums::_http_file_download_status_failed) || !ProcessMapPartDefinition())
 					Status() = Enums::_http_file_download_status_failed;
 				else
 					Status() = Enums::_http_file_download_status_succeeded;
@@ -1084,73 +1086,6 @@ namespace Yelo
 
 		/*!
 		 * \brief
-		 * Initializes the map download display.
-		 * 
-		 * \param pDevice
-		 * The current render device.
-		 * 
-		 * \param pParameters
-		 * The current devices presentation parameters.
-		 * 
-		 * Initializes the map download display.
-		 */
-		void	Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
-		{
-			g_map_download_display.Initialize(pDevice, pParameters);
-		}
-
-		/*!
-		 * \brief
-		 * Releases download display resources, before the device is reset.
-		 * 
-		 * Releases download display resources, before the device is reset.
-		 */
-		void	OnLostDevice()
-		{
-			g_map_download_display.DeviceLost();
-		}
-
-		/*!
-		 * \brief
-		 * Re-allocates download display after the device has been reset.
-		 * 
-		 * \param pParameters
-		 * The presentation parameters the device was reset with.
-		 * 
-		 * Re-allocates download display after the device has been reset.
-		 */
-		void	OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
-		{
-			g_map_download_display.DeviceReset(pParameters);
-		}
-
-		/*!
-		 * \brief
-		 * Renders the download display.
-		 * 
-		 * Renders the download display.
-		 */
-		void	Render()
-		{
-			if(g_map_download_globals.m_map_download_update_stage == _map_download_update_stage_idle)
-				return;
-
-			g_map_download_display.Render();
-		}
-
-		/*!
-		 * \brief
-		 * Disposes of the download display.
-		 * 
-		 * Disposes of the download display.
-		 */
-		void	Release()
-		{
-			g_map_download_display.Dispose();
-		}
-
-		/*!
-		 * \brief
 		 * Updates the download display with the current map download progress.
 		 * 
 		 * Updates the download display with the current map download progress.
@@ -1172,34 +1107,25 @@ namespace Yelo
 						g_map_download_globals.m_map_part_definition.progress = 0;
 						g_map_download_display.SetProviderTitle("Searching");
 						g_map_download_display.SetProviderDescription("Looking for a map download provider...");
+						g_map_download_display.SetMapDownloadState(_map_download_state_searching);
 						break;
 					case _map_download_stage_map_part_download:
-						g_map_download_display.SetMapExtracting(false);
-						g_map_download_display.SetReconnecting(false);
-						g_map_download_display.SetFailed(false);
+						g_map_download_display.SetMapDownloadState(_map_download_state_downloading);
 						break;
 					case _map_download_stage_map_archive_extraction:
-						g_map_download_display.SetMapExtracting(true);
-						g_map_download_display.SetReconnecting(false);
-						g_map_download_display.SetFailed(false);
+						g_map_download_display.SetMapDownloadState(_map_download_state_extracting);
 						break;
 					default:
-						g_map_download_display.SetMapExtracting(false);
-						g_map_download_display.SetReconnecting(false);
-						g_map_download_display.SetFailed(false);
+						g_map_download_display.SetMapDownloadState(_map_download_state_completed);
 						break;
 					};
 				}
 				break;
 			case _map_download_update_stage_map_download_completion:
-				g_map_download_display.SetMapExtracting(false);
-				g_map_download_display.SetReconnecting(true);
-				g_map_download_display.SetFailed(false);
+				g_map_download_display.SetMapDownloadState(_map_download_state_reconnecting);
 				break;
 			case _map_download_update_stage_failed:
-				g_map_download_display.SetMapExtracting(false);
-				g_map_download_display.SetReconnecting(false);
-				g_map_download_display.SetFailed(true);
+				g_map_download_display.SetMapDownloadState(_map_download_state_failed);
 				g_map_download_display.SetProviderTitle("");
 				g_map_download_display.SetProviderDescription("");
 				break;
@@ -1281,9 +1207,6 @@ namespace Yelo
 				};
 			}
 			g_map_download_display.SetMapProgress(g_map_download_globals.m_map_part_definition.progress);
-
-			g_map_download_display.Update();
-
 			ReleaseMutex(g_globals_access_mutex);
 		}
 
@@ -1517,16 +1440,8 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			int map_list_index = NONE;
-#if FALSE // old code
-			cstring map_extension = map_element.m_map_is_yelo 
-				? Cache::K_MAP_FILE_EXTENSION_YELO
-				: Cache::K_MAP_FILE_EXTENSION;
+			int map_list_index = Interface::MapListAddMapFromPath(Cache::K_MAP_FILES_DIRECTORY, map_element.m_filename);
 
-			Engine::Cache::MapListAddMap(map_element.m_filename, map_extension);
-#elif FALSE // TODO: new code
-			map_list_index = Interface::MapListAddMapFromPath(/*maps path string here*/, map_element.m_filename);
-#endif
 			return map_list_index != NONE;
 		}
 
@@ -2363,8 +2278,8 @@ namespace Yelo
 			case _map_download_update_stage_idle:
 				break;
 			case _map_download_update_stage_start_download:
-				// disable the update function for ui widgets, to prevent menu navigation mid-download
-				Memory::FunctionProcessUpdateUIWidgetsDisabled() = true;
+				// Display the download UI
+				Interface::OpenSauceUI::ShowScreen(RESOURCE_ID_DEBUG("#SCN_map_download"));
 
 				// start a new thread for downloading the map
 				if(!StartDownloadThread())
@@ -2396,8 +2311,8 @@ namespace Yelo
 				g_map_download_display.ResetDisplay();
 				g_map_download_globals.m_map_download_update_stage = _map_download_update_stage_idle;
 
-				// the download is complete/canceled so re-enable the ui widget update function
-				Memory::FunctionProcessUpdateUIWidgetsDisabled() = false;
+				// Hide the download UI
+				Interface::OpenSauceUI::HideScreen(RESOURCE_ID_DEBUG("#SCN_map_download"));
 				break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();

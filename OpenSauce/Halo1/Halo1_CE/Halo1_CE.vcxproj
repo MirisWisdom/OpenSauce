@@ -399,6 +399,7 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.cpp" />
@@ -417,9 +418,9 @@
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.cpp" />
-    <ClCompile Include="Interface\TextBlock.cpp" />
     <ClCompile Include="Interface\UIWidgets.cpp" />
     <ClCompile Include="Memory\FunctionInterface.cpp" />
     <ClCompile Include="Memory\MemoryInterface.cpp" />
@@ -550,6 +551,7 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.hpp" />
@@ -572,6 +574,7 @@
     <ClInclude Include="Interface\OpenSauceUI\Input\i_control_input.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen.hpp" />
@@ -579,7 +582,6 @@
     <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen_controller.hpp" />
-    <ClInclude Include="Interface\TextBlock.hpp" />
     <ClInclude Include="Interface\UIWidgets.hpp" />
     <ClInclude Include="Memory\FunctionInterface.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />
@@ -752,6 +754,7 @@
     <None Include="Resources\OpenSauceUI\MainMenuBottomBarDefinition.json">
       <FileType>Document</FileType>
     </None>
+    <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json" />
     <None Include="TagGroups\CacheFiles.CRC.inl" />
     <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />

@@ -31,6 +31,7 @@
 #include "Interface/OpenSauceUI/Screen/c_screen_display_manager.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_controller_mainmenu.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_controller_mainmenubottombar.hpp"
+#include "Interface/OpenSauceUI/Screen/c_screen_controller_mapdownload.hpp"
 #include "Interface/OpenSauceUI/Screen/c_screen_controller_ingame.hpp"
 
 #include "Interface/OpenSauceUI/GwenUI/c_canvas_gwen.hpp"
@@ -48,6 +49,7 @@
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_pagecontrol.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_button.hpp"
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_pointer.hpp"
+#include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_progressbar.hpp"
 
 namespace Yelo
 {
@@ -100,6 +102,7 @@ namespace Yelo
 			g_control_factory.AddControl("PageControl", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_pagecontrol>());
 			g_control_factory.AddControl("Button", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_button>());
 			g_control_factory.AddControl("Pointer", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_pointer>());
+			g_control_factory.AddControl("ProgressBar", std::make_unique<GwenUI::ControlBuilders::c_control_builder_gwen_progressbar>());
 		}
 
 		void Dispose()
@@ -153,9 +156,20 @@ namespace Yelo
 			g_screen_display_manager->SetGameState((Flags::osui_game_state)game_state);
 			g_screen_display_manager->Update();
 		}
+		
+		void ShowScreen(const uint32 screen_id)
+		{
+			g_screen_display_manager->ShowScreen(screen_id);
+		}
+
+		void HideScreen(const uint32 screen_id)
+		{
+			g_screen_display_manager->HideScreen(screen_id);
+		}
 
 		template<typename ControllerType>
-		void AddScreenController(cstring definition_name
+		void AddScreenController(const uint32 screen_id
+			, cstring definition_name
 			, Flags::osui_game_state loaded_states
 			, Flags::osui_game_state active_states
 			, Flags::osui_screen_flags screen_flags
@@ -163,7 +177,8 @@ namespace Yelo
 		{
 			Definitions::c_screen_definition screen_definition;
 			Screen::c_screen_definition_registry::GetScreenDefinition(g_ui_package, definition_name, screen_definition);
-			g_screen_display_manager->AddScreenController(loaded_states
+			g_screen_display_manager->AddScreenController(screen_id
+				, loaded_states
 				, active_states
 				, screen_flags
 				, toggle_key
@@ -179,7 +194,8 @@ namespace Yelo
 			g_mouse_pointer->BuildMouse(g_control_input);
 
 
-			AddScreenController<Screen::c_screen_controller_mainmenu>("MainMenu"
+			AddScreenController<Screen::c_screen_controller_mainmenu>(RESOURCE_ID_DEBUG("#SCN_main_menu")
+				, "MainMenu"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu)
 				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
@@ -188,12 +204,20 @@ namespace Yelo
 					| Flags::_osui_screen_flags_esckey_toggled)
 				, Enums::_key_code_f7);
 
-			AddScreenController<Screen::c_screen_controller_mainmenubottombar>("MainMenuBottomBar"
+			AddScreenController<Screen::c_screen_controller_mainmenubottombar>(RESOURCE_ID_DEBUG("#SCN_main_menu_bottom")
+				, "MainMenuBottomBar"
 				, Flags::_osui_game_state_main_menu
 				, Flags::_osui_game_state_main_menu
 				, Flags::_osui_screen_flags_always_visible);
 
-			AddScreenController<Screen::c_screen_controller_ingame>("InGame"
+			AddScreenController<Screen::c_screen_controller_mapdownload>(RESOURCE_ID_DEBUG("#SCN_map_download")
+				, "MapDownload"
+				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_loading | Flags::_osui_game_state_in_game)
+				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_loading | Flags::_osui_game_state_in_game)
+				, Flags::_osui_screen_flags_is_modal);
+
+			AddScreenController<Screen::c_screen_controller_ingame>(RESOURCE_ID_DEBUG("#SCN_in_game")
+				, "InGame"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
 				, Flags::_osui_game_state_in_game
 				, (Flags::osui_screen_flags)(Flags::_osui_screen_flags_key_toggled
@@ -202,7 +226,6 @@ namespace Yelo
 				| Flags::_osui_screen_flags_show_cursor
 				| Flags::_osui_screen_flags_disable_movement)
 				, Enums::_key_code_f7);
-
 
 			g_screen_display_manager->SetGameState(Flags::_osui_game_state_main_menu);
 		}

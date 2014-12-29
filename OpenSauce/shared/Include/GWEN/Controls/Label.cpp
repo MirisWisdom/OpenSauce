@@ -45,6 +45,9 @@ void Label::SetAlignment( int iAlign )
 	if ( m_iAlign == iAlign ) { return; }
 
 	m_iAlign = iAlign;
+
+	m_Text->SetAlignment(iAlign);
+
 	Invalidate();
 }
 

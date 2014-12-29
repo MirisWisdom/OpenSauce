@@ -592,6 +592,12 @@
     <ClInclude Include="Interface\OpenSauceUI\Input\i_control_keyboard_handler.hpp">
       <Filter>Interface\OpenSauceUI\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -655,9 +661,6 @@
       <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="Interface\Keystone.cpp">
-      <Filter>Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="Interface\TextBlock.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="Interface\UIWidgets.cpp">
@@ -1204,6 +1207,12 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
@@ -1468,9 +1477,6 @@
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="Interface\Keystone.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface\TextBlock.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="Interface\UIWidgets.hpp">
@@ -2079,6 +2085,9 @@
       <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
     </None>
     <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
       <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
     </None>
   </ItemGroup>
