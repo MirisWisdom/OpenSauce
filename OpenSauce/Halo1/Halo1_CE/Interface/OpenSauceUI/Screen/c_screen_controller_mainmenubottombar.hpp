@@ -21,6 +21,10 @@ namespace Yelo
 			bool m_available_version_set;
 
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <param name="definition">	[in] The screen definition. </param>
 			c_screen_controller_mainmenubottombar(Definitions::c_screen_definition& definition);
 
 		private:

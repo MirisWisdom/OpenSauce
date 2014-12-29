@@ -154,7 +154,7 @@ namespace Yelo
 		}
 
 		template<typename Type>
-		void c_screen_controller_base::SetControlPropertyImpl(uint32 control_id, uint32 property_id, Type value)
+		void c_screen_controller_base::SetControlPropertyImpl(const uint32 control_id, const uint32 property_id, const Type value)
 		{
 			// Get the property and control
 			Control::t_control_ptr control;
@@ -166,7 +166,7 @@ namespace Yelo
 		}
 
 		template<>
-		void c_screen_controller_base::SetControlPropertyImpl<cstring>(uint32 control_id, uint32 property_id, cstring value)
+		void c_screen_controller_base::SetControlPropertyImpl<cstring>(const uint32 control_id, const uint32 property_id, cstring value)
 		{
 			// Get the property and control
 			Control::t_control_ptr control;
@@ -177,17 +177,22 @@ namespace Yelo
 			property->Set(*control, value);
 		}
 
-		void c_screen_controller_base::SetControlProperty(uint32 control_id, uint32 property_id, bool value)
+		void c_screen_controller_base::SetControlProperty(const uint32 control_id, const uint32 property_id, const bool value)
 		{
 			SetControlPropertyImpl<bool>(control_id, property_id, value);
 		}
 
-		void c_screen_controller_base::SetControlProperty(uint32 control_id, uint32 property_id, int32 value)
+		void c_screen_controller_base::SetControlProperty(const uint32 control_id, const uint32 property_id, const int32 value)
 		{
 			SetControlPropertyImpl<int32>(control_id, property_id, value);
 		}
 
-		void c_screen_controller_base::SetControlProperty(uint32 control_id, uint32 property_id, cstring value)
+		void c_screen_controller_base::SetControlProperty(const uint32 control_id, const uint32 property_id, const real value)
+		{
+			SetControlPropertyImpl<real>(control_id, property_id, value);
+		}
+
+		void c_screen_controller_base::SetControlProperty(const uint32 control_id, const uint32 property_id, cstring value)
 		{
 			SetControlPropertyImpl<cstring>(control_id, property_id, value);
 		}

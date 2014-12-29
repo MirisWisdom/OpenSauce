@@ -89,19 +89,11 @@
 #		define __GS_COMPONENT_DX9_RELEASE			Hud::Release
 #	endif
 #elif	BOOST_PP_ITERATION() == 10
-#	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
-#		define __GS_COMPONENT_DX9_INITIALIZE		Networking::HTTP::Client::MapDownload::Initialize3D
-#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Networking::HTTP::Client::MapDownload::OnLostDevice
-#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Networking::HTTP::Client::MapDownload::OnResetDevice
-#		define __GS_COMPONENT_DX9_RENDER			Networking::HTTP::Client::MapDownload::Render
-#		define __GS_COMPONENT_DX9_RELEASE			Networking::HTTP::Client::MapDownload::Release
-#	endif
-#elif	BOOST_PP_ITERATION() == 11
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Lightmaps::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Lightmaps::Dispose
 #	endif
-#elif	BOOST_PP_ITERATION() == 12
+#elif	BOOST_PP_ITERATION() == 11
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Sky::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Sky::Dispose
@@ -109,7 +101,7 @@
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		Render::Sky::InitializeForNewMap
 #		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			Render::Sky::DisposeFromOldMap
 #	endif
-#elif	BOOST_PP_ITERATION() == 13
+#elif	BOOST_PP_ITERATION() == 12
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					StructureBSP::Initialize
 #		define __GS_COMPONENT_DISPOSE						StructureBSP::Dispose

@@ -11,7 +11,6 @@
 #include <blamlib/Halo1/main/main_structures.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
-#include "Interface/TextBlock.hpp"
 #include "Game/GameState.hpp"
 
 namespace Yelo

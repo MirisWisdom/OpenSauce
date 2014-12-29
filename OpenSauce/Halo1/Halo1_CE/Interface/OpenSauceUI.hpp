@@ -17,6 +17,9 @@ namespace Yelo
 
 		void Update();
 
+		void ShowScreen(const uint32 screen_id);
+		void HideScreen(const uint32 screen_id);
+
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
 		void OnLostDevice();
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);

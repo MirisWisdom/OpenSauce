@@ -19,6 +19,10 @@ namespace Yelo
 			: public c_screen_controller_base
 		{
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <param name="definition">	[in] The screen definition. </param>
 			c_screen_controller_mainmenu(Definitions::c_screen_definition& definition);
 
 		private:

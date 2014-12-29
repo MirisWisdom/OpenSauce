@@ -22,6 +22,7 @@ GWEN_CONTROL_CONSTRUCTOR( Text )
 	m_Color = GetSkin()->Colors.Label.Default;
 	SetMouseInputEnabled( false );
 	SetWrap( false );
+	SetAlignment( Gwen::Pos::Left | Gwen::Pos::Top );
 }
 
 Text::~Text()
@@ -143,6 +144,18 @@ Gwen::Rect Text::GetLineBox( int i )
 	}
 }
  
+void Text::SetAlignment( int iAlign )
+{
+	if ( m_iAlign == iAlign ) { return; }
+
+	m_iAlign = iAlign;
+	Invalidate();
+}
+
+int Text::GetAlignment()
+{
+	return m_iAlign;
+}
 
 int Text::GetClosestCharacter( Gwen::Point p )
 {
@@ -321,6 +334,7 @@ void Text::RefreshSizeWrap()
 		{
 			Text* t = new Text( this );
 			t->SetFont( GetFont() );
+			t->SetTextColor( m_Color );
 			if(bWrapped)
 			{
 				t->SetString( strLine.substr( 0, strLine.length() - (*it).length() ) );
@@ -348,10 +362,33 @@ void Text::RefreshSizeWrap()
 	}
 
 	// Size to children height and parent width
+	Point childsize = ChildrenSize();
 	{
-		Point childsize = ChildrenSize();
 		SetSize( w, childsize.y );
 	}
+
+	// Align the text within the parent
+	int y_offset = 0;
+	for ( TextLines::iterator it = m_Lines.begin(); it != m_Lines.end(); ++it )
+	{
+		Text* text = *it;
+		const Rect & bounds = GetInnerBounds();
+
+		int x = 0;
+		int y = 0;
+
+		if ( m_iAlign & Pos::Left )		{ x = bounds.x; }
+		if ( m_iAlign & Pos::Right )	{ x = bounds.x + ( bounds.w - text->Width() ); }
+		if ( m_iAlign & Pos::CenterH )	{ x = bounds.x + ( bounds.w - text->Width() )  * 0.5; }
+		if ( m_iAlign & Pos::Top )		{ y = bounds.y; }
+		if ( m_iAlign & Pos::Bottom )	{ y = bounds.y + ( bounds.h - childsize.y ); }
+		if ( m_iAlign & Pos::CenterV )	{ y = bounds.y + ( bounds.h - childsize.y )  * 0.5; }
+
+		text->SetPos( x, y + y_offset );
+
+		y_offset += text->Height();
+	}
+
 	InvalidateParent();
 	Invalidate();
 }

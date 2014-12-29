@@ -99,7 +99,14 @@ namespace Yelo
 #define K_PROPERTY_IMAGE_ID				RESOURCE_ID_DEBUG("Image")
 #define K_PROPERTY_IMAGEALPHA_ID		RESOURCE_ID_DEBUG("ImageAlpha")
 #pragma endregion
-		
+
+#pragma region Progress Bar
+#define K_PROPERTY_VERTICAL_ID			RESOURCE_ID_DEBUG("Vertical")
+#define K_PROPERTY_HORIZONTAL_ID		RESOURCE_ID_DEBUG("Horizontal")
+#define K_PROPERTY_CYCLESPEED_ID		RESOURCE_ID_DEBUG("CycleSpeed")
+#define K_PROPERTY_AUTOLABEL_ID			RESOURCE_ID_DEBUG("AutoLabel")
+#pragma endregion
+
 #pragma region General
 #define K_PROPERTY_VALUE_ID				RESOURCE_ID_DEBUG("Value")
 #define K_PROPERTY_COLOR_ID				RESOURCE_ID_DEBUG("Color")

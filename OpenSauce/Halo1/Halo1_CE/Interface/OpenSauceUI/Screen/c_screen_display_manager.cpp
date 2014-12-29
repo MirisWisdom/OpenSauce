@@ -36,7 +36,8 @@ namespace Yelo
 			return m_active_screen_count > 0;
 		}
 
-		void c_screen_display_manager::AddScreenController(const Flags::osui_game_state loaded_game_states
+		void c_screen_display_manager::AddScreenController(const uint32 screen_id
+			, const Flags::osui_game_state loaded_game_states
 			, const Flags::osui_game_state active_game_states
 			, const Flags::osui_screen_flags screen_flags
 			, const Enums::key_code toggle_key
@@ -44,7 +45,7 @@ namespace Yelo
 		{
 			YELO_ASSERT_DISPLAY((loaded_game_states & active_game_states) == active_game_states, "Screens must be loaded in the states where they can be displayed");
 
-			m_screen_instances.push_back(s_screen_instance { loaded_game_states, active_game_states, screen_flags, toggle_key, controller });
+			m_screen_instances.push_back(s_screen_instance { screen_id, loaded_game_states, active_game_states, screen_flags, toggle_key, controller });
 		}
 
 		void c_screen_display_manager::ClearScreenControllers()
@@ -83,6 +84,11 @@ namespace Yelo
 					if(instance.m_active_game_states & state)
 					{
 						m_current_stage_instances.push_back(&instance);
+
+						if(instance.m_is_visible)
+						{
+							continue;
+						}
 
 						// If the screen should always be visible set it to be displayed
 						if(instance.m_screen_flags & Flags::_osui_screen_flags_always_visible)
@@ -170,7 +176,35 @@ namespace Yelo
 				Yelo::Input::SetKeyState(Enums::_key_code_escape, 0);
 			}
 		}
-		
+
+		void c_screen_display_manager::ShowScreen(const uint32 screen_id)
+		{
+			auto found_entry = std::find_if(m_current_stage_instances.begin(), m_current_stage_instances.end(),
+				[screen_id](s_screen_instance* instance)
+				{
+					return instance->m_screen_id == screen_id;
+				});
+
+			if(found_entry != m_current_stage_instances.end())
+			{
+				ShowScreen(**found_entry);
+			}
+		}
+
+		void c_screen_display_manager::HideScreen(const uint32 screen_id)
+		{
+			auto found_entry = std::find_if(m_current_stage_instances.begin(), m_current_stage_instances.end(),
+				[screen_id](s_screen_instance* instance)
+				{
+					return instance->m_screen_id == screen_id;
+				});
+
+			if(found_entry != m_current_stage_instances.end())
+			{
+				HideScreen(**found_entry);
+			}
+		}
+
 		void c_screen_display_manager::ShowScreen(s_screen_instance& screen)
 		{
 			if(screen.m_is_visible)

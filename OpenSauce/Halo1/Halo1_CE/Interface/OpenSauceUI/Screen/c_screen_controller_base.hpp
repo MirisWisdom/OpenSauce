@@ -49,10 +49,27 @@ namespace Yelo
 			t_screen_ptr m_target_screen;
 			Definitions::c_screen_definition m_screen_definition;
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets a control's anchor point. </summary>
+			///
+			/// <param name="control">	[in] The control. </param>
+			/// <param name="anchor"> 	The anchor point. </param>
+			///
+			/// <returns>	The control's anchor point. </returns>
 			point2d GetControlAnchorPoint(Control::i_control& control, const screen_anchor anchor);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Anchors the screen to a point on it's parent. </summary>
+			///
+			/// <param name="parent_anchor">	The parents anchor point. </param>
+			/// <param name="child_anchor"> 	The childs anchor point. </param>
 			void AnchorScreen(const screen_anchor parent_anchor, const screen_anchor child_anchor);
 
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <param name="definition">	[in] The screen definition. </param>
 			c_screen_controller_base(Definitions::c_screen_definition& definition);
 			
 #pragma region i_screen_controller
@@ -136,6 +153,14 @@ namespace Yelo
 			/// <param name="property_id">	Identifier for the property. </param>
 			/// <param name="value">	  	The value. </param>
 			void SetControlProperty(const uint32 control_id, const uint32 property_id, const int32 value);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Sets a string control property. </summary>
+			///
+			/// <param name="control_id"> 	Identifier for the control. </param>
+			/// <param name="property_id">	Identifier for the property. </param>
+			/// <param name="value">	  	The value. </param>
+			void SetControlProperty(const uint32 control_id, const uint32 property_id, const real value);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets a string control property. </summary>

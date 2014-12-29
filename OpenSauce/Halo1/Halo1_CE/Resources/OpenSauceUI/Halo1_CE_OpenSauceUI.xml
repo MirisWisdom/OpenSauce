@@ -22,5 +22,10 @@
 			<Type>Archive</Type>
 			<Path>InGameDefinition.json</Path>
 		</File>
+		<File>
+			<ID>MapDownload</ID>
+			<Type>Archive</Type>
+			<Path>MapDownloadDefinition.json</Path>
+		</File>
 	</PackedFile>
 </OpenSauce>

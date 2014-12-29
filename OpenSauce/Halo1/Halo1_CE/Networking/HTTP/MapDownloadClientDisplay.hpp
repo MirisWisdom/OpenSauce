@@ -7,12 +7,23 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include "Interface/TextBlock.hpp"
 
 namespace Yelo
 {
 	namespace Networking { namespace HTTP { namespace Client { namespace MapDownload
 	{
+		enum map_download_state : _enum
+		{
+			_map_download_state_searching,
+			_map_download_state_downloading,
+			_map_download_state_completed,
+			_map_download_state_extracting,
+			_map_download_state_reconnecting,
+			_map_download_state_failed,
+
+			_map_download_state_
+		};
+
 		enum
 		{
 			k_display_title_string_length = 13, // Map Download/0
@@ -25,73 +36,40 @@ namespace Yelo
 
 		class c_map_download_display
 		{
-			// background
-			std::unique_ptr<TextBlock> m_background_tint;
-			// container
-			std::unique_ptr<TextBlock> m_base_container;
-			// inner container
-			std::unique_ptr<TextBlock> m_inner_container;
-			// title
-			std::unique_ptr<TextBlock> m_title;
-			// map name
-			std::unique_ptr<TextBlock> m_map_name;
-			// part progress bar back
-			std::unique_ptr<TextBlock> m_part_progress_back;
-			// part progress bar front
-			std::unique_ptr<TextBlock> m_part_progress_front;
-			// part progress bar text
-			std::unique_ptr<TextBlock> m_part_progress_text;
-			// map progress bar back
-			std::unique_ptr<TextBlock> m_map_progress_back;
-			// map progress bar front
-			std::unique_ptr<TextBlock> m_map_progress_front;
-			// map progress bar text
-			std::unique_ptr<TextBlock> m_map_progress_text;
-			// cancel text
-			std::unique_ptr<TextBlock> m_cancel;
-			// provider title
-			std::unique_ptr<TextBlock> m_provider_title;
-			// provider text
-			std::unique_ptr<TextBlock> m_provider_description;
-
-			bool m_map_extracting;
-			bool m_reconnecting;
-			bool m_failed;
-			PAD8;
+			map_download_state m_download_state;
+			PAD16;
 
 			real m_part_progress;
 			real m_map_progress;
 			real m_reconnect_time;
 
-			wchar_t* m_title_string;
-			wchar_t* m_cancel_string;
+			char m_map_name_string[k_display_map_name_string_length];
+			char m_provider_title_string[k_display_provider_title_string_length];
+			char m_provider_description_string[k_display_provider_description_string_length];
 
-			wchar_t m_map_name_string[k_display_map_name_string_length];
-			wchar_t m_part_progress_string[k_display_progress_string_length];
-			wchar_t m_map_progress_string[k_display_progress_string_length];
-			wchar_t m_provider_title_string[k_display_provider_title_string_length];
-			wchar_t m_provider_description_string[k_display_provider_description_string_length];
-
-
-			void SetupDisplay(D3DPRESENT_PARAMETERS* present_parameters);
 		public:
 			void SetMapName(const char* map_name);
+			cstring GetMapName();
+
 			void SetProviderTitle(const char* provider_title);
+			cstring GetProviderTitle();
+
 			void SetProviderDescription(const char* provider_description);
+			cstring GetProviderDescription();
+
 			void SetPartProgress(const real percent_complete);
+			real GetPartProgress();
+
 			void SetMapProgress(const real percent_complete);
-			void SetMapExtracting(const bool is_extracting);
-			void SetReconnecting(const bool is_reconnecting);
+			real GetMapProgress();
+			
 			void SetReconnectTime(const real time_remaining);
-			void SetFailed(const bool is_failed);
+			real GetReconnectTime();
+
+			void SetMapDownloadState(const map_download_state state);
+			map_download_state GetMapDownloadState();
 
 			void ResetDisplay();
-			void Initialize(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* present_parameters);
-			void Dispose();
-			void DeviceLost();
-			void DeviceReset(D3DPRESENT_PARAMETERS* present_parameters);
-			void Update();
-			void Render();
 		};
 
 		extern c_map_download_display g_map_download_display;
