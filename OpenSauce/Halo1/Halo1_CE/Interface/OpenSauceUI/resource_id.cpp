@@ -11,11 +11,15 @@
 
 #include <boost/crc.hpp>
 
+#define DUMP_CRCS
+
 namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI
 	{
-#ifdef DEBUG
+#if defined(DUMP_CRCS) && defined(DEBUG)
+		static std::vector<uint32> g_printed_crcs;
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Prints a CRC to the debug output. </summary>
 		///
@@ -23,6 +27,12 @@ namespace Yelo
 		/// <param name="crc">	The CRC of the string. </param>
 		static void DumpCRC(const char* str, uint32 crc)
 		{
+			if(std::find(g_printed_crcs.begin(), g_printed_crcs.end(), crc) != g_printed_crcs.end())
+			{
+				return;
+			}
+			g_printed_crcs.push_back(crc);
+
 			OutputDebugString("CRC - ");
 			OutputDebugString(str);
 			OutputDebugString("\t\t");
@@ -60,7 +70,7 @@ namespace Yelo
 			// Generate the CRC for the provided string and compare it against the expected crc
 			auto test_crc = CRCString(str);
 
-			YELO_ASSERT_DISPLAY(test_crc == crc, "A crc has been used that does not match the associated string");
+			YELO_ASSERT_DISPLAY(test_crc == crc, "A crc has been used that does not match the associated string: %s", str);
 
 			return crc;
 		}

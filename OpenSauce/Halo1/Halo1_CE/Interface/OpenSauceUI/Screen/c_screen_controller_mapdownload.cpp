@@ -17,14 +17,14 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
 #pragma region Resource ID Defines
-#define K_LBL_MAP_DOWNLOAD_TITLE_ID									RESOURCE_ID_DEBUG("#LBL_map_download_title")
+#define K_LBL_MAP_DOWNLOAD_TITLE_ID									RESOURCE_ID("#LBL_map_download_title",			0xF29195EB)
 		
-#define K_LBL_MAP_NAME_ID											RESOURCE_ID_DEBUG("#LBL_map_name")
-#define K_PRG_MAP_PROGRESS_ID										RESOURCE_ID_DEBUG("#PRG_map_progress")
-#define K_LBL_ESC_TO_CANCEL_TEXT_ID									RESOURCE_ID_DEBUG("#LBL_esc_to_cancel_text")
+#define K_LBL_MAP_NAME_ID											RESOURCE_ID("#LBL_map_name",					0x3BC95495)
+#define K_PRG_MAP_PROGRESS_ID										RESOURCE_ID("#PRG_map_progress",				0x6B38B87F)
+#define K_LBL_ESC_TO_CANCEL_TEXT_ID									RESOURCE_ID("#LBL_esc_to_cancel_text",			0x93F82DD2)
 
-#define K_DOWNLOAD_SOURCE_TITLE_ID									RESOURCE_ID_DEBUG("#LBL_download_source_title")
-#define K_DOWNLOAD_SOURCE_DESCRIPTION_ID							RESOURCE_ID_DEBUG("#LBL_download_source_description")
+#define K_DOWNLOAD_SOURCE_TITLE_ID									RESOURCE_ID("#LBL_download_source_title",		0xCDB0CD99)
+#define K_DOWNLOAD_SOURCE_DESCRIPTION_ID							RESOURCE_ID("#LBL_download_source_description",	0x88C43AA5)
 #pragma endregion
 
 		c_screen_controller_mapdownload::c_screen_controller_mapdownload(Definitions::c_screen_definition& definition)

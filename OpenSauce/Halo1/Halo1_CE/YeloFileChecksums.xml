@@ -5,5 +5,5 @@
 	<file ID="SE_EffectCollection_VS" MD5="b96e6d97e076db701de0a172608e481d">$(WorkingDirectory)shaders\vsh_OS.enc</file>
 	<file ID="PP_PPShaders_SHD" MD5="8a5f588f34f0d0ae96935a803fdeb8e4">$(CommonAppData)shaders\pp_shaders.shd</file>
 	<file ID="GBUF_GBuffer_Shaders_SHD" MD5="c391b5257dc577afa3e696c12a49f2ad">$(CommonAppData)shaders\gbuffer_shaders.shd</file>
-	<file ID="UI_OpenSauceUI_PAK" MD5="509fed601fac9cbc499f0fa4e087c133">$(CommonAppData)OpenSauceUI.pak</file>
+	<file ID="UI_OpenSauceUI_PAK" MD5="b99c3e133b28630a48efaf6a18d95371">$(CommonAppData)OpenSauceUI.pak</file>
 </osYeloChecksums>

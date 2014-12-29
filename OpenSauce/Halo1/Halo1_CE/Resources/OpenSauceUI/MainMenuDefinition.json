@@ -26,6 +26,7 @@
 				},
 				"Control": {
 					"IDStr": "#LBL_opensauce_settings_title",
+					"ID": "1431240788",
 					"Type": "Label",
 					"Property": {
 						"Name": "Dock",
@@ -83,6 +84,7 @@
 					},
 					"Control": {
 						"IDStr": "#LBL_graphics_title",
+						"ID": "4230771301",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -116,6 +118,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_general_title",
+						"ID": "655963254",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -144,6 +147,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_general_gbuffer_enabled",
+						"ID": "2162562011",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -168,6 +172,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_general_nvidia_camo_enabled",
+						"ID": "1173728595",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -193,6 +198,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_engine_upgrades_title",
+						"ID": "4060836335",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -221,6 +227,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_upgrades_max_rendered_triangles_enabled",
+						"ID": "1916776120",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -245,6 +252,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_upgrades_max_bone_nodes_enabled",
+						"ID": "4207643252",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -270,6 +278,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_shader_extension_model_title",
+						"ID": "2807400449",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -298,6 +307,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_model_normal_maps_enabled",
+						"ID": "1107930793",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -322,6 +332,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_model_detail_normal_maps_enabled",
+						"ID": "869034518",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -346,6 +357,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_model_specular_maps_enabled",
+						"ID": "1311867135",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -370,6 +382,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_model_specular_lighting_enabled",
+						"ID": "3279856787",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -395,6 +408,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_shader_extension_environment_title",
+						"ID": "1644433382",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -423,6 +437,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_environment_diffuse_dlm_enabled",
+						"ID": "3659161908",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -447,6 +462,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_environment_specular_dlm_enabled",
+						"ID": "4036532295",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -472,6 +488,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_shader_extension_effect_title",
+						"ID": "1640732877",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -500,6 +517,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_shader_extension_effect_depth_fade_enabled",
+						"ID": "2638136402",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -525,6 +543,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_postprocessing_title",
+						"ID": "2940687222",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -553,6 +572,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_postprocessing_motionblur_enabled",
+						"ID": "3866955836",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -591,6 +611,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_postprocessing_motionblur_amount",
+							"ID": "833640556",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -619,6 +640,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_postprocessing_motionblur_amount_text",
+							"ID": "936809343",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -647,6 +669,7 @@
 						},
 						"Control": {
 							"IDStr": "#SLD_postprocessing_motionblur_amount",
+							"ID": "84999408",
 							"Type": "HorizontalSlider",
 							"Property": {
 								"Name": "Dock",
@@ -676,6 +699,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_postprocessing_bloom_enabled",
+						"ID": "1773358855",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -700,6 +724,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_postprocessing_anti_aliasing_enabled",
+						"ID": "2587768095",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -724,6 +749,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_postprocessing_external_effects_enabled",
+						"ID": "3935297176",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -748,6 +774,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_postprocessing_map_effects_enabled",
+						"ID": "265273586",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -773,6 +800,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_internet_title",
+						"ID": "87392576",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -805,6 +833,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_check_for_game_updates_enabled",
+						"ID": "3459930835",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -829,6 +858,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_map_downloading_enabled",
+						"ID": "313565860",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",
@@ -854,6 +884,7 @@
 
 					"Control": {
 						"IDStr": "#LBL_map_files_title",
+						"ID": "126841630",
 						"Type": "Label",
 						"Property": {
 							"Name": "Dock",
@@ -886,6 +917,7 @@
 					},
 					"Control": {
 						"IDStr": "#CHK_check_for_yelo_first_enabled",
+						"ID": "1555369439",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",

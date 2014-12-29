@@ -12,6 +12,7 @@
 			},
 			"Control": {
 				"IDStr": "#PDG_ingame_page_control",
+				"ID": "3629440327",
 				"Type": "PageControl",
 				"Property": {
 					"Name": "Dock",
@@ -74,6 +75,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_camera_title",
+							"ID": "893561670",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -121,6 +123,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_camera_fov",
+							"ID": "2751382307",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -153,6 +156,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_camera_fov_value",
+							"ID": "88462230",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -185,6 +189,7 @@
 						},
 						"Control": {
 							"IDStr": "#BTN_camera_fov_reset",
+							"ID": "3659342866",
 							"Type": "Button",
 							"Property": {
 								"Name": "Dock",
@@ -263,6 +268,7 @@
 						},
 						"Control": {
 							"IDStr": "#SLD_camera_fov_value",
+							"ID": "439398408",
 							"Type": "VerticalSlider",
 							"Property": {
 								"Name": "Dock",
@@ -335,6 +341,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_hud_title",
+							"ID": "1671598844",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -396,6 +403,7 @@
 							},
 							"Control": {
 								"IDStr": "#SLD_hud_scale_y_amount",
+								"ID": "2707471029",
 								"Type": "VerticalSlider",
 								"Property": {
 									"Name": "Dock",
@@ -412,6 +420,7 @@
 							},
 							"Control": {
 								"IDStr": "#BTN_hud_scale_reset",
+								"ID": "101760652",
 								"Type": "Button",
 								"Property": {
 									"Name": "Dock",
@@ -482,6 +491,7 @@
 							},
 							"Control": {
 								"IDStr": "#CHK_hud_show_hud_enabled",
+								"ID": "2833660798",
 								"Type": "CheckBoxWithLabel",
 								"Property": {
 									"Name": "Dock",
@@ -514,6 +524,7 @@
 							},
 							"Control": {
 								"IDStr": "#CHK_hud_scale_hud_enabled",
+								"ID": "3153986469",
 								"Type": "CheckBoxWithLabel",
 								"Property": {
 									"Name": "Dock",
@@ -560,6 +571,7 @@
 								},
 								"Control": {
 									"IDStr": "#SLD_hud_scale_x_amount",
+									"ID": "1842002475",
 									"Type": "HorizontalSlider",
 									"Property": {
 										"Name": "Dock",
@@ -626,6 +638,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_weapon_title",
+							"ID": "1729674724",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -669,6 +682,7 @@
 						},
 						"Control": {
 							"IDStr": "#LBL_weapon_position_title",
+							"ID": "3410268845",
 							"Type": "Label",
 							"Property": {
 								"Name": "Dock",
@@ -719,6 +733,7 @@
 							},
 							"Control": {
 								"IDStr": "#SLD_weapon_position_x_offset",
+								"ID": "2440112799",
 								"Type": "HorizontalSlider",
 								"Property": {
 									"Name": "Dock",
@@ -785,6 +800,7 @@
 							},
 							"Control": {
 								"IDStr": "#SLD_weapon_position_y_offset",
+								"ID": "1574644225",
 								"Type": "HorizontalSlider",
 								"Property": {
 									"Name": "Dock",
@@ -851,6 +867,7 @@
 							},
 							"Control": {
 								"IDStr": "#SLD_weapon_position_z_offset",
+								"ID": "3545509346",
 								"Type": "HorizontalSlider",
 								"Property": {
 									"Name": "Dock",
@@ -899,6 +916,7 @@
 						},
 						"Control": {
 							"IDStr": "#BTN_weapon_position_reset",
+							"ID": "3590280222",
 							"Type": "Button",
 							"Property": {
 								"Name": "Dock",

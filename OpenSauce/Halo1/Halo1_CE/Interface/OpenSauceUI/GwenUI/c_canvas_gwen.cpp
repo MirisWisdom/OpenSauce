@@ -66,7 +66,7 @@ namespace Yelo
 
 			uint32 c_canvas_gwen::GetResourceID() const
 			{
-				return RESOURCE_ID_DEBUG("#CNV_main_canvas");
+				return RESOURCE_ID("#CNV_main_canvas", 0x356C7F9C);
 			}
 
 			rectangle2d c_canvas_gwen::GetBounds() const

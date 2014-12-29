@@ -45,10 +45,9 @@ namespace Yelo
 			/// <summary>	Handles the message described by message. </summary>
 			///
 			/// <param name="message">	   	The windows message. </param>
-			/// <param name="been_handled">	Set to true if the message has been handled previously. </param>
 			///
 			/// <returns>	true if the message was handled, false if not. </returns>
-			virtual bool HandleMessage(const MSG* message, const bool been_handled) = 0;
+			virtual void HandleMessage(const MSG* message) = 0;
 		};
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
