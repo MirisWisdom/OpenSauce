@@ -92,6 +92,14 @@ namespace Yelo
 			m_mouse_bounds.top = max_y;
 		}
 
+		void c_control_input_halo::SetMousePosition(const int x, const int y)
+		{
+			m_mouse_position.x = __min(x,					m_mouse_bounds.right);
+			m_mouse_position.x = __max(m_mouse_position.x,	m_mouse_bounds.left);
+			m_mouse_position.y = __min(y,					m_mouse_bounds.top);
+			m_mouse_position.y = __max(m_mouse_position.y,	m_mouse_bounds.bottom);
+		}
+
 		void c_control_input_halo::Update()
 		{
 			UpdateMouseMovement();
