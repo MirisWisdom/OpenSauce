@@ -157,7 +157,12 @@ namespace Yelo
 			g_screen_display_manager->SetGameState((Flags::osui_game_state)game_state);
 			g_screen_display_manager->Update();
 		}
-		
+
+		bool IsUIAvailable()
+		{
+			return g_ui_package_present;
+		}
+
 		void ShowScreen(const uint32 screen_id)
 		{
 			g_screen_display_manager->ShowScreen(screen_id);
@@ -168,16 +173,29 @@ namespace Yelo
 			g_screen_display_manager->HideScreen(screen_id);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Adds a screen controller to the display manager. </summary>
+		///
+		/// <typeparam name="ControllerType">	Type of the controller. </typeparam>
+		/// <param name="screen_id">	  	Identifier for the screen. </param>
+		/// <param name="definition_name">	Name of the definition. </param>
+		/// <param name="loaded_states">  	The states the screen should be loaded in. </param>
+		/// <param name="active_states">  	The active screen states. </param>
+		/// <param name="screen_flags">   	The screen flags. </param>
+		/// <param name="toggle_key">	  	(Optional) The screens toggle key. </param>
 		template<typename ControllerType>
-		void AddScreenController(const uint32 screen_id
+		static void AddScreenController(const uint32 screen_id
 			, cstring definition_name
 			, Flags::osui_game_state loaded_states
 			, Flags::osui_game_state active_states
 			, Flags::osui_screen_flags screen_flags
 			, Enums::key_code toggle_key = Enums::k_number_of_keys)
 		{
+			// Get the screen definition from the ui package
 			Definitions::c_screen_definition screen_definition;
 			Screen::c_screen_definition_registry::GetScreenDefinition(g_ui_package, definition_name, screen_definition);
+
+			// Create the controller and add it to the display manager
 			g_screen_display_manager->AddScreenController(screen_id
 				, loaded_states
 				, active_states
@@ -186,15 +204,25 @@ namespace Yelo
 				, std::make_shared<ControllerType>(screen_definition));
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Loads the OpenSauce user interface. </summary>
+		///
+		/// <param name="device">				  	[in] If non-null, the current render device. </param>
+		/// <param name="presentation_parameters">
+		/// 	[in,out] If non-null, the device's presentation parameters.
+		/// </param>
 		void LoadUI(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* presentation_parameters)
 		{
+			// Update the mouse bounds and initial position
 			g_control_input.SetMouseBounds(0, presentation_parameters->BackBufferWidth, 0, presentation_parameters->BackBufferHeight);
+			g_control_input.SetMousePosition(presentation_parameters->BackBufferWidth / 2, presentation_parameters->BackBufferHeight / 2);
 
+			// Build the canvas and mouse pointer
 			g_canvas->Initialize(device, g_ui_package, g_control_input);
 			g_canvas->SetSize(presentation_parameters->BackBufferWidth, presentation_parameters->BackBufferHeight);
 			g_mouse_pointer->BuildMouse(g_control_input);
 
-
+			// Add all screen controllers
 			AddScreenController<Screen::c_screen_controller_mainmenu>(K_SCREEN_MAIN_MENU
 				, "MainMenu"
 				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_pause_menu | Flags::_osui_game_state_in_game)
@@ -228,11 +256,14 @@ namespace Yelo
 				| Flags::_osui_screen_flags_disable_movement)
 				, Enums::_key_code_f7);
 
+			// Set the initial display state
 			g_screen_display_manager->SetGameState(Flags::_osui_game_state_main_menu);
 		}
 
+		/// <summary>	Unloads the OpenSauce user interface. </summary>
 		void UnloadUI()
 		{
+			// Delete the screen controllers, canvas and mouse
 			g_screen_display_manager->ClearScreenControllers();
 			g_mouse_pointer->DestroyMouse(g_control_input);
 			g_canvas->Release(g_control_input);

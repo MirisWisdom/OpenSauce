@@ -50,9 +50,16 @@
 		<Condition Message="This setup requires the .NET Framework 4.0 to be installed.">
 			<![CDATA[Installed OR NETFRAMEWORK40CLIENT]]>
 		</Condition>
-		
+
 		<Condition Message="This application is only supported on Windows XP SP3 or above.">
 			<![CDATA[Installed OR ((VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3)))]]>
+		</Condition>
+
+		<Upgrade Id="$(var.UpgradeCodeGUID)">
+			<UpgradeVersion Minimum="0.0.0" Maximum="3.9.9" OnlyDetect="yes" Property="OSPREVVERSIONFOUND" />
+		</Upgrade>
+		<Condition Message="Please uninstall the previous version of OpenSauce before installing this one.">
+			<![CDATA[Installed OR (OSPREVVERSIONFOUND = "")]]>
 		</Condition>
 
 		<!-- Set the icon in Add/Remove programs-->

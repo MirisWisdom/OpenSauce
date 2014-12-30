@@ -2337,7 +2337,7 @@ namespace Yelo
 		 */
 		void	AddMapForDownload(const char* map_name)
 		{
-			if(!c_settings_mapdownload::Instance()->m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled || !Interface::OpenSauceUI::IsUIAvailable())
 				return;
 
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)

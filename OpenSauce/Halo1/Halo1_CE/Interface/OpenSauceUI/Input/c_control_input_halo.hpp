@@ -42,6 +42,13 @@ namespace Yelo
 			/// <param name="max_y">	The maximum y coordinate. </param>
 			void SetMouseBounds(const int min_x, const int max_x, const int min_y, const int max_y) override;
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Sets the position of the mouse. </summary>
+			///
+			/// <param name="x">	The mouse x position. </param>
+			/// <param name="y">	The mouse y position. </param>
+			void SetMousePosition(const int x, const int y) override;
+
 			/// <summary>	Updates the ui input. </summary>
 			void Update() override;
 

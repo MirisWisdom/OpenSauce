@@ -116,9 +116,9 @@ namespace Yelo
 			SetControlProperty(K_CHK_GENERAL_GBUFFER_ENABLED_ID,							K_PROPERTY_TEXT_ID, "GBuffer Enabled");
 			SetControlProperty(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID,						K_PROPERTY_TEXT_ID, "Use nVidia Camo (requires restart)");
 
-			SetControlProperty(K_LBL_ENGINE_UPGRADES_TITLE_ID,								K_PROPERTY_TEXT_ID, "Engine Upgrades");
-			SetControlProperty(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Increase maximum rendered triangles (requires restart)");
-			SetControlProperty(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Increase maximum model bone count (requires restart)");
+			SetControlProperty(K_LBL_ENGINE_UPGRADES_TITLE_ID,								K_PROPERTY_TEXT_ID, "Engine Upgrades (requires restart)");
+			SetControlProperty(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Increase maximum rendered triangles");
+			SetControlProperty(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Increase maximum model bone count");
 
 			SetControlProperty(K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID,						K_PROPERTY_TEXT_ID, "Shader Extension - Models");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Normal Maps Enabled");
@@ -148,7 +148,7 @@ namespace Yelo
 
 			SetControlProperty(K_LBL_MAP_FILES_TITLE_ID,									K_PROPERTY_TEXT_ID, "Map Files");
 
-			SetControlProperty(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID,				K_PROPERTY_TEXT_ID, "Look for .yelo maps first (Requires Restart)");
+			SetControlProperty(K_CHK_MAP_FILES_CHECK_FOR_YELO_FIRST_ENABLED_ID,				K_PROPERTY_TEXT_ID, "Look for .yelo maps first (requires restart)");
 		}
 
 		void c_screen_controller_mainmenu::BindDynamicProperties()
