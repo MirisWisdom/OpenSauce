@@ -102,14 +102,6 @@
 				<RemoveFolder Id='Halo1_CE_OpenSauce_REMDIR' On='uninstall' />
 			</Component>
 		</Directory>
-
-		<!-- Remove all files in the Yelo directory and delete it -->
-		<Directory Id='Halo1_CE_Yelo_DIR' Name='Yelo'>
-			<Component Id='Halo1_CE_YeloRemove_COMP' Guid='D7E6C97B-615F-4AFA-86CA-080A519760B9'>
-				<RemoveFile Id='Halo1_CE_Yelo_REM' Name='*.*' On='uninstall' />
-				<RemoveFolder Id='Halo1_CE_Yelo_REMDIR' On='uninstall' />
-			</Component>
-		</Directory>
 	</Directory>
 
 	<!-- Files and folders that belong in the HEK root directory -->
