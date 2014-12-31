@@ -47,6 +47,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Common/DebugDump.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_COMMON_DEBUG_DUMP
+	FUNC_PTR(WINMAIN_EXCEPTION_FILTER,									0x546920, 0x4FFEA0);
 	FUNC_PTR(WINMAIN_EXCEPTION_FILTER_CALL,								0x545341, 0x4FF60F);
 
 	FUNC_PTR(RASTERIZER_DX9_SAVE_GAMMA,									0x525E00, FUNC_PTR_NULL);

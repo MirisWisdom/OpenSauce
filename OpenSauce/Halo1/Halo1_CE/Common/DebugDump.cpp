@@ -7,22 +7,21 @@
 #include "Common/Precompile.hpp"
 #include "Common/DebugDump.hpp"
 
-#if !PLATFORM_IS_DEDI
-
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
+#include "Memory/MemoryInterface.hpp"
+
+#if PLATFORM_IS_USER
 #include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 #include <YeloLib/cseries/pc_crashreport.hpp>
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/Settings.hpp"
-#include "Memory/MemoryInterface.hpp"
 #include "Interface/Keystone.hpp"
-
-//#define DISABLE_EXCEPTION_HANDLING
+#endif
 
 namespace Yelo
 {
@@ -32,6 +31,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
 #include "Memory/_EngineLayout.inl"
 
+#if PLATFORM_IS_USER
 		static char g_reports_path[MAX_PATH];
 		struct s_freeze_dump_globals
 		{
@@ -219,14 +219,13 @@ namespace Yelo
 				result = Debug::SEHExceptionFilter(ptrs);
 			}
 
-#if PLATFORM_IS_USER
 			Keystone::ReleaseKeystone();
 
 			// save gamma to registry
 			CAST_PTR(proc_simple_function, GET_FUNC_VPTR(RASTERIZER_DX9_SAVE_GAMMA))();
 			// present final frame
 			CAST_PTR(proc_simple_function, GET_FUNC_VPTR(RASTERIZER_WINDOWS_PRESENT_FRAME))();
-#endif
+
 			// kill all sounds
 			CAST_PTR(proc_simple_function, GET_FUNC_VPTR(SOUND_STOP_ALL))();
 
@@ -378,10 +377,8 @@ namespace Yelo
 				// override the WinMain catch all exception filter
 				Memory::WriteRelativeCall(ExceptionFilter, GET_FUNC_VPTR(WINMAIN_EXCEPTION_FILTER_CALL), true);
 
-#if PLATFORM_IS_USER
 				// add a screenshot to the report
 				Debug::AddScreenshotToCrashReport();
-#endif
 
 				// add custom properties to the report
 				Debug::AddPropertyToCrashReport("CommandLine", GetCommandLine());
@@ -391,10 +388,6 @@ namespace Yelo
 				if(Settings::GetSettingsFilePath(Settings::K_USER_FILENAME_XML, file_path))
 				{
 					Debug::AddFileToCrashReport(file_path, Settings::K_USER_FILENAME_XML, "User settings file");
-				}
-				if(Settings::GetSettingsFilePath(Settings::K_SERVER_FILENAME_XML, file_path))
-				{
-					Debug::AddFileToCrashReport(file_path, Settings::K_SERVER_FILENAME_XML, "Server settings file");
 				}
 			}
 		}
@@ -415,6 +408,45 @@ namespace Yelo
 			// uninstall the crashrpt exception handler
 			Debug::UninstallExceptionHandler();
 		}
+#else
+		static int WINAPI ExceptionFilter(PEXCEPTION_POINTERS ptrs)
+		{
+			typedef void (PLATFORM_API* proc_simple_function)(void);
+
+			int result;
+			bool disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
+
+			if (
+#ifdef API_DEBUG
+				IsDebuggerPresent() ||
+#endif
+				disable_exception_handling
+				)
+			{
+				result = EXCEPTION_CONTINUE_SEARCH;
+
+				// kill all sounds
+				CAST_PTR(proc_simple_function, GET_FUNC_VPTR(SOUND_STOP_ALL))();
+
+				// report the exception to windows
+				ReportFault(ptrs, 0);
+			}
+			else
+			{
+				result = CAST_PTR(int (WINAPI*)(PEXCEPTION_POINTERS), GET_FUNC_VPTR(WINMAIN_EXCEPTION_FILTER))(ptrs);
+			}
+
+			return result;
+		}
+
+		void DumpInitialize()
+		{
+			Memory::WriteRelativeCall(ExceptionFilter, GET_FUNC_VPTR(WINMAIN_EXCEPTION_FILTER_CALL), true);
+		}
+
+		void DumpDispose() { }
+
+		void Update(real delta) { }
+#endif
 	};
 };
-#endif
