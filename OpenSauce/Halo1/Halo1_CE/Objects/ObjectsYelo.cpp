@@ -163,7 +163,9 @@ namespace Yelo
 		{
 			c_settings_objects::Register(Settings::Manager());
 
+#if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
+#endif
 
 #if PLATFORM_IS_USER
 			if(!CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())

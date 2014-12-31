@@ -16,7 +16,7 @@
 #		define __GS_COMPONENT_INITIALIZE	Debug::FileInitialize
 #		define __GS_COMPONENT_DISPOSE		Debug::FileDispose
 #	endif
-#elif	BOOST_PP_ITERATION() == 3 && PLATFORM_IS_USER // compile in release too to get dumps from users
+#elif	BOOST_PP_ITERATION() == 3 // compile in release too to get dumps from users
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE	Debug::DumpInitialize
 #		define __GS_COMPONENT_DISPOSE		Debug::DumpDispose
