@@ -8,10 +8,10 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/Halo1/files/packed_file.hpp>
-
 namespace Yelo
 {
+	class c_packed_file;
+
 	namespace Rasterizer { namespace Textures
 	{
 		/// <summary>	Loader for packed textures. </summary>

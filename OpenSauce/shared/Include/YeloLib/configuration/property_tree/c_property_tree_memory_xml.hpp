@@ -11,14 +11,14 @@ namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		class c_property_tree_memory_xml
+		class c_property_tree_memory_xml final
 			: public c_property_tree_memory
 		{
 		public:
 			c_property_tree_memory_xml(cstring data);
 
-		protected:
-			void ReadPropertyTree(std::istringstream& data, boost::property_tree::ptree& property_tree) final override;
+		private:
+			void ReadPropertyTree(std::istringstream& data, boost::property_tree::ptree& property_tree) override;
 		};
 	};};
 };
