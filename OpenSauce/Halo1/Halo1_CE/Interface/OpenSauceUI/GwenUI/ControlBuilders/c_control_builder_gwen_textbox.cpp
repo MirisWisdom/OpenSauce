@@ -15,6 +15,7 @@
 #include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Interface/OpenSauceUI/Control/c_control_base.hpp"
+#include "Interface/OpenSauceUI/GwenUI/c_event_handler_gwen.hpp"
 
 namespace Yelo
 {

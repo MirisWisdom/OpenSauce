@@ -7,8 +7,9 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include "Gwen/Gwen.h"
-#include "Gwen/BaseRender.h"
+#include <Gwen/Gwen.h>
+#include <Gwen/BaseRender.h>
+
 #include "Rasterizer/Textures/c_packed_texture_loader.hpp"
 
 namespace Yelo

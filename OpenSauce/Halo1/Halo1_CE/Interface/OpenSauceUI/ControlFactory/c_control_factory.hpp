@@ -29,6 +29,15 @@ namespace Yelo
 
 			std::vector<s_control_type> m_controls;
 
+		private:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for a control type. </summary>
+			///
+			/// <param name="type_name">	Name of the type. </param>
+			///
+			/// <returns>	Iterator for the found control type. </returns>
+			std::vector<s_control_type>::iterator FindControlType(const std::string& type_name);
+
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Adds a control type to the control factory. </summary>

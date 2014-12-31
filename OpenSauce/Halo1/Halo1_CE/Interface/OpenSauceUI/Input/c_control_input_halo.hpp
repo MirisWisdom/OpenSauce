@@ -9,6 +9,8 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Interface/OpenSauceUI/Input/i_control_input.hpp"
+#include "Interface/OpenSauceUI/Input/i_control_mouse_handler.hpp"
+#include "Interface/OpenSauceUI/Input/i_control_keyboard_handler.hpp"
 #include "Interface/Controls.hpp"
 #include "Interface/Keystone.hpp"
 

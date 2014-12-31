@@ -27,6 +27,7 @@ namespace Yelo
 			, m_mouse_show_count(0)
 			, m_modal_screen_count(0)
 			, m_disable_movement_count(0)
+			, m_previous_esckey_state(false)
 			, m_screen_instances()
 			, m_current_stage_instances()
 		{ }

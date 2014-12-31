@@ -8,9 +8,8 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include "Interface/OpenSauceUI/i_visibility_toggle.hpp"
 #include "Interface/OpenSauceUI/Input/i_control_input.hpp"
-#include "Interface/OpenSauceUI/Control/i_canvas.hpp"
-#include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
 
 namespace Yelo
 {

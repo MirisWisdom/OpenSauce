@@ -601,6 +601,21 @@
     <ClInclude Include="Interface\OpenSauceUI\Screen\screen_ids.hpp">
       <Filter>Interface\OpenSauceUI\Screen</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_event_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_property_interface.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_property_interface.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_event_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1215,6 +1230,15 @@
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_event_handler.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_property_interface.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

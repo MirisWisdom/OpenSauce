@@ -385,6 +385,8 @@
     <ClCompile Include="Interface\OpenSauceUI\ControlFactory\c_control_builder_base.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\ControlFactory\c_control_factory.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Control\c_control_base.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_event_handler.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_property_interface.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Control\s_interface_value.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_definition.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.cpp" />
@@ -409,6 +411,7 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_canvas_gwen.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_control_gwen.cpp" />
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_mouse_pointer_gwen.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.cpp" />
     <ClCompile Include="Interface\OpenSauceUI\Input\c_control_input_halo.cpp" />
@@ -537,6 +540,10 @@
     <ClInclude Include="Interface\OpenSauceUI\Control\control_event_ids.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\control_property_ids.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\c_control_base.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_event_handler.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_property_interface.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_event_handler.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_property_interface.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\s_interface_value.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\i_canvas.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Control\i_control.hpp" />
@@ -559,6 +566,7 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.hpp" />
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Input\i_control_keyboard_handler.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\Input\i_control_mouse_handler.hpp" />
     <ClInclude Include="Interface\OpenSauceUI\i_visibility_toggle.hpp" />

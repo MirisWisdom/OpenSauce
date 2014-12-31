@@ -194,7 +194,7 @@ namespace Yelo
 
 		void c_control_input_halo::SendKeyboardButton(const Enums::key_code key, const bool state)
 		{
-			// Send the character to the handlers
+			// Send the button state to the handlers
 			for(auto handler : m_keyboard_input_handlers)
 			{
 				handler->OnKeyboardButtonUpdate(key, state);
