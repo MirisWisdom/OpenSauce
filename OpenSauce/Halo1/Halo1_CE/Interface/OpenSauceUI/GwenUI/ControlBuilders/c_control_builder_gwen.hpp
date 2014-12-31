@@ -48,7 +48,7 @@ namespace Yelo
 			/// <remarks>	Derived overrides of this function must call the base function as well. </remarks>
 			///
 			/// <param name="property_interfaces">	[out] The property interfaces. </param>
-			virtual void GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const = 0;
+			virtual void GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the event handlers for the control type. </summary>
@@ -57,7 +57,7 @@ namespace Yelo
 			///
 			/// <param name="control">		 	[in] The control. </param>
 			/// <param name="event_handlers">	[out] The event handlers. </param>
-			virtual void GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const = 0;
+			virtual void GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Builds a Gwen control from the specified definition. </summary>
@@ -67,7 +67,7 @@ namespace Yelo
 			/// <param name="parent">			 	[in] The parent. </param>
 			///
 			/// <returns>	A shared control pointer. </returns>
-			Control::t_control_ptr Build(ControlFactory::c_control_factory& control_registry
+			Control::control_ptr_t Build(ControlFactory::c_control_factory& control_registry
 				, Definitions::c_control_definition& control_definition
 				, Control::i_control& parent) const override;
 		};

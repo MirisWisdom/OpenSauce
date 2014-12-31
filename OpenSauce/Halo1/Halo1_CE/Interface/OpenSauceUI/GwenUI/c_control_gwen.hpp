@@ -20,7 +20,7 @@ namespace Yelo
 		class c_event_handler_gwen;
 
 		/// <summary>	Defines an alias representing an event data transform function. </summary>
-		typedef std::function<void(Gwen::Event::Info&, Control::s_interface_value&)> t_event_data_transform;
+		typedef std::function<void(Gwen::Event::Info&, Control::s_interface_value&)> event_data_transform_t;
 
 		/// <summary>	An event handler for gwen controls. </summary>
 		class c_event_handler_gwen_handler final
@@ -30,7 +30,7 @@ namespace Yelo
 			const c_event_handler_gwen& m_owner;
 			Gwen::Event::Caller& m_caller;
 			bool is_attached;
-			const t_event_data_transform m_data_transform;
+			const event_data_transform_t m_data_transform;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Callback for attaching to a gwen control event. </summary>
@@ -47,7 +47,7 @@ namespace Yelo
 			/// <param name="data_transform">	The data transform function. </param>
 			c_event_handler_gwen_handler( const c_event_handler_gwen& owner
 				, Gwen::Event::Caller& caller
-				, const t_event_data_transform& data_transform);
+				, const event_data_transform_t& data_transform);
 
 			/// <summary>	Destructor. </summary>
 			~c_event_handler_gwen_handler();
@@ -72,7 +72,7 @@ namespace Yelo
 			///
 			/// <param name="caller">		 	[in] The caller to attach to. </param>
 			/// <param name="data_transform">	(Optional) the data transform function. </param>
-			c_event_handler_gwen(Gwen::Event::Caller& caller, const t_event_data_transform& data_transform = nullptr);
+			c_event_handler_gwen(Gwen::Event::Caller& caller, const event_data_transform_t& data_transform = nullptr);
 
 		private:
 			/// <summary>	Attaches the handler to the event. </summary>
@@ -99,8 +99,8 @@ namespace Yelo
 			/// <param name="event_handlers">	  	[in] The control's event handlers. </param>
 			c_control_gwen(Control::i_control& parent
 				, Gwen::Controls::Base* gwen_control
-				, const Control::t_property_interface_map& property_interfaces
-				, const Control::t_event_handler_map& event_handlers);
+				, const Control::property_interface_map_t& property_interfaces
+				, const Control::event_handler_map_t& event_handlers);
 			
 #pragma region i_control
 			////////////////////////////////////////////////////////////////////////////////////////////////////

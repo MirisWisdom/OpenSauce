@@ -29,7 +29,7 @@ namespace Yelo
 			std::unique_ptr<Gwen::Skin::TexturedBase>	m_skin;
 			std::unique_ptr<Gwen::Controls::Canvas>		m_canvas;
 
-			Control::t_control_list m_child_controls;
+			Control::control_list_t m_child_controls;
 
 #pragma region i_canvas
 		public:
@@ -97,7 +97,7 @@ namespace Yelo
 			/// <remarks>	If the specified control has already been added the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to add. </param>
-			void AddControl(Control::t_control_ptr control) override;
+			void AddControl(Control::control_ptr_t control) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes the specified control from the child control list. </summary>
@@ -105,13 +105,13 @@ namespace Yelo
 			/// <remarks>	If the specified control does not exist, the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to remove. </param>
-			void RemoveControl(Control::t_control_ptr control) override;
+			void RemoveControl(Control::control_ptr_t control) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the controls list. </summary>
 			///
 			/// <returns>	A list of controls. </returns>
-			Control::t_control_list& Controls() override;
+			Control::control_list_t& Controls() override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Not applicable for a canvas. </summary>
@@ -119,7 +119,7 @@ namespace Yelo
 			
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Not applicable for a canvas. </summary>
-			void AddEventCallback(const uint32 event_id, const uint32 callback_id, const Control::t_event_callback& function, void* userdata) override { }
+			void AddEventCallback(const uint32 event_id, const uint32 callback_id, const Control::event_callback_t& function, void* userdata) override { }
 			
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Not applicable for a canvas. </summary>

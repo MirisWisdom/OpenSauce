@@ -44,7 +44,7 @@ namespace Yelo
 			gwen_control.SetText("");
 		}
 
-		void c_control_builder_gwen_textboxnumeric::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_textboxnumeric::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_textbox::GetPropertyInterfaces(property_interfaces);
 			

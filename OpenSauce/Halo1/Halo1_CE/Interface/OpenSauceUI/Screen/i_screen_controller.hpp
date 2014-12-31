@@ -56,7 +56,7 @@ namespace Yelo
 		};
 
 		/// <summary>	Defines an alias representing screen controller shared pointer. </summary>
-		typedef std::shared_ptr<i_screen_controller> t_screen_controller_ptr;
+		typedef std::shared_ptr<i_screen_controller> screen_controller_ptr_t;
 	};};};
 };
 #endif

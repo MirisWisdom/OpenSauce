@@ -51,7 +51,7 @@ namespace Yelo
 				const Flags::osui_game_state m_active_game_states;
 				const Flags::osui_screen_flags m_screen_flags;
 				const Enums::key_code m_toggle_key;
-				t_screen_controller_ptr m_screen_controller;
+				screen_controller_ptr_t m_screen_controller;
 
 				bool m_is_visible;
 				byte m_previous_key_state;
@@ -102,7 +102,7 @@ namespace Yelo
 				, const Flags::osui_game_state active_game_states
 				, const Flags::osui_screen_flags screen_flags
 				, const Enums::key_code toggle_key
-				, t_screen_controller_ptr controller);
+				, screen_controller_ptr_t controller);
 
 			/// <summary>	Destroys all screens and controllers. </summary>
 			void ClearScreenControllers();

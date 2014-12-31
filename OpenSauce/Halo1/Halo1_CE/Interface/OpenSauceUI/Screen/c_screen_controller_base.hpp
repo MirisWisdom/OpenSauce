@@ -34,19 +34,19 @@ namespace Yelo
 
 		private:
 			/// <summary>	Defines an alias representing a dynamic property update function. </summary>
-			typedef std::function<void(Control::i_control&, Control::i_property_interface&)> t_dynamic_property_update;
+			typedef std::function<void(Control::i_control&, Control::i_property_interface&)> dynamic_property_update_t;
 
 			struct s_dynamic_property
 			{
 				Control::i_control& m_control;
 				Control::i_property_interface& m_property;
-				const t_dynamic_property_update m_update;
+				const dynamic_property_update_t m_update;
 			};
 
 			std::vector<s_dynamic_property> m_dynamic_properties;
 
 		protected:
-			t_screen_ptr m_target_screen;
+			screen_ptr_t m_target_screen;
 			Definitions::c_screen_definition m_screen_definition;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ namespace Yelo
 			///
 			/// <param name="control_id"> 	Identifier for the control. </param>
 			/// <param name="control_out">	[out] The found control. </param>
-			void FindControl(const uint32 control_id, Control::t_control_ptr& control_out);
+			void FindControl(const uint32 control_id, Control::control_ptr_t& control_out);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for a control and property. </summary>
@@ -124,7 +124,10 @@ namespace Yelo
 			/// <param name="property_id"> 	Identifier for the property. </param>
 			/// <param name="control_out"> 	[out] The found control. </param>
 			/// <param name="property_out">	[out] The found property. </param>
-			void FindControlAndProperty(const uint32 control_id, const uint32 property_id, Control::t_control_ptr& control_out, Control::i_property_interface*& property_out);
+			void FindControlAndProperty(const uint32 control_id
+				, const uint32 property_id
+				, Control::control_ptr_t& control_out
+				, Control::i_property_interface*& property_out);
 
 		private:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +179,7 @@ namespace Yelo
 			/// <param name="control_id"> 	Identifier for the control. </param>
 			/// <param name="property_id">	Identifier for the property. </param>
 			/// <param name="update">	  	The update function. </param>
-			void AddDynamicProperty(const uint32 control_id, const uint32 property_id, const t_dynamic_property_update& update);
+			void AddDynamicProperty(const uint32 control_id, const uint32 property_id, const dynamic_property_update_t& update);
 #pragma endregion
 
 #pragma region Event Setup
@@ -188,7 +191,7 @@ namespace Yelo
 			/// <param name="callback_id">	Identifier for the callback. </param>
 			/// <param name="userdata">   	[in] The userdata for the callback. </param>
 			/// <param name="function">   	The callback function. </param>
-			void AttachEvent(const uint32 control_id, const uint32 event_id, const uint32 callback_id, void* userdata, Control::t_event_callback function);
+			void AttachEvent(const uint32 control_id, const uint32 event_id, const uint32 callback_id, void* userdata, Control::event_callback_t function);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Detach event. </summary>

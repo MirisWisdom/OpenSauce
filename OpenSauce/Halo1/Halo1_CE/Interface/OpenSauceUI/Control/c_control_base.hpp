@@ -24,7 +24,7 @@ namespace Yelo
 			{
 				uint32 id;
 				void* userdata;
-				t_event_callback function;
+				event_callback_t function;
 
 				////////////////////////////////////////////////////////////////////////////////////////////////////
 				/// <summary>	Assignment operator. </summary>
@@ -52,7 +52,7 @@ namespace Yelo
 			/// <param name="callback_id">	Identifier for the callback. </param>
 			/// <param name="function">   	The function. </param>
 			/// <param name="userdata">   	[in] If non-null, the userdata. </param>
-			void AddCallback(const uint32 callback_id, const t_event_callback& function, void* userdata);
+			void AddCallback(const uint32 callback_id, const event_callback_t& function, void* userdata);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes the callback described by callback_id. </summary>
@@ -75,27 +75,27 @@ namespace Yelo
 		};
 
 		/// <summary>	Defines an alias representing event handler shared pointer. </summary>
-		typedef std::shared_ptr<c_event_handler> t_event_handler_ptr;
+		typedef std::shared_ptr<c_event_handler> event_handler_ptr_t;
 
 		/// <summary>	Defines an alias representing an event_handler map. </summary>
-		typedef std::map<uint32, t_event_handler_ptr> t_event_handler_map;
+		typedef std::map<uint32, event_handler_ptr_t> event_handler_map_t;
 
 		/// <summary>	A property interface. </summary>
 		class c_property_interface final
 			: public i_property_interface
 		{
 			/// <summary>	Defines an alias representing the property get function. </summary>
-			typedef std::function<void(i_control&, s_interface_value&)> t_property_get_func;
+			typedef std::function<void(i_control&, s_interface_value&)> property_get_func_t;
 
 			/// <summary>	Defines an alias representing the property set function. </summary>
-			typedef std::function<void(i_control&, const s_interface_value&)> t_property_set_func;
+			typedef std::function<void(i_control&, const s_interface_value&)> property_set_func_t;
 
 			/// <summary>	Defines an alias representing the property set by string function. </summary>
-			typedef std::function<void(i_control&, const char*)> t_property_set_by_string_func;
+			typedef std::function<void(i_control&, const char*)> property_set_by_string_func_t;
 
-			const t_property_get_func m_get;
-			const t_property_set_func m_set;
-			const t_property_set_by_string_func m_set_string;
+			const property_get_func_t m_get;
+			const property_set_func_t m_set;
+			const property_set_by_string_func_t m_set_string;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,9 +104,9 @@ namespace Yelo
 			/// <param name="get">		 	The get function. </param>
 			/// <param name="set">		 	The set function. </param>
 			/// <param name="set_string">	The set by string function. </param>
-			c_property_interface(const t_property_get_func& get
-				, const t_property_set_func& set
-				, const t_property_set_by_string_func& set_string);
+			c_property_interface(const property_get_func_t& get
+				, const property_set_func_t& set
+				, const property_set_by_string_func_t& set_string);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets a property using a string representation. </summary>
@@ -143,9 +143,9 @@ namespace Yelo
 		private:
 			i_control& m_parent;
 			uint32 m_resource_id;
-			t_control_list m_child_controls;
-			t_property_interface_map m_property_interfaces;
-			t_event_handler_map m_event_handlers;
+			control_list_t m_child_controls;
+			property_interface_map_t m_property_interfaces;
+			event_handler_map_t m_event_handlers;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for a matching control in the child control list. </summary>
@@ -153,7 +153,7 @@ namespace Yelo
 			/// <param name="control">	The control to find. </param>
 			///
 			/// <returns>	The found control. </returns>
-			t_control_list::const_iterator FindControl(const t_control_ptr control) const;
+			control_list_t::const_iterator FindControl(const control_ptr_t control) const;
 			
 		protected:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,7 @@ namespace Yelo
 			///
 			/// <param name="event_id">			Identifier for the event. </param>
 			/// <param name="event_handler">	[in] The event handler. </param>
-			void AddEventHandler(const uint32 event_id, const t_event_handler_ptr& event_handler);
+			void AddEventHandler(const uint32 event_id, const event_handler_ptr_t& event_handler);
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@ namespace Yelo
 			/// <remarks>	If the specified control has already been added the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to add. </param>
-			void AddControl(t_control_ptr control) final override;
+			void AddControl(control_ptr_t control) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes the specified control from the child control list. </summary>
@@ -218,13 +218,13 @@ namespace Yelo
 			/// <remarks>	If the specified control does not exist, the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to remove. </param>
-			void RemoveControl(t_control_ptr control) final override;
+			void RemoveControl(control_ptr_t control) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the controls list. </summary>
 			///
 			/// <returns>	A list of controls. </returns>
-			t_control_list& Controls() final override;
+			control_list_t& Controls() final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a property interface. </summary>
@@ -241,7 +241,7 @@ namespace Yelo
 			/// <param name="callback_id">	Identifier for the callback. </param>
 			/// <param name="callback">   	The callback function. </param>
 			/// <param name="userdata">   	[in] The userdata for the event. </param>
-			void AddEventCallback(const uint32 event_id, const uint32 callback_id, const t_event_callback& function, void* userdata) final override;
+			void AddEventCallback(const uint32 event_id, const uint32 callback_id, const event_callback_t& function, void* userdata) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes an event callback. </summary>

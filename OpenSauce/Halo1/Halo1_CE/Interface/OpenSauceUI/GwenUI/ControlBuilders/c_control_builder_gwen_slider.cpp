@@ -142,7 +142,7 @@ namespace Yelo
 			gwen_control.SetFloatValue(0.5f);
 		}
 
-		void c_control_builder_gwen_slider::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_slider::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 
@@ -153,7 +153,7 @@ namespace Yelo
 			property_interfaces[K_PROPERTY_VALUE_ID] = GET_PROPERTY_INTERFACE(slider_value);
 		}
 
-		void c_control_builder_gwen_slider::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
+		void c_control_builder_gwen_slider::GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const
 		{
 			c_control_builder_gwen_base::GetEventHandlers(control, event_handlers);
 			

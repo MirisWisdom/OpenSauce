@@ -935,7 +935,7 @@ namespace Yelo
 			Label_SetTextColor(*gwen_control.FinishButton(), argb_color { 255, 0, 0, 0 });
 		}
 
-		void c_control_builder_gwen_pagecontrol::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_pagecontrol::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
@@ -984,7 +984,7 @@ namespace Yelo
 
 		}
 
-		void c_control_builder_gwen_pagecontrol::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
+		void c_control_builder_gwen_pagecontrol::GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const
 		{
 			c_control_builder_gwen_base::GetEventHandlers(control, event_handlers);
 			
@@ -1000,7 +1000,7 @@ namespace Yelo
 			event_handlers[K_EVENT_FINISH_ID] = std::make_unique<c_event_handler_gwen>(gwen_control.onFinish);
 		}
 
-		Control::t_control_ptr c_control_builder_gwen_pagecontrol::Build(ControlFactory::c_control_factory& control_registry
+		Control::control_ptr_t c_control_builder_gwen_pagecontrol::Build(ControlFactory::c_control_factory& control_registry
 			, Definitions::c_control_definition& control_definition
 			, Control::i_control& parent) const
 		{
@@ -1018,10 +1018,10 @@ namespace Yelo
 
 				// Create a new osui control for the page base control
 				auto* page_base = gwen_control.GetPage(i);
-				Control::t_control_ptr page_control = std::make_unique<c_control_gwen>(*control
+				Control::control_ptr_t page_control = std::make_unique<c_control_gwen>(*control
 					, page_base
-					, Control::t_property_interface_map()
-					, Control::t_event_handler_map());
+					, Control::property_interface_map_t()
+					, Control::event_handler_map_t());
 
 				control->AddControl(page_control);
 

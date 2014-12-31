@@ -81,11 +81,11 @@ namespace Yelo
 				return m_canvas.get();
 			}
 
-			void c_canvas_gwen::AddControl(Control::t_control_ptr control)
+			void c_canvas_gwen::AddControl(Control::control_ptr_t control)
 			{
 				//Check whether the control already exists
 				auto existing_control = std::find_if(m_child_controls.begin(), m_child_controls.end(),
-					[&](Control::t_control_ptr entry)
+					[&](Control::control_ptr_t entry)
 					{
 						return entry == control;
 					});
@@ -98,11 +98,11 @@ namespace Yelo
 				}
 			}
 
-			void c_canvas_gwen::RemoveControl(Control::t_control_ptr control)
+			void c_canvas_gwen::RemoveControl(Control::control_ptr_t control)
 			{
 				//Find the control to remove
 				auto existing_control = std::find_if(m_child_controls.begin(), m_child_controls.end(),
-					[&](Control::t_control_ptr entry)
+					[&](Control::control_ptr_t entry)
 					{
 						return entry == control;
 					});
@@ -123,7 +123,7 @@ namespace Yelo
 				}
 			}
 
-			Control::t_control_list& c_canvas_gwen::Controls()
+			Control::control_list_t& c_canvas_gwen::Controls()
 			{
 				return m_child_controls;
 			}

@@ -44,7 +44,7 @@ namespace Yelo
 			/// <param name="definition">	[in] The control definition. </param>
 			///
 			/// <returns>	A shared pointer for the new control. </returns>
-			Control::t_control_ptr BuildControl(Control::i_control& parent, Definitions::c_control_definition& definition);
+			Control::control_ptr_t BuildControl(Control::i_control& parent, Definitions::c_control_definition& definition);
 		};
 	};};};
 };

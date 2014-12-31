@@ -58,14 +58,14 @@ namespace Yelo
 			gwen_control.SetChecked(false);
 		}
 
-		void c_control_builder_gwen_checkbox::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_checkbox::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
 			property_interfaces[K_PROPERTY_CHECKED_ID] = GET_PROPERTY_INTERFACE(checkbox_checked);
 		}
 
-		void c_control_builder_gwen_checkbox::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
+		void c_control_builder_gwen_checkbox::GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const
 		{
 			c_control_builder_gwen_base::GetEventHandlers(control, event_handlers);
 

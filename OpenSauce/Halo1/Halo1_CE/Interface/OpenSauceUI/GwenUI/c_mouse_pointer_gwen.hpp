@@ -22,7 +22,7 @@ namespace Yelo
 		{
 			ControlFactory::c_control_factory& m_control_factory;
 			Control::i_canvas& m_canvas;
-			Control::t_control_ptr m_mouse_control;
+			Control::control_ptr_t m_mouse_control;
 			Control::i_property_interface* m_position_property;
 
 		public:

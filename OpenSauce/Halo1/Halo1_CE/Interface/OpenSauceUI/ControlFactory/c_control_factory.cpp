@@ -13,7 +13,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace ControlFactory
 	{
-		void c_control_factory::AddControl(const std::string& type_name, t_control_builder_ptr builder)
+		void c_control_factory::AddControl(const std::string& type_name, control_builder_ptr_t builder)
 		{
 			// Test whether an existing control is present
 			auto existing_control = std::find_if(m_controls.begin(), m_controls.end(),
@@ -35,7 +35,7 @@ namespace Yelo
 			m_controls.push_back(s_control_type { type_name, builder });
 		}
 
-		Control::t_control_ptr c_control_factory::BuildControl(Control::i_control& parent, Definitions::c_control_definition& definition)
+		Control::control_ptr_t c_control_factory::BuildControl(Control::i_control& parent, Definitions::c_control_definition& definition)
 		{
 			// Find the requested control
 			auto control_definition = std::find_if(m_controls.begin(), m_controls.end(),

@@ -44,7 +44,7 @@ namespace Yelo
 		};
 
 		/// <summary>	Defines an alias representing a shared mouse pointer pointer. </summary>
-		typedef std::shared_ptr<i_mouse_pointer> t_mouse_pointer_ptr;
+		typedef std::shared_ptr<i_mouse_pointer> mouse_pointer_ptr_t;
 	};};};
 };
 #endif

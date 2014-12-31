@@ -20,21 +20,21 @@ namespace Yelo
 			: public i_screen
 		{
 		private:
-			Control::t_control_ptr m_root_control;
-			std::map<uint32, Control::t_control_ptr> m_control_resource_list;
+			Control::control_ptr_t m_root_control;
+			std::map<uint32, Control::control_ptr_t> m_control_resource_list;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Constructor. </summary>
 			///
 			/// <param name="root_control">	The screen's root control. </param>
-			c_screen(Control::t_control_ptr root_control);
+			c_screen(Control::control_ptr_t root_control);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the root control of the screen. </summary>
 			///
 			/// <returns>	The root control of the screen. </returns>
-			Control::t_control_ptr GetRootControl() const override;
+			Control::control_ptr_t GetRootControl() const override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a control based on it's resource id. </summary>
@@ -42,7 +42,7 @@ namespace Yelo
 			/// <param name="resource_id">	Identifier for the control resource. </param>
 			///
 			/// <returns>	The found control or nullptr if not found. </returns>
-			Control::t_control_ptr GetControl(const uint32 resource_id) override;
+			Control::control_ptr_t GetControl(const uint32 resource_id) override;
 
 			/// <summary>	Shows the screen. </summary>
 			void Show() override;
@@ -55,7 +55,7 @@ namespace Yelo
 			/// <summary>	Adds a control to the resource list if it has an id defined. </summary>
 			///
 			/// <param name="control">	The control to add. </param>
-			void AddControlResource(Control::t_control_ptr control);
+			void AddControlResource(Control::control_ptr_t control);
 		};
 	};};};
 };
