@@ -376,16 +376,16 @@ namespace Yelo
 	class c_scope_end_execute
 	{
 		/// <summary>	Defines an alias representing the end execute function. </summary>
-		typedef std::function<void()> t_end_execute_func;
+		typedef std::function<void()> end_execute_func_t;
 
-		const t_end_execute_func m_function;
+		const end_execute_func_t m_function;
 
 	public:
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Constructor. </summary>
 		///
 		/// <param name="function">	The function to run. </param>
-		c_scope_end_execute(const t_end_execute_func& function)
+		c_scope_end_execute(const end_execute_func_t& function)
 			: m_function(function)
 		{ }
 

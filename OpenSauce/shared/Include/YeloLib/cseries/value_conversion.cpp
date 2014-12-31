@@ -11,14 +11,10 @@ namespace Yelo
 	namespace ValueConversion
 	{
 #pragma region From String
-		static bool FromStringImpl(cstring format, int member_count, cstring input, ...)
+		template<typename ... Arguments>
+		static bool FromStringImpl(cstring format, int member_count, cstring input, Arguments ... args)
 		{
-			va_list args;
-			va_start(args, input);
-			int members_found = vsscanf(input, format, args);
-			va_end(args);
-
-			return members_found == member_count;
+			return member_count == sscanf_s(input, format, args ...);
 		}
 
 		bool FromString(cstring string, bool& output)

@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include <YeloLib/configuration/c_configuration_file_factory.hpp>
+#include <YeloLib/Halo1/cache/shared_cache_files.hpp>
 #include <BlamLib/Halo1/game/game_globals.hpp>
 #include <BlamLib/Halo1/game/game_globals_structures.hpp>
 #include <BlamLib/Halo1/cache/cache_files.hpp>
@@ -132,7 +133,7 @@ namespace Yelo
 			bool in_menu =				Yelo::Input::IsInMenu();
 			bool in_chat =				Yelo::Input::IsInChat();
 			bool is_loading =			GameState::GameGlobals()->map_loading_in_progress;
-			bool is_main_menu_cache =	Yelo::Cache::CacheFileGlobals()->cache_header.cache_type == 2;
+			bool is_main_menu_cache =	Yelo::Cache::CacheFileGlobals()->cache_header.cache_type == Enums::_shared_cache_type_main_menu;
 
 			_enum game_state = Flags::_osui_game_state_in_game;
 			if(is_loading)
