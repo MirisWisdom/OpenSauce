@@ -16,6 +16,7 @@ namespace Yelo
 #pragma region String Handling
 		void s_interface_value::DeleteString()
 		{
+			// If the value is a string pointer and we own it, delete the string
 			if(is_cstring && m_cstring && is_string_owner)
 			{
 				delete [] m_cstring;
@@ -34,8 +35,10 @@ namespace Yelo
 
 		void s_interface_value::SetString(const std::string& value)
 		{
+			// Delete any existing string
 			DeleteString();
 
+			// Store a copy of the input string
 			auto length = strlen(value.c_str()) + 1;
 			m_cstring = new char[length];
 			m_cstring[0] = '\0';
@@ -47,8 +50,10 @@ namespace Yelo
 
 		void s_interface_value::SetString(const std::wstring& value)
 		{
+			// Delete any existing string
 			DeleteString();
-
+			
+			// Store a copy of the input string
 			auto length = wcslen(value.c_str()) + 1;
 			m_wstring = new wchar_t[length];
 			m_wstring[0] = L'\0';

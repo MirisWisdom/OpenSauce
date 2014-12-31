@@ -52,6 +52,9 @@ namespace Yelo
 			/// <returns>	A vector containing pointers to the containers members. </returns>
 			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override;
 		};
+
+		/// <summary>	Defines an alias representing a list of control definitions. </summary>
+		typedef std::vector<Definitions::c_control_definition> control_definition_list_t;
 	};};};
 };
 #endif

@@ -15,6 +15,15 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI
 	{
+		Control::control_list_t::iterator c_canvas_gwen::FindChildControl(Control::control_ptr_t control)
+		{
+			return std::find_if(m_child_controls.begin(), m_child_controls.end(),
+				[&](Control::control_ptr_t entry)
+				{
+					return entry == control;
+				});
+		}
+
 #pragma region i_canvas
 			void c_canvas_gwen::Initialize(IDirect3DDevice9* device, c_packed_file& ui_package, Input::i_control_input& control_input)
 			{
@@ -24,7 +33,7 @@ namespace Yelo
 
 				m_canvas->SetDrawBackground(false);
 				m_skin->SetRender(m_renderer.get());
-				m_skin->Init( "OpenSauceUISkin" );
+				m_skin->Init("OpenSauceUISkin");
 
 				control_input.AttachMouseInputHandler(this);
 				control_input.AttachKeyboardInputHandler(this);
@@ -84,11 +93,7 @@ namespace Yelo
 			void c_canvas_gwen::AddControl(Control::control_ptr_t control)
 			{
 				//Check whether the control already exists
-				auto existing_control = std::find_if(m_child_controls.begin(), m_child_controls.end(),
-					[&](Control::control_ptr_t entry)
-					{
-						return entry == control;
-					});
+				auto existing_control = FindChildControl(control);
 
 				YELO_ASSERT_DISPLAY(existing_control == m_child_controls.end(), "Attempted to add a control instance to the canvas multiple times");
 
@@ -101,11 +106,7 @@ namespace Yelo
 			void c_canvas_gwen::RemoveControl(Control::control_ptr_t control)
 			{
 				//Find the control to remove
-				auto existing_control = std::find_if(m_child_controls.begin(), m_child_controls.end(),
-					[&](Control::control_ptr_t entry)
-					{
-						return entry == control;
-					});
+				auto existing_control = FindChildControl(control);
 
 				YELO_ASSERT_DISPLAY(existing_control != m_child_controls.end(), "Attempted to remove a non-existant control from the canvas");
 

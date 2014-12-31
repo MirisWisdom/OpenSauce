@@ -31,6 +31,15 @@ namespace Yelo
 
 			Control::control_list_t m_child_controls;
 
+		private:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for a child control. </summary>
+			///
+			/// <param name="control">	The control to find. </param>
+			///
+			/// <returns>	Iterator for the found child control. </returns>
+			Control::control_list_t::iterator FindChildControl(Control::control_ptr_t control);
+
 #pragma region i_canvas
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +158,7 @@ namespace Yelo
 			///
 			/// <param name="button">	The button. </param>
 			/// <param name="value"> 	The button state. </param>
-			void OnMouseButtonUpdate(const int button, bool value) override;
+			void OnMouseButtonUpdate(const int button, const bool value) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Executes the mouse wheel update action. </summary>

@@ -42,14 +42,14 @@ namespace Yelo
 				real_rgb_color m_real_rgb_color;
 				real_argb_color m_real_argb_color;
 			};
-
+			
+#pragma region String Handling
 		private:
 			bool is_cstring;
 			bool is_wstring;
 			bool is_string_owner;
 			PAD8;
 
-#pragma region String Handling
 			/// <summary>	Deletes the string value data if present. </summary>
 			void DeleteString();
 
@@ -68,13 +68,28 @@ namespace Yelo
 #pragma endregion
 
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Default constructor. </summary>
+			///
+			/// <remarks>	The union memory is zero'd in the default constructor. </remarks>
 			s_interface_value();
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Destructor. </summary>
+			///
+			/// <remarks>	Deletes any owned string memory. </remarks>
 			~s_interface_value();
 
 		private:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <remarks>
+			/// 	This private constructor copies data from the supplied pointer to the union'd members.
+			/// </remarks>
+			///
+			/// <param name="data">	[in] A pointer to the data to copy. </param>
+			/// <param name="size">	The size of the data to copy. </param>
 			s_interface_value(void* data, const int32 size);
 
 		public:

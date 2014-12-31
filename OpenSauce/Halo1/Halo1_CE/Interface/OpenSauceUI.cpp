@@ -186,10 +186,10 @@ namespace Yelo
 		template<typename ControllerType>
 		static void AddScreenController(const uint32 screen_id
 			, cstring definition_name
-			, Flags::osui_game_state loaded_states
-			, Flags::osui_game_state active_states
-			, Flags::osui_screen_flags screen_flags
-			, Enums::key_code toggle_key = Enums::k_number_of_keys)
+			, const Flags::osui_game_state loaded_states
+			, const Flags::osui_game_state active_states
+			, const Flags::osui_screen_flags screen_flags
+			, const Enums::key_code toggle_key = Enums::k_number_of_keys)
 		{
 			// Get the screen definition from the ui package
 			Definitions::c_screen_definition screen_definition;

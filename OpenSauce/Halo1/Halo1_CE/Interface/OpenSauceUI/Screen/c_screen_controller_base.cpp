@@ -18,7 +18,8 @@ namespace Yelo
 	namespace Interface { namespace OpenSauceUI { namespace Screen
 	{
 		c_screen_controller_base::c_screen_controller_base(Definitions::c_screen_definition& definition)
-			: m_target_screen(nullptr)
+			: m_dynamic_properties()
+			, m_target_screen(nullptr)
 			, m_screen_definition(definition)
 		{ }
 
@@ -134,6 +135,7 @@ namespace Yelo
 		{
 			// Get the control from the screen by it's resource id
 			auto control = m_target_screen->GetControl(control_id);
+
 			YELO_ASSERT_DISPLAY(control, "Failed to find a required control");
 
 			control_out = control;
@@ -148,6 +150,7 @@ namespace Yelo
 
 			// Get the property from the control by it's resource id
 			auto property = control_out->GetPropertyInterface(property_id);
+
 			YELO_ASSERT_DISPLAY(property, "Failed to find a control property");
 
 			property_out = property;
@@ -214,6 +217,7 @@ namespace Yelo
 		{
 			// Find the control by it's resource id then attach a callback function to the referenced event
 			auto control = m_target_screen->GetControl(control_id);
+
 			YELO_ASSERT_DISPLAY(control, "Failed to find a required control");
 
 			control->AddEventCallback(event_id, callback_id, function, userdata);
@@ -223,6 +227,7 @@ namespace Yelo
 		{
 			// Find the control by it's resource id then remove a callback function referenced by it's id
 			auto control = m_target_screen->GetControl(control_id);
+
 			YELO_ASSERT_DISPLAY(control, "Failed to find a required control");
 
 			control->RemoveEventCallback(event_id, callback_id);

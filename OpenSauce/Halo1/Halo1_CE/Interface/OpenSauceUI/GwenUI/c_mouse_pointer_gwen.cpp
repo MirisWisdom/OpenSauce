@@ -21,6 +21,8 @@ namespace Yelo
 		c_mouse_pointer_gwen::c_mouse_pointer_gwen(ControlFactory::c_control_factory& control_factory, Control::i_canvas& canvas)
 			: m_control_factory(control_factory)
 			, m_canvas(canvas)
+			, m_mouse_control(nullptr)
+			, m_position_property(nullptr)
 		{ }
 
 		void c_mouse_pointer_gwen::BuildMouse(Input::i_control_input& control_input)

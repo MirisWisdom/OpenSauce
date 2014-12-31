@@ -29,7 +29,7 @@ namespace Yelo
 			///
 			/// <param name="button">	The button. </param>
 			/// <param name="value"> 	The button state. </param>
-			virtual void OnMouseButtonUpdate(const int button, bool value) = 0;
+			virtual void OnMouseButtonUpdate(const int button, const bool value) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Executes the mouse wheel update action. </summary>

@@ -67,7 +67,7 @@ namespace Yelo
 			int16 m_modal_screen_count;
 			int16 m_disable_movement_count;
 			byte m_previous_esckey_state;
-			PAD24;
+			PAD8;
 
 			std::vector<s_screen_instance> m_screen_instances;
 			std::vector<s_screen_instance*> m_current_stage_instances;

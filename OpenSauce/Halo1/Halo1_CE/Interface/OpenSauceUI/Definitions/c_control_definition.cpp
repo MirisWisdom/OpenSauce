@@ -21,7 +21,7 @@ namespace Yelo
 #ifdef DEBUG
 			, m_id("IDStr", "")
 #else
-			, m_id("ID", 0xFFFFFFFF)
+			, m_id("ID", RESOURCE_ID_NONE)
 #endif
 			, m_type("Type", "")
 			, m_properties("Property", [](){ return c_control_property_definition(); })

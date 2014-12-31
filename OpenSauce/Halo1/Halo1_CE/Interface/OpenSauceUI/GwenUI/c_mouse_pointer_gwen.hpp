@@ -9,7 +9,10 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Interface/OpenSauceUI/Control/i_mouse_pointer.hpp"
+#include "Interface/OpenSauceUI/Control/i_property_interface.hpp"
 #include "Interface/OpenSauceUI/Control/i_control.hpp"
+#include "Interface/OpenSauceUI/Control/i_canvas.hpp"
+#include "Interface/OpenSauceUI/ControlFactory/c_control_factory.hpp"
 
 namespace Yelo
 {
@@ -59,7 +62,17 @@ namespace Yelo
 			/// <param name="relative">	The relative position. </param>
 			void OnMousePositionUpdate(const point2d& absolute, const point2d& relative) override;
 
-			void OnMouseButtonUpdate(const int button, bool value) { }
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not used. </summary>
+			///
+			/// <param name="button">	The button. </param>
+			/// <param name="value"> 	The value. </param>
+			void OnMouseButtonUpdate(const int button, const bool value) { }
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Not used. </summary>
+			///
+			/// <param name="value">	The value. </param>
 			void OnMouseWheelUpdate(const int value) { }
 #pragma endregion
 		};
