@@ -302,7 +302,7 @@ namespace Yelo
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Class for automatically releasing a COM object when it does out of scope. </summary>
+	/// <summary>	Class for automatically releasing a COM object when it goes out of scope. </summary>
 	///
 	/// <tparam name="TInterface">	COM interface type. </tparam>
 	template<typename TInterface>
@@ -369,6 +369,30 @@ namespace Yelo
 		operator TInterface*&()
 		{
 			return m_target_object;
+		}
+	};
+
+	/// <summary>	Class for executing a function at the end of a scope. </summary>
+	class c_scope_end_execute
+	{
+		/// <summary>	Defines an alias representing the end execute function. </summary>
+		typedef std::function<void()> t_end_execute_func;
+
+		const t_end_execute_func m_function;
+
+	public:
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Constructor. </summary>
+		///
+		/// <param name="function">	The function to run. </param>
+		c_scope_end_execute(const t_end_execute_func& function)
+			: m_function(function)
+		{ }
+
+		/// <summary>	Destructor. </summary>
+		~c_scope_end_execute()
+		{
+			m_function();
 		}
 	};
 

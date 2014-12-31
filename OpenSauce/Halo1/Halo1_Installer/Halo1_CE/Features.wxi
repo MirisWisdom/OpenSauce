@@ -32,10 +32,10 @@
 		<ComponentRef Id='Halo1_CE_OSPPSettings_COMP' />
 		<ComponentRef Id='Halo1_CE_OpenSauceSettingsRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_OpenSauceRemove_COMP' />
-		<ComponentRef Id='Halo1_CE_YeloRemove_COMP' />
 
 		<ComponentRef Id='Halo1_CE_GBufferShaders_COMP' />
 		<ComponentRef Id='Halo1_CE_PPShaders_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceUI_COMP' />
 		<ComponentRef Id='Halo1_CE_ShadersRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_HaloCERemove_COMP' />
 

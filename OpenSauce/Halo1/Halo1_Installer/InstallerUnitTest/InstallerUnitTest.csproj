@@ -168,6 +168,7 @@
     </Content>
     <Content Include="SetPropertiesUnitTests\Resources\PropertySetFileExists.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SetPropertiesUnitTests\Resources\PropertySetValidPath.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

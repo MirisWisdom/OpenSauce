@@ -21,8 +21,8 @@ namespace Yelo
 			// Open the file
 			auto open_result = FileIO::OpenFile(file
 				, file_path.string().c_str()
-				, Enums::_file_io_open_access_type_write
-				, Enums::_file_io_open_create_option_new);
+				, Enums::_file_io_open_access_type_read
+				, Enums::_file_io_open_create_option_open_existing);
 			if(Enums::_file_io_open_error_none != open_result)
 			{
 				return false; // failed to open file

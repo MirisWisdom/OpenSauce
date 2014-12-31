@@ -435,4 +435,32 @@ namespace Environment
 		Memory::WriteRelativeJmp(&Hook_ShaderEnvironmentLightmapPS, GET_FUNC_VPTR(RASTERIZER_ENVIRONMENT_PS_INDEX_ENVIRONMENT_LIGHTMAP_HOOK), true);
 		Memory::WriteRelativeCall(&StructureRenderSpecularDirectionalLightmaps, GET_FUNC_VPTR(LIGHTS_RENDER_SPECULAR_CALL), true);
 	}
+
+	void SetDiffuseDLMsEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_directional_lightmaps_diff;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_directional_lightmaps_diff : 0);
+
+		if(!value)
+		{
+			g_extension_usage_mask &= ~Flags::_shader_extension_usage_directional_lightmaps_spec;
+		}
+	}
+
+	bool GetDiffuseDLMsEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps_diff);
+	}
+
+	void SetSpecularDLMsEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_directional_lightmaps_spec;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_directional_lightmaps_spec : 0);
+	}
+
+	bool GetSpecularDLMsEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps_spec);
+	}
+
 };

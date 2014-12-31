@@ -159,27 +159,6 @@ namespace Yelo
 
 #if PLATFORM_IS_USER
 		static c_version_check_manager_user		g_instance;
-		
-		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
-		{
-			g_instance.Initialize3D(pDevice, pParameters);
-		}
-		void		OnLostDevice()
-		{
-			g_instance.OnLostDevice();
-		}
-		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
-		{
-			g_instance.OnResetDevice(pParameters);
-		}
-		void		Render()
-		{
-			g_instance.Render();
-		}
-		void		Release()
-		{
-			g_instance.Release();
-		}
 #elif PLATFORM_IS_DEDI
 		static c_version_check_manager_dedi		g_instance;
 #endif
@@ -281,6 +260,21 @@ namespace Yelo
 		void		c_version_check_manager_base::TestForUpdate()
 		{
 			UpdateDateState();
+		}
+
+		bool		c_version_check_manager_base::IsNewVersionAvailable()
+		{
+			return m_states.is_new_version_available;
+		}
+
+		const s_version& c_version_check_manager_base::CurrentVersion()
+		{
+			return m_current_version;
+		}
+
+		const s_version& c_version_check_manager_base::AvailableVersion()
+		{
+			return m_available_version;
 		}
 
 		/*!

@@ -706,4 +706,49 @@ no_extension:
 		}
 		return true;
 	}
+
+	void SetNormalMapsEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_normal_map;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_normal_map : 0);
+	}
+
+	bool GetNormalMapsEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_normal_map);
+	}
+
+	void SetDetailNormalMapsEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_detail_normal;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_detail_normal : 0);
+	}
+
+	bool GetDetailNormalMapsEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_detail_normal);
+	}
+
+	void SetSpecularMapsEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_specular_map;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_specular_map : 0);
+	}
+
+	bool GetSpecularMapsEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_specular_map);
+	}
+
+	void SetSpecularLightingEnabled(bool value)
+	{
+		g_extension_usage_mask &= ~Flags::_shader_extension_usage_specular_lighting;
+		g_extension_usage_mask |= (value ? Flags::_shader_extension_usage_specular_lighting : 0);
+	}
+
+	bool GetSpecularLightingEnabled()
+	{
+		return TEST_FLAG(g_extension_usage_mask, Flags::_shader_extension_usage_bit_specular_lighting);
+	}
+
 };

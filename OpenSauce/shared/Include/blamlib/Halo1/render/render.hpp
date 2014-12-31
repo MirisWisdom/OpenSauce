@@ -19,6 +19,7 @@ namespace Yelo
 			PAD8;
 			s_render_camera render_camera, rasterizer_camera;
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_window) == 0xAC );
+		s_render_window* RenderWindow(); // defined in the implementing extension's code
 
 		struct s_render_fog
 		{

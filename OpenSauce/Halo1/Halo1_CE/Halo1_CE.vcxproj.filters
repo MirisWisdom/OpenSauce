@@ -166,6 +166,441 @@
     <Filter Include="_Resources\1.10">
       <UniqueIdentifier>{96b2b90b-f482-472d-9364-2c28e722c4f4}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\shared\Include\GWEN\BaseRender.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Config.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\ControlList.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\DragAndDrop.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Events.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Exports.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Font.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Gwen.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Hook.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\InputHandler.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Macros.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Platform.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Skin.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Structures.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\TextObject.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Texture.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\ToolTip.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\UserData.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Utility.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\WindowProvider.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Align.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Anim.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\LabelClickable.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ListBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Menu.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuItem.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuStrip.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Modal.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\NumericUpDown.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\PageControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ProgressBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Properties.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\PropertyTree.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RadioButton.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RadioButtonController.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Rectangle.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ResizableControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Resizer.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RichLabel.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBarBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBarButton.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Slider.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\SplitterBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Splitters.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\StatusBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabButton.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabStrip.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabTitleBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Text.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TextBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ToolBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TreeControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TreeNode.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\VerticalScrollBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\VerticalSlider.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\WindowButtons.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\WindowControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Base.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Button.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Canvas.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CheckBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CollapsibleCategory.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CollapsibleList.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ColorControls.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ColorPicker.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ComboBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CrossSplitter.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\DockBase.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\DockedTabControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Dragger.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\FieldLabel.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\GroupBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Highlight.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HorizontalScrollBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HorizontalSlider.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HSVColorPicker.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ImagePanel.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Label.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Table.h">
+      <Filter>Common\Shared\GWEN\Controls\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\BaseProperty.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Checkbox.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\ColorSelector.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\ComboBox.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Text.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Skins\TexturedBase.h">
+      <Filter>Common\Shared\GWEN\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Skins\Texturing.h">
+      <Filter>Common\Shared\GWEN\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_canvas_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_control_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\ControlFactory\c_control_factory.hpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\ControlFactory\c_control_builder_base.hpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\ControlFactory\i_control_builder.hpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_screen_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_input.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Pointer.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_mouse_pointer_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\c_control_input_halo.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\resource_id.hpp">
+      <Filter>Interface\OpenSauceUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen_controller.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_control_base.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_control.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_canvas.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_mouse_pointer.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\i_visibility_toggle.hpp">
+      <Filter>Interface\OpenSauceUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_base.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkboxwithlabel.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkbox.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\s_interface_value.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Textures\c_packed_texture_loader.hpp">
+      <Filter>Rasterizer\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_property_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_event_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_page_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_mouse_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_keyboard_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\screen_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -229,9 +664,6 @@
       <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="Interface\Keystone.cpp">
-      <Filter>Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="Interface\TextBlock.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="Interface\UIWidgets.cpp">
@@ -468,6 +900,321 @@
     </ClCompile>
     <ClCompile Include="Settings\Settings.cpp">
       <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\ControlList.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\DragAndDrop.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\events.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Gwen.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Hook.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\inputhandler.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Skin.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\ToolTip.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Utility.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Anim.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\BaseRender.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\LabelClickable.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ListBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Menu.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\MenuItem.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\MenuStrip.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\NumericUpDown.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\PageControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ProgressBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Properties.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\PropertyTree.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RadioButton.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RadioButtonController.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Rectangle.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ResizableControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Resizer.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RichLabel.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBarBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBarButton.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Slider.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\SplitterBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabButton.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabStrip.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Text.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TextBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TextBoxNumeric.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TreeControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TreeNode.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\VerticalScrollBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\VerticalSlider.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\WindowControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Base.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Button.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Canvas.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CheckBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CollapsibleCategory.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ColorControls.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ColorPicker.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ComboBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CrossSplitter.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\DockBase.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\DockedTabControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Dragger.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\GroupBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HorizontalScrollBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HorizontalSlider.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HSVColorPicker.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ImagePanel.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Label.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Platforms\HaloRuntime.cpp">
+      <Filter>Common\Shared\GWEN\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\ControlFactory\c_control_factory.cpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_canvas_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\ControlFactory\c_control_builder_base.cpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_control_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_screen_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Pointer.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_mouse_pointer_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Input\c_control_input_halo.cpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\resource_id.cpp">
+      <Filter>Interface\OpenSauceUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_control_base.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_base.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkboxwithlabel.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkbox.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\s_interface_value.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Textures\c_packed_texture_loader.cpp">
+      <Filter>Rasterizer\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_page_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -735,14 +1482,8 @@
     <ClInclude Include="Interface\Keystone.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Interface\TextBlock.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="Interface\UIWidgets.hpp">
       <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface\YeloSettingsInterface.hpp">
-      <Filter>Interface\Impl</Filter>
     </ClInclude>
     <ClInclude Include="Memory\FunctionInterface.hpp">
       <Filter>Memory</Filter>
@@ -1002,9 +1743,6 @@
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp">
       <Filter>Objects\Impl</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Objects.VehicleSettings.hpp">
-      <Filter>Objects\Impl</Filter>
-    </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp">
       <Filter>Rasterizer\PostProcessing\Bloom</Filter>
     </ClInclude>
@@ -1152,9 +1890,6 @@
       <Filter>Game\Impl\Players</Filter>
     </None>
     <None Include="Interface\GameUI_Hud.inl">
-      <Filter>Interface\Impl</Filter>
-    </None>
-    <None Include="Interface\GameUI_Menu.inl">
       <Filter>Interface\Impl</Filter>
     </None>
     <None Include="Memory\FunctionInterface.Client.inl">
@@ -1346,6 +2081,18 @@
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
     </None>
+    <None Include="Resources\OpenSauceUI\InGameDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuBottomBarDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
@@ -1356,5 +2103,55 @@
     <ResourceCompile Include="Halo1_CE.rc">
       <Filter>_Resources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common\Shared\GWEN">
+      <UniqueIdentifier>{51d1a74b-289d-4f74-8b44-3865468ad79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Controls">
+      <UniqueIdentifier>{4c30c255-df3b-4320-8a50-58177c777ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Platforms">
+      <UniqueIdentifier>{7a375f68-0ad7-45fe-8c25-fdc1fe45beef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Skins">
+      <UniqueIdentifier>{674dbfe4-ed6d-48e1-8676-70d575029a1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Controls\Layout">
+      <UniqueIdentifier>{65662da2-366e-4396-baf2-bde49a4b915d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Controls\Property">
+      <UniqueIdentifier>{8d02c120-57d0-4e30-864b-c5deedc49583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI">
+      <UniqueIdentifier>{6fbba12f-b959-4f91-b6d4-81c86cab5c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\GwenUI">
+      <UniqueIdentifier>{6ef219ea-30f2-4440-9c69-89c9fae742ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\ControlFactory">
+      <UniqueIdentifier>{5abf24be-1bba-4951-adb3-a326adcd3a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Definitions">
+      <UniqueIdentifier>{786eead3-3991-472f-9c9b-5345690835b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Input">
+      <UniqueIdentifier>{7d3078dc-7a51-4771-935c-530d23bc41a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Screen">
+      <UniqueIdentifier>{fa4b0c66-a7a9-40ed-987d-e6557503fe20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Control">
+      <UniqueIdentifier>{f0ab0751-c26d-4c18-95f0-96a67c6f95c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\GwenUI\ControlBuilders">
+      <UniqueIdentifier>{2f4fe07f-cd0f-4414-826e-812f6cce3a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\Textures">
+      <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\ScreenDefinitions">
+      <UniqueIdentifier>{dc17517c-5dcb-4061-9bb0-3a41ed40d7b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

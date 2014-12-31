@@ -41,10 +41,6 @@
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
 
-#if !PLATFORM_IS_DEDI
-	#include "Interface/YeloSettingsInterface.hpp"
-#endif
-
 namespace Yelo
 {
 	namespace Objects
@@ -172,7 +168,6 @@ namespace Yelo
 				render_objects_mods::Initialize();
 #endif
 
-			Vehicle::Initialize();
 			Weapon::Initialize();
 			Equipment::Initialize();
 			Units::Initialize();
@@ -187,7 +182,6 @@ namespace Yelo
 			Units::Dispose();
 
 			Weapon::Dispose();
-			Vehicle::Dispose();
 
 			c_settings_objects::Unregister(Settings::Manager());
 		}
