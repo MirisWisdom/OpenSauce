@@ -111,9 +111,13 @@ FOR %%A IN (%BuildPath%\*.*) DO DEL %%A
 
 IF %BuildDebug% NEQ 0 (
 	FOR %%A IN ("%osBinPath%\Debug\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_Debug.msi"
+	copy "%osBinPath%\Debug\Win32\Halo1_CE\dinput8.pdb" "%BuildPath%\dinput8_debug.pdb"
+	copy "%osBinPath%\DebugDedi\Win32\Halo1_CE\OpenSauceDedi.pdb" "%BuildPath%\OpenSauceDedi_debug.pdb"
 )
 IF %BuildRelease% NEQ 0 (
 	FOR %%A IN ("%osBinPath%\Release\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA.msi"
+	copy "%osBinPath%\Release\Win32\Halo1_CE\dinput8.pdb" "%BuildPath%\dinput8_release.pdb"
+	copy "%osBinPath%\ReleaseDedi\Win32\Halo1_CE\OpenSauceDedi.pdb" "%BuildPath%\OpenSauceDedi_release.pdb"
 )
 IF %BuildReleaseSymbols% NEQ 0 (
 	FOR %%A IN ("%osBinPath%\ReleaseSymbols\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_ReleaseSymbols.msi"
@@ -136,6 +140,7 @@ ECHO Creating build archive using 7-Zip
 ECHO Output: "%BuildPath%\..\%FolderName%.7z"
 
 FOR /f %%A IN ("%BuildPath%\*.msi") DO "%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%%A"
+FOR /f %%A IN ("%BuildPath%\*.pdb") DO "%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%%A"
 GOTO END
 
 :INVALID_VS

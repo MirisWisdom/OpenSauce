@@ -46,7 +46,7 @@ namespace BlamLib.Cryptography
 		/// <returns>A 16 byte array containing the MD5 hash</returns>
 		public static byte[] GenerateFileMD5(string file_path)
 		{
-			using (FileStream input_file = new FileStream(file_path, FileMode.Open))
+			using (FileStream input_file = new FileStream(file_path, FileMode.Open, FileAccess.Read))
 				return GenerateMD5(input_file);
 		}
 
@@ -59,7 +59,7 @@ namespace BlamLib.Cryptography
 		{
 			byte[] md5;
 
-			using (FileStream input_file = new FileStream(file_path, FileMode.Open))
+			using (FileStream input_file = new FileStream(file_path, FileMode.Open, FileAccess.Read))
 				md5 = GenerateMD5(input_file);
 
 			return Util.ByteArrayToString(md5);

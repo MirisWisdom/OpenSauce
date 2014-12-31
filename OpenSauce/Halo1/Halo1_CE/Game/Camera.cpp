@@ -12,7 +12,6 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 
-#include "Interface/YeloSettingsInterface.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 
 namespace Yelo

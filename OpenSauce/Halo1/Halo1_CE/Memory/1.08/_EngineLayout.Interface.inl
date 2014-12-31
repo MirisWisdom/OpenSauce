@@ -10,9 +10,10 @@
 #if __EL_INCLUDE_FILE_ID == __EL_INTERFACE_CONTROLS
 	FUNC_PTR(INPUT_UPDATE_HOOK,				0x493A06, FUNC_PTR_NULL);
 
-	ENGINE_PTR(ControlSettings, Settings,	0x6AD73A, PTR_NULL);
-	ENGINE_PTR(ControlStates, ControlState,	0x64C488, PTR_NULL);
-	ENGINE_PTR(byte, InputStateFlags,		0x6AD4AA, PTR_NULL);
+	ENGINE_PTR(ControlSettings, Settings,			0x6AD73A, PTR_NULL);
+	ENGINE_PTR(ControlStates, ControlState,			0x64C488, PTR_NULL);
+	ENGINE_PTR(PositionState, MousePositionState,	0x6B3F40, PTR_NULL);
+	ENGINE_PTR(byte, InputStateFlags,				0x6AD4AA, PTR_NULL);
 
 #pragma region GameUI
 //////////////////////////////////////////////////////////////////////////
@@ -131,6 +132,8 @@
 	ENGINE_PTR(wchar_t, ChatLogName,		0x637D64, PTR_NULL);
 	ENGINE_PTR(void**, MainWindow,			0x6BD0AC, PTR_NULL);
 
+	FUNC_PTR(KS_TRANSLATEACCELERATOR_CALL,	0x5453C2, FUNC_PTR_NULL);
+	FUNC_PTR(KS_TRANSLATEACCELERATOR,		0x6BD0B8, FUNC_PTR_NULL);
 	FUNC_PTR(KS_GETWINDOW,					0x6BD0C0, FUNC_PTR_NULL);
 	FUNC_PTR(KW_RELEASE,					0x6BD0D0, FUNC_PTR_NULL);
 	FUNC_PTR(KW_GETCONTROLBYID,				0x6BD0D4, FUNC_PTR_NULL);

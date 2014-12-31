@@ -11,15 +11,15 @@ namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		class c_property_tree_file_json
+		class c_property_tree_file_json final
 			: public c_property_tree_file
 		{
 		public:
 			c_property_tree_file_json(const std::string& file_path);
 
-		protected:
-			void ReadPropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) final override;
-			void WritePropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) final override;
+		private:
+			void ReadPropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) override;
+			void WritePropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) override;
 		};
 	};};
 };

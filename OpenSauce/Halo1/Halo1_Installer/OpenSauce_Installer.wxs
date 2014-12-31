@@ -46,13 +46,20 @@
 		<Property Id='CREATESTARTMENUSHORTCUTS' Secure='yes' Value='1'/>
 		<Property Id='CREATEDESKTOPSHORTCUTS' Secure='yes' Value='1'/>
 
-		<PropertyRef Id="NETFRAMEWORK35" />
-		<Condition Message="This setup requires the .NET Framework 3.5 to be installed.">
-			<![CDATA[Installed OR NETFRAMEWORK35]]>
+		<PropertyRef Id="NETFRAMEWORK40CLIENT" />
+		<Condition Message="This setup requires the .NET Framework 4.0 to be installed.">
+			<![CDATA[Installed OR NETFRAMEWORK40CLIENT]]>
 		</Condition>
-		
+
 		<Condition Message="This application is only supported on Windows XP SP3 or above.">
 			<![CDATA[Installed OR ((VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3)))]]>
+		</Condition>
+
+		<Upgrade Id="$(var.UpgradeCodeGUID)">
+			<UpgradeVersion Minimum="0.0.0" Maximum="3.9.9" OnlyDetect="yes" Property="OSPREVVERSIONFOUND" />
+		</Upgrade>
+		<Condition Message="Please uninstall the previous version of OpenSauce before installing this one.">
+			<![CDATA[Installed OR (OSPREVVERSIONFOUND = "")]]>
 		</Condition>
 
 		<!-- Set the icon in Add/Remove programs-->
@@ -74,7 +81,6 @@
 		<Directory Id='TARGETDIR' Name='SourceDir'>
 			<Merge Id="VCRedist100_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
 			<Merge Id="VCRedist120_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
-			<Merge Id="SlimDXRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\slimdxredist\SlimDXMergeModule.msm" DiskId="1" Language="0"/>
 			<!-- Files and folders that belong in the common application data folder-->
 			<Directory Id='CommonAppDataFolder'>
 				<Directory Id='OpenSauce_KornnerStudios_DIR' Name='Kornner Studios'>
@@ -117,6 +123,9 @@
 							<Component Id='OpenSauce_SevenZip_COMP' Guid='88422AF0-1AA1-401c-80A5-1DAD0D42BCFE'>
 								<File Id='OpenSauce_SevenZip_FILE' Name='7z.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\7z.dll' KeyPath='yes' />
 							</Component>
+							<Component Id='OpenSauce_SlimDX_COMP' Guid='F9A0CD85-5193-45DF-80FC-B64023FE2A33'>
+								<File Id='OpenSauce_SlimDX_FILE' Name='SlimDX.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\SlimDX.dll' KeyPath='yes' />
+							</Component>
 							
 							<?ifdef DEBUG?>
 							<Component Id='OpenSauce_OpenSauceIDE_PDB_COMP' Guid='E19A12E4-7AF4-4cb7-A7A1-4E237D924B37'>
@@ -138,9 +147,9 @@
 								<RemoveFolder Id='OpenSauce_OpenSauceIDE_REMDIR' On='uninstall' />
 							</Component>
 							
-							<!-- Removes the settings.bin file on uninstall-->
+							<!-- Removes the settings.xml file on uninstall-->
 							<Component Id='OpenSauce_SettingsRemove_COMP' Guid='58402421-C106-429f-BB32-4801DDB432DA'>
-								<RemoveFile Name='settings.bin' Id='OpenSauce_Settings_REMFILE' On='uninstall' />
+								<RemoveFile Name='settings.xml' Id='OpenSauce_Settings_REMFILE' On='uninstall' />
 							</Component>
 						</Directory>
 
@@ -343,14 +352,6 @@
 				<MergeRef Id='VCRedist120_MERGE'/>
 			</Feature>
 
-			<Feature Id='SlimDX_Redist_FEAT'
-							 Title='SlimDX Runtime Redist'
-							 AllowAdvertise='no'
-							 Display='hidden'
-							 Level='1'>
-				<MergeRef Id='SlimDXRedist_MERGE'/>
-			</Feature>
-			
 			<!-- Game specific features are included here-->
 			<?ifdef Halo1_CE?>
 			<?include Halo1_CE/Features.wxi?>
@@ -370,6 +371,7 @@
 				<ComponentRef Id='OpenSauce_License_COMP' />
 				<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
 				<ComponentRef Id='OpenSauce_SevenZip_COMP' />
+				<ComponentRef Id='OpenSauce_SlimDX_COMP' />
 
 				<?ifdef DEBUG?>
 				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />

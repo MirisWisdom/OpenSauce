@@ -12,10 +12,6 @@
 #include <blamlib/Halo1/interface/map_list.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>

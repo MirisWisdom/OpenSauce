@@ -354,7 +354,7 @@ namespace Yelo
 						g_freeze_dump_globals.m_delay.elapsed = true;
 					}
 
-					g_freeze_dump_globals.m_main_thread_id = GetThreadId(GetCurrentThread());
+					g_freeze_dump_globals.m_main_thread_id = GetCurrentThreadId();
 					g_freeze_dump_globals.m_freeze_thread = std::thread(FreezeDumpCount);
 				}
 			}

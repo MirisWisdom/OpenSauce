@@ -187,8 +187,10 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 		void Update();
-
-		Enums::settings_adjustment_result AdjustSettings();
+		
+		real GetFieldOfView();
+		void SetFieldOfView(const real fov);
+		void ResetFieldOfView();
 
 #if defined(DX_WRAPPER) // TODO: Need fallback initialization for when we're not using the DX_WRAPPER
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);

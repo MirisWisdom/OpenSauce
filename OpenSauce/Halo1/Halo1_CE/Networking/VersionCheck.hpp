@@ -20,14 +20,6 @@ namespace Yelo
 		void		Initialize();
 		void		Dispose();
 
-#ifdef PLATFORM_IS_USER
-		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
-		void		OnLostDevice();
-		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
-		void		Render();
-		void		Release();
-#endif
-
 		void		InitializeForNewMap();
 		void		Update(real delta_time);
 
@@ -301,6 +293,10 @@ namespace Yelo
 			void*		RequestCancelled_Callback(void* component_data);
 
 			virtual void	TestForUpdate();
+
+			bool IsNewVersionAvailable();
+			const s_version& CurrentVersion();
+			const s_version& AvailableVersion();
 
 		protected:
 			void			UpdateDateState();

@@ -6,7 +6,6 @@
 */
 
 #include "Game/Players.hpp"
-#include "Interface/TextBlock.hpp"
 
 namespace Yelo
 {
@@ -14,14 +13,8 @@ namespace Yelo
 	{
 		namespace Vehicle
 		{
-#if PLATFORM_IS_DEDI
-			void Initialize()	{}
-			void Dispose()		{}
-#else
-
+#if !PLATFORM_IS_DEDI
 			struct vehicle_globals {
-				TextBlock* menu;
-
 				size_t presets_count;
 				struct s_seat_preset
 				{
@@ -36,16 +29,6 @@ namespace Yelo
 						seats;
 				};
 				std::array<s_preset, Enums::k_vehicle_view_max_vehicle_presets> presets;
-
-
-				void Dispose()
-				{
-					if(menu != nullptr)
-					{
-						delete menu;
-						menu = nullptr;
-					}
-				}
 
 				s_preset* AddPreset(cstring name)
 				{
@@ -66,67 +49,7 @@ namespace Yelo
 
 					return vehicle ? vehicle : nullptr;
 				}
-
-			public:
-
 			}_vehicle_globals;
-
-			void Initialize()
-			{
-			}
-
-			void Dispose()
-			{
-				_vehicle_globals.Dispose();
-			}
-
-			Enums::settings_adjustment_result AdjustSettings()
-			{
-				_vehicle_globals.menu->Render();
-
-				return Enums::_settings_adjustment_result_not_finished;
-			}
-
-#if defined(DX_WRAPPER)
-			void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
-			{
-				_vehicle_globals.menu = new TextBlock(pDevice,pPP);
-				_vehicle_globals.menu->ApplyScheme();
-				_vehicle_globals.menu->SetDimensions(350,0);
-				_vehicle_globals.menu->Attach(Enums::_attach_method_center, 0,0,0,0);
-				_vehicle_globals.menu->SetTextAlign(DT_CENTER);
-
-// 				_vehicle_globals.menu->SetText(
-// 					L"Mouse \x2195 = Distance\n"
-// 					L"Shift+Mouse \x21BA = Axis\n"
-// 					L"\n"
-// 					L"Left-Click to Save.\n"
-// 					L"Right-Click to Reset.");
-				_vehicle_globals.menu->SetText(L"I don't think so, Scooter :|");
-				_vehicle_globals.menu->Refresh();
-			}
-
-			void OnLostDevice()
-			{
-				_vehicle_globals.menu->OnLostDevice();
-			}
-
-			void OnResetDevice(D3DPRESENT_PARAMETERS *pPP)
-			{
-				_vehicle_globals.menu->OnResetDevice(pPP);
-				_vehicle_globals.menu->Refresh();
-			}
-
-			void Render() {}
-			void Release() 
-			{
-				_vehicle_globals.menu->Release();
-			}
-
-#elif PLATFORM_IS_USER
-			// TODO: Need fallback initialization for when we're not using the DX_WRAPPER
-#endif
-
 #endif
 		};
 	};

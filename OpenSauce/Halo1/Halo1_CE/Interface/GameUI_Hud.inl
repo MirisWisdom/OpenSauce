@@ -5,7 +5,6 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Interface/Controls.hpp"
-#include "Interface/TextBlock.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Memory/FunctionInterface.hpp"
 
@@ -30,8 +29,6 @@ namespace Yelo
 				bool show_crosshair;
 				PAD8;
 			}m_flags;
-
-			TextBlock*		m_menu_text;
 
 			point2d			m_screen_size;
 
@@ -158,79 +155,56 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Properties
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets or sets whether to scale the HUD. </summary>
-		/// <returns>	A bool reference. </returns>
-		///-------------------------------------------------------------------------------------------------
+		bool& ShowHUD() { return g_hud_globals.m_flags.show_hud; }
+
 		bool& ScaleHUD() { return g_hud_globals.m_flags.scale_hud; }
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets or sets whether to show the crosshair. </summary>
-		/// <returns>	A bool reference. </returns>
-		///-------------------------------------------------------------------------------------------------
 		bool& ShowCrosshair() { return g_hud_globals.m_flags.show_crosshair; }
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets a pointer to the games HUD globals. </summary>
-		/// <returns>	void* to the games HUD globals. </returns>
-		///-------------------------------------------------------------------------------------------------
+		real& HUDScaleX() { return g_hud_globals.m_hud_screen.scale.x; }
+
+		real& HUDScaleY() { return g_hud_globals.m_hud_screen.scale.y; }
+
 		void* HudGlobals() DPTR_IMP_GET2(hud_globals);
 #pragma endregion
 
 #pragma region Enable/Disable Scaling
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Replaces the HUD projection and translation values with those that scale the UI widgets.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
 		void EnableWidgetScale()
 		{
 			g_hud_globals.m_projection.projection = g_hud_globals.m_widget_screen.projection;
 			g_hud_globals.m_projection.translation = g_hud_globals.m_widget_screen.translation;
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Replaces the HUD projection and translation values with those that scale the players HUD.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
 		void EnableHUDScale()
 		{
 			g_hud_globals.m_projection.projection = g_hud_globals.m_hud_screen.projection;
 			g_hud_globals.m_projection.translation = g_hud_globals.m_hud_screen.translation;
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Restores the original projection and translation values to disable any UI scaling.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
 		void DisableScale()
 		{
 			g_hud_globals.m_projection.projection = g_hud_globals.m_original_screen.projection;
 			g_hud_globals.m_projection.translation = g_hud_globals.m_original_screen.translation;
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Restores the original translation values to disable any UI offsetting.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
-		void DisableOffset()
+		/// <summary>	Restores the original translation values to disable any UI offsetting. </summary>
+		static void DisableOffset()
 		{
 			g_hud_globals.m_projection.translation = g_hud_globals.m_original_screen.translation;
 		}
 #pragma endregion
 
 #pragma region Render Hooks
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Override of the render widget recursive function which applies UI scaling. </summary>
+		///
 		/// <param name="widget_datum_index">	[in,out] Pointer the datum index of the widget. </param>
 		/// <param name="arg_1">			 	[in,out] First argument from the stock function. </param>
 		/// <param name="arg_2">			 	[in,out] Second argument from the stock function. </param>
 		/// <param name="arg_3">			 	[in,out] Third argument from the stock function. </param>
 		/// <param name="arg_4">			 	[in,out] Fourth argument from the stock function. </param>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <returns>	A PLATFORM_API. </returns>
 		static void PLATFORM_API RenderWidgetRecursiveHook(datum_index* widget_datum_index, void* arg_1, void* arg_2,void* arg_3, void* arg_4)
 		{
 			typedef void (PLATFORM_API* function_t)(void*, void*, void*, void*, void*);
@@ -253,9 +227,10 @@ namespace Yelo
 			render_widget_recursive(widget_datum_index, arg_1, arg_2, arg_3, arg_4);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Override of the render players function to apply HUD scaling. </summary>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <returns>	A PLATFORM_API. </returns>
 		static void PLATFORM_API HudRenderPlayersHook()
 		{
 			typedef void (PLATFORM_API* function_t)();
@@ -269,10 +244,12 @@ namespace Yelo
 			EnableHUDScale();
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Override of the render nav points function to apply HUD scaling. </summary>
+		///
 		/// <param name="arg0">	[in,out] First argument of the stock function. </param>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <returns>	A PLATFORM_API. </returns>
 		static void PLATFORM_API HudRenderNavPointsHook(void* arg0)
 		{
 			typedef void (PLATFORM_API* function_t)(void*);
@@ -286,9 +263,10 @@ namespace Yelo
 			EnableHUDScale();
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Override of the render in-game scoreboard function to apply UI scaling. </summary>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <returns>	A PLATFORM_API. </returns>
 		static void PLATFORM_API HudRenderScoreboardInGameHook()
 		{
 			typedef void (PLATFORM_API* function_t)();
@@ -302,9 +280,10 @@ namespace Yelo
 			EnableHUDScale();
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Override of the render post-game scoreboard function to apply UI scaling. </summary>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <returns>	A PLATFORM_API. </returns>
 		static void PLATFORM_API HudRenderScoreboardPostGameHook()
 		{
 			typedef void (PLATFORM_API* function_t)();
@@ -318,14 +297,15 @@ namespace Yelo
 			EnableHUDScale();
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Modifies the original screen projection matrix to enable UI scaling. </summary>
+		///
 		/// <param name="device">			[in] The graphics device. </param>
 		/// <param name="StartRegister">	The register to start writing from. </param>
 		/// <param name="pConstantData">	Pointer to the constants data. </param>
 		/// <param name="Vector4fCount">	The number of vector4's to set. </param>
+		///
 		/// <returns>	A HRESULT result. </returns>
-		///-------------------------------------------------------------------------------------------------
 		static HRESULT SetVertexShaderConstantF_ScreenProj(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 		{
 			auto* original_matrix = CAST_PTR(D3DXMATRIX*, (float*)pConstantData);
@@ -340,13 +320,13 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Scaling Logic
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Calculates the absolute position of an anchored point. </summary>
+		///
 		/// <param name="anchor">			The anchor type. </param>
 		/// <param name="anchor_bounds">	The anchor bounds. </param>
 		/// <param name="input">			The input point. </param>
 		/// <param name="output">			[out] The output point. </param>
-		///-------------------------------------------------------------------------------------------------
 		static void CalculateAnchor(const Enums::hud_anchor anchor, const point2d anchor_bounds, const point2d input, point2d& output)
 		{
 			switch(anchor)
@@ -374,9 +354,7 @@ namespace Yelo
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Updates the HUD scale globals for the current screen size. </summary>
-		///-------------------------------------------------------------------------------------------------
 		static void UpdateScreenScale()
 		{
 			real_point2d screen_ratio;
@@ -402,9 +380,7 @@ namespace Yelo
 			g_hud_globals.m_widget_screen.translation.x *= -1;
 		}
 		
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Updates the HUD scale for the current HUD size. </summary>
-		///-------------------------------------------------------------------------------------------------
 		static void UpdateAnchorScale()
 		{
 			real_point2d anchor_scale;
@@ -481,12 +457,15 @@ namespace Yelo
 				}
 			}
 		}
+
+		void UpdateChanges()
+		{
+			UpdateScreenScale();
+			UpdateAnchorScale();
+		}
 #pragma endregion
 
 #pragma region Component Interface
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Hooks the games HUD functions and values. </summary>
-		///-------------------------------------------------------------------------------------------------
 		void Initialize()
 		{
 			// TODO: ranged for loop
@@ -530,9 +509,6 @@ namespace Yelo
 			c_settings_hud::Unregister(Settings::Manager());
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Updates the HUD scaling controls. </summary>
-		///-------------------------------------------------------------------------------------------------
 		void Update()
 		{
 			// if the crosshair should be hidden modify the jump that skips it otherwise ensure it is not skipped
@@ -550,105 +526,8 @@ namespace Yelo
 		}
 #pragma endregion
 
-#pragma region Component Settings
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Renders the HUD settings menu. </summary>
-		///-------------------------------------------------------------------------------------------------
-		static void AdjustSettings_Render()
-		{
-			wchar_t text[256];
-			size_t current_length = 0;
-			wchar_t* itr = text;
-
-#define ADD_MENU_ITEM(format,...)													\
-				swprintf_s(itr,NUMBEROF(text)-current_length,format,__VA_ARGS__);	\
-				current_length = wcslen(text);										\
-				itr = text + current_length;
-
-			ADD_MENU_ITEM(L"\x2081. HUD				(%s)\n",	g_hud_globals.m_flags.show_hud ?	L"On" : L"Off");
-			ADD_MENU_ITEM(L"\x2082. HUD Scaling		(%s)\n",	g_hud_globals.m_flags.scale_hud ?	L"On" : L"Off");
-			ADD_MENU_ITEM(L"\nLeft-Click to Save");
-			g_hud_globals.m_menu_text->SetText(text);
-			g_hud_globals.m_menu_text->Refresh();
-			g_hud_globals.m_menu_text->Render();
-#undef ADD_MENU_ITEM
-		}
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Updates the UI scaling globals according to user input. </summary>
-		/// <returns>	An Enums::settings_adjustment_result. </returns>
-		///-------------------------------------------------------------------------------------------------
-		static Enums::settings_adjustment_result AdjustSettings()
-		{
-			if (Input::GetKeyState(Enums::_Key1) == 1)
-			{
-				g_hud_globals.m_flags.show_hud = !g_hud_globals.m_flags.show_hud;
-			}
-
-			if (Input::GetKeyState(Enums::_Key2) == 1)
-			{
-				g_hud_globals.m_flags.scale_hud = !g_hud_globals.m_flags.scale_hud;
-				UpdateScreenScale();
-				UpdateAnchorScale();
-			}
-
-			AdjustSettings_Render();
-
-			return Enums::_settings_adjustment_result_not_finished;
-		}
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Updates the HUD scale according to user input. </summary>
-		/// <returns>	An Enums::settings_adjustment_result. </returns>
-		///-------------------------------------------------------------------------------------------------
-		static Enums::settings_adjustment_result AdjustHUDScale()
-		{
-			// reset the scaling if the right mouse button is pressed
-			if (Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
-			{
-				g_hud_globals.m_hud_screen.scale.x = 1.0f;
-				g_hud_globals.m_hud_screen.scale.y = 1.0f;
-			}
-
-			// change the X/Y scale using the mouse axes
-			g_hud_globals.m_hud_screen.scale.x += Input::GetMouseAxisState(Enums::_MouseAxisX) / 2000.0f;
-			g_hud_globals.m_hud_screen.scale.y += Input::GetMouseAxisState(Enums::_MouseAxisY) / 2000.0f;
-
-			g_hud_globals.m_hud_screen.scale.x = __min(1.0f, g_hud_globals.m_hud_screen.scale.x);
-			g_hud_globals.m_hud_screen.scale.x = __max(0.0f, g_hud_globals.m_hud_screen.scale.x);
-			g_hud_globals.m_hud_screen.scale.y = __min(1.0f, g_hud_globals.m_hud_screen.scale.y);
-			g_hud_globals.m_hud_screen.scale.y = __max(0.0f, g_hud_globals.m_hud_screen.scale.y);
-
-			// render the scale input options
-			wchar_t text[128];
-			swprintf_s(text,
-				L"HUD Scale (%0.3f, %0.3f)\n"
-				L"\nLeft-Click to Save"
-				L"\nRight-Click to Reset",
-				g_hud_globals.m_hud_screen.scale.x,
-				g_hud_globals.m_hud_screen.scale.y
-				);
-			g_hud_globals.m_menu_text->SetText(text);
-			g_hud_globals.m_menu_text->Refresh();
-			g_hud_globals.m_menu_text->Render();
-
-			// update the UI scaling variables
-			UpdateAnchorScale();
-
-			return Enums::_settings_adjustment_result_not_finished;
-		}
-#pragma endregion
-
 #pragma region Component DirectX Interface
 #if defined(DX_WRAPPER)
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Sets the scale values for the initial screen resolution and allocates resources for
-		/// 	drawing the menu.
-		/// </summary>
-		/// <param name="pDevice">	[in] The render device. </param>
-		/// <param name="pPP">	  	[in] The presentation parameters. </param>
-		///-------------------------------------------------------------------------------------------------
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
 		{
 			// set up the original projection and translation globals
@@ -662,33 +541,10 @@ namespace Yelo
 			g_hud_globals.m_screen_size.y = (int16)pPP->BackBufferHeight;
 			UpdateScreenScale();
 			UpdateAnchorScale();
-
-			// allocate the text block for drawing the settings menu
-			g_hud_globals.m_menu_text = new TextBlock(pDevice, pPP);
-			g_hud_globals.m_menu_text->ApplyScheme();
-			g_hud_globals.m_menu_text->SetDimensions(200,0);
-			g_hud_globals.m_menu_text->Attach(Enums::_attach_method_center, 0,0,0,0);
-			g_hud_globals.m_menu_text->SetTextAlign(DT_LEFT);
-
-			g_hud_globals.m_menu_text->SetText(L"dumb");
-			g_hud_globals.m_menu_text->Refresh();
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Informs the menu text block that the device was lost. </summary>
-		///-------------------------------------------------------------------------------------------------
-		void OnLostDevice()
-		{
-			g_hud_globals.m_menu_text->OnLostDevice();
-		}
+		void OnLostDevice() { }
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Resets the scale values for the current screen resolution and informs the menu text block
-		/// 	that the device was reset.
-		/// </summary>
-		/// <param name="pPP">	[in] The presentation parameters. </param>
-		///-------------------------------------------------------------------------------------------------
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP)
 		{
 			// set the scale values for the current screen resolution
@@ -696,26 +552,11 @@ namespace Yelo
 			g_hud_globals.m_screen_size.y = (int16)pPP->BackBufferHeight;
 			UpdateScreenScale();
 			UpdateAnchorScale();
-
-			g_hud_globals.m_menu_text->OnResetDevice(pPP);
-			g_hud_globals.m_menu_text->Refresh();
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Unused. </summary>
-		///-------------------------------------------------------------------------------------------------
-		void Render() {}
+		void Render() { }
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Releases the menu text block. </summary>
-		///-------------------------------------------------------------------------------------------------
-		void Release()
-		{
-			g_hud_globals.m_menu_text->Release();
-
-			delete g_hud_globals.m_menu_text;
-			g_hud_globals.m_menu_text = nullptr;
-		}
+		void Release() { }
 #endif
 #pragma endregion
 	};

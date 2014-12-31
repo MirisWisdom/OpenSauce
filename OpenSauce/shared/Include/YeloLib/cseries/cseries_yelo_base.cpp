@@ -163,6 +163,13 @@ namespace Yelo
 			YELO_DEBUG_FORMAT("Message: %s", message);
 		YELO_DEBUG_FORMAT("%s,#%d in %s", file, line, function);
 
+		if(IsDebuggerPresent())
+		{
+			OutputDebugString("Message: ");
+			OutputDebugString(message);
+			OutputDebugString("\r\n");
+		}
+
 #ifdef _DEBUG
 		// based on _ASSERT_EXPR's implementation
 		_CrtDbgReport(halt ? _CRT_ASSERT : _CRT_WARN,

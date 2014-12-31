@@ -21,6 +21,17 @@
 #		define __GS_COMPONENT_INITIALIZE	Keystone::Initialize
 #		define __GS_COMPONENT_DISPOSE		Keystone::Dispose
 #	endif
+#elif	BOOST_PP_ITERATION() == 4
+#	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE			Interface::OpenSauceUI::Initialize
+#		define __GS_COMPONENT_DISPOSE				Interface::OpenSauceUI::Dispose
+#	elif	__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
+#		define __GS_COMPONENT_DX9_INITIALIZE		Interface::OpenSauceUI::Initialize3D
+#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Interface::OpenSauceUI::OnLostDevice
+#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Interface::OpenSauceUI::OnResetDevice
+#		define __GS_COMPONENT_DX9_RENDER			Interface::OpenSauceUI::Render
+#		define __GS_COMPONENT_DX9_RELEASE			Interface::OpenSauceUI::Release
+#	endif
 #endif
 
 #include "Common/GameSystemComponent.IterationRoundEnd.inl"

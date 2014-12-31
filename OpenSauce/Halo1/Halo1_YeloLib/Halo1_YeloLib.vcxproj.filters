@@ -106,15 +106,6 @@
     <Filter Include="_Resources\OpenSauceIDE">
       <UniqueIdentifier>{54ab6590-d1e6-4e02-908f-1f365dc3a105}</UniqueIdentifier>
     </Filter>
-    <Filter Include="configuration">
-      <UniqueIdentifier>{e3893432-9f00-43e9-8fc7-c62a694f1968}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="configuration\property_tree">
-      <UniqueIdentifier>{a4be0888-c2ad-49ee-af2e-5ae55c09aa75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="configuration\type_containers">
-      <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="render\lightmaps">
       <UniqueIdentifier>{6c494c0b-df0a-4dbf-a6bf-7846870854ca}</UniqueIdentifier>
     </Filter>
@@ -129,6 +120,15 @@
     </Filter>
     <Filter Include="time\interpolation">
       <UniqueIdentifier>{9ae7ddba-2567-4d88-841a-4cf4bcc51ff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="configuration">
+      <UniqueIdentifier>{e3893432-9f00-43e9-8fc7-c62a694f1968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="configuration\property_tree">
+      <UniqueIdentifier>{a4be0888-c2ad-49ee-af2e-5ae55c09aa75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="configuration\type_containers">
+      <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -540,6 +540,18 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp">
       <Filter>time\interpolation</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\value_conversion.hpp">
+      <Filter>cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_json.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_xml.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -814,6 +826,18 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp">
       <Filter>open_sauce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\value_conversion.cpp">
+      <Filter>cseries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_json.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_xml.cpp">
+      <Filter>configuration\property_tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

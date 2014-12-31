@@ -19,6 +19,8 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_KEYSTONE
 #include "Memory/_EngineLayout.inl"
 
+		uint32 PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message);
+
 		void OnChatAddString(wcstring string); // forward declare
 
 		void SendMessageUpdateEAX()
@@ -132,6 +134,9 @@ namespace Yelo
 
 			if(keystone_globals.log != nullptr)
 				SendMessageInitialize();
+			
+			Memory::WriteRelativeCall(&HandleMessage, GET_FUNC_VPTR(KS_TRANSLATEACCELERATOR_CALL), true);
+			CAST_PTR(byte*, GET_FUNC_VPTR(KS_TRANSLATEACCELERATOR_CALL))[5] = Enums::_x86_opcode_nop;
 		}
 
 		void Dispose()
@@ -229,6 +234,20 @@ namespace Yelo
 				call	[eax]
 			API_FUNC_NAKED_END_CDECL(4)
 		}
+
+		API_FUNC_NAKED uint32 KsTranslateAccelerator(void* arg0, HANDLE window_handle, void* arg2, const MSG* message)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(KS_TRANSLATEACCELERATOR);
+
+			API_FUNC_NAKED_START()
+				push	message
+				push	arg2
+				push	window_handle
+				push	arg0
+				mov		eax, FUNCTION
+				call	[eax]
+			API_FUNC_NAKED_END_CDECL(4)
+		}
 		
 		// should only be called by the unhandled exception filter
 		void ReleaseKeystone()
@@ -254,6 +273,44 @@ namespace Yelo
 				WindowRelease(keystone_mainwindow);
 			}
 		}
+
+#pragma region Message Pump
+		struct s_message_pump_globals
+		{
+			std::vector<i_windows_message_handler*> m_message_handlers;
+		};
+		static s_message_pump_globals g_message_pump_globals;
+
+		static uint32 PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message)
+		{
+			uint32 value = KsTranslateAccelerator(arg0, window_handle, arg2, message);
+
+			for(auto entry : g_message_pump_globals.m_message_handlers)
+			{
+				entry->HandleMessage(message);
+			}
+
+			return value;
+		}
+
+		void AttachWindowsMessageHandler(i_windows_message_handler* handler)
+		{
+			auto existing_entry = std::find(g_message_pump_globals.m_message_handlers.begin(), g_message_pump_globals.m_message_handlers.end(), handler);
+			if(existing_entry == g_message_pump_globals.m_message_handlers.end())
+			{
+				g_message_pump_globals.m_message_handlers.push_back(handler);
+			}
+		}
+
+		void DetachWindowsMessageHandler(i_windows_message_handler* handler)
+		{
+			auto existing_entry = std::find(g_message_pump_globals.m_message_handlers.begin(), g_message_pump_globals.m_message_handlers.end(), handler);
+			if(existing_entry != g_message_pump_globals.m_message_handlers.end())
+			{
+				g_message_pump_globals.m_message_handlers.erase(existing_entry);
+			}
+		}
+#pragma endregion
 	};
 };
 
