@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#if !PLATFORM_IS_DEDI
 namespace Yelo
 {
 	namespace Debug
@@ -28,4 +27,3 @@ namespace Yelo
 		void Update(real delta);
 	};
 };
-#endif
