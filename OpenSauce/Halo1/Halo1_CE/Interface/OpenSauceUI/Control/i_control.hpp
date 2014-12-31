@@ -18,10 +18,10 @@ namespace Yelo
 		class i_control;
 
 		/// <summary>	Defines an alias representing the a shared control pointer. </summary>
-		typedef std::shared_ptr<i_control> t_control_ptr;
+		typedef std::shared_ptr<i_control> control_ptr_t;
 
 		/// <summary>	Defines an alias representing a list of shared controls pointers. </summary>
-		typedef std::vector<t_control_ptr> t_control_list;
+		typedef std::vector<control_ptr_t> control_list_t;
 
 #pragma region Property Interface
 		/// <summary>	A property interface. </summary>
@@ -54,12 +54,12 @@ namespace Yelo
 		};
 		
 		/// <summary>	Defines an alias representing a property interface map. </summary>
-		typedef std::map<uint32, i_property_interface*> t_property_interface_map;
+		typedef std::map<uint32, i_property_interface*> property_interface_map_t;
 #pragma endregion
 
 #pragma region Event
 		/// <summary>	Defines an alias for an event callback function. </summary>
-		typedef std::function<void(const s_interface_value&, void*)> t_event_callback;
+		typedef std::function<void(const s_interface_value&, void*)> event_callback_t;
 #pragma endregion
 
 		/// <summary>	Base interface for an OpenSauceUI control. </summary>
@@ -104,7 +104,7 @@ namespace Yelo
 			/// <remarks>	If the specified control has already been added the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to add. </param>
-			virtual void AddControl(t_control_ptr control) = 0;
+			virtual void AddControl(control_ptr_t control) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes the specified control from the child control list. </summary>
@@ -112,13 +112,13 @@ namespace Yelo
 			/// <remarks>	If the specified control does not exist, the action is ignored. </remarks>
 			///
 			/// <param name="control">	The control to remove. </param>
-			virtual void RemoveControl(t_control_ptr control) = 0;
+			virtual void RemoveControl(control_ptr_t control) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the controls list. </summary>
 			///
 			/// <returns>	A list of controls. </returns>
-			virtual t_control_list& Controls() = 0;
+			virtual control_list_t& Controls() = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a property interface. </summary>
@@ -135,7 +135,7 @@ namespace Yelo
 			/// <param name="callback_id">	Identifier for the callback. </param>
 			/// <param name="callback">   	The callback function. </param>
 			/// <param name="userdata">   	[in] The userdata for the event. </param>
-			virtual void AddEventCallback(const uint32 event_id, const uint32 callback_id, const t_event_callback& function, void* userdata) = 0;
+			virtual void AddEventCallback(const uint32 event_id, const uint32 callback_id, const event_callback_t& function, void* userdata) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Removes an event callback. </summary>

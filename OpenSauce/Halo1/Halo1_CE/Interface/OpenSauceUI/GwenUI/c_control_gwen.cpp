@@ -29,7 +29,7 @@ namespace Yelo
 
 		c_event_handler_gwen_handler::c_event_handler_gwen_handler(const c_event_handler_gwen& owner
 			, Gwen::Event::Caller& caller
-			, const t_event_data_transform& data_transform)
+			, const event_data_transform_t& data_transform)
 			: m_owner(owner)
 			, m_caller(caller)
 			, is_attached(false)
@@ -63,7 +63,7 @@ namespace Yelo
 #pragma endregion
 
 #pragma region c_event_handler_gwen
-		c_event_handler_gwen::c_event_handler_gwen(Gwen::Event::Caller& caller, const t_event_data_transform& data_transform)
+		c_event_handler_gwen::c_event_handler_gwen(Gwen::Event::Caller& caller, const event_data_transform_t& data_transform)
 			: Control::c_event_handler()
 			, m_handler_thunk(*this, caller, data_transform)
 		{ }
@@ -82,8 +82,8 @@ namespace Yelo
 #pragma region c_control_gwen
 		c_control_gwen::c_control_gwen(Control::i_control& parent
 			, Gwen::Controls::Base* gwen_control
-			, const Control::t_property_interface_map& property_interfaces
-			, const Control::t_event_handler_map& event_handlers)
+			, const Control::property_interface_map_t& property_interfaces
+			, const Control::event_handler_map_t& event_handlers)
 			: c_control_base(parent)
 			, m_control(gwen_control)
 		{

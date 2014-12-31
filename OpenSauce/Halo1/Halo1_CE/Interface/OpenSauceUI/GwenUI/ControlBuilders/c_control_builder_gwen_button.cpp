@@ -137,7 +137,7 @@ namespace Yelo
 			gwen_control.SetIsToggle(false);
 		}
 
-		void c_control_builder_gwen_button::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_button::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_label::GetPropertyInterfaces(property_interfaces);
 			
@@ -148,7 +148,7 @@ namespace Yelo
 			property_interfaces[K_PROPERTY_IMAGEALPHA_ID] = GET_PROPERTY_INTERFACE(button_image_alpha);
 		}
 
-		void c_control_builder_gwen_button::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
+		void c_control_builder_gwen_button::GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const
 		{
 			c_control_builder_gwen_label::GetEventHandlers(control, event_handlers);
 

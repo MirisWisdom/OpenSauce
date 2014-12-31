@@ -335,7 +335,7 @@ namespace Yelo
 			Label_SetTextColor(label, argb_color { 255, 0, 0, 0 });
 		}
 
-		void c_control_builder_gwen_checkboxwithlabel::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_checkboxwithlabel::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			
@@ -352,7 +352,7 @@ namespace Yelo
 			property_interfaces[K_PROPERTY_DISABLED_ID] = GET_PROPERTY_INTERFACE(checkboxwithlabel_disabled);
 		}
 
-		void c_control_builder_gwen_checkboxwithlabel::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
+		void c_control_builder_gwen_checkboxwithlabel::GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const
 		{
 			c_control_builder_gwen_base::GetEventHandlers(control, event_handlers);
 			

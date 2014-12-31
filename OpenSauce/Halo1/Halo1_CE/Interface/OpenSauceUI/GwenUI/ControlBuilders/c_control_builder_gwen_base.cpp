@@ -220,7 +220,7 @@ namespace Yelo
 
 		void c_control_builder_gwen_base::SetDefaultValues(Gwen::Controls::Base* control) const { }
 
-		void c_control_builder_gwen_base::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_base::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			property_interfaces[K_PROPERTY_POSITION_ID] = GET_PROPERTY_INTERFACE(base_position);
 			property_interfaces[K_PROPERTY_SIZE_ID] = GET_PROPERTY_INTERFACE(base_size);
@@ -231,7 +231,7 @@ namespace Yelo
 			property_interfaces[K_PROPERTY_DISABLED_ID] = GET_PROPERTY_INTERFACE(base_disabled);
 		}
 
-		void c_control_builder_gwen_base::GetEventHandlers(Gwen::Controls::Base* control, Control::t_event_handler_map& event_handlers) const
+		void c_control_builder_gwen_base::GetEventHandlers(Gwen::Controls::Base* control, Control::event_handler_map_t& event_handlers) const
 		{
 			event_handlers[K_EVENT_HOVERENTER_ID] = std::make_unique<c_event_handler_gwen>(control->onHoverEnter);
 			event_handlers[K_EVENT_HOVERLEAVE_ID] = std::make_unique<c_event_handler_gwen>(control->onHoverLeave);

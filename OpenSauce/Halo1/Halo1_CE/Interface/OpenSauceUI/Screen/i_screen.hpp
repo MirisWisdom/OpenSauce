@@ -25,7 +25,7 @@ namespace Yelo
 			/// <summary>	Gets the root control of the screen. </summary>
 			///
 			/// <returns>	The root control of the screen. </returns>
-			virtual Control::t_control_ptr GetRootControl() const = 0;
+			virtual Control::control_ptr_t GetRootControl() const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a control based on it's resource id. </summary>
@@ -33,11 +33,11 @@ namespace Yelo
 			/// <param name="resource_id">	Identifier for the control resource. </param>
 			///
 			/// <returns>	The found control or nullptr if not found. </returns>
-			virtual Control::t_control_ptr GetControl(const uint32 resource_id) = 0;
+			virtual Control::control_ptr_t GetControl(const uint32 resource_id) = 0;
 		};
 
 		/// <summary>	Defines an alias representing a shared screen pointer. </summary>
-		typedef std::shared_ptr<i_screen> t_screen_ptr;
+		typedef std::shared_ptr<i_screen> screen_ptr_t;
 	};};};
 };
 #endif

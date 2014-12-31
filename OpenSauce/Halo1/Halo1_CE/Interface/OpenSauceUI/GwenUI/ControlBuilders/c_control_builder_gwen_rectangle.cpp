@@ -60,7 +60,7 @@ namespace Yelo
 			gwen_control.SetColor(Gwen::Color(255, 255, 255, 255));
 		}
 
-		void c_control_builder_gwen_rectangle::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_rectangle::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 

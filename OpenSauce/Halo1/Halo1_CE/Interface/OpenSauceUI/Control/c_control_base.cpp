@@ -30,7 +30,7 @@ namespace Yelo
 			return id == rhs.id;
 		}
 
-		void c_event_handler::AddCallback(const uint32 callback_id, const t_event_callback& function, void* userdata)
+		void c_event_handler::AddCallback(const uint32 callback_id, const event_callback_t& function, void* userdata)
 		{
 			// Check that the callback has not already been added
 			auto entry = std::find_if(m_callbacks.begin(), m_callbacks.end(),
@@ -93,9 +93,9 @@ namespace Yelo
 #pragma endregion
 
 #pragma region c_property_interface
-		c_property_interface::c_property_interface(const t_property_get_func& get
-			, const t_property_set_func& set
-			, const t_property_set_by_string_func& set_string)
+		c_property_interface::c_property_interface(const property_get_func_t& get
+			, const property_set_func_t& set
+			, const property_set_by_string_func_t& set_string)
 			: m_get(get)
 			, m_set(set)
 			, m_set_string(set_string)
@@ -137,11 +137,11 @@ namespace Yelo
 			, m_property_interfaces()
 		{ }
 
-		t_control_list::const_iterator c_control_base::FindControl(const t_control_ptr control) const
+		control_list_t::const_iterator c_control_base::FindControl(const control_ptr_t control) const
 		{
 			// Find the control using a pointer comparison
 			return std::find_if(m_child_controls.begin(), m_child_controls.end(),
-				[&](const t_control_ptr& entry)
+				[&](const control_ptr_t& entry)
 				{
 					return entry == control;
 				}
@@ -167,7 +167,7 @@ namespace Yelo
 			return found_interface->second;
 		}
 
-		void c_control_base::AddEventHandler(const uint32 event_id, const t_event_handler_ptr& event_handler)
+		void c_control_base::AddEventHandler(const uint32 event_id, const event_handler_ptr_t& event_handler)
 		{
 			YELO_ASSERT_DISPLAY(m_event_handlers.find(event_id) == m_event_handlers.end(), "Attempted to add duplicate event handler to a control");
 
@@ -190,7 +190,7 @@ namespace Yelo
 			m_resource_id = resource_id;
 		}
 
-		void c_control_base::AddControl(t_control_ptr control)
+		void c_control_base::AddControl(control_ptr_t control)
 		{
 			// Add the control to the list if it does not already exist
 			auto found_entry = FindControl(control);
@@ -203,7 +203,7 @@ namespace Yelo
 			}
 		}
 
-		void c_control_base::RemoveControl(t_control_ptr control)
+		void c_control_base::RemoveControl(control_ptr_t control)
 		{
 			// Remove the control from the list if it exists
 			auto found_entry = FindControl(control);
@@ -216,7 +216,7 @@ namespace Yelo
 			}
 		}
 
-		t_control_list& c_control_base::Controls()
+		control_list_t& c_control_base::Controls()
 		{
 			return m_child_controls;
 		}
@@ -230,7 +230,7 @@ namespace Yelo
 			return property_interface;
 		}
 
-		void c_control_base::AddEventCallback(const uint32 event_id, const uint32 callback_id, const t_event_callback& function, void* userdata = nullptr)
+		void c_control_base::AddEventCallback(const uint32 event_id, const uint32 callback_id, const event_callback_t& function, void* userdata = nullptr)
 		{
 			YELO_ASSERT_DISPLAY(m_event_handlers.find(event_id) != m_event_handlers.end(), "Attempted to add an event callback to a non-existant handler");
 

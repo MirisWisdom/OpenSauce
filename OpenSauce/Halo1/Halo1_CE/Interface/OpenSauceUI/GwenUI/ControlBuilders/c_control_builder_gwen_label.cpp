@@ -243,7 +243,7 @@ namespace Yelo
 			Label_SetTextColor(gwen_control, argb_color { 255, 0, 0, 0 });
 		}
 
-		void c_control_builder_gwen_label::GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const
+		void c_control_builder_gwen_label::GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const
 		{
 			c_control_builder_gwen_base::GetPropertyInterfaces(property_interfaces);
 			

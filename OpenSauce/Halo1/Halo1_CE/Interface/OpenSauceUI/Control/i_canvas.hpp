@@ -57,7 +57,7 @@ namespace Yelo
 		};
 
 		/// <summary>	Defines an alias representing a unique canvas pointer. </summary>
-		typedef std::unique_ptr<i_canvas> t_canvas_ptr;
+		typedef std::unique_ptr<i_canvas> canvas_ptr_t;
 	};};};
 };
 #endif

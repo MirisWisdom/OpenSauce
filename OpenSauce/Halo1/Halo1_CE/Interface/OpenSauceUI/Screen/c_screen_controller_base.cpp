@@ -130,7 +130,7 @@ namespace Yelo
 #pragma endregion
 		
 #pragma region Property Setup
-		void c_screen_controller_base::FindControl(const uint32 control_id, Control::t_control_ptr& control_out)
+		void c_screen_controller_base::FindControl(const uint32 control_id, Control::control_ptr_t& control_out)
 		{
 			// Get the control from the screen by it's resource id
 			auto control = m_target_screen->GetControl(control_id);
@@ -141,7 +141,7 @@ namespace Yelo
 
 		void c_screen_controller_base::FindControlAndProperty(const uint32 control_id
 			, const uint32 property_id
-			, Control::t_control_ptr& control_out
+			, Control::control_ptr_t& control_out
 			, Control::i_property_interface*& property_out)
 		{
 			FindControl(control_id, control_out);
@@ -157,7 +157,7 @@ namespace Yelo
 		void c_screen_controller_base::SetControlPropertyImpl(const uint32 control_id, const uint32 property_id, const Type value)
 		{
 			// Get the property and control
-			Control::t_control_ptr control;
+			Control::control_ptr_t control;
 			Control::i_property_interface* property;
 			FindControlAndProperty(control_id, property_id, control, property);
 
@@ -169,7 +169,7 @@ namespace Yelo
 		void c_screen_controller_base::SetControlPropertyImpl<cstring>(const uint32 control_id, const uint32 property_id, cstring value)
 		{
 			// Get the property and control
-			Control::t_control_ptr control;
+			Control::control_ptr_t control;
 			Control::i_property_interface* property;
 			FindControlAndProperty(control_id, property_id, control, property);
 
@@ -197,10 +197,10 @@ namespace Yelo
 			SetControlPropertyImpl<cstring>(control_id, property_id, value);
 		}
 
-		void c_screen_controller_base::AddDynamicProperty(const uint32 control_id, const uint32 property_id, const t_dynamic_property_update& update)
+		void c_screen_controller_base::AddDynamicProperty(const uint32 control_id, const uint32 property_id, const dynamic_property_update_t& update)
 		{
 			// Get the property and control
-			Control::t_control_ptr control;
+			Control::control_ptr_t control;
 			Control::i_property_interface* property;
 			FindControlAndProperty(control_id, property_id, control, property);
 
@@ -210,7 +210,7 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Event Setup
-		void c_screen_controller_base::AttachEvent(const uint32 control_id, const uint32 event_id, const uint32 callback_id, void* userdata, Control::t_event_callback function)
+		void c_screen_controller_base::AttachEvent(const uint32 control_id, const uint32 event_id, const uint32 callback_id, void* userdata, Control::event_callback_t function)
 		{
 			// Find the control by it's resource id then attach a callback function to the referenced event
 			auto control = m_target_screen->GetControl(control_id);

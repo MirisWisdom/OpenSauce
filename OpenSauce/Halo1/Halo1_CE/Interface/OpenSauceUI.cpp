@@ -61,8 +61,8 @@ namespace Yelo
 
 		static ControlFactory::c_control_factory g_control_factory;
 		static Input::c_control_input_halo g_control_input;
-		static Control::t_canvas_ptr g_canvas;
-		static Control::t_mouse_pointer_ptr g_mouse_pointer;
+		static Control::canvas_ptr_t g_canvas;
+		static Control::mouse_pointer_ptr_t g_mouse_pointer;
 
 		static std::unique_ptr<Screen::c_screen_display_manager> g_screen_display_manager;
 

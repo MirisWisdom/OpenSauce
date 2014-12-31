@@ -41,7 +41,7 @@ namespace Yelo
 			, const Flags::osui_game_state active_game_states
 			, const Flags::osui_screen_flags screen_flags
 			, const Enums::key_code toggle_key
-			, t_screen_controller_ptr controller)
+			, screen_controller_ptr_t controller)
 		{
 			YELO_ASSERT_DISPLAY((loaded_game_states & active_game_states) == active_game_states, "Screens must be loaded in the states where they can be displayed");
 

@@ -39,7 +39,7 @@ namespace Yelo
 			/// <remarks>	Derived overrides of this function must call the base function as well. </remarks>
 			///
 			/// <param name="property_interfaces">	[out] The property interfaces. </param>
-			void GetPropertyInterfaces(Control::t_property_interface_map& property_interfaces) const override;
+			void GetPropertyInterfaces(Control::property_interface_map_t& property_interfaces) const override;
 		};
 	};};};};
 };

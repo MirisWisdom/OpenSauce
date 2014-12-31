@@ -16,7 +16,7 @@ namespace Yelo
 {
 	namespace Interface { namespace OpenSauceUI { namespace GwenUI { namespace ControlBuilders
 	{
-		Control::t_control_ptr c_control_builder_gwen::Build(ControlFactory::c_control_factory& control_registry
+		Control::control_ptr_t c_control_builder_gwen::Build(ControlFactory::c_control_factory& control_registry
 			, Definitions::c_control_definition& control_definition
 			, Control::i_control& parent) const
 		{
@@ -25,14 +25,14 @@ namespace Yelo
 			SetDefaultValues(gwen_control);
 
 			// Build the control type's property interfaces and event handlers
-			Control::t_property_interface_map property_interfaces;
+			Control::property_interface_map_t property_interfaces;
 			GetPropertyInterfaces(property_interfaces);
 
-			Control::t_event_handler_map event_handlers;
+			Control::event_handler_map_t event_handlers;
 			GetEventHandlers(gwen_control, event_handlers);
 
 			// Build the control
-			Control::t_control_ptr control = std::make_unique<c_control_gwen>(parent
+			Control::control_ptr_t control = std::make_unique<c_control_gwen>(parent
 				, gwen_control
 				, property_interfaces
 				, event_handlers);
