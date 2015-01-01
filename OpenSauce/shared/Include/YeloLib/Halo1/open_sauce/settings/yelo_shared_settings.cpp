@@ -34,6 +34,7 @@ namespace Yelo
 		cstring UserProfilePath()		{ return Internal.UserProfilePath; }
 		cstring UserSavedProfilesPath()	{ return Internal.UserSavedProfilesPath; }
 		cstring UserProfileMapsPath()	{ return Internal.UserProfileMapsPath; }
+		bool	UserProfileMapsPathExists()	{ return FileIO::PathExists(Internal.UserProfileMapsPath); }
 		cstring OpenSauceProfilePath()	{ return Internal.OpenSauceProfilePath; }
 		cstring ReportsPath()			{ return Internal.ReportsPath; }
 		cstring WorkingDirectoryPath()	{ return Internal.WorkingDirectoryPath; }
@@ -65,10 +66,6 @@ namespace Yelo
 
 			strcpy_s(Internal.UserProfileMapsPath, Internal.UserProfilePath);
 			PathAppendA(Internal.UserProfileMapsPath, Cache::K_MAP_FILES_DIRECTORY);
-
-			// if there's no maps folder in the user profile, empty the path string
-			if (!FileIO::PathExists(Internal.UserProfileMapsPath))
-				Internal.UserProfileMapsPath[0] = '\0';
 
 			strcpy_s(Internal.OpenSauceProfilePath, profile_path);
 			PathAppendA(Internal.OpenSauceProfilePath, "OpenSauce\\");

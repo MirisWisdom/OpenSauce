@@ -119,7 +119,7 @@ namespace Yelo
 		/// <summary>	Builds a directory tree. </summary>
 		/// <param name="directory_tree">	The directory tree to create. </param>
 		///-------------------------------------------------------------------------------------------------
-		void BuildDirectoryTree(cstring directory_tree);
+		bool BuildDirectoryTree(cstring directory_tree);
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Queries if a given path exists. </summary>

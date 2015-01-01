@@ -111,7 +111,7 @@ namespace Yelo
 						value = 1.0f;
 						break;
 					case Networking::HTTP::Client::MapDownload::_map_download_state_reconnecting:
-						value = 1.0f - (map_download_display.GetReconnectTime() / 3);
+						value = 1.0f - (map_download_display.GetReconnectTime() / 2);
 						break;
 					case Networking::HTTP::Client::MapDownload::_map_download_state_searching:
 					case Networking::HTTP::Client::MapDownload::_map_download_state_failed:

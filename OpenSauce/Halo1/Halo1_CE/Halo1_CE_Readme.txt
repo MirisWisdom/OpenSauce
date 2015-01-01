@@ -15,6 +15,7 @@
   * CHANGE		Installer now needs .NET 4 and Windows Installer 4.0
   * CHANGE		Installer now checks for CPU support of SSE2
   * CHANGE		Installer now forces the user to manually uninstall builds older than 4.0.0
+  * CHANGE		Map downloading will now try to save the maps to your My Games/Halo CE/maps directory
   * ADD			Added GUI for changing OpenSauce settings (Uses GWEN)
   * ADD			Added soft particles to the engine
   * ADD			Shadows can now be enabled on scenery and devices
