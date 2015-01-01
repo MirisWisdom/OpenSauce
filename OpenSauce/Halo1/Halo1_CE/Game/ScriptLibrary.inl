@@ -187,6 +187,7 @@
 		_hs_global_rasterizer_model_specular_map,
 		_hs_global_rasterizer_environment_dlm_diffuse,
 		_hs_global_rasterizer_environment_dlm_specular,
+		_hs_global_rasterizer_effect_depth_fade,
 		
 	// debug globals
 	#ifdef API_DEBUG
@@ -313,6 +314,7 @@
 	HS_GLOBAL2(rasterizer_model_specular_map, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_specular_map, nullptr);
 	HS_GLOBAL2(rasterizer_environment_dlm_diffuse, bool, &Rasterizer::ShaderExtension::Environment::g_rasterizer_environment_dlm_diffuse, nullptr);
 	HS_GLOBAL2(rasterizer_environment_dlm_specular, bool, &Rasterizer::ShaderExtension::Environment::g_rasterizer_environment_dlm_specular, nullptr);
+	HS_GLOBAL2(rasterizer_effect_depth_fade, bool, &Rasterizer::ShaderExtension::Effect::g_rasterizer_effect_depth_fade, nullptr);
 
 	// debug globals
 	#ifdef API_DEBUG
@@ -479,6 +481,7 @@
 		&GET_HS_GLOBAL(rasterizer_model_specular_map),
 		&GET_HS_GLOBAL(rasterizer_environment_dlm_diffuse),
 		&GET_HS_GLOBAL(rasterizer_environment_dlm_specular),
+		&GET_HS_GLOBAL(rasterizer_effect_depth_fade),
 
 	// debug globals
 	#ifdef API_DEBUG

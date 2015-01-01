@@ -86,6 +86,8 @@ namespace Yelo
 
 			namespace Effect
 			{
+				extern bool g_rasterizer_effect_depth_fade;
+
 				void SetDepthFadeEnabled(bool value);
 				bool GetDepthFadeEnabled();
 			}

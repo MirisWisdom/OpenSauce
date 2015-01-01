@@ -21,6 +21,7 @@
 #include "Common/FileIO.hpp"
 #include "Settings/Settings.hpp"
 #include "Interface/Keystone.hpp"
+#include "Rasterizer/DX9/DX9.hpp"
 #endif
 
 namespace Yelo
@@ -61,10 +62,10 @@ namespace Yelo
 		};
 		static s_freeze_dump_globals g_freeze_dump_globals;
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Reports to the user that a crash report has been created. </summary>
+		///
 		/// <param name="report_directory">	Pathname of the report directory. </param>
-		///-------------------------------------------------------------------------------------------------
 		static void ReportComplete(const char* report_directory)
 		{
 			// writing the report was successful so tell the user
@@ -82,9 +83,7 @@ namespace Yelo
 #endif
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Adds a copy of the game state to the crash report archive. </summary>
-		///-------------------------------------------------------------------------------------------------
 		static void AddGameStateDump()
 		{
 			if(FileIO::PathExists(g_reports_path))
@@ -100,6 +99,30 @@ namespace Yelo
 						FileIO::CloseFile(dump);
 
 						Debug::AddFileToCrashReport(dump_file, "core.bin", "Gamestate dump");
+					}
+				}
+			}
+		}
+
+		/// <summary>	Adds a backbuffer frame dump to the report. </summary>
+		static void AddFrameDump()
+		{
+			if(FileIO::PathExists(g_reports_path))
+			{
+				char frame_file[MAX_PATH];
+				if(FileIO::PathBuild(frame_file, false, 2, g_reports_path, "framedump.jpg"))
+				{
+					auto* device = DX9::Direct3DDevice();
+
+					c_auto_release<IDirect3DSurface9> surface(nullptr);
+					if(device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &surface) != S_OK)
+					{
+						return;
+					}
+
+					if(D3DXSaveSurfaceToFile(frame_file, D3DXIFF_JPG, surface, nullptr, nullptr) == S_OK)
+					{
+						Debug::AddFileToCrashReport(frame_file, "framedump.jpg", "Frame dump");
 					}
 				}
 			}
@@ -184,6 +207,9 @@ namespace Yelo
 
 			// add a gamestate dump to the report
 			AddGameStateDump();
+
+			// add a frame dump to the report
+			AddFrameDump();
 
 			// add CPU information to the report
 			AddCPUInfo();

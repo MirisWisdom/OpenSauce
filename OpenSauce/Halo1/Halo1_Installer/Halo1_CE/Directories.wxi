@@ -76,6 +76,13 @@
 		<Directory Id='Halo1_CE_OpenSauce_DIR' Name='OpenSauce'>
 			<!-- Remove *.txt reports and remove the Reports folder -->
 			<Directory Id='Halo1_CE_Reports_DIR' Name='Reports'>
+				<Directory Id='Halo1_CE_CrashRpt_DIR' Name='CrashRpt'>
+					<Component Id='Halo1_CE_CrashRpt_COMP' Guid='3DAFB4FF-B023-4D6E-8D21-DAA3E521A8CE'>
+						<RemoveFile Id='Halo1_CE_CrashRpt_REM' Name='*.*' On='uninstall' />
+						<RemoveFolder Id='Halo1_CE_CrashRpt_REMDIR' On='uninstall' />
+					</Component>
+				</Directory>
+
 				<Component Id='Halo1_CE_Reports_COMP' Guid='6DC987E1-230F-4DA6-A365-113311C50146'>
 					<RemoveFile Id='Halo1_CE_Reports_REM' Name='*.*' On='uninstall' />
 					<RemoveFolder Id='Halo1_CE_Reports_REMDIR' On='uninstall' />

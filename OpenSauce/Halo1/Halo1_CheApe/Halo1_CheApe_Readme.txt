@@ -1,19 +1,26 @@
 = OpenSauce for the Halo Editing Kit =
 
 == Change Log ==
-=== Version 2014 ===
+=== Version 2015 ===
   * UPGRADE		We now use Visual Studio 2013 instead of 2008 for development
   * ADD			tag system was rewritten in OS code, providing better diagnostic messages and tag utilities. However, the engine's tag saving code is still used
   * ADD			tag system now supports tag fields of the _field_string kind with a custom string length (stock is fixed to 31-character strings)
   * ADD			Custom event handlers for Guerilla's Source Control and Xsync menu items, for use in a future system (they still don't do anything currently)
   * ADD			Introduced "tag-load-test" command to Tool.
+  * ADD			project_yellow_globals_cv tag containing both boarding and unit infection tag blocks
+  * ADD			model_animations tag features two new unit_seat_animation types for seat boarding and ejection
+  * ADD			Added model extractor to OpenSauceIDE
+  * ADD			Added a lightmap rendering script for 3ds MAX
+  * ADD			Added COLLADA lightmap importing to OpenSauceIDE
+  * ADD			Installer now includes the VS120 runtime
+  * CHANGE		obj UV import now uses the index at the end of a mesh name rather then the mesh order
+  * CHANGE		Installer no-longer locks installation to Runtime/HEK registry keys, if the selected directory isn't right it will tell the user
+  * CHANGE		Installer now needs .NET 4 and Windows Installer 4.0
+  * CHANGE		Installer now checks for CPU support of SSE2
+  * CHANGE		Installer now forces the user to manually uninstall builds older than 4.0.0
   * CHANGE		Tool now supports specifying the editor profile (-editorProfile:) on the command line. The first string that doesn't begin with a dash, '-', is assumed to be the command verb
   * CHANGE		Settings system is entirely new. Old settings files will be ignored and won't be automatically upgraded.
   * CHANGE		unit boarding definitions moved from the project_yellow_globals_cv tag and put directly in the unit tag
-
-=== Version 3.1.1 ===
-  * ADD			project_yellow_globals_cv tag containing both boarding and unit infection tag blocks
-  * ADD			model_animations tag features two new unit_seat_animation types for seat boarding and ejection
 
 === Version 3.1 ===
   * PATCH		Weapon's magazine's magazine-objects block will no longer crash when you try to add more than 2 elements. Uses the equipment field for the block name now too.
