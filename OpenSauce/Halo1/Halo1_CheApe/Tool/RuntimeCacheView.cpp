@@ -136,6 +136,7 @@ namespace Yelo
 			k_color_index = Enums::_console_color_lightgreen,
 			k_color_tag = Enums::_console_color_lightpurple,
 			k_color_address = Enums::_console_color_lightaqua,
+			k_color_block_offset = Enums::_console_color_aqua,
 			k_color_name = Enums::_console_color_lightyellow,
 
 			k_color_fieldtype = Enums::_console_color_lightred,

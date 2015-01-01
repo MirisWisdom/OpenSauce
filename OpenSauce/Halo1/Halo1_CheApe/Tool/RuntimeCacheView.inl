@@ -992,16 +992,19 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>	Print information about a field to the console. </summary>
 ///
-/// <param name="field_name">	Name of the field. </param>
-/// <param name="tag_data">  	The local tag data address for the field. </param>
-/// <param name="address">   	The address of the field in Halo's memory. </param>
-/// <param name="field">	 	The field description. </param>
-void PrintFieldInfo(const std::string& field_name, const void* tag_data, const uintptr_t address, const Yelo::tag_field* field)
+/// <param name="field_name">  	Name of the field. </param>
+/// <param name="tag_data">	   	The local tag data address for the field. </param>
+/// <param name="address">	   	The address of the field in Halo's memory. </param>
+/// <param name="block_offset">	The fields block offset. </param>
+/// <param name="field">	   	The field description. </param>
+void PrintFieldInfo(const std::string& field_name, const void* tag_data, const uintptr_t address, const int32 block_offset, const Yelo::tag_field* field)
 {
 	auto& field_descriptor = g_field_descriptions[field->type];
 
 	// Print the address of the field in Halo
 	Console::ColorPrintF(k_color_address, "0x%08X", address);
+	// Print the block offset of the field in Halo
+	Console::ColorPrintF(k_color_block_offset, " 0x%04X", block_offset);
 	// Print the field type
 	Console::ColorPrint(k_color_default, " [");
 	Console::ColorPrintF(k_color_fieldtype, "%s", field_descriptor.m_field_type_name);
@@ -1036,12 +1039,13 @@ void PrintBlockInfo(const std::string& field_name, const void* tag_data, const Y
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>	Prints the fields of a tag block to the console. </summary>
 ///
-/// <param name="tag_data">   	[in,out] The local memory pointer where the block resides. </param>
-/// <param name="address">	  	[in,out] The memory address of the block in Halo's memory. </param>
-/// <param name="start_field">	The start field descriptor. </param>
+/// <param name="tag_data">	   	[in,out] The local memory pointer where the block resides. </param>
+/// <param name="address">	   	[in,out] The memory address of the block in Halo's memory. </param>
+/// <param name="block_offset">	[in,out] The fields block offset. </param>
+/// <param name="start_field"> 	The start field descriptor. </param>
 ///
 /// <returns>	The commands end status. </returns>
-int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
+int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, const Yelo::tag_field* start_field)
 {
 	int count = 0;
 	const Yelo::tag_field* current = start_field;
@@ -1061,7 +1065,7 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* st
 				// print the array
 				for(int i = 0; i < array_count; i++)
 				{
-					auto status = PrintFields(tag_data, address, first_array_field);
+					auto status = PrintFields(tag_data, address, block_offset, first_array_field);
 					if(status != k_status_ok)
 						return status;
 				}
@@ -1091,7 +1095,7 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* st
 
 		puts("");
 
-		PrintFieldInfo(field_name, tag_data, address, current);
+		PrintFieldInfo(field_name, tag_data, address, block_offset, current);
 
 		// if the field is a tag block, print all of its elements
 		if(current->type == Enums::_field_block)
@@ -1149,6 +1153,7 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, const Yelo::tag_field* st
 		size_t field_size = GetFieldSize(current);
 		address += field_size;
 		tag_data +=  field_size;
+		block_offset += field_size;
 
 		current++;
 		count++;
@@ -1186,9 +1191,11 @@ int32 PrintBlock(uintptr_t address, const Yelo::tag_block_definition* block_defi
 
 	auto status = ReadHaloMemory((void*)address, data_pointer, block_definition->element_size);
 
+	int32 block_offset = 0;
+
 	// print the blocks fields to the console
 	if(status == k_status_ok)
-		status = PrintFields(data_pointer, address, block_definition->fields);
+		status = PrintFields(data_pointer, address, block_offset, block_definition->fields);
 
 	return status;
 }
@@ -1318,6 +1325,7 @@ int32 PrintTagIndex(const char* filter)
 struct s_field_tree_entry
 {
 	const uintptr_t field_address;
+	const uint32 field_block_offset;
 	const tag_field* field_definition;
 	const tag_block_definition* block_definition;
 	const int32 block_index;
@@ -1329,6 +1337,7 @@ int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t t
 /// <summary>	Searches for the test address in a list of field's. </summary>
 ///
 /// <param name="field_tree">  	[in,out] The field tree to add to if the address is found. </param>
+/// <param name="block_offset">	[in,out] The fields block offset. </param>
 /// <param name="test_address">	The test address to find. </param>
 /// <param name="tag_data">	   	[in,out] The local copy of the block data. </param>
 /// <param name="address">	   	[in,out] The current fields address in Halo's memory. </param>
@@ -1338,7 +1347,7 @@ int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t t
 /// 	k_status_ok if the field was found, otherwise a non-zero code if not found or an error
 /// 	occurs.
 /// </returns>
-int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t test_address, byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
+int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset, const uintptr_t test_address, byte*& tag_data, uintptr_t& address, const Yelo::tag_field* start_field)
 {
 	const Yelo::tag_field* current = start_field;
 
@@ -1357,7 +1366,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t tes
 				const tag_field* first_array_field = current + 1;
 				for(int i = 0; i < array_count; i++)
 				{
-					auto status = FindField(field_tree, test_address, tag_data, address, first_array_field);
+					auto status = FindField(field_tree, block_offset, test_address, tag_data, address, first_array_field);
 					if(status == k_status_ok)
 					{
 						return status;
@@ -1383,7 +1392,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t tes
 		if((test_address >= address) && (test_address < address + field_size))
 		{
 			// Add a tree entry for the field
-			s_field_tree_entry path_entry { address, current, nullptr, -1 };
+			s_field_tree_entry path_entry { address, block_offset, current, nullptr, -1 };
 			field_tree.push_back(path_entry);
 			return k_status_ok;
 		}
@@ -1395,7 +1404,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t tes
 			if((test_address >= CAST_PTR(uintptr_t, data->address)) && (test_address < CAST_PTR(uintptr_t, data->address) + data->size))
 			{
 				// Add a tree entry for the field
-				s_field_tree_entry path_entry { address, current, nullptr, -1 };
+				s_field_tree_entry path_entry { address, block_offset, current, nullptr, -1 };
 				field_tree.push_back(path_entry);
 				return k_status_ok;
 			}
@@ -1415,7 +1424,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t tes
 				if(status == k_status_ok)
 				{
 					// Add a tree entry for the block
-					s_field_tree_entry path_entry { address, current, definition, element.index };
+					s_field_tree_entry path_entry { address, 0, current, definition, element.index };
 					field_tree.push_back(path_entry);
 					return status;
 				}
@@ -1424,6 +1433,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, const uintptr_t tes
 
 		address += field_size;
 		tag_data += field_size;
+		block_offset += field_size;
 		current++;
 	}
 	return k_status_failed;
@@ -1455,8 +1465,9 @@ int32 FindInBlock(std::vector<s_field_tree_entry>& field_tree, const uintptr_t t
 		return k_status_failed;
 	}
 
+	int32 block_offset = 0;
 	// Find the field address in the block
-	return FindField(field_tree, test_address, data_pointer, address, block_definition->fields);;
+	return FindField(field_tree, block_offset, test_address, data_pointer, address, block_definition->fields);;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1534,6 +1545,8 @@ int32 FindFieldByAddress(const char* address)
 	auto status = FindInBlock(field_tree, test_address, CAST_PTR(uintptr_t, found_tag->base_address), root_definition);
 	if(status == k_status_ok)
 	{
+		int block_address = 0;
+
 		// Print the field tree
 		// Tree entries are added in reverse order once a field has been found so print the tree in reverse
 		for(auto iter = field_tree.rbegin(); iter != field_tree.rend(); iter++)
@@ -1560,7 +1573,7 @@ int32 FindFieldByAddress(const char* address)
 			byte* tag_data_ptr = tag_data.get();
 
 			// Print the field info
-			PrintFieldInfo(field_name, tag_data_ptr, iter->field_address, iter->field_definition);
+			PrintFieldInfo(field_name, tag_data_ptr, iter->field_address, iter->field_block_offset, iter->field_definition);
 			puts("");
 			
 			// If the path entry is a block definition print the block element info
