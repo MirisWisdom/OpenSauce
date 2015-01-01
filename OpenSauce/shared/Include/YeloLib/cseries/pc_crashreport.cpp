@@ -14,6 +14,7 @@
 #pragma comment (lib, "../../shared/lib/x86/CrashRpt1401.lib") // TODO: setup proper shared lib directories in vcxproj
 
 #include <YeloLib/files/files.hpp>
+#include <YeloLib/Halo1/open_sauce/yelo_version.hpp>
 
 //#define TEST_CRASH_REPORT
 

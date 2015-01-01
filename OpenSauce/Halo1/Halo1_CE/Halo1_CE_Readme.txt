@@ -1,21 +1,43 @@
 = OpenSauce for Halo Custom Edition v1.09 =
 
 == Change Log ==
-=== Version 2014 ===
-  * REMOVE		scenario_faux_zones will be deprecated soon, as a new and different system will implement their functionality
+=== Version 2015 ===
+  * REMOVE		scenario_faux_zones have been depreceated
   * PATCH		Non-multiplayer maps will no longer even show up in the map list
-  * ADD			Added new script functions: weapon_data_magazine_get\set_integer
+  * PATCH		OS now points 1.09 to the new multiplayer master servers
+  * CHANGE		OS now adds the 1.09 exe alongside 1.10, with a desktop shortcut to run it
+  * CHANGE		Installer no-longer locks installation to Runtime/HEK registry keys, if the selected directory isn't right it will tell the user
   * CHANGE		OpenSauce is now compiled with VS2013, instead of VS2008
   * CHANGE		Settings system is entirely new. Old settings files will be ignored and won't be automatically upgraded.
   * CHANGE		mod-sets now Just Work. There's no more need for a ModSets.xml, so long as the mod's data files exist in a proper maps folder, OS will load them
   * CHANGE		OS will now process files in the "maps\" folder in the user's profile directory
-
-=== Version 3.1.1 ===
-  * ADD			added unit boarding
-  * ADD			added entering biped unit seats
+  * CHANGE		HUD scaling now respects screen anchors and scale multiplayer elements correctly
+  * CHANGE		Installer now needs .NET 4 and Windows Installer 4.0
+  * CHANGE		Installer now checks for CPU support of SSE2
+  * CHANGE		Installer now forces the user to manually uninstall builds older than 4.0.0
+  * ADD			Added GUI for changing OpenSauce settings (Uses GWEN)
+  * ADD			Added soft particles to the engine
+  * ADD			Shadows can now be enabled on scenery and devices
+  * ADD			Added diffuse directional lightmaps to the engine
+  * ADD			Added experimental specular directional lightmaps to the engine
+  * ADD			Added bsp modifiers for changing lightmaps and skies using HS (replaces scenario_faux_zones)
+  * ADD			Added rasterizer globals for toggling shader extensions
+  * ADD			Added new script functions: weapon_data_magazine_get\set_integer
+  * ADD			Added functionality to allow full crash dumps to be created
+  * ADD			Added crash report creation with a minidump, screenshot, core dump, etc. (Uses CrashRpt)
+  * ADD			Installer now includes the VS120 runtime
+  * ADD			Added unit boarding
+  * ADD			Added entering biped unit seats
   * ADD			disableVehicleRemapper setting, along with a vehicle_remapper_enabled script function, to turn off the PC's vehicle respawning nonsense
-  * FIX [69]	object_data_get_real logic will no longer cause exceptions
-  * FIX			fixed detail objects not being drawn when using os shader extensions
+  * FIX			Fixed map download client not trying master servers if the dedicated server can't serve the map
+  * FIX			Fixed map download server not handling certain map names
+  * FIX [69]	Object_data_get_real logic will no longer cause exceptions
+  * FIX			Fixed detail objects not being drawn when using os shader extensions
+  * FIX			Fixed crash when downloading encrypted maps
+  * FIX			Fixed yelo maps not being added to the map list
+  * FIX [72]	Fixed >2 grenade types breaking tool lightmaps
+  * FIX [90]	Fixed damage anchors not scaling correctly
+  * FIX [80]	Fixed Ctrl+C being seen as a crash in tool
 
 === Version 3.1 ===
   * PATCH		project_yellow_globals tag features new flag for forcing the game to use 'stun jumping penalty' instead of 'turning penalty' in the engine's biped jump code

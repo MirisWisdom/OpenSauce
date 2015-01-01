@@ -21,7 +21,8 @@ namespace Effect
 		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 0,
 		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 1
 	};
-
+	
+	bool					g_rasterizer_effect_depth_fade = true;
 	static uint32			g_current_shader_offset = 0;
 	static _enum			g_extension_usage_mask;
 
@@ -141,6 +142,11 @@ namespace Effect
 	void SetShaderEffectVariables(const TagGroups::s_shader_effect* shader)
 	{
 		g_current_shader_offset = 0;
+
+		if(!g_rasterizer_effect_depth_fade)
+		{
+			return;
+		}
 
 		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled || !shader)
 		{
