@@ -45,9 +45,11 @@
 			7, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <print-size> <verbose>", 
 		&tag_load_maintenance),
 
+#ifdef API_DEBUG
 	IMPORT_CLASS_DEFINITION("compile-shaders", 
 			5, "<source-directory> <intermediate-directory> <output-directory> <collection-definition> <specific-shader>", 
 		&Shader::Compiler::compile_shaders),
+#endif
 
 	IMPORT_CLASS_DEFINITION("build-packed-file", 
 			3, "<source-directory> <output-directory> <file-definition-xml>", 

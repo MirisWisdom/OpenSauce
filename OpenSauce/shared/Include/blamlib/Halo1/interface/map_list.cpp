@@ -300,7 +300,7 @@ namespace Yelo
 			Interface::MapListAddMapTypessInPath(fd, "");
 
 			// only try adding maps from the user profile if we detected the presence of an actual maps directory
-			if (!is_null_or_empty(Settings::UserProfileMapsPath()))
+			if (Settings::UserProfileMapsPathExists())
 			{
 				cstring user_profile_path = Settings::UserProfilePath();
 

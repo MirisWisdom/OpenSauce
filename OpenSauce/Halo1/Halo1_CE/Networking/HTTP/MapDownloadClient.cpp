@@ -1058,7 +1058,8 @@ namespace Yelo
 			struct
 			{
 				archive_extraction_state	state;
-				PAD16;
+				bool						using_stock_maps_path;
+				PAD8;
 			}m_archive_extraction;
 
 			struct
@@ -1396,9 +1397,21 @@ namespace Yelo
 					// build the output file path
 					char map_file_path[MAX_PATH] = "";
 
-					// TODO: we should probably download maps to the user's profile maps\ instead
+					// If the user's maps directory does not exist, try to create and use it, otherwise default to the stock maps directory
+					cstring maps_directory = Settings::UserProfileMapsPath();
+					g_map_download_globals.m_archive_extraction.using_stock_maps_path = false;
+
+					if(!Settings::UserProfileMapsPathExists())
+					{
+						if(!FileIO::BuildDirectoryTree(Settings::UserProfileMapsPath()))
+						{
+							maps_directory = Settings::PlatformUserMapsPath();
+							g_map_download_globals.m_archive_extraction.using_stock_maps_path = true;
+						}
+					}
+
 					if(!FileIO::PathBuild(map_file_path,
-						false, 2, Cache::K_MAP_FILES_DIRECTORY,
+						false, 2, maps_directory,
 						map_element.m_filename))
 						break;
 				
@@ -1440,7 +1453,15 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			int map_list_index = Interface::MapListAddMapFromPath(Cache::K_MAP_FILES_DIRECTORY, map_element.m_filename);
+			int map_list_index = NONE;
+
+			cstring maps_directory = Settings::UserProfileMapsPath();
+			if(g_map_download_globals.m_archive_extraction.using_stock_maps_path)
+			{
+				maps_directory = Settings::PlatformUserMapsPath();
+			}
+
+			Interface::MapListAddMapFromPath(maps_directory, map_element.m_filename);
 
 			return map_list_index != NONE;
 		}

@@ -25,22 +25,62 @@ namespace Yelo
 		extern cstring K_SERVER_FILENAME_XML;
 		extern cstring K_EDITOR_FILENAME_XML;
 
-		// Path to the systems common application data folder
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Path to the systems common application data folder. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring CommonAppDataPath();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	User profile path. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring UserProfilePath();
-		// 'savegames' path
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	User's saved profiles path. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring UserSavedProfilesPath();
-		// maps folder under the user's profile.
-		// Returns an empty string if the maps folder doesn't exist
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Maps folder under the user's profile. </summary>
+		///
+		/// <remarks>
+		/// 	Use UserProfileMapsPathExists to check the folder exists before interacting iwth it.
+		/// </remarks>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring UserProfileMapsPath();
-		// The OpenSauce path to use that is under the User's game profile
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Queries if a user's profile maps path exists. </summary>
+		///
+		/// <returns>	true if it exists, false if it does not. </returns>
+		bool	UserProfileMapsPathExists();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	The OpenSauce path to use that is under the User's game profile. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring OpenSauceProfilePath();
-		// Path which we store our reports in
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Path which we store our reports in. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring ReportsPath();
-		// The current working directory
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	The current working directory. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring WorkingDirectoryPath();
 
-		// user's maps\ path for the defined PLATFORM_TYPE
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	User's maps\ path for the defined PLATFORM_TYPE. </summary>
+		///
+		/// <returns>	A cstring. </returns>
 		cstring PlatformUserMapsPath();
 
 		void SharedInitialize(cstring profile_path);
