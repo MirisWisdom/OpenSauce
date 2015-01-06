@@ -305,8 +305,14 @@ namespace Yelo
 
 				const auto& gamestate = g_bsp_modifier_globals.m_bsp_modifier_gamestate[modifier_index];
 
-				SetLightmapSet(modifier_index, (sbyte)bsp_index, gamestate.m_lightmap_set);
-				SetSkySet(modifier_index, (sbyte)bsp_index, gamestate.m_sky_set);
+				if(!SetLightmapSet(modifier_index, (sbyte)bsp_index, gamestate.m_lightmap_set))
+				{
+					SetStockLightmap();
+				}
+				if(!SetSkySet(modifier_index, (sbyte)bsp_index, gamestate.m_sky_set))
+				{
+					Render::Sky::Reset();
+				}
 			}
 			else
 			{
