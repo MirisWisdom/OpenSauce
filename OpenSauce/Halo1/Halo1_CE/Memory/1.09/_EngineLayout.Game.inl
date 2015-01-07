@@ -146,7 +146,7 @@ namespace Fov
 	ENGINE_DPTR(particle_system_particles_data_t, particle_system_particles,0x815D94, 0x6E1C58);
 
 	ENGINE_DPTR(s_structure_detail_objects_data, structure_detail_objects,	0x6BDA6C, 0x6260F4);
-	ENGINE_DPTR(s_structure_decals_data, structure_decals,					0x6BDA7C, 0x626104);
+	ENGINE_DPTR(s_structure_decals_data, structure_decals,					0x6BDA7C, 0x6260F4);
 	ENGINE_DPTR(s_breakable_surface_globals_data, breakable_surface_globals,0x653CC8, 0x5C5BB0);
 	ENGINE_DPTR(decals_data_t, decals,										0x815DA4, 0x6E1C64);
 	ENGINE_DPTR(s_decal_globals_data, decal_globals,						0x64BA28, 0x5BD808);
