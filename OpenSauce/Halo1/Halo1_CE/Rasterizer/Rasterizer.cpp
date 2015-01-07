@@ -256,6 +256,7 @@ namespace Yelo
 				global_def->address = CAST_PTR(void*, address + rdt.field);// fix the global definition's address to point to the correct memory
 			}
 			
+#if PLATFORM_VERSION <= 0x1090
 			// update the resolution definition array length
 			// definition count has been increased to 64 so that ridiculous amounts of resolutions in the future are accommodated
 			GET_PTR(RESOLUTION_LIST_COUNT) = NUMBEROF(g_resolution_list);
@@ -277,6 +278,7 @@ namespace Yelo
 
 			// replace the original resolution populator with the new one
 			Memory::WriteRelativeCall(&SetupResolutions, GET_FUNC_VPTR(RESOLUTION_LIST_SETUP_RESOLUTIONS_CALL), true);
+#endif
 
 			// make the screenshot function use a unique subfolder
 			tag_string screenshots_folder;
@@ -323,7 +325,7 @@ namespace Yelo
 
 		API_FUNC_NAKED static void RenderWindowReflectionHook()
 		{
-			static const uintptr_t CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
+			static const uintptr_t CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_FUNC);
 			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL_RETN);
 
 			__asm {

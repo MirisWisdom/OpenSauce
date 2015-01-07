@@ -46,7 +46,7 @@
 	namespace Hud
 	{
 		#pragma region ShowCrosshair
-		ENGINE_PTR(uint16, RENDER_CROSSHAIRS_DISABLE_MOD,				0x4B62E1, PTR_NULL);
+		ENGINE_PTR(uint16, RENDER_CROSSHAIRS_DISABLE_MOD,			0x4B62E1, PTR_NULL);
 		#pragma endregion
 
 		#pragma region Scale

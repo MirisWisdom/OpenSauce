@@ -26,6 +26,7 @@ public:
 		}
 	}
 
+#if PLATFORM_IS_EDITOR
 	// Not actually an upgrade, but a fix (nodes at index >43 would get stretched). However, we fix it in both sapien and ingame so I put the code here
 	static void InitializeMaximumNodesPerModelFixes()
 	{
@@ -40,5 +41,6 @@ public:
 			*ptr = Enums::k_maximum_nodes_per_model;
 		RasterizerGlobals()->maximum_nodes_per_model = Enums::k_maximum_nodes_per_model;
 	}
+#endif
 };
 static c_render_upgrades g_render_upgrades;

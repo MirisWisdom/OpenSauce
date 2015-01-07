@@ -116,6 +116,7 @@
 	{ PTR_##name = PLATFORM_VALUE_HACK_((__VA_ARGS__)) };	\
 	BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );
 
+#define DUO_PTR(name) (name) , (name)
 
 namespace Yelo
 {
