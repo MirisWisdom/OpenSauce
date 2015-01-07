@@ -4,10 +4,10 @@
     <CheckYeloFilesFirst>true</CheckYeloFilesFirst>
     <MainMenuScenario/>
   </CacheFiles>
-  <GBuffer>
-    <Enabled>true</Enabled>
-  </GBuffer>
   <Rasterizer>
+    <GBuffer>
+      <Enabled>true</Enabled>
+    </GBuffer>
     <UseNvidiaCamo>false</UseNvidiaCamo>
     <Upgrades>
       <MaximumRenderedTriangles>true</MaximumRenderedTriangles>
