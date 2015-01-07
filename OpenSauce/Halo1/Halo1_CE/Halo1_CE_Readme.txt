@@ -4,8 +4,7 @@
 === Version 2015 ===
   * REMOVE		scenario_faux_zones have been depreceated
   * PATCH		Non-multiplayer maps will no longer even show up in the map list
-  * PATCH		OS now points 1.09 to the new multiplayer master servers
-  * CHANGE		OS now adds the 1.09 exe alongside 1.10, with a desktop shortcut to run it
+  * CHANGE		OS is now targeted at 1.10
   * CHANGE		Installer no-longer locks installation to Runtime/HEK registry keys, if the selected directory isn't right it will tell the user
   * CHANGE		OpenSauce is now compiled with VS2013, instead of VS2008
   * CHANGE		Settings system is entirely new. Old settings files will be ignored and won't be automatically upgraded.

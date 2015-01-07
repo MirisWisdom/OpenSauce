@@ -323,17 +323,17 @@ namespace Yelo
 		static bool g_is_rendering_reflection = false;
 		bool IsRenderingReflection() { return g_is_rendering_reflection; }
 
-		API_FUNC_NAKED static void RenderWindowReflectionHook()
+		static void PLATFORM_API RenderWindowHook(const uint16 local_player_index
+			, void* render_camera
+			, void* render_frustum
+			, void* rasterizer_camera
+			, void* rasterizer_frustum
+			, void* rasterizer_target
+			, const bool is_mirror)
 		{
-			static const uintptr_t CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_FUNC);
-			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL_RETN);
-
-			__asm {
-				mov		g_is_rendering_reflection, 1
-				call	CALL_ADDRESS
-				mov		g_is_rendering_reflection, 0
-				jmp		RETN_ADDRESS
-			}
+			g_is_rendering_reflection = true;
+			blam::render_window(local_player_index, render_camera, render_frustum, rasterizer_camera, rasterizer_frustum, rasterizer_target, is_mirror);
+			g_is_rendering_reflection = false;
 		}
 
 		void Initialize()
@@ -344,8 +344,7 @@ namespace Yelo
 			Memory::WriteRelativeCall(&Rasterizer::Update, GET_FUNC_VPTR(RENDER_WINDOW_END_HOOK));
 #endif
 
-			Memory::WriteRelativeJmp(&RenderWindowReflectionHook,
-				GET_FUNC_VPTR(RENDER_WINDOW_REFLECTION_CALL), true);
+			Memory::WriteRelativeCall(&RenderWindowHook, GET_FUNC_VPTR(RENDER_WINDOW_REFLECTION_CALL), true);
 		}
 
 		void Dispose()
