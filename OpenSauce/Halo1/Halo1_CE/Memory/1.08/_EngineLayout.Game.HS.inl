@@ -26,7 +26,7 @@
 		CAST_PTR(uint32*, PLATFORM_VALUE(0x485EDA, 0x47D7CA))
 	};
 
-	static byte* K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = CAST_PTR(byte*, PLATFORM_VALUE(0x485E87, 0x47D777));
+	static byte* ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = CAST_PTR(byte*, PLATFORM_VALUE(0x485E87, 0x47D777));
 
 
 //////////////////////////////////////////////////////////////////////////

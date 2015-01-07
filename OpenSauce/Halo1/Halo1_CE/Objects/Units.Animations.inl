@@ -272,9 +272,9 @@ namespace Animations
 			Memory::WriteRelativeCall(&UnitAnimationStateInterruptableHook, ptr, true);
 		for(auto ptr : K_UNIT_ANIMATION_BUSY_CALLS)
 			Memory::WriteRelativeCall(&UnitAnimationBusyHook, ptr, true);
-		Memory::WriteRelativeCall(&UnitAnimationStateLoopsHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_STATE_LOOPS_CALL), true);
-		Memory::WriteRelativeCall(&UnitAnimationWeaponIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_WEAPON_IK_CALL), true);
-		Memory::WriteRelativeCall(&UnitAnimationVehicleIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_VEHICLE_IK_CALL), true);
+		Memory::WriteRelativeCall(&UnitAnimationStateLoopsHook, GET_FUNC_VPTR(UNIT_ANIMATION_STATE_LOOPS_CALL), true);
+		Memory::WriteRelativeCall(&UnitAnimationWeaponIKHook, GET_FUNC_VPTR(UNIT_ANIMATION_WEAPON_IK_CALL), true);
+		Memory::WriteRelativeCall(&UnitAnimationVehicleIKHook, GET_FUNC_VPTR(UNIT_ANIMATION_VEHICLE_IK_CALL), true);
 	}
 
 	void Dispose()

@@ -21,11 +21,8 @@
 	<CustomAction Id='Halo1_CE_SetPropertiesHEK_CACT' BinaryKey='SetProperties_BIN' DllEntry='SetPropertiesCA' Execute='immediate' Return='check'/>
 
 
-	<!-- Queue patching OS_haloce -->
-	<CustomAction Id='Halo1_CE_AppendFilePatcherDataHaloCE_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HCE_Client;[HALO1_CE_HCECLIENT_VERSION_109_PROP];[HALO1_CE_HCE_INSTALLDIR_PROP];'/>
-
 	<!-- Queue patching OS_haloceded -->
-	<CustomAction Id='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HCE_Dedi;[HALO1_CE_HCEDEDI_VERSION_109_PROP];[HALO1_CE_HCE_INSTALLDIR_PROP];'/>
+	<CustomAction Id='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HCE_Dedi;[HALO1_CE_HCEDEDI_VERSION_110_PROP];[HALO1_CE_HCE_INSTALLDIR_PROP];'/>
 
 	<!-- Queue patching OS_Guerilla -->
 	<CustomAction Id='Halo1_CE_AppendFilePatcherDataGuerilla_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HEK_Guerilla;[HALO1_CE_HEK_GUERILLAPATH_PROP];[HALO1_CE_HEK_INSTALLDIR_PROP];'/>

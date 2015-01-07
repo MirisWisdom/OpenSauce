@@ -81,4 +81,16 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_structure_render_globals) == 0x18 );
 		s_structure_render_globals* StructureRenderGlobals(); // defined in the implementing extension's code
 	};
+
+	namespace blam
+	{
+		void PLATFORM_API render_frame(void* windows, const int32 window_count, void* arg3, const real delta_time, void* arg5);
+		void PLATFORM_API render_window(const uint16 local_player_index
+			, void* render_camera
+			, void* render_frustum
+			, void* rasterizer_camera
+			, void* rasterizer_frustum
+			, void* rasterizer_target
+			, const bool is_mirror);
+	};
 };

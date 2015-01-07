@@ -97,7 +97,7 @@ namespace Yelo { namespace DataFiles {
 
 	API_FUNC_NAKED static void PLATFORM_API CacheFilesInitialize_DataFilesOpenHook()
 	{
-		static uintptr_t JMP_ADDRESS = GET_FUNC_PTR(CACHE_FILES_INITIALIZE)+0x2F3;
+		static uintptr_t JMP_ADDRESS = GET_FUNC_PTR(CACHE_FILES_INITIALIZE_RETN);
 
 		using namespace Cache; // can't use '::' in the asm code for struct offsets
 
@@ -114,7 +114,7 @@ namespace Yelo { namespace DataFiles {
 	}
 	API_FUNC_NAKED static void PLATFORM_API CacheFilesDispose_DataFilesCloseHook()
 	{
-		static uintptr_t JMP_ADDRESS = GET_FUNC_PTR(CACHE_FILES_DISPOSE)+0x262;
+		static uintptr_t JMP_ADDRESS = GET_FUNC_PTR(CACHE_FILES_DISPOSE_RETN);
 
 		__asm {
 			call	blam::data_files_close

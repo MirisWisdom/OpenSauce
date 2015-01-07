@@ -105,10 +105,8 @@ namespace Yelo
 
 		void Initialize()
 		{
-			Memory::WriteRelativeJmp(CacheFilesInitialize_DataFilesOpenHook,
-				CAST_PTR(void*, GET_FUNC_PTR(CACHE_FILES_INITIALIZE)+0xB), true);
-			Memory::WriteRelativeJmp(CacheFilesDispose_DataFilesCloseHook,
-				CAST_PTR(void*, GET_FUNC_PTR(CACHE_FILES_DISPOSE)+0x48), true);
+			Memory::WriteRelativeJmp(CacheFilesInitialize_DataFilesOpenHook, GET_FUNC_VPTR(CACHE_FILES_INITIALIZE_HOOK), true);
+			Memory::WriteRelativeJmp(CacheFilesDispose_DataFilesCloseHook, GET_FUNC_VPTR(CACHE_FILES_DISPOSE_HOOK), true);
 			Memory::WriteRelativeJmp(DataFileReadHook,
 				GET_FUNC_VPTR(DATA_FILE_READ), true);
 

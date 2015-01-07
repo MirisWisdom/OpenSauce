@@ -1,0 +1,206 @@
+NEWS:
+	- [hell] updated to current client
+	- FIXED memory leak
+
+ISSUES:
+
+
+ROADMAP:
+	add: Win64 version         50% done
+	add: Linux version 32/64   20% done
+	add: MacOS version         00% done
+	imp: pdcurses console
+	imp: tabcompletion and syntax highlighting
+	bug: hangup on several reloads
+	[sro]  inventory API and a whole bot.
+	[hell] path finding performance and quality
+	[myth] spamfilter currently defect
+	[myth] add support fot Korean and Russian client
+
+CHANGELOG:
+V3.0.2 - hell, myth, bugfixes&improvements        [YOU ARE HERE]
+	MWI: [sro] updated to client version 1.406
+	BNO: improved lua exception handling
+	BNO: [hell] added radar hack
+	MWI+BNO: [hell] update to client version: 2.0.0.3
+	MWI: added first version of lcpp - Lua PreProcessor
+	MWI+BNO: fixed dbg.getModule() - crash and ordinals
+	MWI: fixed eject bug for INTERCEPT_NOPs
+	RLA+MWI: [sro] improved collision function and movement routing
+	RLA: updated to recent SRO version 28.08.2012
+	MWI: fixed the file read bug in asmdiff
+	MWI: 64Bit stuff, but nothing to release yet
+	MWI: increased luacall performance
+	MWI: fixed a memory leak
+	MWI: fixed dbg breakpoint module
+
+V3.0.1 - dbg module improvements
+	MWI: [myth/hell] fixed network packet parsing deadlocks
+	MWI: changed codecave threadid logic. 0:curr(default) -1:main
+	RLA+MIW: added libudis86 lua binding
+	MWI: improved dbg module. memory and execution breakpoints.
+	MWI: added shell32.IsUserAnAdmin() check to inject.lua
+	MWI: refactored asmcall module
+	MWI: added lua messageBox function
+	MWI: removed lua_checkargs(). switched to luaL_check...
+
+V3.0.0 - generic injection
+	MWI: made injector generic so any win32 can be used
+	MWI: fixed userinput using correct windows HWND
+	MWI: EXPERIMENTAL added asmdiff autoupdate mode
+	MWI: added asmdiff lua module
+
+V2.4.1 05.07.2012 - LuaJIT added
+	MWI: updated apikey check to maj.min.mic version codes
+	MWI: [hell] client aniversary update 05.07.2012
+	MWI: slightly increased lua threadcall performance
+	MWI: added codecave lua module - setup codecaves from Lua
+	MWI: added asmcall lua module - invoke ASM directly from Lua
+	MWI: switched to LuaJIT 5.1 - ctypes and performance boost
+	
+V2.4 02.07.2012
+	MWI: changed from luadoc to ldoc which gives better HTML docs
+	MWI: [all] added "KEYUP" event for easier Lua key binding stuff.
+	RLA: added DirectX printing stuff (TRIANGLE,POINT,LINESTRIP)
+	MWI: [all] implemented score based spamfilter
+	MWI: fixed some GUI callbacks were not working / crashing
+	MWI: fixed spamfilter again
+	MWI: fixed "PAUSE" event
+
+V2.3 20.06.2012
+	MWI+RLA: fixed a memory leak / close handle bug in debugging functions
+	MWI: fixed a bug in persistence.lua data storage manager
+	MWI: [all] added new events: debugEvent("MOUSE") debugEvent("KEYBOARD")
+	MWI: added mmBBQ SDK
+	MWI: fixed event.lua tests
+	RLA: [sro] added zoomhack
+	MWI: fixed Lua dofile() function wrapper to work as intended
+	RLA: updated [sro] to latest binary
+	MWI: fixed injector not causing to detect: unknown.exe
+	MWI: fixed start.bat for winXP32 users. thx@Coquitment
+
+V2.2 14.06.2012
+	MWI: stabilized codecaving core. no more lockups finally
+
+V2.1 12.06.2012
+	MWI: added more anti-anti hacking foobar
+	MWI: hardened apikey checks for security reasons
+
+V2.0 08.06.2012
+	RLA: removed exported symbols from DLL build :) hi@magma
+
+V1.9 03.06.2012 
+	MWI: ingame command handling
+
+V1.8 31.05.2012
+	RLA: [sro] grab item added
+	RLA: [sro] dies, pick, add events added
+	RLA: [sro] getting model string and some lua events added
+
+V1.7 31.05.2012
+	MWI: added console function
+
+V1.6 28.05.2012
+	MWI: [myth] update for client content patch
+	RLA: [sro] collosion detection
+	RLA: added sro_launcher
+	RLA+MWI: [sro] defeated hackshield :)
+
+V1.5 04.04.2012
+	MWI: improved examples a lot (pot, shop, interact...)
+	MWI: [hell], [myth] improved environment module
+	MWI: [myth] targeting
+	MWI: ported hell_env module to [myth]
+	MWI: moved all targets into one dll
+	MWI: fixed symbols package loader
+	MWI: added [myth] character selection
+	MWI: implemented [hell] event.COMMAND
+	MWI: updated [myth] project
+	MWI: implemented common LUA itnerface for all targets
+	MWI: added lua relay connection
+	RLA: added new TARGET [sro]
+	MWI: added lua sockets
+	MWI: upgraded to lua5.2
+	MWI: added Lua function _G.getVersion()
+
+V1.4 15.12.2011
+	RLA: instance reset bugfix
+	MWI: fixed hell_map.getCollision(...)
+	MWI: fixed moveit.lua
+	MWI: fixed hell_global.sendCommand("/w ...")
+	FSA: fixed hell_env object quality on "rocket" mods
+	MWI: fixed hell_global.isIngame()
+	MWI: added exe md5sum check override
+	MWI: added de-censor option in config.lua
+
+V1.3 01.12.2011 
+	NHO: LUA double precision by inline asm
+	RLA: added setdifficulty
+	MWI: added astar.lua routing module
+	MWI: improved default spam filter regex set
+	RLA: added rundll32 loader
+	RLA: fixed Win Vista bug
+	MWI: removed winject.exe from project
+	MWI: added MD5SUM check of target binary
+	RLA: improved instance reset
+	MWI: improved event module a bit for SW events
+	MWI: improve asmcall a bit
+
+V1.2 24.11.2011
+	MWI+RLA: [hell] client version update
+
+V1.1 23.11.2011
+	MWI: added windows installer
+	RLA: added event.CHAT for received chat messaged
+	RLA: added spamfilter
+	MWI: improved hell_inv module
+	MWI+RLA: added more examples
+
+V1.0 18.11.2011 (RELEASE)
+	RLA: [hell] instance reset 
+	RLA: hell_inv inventory lua module
+	MWI: added apikey checks
+
+V0.9 15.11.2011
+	MWI: rewrote LUA DLL symbols package loader
+	MWI: reduced codebase
+	RLA: added own injection tool
+
+V0.8 06.11.2011
+	MWI: implemented main thread lua call injection
+	MWI: improved stability
+	RLA: [hell] added collision detection for real movement
+
+V0.7 27.10.2011
+	MWI: added main thread asmcall injection
+	RLA: [hell] added environment support
+	RLA: [hell] added skill support
+	RLA: [hell] added inventory support
+	MWI: added Autologin feature
+	MWI: added config.lua for customizing
+
+V0.6 07.09.2011
+	MWI: implemented user32 input recorder using WindowMessageLoop
+	MWI: added persistence lua table support
+
+V0.5 02.09.2011
+	MWI: [myth] updated to V33 02.09.2011
+	MWI: [hell] Added basic GUI support
+	RLA: Fixed gcc + mingw + lua issues
+
+V0.4 10.08.2011
+	RLA: Ported project to work with gcc / mingw
+	RLA: Added [hell] target
+
+V0.3 30.06.2011
+	MWI: [myth] Added attackToPrimary/Secondary functions
+	MWI: [myth] Added movement functions
+
+V0.2 25.06.2011
+	MWI: Added LUA EVENT interface register() unregister() EVENT_...
+	MWI: Added LUA timed excecution delay(fctn, millis)
+
+V0.1 24.06.2011
+	LUA apidoc see http://mmbbq.org
+	DLL that covers movment, cam, coords and various other function
+	Winject loader

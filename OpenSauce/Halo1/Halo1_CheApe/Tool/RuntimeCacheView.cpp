@@ -61,6 +61,8 @@ namespace Yelo
 		
 		static const void* k_runtime_109_cache_header_ptr = CAST_PTR(void*, 0x643060 + 0x4);
 		static const void* k_runtime_109_cache_globals_ptr = CAST_PTR(void*, 0x643060 + 0x804);
+		static const void* k_runtime_110_cache_header_ptr = CAST_PTR(void*, 0x643040 + 0x4);
+		static const void* k_runtime_110_cache_globals_ptr = CAST_PTR(void*, 0x643040 + 0x804);
 
 		// Last I checked, compiler was initializing with a dynamic initializer.
 		// Guess there's just a shit load of fields, or the use of enum values is causing this. Oh well.

@@ -242,8 +242,8 @@ namespace Yelo
 
 			AddScreenController<Screen::c_screen_controller_mapdownload>(K_SCREEN_MAP_DOWNLOAD
 				, "MapDownload"
-				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_loading | Flags::_osui_game_state_in_game)
-				, (Flags::osui_game_state)(Flags::_osui_game_state_main_menu | Flags::_osui_game_state_loading | Flags::_osui_game_state_in_game)
+				, (Flags::osui_game_state)(Flags::_osui_game_state_all)
+				, (Flags::osui_game_state)(Flags::_osui_game_state_all)
 				, Flags::_osui_screen_flags_is_modal);
 
 			AddScreenController<Screen::c_screen_controller_ingame>(K_SCREEN_IN_GAME

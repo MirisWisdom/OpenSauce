@@ -170,7 +170,7 @@ int32 GetHaloHandle()
 	DWORD process_count = bytes_written / sizeof(DWORD);
 
 	Console::ColorPrintF(k_color_default, "%i processes found\n", process_count);
-	Console::ColorPrint(k_color_default, "searching for os_haloce.exe...", true);
+	Console::ColorPrint(k_color_default, "searching for haloce.exe...", true);
 
 	bool found_halo = false;
 	// loop through all of the processes
@@ -206,8 +206,8 @@ int32 GetHaloHandle()
 
 					_strlwr(process_name);
 
-					// determine whether the process is an instance of os_haloce
-					if(!strcmp(process_name, "os_haloce.exe"))
+					// determine whether the process is an instance of haloce
+					if(!strcmp(process_name, "haloce.exe"))
 					{
 						g_cache_view_globals.m_halo_handle = process;
 						found_halo = true;
@@ -221,9 +221,9 @@ int32 GetHaloHandle()
 	}
 
 	if(found_halo)
-		Console::ColorPrint(k_color_default, "os_haloce.exe process found!", true);
+		Console::ColorPrint(k_color_default, "haloce.exe process found!", true);
 	else
-		Console::ColorPrint(k_color_default, "unable to find a running instance of os_haloce.exe", true);
+		Console::ColorPrint(k_color_default, "unable to find a running instance of haloce.exe", true);
 
 	free(processes);
 
@@ -365,7 +365,7 @@ int32 LoadTagIndex()
 	Console::ColorPrint(k_color_default, "\nreading cache file globals...", true);
 
 	// read the cache header
-	auto status = ReadHaloMemory(k_runtime_109_cache_header_ptr, 
+	auto status = ReadHaloMemory(k_runtime_110_cache_header_ptr, 
 		&g_cache_view_globals.m_cache_file_header, 
 		sizeof(Cache::s_cache_header));
 
@@ -375,7 +375,7 @@ int32 LoadTagIndex()
 	// read the variable containing the cache file globals pointer
 	void* cache_tag_header_ptr;
 
-	status = ReadHaloMemory(k_runtime_109_cache_globals_ptr, 
+	status = ReadHaloMemory(k_runtime_110_cache_globals_ptr, 
 		&cache_tag_header_ptr, 
 		sizeof(cache_tag_header_ptr));
 
@@ -481,7 +481,7 @@ int32 HasCacheChanged()
 	Cache::s_cache_header comparison_header;
 
 	// read the current cache header 
-	auto status = ReadHaloMemory(k_runtime_109_cache_header_ptr, 
+	auto status = ReadHaloMemory(k_runtime_110_cache_header_ptr, 
 		&comparison_header, 
 		sizeof(Cache::s_cache_header));
 

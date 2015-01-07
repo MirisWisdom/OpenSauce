@@ -22,13 +22,8 @@
 		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
 	</Custom>
 
-	<!-- Append patch arguments for OS_haloce -->
-	<Custom Action='Halo1_CE_AppendFilePatcherDataHaloCE_CACT' Before='InstallFinalize'>
-		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
-	</Custom>
-
 	<!-- Append patch arguments for OS_haloceded -->
-	<Custom Action='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' After='Halo1_CE_AppendFilePatcherDataHaloCE_CACT'>
+	<Custom Action='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Before='InstallFinalize'>
 		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
 	</Custom>
 

@@ -23,7 +23,9 @@ namespace Yelo
 			_osui_game_state_main_menu			= 1 << 1,
 			_osui_game_state_loading			= 1 << 2,
 			_osui_game_state_in_game			= 1 << 3,
-			_osui_game_state_pause_menu			= 1 << 4
+			_osui_game_state_pause_menu			= 1 << 4,
+
+			_osui_game_state_all				= 0xFFFF
 		};
 
 		enum osui_screen_flags : uint16

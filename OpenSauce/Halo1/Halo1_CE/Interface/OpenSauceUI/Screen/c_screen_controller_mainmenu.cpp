@@ -38,14 +38,10 @@ namespace Yelo
 #define K_LBL_GENERAL_TITLE_ID											RESOURCE_ID("#LBL_general_title",											0x27193476)
 #define K_CHK_GENERAL_GBUFFER_ENABLED_ID								RESOURCE_ID("#CHK_general_gbuffer_enabled",									0x80E613DB)
 #define K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID							RESOURCE_ID("#CHK_general_gbuffer_toggle_event",							0x6ECC34F2)
-#define K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID							RESOURCE_ID("#CHK_general_nvidia_camo_enabled",								0x45F5AD53)
-#define K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID						RESOURCE_ID("#CHK_general_nvidia_camo_toggle_event",						0xBA1AC82A)
 
 #define K_LBL_ENGINE_UPGRADES_TITLE_ID									RESOURCE_ID("#LBL_engine_upgrades_title",									0xF20B71EF)
 #define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID				RESOURCE_ID("#CHK_upgrades_max_rendered_triangles_enabled",					0x723FAEB8)
 #define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID			RESOURCE_ID("#CHK_upgrades_max_rendered_triangles_toggle_event",			0xFB9422A8)
-#define K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID						RESOURCE_ID("#CHK_upgrades_max_bone_nodes_enabled",							0xFACB8A74)
-#define K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID					RESOURCE_ID("#CHK_upgrades_max_bone_nodes_toggle_event",					0xB9B6D654)
 
 #define K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID							RESOURCE_ID("#LBL_shader_extension_model_title",							0xA7558801)
 #define K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID				RESOURCE_ID("#CHK_shader_extension_model_normal_maps_enabled",				0x4209AEA9)
@@ -114,11 +110,9 @@ namespace Yelo
 
 			SetControlProperty(K_LBL_GENERAL_TITLE_ID,										K_PROPERTY_TEXT_ID, "General");
 			SetControlProperty(K_CHK_GENERAL_GBUFFER_ENABLED_ID,							K_PROPERTY_TEXT_ID, "GBuffer Enabled");
-			SetControlProperty(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID,						K_PROPERTY_TEXT_ID, "Use nVidia Camo (requires restart)");
 
 			SetControlProperty(K_LBL_ENGINE_UPGRADES_TITLE_ID,								K_PROPERTY_TEXT_ID, "Engine Upgrades (requires restart)");
 			SetControlProperty(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Increase maximum rendered triangles");
-			SetControlProperty(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Increase maximum model bone count");
 
 			SetControlProperty(K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID,						K_PROPERTY_TEXT_ID, "Shader Extension - Models");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Normal Maps Enabled");
@@ -160,23 +154,11 @@ namespace Yelo
 					property.Set(control, Control::s_interface_value(DX9::c_gbuffer_system::g_system_enabled));
 				});
 
-			AddDynamicProperty(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_PROPERTY_CHECKED_ID,
-				[](Control::i_control& control, Control::i_property_interface& property)
-				{
-					property.Set(control, Control::s_interface_value(Rasterizer::c_settings_rasterizer::Instance().Get().m_use_nvidia_camo));
-				});
-
 
 			AddDynamicProperty(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_PROPERTY_CHECKED_ID,
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_maximum_rendered_triangles));
-				});
-
-			AddDynamicProperty(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_PROPERTY_CHECKED_ID,
-				[](Control::i_control& control, Control::i_property_interface& property)
-				{
-					property.Set(control, Control::s_interface_value(Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_model_node_stretching_fix));
 				});
 
 
@@ -311,24 +293,12 @@ namespace Yelo
 						Rasterizer::PostProcessing::MotionBlur::c_system_motionblur::Instance().Enabled() = false;
 					}
 				});
-			
-			AttachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID, nullptr,
-				[](const Control::s_interface_value& event_data, void* userdata)
-				{
-					Rasterizer::c_settings_rasterizer::Instance().Get().m_use_nvidia_camo = event_data.m_bool;
-				});
-			
+
 
 			AttachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
 					Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_maximum_rendered_triangles = event_data.m_bool;
-				});
-
-			AttachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID, nullptr,
-				[](const Control::s_interface_value& event_data, void* userdata)
-				{
-					Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_model_node_stretching_fix = event_data.m_bool;
 				});
 
 
@@ -472,10 +442,8 @@ namespace Yelo
 		{
 			// Remove all bound events
 			DetachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_GENERAL_NVIDIA_CAMO_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_NVIDIA_CAMO_TOGGLE_EVENT_ID);
 
 			DetachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID);
-			DetachEvent(K_CHK_UPGRADES_MAX_BONE_NODES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_BONE_NODES_TOGGLE_EVENT_ID);
 			
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID);
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_TOGGLE_EVENT_ID);
