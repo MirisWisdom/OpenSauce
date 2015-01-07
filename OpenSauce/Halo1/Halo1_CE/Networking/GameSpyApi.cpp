@@ -147,6 +147,8 @@ _return:
 			{
 				// TODO: override key callbacks
 			}
+
+#if PLATFORM_VERSION <= 0x1090
 			// Change the old GameSpy URLs to whichever is best for the community these days (should be Bungie's hosthpc.com)
 			static void InitializeGameSpyEmulatorUrls()
 			{
@@ -168,12 +170,17 @@ _return:
 					// http://motd.gamespy.com/motd/vercheck.asp?productid=%d&versionuniqueid=%s&distid=%d
 					R"(http://hpcup.bungie.net/motd/vercheck.asp?productid=%d&versionuniqueid=%s&distid=%d)";
 			}
+#endif
+
 			void Initialize()
 			{
 				// TODO: populate GetGameVer()
 				
 				c_settings_gamespy::Register(Settings::Manager());
+
+#if PLATFORM_VERSION <= 0x1090
 				InitializeGameSpyEmulatorUrls();
+#endif
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
 					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);

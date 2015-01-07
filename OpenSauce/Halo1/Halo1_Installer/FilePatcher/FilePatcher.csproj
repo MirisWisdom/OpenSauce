@@ -68,10 +68,9 @@
     <EmbeddedResource Include="Definitions\Halo1_HEK_Tool.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Definitions\Halo1_HCE_Dedi.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Definitions\Halo1_HCE_Client.xml" />
+    <EmbeddedResource Include="Definitions\Halo1_HCE_Dedi.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(WixCATargetsPath)" />

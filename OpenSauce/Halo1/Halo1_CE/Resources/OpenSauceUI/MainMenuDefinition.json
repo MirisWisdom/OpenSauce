@@ -170,31 +170,6 @@
 							"Value": "0 20 0 0"
 						}
 					},
-					"Control": {
-						"IDStr": "#CHK_general_nvidia_camo_enabled",
-						"ID": "1173728595",
-						"Type": "CheckBoxWithLabel",
-						"Property": {
-							"Name": "Dock",
-							"Value": "Top"
-						},
-						"Property": {
-							"Name": "TextColor",
-							"Value": "200 200 200 255"
-						},
-						"Property": {
-							"Name": "TextHAlignment",
-							"Value": "Left"
-						},
-						"Property": {
-							"Name": "TextSize",
-							"Value": "14"
-						},
-						"Property": {
-							"Name": "Margin",
-							"Value": "0 20 0 0"
-						}
-					},
 
 					"Control": {
 						"IDStr": "#LBL_engine_upgrades_title",
@@ -228,31 +203,6 @@
 					"Control": {
 						"IDStr": "#CHK_upgrades_max_rendered_triangles_enabled",
 						"ID": "1916776120",
-						"Type": "CheckBoxWithLabel",
-						"Property": {
-							"Name": "Dock",
-							"Value": "Top"
-						},
-						"Property": {
-							"Name": "TextColor",
-							"Value": "200 200 200 255"
-						},
-						"Property": {
-							"Name": "TextHAlignment",
-							"Value": "Left"
-						},
-						"Property": {
-							"Name": "TextSize",
-							"Value": "14"
-						},
-						"Property": {
-							"Name": "Margin",
-							"Value": "0 20 0 0"
-						}
-					},
-					"Control": {
-						"IDStr": "#CHK_upgrades_max_bone_nodes_enabled",
-						"ID": "4207643252",
 						"Type": "CheckBoxWithLabel",
 						"Property": {
 							"Name": "Dock",

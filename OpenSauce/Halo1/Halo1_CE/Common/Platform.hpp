@@ -10,8 +10,8 @@
 
 #if !defined(PLATFORM_VERSION)
 	//#define PLATFORM_VERSION 0x1080 // 1.08 is no longer actively supported, use at your own risk
-	#define PLATFORM_VERSION 0x1090 // 1.09 is no longer actively supported, use at your own risk
-	//#define PLATFORM_VERSION 0x10A0 // latest supported release of haloce
+	//#define PLATFORM_VERSION 0x1090 // 1.09 is no longer actively supported, use at your own risk
+	#define PLATFORM_VERSION 0x10A0 // latest supported release of haloce
 #endif
 
 
@@ -23,7 +23,7 @@
 	#define PLATFORM_VERSION_BUILD 0620
 #elif PLATFORM_VERSION == 0x10A0
 	#define PLATFORM_VERSION_VALUE 1.10
-	#define PLATFORM_VERSION_BUILD 0621 // TODO: this isn't final yet
+	#define PLATFORM_VERSION_BUILD 0621
 #else
 	#error FUCK YOU, this version isn't supported
 #endif

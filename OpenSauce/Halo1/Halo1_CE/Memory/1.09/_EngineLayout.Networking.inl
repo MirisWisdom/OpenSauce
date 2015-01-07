@@ -22,7 +22,7 @@
 	ENGINE_PTR(field_properties_definition, message_delta_field_locality_reference_position,			0x6314B0, 0x5A6E50);
 	ENGINE_PTR(field_properties_definition, message_delta_field_digital_throttle,						0x633660, 0x5A8FF8);
 	ENGINE_PTR(field_properties_definition, message_delta_field_fixed_width_weapon_index,				0x633738, 0x5A90D0);
-	ENGINE_PTR(field_properties_definition, message_delta_field_fixed_width_grenade_index,				0x6337A0, 0x5A913C);
+	ENGINE_PTR(field_properties_definition, message_delta_field_fixed_width_grenade_index,				0x6337A0, 0x5A9138);
 	ENGINE_PTR(field_properties_definition, message_delta_field_item_placement_position,				0x635FD0, 0x5AB9A8);
 
 	ENGINE_PTR(field_properties_definition, message_delta_field_local_player_update_sequence_number,	0x634EC8, 0x5AA8A0);

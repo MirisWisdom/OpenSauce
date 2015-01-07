@@ -69,8 +69,8 @@ namespace Yelo
 				 strstr(name,"tool") != nullptr )
 				return Enums::_version_result_code_dx9_app;
 
-			// Enable OS if the exe name is OS_haloce/ded
-			_main_globals.enabled = (strcmp(name, PLATFORM_VALUE("os_haloce.exe","os_haloceded.exe")) == 0);
+			// Enable OS if the exe name is haloce/OS_ded
+			_main_globals.enabled = (strcmp(name, PLATFORM_VALUE("haloce.exe","os_haloceded.exe")) == 0);
 
 			return Enums::_version_result_code_valid;
 		}

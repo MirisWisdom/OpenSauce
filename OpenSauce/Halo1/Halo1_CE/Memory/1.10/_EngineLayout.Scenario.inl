@@ -5,22 +5,28 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#if !PLATFORM_IS_DEDI
+#include "Memory/1.10/Pointers/HaloCE_110_Runtime.Scenario.inl"
+#else
+#include "Memory/1.10/Pointers/HaloCE_110_Dedi.Scenario.inl"
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 // Scenario.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_SCENARIO_SCENARIO
-	ENGINE_DPTR(s_scenario_globals, scenario_globals,				0x6E2274-0x20, 0x629454);
+	ENGINE_DPTR(s_scenario_globals, scenario_globals,				DUO_PTR(K_SCENARIO_GLOBALS));
 
-	ENGINE_PTR(TagGroups::scenario*, global_scenario,				0x6E226C-0x20, 0x62944C);
-	ENGINE_PTR(TagGroups::collision_bsp*, global_bsp3d,				0x6E2270-0x20, 0x629450);
-	ENGINE_PTR(TagGroups::collision_bsp*, global_collision_bsp,		0x6E2278-0x20, 0x629458);
-	ENGINE_PTR(TagGroups::structure_bsp*, global_structure_bsp,		0x6E227C-0x20, 0x62945C);
+	ENGINE_PTR(TagGroups::scenario*, global_scenario,				DUO_PTR(K_GLOBAL_SCENARIO));
+	ENGINE_PTR(TagGroups::collision_bsp*, global_bsp3d,				DUO_PTR(K_GLOBAL_BSP3D));
+	ENGINE_PTR(TagGroups::collision_bsp*, global_collision_bsp,		DUO_PTR(K_GLOBAL_COLLISION_BSP));
+	ENGINE_PTR(TagGroups::structure_bsp*, global_structure_bsp,		DUO_PTR(K_GLOBAL_STRUCTURE_BSP));
 
-	ENGINE_PTR(datum_index, global_scenario_index,					0x6397DC-0x10, 0x5AD85C);
-	ENGINE_PTR(int16, structure_bsp_index,							0x6397E0-0x10, 0x5AD860);
+	ENGINE_PTR(datum_index, global_scenario_index,					DUO_PTR(K_GLOBAL_SCENARIO_INDEX));
+	ENGINE_PTR(int16, structure_bsp_index,							DUO_PTR(K_STRUCTURE_BSP_INDEX));
 
-	FUNC_PTR(OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__READ,	0x4F8207, 0x4DF547+0x30);
-	FUNC_PTR(OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__WRITE,	0x4F83CE, 0x4DF70E+0x30);
-	FUNC_PTR(OBJECTS_INITIALIZE_FOR_NEW_MAP_MOD_PROCESSED_BSPS,		0x4F84E2, 0x4DF822+0x30);
+	FUNC_PTR(OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__READ,	DUO_PTR(K_OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__READ));
+	FUNC_PTR(OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__WRITE,	DUO_PTR(K_OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__WRITE));
+	FUNC_PTR(OBJECTS_INITIALIZE_FOR_NEW_MAP_MOD_PROCESSED_BSPS,		DUO_PTR(K_OBJECTS_INITIALIZE_FOR_NEW_MAP_MOD_PROCESSED_BSPS));
 
 
 //////////////////////////////////////////////////////////////////////////

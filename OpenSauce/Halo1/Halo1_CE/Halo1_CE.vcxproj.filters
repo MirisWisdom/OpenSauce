@@ -64,12 +64,6 @@
     <Filter Include="Game\Impl\Players">
       <UniqueIdentifier>{0cc43331-4a53-4fc0-a3a1-45dc674cb346}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{77ede202-d5b6-4b79-a33a-8cc5b0510fe6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Interface\Impl">
-      <UniqueIdentifier>{ac39391e-f598-460c-861a-689d3670ff1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{26087e13-8dec-42bd-8e6c-a56580bcd9bc}</UniqueIdentifier>
     </Filter>
@@ -2099,9 +2093,6 @@
     <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderDraw.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
-    <None Include="Memory\1.10\_EngineLayout.Scenario.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
     </None>
@@ -2116,6 +2107,138 @@
     </None>
     <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
       <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.TagGroups.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Game.HS.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Networking.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Objects.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Scenario.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Objects.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.OpenSauce.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Scenario.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Interface.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Objects.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.OpenSauce.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.ShaderDraw.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Scenario.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Interface.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Objects.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.OpenSauce.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2147,11 +2270,26 @@
     <Filter Include="Common\Shared\GWEN\Controls\Property">
       <UniqueIdentifier>{8d02c120-57d0-4e30-864b-c5deedc49583}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rasterizer\Textures">
+      <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10\Pointers">
+      <UniqueIdentifier>{257eb2e7-7c67-49f7-8ec7-df928ff9b1dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{77ede202-d5b6-4b79-a33a-8cc5b0510fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Impl">
+      <UniqueIdentifier>{ac39391e-f598-460c-861a-689d3670ff1e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Interface\OpenSauceUI">
       <UniqueIdentifier>{6fbba12f-b959-4f91-b6d4-81c86cab5c10}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interface\OpenSauceUI\GwenUI">
       <UniqueIdentifier>{6ef219ea-30f2-4440-9c69-89c9fae742ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\GwenUI\ControlBuilders">
+      <UniqueIdentifier>{2f4fe07f-cd0f-4414-826e-812f6cce3a3a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interface\OpenSauceUI\ControlFactory">
       <UniqueIdentifier>{5abf24be-1bba-4951-adb3-a326adcd3a0d}</UniqueIdentifier>
@@ -2168,14 +2306,14 @@
     <Filter Include="Interface\OpenSauceUI\Control">
       <UniqueIdentifier>{f0ab0751-c26d-4c18-95f0-96a67c6f95c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface\OpenSauceUI\GwenUI\ControlBuilders">
-      <UniqueIdentifier>{2f4fe07f-cd0f-4414-826e-812f6cce3a3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rasterizer\Textures">
-      <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface\OpenSauceUI\ScreenDefinitions">
       <UniqueIdentifier>{dc17517c-5dcb-4061-9bb0-3a41ed40d7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10\Pointers\Server">
+      <UniqueIdentifier>{4c16552a-33bf-4a67-ad05-a94e1feda2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10\Pointers\Runtime">
+      <UniqueIdentifier>{4a7890ee-7d49-4ab9-a526-5e244aebd305}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

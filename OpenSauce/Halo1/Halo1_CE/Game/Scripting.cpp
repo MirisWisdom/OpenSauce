@@ -43,7 +43,7 @@ namespace Yelo
 			// change from 'jz' (0x74) to 'jge' (0x7D)
 			// This allows us to support scenarios with original script nodes, or with
 			// Yelo based script nodes, which are larger (because of memory upgrades, duh)
-			*K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = Enums::_x86_opcode_jge_short;
+			*ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = Enums::_x86_opcode_jge_short;
 		}
 
 		static void MemoryUpgradesDispose()
