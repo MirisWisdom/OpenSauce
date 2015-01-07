@@ -1189,6 +1189,28 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// render
+	namespace blam
+	{
+		void PLATFORM_API render_frame(void* windows, const int32 window_count, void* arg3, const real delta_time, void* arg5)
+		{
+			CAST_PTR(void (PLATFORM_API*)(void*, const int32, void*, const real, void*), Engine::GET_FUNC_PTR(RENDER_FRAME))
+				(windows, window_count, arg3, delta_time, arg5);
+		}
+
+		void PLATFORM_API render_window(const uint16 local_player_index
+			, void* render_camera
+			, void* render_frustum
+			, void* rasterizer_camera
+			, void* rasterizer_frustum
+			, void* rasterizer_target
+			, const bool is_mirror)
+		{
+			CAST_PTR(void (PLATFORM_API*)(const uint16, void*, void*, void*, void*, void*, const bool), Engine::GET_FUNC_PTR(RENDER_WINDOW))
+				(local_player_index, render_camera, render_frustum, rasterizer_camera, rasterizer_frustum, rasterizer_target, is_mirror);
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// scenario
 	namespace blam
 	{

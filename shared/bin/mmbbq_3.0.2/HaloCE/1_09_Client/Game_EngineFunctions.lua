@@ -158,6 +158,11 @@ HaloCEClient_Game_EngineFunctions =
 	["K_PLAYER_SET_ACTION_RESULT_TO_NETWORK"] =          0x47BD90,
 
 --////////////////////////////////////////////////////////////////////////
+-- Render
+	["K_RENDER_FRAME"] =                                 0x50FB40,
+	["K_RENDER_WINDOW"] =                                0x50FC50,
+
+--////////////////////////////////////////////////////////////////////////
 -- Scenario
 	["K_SCENARIO_TRIGGER_VOLUME_TEST_POINT"] =           0x542780,
 
@@ -274,8 +279,10 @@ HaloCEClient_Game_EngineFunctions_Index =
 	[102] = "K_PLAYER_EXAMINE_NEARBY_VEHICLE",
 	[103] = "K_PLAYER_SET_ACTION_RESULT",
 	[104] = "K_PLAYER_SET_ACTION_RESULT_TO_NETWORK",
-	[105] = "K_SCENARIO_TRIGGER_VOLUME_TEST_POINT",
-	[106] = "K_TAG_LOADED",
-	[107] = "K_TAG_ITERATOR_NEXT",
-	[108] = "K_UNICODE_STRING_LIST_GET_STRING",
+	[105] = "K_RENDER_FRAME",
+	[106] = "K_RENDER_WINDOW",
+	[107] = "K_SCENARIO_TRIGGER_VOLUME_TEST_POINT",
+	[108] = "K_TAG_LOADED",
+	[109] = "K_TAG_ITERATOR_NEXT",
+	[110] = "K_UNICODE_STRING_LIST_GET_STRING",
 }

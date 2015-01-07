@@ -162,6 +162,11 @@ FUNC_PTR(PLAYER_SET_ACTION_RESULT,				0x47BB90, 0x473610);
 FUNC_PTR(PLAYER_SET_ACTION_RESULT_TO_NETWORK,	0x47BD80, 0x473800);
 
 //////////////////////////////////////////////////////////////////////////
+// Render
+FUNC_PTR(RENDER_FRAME,							0x50FB10, FUNC_PTR_NULL);
+FUNC_PTR(RENDER_WINDOW,							0x50FC20, FUNC_PTR_NULL);
+
+//////////////////////////////////////////////////////////////////////////
 // Scenario
 FUNC_PTR(SCENARIO_TRIGGER_VOLUME_TEST_POINT,0x542750, 0x4FD460);
 
