@@ -26,6 +26,8 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_DEVICEHOOKS
 #include "Memory/_EngineLayout.inl"
 
+		static real g_corruption_hack_null_data[12264];
+
 		static void CreateD3DHook(void* call_address, void* hook_address)
 		{
 			Memory::WriteRelativeCall(hook_address, call_address, true);
@@ -88,6 +90,8 @@ namespace Yelo
 		{
 			if(Yelo::Main::IsYeloEnabled())
 			{
+				DX9::Direct3DDevice()->DrawPrimitiveUP(D3DPT_LINESTRIP, 0x1FF, &g_corruption_hack_null_data, 0x18);
+
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
 
@@ -151,7 +155,9 @@ namespace Yelo
 		}
 
 		void Initialize()
-		{			
+		{
+			ZeroMemory(&g_corruption_hack_null_data[0], sizeof(g_corruption_hack_null_data));
+
 			Memory::WriteRelativeJmp(Hook_D3DCreateDeviceCall, GET_FUNC_VPTR(RASTERIZER_D3D_CREATE_DEVICE_HOOK), true);
 			Memory::WriteRelativeCall(Hook_D3DResetCall, GET_FUNC_VPTR(RASTERIZER_D3D_RESET_DEVICE_HOOK), true);
 
