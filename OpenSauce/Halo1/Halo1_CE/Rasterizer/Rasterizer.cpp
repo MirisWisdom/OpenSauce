@@ -182,6 +182,7 @@ namespace Yelo
 				sizeof(struct rasterizer_triangle)*Enums::k_rasterizer_maximum_dynamic_triangles;
 		}
 
+#if PLATFORM_VERSION <= 0x1090
 		static void SetupResolutions()
 		{
 			if(!DX9::Direct3D9())
@@ -217,6 +218,7 @@ namespace Yelo
 					blam::ui_video_screen_add_resolution(display_mode.Width, display_mode.Height, display_mode.RefreshRate);
 			}
 		}
+#endif
 
 		// release direct3D resources before the device is destroyed
 		static void RasterizerDisposeHook()
