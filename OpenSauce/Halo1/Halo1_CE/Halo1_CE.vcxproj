@@ -72,7 +72,7 @@
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Client' ">
     <TargetName>dinput8</TargetName>
-    <OSDebugExecutableName>OS_haloce.exe</OSDebugExecutableName>
+    <OSDebugExecutableName>haloce.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Dedi' ">
     <TargetName>OpenSauceDedi</TargetName>
