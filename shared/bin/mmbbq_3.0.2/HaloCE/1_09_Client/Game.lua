@@ -42,7 +42,7 @@ HaloCEClient_Game =
 	
 	["K_OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS"] =             0x448729,
 	
-	["K_MAX_FOV"] =                                                       0x449522 + 2,
+	["K_MAX_FOV_CHECK_JMP"] =                                             0x44952D,
 	
 --////////////////////////////////////////////////////////////////////////
 -- Campaign.cpp
@@ -309,7 +309,7 @@ HaloCEClient_Game_Index =
 	[23] = "K_OBSERVER_UPDATE_POSITIONS",
 	[24] = "K_OBSERVER_UPDATE_POSITIONS_NO_SCOPE_BLUR",
 	[25] = "K_OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS",
-	[26] = "K_MAX_FOV",
+	[26] = "K_MAX_FOV_CHECK_JMP",
 	[27] = "K_SCENARIO_PATHS_REFERENCE_0",
 	[28] = "K_SCENARIO_PATHS_REFERENCE_1",
 	[29] = "K_SCENARIO_PATHS_REFERENCE_2",

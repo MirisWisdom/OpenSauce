@@ -74,26 +74,18 @@
 #	endif
 #elif	BOOST_PP_ITERATION() == 8
 #	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
-#		define __GS_COMPONENT_DX9_INITIALIZE		Fov::Initialize3D
-#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Fov::OnLostDevice
-#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Fov::OnResetDevice
-#		define __GS_COMPONENT_DX9_RENDER			Fov::Render
-#		define __GS_COMPONENT_DX9_RELEASE			Fov::Release
-#	endif
-#elif	BOOST_PP_ITERATION() == 9
-#	if		__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
 #		define __GS_COMPONENT_DX9_INITIALIZE		Hud::Initialize3D
 #		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Hud::OnLostDevice
 #		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Hud::OnResetDevice
 #		define __GS_COMPONENT_DX9_RENDER			Hud::Render
 #		define __GS_COMPONENT_DX9_RELEASE			Hud::Release
 #	endif
-#elif	BOOST_PP_ITERATION() == 10
+#elif	BOOST_PP_ITERATION() == 9
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Lightmaps::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Lightmaps::Dispose
 #	endif
-#elif	BOOST_PP_ITERATION() == 11
+#elif	BOOST_PP_ITERATION() == 10
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Sky::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Sky::Dispose
@@ -101,7 +93,7 @@
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		Render::Sky::InitializeForNewMap
 #		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			Render::Sky::DisposeFromOldMap
 #	endif
-#elif	BOOST_PP_ITERATION() == 12
+#elif	BOOST_PP_ITERATION() == 11
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					StructureBSP::Initialize
 #		define __GS_COMPONENT_DISPOSE						StructureBSP::Dispose

@@ -263,7 +263,7 @@
 							},
 							"Property": {
 								"Name": "Text",
-								"Value": "140"
+								"Value": "160"
 							}
 						},
 						"Control": {
@@ -284,7 +284,15 @@
 							},
 							"Property": {
 								"Name": "Max",
-								"Value": "140"
+								"Value": "160"
+							},
+							"Property": {
+								"Name": "ClampToNotches",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "NotchCount",
+								"Value": "24"
 							}
 						},
 						"Control": {

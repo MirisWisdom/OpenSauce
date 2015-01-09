@@ -5,123 +5,81 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Interface/Controls.hpp"
+#include "Game/Players.hpp"
+#include "TagGroups/CacheFiles.hpp"
 
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <YeloLib/Halo1/cache/shared_cache_files.hpp>
+#include <BlamLib/Halo1/cache/cache_files.hpp>
+#include <BlamLib/Halo1/cache/cache_files_globals.hpp>
 
 namespace Yelo
 {
 	namespace Fov
 	{
-#define DEF_FOV_H	1.22173047065735f
-#define DEF_FOV_V	(atanf(0.75f*tanf(DEF_FOV_H/2.f))*2.f)
+		static real g_fov_scale = 1.0f;
 
-		struct s_fov_globals
+#pragma region Settings
+		c_settings_container::c_settings_container()
+			: Configuration::c_configuration_container("Camera")
+			, m_field_of_view("FieldOfView", 70.0f)
+			, m_ignore_fov_change_in_cinematics("IgnoreFOVChangeInCinematics", true)
+			, m_ignore_fov_change_in_main_menu("IgnoreFOVChangeInMainMenu", true)
+		{ }
+
+		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
 		{
-			struct
-			{
-				real height;
-				real vertical;
-				real height_max;
-			}fov;
-
-			struct
-			{
-				real width, height, distance;
-			}screen;
-
-			void InitializeToDefaultSettings()
-			{
-				fov.vertical = DEF_FOV_V;
-			}
-
-			void Scale()
-			{
-				screen.distance = screen.height / tanf( fov.vertical / 2.f);
-				fov.height = atanf( screen.width / screen.distance ) * 2.f;
-			}
-		};
-
-		static s_fov_globals g_fov_globals
-		{
-			{
-				DEF_FOV_H,
-				0.f,
-				3.14159f,
-			}, // fov
-
-			{
-				0
-			} // screen
-		};
-
-		class c_settings_container
-			: public Configuration::c_configuration_container
-		{
-		public:
-			Configuration::c_configuration_value<real> m_field_of_view;
-
-			c_settings_container()
-				: Configuration::c_configuration_container("Camera")
-				, m_field_of_view("FieldOfView", DEF_FOV_V)
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override
-			{
-				return std::vector<i_configuration_value* const> { &m_field_of_view };
-			}
-		};
-
-		class c_settings_fov
-			: public Settings::c_settings_singleton<c_settings_container, c_settings_fov>
-		{
-		public:
-			void PostLoad() final override
-			{
-				g_fov_globals.fov.vertical = Get().m_field_of_view;
- 				g_fov_globals.Scale();
-			}
-
-			void PreSave() final override
-			{
-				Get().m_field_of_view = g_fov_globals.fov.vertical;
-			}
-		};
-
-		static bool RequiresZoomFix()
-		{
-			real h = Camera::Observer()->origin.fov;
-			real v = atanf(g_fov_globals.screen.height/g_fov_globals.screen.width * tanf(h/2.f)) * 2.f;
-
-			return Camera::Observer()->command.fov < h && v > 1.28f;
+			return std::vector<i_configuration_value* const> { &m_field_of_view, &m_ignore_fov_change_in_cinematics, &m_ignore_fov_change_in_main_menu };
 		}
+
+		void c_settings_fov::PostLoad()
+		{
+			real base_fov = __min(Get().m_field_of_view, 160.0f);
+			base_fov =		__max(base_fov, 40.0f);
+
+			g_fov_scale = base_fov / 70.0f;
+		}
+
+		void c_settings_fov::PreSave()
+		{
+			Get().m_field_of_view = 70.0f * g_fov_scale;
+		}
+#pragma endregion
 
 		static void PLATFORM_API observer_update_command_hook()
 		{
-			Fov::Update();
-		}
+			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() > -1)
+			{
+				return;
+			}
 
-		static void PLATFORM_API OBSERVER_UPDATE_POSITIONS()
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS);
+			bool in_main_menu = Yelo::Cache::CacheFileGlobals()->cache_header.cache_type == Enums::_shared_cache_type_main_menu;
+			if(in_main_menu && c_settings_fov::Instance()->m_ignore_fov_change_in_main_menu)
+			{
+				return;
+			}
 
-			__asm call	FUNCTION
+			if(!in_main_menu
+				&& Camera::DirectorScripting()->initialized
+				&& c_settings_fov::Instance()->m_ignore_fov_change_in_cinematics)
+			{
+				return;
+			}
 
-			GET_PTR(OBSERVER_UPDATE_POSITIONS_no_scope_blur) = Fov::RequiresZoomFix();
+			real player_fov = Camera::Observer()->command_update->fov;
+			if(player_fov != 0.0f)
+			{
+				Camera::Observer()->command.fov = player_fov * g_fov_scale;
+			}
 		}
 
 		void Initialize()
 		{
 			// Overwrite the 'retn' at the observer_update_command with a jmp to our hook code
 			Memory::WriteRelativeJmp(observer_update_command_hook, GET_FUNC_VPTR(OBSERVER_UPDATE_COMMAND_HOOK), true);
-			Memory::WriteRelativeCall(OBSERVER_UPDATE_POSITIONS, GET_FUNC_VPTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS));
 
-			GET_PTR(MAX) = &g_fov_globals.fov.height_max;
-			
-			g_fov_globals.InitializeToDefaultSettings();
-			
+			// Disabled the max fov check
+			GET_PTR(MAX_FOV_CHECK_JMP) = Enums::_x86_opcode_jmp_short;
+
 			c_settings_fov::Register(Settings::Manager());
 		}
 
@@ -130,52 +88,19 @@ namespace Yelo
 			c_settings_fov::Unregister(Settings::Manager());
 		}
 
-		void Update()
-		{
-			real player_fov = Camera::Observer()->command_update->fov;
-			if(player_fov != 0.0f)
-				Camera::Observer()->command.fov = g_fov_globals.fov.height * player_fov / DEF_FOV_H;
-		}
-
 		real GetFieldOfView()
 		{
-			 return g_fov_globals.fov.vertical * 180.f / 3.14159f;
+			 return 70.0f * g_fov_scale;
 		}
 
 		void SetFieldOfView(const real fov)
 		{
-			g_fov_globals.fov.vertical = fov / (180.f / 3.14159f);
-			g_fov_globals.Scale();
+			g_fov_scale = fov / 70.0f;
 		}
 
 		void ResetFieldOfView()
 		{
-			g_fov_globals.InitializeToDefaultSettings();
+			g_fov_scale = 1.0f;
 		}
-
-#if defined(DX_WRAPPER)
-		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
-		{
-			g_fov_globals.screen.width = real(pPP->BackBufferWidth);
-			g_fov_globals.screen.height = real(pPP->BackBufferHeight);
-			g_fov_globals.Scale();
-		}
-
-		void OnLostDevice() { }
-
-		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP)
-		{
-			g_fov_globals.screen.width = real(pPP->BackBufferWidth);
-			g_fov_globals.screen.height = real(pPP->BackBufferHeight);
-			g_fov_globals.Scale();
-		}
-		
-		void Render() { }
-		
-		void Release() { }
-#endif
-
-#undef DEF_FOV_H
-#undef DEF_FOV_V
 	};
 };

@@ -25,6 +25,7 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 #include "Networking/GameSpyApi.hpp"
 #include "TagGroups/CacheFiles.hpp"
+#include "Game/Camera.hpp"
 
 namespace Yelo
 {
@@ -42,6 +43,16 @@ namespace Yelo
 #define K_LBL_ENGINE_UPGRADES_TITLE_ID									RESOURCE_ID("#LBL_engine_upgrades_title",									0xF20B71EF)
 #define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID				RESOURCE_ID("#CHK_upgrades_max_rendered_triangles_enabled",					0x723FAEB8)
 #define K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID			RESOURCE_ID("#CHK_upgrades_max_rendered_triangles_toggle_event",			0xFB9422A8)
+		
+#define K_LBL_CAMERA_TITLE_ID											RESOURCE_ID("#LBL_camera_title",											0x3542AB46)
+#define K_LBL_FIELD_OF_VIEW_LABEL_ID									RESOURCE_ID("#LBL_field_of_view_label",										0x4DBA3CC6)
+#define K_LBL_FIELD_OF_VIEW_AMOUNT_TEXT_ID								RESOURCE_ID("#LBL_field_of_view_amount_text",								0xE3D3BC2A)
+#define K_SLD_FIELD_OF_VIEW_ID											RESOURCE_ID("#SLD_field_of_view",											0xCB8709CA)
+#define K_SLD_FIELD_OF_VIEW_AMOUNT_CHANGED_EVENT_ID						RESOURCE_ID("#SLD_field_of_view_amount_changed_event",						0x1B731E17)
+#define K_CHK_IGNORE_FOV_IN_CINEMATICS_ENABLED_ID						RESOURCE_ID("#CHK_ignore_fov_in_cinematics_enabled",						0x873A7F15)
+#define K_CHK_IGNORE_FOV_IN_CINEMATICS_TOGGLE_EVENT_ID					RESOURCE_ID("#CHK_ignore_fov_in_cinematics_toggle_event",					0x82CB7060)
+#define K_CHK_IGNORE_FOV_IN_MAIN_MENU_ENABLED_ID						RESOURCE_ID("#CHK_ignore_fov_in_main_menu_enabled",							0x1F5A29BD)
+#define K_CHK_IGNORE_FOV_IN_MAIN_MENU_TOGGLE_EVENT_ID					RESOURCE_ID("#CHK_ignore_fov_in_main_menu_toggle_event",					0xDDB53F7B)
 
 #define K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID							RESOURCE_ID("#LBL_shader_extension_model_title",							0xA7558801)
 #define K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID				RESOURCE_ID("#CHK_shader_extension_model_normal_maps_enabled",				0x4209AEA9)
@@ -114,6 +125,11 @@ namespace Yelo
 			SetControlProperty(K_LBL_ENGINE_UPGRADES_TITLE_ID,								K_PROPERTY_TEXT_ID, "Engine Upgrades (requires restart)");
 			SetControlProperty(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Increase maximum rendered triangles");
 
+			SetControlProperty(K_LBL_CAMERA_TITLE_ID,										K_PROPERTY_TEXT_ID, "Camera");
+			SetControlProperty(K_LBL_FIELD_OF_VIEW_LABEL_ID,								K_PROPERTY_TEXT_ID, "Field Of View");
+			SetControlProperty(K_CHK_IGNORE_FOV_IN_CINEMATICS_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Ignore FOV change in cinematics");
+			SetControlProperty(K_CHK_IGNORE_FOV_IN_MAIN_MENU_ENABLED_ID,					K_PROPERTY_TEXT_ID, "Ignore FOV change in the main menu");
+
 			SetControlProperty(K_LBL_SHADER_EXTENSION_MODEL_TITLE_ID,						K_PROPERTY_TEXT_ID, "Shader Extension - Models");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID,			K_PROPERTY_TEXT_ID, "Normal Maps Enabled");
 			SetControlProperty(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID,	K_PROPERTY_TEXT_ID, "Detail Normal Maps Enabled");
@@ -159,6 +175,34 @@ namespace Yelo
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
 					property.Set(control, Control::s_interface_value(Rasterizer::c_settings_rasterizer::Instance().Get().m_upgrades.m_maximum_rendered_triangles));
+				});
+
+
+			AddDynamicProperty(K_LBL_FIELD_OF_VIEW_AMOUNT_TEXT_ID, K_PROPERTY_TEXT_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					char buffer[10] = "";
+					sprintf_s(buffer, "%.0f", Fov::GetFieldOfView());
+
+					property.Set(control, Control::s_interface_value(buffer));
+				});
+
+			AddDynamicProperty(K_SLD_FIELD_OF_VIEW_ID, K_PROPERTY_VALUE_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(Fov::GetFieldOfView()));
+				});
+
+			AddDynamicProperty(K_CHK_IGNORE_FOV_IN_CINEMATICS_ENABLED_ID, K_PROPERTY_CHECKED_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(Fov::c_settings_fov::Instance()->m_ignore_fov_change_in_cinematics));
+				});
+
+			AddDynamicProperty(K_CHK_IGNORE_FOV_IN_MAIN_MENU_ENABLED_ID, K_PROPERTY_CHECKED_ID,
+				[](Control::i_control& control, Control::i_property_interface& property)
+				{
+					property.Set(control, Control::s_interface_value(Fov::c_settings_fov::Instance()->m_ignore_fov_change_in_main_menu));
 				});
 
 
@@ -302,6 +346,25 @@ namespace Yelo
 				});
 
 
+			AttachEvent(K_SLD_FIELD_OF_VIEW_ID, K_EVENT_VALUECHANGED_ID, K_SLD_FIELD_OF_VIEW_AMOUNT_CHANGED_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Fov::SetFieldOfView(event_data.m_real);
+				});
+
+			AttachEvent(K_CHK_IGNORE_FOV_IN_CINEMATICS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_IGNORE_FOV_IN_CINEMATICS_TOGGLE_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Fov::c_settings_fov::Instance()->m_ignore_fov_change_in_cinematics = event_data.m_bool;
+				});
+
+			AttachEvent(K_CHK_IGNORE_FOV_IN_MAIN_MENU_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_IGNORE_FOV_IN_MAIN_MENU_TOGGLE_EVENT_ID, nullptr,
+				[](const Control::s_interface_value& event_data, void* userdata)
+				{
+					Fov::c_settings_fov::Instance()->m_ignore_fov_change_in_main_menu = event_data.m_bool;
+				});
+
+
 			AttachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
@@ -442,8 +505,12 @@ namespace Yelo
 		{
 			// Remove all bound events
 			DetachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID);
-
+			
 			DetachEvent(K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_UPGRADES_MAX_RENDERED_TRIANGLES_TOGGLE_EVENT_ID);
+
+			DetachEvent(K_SLD_FIELD_OF_VIEW_ID, K_EVENT_VALUECHANGED_ID, K_SLD_FIELD_OF_VIEW_AMOUNT_CHANGED_EVENT_ID);
+			DetachEvent(K_CHK_IGNORE_FOV_IN_CINEMATICS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_IGNORE_FOV_IN_CINEMATICS_TOGGLE_EVENT_ID);
+			DetachEvent(K_CHK_IGNORE_FOV_IN_MAIN_MENU_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_IGNORE_FOV_IN_MAIN_MENU_TOGGLE_EVENT_ID);
 			
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_NORMAL_MAPS_TOGGLE_EVENT_ID);
 			DetachEvent(K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_SHADER_EXTENSION_MODEL_DETAIL_NORMAL_MAPS_TOGGLE_EVENT_ID);
