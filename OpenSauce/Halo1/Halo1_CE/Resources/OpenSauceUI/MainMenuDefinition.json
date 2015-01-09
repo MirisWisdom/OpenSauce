@@ -227,6 +227,188 @@
 					},
 
 					"Control": {
+						"IDStr": "#LBL_camera_title",
+						"ID": "893561670",
+						"Type": "Label",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 20"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "16"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "2 5 0 0"
+						}
+					},
+					"Control": {
+						"Type": "Rectangle",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "Size",
+							"Value": "0 16"
+						},
+						"Property": {
+							"Name": "Color",
+							"Value": "0 0 0 0"
+						},
+						"Control": {
+							"IDStr": "#LBL_field_of_view_label",
+							"ID": "1304050886",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "150 14"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "14"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 37 0 0"
+							}
+						},
+						"Control": {
+							"IDStr": "#LBL_field_of_view_amount_text",
+							"ID": "3822304298",
+							"Type": "Label",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "40 20"
+							},
+							"Property": {
+								"Name": "TextColor",
+								"Value": "200 200 200 255"
+							},
+							"Property": {
+								"Name": "TextHAlignment",
+								"Value": "Right"
+							},
+							"Property": {
+								"Name": "TextSize",
+								"Value": "15"
+							},
+							"Property": {
+								"Name": "Margin",
+								"Value": "0 0 0 10"
+							}
+						},
+						"Control": {
+							"IDStr": "#SLD_field_of_view",
+							"ID": "3414624714",
+							"Type": "HorizontalSlider",
+							"Property": {
+								"Name": "Dock",
+								"Value": "Left"
+							},
+							"Property": {
+								"Name": "Size",
+								"Value": "300 20"
+							},
+							"Property": {
+								"Name": "Min",
+								"Value": "40"
+							},
+							"Property": {
+								"Name": "Max",
+								"Value": "160"
+							},
+							"Property": {
+								"Name": "ClampToNotches",
+								"Value": "True"
+							},
+							"Property": {
+								"Name": "NotchCount",
+								"Value": "24"
+							}
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_ignore_fov_in_cinematics_enabled",
+						"ID": "2268757781",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+					"Control": {
+						"IDStr": "#CHK_ignore_fov_in_main_menu_enabled",
+						"ID": "526002621",
+						"Type": "CheckBoxWithLabel",
+						"Property": {
+							"Name": "Dock",
+							"Value": "Top"
+						},
+						"Property": {
+							"Name": "TextColor",
+							"Value": "200 200 200 255"
+						},
+						"Property": {
+							"Name": "TextHAlignment",
+							"Value": "Left"
+						},
+						"Property": {
+							"Name": "TextSize",
+							"Value": "14"
+						},
+						"Property": {
+							"Name": "Margin",
+							"Value": "0 20 0 0"
+						}
+					},
+
+					"Control": {
 						"IDStr": "#LBL_shader_extension_model_title",
 						"ID": "2807400449",
 						"Type": "Label",

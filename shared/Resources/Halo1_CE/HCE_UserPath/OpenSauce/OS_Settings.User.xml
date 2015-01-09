@@ -53,7 +53,9 @@
 		</PostProcessing>
 	</Rasterizer>
 	<Camera>
-		<FieldOfView>0.9671381</FieldOfView>
+		<FieldOfView>70.0</FieldOfView>
+		<IgnoreFOVChangeInCinematics>true</IgnoreFOVChangeInCinematics>
+		<IgnoreFOVChangeInMainMenu>true</IgnoreFOVChangeInMainMenu>
 	</Camera>
 	<Networking>
 		<GameSpy>
