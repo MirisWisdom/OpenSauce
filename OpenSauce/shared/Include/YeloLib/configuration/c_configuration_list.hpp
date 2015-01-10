@@ -138,10 +138,28 @@ namespace Yelo
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the size of the list. </summary>
+			///
+			/// <returns>	The size of the list. </returns>
+			auto size() const -> decltype(m_values.size()) 
+			{
+				return m_values.size();
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the list as a reference. </summary>
 			///
 			/// <returns>	A std::vector<T> reference. </returns>
 			std::vector<T>& Get()
+			{
+				return m_values;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the list as a const reference. </summary>
+			///
+			/// <returns>	A const std::vector<T> reference. </returns>
+			const std::vector<T>& GetConst() const
 			{
 				return m_values;
 			}

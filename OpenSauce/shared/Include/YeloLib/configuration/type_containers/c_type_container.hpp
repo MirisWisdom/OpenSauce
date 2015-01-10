@@ -26,6 +26,10 @@ namespace Yelo
 			Type m_value;
 
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Constructor. </summary>
+			///
+			/// <param name="name">	The name of the node. </param>
 			c_type_container(const std::string& name)
 				: Configuration::c_configuration_container(name)
 			{ }
@@ -40,7 +44,18 @@ namespace Yelo
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Assignment operator. Sets the raw conifguration value to the provided value. </summary>
+			/// <summary>	Gets the value as a const reference. </summary>
+			///
+			/// <returns>	The wrapped value. </returns>
+			const Type& GetConst() const
+			{
+				return m_value;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Assignment operator. Sets the raw configuration value to the provided value.
+			/// </summary>
 			///
 			/// <param name="value">	The value to set. </param>
 			///
@@ -52,7 +67,10 @@ namespace Yelo
 				return *this;
 			}
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Support for casting the object to the templated type. </summary>
+			///
+			/// <returns>	The result of the operation. </returns>
 			operator Type&()
 			{
 				return m_value;

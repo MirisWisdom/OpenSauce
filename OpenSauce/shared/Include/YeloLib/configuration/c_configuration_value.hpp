@@ -104,6 +104,15 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the raw configuration value. </summary>
 			///
+			/// <returns>	The configuration's value as a const reference. </returns>
+			const T& GetConst() const
+			{
+				return m_value;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the raw configuration value. </summary>
+			///
 			/// <returns>	The configuration's value as a reference. </returns>
 			T* GetPtr()
 			{

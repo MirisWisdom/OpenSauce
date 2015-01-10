@@ -12,30 +12,28 @@ namespace Yelo
 {
 	namespace Configuration
 	{
-		/// <summary>	A real vector 3D configuration container. </summary>
-		class c_real_vector3d_container
-			: public Configuration::c_type_container<real_vector3d>
+		/// <summary>	A real bounds configuration container. </summary>
+		class c_real_bounds_container
+			: public Configuration::c_type_container<real_bounds>
 		{
 		private:
-			Configuration::c_configuration_value<real> m_i;
-			Configuration::c_configuration_value<real> m_j;
-			Configuration::c_configuration_value<real> m_k;
+			Configuration::c_configuration_value<real> m_lower;
+			Configuration::c_configuration_value<real> m_upper;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Initializes a new instance of the c_real_vector3d_container class. </summary>
+			/// <summary>	Initializes a new instance of the c_real_bounds_container class. </summary>
 			///
-			/// <param name="name">			The configuration node name for the value. </param>
-			/// <param name="default_i">	The default value for i. </param>
-			/// <param name="default_j">	The default value for j. </param>
-			/// <param name="default_k">	The default value for k. </param>
-			c_real_vector3d_container(const std::string& name, const real default_i, const real default_j, const real default_k);
+			/// <param name="name">				The configuration node name for the value. </param>
+			/// <param name="default_lower">	The default value for lower. </param>
+			/// <param name="default_upper">	The default value for upper. </param>
+			c_real_bounds_container(const std::string& name, const real default_lower, const real default_upper);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Initializes a new instance of the c_real_vector3d_container class. </summary>
+			/// <summary>	Initializes a new instance of the c_real_bounds_container class. </summary>
 			///
 			/// <param name="name">	The configuration node name for the value. </param>
-			c_real_vector3d_container(const std::string& name);
+			c_real_bounds_container(const std::string& name);
 
 		protected:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

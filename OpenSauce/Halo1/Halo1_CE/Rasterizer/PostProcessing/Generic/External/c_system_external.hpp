@@ -38,6 +38,11 @@ namespace Yelo
 	{
 		extern cstring K_EXTERNAL_PP_SETTINGS_FILE;
 
+		class c_external_pp_settings_container;
+		class c_shader_container;
+		class c_effect_container;
+		class c_effect_instance_container;
+
 		class c_system_external
 			: public IPostProcessingComponent
 			, public IPostProcessingRenderable
@@ -169,13 +174,13 @@ namespace Yelo
 			HRESULT LoadEffects();
 			void UnloadEffects();
 
-			bool ReadUserPaths(TiXmlElement* root);
+			bool ReadUserPaths(const c_external_pp_settings_container& settings);
 			void ResetUserPaths();
-			bool ReadShaders(TiXmlElement* shaders);
+			bool ReadShaders(const std::vector<c_shader_container>& shaders);
 			void DeleteShaders();
-			bool ReadEffects(TiXmlElement* effects);
+			bool ReadEffects(const std::vector<c_effect_container>& effects);
 			void DeleteEffects();
-			bool ReadEffectInstances(TiXmlElement* effect_instances);
+			bool ReadEffectInstances(const std::vector<c_effect_instance_container>& effect_instances);
 			void DeleteEffectInstances();
 
 			/////////////////////////////////////////////////
@@ -189,12 +194,12 @@ namespace Yelo
 			
 			/////////////////////////////////////////////////
 			// effect definition
-			void BuildEffectDefinition(s_effect_postprocess_external* definition, TiXmlElement* effect_root);
+			void BuildEffectDefinition(s_effect_postprocess_external* definition, const c_effect_container& effect);
 			void DestroyEffectDefinition(s_effect_postprocess_external* definition);
 
 			/////////////////////////////////////////////////
 			// effect instance definition
-			void BuildEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition, TiXmlElement* instance_root);
+			void BuildEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition, const c_effect_instance_container& effect_instance);
 			void DestroyEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition);
 
 			/////////////////////////////////////////////////
