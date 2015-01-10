@@ -14,6 +14,14 @@
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_shader_include_manager.hpp"
+#include "Game/Console.hpp"
+
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_container_list.hpp>
+#include <YeloLib/configuration/c_configuration_value_list.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/type_containers/c_point2d_container.hpp>
+#include <YeloLib/configuration/type_containers/c_real_bounds_container.hpp>
 
 // TODO: finish reimplementing for loops with ranged for loops, where applicable
 
@@ -22,6 +30,159 @@ namespace Yelo
 	namespace Rasterizer { namespace PostProcessing { namespace Generic { namespace External
 	{
 		cstring K_EXTERNAL_PP_SETTINGS_FILE = "OS_Settings.PostProcessing.xml";
+
+#pragma region External PP Settings
+		class c_shader_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<std::string> m_id;
+			Configuration::c_configuration_value<std::string> m_file;
+
+			c_shader_container()
+				: Configuration::c_configuration_container("Shader")
+				, m_id("ID", "")
+				, m_file("File", "")
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_file };
+			}
+		};
+
+		class c_effect_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<std::string> m_id;
+			Configuration::c_configuration_value_list<std::string> m_shader_ids;
+
+			c_effect_container()
+				: Configuration::c_configuration_container("Effect")
+				, m_id("ID", "")
+				, m_shader_ids("ShaderID", "")
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_shader_ids };
+			}
+		};
+
+		class c_quad_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_point2d_container m_tessellation;
+			Configuration::c_real_bounds_container m_bounds_x;
+			Configuration::c_real_bounds_container m_bounds_y;
+
+			c_quad_container()
+				: Configuration::c_configuration_container("Quad")
+				, m_tessellation("Tessellation", 4, 4)
+				, m_bounds_x("BoundsX", 0.0f, 1.0f)
+				, m_bounds_y("BoundsY", 0.0f, 1.0f)
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const> { &m_tessellation, &m_bounds_x, &m_bounds_y };
+			}
+		};
+
+		class c_activation_control_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<uint16> m_activation_state;
+			Configuration::c_configuration_value<bool> m_invert;
+
+			c_activation_control_container()
+				: Configuration::c_configuration_container("ActivationControl")
+				, m_activation_state("State", 0)
+				, m_invert("Invert", false)
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const> { &m_activation_state, &m_invert };
+			}
+		};
+
+		class c_effect_instance_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<std::string> m_name;
+			Configuration::c_configuration_value<std::string> m_effect;
+			Configuration::c_configuration_value<uint16> m_render_stage;
+			Configuration::c_configuration_value<uint16> m_activation_operation;
+			c_quad_container m_quad;
+			Configuration::c_configuration_container_list<c_activation_control_container> m_activation_controls;
+
+			c_effect_instance_container()
+				: Configuration::c_configuration_container("EffectInstance")
+				, m_name("Name", "")
+				, m_effect("Effect", "")
+				, m_render_stage("RenderStage", 0)
+				, m_activation_operation("ActivationOperation", 0)
+				, m_quad()
+				, m_activation_controls("ActivationControl", []() { return c_activation_control_container(); })
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const>
+				{
+					&m_name,
+					&m_effect,
+					&m_render_stage,
+					&m_activation_operation,
+					&m_quad,
+					&m_activation_controls,
+				};
+			}
+		};
+
+		class c_external_pp_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<std::string> m_shader_directory;
+			Configuration::c_configuration_value<std::string> m_texture_directory;
+			Configuration::c_configuration_container_list<c_shader_container> m_shaders;
+			Configuration::c_configuration_container_list<c_effect_container> m_effects;
+			Configuration::c_configuration_container_list<c_effect_instance_container> m_effect_instances;
+
+			c_external_pp_settings_container()
+				: Configuration::c_configuration_container("PostProcessing")
+				, m_shader_directory("ShaderDirectory", "")
+				, m_texture_directory("TextureDirectory", "")
+				, m_shaders("Shader", []() { return c_shader_container(); })
+				, m_effects("Effect", []() { return c_effect_container(); })
+				, m_effect_instances("EffectInstance", []() { return c_effect_instance_container(); })
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const>
+				{
+					&m_shader_directory,
+					&m_texture_directory,
+					&m_shaders,
+					&m_effects,
+					&m_effect_instances
+				};
+			}
+		};
+#pragma endregion
 
 		/////////////////////////////////////////////////
 		// static members
@@ -308,33 +469,52 @@ namespace Yelo
 		HRESULT c_system_external::LoadExternal()
 		{
 			// load the xml file
-			TiXmlDocument pp_setup = TiXmlDocument();
-			TiXmlElement* root_element = NULL;
+			char file_path[MAX_PATH];
+			if( !Settings::GetSettingsFilePath(K_EXTERNAL_PP_SETTINGS_FILE, file_path))
 			{
-				char file_path[MAX_PATH];
-				if( !Settings::GetSettingsFilePath(K_EXTERNAL_PP_SETTINGS_FILE, file_path) || 
-					(root_element = Settings::GenericSettingsParse(pp_setup, file_path, "postprocessing")) == NULL)
-					return E_FAIL;
+				return E_FAIL;
 			}
 
-			// get the users shader and texture directories
-			if(!ReadUserPaths(root_element))
+			auto config_file = Configuration::c_configuration_file_factory::CreateConfigurationFile(file_path);
+			if(!config_file->Load())
+			{
 				return E_FAIL;
-			
-			// read the shaders and create shader classes for each shader
-			TiXmlElement* shader_list_element = root_element->FirstChildElement("shaders");
-			if(!shader_list_element || !ReadShaders(shader_list_element))
-				return E_FAIL;
-			
-			// read the effects create effect classes for each effect
-			TiXmlElement* effect_list_element = root_element->FirstChildElement("effects");
-			if(!effect_list_element || !ReadEffects(effect_list_element))
-				return E_FAIL;
+			}
 
-			// read the effect instances create effect instance classes for each instance
-			TiXmlElement* effect_instance_list_element = root_element->FirstChildElement("effect_instances");
-			if(!effect_instance_list_element || !ReadEffectInstances(effect_instance_list_element))
+			auto root_node = config_file->Root();
+			auto pp_node = root_node->GetChild("OpenSauce.PostProcessing");
+
+			if(!pp_node)
+			{
 				return E_FAIL;
+			}
+
+			c_external_pp_settings_container settings;
+			settings.GetValue(*pp_node);
+
+			// Get the users shader and texture directories
+			if(!ReadUserPaths(settings))
+			{
+				return E_FAIL;
+			}
+			
+			// Read the shaders and create shader classes for each shader
+			if(!ReadShaders(settings.m_shaders.GetConst()))
+			{
+				return E_FAIL;
+			}
+			
+			// Read the effects create effect classes for each effect
+			if(!ReadEffects(settings.m_effects.GetConst()))
+			{
+				return E_FAIL;
+			}
+
+			// Read the effect instances create effect instance classes for each instance
+			if(!ReadEffectInstances(settings.m_effect_instances.GetConst()))
+			{
+				return E_FAIL;
+			}
 
 			return S_OK;
 		}
@@ -399,27 +579,31 @@ namespace Yelo
 				m_members_external.m_effect_instances.effect_instance_sets[i].instance->UnloadEffectInstance();
 		}
 
-		bool c_system_external::ReadUserPaths(TiXmlElement* root)
+		bool c_system_external::ReadUserPaths(const c_external_pp_settings_container& settings)
 		{
-			// read the users paths
-			const char* shader_directory = root->Attribute("shader_directory");
-			const char* texture_directory = root->Attribute("texture_directory");
+			// Read the users paths
+			auto& shader_directory = settings.m_shader_directory.GetConst();
+			auto& texture_directory = settings.m_texture_directory.GetConst();
 
-			if(!shader_directory || !texture_directory)
+			if(shader_directory.empty() || texture_directory.empty())
+			{
 				return false;
+			}
 
-			// copy the paths into memory
+			// Copy the paths into memory
 			ResetUserPaths();
 
-			strcat_s(m_members_external.m_paths.shaders_path, sizeof(m_members_external.m_paths.shaders_path), shader_directory);
-			strcat_s(m_members_external.m_paths.textures_path, sizeof(m_members_external.m_paths.textures_path), texture_directory);
+			strcat_s(m_members_external.m_paths.shaders_path, sizeof(m_members_external.m_paths.shaders_path), shader_directory.c_str());
+			strcat_s(m_members_external.m_paths.textures_path, sizeof(m_members_external.m_paths.textures_path), texture_directory.c_str());
 
 			FileIO::AppendDirectorySlash(m_members_external.m_paths.shaders_path, sizeof(m_members_external.m_paths.shaders_path));
 			FileIO::AppendDirectorySlash(m_members_external.m_paths.textures_path, sizeof(m_members_external.m_paths.textures_path));
 
 			if(!FileIO::PathExists(m_members_external.m_paths.shaders_path) || !FileIO::PathExists(m_members_external.m_paths.textures_path))
 			{
-				YELO_ASSERT_DISPLAY(false, "external postprocessing shaders path or textures path does not exist");
+				blam::console_printf(false, "The external post processing shader or texture path does not exist:");
+				blam::console_printf(false, "%s", m_members_external.m_paths.shaders_path);
+				blam::console_printf(false, "%s", m_members_external.m_paths.textures_path);
 				return false;
 			}
 			return true;
@@ -431,69 +615,65 @@ namespace Yelo
 			m_members_external.m_paths.textures_path[0] = '\0';
 		}
 
-		bool c_system_external::ReadShaders(TiXmlElement* shaders)
+		bool c_system_external::ReadShaders(const std::vector<c_shader_container>& shaders)
 		{
-			m_members_external.m_shaders.count = 0;
-			TiXmlElement* shader_element = shaders->FirstChildElement("shader");
-			if(!shader_element)
+			m_members_external.m_shaders.count = shaders.size();
+			if(shaders.size() == 0)
+			{
 				return false;
+			}
 
-			// get the shader count
-			TiXmlElement* counter_element = shader_element;
-			do{ m_members_external.m_shaders.count++; } while(counter_element = counter_element->NextSiblingElement("shader"));
+			// Allocate memory for the shader definitions
+			m_members_external.m_shaders.shader_sets = new s_shader_set[shaders.size()];
 
-			//allocate memory for the shader definitions
-			m_members_external.m_shaders.shader_sets = new s_shader_set[m_members_external.m_shaders.count];
-
-			// read the shaders
+			// Read the shaders
 			uint32 index = 0;
-			do
+			for(auto& shader : shaders)
 			{
 				s_shader_set& set = m_members_external.m_shaders.shader_sets[index];
 
-				// allocate memory for the shader definition and class
+				// Allocate memory for the shader definition and class
 				set.definition = new TagGroups::s_shader_postprocess_generic();
 				set.shader = new c_shader_external();
 
-				// reset the definition and class to default values
+				// Reset the definition and class to default values
 				ZeroMemory(set.definition, sizeof(TagGroups::s_shader_postprocess_generic));
 				set.shader->Ctor();
 				set.shader->SetShaderDefinition(set.definition);
+				
+				auto& shader_id = shader.m_id.GetConst();
+				auto& shader_path = shader.m_file.GetConst();
 
-				const char* shader_id = shader_element->Attribute("id");
-				const char* shader_path = shader_element->GetText();
-
-				// if the shader has no id it cannot be references
-				// if a shader has no path there is nothing to load
-				if(!shader_id || !shader_path)
+				if(shader_id.empty() || shader_path.empty())
 				{
-					index++;
-					continue;
+					blam::console_printf(false, "An external post processing shaders id or path are not set");
+					return false;
 				}
 
-				// build the absolute shader path
+				// Build the absolute shader path
 				char absolute_shader_path[MAX_PATH];
 				absolute_shader_path[0] = '\0';
 				strcpy_s(absolute_shader_path, sizeof(absolute_shader_path), m_members_external.m_paths.shaders_path);
-				PathAppend(absolute_shader_path, shader_path);
+				PathAppend(absolute_shader_path, shader_path.c_str());
 				strcat_s(absolute_shader_path, sizeof(absolute_shader_path), ".fx");
 
 				if(!FileIO::PathExists(absolute_shader_path))
 				{
-					index++;
-					continue;
+					blam::console_printf(false, "An external post processing shader path doesn't exist:");
+					blam::console_printf(false, "%s", absolute_shader_path);
+					return false;
 				}
 
-				// create the shader definition
+				// Create the shader definition
 				BuildShaderDefinition(set.definition, absolute_shader_path);
 
-				// setup the shader class
+				// Setup the shader class
 				set.shader->SetShaderPath(absolute_shader_path);
-				set.shader->SetShaderID(shader_id);
+				set.shader->SetShaderID(shader_id.c_str());
 				set.shader->SetupShader();
 
 				index++;
-			}while(shader_element = shader_element->NextSiblingElement("shader"));
+			}
 
 			return true;
 		}
@@ -523,23 +703,20 @@ namespace Yelo
 			m_members_external.m_shaders.count = 0;
 		}
 
-		bool c_system_external::ReadEffects(TiXmlElement* effects)
+		bool c_system_external::ReadEffects(const std::vector<c_effect_container>& effects)
 		{
-			m_members_external.m_effects.count = 0;
-			TiXmlElement* effect_element = effects->FirstChildElement("effect");
-			if(!effect_element)
+			m_members_external.m_effects.count = effects.size();
+			if(effects.size() == 0)
+			{
 				return false;
+			}
 
-			// get the effect count
-			TiXmlElement* counter_element = effect_element;
-			do{ m_members_external.m_effects.count++; } while(counter_element = counter_element->NextSiblingElement("effect"));
-
-			//allocate memory for the effect sets
+			// Allocate memory for the effect sets
 			m_members_external.m_effects.effect_sets = new s_effect_set[m_members_external.m_effects.count];
 
-			// read the effects
+			// Read the effects
 			uint32 index = 0;
-			do
+			for(auto& effect : effects)
 			{
 				s_effect_set& set = m_members_external.m_effects.effect_sets[index];
 
@@ -548,30 +725,30 @@ namespace Yelo
 				set.shader_instances = nullptr;
 				set.shader_instance_count = 0;
 
-				// reset the definition and class to default values
+				// Reset the definition and class to default values
 				ZeroMemory(set.definition, sizeof(s_effect_postprocess_external));
 				set.effect->Ctor();
 				set.effect->SetEffectDefinition(set.definition);
 
-				BuildEffectDefinition(set.definition, effect_element);
+				BuildEffectDefinition(set.definition, effect);
 
-				// if the effect does not reference any shaders it is useless
+				// If the effect does not reference any shaders it is useless
 				if(!set.definition->shader_ids.Count)
 				{
-					index++;
-					continue;
+					blam::console_printf(false, "An external post processing effect has no shader ID's");
+					return false;
 				}
 
-				const char* effect_id = effect_element->Attribute("id");
+				auto& effect_id = effect.m_id.GetConst();
 
-				// if the effect has no id it cannot be referenced
-				if(!effect_id)
+				// If the effect has no id it cannot be referenced
+				if(effect_id.empty())
 				{
-					index++;
-					continue;
+					blam::console_printf(false, "An external post processing effect has no ID");
+					return false;
 				}
 
-				set.effect->SetEffectID(effect_id);
+				set.effect->SetEffectID(effect_id.c_str());
 
 				set.shader_instances = new c_shader_instance_generic[set.definition->shader_ids.Count];
 				set.shader_instance_count = set.definition->shader_ids.Count;
@@ -595,7 +772,11 @@ namespace Yelo
 						if(strcmp(m_members_external.m_shaders.shader_sets[j].shader->GetShaderID(), id) == 0)
 							shader_set = &m_members_external.m_shaders.shader_sets[j];
 					// if any shader is missing the effect is invalid
-					if(!shader_set) break;
+					if(!shader_set)
+					{
+						blam::console_printf(false, "An external post processing effect references a non-existing shader set: %s", id);
+						return false;
+					}
 
 					shader_instance.SetShader(shader_set->shader);
 					shader_instance.SetupShaderInstance();
@@ -604,7 +785,8 @@ namespace Yelo
 				set.effect->SetupEffect();
 
 				index++;
-			}while(effect_element = effect_element->NextSiblingElement("effect"));
+			}
+
 			return true;
 		}
 
@@ -639,40 +821,37 @@ namespace Yelo
 			m_members_external.m_effects.count = 0;
 		}
 
-		bool c_system_external::ReadEffectInstances(TiXmlElement* effect_instances)
+		bool c_system_external::ReadEffectInstances(const std::vector<c_effect_instance_container>& effect_instances)
 		{
-			m_members_external.m_effect_instances.count = 0;
-			TiXmlElement* effect_instance_element = effect_instances->FirstChildElement("effect_instance");
-			if(!effect_instance_element)
+			m_members_external.m_effect_instances.count = effect_instances.size();
+			if(effect_instances.size() == 0)
+			{
 				return false;
+			}
 
-			// get the effect instance count
-			TiXmlElement* counter_element = effect_instance_element;
-			do{ m_members_external.m_effect_instances.count++; } while(counter_element = counter_element->NextSiblingElement("effect_instance"));
+			// Allocate memory for the effect instance sets
+			m_members_external.m_effect_instances.effect_instance_sets = new s_effect_instance_set[effect_instances.size()];
 
-			//allocate memory for the effect instance sets
-			m_members_external.m_effect_instances.effect_instance_sets = new s_effect_instance_set[m_members_external.m_effect_instances.count];
-
-			// read the effect instances
+			// Read the effect instances
 			uint32 index = 0;
-			do
+			for(auto& effect_instance : effect_instances)
 			{
 				s_effect_instance_set& set = m_members_external.m_effect_instances.effect_instance_sets[index];
 
 				set.definition = new TagGroups::s_effect_postprocess_generic_effect_instance();
 				set.instance = new c_effect_instance_generic();
 
-				// clear the definition
+				// Clear the definition
 				ZeroMemory(set.definition, sizeof(TagGroups::s_effect_postprocess_generic_effect_instance));
 				set.instance->Ctor();
 
 				bool effect_found = false;
-				const char* effect_ref = effect_instance_element->Attribute("effect");
-				for(uint32 i = 0; (i < m_members_external.m_effects.count) && effect_ref; i++)
+				auto& effect_ref = effect_instance.m_effect.GetConst();
+				for(uint32 i = 0; (i < m_members_external.m_effects.count) && !effect_ref.empty(); i++)
 				{
 					s_effect_set& effect_set = m_members_external.m_effects.effect_sets[i];
 
-					if(strcmp(effect_set.effect->GetEffectID(), effect_ref) == 0)
+					if(effect_ref == effect_set.effect->GetEffectID())
 					{
 						set.instance->SetEffect(effect_set.effect);
 						effect_found = true;
@@ -680,18 +859,19 @@ namespace Yelo
 					}
 				}
 
-				if(effect_ref && effect_found)
+				if(!effect_ref.empty() && effect_found)
 				{
 					set.instance->SetEffectInstanceDefinition(set.definition);
 
-					// build the effect instance definition
-					BuildEffectInstanceDefinition(set.definition, effect_instance_element);
+					// Build the effect instance definition
+					BuildEffectInstanceDefinition(set.definition, effect_instance);
 				}
 
 				set.instance->SetupEffectInstance();
 
 				index++;
-			}while(effect_instance_element = effect_instance_element->NextSiblingElement("effect_instance"));
+			}
+
 			return true;
 		}
 
@@ -943,33 +1123,33 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// effect definition
-		void c_system_external::BuildEffectDefinition(s_effect_postprocess_external* definition, TiXmlElement* effect_root)
+		void c_system_external::BuildEffectDefinition(s_effect_postprocess_external* definition, const c_effect_container& effect)
 		{
-			TiXmlElement* shaders_element = effect_root->FirstChildElement("shaders");
-			if(!shaders_element) return;
+			auto& shader_ids = effect.m_shader_ids.GetConst();
 
-			TiXmlElement* shader_element = shaders_element->FirstChildElement("shader");
-			if(!shader_element) return;
-
-			uint32 count = 0;
-			TiXmlElement* counter_element = shader_element;
-			do { count++; }while(counter_element = counter_element->NextSiblingElement("shader"));
-
-			definition->shader_ids.Address = new tag_string[count];
-			definition->shader_ids.Count = count;
+			if(shader_ids.size() == 0)
+			{
+				return;
+			}
+			
+			definition->shader_ids.Address = new tag_string[shader_ids.size()];
+			definition->shader_ids.Count = shader_ids.size();
 
 			uint32 index = 0;
-			do
+			for(auto& id : shader_ids)
 			{
 				tag_string& shader_id = definition->shader_ids[index];
 
 				ZeroMemory(shader_id, sizeof(shader_id));
 
-				const char* id = shader_element->GetText();
-				if(id)
-					strncpy_s(shader_id, sizeof(shader_id), id, sizeof(shader_id));
+				auto& id_string = id.GetConst();
+				if(!id_string.empty())
+				{
+					strncpy_s(shader_id, sizeof(shader_id), id_string.c_str(), sizeof(shader_id));
+				}
+
 				index++;
-			}while(shader_element = shader_element->NextSiblingElement("shader"));
+			}
 		}
 
 		void c_system_external::DestroyEffectDefinition(s_effect_postprocess_external* definition)
@@ -981,101 +1161,61 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// effect instance definition
-		void c_system_external::BuildEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition, TiXmlElement* instance_root)
+		void c_system_external::BuildEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition
+			, const c_effect_instance_container& effect_instance)
 		{
-			const char* name = instance_root->Attribute("name");
-			if(name)
-				strncpy_s(definition->name, sizeof(definition->name), name, sizeof(definition->name));
-
-			int render_stage = 0;
-			if(instance_root->QueryIntAttribute("render_stage", &render_stage) != TIXML_SUCCESS)
-				render_stage = Enums::_postprocess_render_stage_pre_hud;
-			definition->render_stage = render_stage;
-
-			int activation_operation = 0;
-			if(instance_root->QueryIntAttribute("activation_operation", &activation_operation) != TIXML_SUCCESS)
-				activation_operation = 0;
-			definition->activation_operation = activation_operation;
-
-			TiXmlElement* element = nullptr;
-
-			//set quad to defaults
-			definition->quad_definition.tessellation.x = 4;
-			definition->quad_definition.tessellation.y = 4;
-			definition->quad_definition.x_bounds.lower = 0.0;
-			definition->quad_definition.x_bounds.upper = 1.0;
-			definition->quad_definition.y_bounds.lower = 0.0;
-			definition->quad_definition.y_bounds.upper = 1.0;
-
-			TiXmlElement* quad_element = instance_root->FirstChildElement("quad");
-			if(quad_element)
+			auto& name = effect_instance.m_name.GetConst();
+			if(!name.empty())
 			{
-				element = quad_element->FirstChildElement("tessellation");
-				if(element)
-				{
-					int x_value, y_value;
-					if(element->QueryIntAttribute("x", &x_value) != TIXML_SUCCESS)
-						x_value = 4;
-					if(element->QueryIntAttribute("y", &y_value) != TIXML_SUCCESS)
-						y_value = 4;
-
-					definition->quad_definition.tessellation.x = x_value;
-					definition->quad_definition.tessellation.y = y_value;
-				}
-
-				element = quad_element->FirstChildElement("x_bounds");
-				if(element)
-				{
-					float lower, upper;
-					if(element->QueryFloatAttribute("lower", &lower) != TIXML_SUCCESS)
-						lower = 0.0;
-					if(element->QueryFloatAttribute("upper", &upper) != TIXML_SUCCESS)
-						upper = 1.0;
-
-					definition->quad_definition.x_bounds.lower = lower;
-					definition->quad_definition.x_bounds.upper = upper;
-				}
-
-				element = quad_element->FirstChildElement("y_bounds");
-				if(element)
-				{
-					float lower, upper;
-					if(element->QueryFloatAttribute("lower", &lower) != TIXML_SUCCESS)
-						lower = 0.0;
-					if(element->QueryFloatAttribute("upper", &upper) != TIXML_SUCCESS)
-						upper = 1.0;
-
-					definition->quad_definition.y_bounds.lower = lower;
-					definition->quad_definition.y_bounds.upper = upper;
-				}
+				strncpy_s(definition->name, sizeof(definition->name), name.c_str(), sizeof(definition->name));
 			}
 
-			TiXmlElement* activation_control_element = instance_root->FirstChildElement("activation_controls");
-			if(activation_control_element && (element = activation_control_element->FirstChildElement("activation_control")))
+			int render_stage = effect_instance.m_render_stage.GetConst();
+			if(render_stage >= Enums::_postprocess_render_stage)
 			{
-				uint32 count = 0;
-				TiXmlElement* counter_element = element;
-				do { count++; }while(counter_element = counter_element->NextSiblingElement("activation_control"));
+				render_stage = Enums::_postprocess_render_stage_pre_hud;
+			}
+			definition->render_stage = render_stage;
 
-				definition->activation_controls.Address = new TagGroups::s_effect_postprocess_effect_activation_control[count];
-				definition->activation_controls.Count = count;
+			int activation_operation = effect_instance.m_activation_operation.GetConst();
+			if(activation_operation > 1)
+			{
+				activation_operation = 0;
+			}
+			definition->activation_operation = activation_operation;
+			
+			// Set quad values
+			auto& quad = effect_instance.m_quad;
+
+			definition->quad_definition.tessellation.x = quad.m_tessellation.GetConst().x;
+			definition->quad_definition.tessellation.y = quad.m_tessellation.GetConst().y;
+			definition->quad_definition.x_bounds.lower = quad.m_bounds_x.GetConst().lower;
+			definition->quad_definition.x_bounds.upper = quad.m_bounds_x.GetConst().upper;
+			definition->quad_definition.y_bounds.lower = quad.m_bounds_y.GetConst().lower;
+			definition->quad_definition.y_bounds.upper = quad.m_bounds_y.GetConst().upper;
+
+			int activation_control_count = effect_instance.m_activation_controls.size();
+			if(activation_control_count != 0)
+			{
+				definition->activation_controls.Address = new TagGroups::s_effect_postprocess_effect_activation_control[activation_control_count];
+				definition->activation_controls.Count = activation_control_count;
 
 				int32 index = 0;
-				do
+				for(auto& activation_control : effect_instance.m_activation_controls.GetConst())
 				{
 					TagGroups::s_effect_postprocess_effect_activation_control& control = definition->activation_controls[index];
 
-					int state;
-					if(element->QueryIntAttribute("state", &state) != TIXML_SUCCESS)
+					int state = activation_control.m_activation_state.GetConst();
+					if(state >= Enums::_effect_activation_control_state)
+					{
 						state = 0;
-					else if((state < 0) || (state >= Enums::_effect_activation_control_state))
-						state = 0;
+					}
 					control.state = state;
 
-					control.flags.invert_bit = Settings::ParseBoolean(element->Attribute("invert"));
+					control.flags.invert_bit = activation_control.m_invert.GetConst();
 
 					index++;
-				}while(element = element->NextSiblingElement("activation_control"));
+				}
 			}
 		}
 

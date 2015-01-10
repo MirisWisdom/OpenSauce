@@ -12,30 +12,28 @@ namespace Yelo
 {
 	namespace Configuration
 	{
-		/// <summary>	A real vector 3D configuration container. </summary>
-		class c_real_vector3d_container
-			: public Configuration::c_type_container<real_vector3d>
+		/// <summary>	A point 2D configuration container. </summary>
+		class c_point2d_container
+			: public Configuration::c_type_container<point2d>
 		{
 		private:
-			Configuration::c_configuration_value<real> m_i;
-			Configuration::c_configuration_value<real> m_j;
-			Configuration::c_configuration_value<real> m_k;
+			Configuration::c_configuration_value<int16> m_x;
+			Configuration::c_configuration_value<int16> m_y;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Initializes a new instance of the c_real_vector3d_container class. </summary>
+			/// <summary>	Initializes a new instance of the c_point2d_container class. </summary>
 			///
 			/// <param name="name">			The configuration node name for the value. </param>
-			/// <param name="default_i">	The default value for i. </param>
-			/// <param name="default_j">	The default value for j. </param>
-			/// <param name="default_k">	The default value for k. </param>
-			c_real_vector3d_container(const std::string& name, const real default_i, const real default_j, const real default_k);
+			/// <param name="default_x">	The default value for x. </param>
+			/// <param name="default_y">	The default value for y. </param>
+			c_point2d_container(const std::string& name, const int16 default_x, const int16 default_y);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Initializes a new instance of the c_real_vector3d_container class. </summary>
+			/// <summary>	Initializes a new instance of the c_point2d_container class. </summary>
 			///
 			/// <param name="name">	The configuration node name for the value. </param>
-			c_real_vector3d_container(const std::string& name);
+			c_point2d_container(const std::string& name);
 
 		protected:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

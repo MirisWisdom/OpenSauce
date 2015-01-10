@@ -552,6 +552,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_xml.hpp">
       <Filter>configuration\property_tree</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_point2d_container.hpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_bounds_container.hpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_point2d_container.hpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -838,6 +847,15 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_memory_xml.cpp">
       <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_point2d_container.cpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_bounds_container.cpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_point2d_container.cpp">
+      <Filter>configuration\type_containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
