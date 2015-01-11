@@ -9,6 +9,10 @@
 
 #include <YeloLib/files/files.hpp>
 #include <YeloLib/main/main_yelo_base.hpp>
+#include <YeloLib/configuration/c_configuration_file_factory.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_container_list.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"
@@ -19,94 +23,121 @@ namespace Yelo
 {
 	namespace FileIO
 	{
-		s_file_io_globals g_file_io_globals;
+#pragma region XML containers
+		class c_file_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<std::string> m_id;
+			Configuration::c_configuration_value<std::string> m_md5;
+			Configuration::c_configuration_value<std::string> m_path;
 
-		/*!
-		 * \brief
-		 * Reads file ID definitions from an embedded XML resource.
-		 * 
-		 * Reads file ID definitions from an embedded XML resource. The XML file has the files location and its md5 checksum for later validation.
-		 */
+			c_file_container()
+				: Configuration::c_configuration_container("File")
+				, m_id("ID", "")
+				, m_md5("MD5", "")
+				, m_path("Path", "")
+			{ }
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets whether the checksum check is required. </summary>
+			///
+			/// <returns>	true if it is required, false if it is not. </returns>
+			bool GetChecksumRequired() const
+			{
+				return !m_md5.GetConst().empty();
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the file's absolute path. </summary>
+			///
+			/// <returns>	The files's absolute path. </returns>
+			std::string GetAbsolutePath() const
+			{
+				std::string path(m_path.GetConst());
+				Settings::ParseEnvironmentVariables(path);
+
+				return path;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets whether the file exists. </summary>
+			///
+			/// <returns>	true if it exists, false if it does not. </returns>
+			bool GetFileExists() const
+			{
+				return FileIO::PathExists(GetAbsolutePath().c_str());
+			}
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_md5, &m_path };
+			}
+		};
+
+		class c_checksums_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_container_list<c_file_container> m_files;
+
+			c_checksums_container()
+				: Configuration::c_configuration_container("Checksums")
+				, m_files("File", []() { return c_file_container(); })
+			{ }
+
+		protected:
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<Configuration::i_configuration_value* const> { &m_files };
+			}
+		};
+#pragma endregion
+
+		static c_checksums_container g_checksums;
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Reads file ID definitions from an embedded XML resource. </summary>
+		///
+		/// <remarks>
+		/// 	The XML file has the files location and its MD5 checksum for later validation.
+		/// </remarks>
 		static void ReadIDFileDefinitions()
 		{
-			// get the resouce from the module
+			// Get the resource from the module
 			HRSRC resource = FindResource(Main::YeloModuleHandle(), MAKEINTRESOURCE(OS_CHECKSUMS_XML), "XML");
-			if(!resource) return;
-			HGLOBAL resource_handle = LoadResource(Main::YeloModuleHandle(), resource);
-			if(!resource_handle) return;
-			void* resource_pointer = LockResource(resource_handle);
-			if(!resource_pointer) return;
-
-			// read the xml from the resource pointer
-			TiXmlDocument definition_xml;
-			definition_xml.Parse(CAST_PTR(const char*, resource_pointer));
-
-			TiXmlElement* root = definition_xml.FirstChildElement("osYeloChecksums");
-			if(root == nullptr)
-				return;
-
-			TiXmlElement* file_element = root->FirstChildElement("file");
-			if(file_element == nullptr)
-				return;
-
-			//get the file count by enumerating all file elements
-			g_file_io_globals.m_id_file_count = 0;
-			TiXmlElement* count_element = file_element;
-			do{ g_file_io_globals.m_id_file_count++; }while(count_element = count_element->NextSiblingElement("file"));
-
-			//.allocate the file definition memory
-			g_file_io_globals.m_id_file_definitions = new s_id_file_definition[g_file_io_globals.m_id_file_count];
-
-			// read all of the file definitions
-			uint32 index = 0;
-			do
+			if(!resource)
 			{
-				s_id_file_definition& file_def = g_file_io_globals.m_id_file_definitions[index];
+				return;
+			}
 
-				const char* string_pointer = nullptr;
-				uint32 string_length = 0;
+			HGLOBAL resource_handle = LoadResource(Main::YeloModuleHandle(), resource);
+			if(!resource_handle)
+			{
+				return;
+			}
 
-				// read the files ID
-				string_pointer = file_element->Attribute("ID");
-				string_length = strlen(string_pointer) + 1;
+			void* resource_pointer = LockResource(resource_handle);
+			if(!resource_pointer)
+			{
+				return;
+			}
 
-				file_def.m_id = new char[string_length];
-				file_def.m_id[0] = 0;
-				strcpy_s(file_def.m_id, string_length, string_pointer);
+			// Read the xml from the resource pointer
+			auto config_file = Configuration::c_configuration_file_factory::CreateConfigurationFile(CAST_PTR(const char*, resource_pointer), "xml");
+			if(!config_file || !config_file->Load())
+			{
+				return;
+			}
 
-				// read the files MD5 if present
-				string_pointer = file_element->Attribute("MD5");
-				if(!string_pointer)
-				{
-					file_def.m_md5[0] = 0;
-					file_def.m_flags.do_md5_check = false;
-				}
-				else
-				{
-					string_length = strlen(string_pointer) + 1;
+			auto checksums_node = config_file->Root()->GetChild("OpenSauce.Checksums");
+			if(!checksums_node)
+			{
+				return;
+			}
 
-					file_def.m_md5[0] = 0;
-					strcpy_s(file_def.m_md5, sizeof(file_def.m_md5), string_pointer);
-					file_def.m_flags.do_md5_check = true;
-				}
-
-				// read the files location
-				string_pointer = file_element->GetText();
-
-				// parse environment variables to create the absolute path
-				std::string location(string_pointer);
-				Settings::ParseEnvironmentVariables(location);
-
-				string_length = location.length() + 1;
-				file_def.m_location = new char[string_length];
-				file_def.m_location[0] = 0;
-				strcpy_s(file_def.m_location, string_length, location.c_str());
-
-				// check the file exists
-				file_def.m_flags.file_exists = PathExists(file_def.m_location);
-
-				index++;
-			}while(file_element = file_element->NextSiblingElement("file"));
+			g_checksums.GetValue(*checksums_node);
 		}
 
 		void Initialize()
@@ -114,92 +145,71 @@ namespace Yelo
 			ReadIDFileDefinitions();
 		}
 
-		void Dispose()
-		{
-			// delete allocated memory in each file id definition
-			for(uint32 i = 0; i < g_file_io_globals.m_id_file_count; i++)
-			{
-				s_id_file_definition& file_def = g_file_io_globals.m_id_file_definitions[i];
+		void Dispose() { }
 
-				delete [] file_def.m_id;
-				delete [] file_def.m_location;
-			}
-			// delete the file definition array
-			delete [] g_file_io_globals.m_id_file_definitions;
-			g_file_io_globals.m_id_file_definitions = nullptr;
-			g_file_io_globals.m_id_file_count = 0;
-		}
-
-		/*!
-		 * \brief
-		 * Opens a file referenced in the id file list.
-		 * 
-		 * \param info_out
-		 * A file information struct for storing handles and pointers.
-		 * 
-		 * \param file_id
-		 * The string ID used to reference a file in the id file list.
-		 * 
-		 * \returns
-		 * A non-zero value if an error occurred.
-		 * 
-		 * Opens a file referenced in the id file list. ID files can only be readonly, otherwise the md5 would change when the file is written to.
-		 * If the file id definition has an MD5 checksum the file is memory mapped and it's checksum compared. If the checksums do not match, an error is returned,
-		 * but the file remains open for reading.
-		 */
 		Enums::file_io_open_error OpenFileByID(s_file_info& info_out, const char* file_id)
 		{
-			bool found = false;
-			uint32 index = 0;
-			for(index = 0; index < g_file_io_globals.m_id_file_count; index++)
-			{
-				// compare the file ids
-				if(strcmp(g_file_io_globals.m_id_file_definitions[index].m_id, file_id) == 0)
+			auto found_file = std::find_if(g_checksums.m_files.begin(), g_checksums.m_files.end(),
+				[file_id](const c_file_container& entry)
 				{
-					found = true;
-					break;
+					return entry.m_id.GetConst() == file_id;
 				}
+			);
+
+			if(found_file == g_checksums.m_files.end())
+			{
+				return Enums::_file_io_open_error_file_does_not_exist;
 			}
 
-			if(!found)
+			auto& file_entry = *found_file;
+			if(!file_entry.GetFileExists())
+			{
 				return Enums::_file_io_open_error_file_does_not_exist;
+			}
 
-			s_id_file_definition& file_def = g_file_io_globals.m_id_file_definitions[index];
-
-			// file presence was checked when initializing
-			if(!file_def.m_flags.file_exists)
-				return Enums::_file_io_open_error_file_does_not_exist;
-
-			// open the file
+			// Open the file
 			// ID files are always read only
-			info_out.file_handle = CreateFile(file_def.m_location, 
-				GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+			info_out.file_handle = CreateFile(file_entry.GetAbsolutePath().c_str()
+				, GENERIC_READ
+				, 0
+				, nullptr
+				, OPEN_EXISTING
+				, FILE_ATTRIBUTE_NORMAL
+				, nullptr);
 
 			if(info_out.file_handle == INVALID_HANDLE_VALUE)
+			{
 				return GetOpenErrorEnum(GetLastError());
+			}
 
 			info_out.file_size = GetFileSize(info_out.file_handle, nullptr);
 
 			if(info_out.file_size == 0)
+			{
 				return Enums::_file_io_open_error_file_is_empty;
+			}
 
 			info_out.m_flags.is_readable = true;
 
 #ifdef FILE_IO_DO_MD5_CHECK
-			if(file_def.m_flags.do_md5_check)
+			if(file_entry.GetChecksumRequired())
 			{
 				// map the file as we don't need to read it into memory
 				HANDLE mapped_file = CreateFileMapping(info_out.file_handle, nullptr, PAGE_READONLY, 0, 0, nullptr);
 
 				void* mapping_pointer = MapViewOfFile(mapped_file, FILE_MAP_READ, 0, 0, 0);
 
-				bool md5_matches = Engine::CompareMD5(CAST_PTR(byte*, mapping_pointer), info_out.file_size, file_def.m_md5);
+				bool md5_matches = Engine::CompareMD5(CAST_PTR(byte*, mapping_pointer)
+					, info_out.file_size
+					, file_entry.m_md5.GetConst().c_str());
 
 				UnmapViewOfFile(mapping_pointer);
 				CloseHandle(mapped_file);
 
 				if(!md5_matches)
+				{
 					return Enums::_file_io_open_error_md5_mismatch;
+				}
 			}
 #endif
 			return Enums::_file_io_open_error_none;

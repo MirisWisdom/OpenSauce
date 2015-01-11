@@ -655,7 +655,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingComponent.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingRenderable.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingUpdatable.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingUserSettings.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_shader_instance_motionblur.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_shader_motionblur.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_system_motionblur.hpp" />

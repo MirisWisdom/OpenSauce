@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
+#include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/Settings.hpp"
@@ -527,7 +528,7 @@ namespace Yelo
 
 				bool encrypted_value = false;
 				if(encrypted)
-					encrypted_value = Settings::ParseBoolean(encrypted);
+					ValueConversion::FromString(encrypted, encrypted_value);
 
 				bool encryption_valid = true;
 				if((encrypted_value && !unencryptedmd5) || (!encrypted_value && unencryptedmd5))

@@ -21,12 +21,12 @@ namespace Yelo
 		{
 			auto std_string = std::string(string);
 
-			if((std_string == "True") || (std_string == "true") || (std_string == "1"))
+			if((std_string == "True") || (std_string == "true") || (std_string == "on") || (std_string == "1"))
 			{
 				output = true;
 				return true;
 			}
-			else if((std_string == "False") || (std_string == "false") || (std_string == "0"))
+			else if((std_string == "False") || (std_string == "false") || (std_string == "off") || (std_string == "0"))
 			{
 				output = false;
 				return true;

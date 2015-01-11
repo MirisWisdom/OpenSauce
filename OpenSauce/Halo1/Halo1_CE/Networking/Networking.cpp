@@ -125,12 +125,12 @@ namespace Yelo
 		#pragma endregion
 
 		#pragma region OnPlayerExitDelegate
-#if PLATFORM_VERSION <= 0x1090
 		API_FUNC_NAKED static void PLATFORM_API OnPlayerExitDelegate()
 		{
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_REMOVE_PLAYER);
 
 			API_FUNC_NAKED_START_()
+#if PLATFORM_VERSION <= 0x1090
 				push	esi		// esi = s_network_game
 				push	edi		// save edi just in case the compiler does some nasty stuff
 
@@ -141,14 +141,7 @@ namespace Yelo
 				pop		esi
 
 				call	CALL_ADDR
-			API_FUNC_NAKED_END_()
-		}
 #else
-		API_FUNC_NAKED static void PLATFORM_API OnPlayerExitDelegate()
-		{
-			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_REMOVE_PLAYER);
-
-			API_FUNC_NAKED_START_()
 				push	ebx		// ebx = s_network_game
 				push	eax		// save eax just in case the compiler does some nasty stuff
 
@@ -159,9 +152,9 @@ namespace Yelo
 				pop		ebx
 
 				call	CALL_ADDR
+#endif
 			API_FUNC_NAKED_END_()
 		}
-#endif
 
 		#pragma endregion
 		//////////////////////////////////////////////////////////////////////////
