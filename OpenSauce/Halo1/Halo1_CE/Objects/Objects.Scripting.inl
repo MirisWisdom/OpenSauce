@@ -8,6 +8,8 @@
 #include "Game/GameStateRuntimeData.hpp"
 #include "Objects/Objects.hpp"
 
+#include <YeloLib/cseries/value_conversion.hpp>
+
 namespace Yelo
 {
 	namespace Objects
@@ -358,7 +360,11 @@ static void* scripting_vehicle_remapper_enabled_evaluate(void** arguments)
 
 	result.boolean = !c_settings_objects::Instance()->m_vehicle_remapper_enabled;
 	if( args->state_name[0] != '\0' && strcmp(args->state_name, "get")!=0 )
-		VehicleRemapperEnable( Settings::ParseBoolean(args->state_name) );
+	{
+		bool value = false;
+		ValueConversion::FromString(args->state_name, value);
+		VehicleRemapperEnable( value );
+	}
 
 	return result.pointer;
 }

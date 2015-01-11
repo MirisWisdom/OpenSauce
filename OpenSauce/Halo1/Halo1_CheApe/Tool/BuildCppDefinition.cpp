@@ -8,6 +8,7 @@
 #include "Tool/BuildCppDefinition.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
+#include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/StringEditing.hpp"
 #include "Engine/EngineFunctions.hpp"
@@ -29,7 +30,8 @@ namespace Yelo
 			tag group_tag = *args->group_tag;
 			TagGroups::TagSwap(group_tag);
 
-			bool add_boost_asserts = Settings::ParseBoolean(args->add_boost_asserts_cstr);
+			bool add_boost_asserts = true;
+			ValueConversion::FromString(args->add_boost_asserts_cstr, add_boost_asserts);
 
 			// get the tag groups definition
 			tag_group* tag_group_def = blam::tag_group_get(group_tag);

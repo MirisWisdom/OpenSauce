@@ -189,17 +189,6 @@ namespace Yelo
 			return file;
 		}
 
-
-		TiXmlElement* GenericSettingsParse(TiXmlDocument& doc, char file_path[MAX_PATH], cstring branch_name)
-		{
-			return GenericSettingsParse("Halo1_CE", doc, file_path, branch_name);
-		}
-		TiXmlElement* GenericSettingsWrite(TiXmlDocument& doc, cstring root_name, cstring branch_name)
-		{
-			return GenericSettingsWrite("Halo1_CE", doc, root_name, branch_name);
-		}
-
-
 		void ReplaceEnvironmentVariable(std::string& parse_string, const char* variable, const char* value)
 		{
 			if(!variable || !value)

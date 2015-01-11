@@ -15,6 +15,7 @@
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
+#include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/StringEditing.hpp"
 #include "Engine/EngineFunctions.hpp"
@@ -427,11 +428,18 @@ namespace Yelo
 				return;
 			}
 
-			bool prompt_to_continue = Settings::ParseBoolean(args->prompt_to_continue);
-			bool prompt_to_fix_unresolved = Settings::ParseBoolean(args->prompt_to_fix_unresolved);
-			bool load_non_resolving = Settings::ParseBoolean(args->load_non_resolving);
-			bool print_size = Settings::ParseBoolean(args->print_size);
-			bool verbose = Settings::ParseBoolean(args->verbose);
+			bool prompt_to_continue = true;
+			bool prompt_to_fix_unresolved = true;
+			bool load_non_resolving = true;
+			bool print_size = true;
+			bool verbose = true;
+			
+			ValueConversion::FromString(args->prompt_to_continue, prompt_to_continue);
+			ValueConversion::FromString(args->prompt_to_fix_unresolved, prompt_to_fix_unresolved);
+			ValueConversion::FromString(args->load_non_resolving, load_non_resolving);
+			ValueConversion::FromString(args->print_size, print_size);
+			ValueConversion::FromString(args->verbose, verbose);
+
 			_enum mode = prompt_to_fix_unresolved
 				? c_tag_maintenance_children_controller::_mode_fix_unresolving
 				: c_tag_maintenance_children_controller::_mode_print_unresolving;

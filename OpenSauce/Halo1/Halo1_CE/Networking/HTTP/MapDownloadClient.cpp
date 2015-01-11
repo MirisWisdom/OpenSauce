@@ -17,6 +17,7 @@
 #include <YeloLib/memory/compression/zip_codec.hpp>
 #include <YeloLib/memory/security/xxtea.hpp>
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
+#include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/Settings.hpp"
@@ -583,7 +584,9 @@ namespace Yelo
 
 					bool encrypted_value = false;
 					if(encrypted)
-						encrypted_value = Settings::ParseBoolean(encrypted);
+					{
+						ValueConversion::FromString(encrypted, encrypted_value);
+					}
 
 					bool encryption_valid = true;
 					if(encrypted_value && !unencrypted_md5)

@@ -16,6 +16,7 @@
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
@@ -125,9 +126,9 @@ namespace Yelo { namespace Tool {
 		}* args = CAST_PTR(s_arguments*, arguments);
 
 		bool copy_data_files_first, store_resources, use_memory_upgrades;
-		copy_data_files_first = Settings::ParseBoolean(args->copy_data_files_first_str);
-		store_resources = Settings::ParseBoolean(args->store_resources_str);
-		use_memory_upgrades = Settings::ParseBoolean(args->use_memory_upgrades_str);
+		ValueConversion::FromString(args->copy_data_files_first_str, copy_data_files_first);
+		ValueConversion::FromString(args->store_resources_str, store_resources);
+		ValueConversion::FromString(args->use_memory_upgrades_str, use_memory_upgrades);
 		//////////////////////////////////////////////////////////////////////////
 		
 		if (!use_memory_upgrades)

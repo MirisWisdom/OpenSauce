@@ -10,6 +10,7 @@
 
 #include <YeloLib/Halo1/cache/cache_files_structures_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
+#include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Tool/BuildCacheFile/BuildCacheFileGlobals.hpp"
 #include "Tool/BuildCacheFile/BuildCacheFileMemoryUpgrades.hpp"
@@ -49,9 +50,10 @@ void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[])
 	}* args = CAST_PTR(s_arguments*, arguments);
 
 	bool copy_data_files_first, store_resources, use_memory_upgrades;
-	copy_data_files_first = Settings::ParseBoolean(args->copy_data_files_first_str);
-	store_resources = Settings::ParseBoolean(args->store_resources_str);
-	use_memory_upgrades = Settings::ParseBoolean(args->use_memory_upgrades_str);
+	ValueConversion::FromString(args->copy_data_files_first_str, copy_data_files_first);
+	ValueConversion::FromString(args->store_resources_str, store_resources);
+	ValueConversion::FromString(args->use_memory_upgrades_str, use_memory_upgrades);
+
 	//////////////////////////////////////////////////////////////////////////
 
 	if(!use_memory_upgrades)

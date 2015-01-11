@@ -1659,9 +1659,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingUpdatable.hpp">
       <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingUserSettings.hpp">
-      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_shader_instance_motionblur.hpp">
       <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
     </ClInclude>
