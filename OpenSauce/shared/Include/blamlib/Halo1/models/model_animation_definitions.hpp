@@ -108,10 +108,6 @@ namespace Yelo
 			_weapon_class_animation_unused54,
 
 			k_number_of_weapon_class_animations,
-
-			// When used in a regular unit (e.g. elite) this is the 'infect-start' animation
-			// When used in an infected unit (e.g. combat form elite) this is the 'infect-end' animation
-			_weapon_class_animation_yelo_infect = _weapon_class_animation_unused52,
 		};
 
 		enum unit_seat_animation

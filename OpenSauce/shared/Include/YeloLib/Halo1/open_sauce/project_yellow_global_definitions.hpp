@@ -6,9 +6,11 @@
 */
 #pragma once
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
-
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+
+#if PLATFORM_IS_EDITOR
+#include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
+#endif
 
 namespace Yelo
 {
@@ -124,8 +126,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, mod_name, "", "name of the engine 'mod' these globals and, inheriting scenario, are for");
 
 			TAG_FIELD(tag_reference, explicit_references, 'tagc');
-			TAG_FIELD(tag_reference, cv_globals, 'gelc');
-			TAG_PAD(int32, 4);
+			TAG_PAD(int32, 8);
 
 #if FALSE	// TODO: once we're sure it's safe to remove this, move the padding below into the padding field above
 			/* !-- Preprocessing --! */
@@ -170,9 +171,6 @@ namespace Yelo
 
 		static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 #endif
-		public:
-			// Does the tag definition have a project_yellow_globals_cv reference?
-			bool HasCvGlobals() const;
 		};
 	};
 };

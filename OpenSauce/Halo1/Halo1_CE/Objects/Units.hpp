@@ -8,7 +8,8 @@
 
 namespace Yelo
 {
-	namespace Objects { namespace Units {
+	namespace Objects { namespace Units
+	{
 		void Initialize();
 		void Dispose();
 		void InitializeForNewMap();
@@ -22,5 +23,7 @@ namespace Yelo
 		void InitializeForNewMapPrologue();
 
 		void InitializeForYeloGameState(bool enabled);
+
+		void ObjectsUpdate();
 	}; };
 };

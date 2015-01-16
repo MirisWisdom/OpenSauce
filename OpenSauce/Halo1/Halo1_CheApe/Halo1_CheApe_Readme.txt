@@ -7,7 +7,6 @@
   * ADD			tag system now supports tag fields of the _field_string kind with a custom string length (stock is fixed to 31-character strings)
   * ADD			Custom event handlers for Guerilla's Source Control and Xsync menu items, for use in a future system (they still don't do anything currently)
   * ADD			Introduced "tag-load-test" command to Tool.
-  * ADD			project_yellow_globals_cv tag containing both boarding and unit infection tag blocks
   * ADD			model_animations tag features two new unit_seat_animation types for seat boarding and ejection
   * ADD			Added model extractor to OpenSauceIDE
   * ADD			Added a lightmap rendering script for 3ds MAX

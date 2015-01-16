@@ -405,14 +405,14 @@ namespace Yelo
 			ai_index_actor_iterator_new(ai_reference, iterator);
 			while (auto* actor = ai_index_actor_iterator_next(iterator))
 			{
-				datum_index unit_index = *actor->GetMetaUnitIndex();
+				datum_index unit_index = actor->meta.unit_index;
 				if (!unit_index.IsNull())
 				{
 					object_list_add(list_index, unit_index);
 				}
 
 				// add all the units that make up this actor's swarm
-				for (datum_index swarm_unit_index = *actor->GetMetaSwarmUnitIndex(); !swarm_unit_index.IsNull(); )
+				for (datum_index swarm_unit_index = actor->meta.swarm_unit_index; !swarm_unit_index.IsNull(); )
 				{
 					auto* unit = object_get_and_verify_type<s_unit_datum>(swarm_unit_index);
 					object_list_add(list_index, swarm_unit_index);

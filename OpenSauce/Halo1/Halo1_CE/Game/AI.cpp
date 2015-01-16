@@ -12,7 +12,6 @@
 #include <blamlib/Halo1/ai/prop_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/units/units_yelo.hpp>
 
@@ -45,41 +44,41 @@ namespace Yelo
 
 		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
 		{
-			const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 			auto unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
-
-			// Exit the vehicle like normal if a globals tag doesn't exist
-			if(cv_globals == nullptr)
-			{
-				unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
-				return;
-			}
 
 			datum_index parent_unit_index = unit->object.parent_object_index;
 			auto parent_unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(parent_unit_index);
 			int16 seat_index = unit->unit.vehicle_seat_index;
 
-			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
-				cv_globals->FindUnitExternalUpgradeBlock(parent_unit->object.definition_index);
+			const auto* unit_definition = blam::tag_get<TagGroups::s_unit_definition>(parent_unit->object.definition_index);
 
-			// Check if a unit upgrades definition exists for the vehicle the actor is in
-			if (unit_upgrades_definition != nullptr)
+			// TODO: Add tag data to get bidirectional references?
+			// Get the boarding seat definition for the current seat
+			int16 boarding_seat_index = 0;
+			const TagGroups::unit_seat_boarding* boarding_seat = nullptr;
+			for(auto& seat : unit_definition->unit.seats)
 			{
-				// Check if the seat the actor is in is being boarded
-				for(const auto& boarding_seat : unit_upgrades_definition->boarding_seats)
+				if(seat.HasBoardingTargetSeat() && (seat.GetSeatBoarding().target_seat_index == seat_index))
 				{
-					int16 boarding_seat_index = boarding_seat.seat_index;
-					int16 target_seat_index = boarding_seat.target_seat_index;
-
-					if (seat_index == target_seat_index)
-					{
-						datum_index boarding_unit = Objects::GetUnitInSeat(parent_unit_index, boarding_seat_index);
-
-						// If the seat is being boarded, prevent ai from exiting
-						if (boarding_unit != datum_index::null)
-							return;
-					}
+					boarding_seat = &seat.GetSeatBoarding();
+					break;
 				}
+
+				boarding_seat_index++;
+			}
+
+			// Exit the vehicle like normal if the seat can't be boarded
+			if(!boarding_seat)
+			{
+				unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
+				return;
+			}
+
+			// Check if the seat the actor is in is being boarded. If the seat is being boarded, prevent ai from exiting.
+			datum_index boarding_unit = Objects::GetUnitInSeat(parent_unit_index, boarding_seat_index);
+			if (!boarding_unit.IsNull())
+			{
+				return;
 			}
 
 			// Exit the vehicle like normal if conditions haven't been met

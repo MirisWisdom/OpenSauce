@@ -16,6 +16,8 @@
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <blamlib/Halo1/ai/actor_structures.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "Game/Console.hpp"
 #include "Game/GameState.hpp"
@@ -275,6 +277,135 @@ namespace Yelo
 		{
 			Engine::AI::Delete(actor_index, is_dead);
 		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_update(const datum_index actor_index)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_UPDATE);
+
+			API_FUNC_NAKED_START()
+				mov		esi, actor_index
+				call	CALL_ADDRESS
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_customize_unit(const datum_index actor_variant, const datum_index unit_index)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_CUSTOMIZE_UNIT);
+
+			API_FUNC_NAKED_START()
+				mov		eax, actor_variant
+				push	unit_index
+				call	CALL_ADDRESS
+				add		esp, 4
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_set_active(const datum_index actor_index, const bool active)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_SET_ACTIVE);
+
+			API_FUNC_NAKED_START()
+				xor		eax, eax
+				mov		al, active
+				mov		edi, actor_index
+				call	CALL_ADDRESS
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_set_dormant(const datum_index actor_index, const bool dormant)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_SET_DORMANT);
+
+			API_FUNC_NAKED_START()
+				xor		ebx, ebx
+				mov		bl, dormant
+				mov		eax, actor_index
+				call	CALL_ADDRESS
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		void PLATFORM_API actor_delete_props(const datum_index actor_index)
+		{
+			return CAST_PTR(void (PLATFORM_API*)(const datum_index), Engine::GET_FUNC_PTR(ACTOR_DELETE_PROPS))(actor_index);
+		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_freeze(const datum_index actor_index)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_FREEZE);
+
+			API_FUNC_NAKED_START()
+				mov		eax, actor_index
+				call	CALL_ADDRESS
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		void PLATFORM_API actor_braindead(const datum_index actor_index, const bool braindead)
+		{
+			const auto actor_data = AI::Actors()[actor_index];
+
+			if(braindead)
+			{
+				actor_data->state_flags = 0;
+				actor_data->state.action = Enums::_actor_action_none;
+
+				actor_delete_props(actor_index);
+				actor_freeze(actor_index);
+				actor_set_dormant(actor_index, 0);
+			}
+			else
+			{
+				if(actor_data->state_flags == 0)
+				{
+					actor_data->state_flags = 2;
+				}
+			}
+		}
+
+		datum_index PLATFORM_API actor_create_for_unit(const bool is_swarm
+			, const datum_index unit_index
+			, const datum_index actor_variant
+			, const datum_index encounter_index
+			, const int32 squad_index
+			, const int32 arg7
+			, const int32 arg6
+			, const bool magic_sight_after_timer
+			, const Enums::actor_default_state initial_state
+			, const Enums::actor_default_state return_state
+			, const int32 command_list_index
+			, const int32 sequence_id)
+		{
+			return CAST_PTR(datum_index (PLATFORM_API*)
+				( const bool
+				, const datum_index
+				, const datum_index
+				, const datum_index
+				, const int32
+				, const int32
+				, const int32
+				, const bool
+				, const Enums::actor_default_state
+				, const Enums::actor_default_state
+				, const int32
+				, const int32), Engine::GET_FUNC_PTR(ACTOR_CREATE_FOR_UNIT))
+				( is_swarm
+				, unit_index
+				, actor_variant
+				, encounter_index
+				, squad_index
+				, arg7
+				, arg6
+				, magic_sight_after_timer
+				, initial_state
+				, return_state
+				, command_list_index
+				, sequence_id);
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 		// ai_script.c
 		void PLATFORM_API ai_scripting_attach_free(datum_index unit_index, datum_index actor_variant_definition_index)
@@ -1059,84 +1190,103 @@ namespace Yelo
 			return 0;
 #endif
 		}
+
 		//////////////////////////////////////////////////////////////////////////
 		// objects.c
 		void PLATFORM_API object_reset(datum_index object_index)
 		{
 			Engine::Objects::Reset(object_index);
 		}
+
 		void PLATFORM_API object_set_position(datum_index object_index, 
 			__in_opt real_point3d* new_position, __in_opt real_vector3d* new_forward, __in_opt real_vector3d* new_up)
 		{
 			Engine::Objects::SetPosition(object_index, new_position, new_forward, new_up);
 		}
+
 		void PLATFORM_API object_set_position_network(datum_index object_index, 
 			real_point3d* new_position)
 		{
 			Engine::Objects::SetPositionNetwork(object_index, new_position);
 		}
+
 		void PLATFORM_API object_translate(datum_index object_index, 
 			const real_point3d& new_position, __in_opt const s_scenario_location* new_location)
 		{
 			// TODO
 		}
+
 		void PLATFORM_API object_placement_data_new(s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index)
 		{
 			Engine::Objects::PlacementDataNew(data, object_definition_index, owner_object_index);
 		}
+
 		datum_index PLATFORM_API object_new(s_object_placement_data& data)
 		{
 			return Engine::Objects::New(data);
 		}
+
 		datum_index PLATFORM_API object_new_with_role(s_object_placement_data& data, Enums::networked_datum role)
 		{
 			return Engine::Objects::NewWithRole(data, role);
 		}
+
 		void PLATFORM_API object_delete_to_network(datum_index object_index)
 		{
 			Engine::Networking::EncodeObjectDeletionMessage(object_index);
 		}
+
 		void PLATFORM_API object_delete(datum_index object_index)
 		{
 			Engine::Objects::Delete(object_index);
 		}
+
 		void PLATFORM_API object_reconnect_to_map(datum_index object_index, __in_opt s_scenario_location* location_reference)
 		{
 			Engine::Objects::ReconnectToMap(object_index, location_reference);
 		}
+
 		void PLATFORM_API object_disconnect_from_map(datum_index object_index)
 		{
 			Engine::Objects::DisconnectFromMap(object_index);
 		}
+
 		void PLATFORM_API object_attach_to_marker(datum_index target_object_index, cstring target_marker_name, datum_index object_index, cstring marker_name)
 		{
 			Engine::Objects::Attach(target_object_index, target_marker_name, object_index, marker_name);
 		}
+
 		void PLATFORM_API object_detach(datum_index object_index)
 		{
 			Engine::Objects::Detach(object_index);
 		}
+
 		real_point3d& PLATFORM_API object_get_origin(datum_index object_index, __out real_point3d& return_origin)
 		{
 			return Engine::Objects::GetOrigin(object_index, return_origin);
 		}
+
 		void PLATFORM_API object_get_orientation(datum_index object_index, 
 			__out_opt real_vector3d* return_forward, __out_opt real_vector3d* return_up)
 		{
 			Engine::Objects::GetOrientation(object_index, return_forward, return_up);
 		}
+
 		s_scenario_location& PLATFORM_API object_get_location(datum_index object_index, __out s_scenario_location& return_location)
 		{
 			return Engine::Objects::GetLocation(object_index, return_location);
 		}
+
 		void PLATFORM_API object_start_interpolation(datum_index object_index, int32 interpolation_frame_count)
 		{
 			Engine::Objects::StartInterpolation(object_index, interpolation_frame_count);
 		}
+
 		s_object_data* PLATFORM_API object_iterator_next(s_object_iterator& iter)
 		{
 			return Engine::Objects::IteratorNext(iter);
 		}
+
 		int16 PLATFORM_API objects_in_sphere(Flags::objects_find_flags find_flags, long_flags object_type_flags, 
 			const s_scenario_location& location, const real_point3d& center, real radius, 
 			datum_index object_indices[], int16 maximum_object_indices)
@@ -1144,25 +1294,40 @@ namespace Yelo
 			return Engine::Objects::FindInSphere(find_flags, object_type_flags,
 				location, center, radius, object_indices, maximum_object_indices);
 		}
+
 		void PLATFORM_API object_definition_predict(datum_index object_index)
 		{
 			Engine::Objects::DefinitionPredict(object_index);
 		}
+
 		bool PLATFORM_API object_header_block_allocate(datum_index object_index, size_t block_reference_offset, size_t size)
 		{
 			return Engine::Objects::HeaderBlockAllocate(object_index, block_reference_offset, size);
 		}
+
 		void PLATFORM_API objects_scripting_set_scale(datum_index object_index, real scale, int32 ticks)
 		{
 			Engine::Objects::SetScale(object_index, scale, ticks);
-		}		
+		}
+
 		real PLATFORM_API object_get_level_of_detail_pixels(datum_index object_index)
 		{
 			return Engine::Objects::GetLevelOfDetailPixels(object_index);
 		}
+
 		void PLATFORM_API object_render_state_refresh(datum_index object_render_state_index, datum_index object_index, real level_of_detail_pixels, byte arg4)
 		{
 			Engine::Objects::ObjectRenderStateRefresh(object_render_state_index, object_index, level_of_detail_pixels, arg4);
+		}
+
+		void PLATFORM_API objects_update()
+		{
+			CAST_PTR(void (PLATFORM_API*)(), Engine::GET_FUNC_PTR(OBJECTS_UPDATE))();
+		}
+
+		void PLATFORM_API object_update(datum_index object_index)
+		{
+			CAST_PTR(void (PLATFORM_API*)(const datum_index), Engine::GET_FUNC_PTR(OBJECT_UPDATE))(object_index);
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -1192,12 +1357,6 @@ namespace Yelo
 	// render
 	namespace blam
 	{
-		void PLATFORM_API render_frame(void* windows, const int32 window_count, void* arg3, const real delta_time, void* arg5)
-		{
-			CAST_PTR(void (PLATFORM_API*)(void*, const int32, void*, const real, void*), Engine::GET_FUNC_PTR(RENDER_FRAME))
-				(windows, window_count, arg3, delta_time, arg5);
-		}
-
 		void PLATFORM_API render_window(const uint16 local_player_index
 			, void* render_camera
 			, void* render_frustum
@@ -1331,49 +1490,161 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// units.c
-		void PLATFORM_API unit_set_animation(datum_index unit_index, datum_index animation_graph_index, int32 animation_index)
+		void PLATFORM_API unit_update(const datum_index unit_index)
+		{
+			CAST_PTR(void (PLATFORM_API*)(const datum_index), Engine::GET_FUNC_PTR(UNIT_UPDATE))(unit_index);
+		}
+
+		void PLATFORM_API unit_set_animation(datum_index unit_index
+			, datum_index animation_graph_index
+			, int32 animation_index)
 		{
 			Engine::Objects::UnitSetAnimation(unit_index, animation_graph_index, animation_index);
 		}
 
-
-		int16 PLATFORM_API unit_find_nearby_seat(datum_index unit_index, datum_index target_unit_index, __out int16& parent_seat_index)
+		int16 PLATFORM_API unit_find_nearby_seat(datum_index unit_index
+			, datum_index target_unit_index
+			, __out int16& parent_seat_index)
 		{
 			return Engine::Objects::UnitFindNearbySeat(unit_index, target_unit_index, parent_seat_index);
 		}
-		bool PLATFORM_API unit_can_enter_seat(datum_index unit_index, datum_index target_unit_index, int16 seat_index, 
-			__out datum_index* unit_in_seat_index)
+
+		bool PLATFORM_API unit_can_enter_seat(datum_index unit_index
+			, datum_index target_unit_index
+			, int16 seat_index
+			, __out datum_index* unit_in_seat_index)
 		{
 			return Engine::Objects::UnitCanEnterSeat(unit_index, target_unit_index, seat_index, unit_in_seat_index);
 		}
-		bool PLATFORM_API unit_enter_seat(datum_index unit_index, datum_index target_unit_index, int32 seat_index)
+
+		bool PLATFORM_API unit_enter_seat(datum_index unit_index
+			, datum_index target_unit_index
+			, int32 seat_index)
 		{
 			return Engine::Objects::UnitEnterSeat(unit_index, target_unit_index, seat_index);
 		}
+
 		void PLATFORM_API unit_get_camera_position(datum_index unit_index, __out real_point3d* return_position)
 		{
 			Engine::Objects::UnitGetCameraPosition(unit_index, return_position);
 		}
+
+		void PLATFORM_API unit_kill(const datum_index unit_index)
+		{
+			auto* unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(unit_index);
+			if(unit_datum)
+			{
+				SET_FLAG(unit_datum->object.damage.flags, Flags::_object_killed_bit, true);
+			}
+		}
+
 		void PLATFORM_API unit_open(datum_index unit_index)
 		{
 			Engine::Objects::UnitOpen(unit_index);
 		}
+
 		void PLATFORM_API unit_close(datum_index unit_index)
 		{
 			Engine::Objects::UnitClose(unit_index);
 		}
+
 		void PLATFORM_API unit_scripting_exit_vehicle(datum_index unit_index)
 		{
 			Engine::Objects::UnitExitVehicle(unit_index);
 		}
-		void PLATFORM_API unit_exit_seat_end(datum_index unit_index, 
-			bool no_network_message, bool can_run_on_client_side, bool unknown)
+
+		API_FUNC_NAKED bool PLATFORM_API unit_try_and_exit_seat(const datum_index unit_index)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_TRY_AND_EXIT_SEAT);
+
+			API_FUNC_NAKED_START()
+				mov		eax, unit_index
+				call	CALL_ADDRESS
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API unit_detach_from_parent(const datum_index unit_index)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_DETACH_FROM_PARENT);
+
+			API_FUNC_NAKED_START()
+				mov		edi, unit_index
+				call	CALL_ADDRESS
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		void PLATFORM_API unit_exit_seat_end(datum_index unit_index
+			, bool no_network_message
+			, bool can_run_on_client_side
+			, bool unknown)
 		{
 			Engine::Objects::UnitExitSeatEnd(unit_index, no_network_message, can_run_on_client_side, unknown);
 		}
+
 		int16 unit_get_custom_animation_time(datum_index unit_index)
 		{
 			return Engine::Objects::UnitGetCustomAnimationTime(unit_index);
+		}
+		
+		API_FUNC_NAKED bool PLATFORM_API unit_start_user_animation(const datum_index unit_index
+			, const datum_index animation_definition_index
+			, cstring animation_name
+			, const bool interpolate)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_START_USER_ANIMATION);
+
+			API_FUNC_NAKED_START()
+				mov		eax, animation_name
+				mov		edi, animation_definition_index
+				xor		ebx, ebx
+				mov		bl, interpolate
+				push	ebx
+				push	unit_index
+				call	CALL_ADDRESS
+				add		esp, 8
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force)
+		{
+			CAST_PTR(void (PLATFORM_API*)(const datum_index, const bool), Engine::GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON))(unit_index, force);
+		}
+
+		void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
+			, const Objects::s_damage_data* damage_data
+			, const _enum damage_flags
+			, const real shield_amount
+			, const real body_amount
+			, void* arg6
+			, const int32 damage_part)
+		{
+			CAST_PTR(void (PLATFORM_API*)(const datum_index
+				, const s_damage_data*
+				, const _enum
+				, const real
+				, const real
+				, const void*
+				, const int32), Engine::GET_FUNC_PTR(UNIT_DAMAGE_AFTERMATH))
+				(unit_index, damage_data, damage_flags, shield_amount, body_amount, arg6, damage_part);
+		}
+
+		API_FUNC_NAKED void PLATFORM_API unit_scripting_set_current_vitality(const datum_index unit_index
+			, const real health
+			, const real shield)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_SCRIPTING_SET_CURRENT_VITALITY);
+
+			API_FUNC_NAKED_START()
+				mov		eax, unit_index
+				push	shield
+				push	health
+				call	CALL_ADDRESS
+				add		esp, 8
+				pop		ebp
+			API_FUNC_NAKED_END_()
 		}
 	};
 };

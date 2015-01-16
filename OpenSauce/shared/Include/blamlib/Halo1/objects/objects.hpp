@@ -246,6 +246,9 @@ namespace Yelo
 
 		void PLATFORM_API object_render_state_refresh(datum_index object_render_state_index, datum_index object_index, real level_of_detail_pixels, byte arg4);
 
+		void PLATFORM_API objects_update();
+
+		void PLATFORM_API object_update(datum_index object_index);
 
 		s_object_data* object_get(datum_index object_index);
 		s_object_data* object_get_and_verify_type(datum_index object_index, long_flags expected_types);

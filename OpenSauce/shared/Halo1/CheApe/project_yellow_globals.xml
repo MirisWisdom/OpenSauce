@@ -48,8 +48,7 @@
 			<field type="String" name="mod name" tooltip="name of the engine 'mod' these globals, and inheriting scenario, are for" />
 
 			<field type="TagReference" name="global explicit references" definition="tag_collection_reference" />
-			<field type="TagReference" name="choking victim globals" definition="project_yellow_globals_cv_reference" tooltip="choke my chicken l0dex" />
-			<field type="Pad" definition="16" />
+			<field type="Pad" definition="32" />
 
 			<!-- TODO: Remove -->
 			<field type="Block" name="" definition="preprocess_block" />

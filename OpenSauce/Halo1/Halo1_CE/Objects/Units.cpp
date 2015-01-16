@@ -16,9 +16,9 @@
 #include <blamlib/Halo1/units/vehicle_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/Halo1/units/c_unit_transform_manager.hpp>
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
@@ -38,17 +38,39 @@ namespace Yelo
 
 #include "Objects/Units.Boarding.inl"
 #include "Objects/Units.Animations.inl"
-#include "Objects/Units.UnitInfections.inl"
+#include "Objects/Units.UnitTransform.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 namespace Yelo
 {
-	namespace Objects { namespace Units {
+	namespace Objects { namespace Units
+	{
+		static void PLATFORM_API UnitDamageAftermathHook(const datum_index unit_index
+			, const s_damage_data* damage_data
+			, const Flags::object_damage_flags damage_flags
+			, const real shield_amount
+			, const real body_amount
+			, void* arg6
+			, const int32 damage_part)
+		{
+			blam::unit_damage_aftermath(unit_index, damage_data, damage_flags, shield_amount, body_amount, arg6, damage_part);
+
+			Transform::UnitDamaged(unit_index, damage_data);
+		}
+
+		void ObjectsUpdate()
+		{
+			c_object_iterator iter(Enums::_object_type_mask_unit);
+
+			for(auto object_index : iter)
+			{
+				Transform::UnitUpdate(object_index.index);
+			}
+		}
 
 		void Initialize()
 		{
 			Animations::Initialize();
-			Infections::Initialize();
 			Boarding::Initialize();
 			
 			static const byte opcode_null[] = { 
@@ -57,12 +79,10 @@ namespace Yelo
 			};
 
 			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), opcode_null);
+			Memory::WriteRelativeCall(&UnitDamageAftermathHook, GET_FUNC_VPTR(UNIT_DAMAGE_AFTERMATH_CALL), true);
 		}
 
-		void Dispose()
-		{
-			Infections::Dispose();
-		}
+		void Dispose() { }
 
 		static void InitializeUnitGrenadeTypesForNewMap(GameState::s_yelo_header_data& yelo_header)
 		{
@@ -91,6 +111,7 @@ namespace Yelo
 
 			yelo_header.flags.update_unit_grenade_types_count = false;
 		}
+
 		void InitializeForNewMap()
 		{
 			if(GameState::YeloGameStateEnabled())
@@ -100,10 +121,13 @@ namespace Yelo
 				// handle the grenade types upgrading, if needed
 				InitializeUnitGrenadeTypesForNewMap(yelo_header);
 			}
+
+			Transform::InitializeForNewMap();
 		}
 
 		void DisposeFromOldMap()
 		{
+			Transform::DisposeFromOldMap();
 		}
 
 		void InitializeForNewMapPrologue()
@@ -128,6 +152,5 @@ namespace Yelo
 		void InitializeForYeloGameState(bool enabled)
 		{
 		}
-
 	}; };
 };
