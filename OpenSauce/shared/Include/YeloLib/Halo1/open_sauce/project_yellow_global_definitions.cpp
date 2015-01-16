@@ -17,86 +17,6 @@ namespace Yelo
 	{
 		cstring project_yellow_globals::k_default_name = "there they are all standing in a row";
 
-		int32 s_unit_infections_definition::FindInfectableUnitIndex(int32 infection_unit_index, datum_index infectable_unit_definition_index) const
-		{
-			for(int32 x = 0; x < infectable_units.Count; x++)
-			{
-				const TagGroups::s_unit_infection& unit_infection = infectable_units[x];
-
-				if(	infection_unit_index == unit_infection.infection_unit &&
-					infectable_unit_definition_index == unit_infection.unit)
-					return x;
-			}
-			return NONE;
-		}
-
-		int32 s_unit_infections_definition::FindInfectionUnitIndex(datum_index unit_definition_index) const
-		{
-			for(int32 x = 0; x < infection_units.Count; x++)
-			{
-				if(unit_definition_index == infection_units[x].tag_index)
-					return x;
-			}
-			return NONE;
-		}
-
-		int32 s_unit_infections_definition::LookupUnitInfectionIndex(datum_index infection_unit_definition_index, datum_index target_unit_definition_index) const
-		{
-			return FindInfectableUnitIndex(
-				FindInfectionUnitIndex(infection_unit_definition_index),
-				target_unit_definition_index);
-		}
-
-		int32 project_yellow_globals_cv::FindUnitExternalUpgradeIndex(datum_index unit_tag_index) const
-		{
-			for (int32 x = 0; x < unit_external_upgrades.Count; x++)
-			{
-				if (unit_tag_index == unit_external_upgrades[x].unit.tag_index)
-					return x;
-			}
-			return NONE;
-		}
-
-		int32 project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatIndex(datum_index unit_tag_index, int16 seat_index) const
-		{
-			TagGroups::s_unit_external_upgrades const* unit_external_upgrades = 
-				FindUnitExternalUpgradeBlock(unit_tag_index);
-
-			if (unit_external_upgrades == nullptr)
-				return NONE;
-			
-			for (int32 x = 0; x < unit_external_upgrades->boarding_seats.Count; x++)
-			{
-				if (seat_index == unit_external_upgrades->boarding_seats[x].seat_index)
-					return x;
-			}
-			return NONE;
-		}
-
-		TagGroups::s_unit_external_upgrades const* project_yellow_globals_cv::FindUnitExternalUpgradeBlock(datum_index unit_tag_index) const
-		{
-			for(const auto& upgrade : unit_external_upgrades)
-				if (unit_tag_index == upgrade.unit.tag_index)
-					return &upgrade;
-
-			return nullptr;
-		}
-
-		TagGroups::s_unit_boarding_seat const* project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_tag_index, int16 seat_index) const
-		{
-			TagGroups::s_unit_external_upgrades const* unit_external_upgrades = 
-				FindUnitExternalUpgradeBlock(unit_tag_index);
-
-			if (unit_external_upgrades == nullptr)
-				return nullptr;
-
-			for(const auto& boarding_seat : unit_external_upgrades->boarding_seats)
-				if (seat_index == boarding_seat.seat_index)
-					return &boarding_seat;
-
-			return nullptr;
-		}
-
 #if PLATFORM_IS_EDITOR
 		void project_yellow_globals::CullInvalidNetworkPlayerUnits()
 		{
@@ -130,15 +50,9 @@ namespace Yelo
 		}
 #endif
 
-		bool project_yellow_globals::HasCvGlobals() const
-		{
-			return	cv_globals.group_tag == project_yellow_globals_cv::k_group_tag &&
-					cv_globals.tag_index.IsNull() == false;
-		}
-
 #if PLATFORM_IS_EDITOR
 		//////////////////////////////////////////////////////////////////////////
-		// project_yellow_globals_cv
+		// project_yellow_globals
 #if FALSE
 		cstring PLATFORM_API s_yelo_preprocess_maplist_entry::FormatBlockName(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
@@ -188,60 +102,6 @@ namespace Yelo
 				strncat_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[1], Enums::k_tag_string_length);
 
 			return formatted_buffer;
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// unit_external_upgrades_block
-		static int UnitGetSeatIndexFromLabel(s_unit_definition* unit_def, cstring seat_label)
-		{
-			for (int i = 0; i < unit_def->unit.seats.Count; i++)
-			{
-				if (strcmp(seat_label, unit_def->unit.seats[i].label) == 0)
-					return i;
-			}
-			return NONE;
-		}
-
-		static void UnitExternalUpgradesBlockPostprocess(TAG_TBLOCK(&unit_external_upgrades_def, s_unit_external_upgrades),
-			Enums::tag_postprocess_mode mode)
-		{
-			if (mode != Enums::_tag_postprocess_mode_for_runtime)
-				return;
-
-			for (auto& upgrade : unit_external_upgrades_def)
-			{
-				datum_index tag_index = blam::tag_load(upgrade.unit.group_tag, upgrade.unit.name,
-					FLAG(Flags::_tag_load_non_resolving_references_bit));
-
-				if (!tag_index.IsNull())
-				{
-					auto* unit_def = blam::tag_get<s_unit_definition>(tag_index);
-
-					for (auto& seat : upgrade.boarding_seats)
-					{
-						cstring seat_label = seat.seat_label;
-						cstring target_seat_label = seat.target_seat_label;
-
-						seat.seat_index = UnitGetSeatIndexFromLabel(unit_def, seat_label);
-						seat.target_seat_index = UnitGetSeatIndexFromLabel(unit_def, target_seat_label);
-					}
-				}
-			}
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
-		// project_yellow_globals_cv
-		bool PLATFORM_API project_yellow_globals_cv::GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
-		{
-			auto* def = blam::tag_get<project_yellow_globals_cv>(tag_index);
-
-			def->version = project_yellow_globals_cv::k_version;
-			UnitExternalUpgradesBlockPostprocess(def->unit_external_upgrades, mode);
-
-			return true;
 		}
 		//////////////////////////////////////////////////////////////////////////
 #endif

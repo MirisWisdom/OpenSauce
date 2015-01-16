@@ -12,7 +12,6 @@
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <YeloLib/Halo1/tag_files/tag_database_definitions.hpp>
 
@@ -29,16 +28,10 @@ namespace Yelo
 		static struct s_yelo_definition_globals {
 			bool initialized;
 			PAD24;
-			tag_group* py_globals_cv_definition;
 			tag_group* py_globals_definition;
 			tag_group* py_definition;
 
 		private:
-			bool VerifyYeloGlobalsCvGroup() const
-			{
-				return	py_globals_cv_definition->version == project_yellow_globals_cv::k_version &&
-						py_globals_cv_definition->header_block_definition->element_size == sizeof(project_yellow_globals_cv);
-			}
 			bool VerifyYeloGlobalsGroup() const
 			{
 				return	py_globals_definition->version == project_yellow_globals::k_version &&
@@ -59,7 +52,7 @@ namespace Yelo
 			void Dispose();
 		}_yelo_definition_globals = {
 			false,
-			nullptr, nullptr, nullptr,
+			nullptr, nullptr,
 		};
 
 		static void VerifyGroupDefinitionHandler(bool& valid_definitions,
@@ -82,10 +75,6 @@ namespace Yelo
 			bool valid_definitions = true;
 
 			VerifyGroupDefinitionHandler(valid_definitions,
-				py_globals_cv_definition, &s_yelo_definition_globals::VerifyYeloGlobalsCvGroup,
-				"project_yellow_globals_cv");
-
-			VerifyGroupDefinitionHandler(valid_definitions,
 				py_globals_definition, &s_yelo_definition_globals::VerifyYeloGlobalsGroup,
 				"project_yellow_globals");
 
@@ -99,13 +88,7 @@ namespace Yelo
 		void s_yelo_definition_globals::InitializeGroupDefinitions()
 		{
 			int32 field_index = NONE;
-
-			//////////////////////////////////////////////////////////////////////////
-			{// project_yellow_globals_cv
-				py_globals_cv_definition->postprocess_proc = &TagGroups::project_yellow_globals_cv::GroupPostprocess;
-			}
-			//////////////////////////////////////////////////////////////////////////
-
+			
 			//////////////////////////////////////////////////////////////////////////
 			{// project_yellow_globals
 				py_globals_definition->postprocess_proc = &TagGroups::project_yellow_globals::GroupPostprocess;
@@ -178,7 +161,6 @@ namespace Yelo
 
 		void s_yelo_definition_globals::InitializeGroupReferences()
 		{
-			py_globals_cv_definition = blam::tag_group_get<project_yellow_globals_cv>();
 			py_globals_definition = blam::tag_group_get<project_yellow_globals>();
 			py_definition = blam::tag_group_get<project_yellow>();
 		}

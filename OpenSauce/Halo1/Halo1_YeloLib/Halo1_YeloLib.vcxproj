@@ -118,6 +118,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\objects\objects_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
@@ -127,8 +128,10 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_transform_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_transform_definition.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
@@ -192,7 +195,6 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_settings_definitions.hpp" />
@@ -293,9 +295,11 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\cseries\value_conversion.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\objects\objects_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_transform_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp" />

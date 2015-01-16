@@ -791,7 +791,7 @@
     <None Include="Objects\ObjectFieldDefinitions.inl" />
     <None Include="Objects\Objects.Damage.inl" />
     <None Include="Objects\Objects.Scripting.inl" />
-    <None Include="Objects\Units.UnitInfections.inl" />
+    <None Include="Objects\Units.UnitTransform.inl" />
     <None Include="Objects\Objects.VehicleSettings.inl" />
     <None Include="Objects\Objects.WeaponSettings.inl" />
     <None Include="Objects\Units.Animations.inl" />

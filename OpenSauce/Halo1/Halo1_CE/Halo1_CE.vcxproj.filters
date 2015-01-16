@@ -2066,9 +2066,6 @@
     <None Include="Objects\Objects.WeaponSettings.inl">
       <Filter>Objects\Impl</Filter>
     </None>
-    <None Include="Objects\Units.UnitInfections.inl">
-      <Filter>Objects\Impl</Filter>
-    </None>
     <None Include="TagGroups\CacheFiles.DataFiles.inl">
       <Filter>TagGroups\Impl</Filter>
     </None>
@@ -2236,6 +2233,9 @@
     </None>
     <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.TagGroups.inl">
       <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Objects\Units.UnitTransform.inl">
+      <Filter>Objects\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
