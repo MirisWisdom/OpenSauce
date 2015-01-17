@@ -16,8 +16,15 @@
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/cryptography/md5.hpp>
+#include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
+#include <blamlib/Halo1/objects/object_structures.hpp>
+#include <blamlib/Halo1/ai/actors.hpp>
+#include <blamlib/Halo1/ai/actor_structures.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
+
+#include "Engine/Objects.hpp"
 
 namespace Yelo
 {
@@ -56,7 +63,54 @@ namespace Yelo
 			return g_yelo_game_state_enabled;
 		}
 	};
+	
+	//////////////////////////////////////////////////////////////////////////
+	// ai
+	namespace blam
+	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		//////////////////////////////////////////////////////////////////////////
+		// actors.c
+		API_FUNC_NAKED void PLATFORM_API actor_delete(datum_index actor_index, bool is_dead)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(ACTOR_DELETE);
 
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_customize_unit(const datum_index actor_variant, const datum_index unit_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(ACTOR_CUSTOMIZE_UNIT);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API actor_braindead(const datum_index actor_index, const bool braindead)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(ACTOR_BRAINDEAD);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED datum_index PLATFORM_API actor_create_for_unit(const bool is_swarm
+			, const datum_index unit_index
+			, const datum_index actor_variant
+			, const datum_index encounter_index
+			, const int32 squad_index
+			, const int32 arg7
+			, const int32 arg6
+			, const bool magic_sight_after_timer
+			, const Enums::actor_default_state initial_state
+			, const Enums::actor_default_state return_state
+			, const int32 command_list_index
+			, const int32 sequence_id)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(ACTOR_CREATE_FOR_UNIT);
+
+			_asm jmp	FUNCTION;
+		}
+#endif
+	};
 	//////////////////////////////////////////////////////////////////////////
 	// cseries
 	namespace blam
@@ -152,6 +206,21 @@ namespace Yelo
 #endif
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// game
+	namespace blam
+	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		//////////////////////////////////////////////////////////////////////////
+		// game_allegiance.c
+		API_FUNC_NAKED bool PLATFORM_API game_team_is_enemy(long_enum team, long_enum team_to_test)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(GAME_TEAM_IS_ENEMY);
+
+			__asm	jmp	FUNCTION
+		}
+#endif
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// hs
 	namespace blam
 	{
@@ -163,6 +232,15 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+		
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		API_FUNC_NAKED void PLATFORM_API hs_effect_new_from_object_marker(datum_index effect_definition_index, datum_index object_index, cstring marker_name)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(HS_EFFECT_NEW_FROM_OBJECT_MARKER);
+
+			__asm	jmp	FUNCTION
+		}
+#endif
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// interface
@@ -358,6 +436,78 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// objects
+	namespace blam
+	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		API_FUNC_NAKED datum_index PLATFORM_API object_new(s_object_placement_data& data)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_NEW);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API object_delete(datum_index object_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_DELETE);
+
+			_asm jmp	FUNCTION;
+		}
+		
+		s_object_data* object_get(datum_index object_index)
+		{
+			if(!Objects::ObjectHeader().Header.is_valid)
+			{
+				return nullptr;
+			}
+
+			return Objects::ObjectHeader()[object_index]->_object;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API object_detach(datum_index object_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_DETACH);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API object_attach_to_marker(datum_index target_object_index, cstring target_marker_name, datum_index object_index, cstring marker_name)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_ATTACH_TO_MARKER);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API objects_update()
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECTS_UPDATE);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API object_placement_data_new(s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_PLACEMENT_DATA_NEW);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED s_object_data* PLATFORM_API object_iterator_next(s_object_iterator& iter)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_ITERATOR_NEXT);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED real_point3d& PLATFORM_API object_get_origin(datum_index object_index, __out real_point3d& return_origin)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_GET_ORIGIN);
+
+			_asm jmp	FUNCTION;
+		}
+#endif
+	}
+	//////////////////////////////////////////////////////////////////////////
 	// scenario
 	namespace blam
 	{
@@ -522,6 +672,55 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// units
+	namespace blam
+	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		API_FUNC_NAKED void PLATFORM_API unit_kill(const datum_index unit_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_KILL);
+
+			_asm jmp	FUNCTION;
+		}
+		
+		int16 unit_get_custom_animation_time(datum_index unit_index)
+		{
+			return CAST_PTR(int16 (PLATFORM_API*)(const datum_index), GET_FUNC_PTR(UNIT_GET_CUSTOM_ANIMATION_TIME))(unit_index);
+		}
+
+		API_FUNC_NAKED bool PLATFORM_API unit_start_user_animation(const datum_index unit_index
+			, const datum_index animation_definition_index
+			, cstring animation_name
+			, const bool interpolate)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_START_USER_ANIMATION);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
+			, const Objects::s_damage_data* damage_data
+			, const _enum damage_flags
+			, const real shield_amount
+			, const real body_amount
+			, void* arg6
+			, const int32 damage_part
+			, const datum_index dead_unit_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_DAMAGE_AFTERMATH);
+
+			_asm jmp	FUNCTION;
+		}
+#endif
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// cryptography

@@ -29,63 +29,112 @@ namespace Yelo
 	{
 		c_unit_transform_manager::c_unit_transform_manager()
 			: m_transforms_allowed(true)
-			, m_unit_transform_map()
 			, m_transforms_in_progress()
 		{ }
 
-		const TagGroups::s_unit_transform_definition* c_unit_transform_manager::FindUnitTransform(const datum_index unit_tag_index
-			, const datum_index instigator_tag_index
+		const TagGroups::s_actor_variant_transform* c_unit_transform_manager::FindTransform(
+#if PLATFORM_IS_EDITOR
+			const TagBlock<TagGroups::s_actor_variant_transform>& transformations
+#else
+			const TagBlock<const TagGroups::s_actor_variant_transform>& transformations
+#endif
+			, const datum_index& unit_index
+			, const datum_index& instigator_unit_index
 			, const bool damage_is_melee)
 		{
-			// Search for a matching unit tag index
-			auto transform_set_iter = m_unit_transform_map.find(unit_tag_index.index);
-			if(transform_set_iter == m_unit_transform_map.end())
+			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
+			auto* instigator_unit_datum = (instigator_unit_index.IsNull() ? nullptr : blam::object_try_and_get_and_verify_type<s_unit_datum>(instigator_unit_index));
+
+			auto test_transform = [&](const TagGroups::s_actor_variant_transform& transform) -> bool
 			{
-				return nullptr;
-			}
-
-			auto& transform_set = transform_set_iter->second;
-			auto& transform_list = transform_set.m_transforms;
-
-			auto found_transform = std::find_if(transform_list.begin(), transform_list.end(),
-				[&](const TagGroups::s_unit_transform_definition* entry)
+				// If we should ignore friendly fire, do so
+				if(instigator_unit_datum)
 				{
-					for(auto& instigator : entry->instigators)
+					if(TEST_FLAG(transform.flags, Flags::_actor_variant_transform_flags_ignore_friendly_fire_bit)
+						&& !blam::game_team_is_enemy(unit_datum->object.owner_team, instigator_unit_datum->object.owner_team))
 					{
-						// Skip if the damage type does not match
-						if(((instigator.damage_type == Enums::_unit_transform_damage_type_weapon_only) && damage_is_melee)
-							|| ((instigator.damage_type == Enums::_unit_transform_damage_type_melee_only) && !damage_is_melee))
-						{
-							return false;
-						}
-
-						if(instigator.unit.tag_index == instigator_tag_index)
-						{
-							return true;
-						}
+						return false;
 					}
-
-					return false;
 				}
-			);
 
-			// If a matching transform was found, return it, otherwise return the default transform
-			if(found_transform != transform_list.end())
+				// Test whether the transform is valid based on the unit's damage
+				bool health_below_threshold = unit_datum->object.damage.health <= transform.health_threshold;
+				bool shield_below_threshold = unit_datum->object.damage.shield <= transform.shield_threshold;
+
+				bool valid_transform = false;
+				switch(transform.threshold_type)
+				{
+				case Enums::_actor_variant_transform_threshold_type_both:
+					valid_transform = health_below_threshold && shield_below_threshold;
+					break;
+				case Enums::_actor_variant_transform_threshold_type_shield_amount_only:
+					valid_transform = shield_below_threshold;
+					break;
+				case Enums::_actor_variant_transform_threshold_type_health_amount_only:
+					valid_transform = health_below_threshold;
+					break;
+				};
+
+				return valid_transform;
+			};
+
+			std::function<bool (const TagGroups::s_actor_variant_transform&)> select_func;
+			if(instigator_unit_datum)
 			{
-				return *found_transform;
+				// If the instigator is not null select entries that match the instigator and damage type's
+				select_func = [&](const TagGroups::s_actor_variant_transform& entry) -> bool
+					{
+						if(test_transform(entry))
+						{
+							for(auto& instigator : entry.instigators)
+							{
+								// Skip if the damage type does not match
+								if(((instigator.damage_type == Enums::_actor_variant_transform_damage_type_weapon_only) && damage_is_melee)
+									|| ((instigator.damage_type == Enums::_actor_variant_transform_damage_type_melee_only) && !damage_is_melee))
+								{
+									return false;
+								}
+
+								if(instigator.unit.tag_index == instigator_unit_datum->object.definition_index)
+								{
+									return true;
+								}
+							}
+						}
+						return false;
+					};
 			}
 			else
 			{
-				return transform_set.m_default_transform;
+				// If the instigator is not null select entries that have no instigators defined
+				select_func = [&](const TagGroups::s_actor_variant_transform& entry) -> bool
+					{
+						if((entry.instigators.Count == 0) && test_transform(entry))
+						{
+							return true;
+						}
+
+						return false;
+					};
 			}
-		}
+			
+			// Populate the transforms list
+			std::vector<const TagGroups::s_actor_variant_transform*> transforms;
+			for(auto& entry : transformations)
+			{
+				if(select_func(entry))
+				{
+					transforms.push_back(&entry);
+				}
+			}
+			
+			// Pick a random transform from the transforms list
+			if(transforms.size())
+			{
+				return transforms[rand() % transforms.size()];
+			}
 
-		const TagGroups::s_unit_transform_target& c_unit_transform_manager::GetTransformTarget(const TagGroups::s_unit_transform_definition& transform_definition)
-		{
-			// Choose a random transform target
-			int target_index = rand() % transform_definition.targets.Count;
-
-			return transform_definition.targets[target_index];
+			return nullptr;
 		}
 
 #pragma region Attachments
@@ -108,9 +157,10 @@ namespace Yelo
 
 			// If there is only 1 marker do not append a marker index to the name
 			cstring destination_marker = destination_marker_name;
+
+			tag_string destination_marker_buffer;
 			if(destination_marker_index != NONE)
 			{
-				tag_string destination_marker_buffer;
 				sprintf_s(destination_marker_buffer, "%s%d", destination_marker_name, destination_marker_index);
 
 				destination_marker = destination_marker_buffer;
@@ -223,7 +273,7 @@ namespace Yelo
 				unit_datum->object.owner_team = (Enums::game_team)resulting_team;
 			}
 
-			DeleteChildrenByType(unit_index, Enums::_object_type_mask_unit);
+			DeleteChildrenByType(unit_index, Enums::_object_type_mask_all);
 
 			return unit_index;
 		}
@@ -293,7 +343,7 @@ namespace Yelo
 
 		void c_unit_transform_manager::TransformOut(const datum_index unit_index
 			, s_unit_datum* unit_datum
-			, const TagGroups::s_unit_transform_definition& transform_definition)
+			, const TagGroups::s_actor_variant_transform& transform_definition)
 		{
 			// Freeze the actor
 			blam::actor_braindead(unit_datum->unit.actor_index, true);
@@ -304,10 +354,13 @@ namespace Yelo
 				, transform_definition.transform_out_anim
 				, false);
 
-			// Attach the transform objects
-			TransformAttachObjects(unit_index, unit_datum, transform_definition);
+			// Get the actor variants transform targets
+			auto* unit_transform = blam::tag_get<TagGroups::s_unit_transform_definition>(transform_definition.unit_transform.tag_index);
 
-			if(TEST_FLAG(transform_definition.flags, Flags::_unit_transform_flags_invicible_during_transform_out_bit))
+			// Attach the transform objects
+			TransformAttachObjects(unit_index, unit_datum, *unit_transform);
+
+			if(TEST_FLAG(transform_definition.flags, Flags::_actor_variant_transform_flags_invicible_during_transform_out_bit))
 			{
 				SET_FLAG(unit_datum->object.damage.flags, Flags::_object_cannot_take_damage_bit, true);
 			}
@@ -319,7 +372,10 @@ namespace Yelo
 			, s_unit_datum* unit_datum
 			, const s_unit_transform_state& transform_state)
 		{
-			auto& transform_target = GetTransformTarget(*transform_state.m_unit_transform);
+			// Get a random transform target
+			auto* unit_transform = blam::tag_get<TagGroups::s_unit_transform_definition>(transform_state.m_actor_variant_transform->unit_transform.tag_index);
+			auto& transform_target = unit_transform->targets[rand() % unit_transform->targets.Count];
+
 			auto* actor_variant_definition = blam::tag_get<TagGroups::s_actor_variant_definition>(transform_target.actor_variant.tag_index);
 
 			// Spawn the transition effect
@@ -433,66 +489,21 @@ namespace Yelo
 			m_transforms_allowed = value;
 		}
 
-		void c_unit_transform_manager::LoadTransformDefinitions()
+		void c_unit_transform_manager::ClearInProgressTransforms()
 		{
-			// Look for all unit transform tags in the cache
-			TagGroups::s_tag_iterator iter;
-			blam::tag_iterator_new(iter, TagGroups::s_unit_transform_definition::k_group_tag);
-
-			datum_index tag_index = datum_index::null;
-			while(!(tag_index = blam::tag_iterator_next(iter)).IsNull())
-			{
-				// Add the unit transform definition
-				auto* unit_transform = blam::tag_get<TagGroups::s_unit_transform_definition>(tag_index);
-
-				for(auto& variant : unit_transform->actor_variants)
-				{
-					auto actv_tag_index = variant.tag_index;
-
-					// Add a new transform set entry if one does not exist
-					auto transform_list_iter = m_unit_transform_map.find(actv_tag_index.index);
-					if(transform_list_iter == m_unit_transform_map.end())
-					{
-						m_unit_transform_map[actv_tag_index.index] = s_unit_transform_set();
-					}
-
-					auto& transform_set = m_unit_transform_map[actv_tag_index.index];
-
-					// If the transform is the default, add it as the default, otherwise add it as a normal option
-					if(TEST_FLAG(unit_transform->flags, Flags::_unit_transform_flags_default_transform_bit))
-					{
-						transform_set.m_default_transform = unit_transform;
-					}
-					else
-					{
-						transform_set.m_transforms.push_back(unit_transform);
-					}
-				}
-			}
-		}
-
-		void c_unit_transform_manager::UnloadTransformDefinitions()
-		{
-			m_unit_transform_map.clear();
 			m_transforms_in_progress.clear();
 		}
 
 		void c_unit_transform_manager::UnitDamaged(const datum_index unit_index, const Objects::s_damage_data* damage_data)
 		{
-			if(!m_transforms_allowed || damage_data->responsible_unit_index.IsNull())
+			if(!m_transforms_allowed)
 			{
 				return;
 			}
 
-			// Get the unit datums and definitions
+			// Get the unit datums
 			auto* unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(unit_index);
 			if(!unit_datum)
-			{
-				return;
-			}
-
-			// Transforms only apply to actors
-			if(unit_datum->unit.actor_index.IsNull())
 			{
 				return;
 			}
@@ -505,8 +516,8 @@ namespace Yelo
 				return;
 			}
 
-			auto* responsible_unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(damage_data->responsible_unit_index);
-			if(!responsible_unit_datum)
+			// Transforms only apply to actors
+			if(unit_datum->unit.actor_index.IsNull())
 			{
 				return;
 			}
@@ -516,54 +527,49 @@ namespace Yelo
 			{
 				return;
 			}
+			
+			// If the actor variant has no transforms defined, return
+			auto* actor_variant_definition = blam::tag_get<TagGroups::s_actor_variant_definition>(actor_datum->meta.actor_variant_definition_index);
+			if(!actor_variant_definition
+				|| (actor_variant_definition->actor_variant_extension.Count == 0)
+				|| (actor_variant_definition->actor_variant_extension[0].transformations.Count == 0))
+			{
+				return;
+			}
+			auto& transformations = actor_variant_definition->actor_variant_extension[0].transformations;
 
-			// If no matching transform is found, return
+			// Try to find a transform for the damage instigator
+			// If no match is found, look for a default transform
+			// Return if no match is found
 			bool is_melee = (unit_datum->unit.damage_result.category == Enums::_damage_category_melee);
 
-			auto* unit_transform = FindUnitTransform(actor_datum->meta.actor_variant_definition_index
-				, responsible_unit_datum->object.definition_index
+			auto* actor_variant_transform = FindTransform(transformations
+				, unit_index
+				, damage_data->responsible_unit_index
 				, is_melee);
-			if(!unit_transform)
+
+			if(!actor_variant_transform)
 			{
-				return;
-			}
+				actor_variant_transform = FindTransform(transformations
+					, unit_index
+					, datum_index::null
+					, is_melee);
 
-			// If we should ignore friendly fire, do so
-			if(TEST_FLAG(unit_transform->flags, Flags::_unit_transform_flags_ignore_friendly_fire_bit)
-				&& !blam::game_team_is_enemy(unit_datum->object.owner_team, responsible_unit_datum->object.owner_team))
-			{
-				return;
-			}
-
-			// Test whether the unit should transform based on it's damage
-			bool health_below_threshold = unit_datum->object.damage.health <= unit_transform->health_threshold;
-			bool shield_below_threshold = unit_datum->object.damage.shield <= unit_transform->shield_threshold;
-
-			bool transform = false;
-			switch(unit_transform->threshold_type)
-			{
-			case Enums::_unit_transform_threshold_type_both:
-				transform = health_below_threshold && shield_below_threshold;
-				break;
-			case Enums::_unit_transform_threshold_type_shield_amount_only:
-				transform = shield_below_threshold;
-				break;
-			case Enums::_unit_transform_threshold_type_health_amount_only:
-				transform = health_below_threshold;
-				break;
-			};
-
-			// If the unit should transform, start the transform out stage
-			if(transform)
-			{
-				TransformOut(unit_index, unit_datum, *unit_transform);
-
-				m_transforms_in_progress[unit_index.index] = s_unit_transform_state
+				if(!actor_variant_transform)
 				{
-					unit_transform,
-					responsible_unit_datum->object.owner_team
-				};
+					return;
+				}
 			}
+
+			// Start transforming the unit, using the found transform
+			TransformOut(unit_index, unit_datum, *actor_variant_transform);
+			
+			auto* instigator_unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(damage_data->responsible_unit_index);
+			m_transforms_in_progress[unit_index.index] = s_unit_transform_state
+			{
+				actor_variant_transform,
+				(instigator_unit_datum ? instigator_unit_datum->object.owner_team : Enums::_game_team_none)
+			};
 		}
 
 		void c_unit_transform_manager::UnitUpdate(const datum_index unit_index)

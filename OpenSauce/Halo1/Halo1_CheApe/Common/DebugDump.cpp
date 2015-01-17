@@ -154,6 +154,20 @@ namespace Yelo
 				call	BlamErrorHook
 			API_FUNC_NAKED_END_()
 		}
+	
+		static char g_error_buffer[1024] = "";
+		void PLATFORM_API error_debug_output(const Enums::error_message_priority priority, cstring format, ...)
+		{
+			va_list params;
+			va_start(params,format);
+
+			vsprintf_s(g_error_buffer, format, params);
+			OutputDebugString(g_error_buffer);
+			OutputDebugString("\r\n");
+
+			blam::error(priority, format, *params);
+			va_end(params);
+		}
 #endif
 		void DumpInitialize()
 		{
@@ -183,6 +197,11 @@ namespace Yelo
 				// put a hook at the end of error(). hook will not handle priority==0 cases
 				byte* error_proc_eof = CAST_PTR(byte*, blam::error) + PLATFORM_VALUE(0x290, 0x2A8, 0x29A);
 				Memory::WriteRelativeJmp(BlamErrorHook_Trampoline, error_proc_eof, true);
+
+				// Hook the error jmp to print all errors to the output console
+#if PLATFORM_TYPE != PLATFORM_TOOL
+				Memory::WriteRelativeJmp(&error_debug_output, CAST_PTR(void*, PLATFORM_VALUE(0x401FE6, PTR_NULL, 0x40716C)), true);
+#endif
 			}
 #endif
 		}

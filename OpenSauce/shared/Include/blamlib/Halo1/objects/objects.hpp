@@ -133,7 +133,7 @@ namespace Yelo
 
 		struct s_object_iterator
 		{
-			enum { k_signature = 'ееее' };
+			enum { k_signature = 0x86868686 };
 
 			long_flags type_mask;						// object types to iterate
 			Flags::object_header_flags ignore_flags;	// When any of these bits are set, the object is skipped
