@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/units/units.hpp>
 
+#include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/Units.UnitTransform.inl"
 
 namespace Yelo
@@ -61,6 +62,7 @@ namespace Yelo
 
 		void InitializeForNewMap()
 		{
+			Items::InitializeGrenadesForNewMap();
 			Transform::InitializeForNewMap();
 		}
 
