@@ -91,7 +91,7 @@ namespace Yelo
 
 			return iter;
 		}
-#if !PLATFORM_IS_EDITOR // TODO: need to define object_get for editor builds
+
 		s_object_data* object_get_and_verify_type(datum_index object_index, long_flags expected_types)
 		{
 			s_object_data* object = object_get(object_index);
@@ -110,6 +110,5 @@ namespace Yelo
 				? object 
 				: nullptr;
 		}
-#endif
 	};
 };

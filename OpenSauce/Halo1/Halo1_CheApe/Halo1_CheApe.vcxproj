@@ -94,8 +94,11 @@
   <ItemGroup>
     <ClCompile Include="Engine\AnimationUpgrade.cpp" />
     <ClCompile Include="Engine\EngineFunctions.cpp" />
+    <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp" />
+    <ClCompile Include="Engine\Objects.cpp" />
     <ClCompile Include="Engine\Scripting.cpp" />
+    <ClCompile Include="Engine\Units.cpp" />
     <ClCompile Include="Guerilla\field_dialog_extensions.cpp" />
     <ClCompile Include="Guerilla\guerilla_application_extensions.cpp" />
     <ClCompile Include="Guerilla\string_dialog_extensions.cpp" />
@@ -153,8 +156,11 @@
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp" />
     <ClInclude Include="Engine\EngineFunctions.hpp" />
+    <ClInclude Include="Engine\Game.hpp" />
     <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp" />
+    <ClInclude Include="Engine\Objects.hpp" />
     <ClInclude Include="Engine\Scripting.hpp" />
+    <ClInclude Include="Engine\Units.hpp" />
     <ClInclude Include="Guerilla\field_dialog_extensions.hpp" />
     <ClInclude Include="Guerilla\guerilla_application_extensions.hpp" />
     <ClInclude Include="Guerilla\string_dialog_extensions.hpp" />
@@ -222,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
+    <None Include="Engine\Units.UnitTransform.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />

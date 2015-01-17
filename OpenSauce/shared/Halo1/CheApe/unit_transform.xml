@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
 	
-	<enums>
-		<Enum name="unit_transform_threshold_type">
-			<field>both</field>
-			<field>shield amount only</field>
-			<field>health amount only</field>
-		</Enum>
-		
-		<Enum name="unit_transform_damage_type">
-			<field>both</field>
-			<field>weapon damage only</field>
-			<field>melee damage only</field>
-		</Enum>
-		
+	<enums>		
 		<Enum name="unit_transform_resulting_team">
 			<field>unit default</field>
 			<field>player</field>
@@ -36,12 +24,6 @@
 			<field>health only</field>
 		</Enum>
 		
-		<Enum name="unit_transform_rider_handling">
-			<field>eject</field>
-			<field>kill</field>
-			<field>inherit</field>
-		</Enum>
-		
 		<Enum name="unit_transform_actor_state">
 			<field>none</field>
 			<field>sleeping</field>
@@ -58,13 +40,7 @@
 		</Enum>
 	</enums>
 	
-	<flags>
-		<Flag name="unit_transform_flags">
-			<field>default transform</field>
-			<field>ignore friendly fire</field>
-			<field>invicible during transform out</field>
-		</Flag>
-		
+	<flags>		
 		<Flag name="unit_transform_target_flags">
 			<field>try to use existing unit</field>
 			<field>inherit encounter/squad</field>
@@ -72,24 +48,13 @@
 		</Flag>
 	</flags>
 
-	<blocks>
-		<TagBlock name="unit_transform_actor_variant_block" maxElements="32">
-			<field type="TagReference" name="actor variant" definition="actor_variant_reference" blockname="true" />
-		</TagBlock>
-		
-		<TagBlock name="unit_transform_instigator_block" maxElements="16">
-			<!--s_unit_transform_instigator-->
-			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />
-			<field type="Enum" name="damage type" definition="unit_transform_damage_type" />
-			<field type="Pad" definition="2" />
-		</TagBlock>
-		
+	<blocks>		
 		<TagBlock name="unit_transform_target_block" maxElements="16">
 			<!--s_unit_transform_target-->
 			<field type="String" name="target name" blockname="true" />
 			<field type="WordFlags" name="flags" definition="unit_transform_target_flags" />
 			<field type="Enum" name="resulting team" definition="unit_transform_resulting_team" />
-			<field type="TagReference" name="actor variant" definition="actor_variant_reference_non_resolving" />
+			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
 			<field type="Enum" name="actor state" definition="unit_transform_actor_state" />
 			<field type="Pad" definition="2" />
 			<field type="TagReference" name="transform effect" definition="effect_reference" />
@@ -108,40 +73,11 @@
 			<field type="ShortInteger" name="destination marker count" />
 			<field type="Pad" definition="2" />
 		</TagBlock>
-		
-		<TagBlock name="actor_variant_transform_block" maxElements="16">
-			<!--s_actor_variant_transform-->
-			<field type="TagReference" name="object" definition="object_reference" blockname="true" />
-			<field type="String" name="object marker" blockname="true" />
-			<field type="String" name="destination marker" blockname="true" />
-			<field type="ShortInteger" name="destination marker count" />
-			<field type="Pad" definition="2" />
-		</TagBlock>
-		
-		<TagBlock name="unit_transform_object_attachment_block" maxElements="16">
-			<!--s_unit_transform_object_attachment-->
-			<field type="TagReference" name="object" definition="object_reference" blockname="true" />
-			<field type="String" name="object marker" blockname="true" />
-			<field type="String" name="destination marker" blockname="true" />
-			<field type="ShortInteger" name="destination marker count" />
-			<field type="Pad" definition="2" />
-		</TagBlock>
 	</blocks>
 
 	<groups>
 		<TagGroup name="unit_transform" groupTag="utrn" version="1">
 			<!--s_unit_transform_definition-->
-			<field type="String" name="transform name" />
-			<field type="Block" name="actor_variants" definition="unit_transform_actor_variant_block" />
-			<field type="WordFlags" name="flags" definition="unit_transform_flags" />
-			<!--field type="Enum" name="rider handling" definition="unit_transform_rider_handling" /-->
-			<field type="Pad" definition="2" />
-			<field type="Enum" name="threshold type" definition="unit_transform_threshold_type" />
-			<field type="Pad" definition="2" />
-			<field type="RealFraction" name="shield threshold" />
-			<field type="RealFraction" name="health threshold" />
-			<field type="String" name="transform out anim" />
-			<field type="Block" name="instigators" definition="unit_transform_instigator_block" />
 			<field type="Block" name="targets" definition="unit_transform_target_block" />
 			<field type="Block" name="object attachments" definition="unit_transform_object_attachment_block" />		
 		</TagGroup>

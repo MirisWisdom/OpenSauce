@@ -83,7 +83,11 @@ namespace Yelo
 			, const real shield_amount
 			, const real body_amount
 			, void* arg6
-			, const int32 damage_part);
+			, const int32 damage_part
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+			, const datum_index dead_unit_index
+#endif
+		);
 
 		DOC_TODO("Move to unit_script.hpp?")
 		void PLATFORM_API unit_scripting_set_current_vitality(const datum_index unit_index

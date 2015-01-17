@@ -28,6 +28,24 @@
 		TagGroups::s_game_globals** GlobalGameGlobalsReference()		PTR_IMP_GET2(global_game_globals);
 	};
 
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
+	namespace AI
+	{
+		ENGINE_DPTR(actor_data_t, actor_data,							PTR_NULL, PTR_NULL, 0xE459DC);
+		
+		actor_data_t& Actors()											DPTR_IMP_GET_BYREF(actor_data);
+	};
+
+	namespace Objects
+	{
+		ENGINE_DPTR(object_header_data_t, object_header,				PTR_NULL, PTR_NULL, 0x01056E4C);
+		ENGINE_PTR(s_object_name_list_data*, object_name_list,			PTR_NULL, PTR_NULL, 0xDB44D0);
+
+		object_header_data_t& ObjectHeader()							DPTR_IMP_GET_BYREF(object_header);
+		s_object_name_list_data* ObjectNameList()						PTR_IMP_GET(object_name_list);
+	};
+	#endif
+
 	namespace GameUI
 	{
 		ENGINE_DPTR(s_first_person_weapons, first_person_weapons, PTR_NULL, 0x10C8EAC, 0xE00D44);
@@ -68,6 +86,12 @@
 	namespace blam
 	{
 		//////////////////////////////////////////////////////////////////////////
+		// ai/actors
+		FUNC_PTR(ACTOR_DELETE,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x697770);
+		FUNC_PTR(ACTOR_CUSTOMIZE_UNIT,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x697310);
+		FUNC_PTR(ACTOR_BRAINDEAD,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x697E60);
+		FUNC_PTR(ACTOR_CREATE_FOR_UNIT,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x699750);
+		//////////////////////////////////////////////////////////////////////////
 		// cseries/cseries
 		FUNC_PTR(DISPLAY_ASSERT,	0x42C840, 0x435F10, 0x4F7000);
 		//////////////////////////////////////////////////////////////////////////
@@ -84,7 +108,13 @@
 		// cseries/profile
 		ENGINE_PTR(bool, g_profiling_enabled,	0xC81CB1, 0xFC9009, 0xDB2D21);
 		FUNC_PTR(PROFILE_ENTER_PRIVATE,			0x475F30, 0x452970, 0x535490);
-		FUNC_PTR(PROFILE_EXIT_PRIVATE,			0x475FB0, 0x4529F0, 0x535510);
+		FUNC_PTR(PROFILE_EXIT_PRIVATE,			0x475FB0, 0x4529F0, 0x535510);		
+		//////////////////////////////////////////////////////////////////////////
+		// game/game_allegiance
+		FUNC_PTR(GAME_TEAM_IS_ENEMY,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x6773C0);
+		//////////////////////////////////////////////////////////////////////////
+		// hs/effects
+		FUNC_PTR(HS_EFFECT_NEW_FROM_OBJECT_MARKER,	FUNC_PTR_NULL, FUNC_PTR_NULL, 0x6C9B90);
 		//////////////////////////////////////////////////////////////////////////
 		// hs/hs_scenario_definitions
 		FUNC_PTR(HS_SCENARIO_POSTPROCESS,		0x4F26B0, 0x4C27C0, 0x584890);
@@ -124,6 +154,16 @@
 		FUNC_PTR(MEMORY_POOL_DEFRAGMENT,		0x5E3FD0, 0x4EBEE0, 0x6188F0);
 		FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE,	0x5E4030, 0x4EBF40, 0x618950);
 		//////////////////////////////////////////////////////////////////////////
+		// objects/objects		
+		FUNC_PTR(OBJECT_NEW,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x568E50);
+		FUNC_PTR(OBJECT_DELETE,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x564C80);
+		FUNC_PTR(OBJECT_DETACH,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x5651E0);
+		FUNC_PTR(OBJECT_ATTACH_TO_MARKER,		FUNC_PTR_NULL, FUNC_PTR_NULL, 0x568EA0);
+		FUNC_PTR(OBJECTS_UPDATE,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x5699F0);
+		FUNC_PTR(OBJECT_PLACEMENT_DATA_NEW,		FUNC_PTR_NULL, FUNC_PTR_NULL, 0x563AF0);
+		FUNC_PTR(OBJECT_ITERATOR_NEXT,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x561360);
+		FUNC_PTR(OBJECT_GET_ORIGIN,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x565320);
+		// ///////////////////////////////////////////////////////////////////////
 		// scenario/scenario
 		FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP, 0x45FD30, 0x443A50, 0x516D40);
 		FUNC_PTR(SCENARIO_LOAD,					0x4604D0, 0x443C50, 0x5174E0);
@@ -156,6 +196,13 @@
 		FUNC_PTR(FILE_READ_FROM_POSITION,		0x445D50, 0x44BB70, 0x501340);
 		FUNC_PTR(FILE_WRITE_TO_POSITION,		0x445DB0, 0x44BBD0, 0x5013A0);
 		FUNC_PTR(FILE_READ_ONLY_,				0x445030, 0x44B480, 0x500620);
+		//////////////////////////////////////////////////////////////////////////
+		// units/units
+		FUNC_PTR(UNIT_KILL,							FUNC_PTR_NULL, FUNC_PTR_NULL, 0x585160);
+		FUNC_PTR(UNIT_GET_CUSTOM_ANIMATION_TIME,	FUNC_PTR_NULL, FUNC_PTR_NULL, 0x58A220);
+		FUNC_PTR(UNIT_START_USER_ANIMATION,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x58A2C0);
+		FUNC_PTR(UNIT_DROP_CURRENT_WEAPON,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x58CA40);
+		FUNC_PTR(UNIT_DAMAGE_AFTERMATH,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x594590);
 		//////////////////////////////////////////////////////////////////////////
 		// cryptography
 		FUNC_PTR(GENERATE_MD5,					0x604860, 0x588B70, 0x6F78E0);
