@@ -18,5 +18,8 @@ namespace Yelo
 
 		void GrenadeTypesUpgrade(bool enabled);
 
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		void InitializeGrenadesForNewMap();
+#endif
 	}; };
 };
