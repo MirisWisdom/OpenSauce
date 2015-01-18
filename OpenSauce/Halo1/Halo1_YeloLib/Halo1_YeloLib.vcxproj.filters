@@ -130,6 +130,9 @@
     <Filter Include="configuration\type_containers">
       <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ai">
+      <UniqueIdentifier>{d649cd04-3dcb-4e6c-a4fb-65e77fd8efd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -561,11 +564,11 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_transform_definition.hpp">
       <Filter>units</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_transform_manager.hpp">
-      <Filter>units</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\objects\objects_yelo.hpp">
       <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.hpp">
+      <Filter>ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -866,8 +869,8 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\objects\objects_yelo.cpp">
       <Filter>objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_transform_manager.cpp">
-      <Filter>units</Filter>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.cpp">
+      <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

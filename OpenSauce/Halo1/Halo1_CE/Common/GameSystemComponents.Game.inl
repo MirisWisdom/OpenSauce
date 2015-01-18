@@ -39,8 +39,11 @@
 #	endif
 #elif	BOOST_PP_ITERATION() == 7 // No active code currently
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE	AI::Initialize
-#		define __GS_COMPONENT_DISPOSE		AI::Dispose
+#		define __GS_COMPONENT_INITIALIZE				AI::Initialize
+#		define __GS_COMPONENT_DISPOSE					AI::Dispose
+#	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP	AI::InitializeForNewMap
+#		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP		AI::DisposeFromOldMap
 #	endif
 #elif	BOOST_PP_ITERATION() == 8
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE

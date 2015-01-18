@@ -16,6 +16,11 @@
 
 namespace Yelo
 {
+	namespace Objects
+	{
+		struct s_damage_data;
+	};
+
 	namespace AI
 	{
 		encounter_data_t&				Encounters();
@@ -31,6 +36,12 @@ namespace Yelo
 
 		void Initialize();
 		void Dispose();
+		
+		void InitializeForNewMap();
+		void DisposeFromOldMap();
+
 		void PLATFORM_API Update();
+		void ObjectsUpdate();
+		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data);
 	};
 };

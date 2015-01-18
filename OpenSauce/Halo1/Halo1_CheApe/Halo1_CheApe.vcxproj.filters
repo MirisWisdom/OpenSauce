@@ -260,6 +260,9 @@
     <ClCompile Include="Engine\Game.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\AI.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -471,6 +474,9 @@
     <ClInclude Include="Engine\Game.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\AI.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -542,7 +548,7 @@
     <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl">
       <Filter>Tool\BuildCacheFile</Filter>
     </None>
-    <None Include="Engine\Units.UnitTransform.inl">
+    <None Include="Engine\AI.Transform.inl">
       <Filter>Engine\Impl</Filter>
     </None>
   </ItemGroup>

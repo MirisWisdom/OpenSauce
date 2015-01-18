@@ -2234,8 +2234,8 @@
     <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.TagGroups.inl">
       <Filter>_Resources\1.10\Pointers\Runtime</Filter>
     </None>
-    <None Include="Objects\Units.UnitTransform.inl">
-      <Filter>Objects\Impl</Filter>
+    <None Include="Game\AI.Transform.inl">
+      <Filter>Game\Impl\AI</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2311,6 +2311,9 @@
     </Filter>
     <Filter Include="_Resources\1.10\Pointers\Runtime">
       <UniqueIdentifier>{4a7890ee-7d49-4ab9-a526-5e244aebd305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl\AI">
+      <UniqueIdentifier>{62fd605b-7fa9-4b74-8e6a-6cb3209d309a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

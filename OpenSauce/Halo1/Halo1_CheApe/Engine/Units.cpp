@@ -14,7 +14,7 @@
 #include <blamlib/Halo1/units/units.hpp>
 
 #include "Engine/GrenadeTypesUpgrade.hpp"
-#include "Engine/Units.UnitTransform.inl"
+#include "Engine/AI.hpp"
 
 namespace Yelo
 {
@@ -40,17 +40,7 @@ namespace Yelo
 				, damage_part
 				, dead_unit_index);
 
-			Transform::UnitDamaged(unit_index, damage_data);
-		}
-
-		void ObjectsUpdate()
-		{
-			c_object_iterator iter(Enums::_object_type_mask_unit);
-
-			for(auto object_index : iter)
-			{
-				Transform::UnitUpdate(object_index.index);
-			}
+			AI::UnitDamageAftermath(unit_index, damage_data);
 		}
 
 		void Initialize()
@@ -63,13 +53,9 @@ namespace Yelo
 		void InitializeForNewMap()
 		{
 			Items::InitializeGrenadesForNewMap();
-			Transform::InitializeForNewMap();
 		}
 
-		void DisposeFromOldMap()
-		{
-			Transform::DisposeFromOldMap();
-		}
+		void DisposeFromOldMap() { }
 	};};
 };
 #endif

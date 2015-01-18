@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/objects/objects.hpp>
 
 #include "Engine/Units.hpp"
+#include "Engine/AI.hpp"
 
 namespace Yelo
 {
@@ -21,7 +22,7 @@ namespace Yelo
 
 		void PLATFORM_API ObjectsUpdate()
 		{
-			Units::ObjectsUpdate();
+			AI::ObjectsUpdate();
 
 			blam::objects_update();
 		}

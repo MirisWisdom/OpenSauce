@@ -23,7 +23,5 @@ namespace Yelo
 		void InitializeForNewMapPrologue();
 
 		void InitializeForYeloGameState(bool enabled);
-
-		void ObjectsUpdate();
 	}; };
 };
