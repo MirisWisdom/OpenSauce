@@ -16,6 +16,7 @@
 #include <blamlib/Halo1/ai/actors.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/hs/hs_library_external.hpp>
+#include <blamlib/Halo1/models/models.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/ai/actor_structures.hpp>
 #include <blamlib/Halo1/ai/actor_definitions.hpp>
@@ -138,23 +139,23 @@ namespace Yelo
 		}
 
 #pragma region Attachments
-		void c_unit_transform_manager::TransformAttachObject(const datum_index unit_index
+		void c_unit_transform_manager::DeleteAttachments(const datum_index unit_index, const TagGroups::s_unit_transform_definition& transform_definition)
+		{
+			for(auto& attachment : transform_definition.attachments)
+			{
+				DeleteChildrenByDefinition(unit_index, attachment.object_type.tag_index);
+			}
+		}
+
+		void c_unit_transform_manager::AttachObject(const datum_index unit_index
 			, const s_unit_datum* unit_datum
 			, const datum_index object_type
 			, const tag_string& object_marker_name
 			, const tag_string& destination_marker_name
-			, const int32 destination_marker_index)
+			, const int32 destination_marker_index
+			, const Enums::game_team attachment_team
+			, const real attachment_scale)
 		{
-			// Set up the placement data to match the target object's
-			s_object_placement_data attachment_placement_data;
-			blam::object_placement_data_new(attachment_placement_data, object_type);
-
-			attachment_placement_data.position = unit_datum->object.position;
-
-			// Create the object
-			datum_index attachment_object;
-			attachment_object = blam::object_new(attachment_placement_data);
-
 			// If there is only 1 marker do not append a marker index to the name
 			cstring destination_marker = destination_marker_name;
 
@@ -166,35 +167,82 @@ namespace Yelo
 				destination_marker = destination_marker_buffer;
 			}
 
+			// If the target marker does not exist, skip the attachment
+			auto* object_definition = blam::tag_get<TagGroups::s_object_definition>(unit_datum->object.definition_index);
+			if(object_definition->object.references.render_model.tag_index.IsNull())
+			{
+				return;
+			}
+
+			if(blam::model_find_marker(object_definition->object.references.render_model.tag_index, destination_marker) == NONE)
+			{
+				return;
+			}
+
+			// Set up the placement data to match the target object's
+			s_object_placement_data attachment_placement_data;
+			blam::object_placement_data_new(attachment_placement_data, object_type);
+
+			attachment_placement_data.position = unit_datum->object.position;
+			attachment_placement_data.owner_team = attachment_team;
+
+			// Create the object
+			datum_index attachment_object;
+			attachment_object = blam::object_new(attachment_placement_data);
+
+			// Scale the attachment as required
+			auto* attachment_datum = blam::object_get(attachment_object);
+			attachment_datum->scale = attachment_scale;
+
 			// Attach the object
 			blam::object_attach_to_marker(unit_index, destination_marker_name, attachment_object, object_marker_name);
 		}
 
-		void c_unit_transform_manager::TransformAttachObjects(const datum_index unit_index
+		void c_unit_transform_manager::AttachObjects(const datum_index unit_index
 			, const s_unit_datum* unit_datum
+			, const Enums::game_team instigator_team
 			, const TagGroups::s_unit_transform_definition& transform_definition)
 		{
 			for(auto& attachment : transform_definition.attachments)
 			{
+				Enums::game_team attachment_team = Enums::_game_team_none;
+				switch(attachment.attachment_team)
+				{
+				case Enums::_unit_transform_resulting_team_inherit_from_attacked:
+					attachment_team = unit_datum->object.owner_team;
+					break;
+				case Enums::_unit_transform_resulting_team_inherit_from_attacker:
+					attachment_team = instigator_team;
+					break;
+				default:
+					attachment_team = (Enums::game_team)attachment.attachment_team;
+				}
+
+				real attachment_scale = attachment.attachment_scale.lower + (((real)rand() / (real)RAND_MAX) * (attachment.attachment_scale.upper - attachment.attachment_scale.lower));
+
 				if(attachment.destination_marker_count == 1)
 				{
-					TransformAttachObject(unit_index
+					AttachObject(unit_index
 						, unit_datum
 						, attachment.object_type.tag_index
 						, attachment.object_marker
 						, attachment.destination_marker
-						, NONE);
+						, NONE
+						, attachment_team
+						, attachment_scale);
 				}
 				else
 				{
 					for(int32 marker_index = 0; marker_index < attachment.destination_marker_count; marker_index++)
 					{
-						TransformAttachObject(unit_index
+						AttachObject(unit_index
 							, unit_datum
 							, attachment.object_type.tag_index
 							, attachment.object_marker
 							, attachment.destination_marker
-							, marker_index);
+							, marker_index
+							, attachment_team
+							, attachment_scale);
 					}
 				}
 			}
@@ -273,8 +321,6 @@ namespace Yelo
 				unit_datum->object.owner_team = (Enums::game_team)resulting_team;
 			}
 
-			DeleteChildrenByType(unit_index, Enums::_object_type_mask_all);
-
 			return unit_index;
 		}
 
@@ -343,6 +389,7 @@ namespace Yelo
 
 		void c_unit_transform_manager::TransformOut(const datum_index unit_index
 			, s_unit_datum* unit_datum
+			, const Enums::game_team instigator_team
 			, const TagGroups::s_actor_variant_transform& transform_definition)
 		{
 			// Freeze the actor
@@ -358,7 +405,7 @@ namespace Yelo
 			auto* unit_transform = blam::tag_get<TagGroups::s_unit_transform_definition>(transform_definition.unit_transform.tag_index);
 
 			// Attach the transform objects
-			TransformAttachObjects(unit_index, unit_datum, *unit_transform);
+			AttachObjects(unit_index, unit_datum, instigator_team, *unit_transform);
 
 			if(TEST_FLAG(transform_definition.flags, Flags::_actor_variant_transform_flags_invicible_during_transform_out_bit))
 			{
@@ -397,6 +444,9 @@ namespace Yelo
 					, unit_datum
 					, transform_target.resulting_team
 					, transform_state.m_instigator_team);
+
+				DeleteAttachments(unit_index, *unit_transform);
+				DetachChildActors(unit_index);
 			}
 			else
 			{
@@ -560,15 +610,17 @@ namespace Yelo
 					return;
 				}
 			}
-
-			// Start transforming the unit, using the found transform
-			TransformOut(unit_index, unit_datum, *actor_variant_transform);
 			
 			auto* instigator_unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(damage_data->responsible_unit_index);
+			auto instigator_team = (instigator_unit_datum ? instigator_unit_datum->object.owner_team : Enums::_game_team_none);
+
+			// Start transforming the unit, using the found transform
+			TransformOut(unit_index, unit_datum, instigator_team, *actor_variant_transform);
+			
 			m_transforms_in_progress[unit_index.index] = s_unit_transform_state
 			{
 				actor_variant_transform,
-				(instigator_unit_datum ? instigator_unit_datum->object.owner_team : Enums::_game_team_none)
+				instigator_team
 			};
 		}
 
@@ -588,6 +640,14 @@ namespace Yelo
 				{
 					SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, false);
 					SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit, false);
+					
+					auto& transform_state = m_transforms_in_progress[unit_index.index];
+					auto* unit_transform = blam::tag_get<TagGroups::s_unit_transform_definition>(transform_state.m_actor_variant_transform->unit_transform.tag_index);
+
+					if(unit_transform && TEST_FLAG(unit_transform->flags, Flags::_unit_transform_attachment_flags_delete_attachments_on_death))
+					{
+						DeleteAttachments(unit_index, *unit_transform);
+					}
 
 					m_transforms_in_progress.erase(unit_index.index);
 					return;

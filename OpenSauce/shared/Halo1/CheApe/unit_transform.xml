@@ -40,11 +40,15 @@
 		</Enum>
 	</enums>
 	
-	<flags>		
+	<flags>	
 		<Flag name="unit_transform_target_flags">
 			<field>try to use existing unit</field>
 			<field>inherit encounter/squad</field>
 			<field>drop weapon</field>
+		</Flag>
+		
+		<Flag name="unit_transform_attachment_flags">
+			<field>delete attachments on death</field>
 		</Flag>
 	</flags>
 
@@ -71,7 +75,8 @@
 			<field type="String" name="object marker" blockname="true" />
 			<field type="String" name="destination marker" blockname="true" />
 			<field type="ShortInteger" name="destination marker count" />
-			<field type="Pad" definition="2" />
+			<field type="Enum" name="attachment team" definition="unit_transform_resulting_team" />
+			<field type="RealBounds" name="attachment scale" />
 		</TagBlock>
 	</blocks>
 
@@ -79,7 +84,9 @@
 		<TagGroup name="unit_transform" groupTag="utrn" version="1">
 			<!--s_unit_transform_definition-->
 			<field type="Block" name="targets" definition="unit_transform_target_block" />
-			<field type="Block" name="object attachments" definition="unit_transform_object_attachment_block" />		
+			<field type="WordFlags" name="flags" definition="unit_transform_attachment_flags" />
+			<field type="Pad" definition="2" />
+			<field type="Block" name="attachments" definition="unit_transform_object_attachment_block" />		
 		</TagGroup>
 	</groups>
 

@@ -436,6 +436,19 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// models
+	namespace blam
+	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		API_FUNC_NAKED int16 PLATFORM_API model_find_marker(const datum_index render_model_definition_index, cstring marker_name)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(MODEL_FIND_MARKER);
+
+			_asm jmp	FUNCTION;
+		}
+#endif
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// objects
 	namespace blam
 	{

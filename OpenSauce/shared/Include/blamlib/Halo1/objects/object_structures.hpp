@@ -298,6 +298,12 @@ namespace Yelo
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );
 
+		struct s_object_datum
+		{
+			enum { k_object_types_mask = Enums::_object_type_object };
+
+			s_object_data object;
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum) == Enums::k_object_size_object );
 
 		//////////////////////////////////////////////////////////////////////////
 		// scenery
@@ -308,7 +314,7 @@ namespace Yelo
 
 		struct s_scenery_datum
 		{
-			enum { k_object_type = Enums::_object_type_scenery };
+			enum { k_object_types_mask = Enums::_object_type_scenery };
 
 			s_object_data object;
 			s_scenery_data scenery;
@@ -324,7 +330,7 @@ namespace Yelo
 
 		struct s_placeholder_datum
 		{
-			enum { k_object_type = Enums::_object_type_placeholder };
+			enum { k_object_types_mask = Enums::_object_type_placeholder };
 
 			s_object_data object;
 			s_placeholder_data placeholder;
@@ -340,7 +346,7 @@ namespace Yelo
 
 		struct s_sound_scenery_datum
 		{
-			enum { k_object_type = Enums::_object_type_sound_scenery };
+			enum { k_object_types_mask = Enums::_object_type_sound_scenery };
 
 			s_object_data object;
 			s_sound_scenery_data sound_scenery;

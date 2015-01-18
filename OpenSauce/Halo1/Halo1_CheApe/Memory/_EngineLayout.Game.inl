@@ -154,7 +154,10 @@
 		FUNC_PTR(MEMORY_POOL_DEFRAGMENT,		0x5E3FD0, 0x4EBEE0, 0x6188F0);
 		FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE,	0x5E4030, 0x4EBF40, 0x618950);
 		//////////////////////////////////////////////////////////////////////////
-		// objects/objects		
+		// models/models
+		FUNC_PTR(MODEL_FIND_MARKER,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x55C910);
+		//////////////////////////////////////////////////////////////////////////
+		// objects/objects
 		FUNC_PTR(OBJECT_NEW,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x568E50);
 		FUNC_PTR(OBJECT_DELETE,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x564C80);
 		FUNC_PTR(OBJECT_DETACH,					FUNC_PTR_NULL, FUNC_PTR_NULL, 0x5651E0);

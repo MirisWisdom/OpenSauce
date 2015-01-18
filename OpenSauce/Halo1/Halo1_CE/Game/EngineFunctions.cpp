@@ -1137,6 +1137,22 @@ namespace Yelo
 	namespace blam
 	{
 		//////////////////////////////////////////////////////////////////////////
+		// models.c
+		API_FUNC_NAKED int16 PLATFORM_API model_find_marker(const datum_index render_model_definition_index, cstring marker_name)
+		{
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(MODEL_FIND_MARKER);
+
+			API_FUNC_NAKED_START()
+				mov		eax, render_model_definition_index
+				push	render_model_definition_index
+				push	marker_name
+				call	CALL_ADDRESS
+				add		esp, 8
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		//////////////////////////////////////////////////////////////////////////
 		// model_animations.c
 		int16 PLATFORM_API animation_choose_random_permutation_internal(long_enum render_or_affects_game_state, datum_index animation_graph_index, int32 animation_index)
 		{
