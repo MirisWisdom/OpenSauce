@@ -51,6 +51,13 @@ namespace Yelo
 
 			_unit_transform_target_flags
 		};
+
+		enum unit_transform_attachment_flags
+		{
+			_unit_transform_attachment_flags_delete_attachments_on_death,
+
+			_unit_transform_attachment_flags
+		};
 	};
 
 	namespace TagGroups
@@ -79,7 +86,8 @@ namespace Yelo
 			TAG_FIELD(tag_string, object_marker);
 			TAG_FIELD(tag_string, destination_marker);
 			TAG_FIELD(int16, destination_marker_count);
-			PAD16;
+			TAG_FIELD(Enums::unit_transform_resulting_team, attachment_team);
+			TAG_FIELD(real_bounds, attachment_scale);
 		};
 
 		struct s_unit_transform_definition
@@ -87,6 +95,8 @@ namespace Yelo
 			enum { k_group_tag = 'utrn' };
 
 			TAG_TBLOCK(targets, s_unit_transform_target);
+			TAG_FIELD(word_flags, flags);
+			PAD16;
 			TAG_TBLOCK(attachments, s_unit_transform_attachment);
 		};
 	};

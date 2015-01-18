@@ -116,10 +116,9 @@ namespace Yelo
 			return dist;
 		}
 
-		typedef void (API_FUNC* proc_object_action_perfomer)(const datum_index object_index);
 		static void PerformActionOnChildrenByType(const datum_index parent
 			, const long_flags object_type_mask
-			, const proc_object_action_perfomer action_performer)
+			, const std::function<void (const datum_index)>& action_performer)
 		{
 			const auto* object_header_datums = Objects::ObjectHeader().Datums();
 			const auto* parent_object = object_header_datums[parent.index]._object;
@@ -176,6 +175,32 @@ namespace Yelo
 					}
 				}
 			);
+		}
+
+		void DeleteChildrenByDefinition(const datum_index parent, const datum_index definition)
+		{
+			PerformActionOnChildrenByType(parent, Enums::_object_type_mask_all,
+				[&](const datum_index object_index)
+				{
+					auto* object_datum = blam::object_get(object_index);
+					if(object_datum && (object_datum->definition_index == definition))
+					{
+						blam::object_delete(object_index);
+					}
+				});
+		}
+
+		void DetachChildrenByDefinition(const datum_index parent, const datum_index definition)
+		{
+			PerformActionOnChildrenByType(parent, Enums::_object_type_mask_all,
+				[&](const datum_index object_index)
+				{
+					auto* object_datum = blam::object_get(object_index);
+					if(object_datum && (object_datum->definition_index == definition))
+					{
+						blam::object_detach(object_index);
+					}
+				});
 		}
 
 		size_t PredictMemoryPoolUsage(const Enums::object_type type, const int32 node_count, const bool include_yelo_upgrades)

@@ -101,6 +101,24 @@ namespace Yelo
 		void DetachChildActors(const datum_index parent);
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Deletes all children of the specified definition type from the parent object.
+		/// </summary>
+		///
+		/// <param name="parent">	 	The parent. </param>
+		/// <param name="definition">	The object definition index. </param>
+		void DeleteChildrenByDefinition(const datum_index parent, const datum_index definition);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Detach all children of the specified definition type from the parent object.
+		/// </summary>
+		///
+		/// <param name="parent">	 	The parent. </param>
+		/// <param name="definition">	The object definition index. </param>
+		void DetachChildrenByDefinition(const datum_index parent, const datum_index definition);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Predict the object memory pool usage. </summary>
 		///
 		/// <param name="type">						The object type. </param>

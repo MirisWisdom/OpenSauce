@@ -64,6 +64,13 @@ namespace Yelo
 				, const bool damage_is_melee);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Deletes attachments on an object that match those in the transform definition. </summary>
+			///
+			/// <param name="unit_datum">		   	The unit datum. </param>
+			/// <param name="transform_definition">	The transform definition. </param>
+			void DeleteAttachments(const datum_index unit_index, const TagGroups::s_unit_transform_definition& transform_definition);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
 			/// 	Attach the transform definition's attachment objects to the target unit at the specific
 			/// 	marker permutation.
@@ -75,31 +82,39 @@ namespace Yelo
 			/// <param name="object_marker_name">	   	The object marker to attach at. </param>
 			/// <param name="destination_marker_name"> 	The destination marker name. </param>
 			/// <param name="destination_marker_index">	The index of the destination marker. </param>
-			void TransformAttachObject(const datum_index unit_index
+			/// <param name="attachment_team">		   	The attachment's team. </param>
+			/// <param name="attachment_scale">		   	The attachment's scale. </param>
+			void AttachObject(const datum_index unit_index
 				, const s_unit_datum* unit_datum
 				, const datum_index object_type
 				, const tag_string& object_marker_name
 				, const tag_string& destination_marker_name
-				, const int32 destination_marker_index);
+				, const int32 destination_marker_index
+				, const Enums::game_team attachment_team
+				, const real attachment_scale);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Attach the transform definition's attachment objects to the target unit. </summary>
 			///
 			/// <param name="unit_index">		   	Datum index of the unit. </param>
 			/// <param name="unit_datum">		   	The unit datum. </param>
+			/// <param name="instigator_team">	   	The instigator team. </param>
 			/// <param name="transform_definition">	The transform definition. </param>
-			void TransformAttachObjects(const datum_index unit_index
+			void AttachObjects(const datum_index unit_index
 				, const s_unit_datum* unit_datum
+				, const Enums::game_team instigator_team
 				, const TagGroups::s_unit_transform_definition& transform_definition);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Starts a the transform out stage on the target unit. </summary>
 			///
 			/// <param name="unit_index">		   	Datum index of the unit. </param>
-			/// <param name="unit_datum">		   	The unit datum. </param>
+			/// <param name="unit_datum">		   	[in,out] The unit datum. </param>
+			/// <param name="instigator_team">	   	The instigator team. </param>
 			/// <param name="transform_definition">	The transform definition. </param>
 			void TransformOut(const datum_index unit_index
 				, s_unit_datum* unit_datum
+				, const Enums::game_team instigator_team
 				, const TagGroups::s_actor_variant_transform& transform_definition);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -110,6 +110,10 @@ FUNC_PTR(DATUM_TRY_AND_GET,						DUO_PTR(K_DATUM_TRY_AND_GET));
 FUNC_PTR(DATUM_INITIALIZE,						DUO_PTR(K_DATUM_INITIALIZE));
 
 //////////////////////////////////////////////////////////////////////////
+// Models
+FUNC_PTR(MODEL_FIND_MARKER,						DUO_PTR(K_MODEL_FIND_MARKER));
+
+//////////////////////////////////////////////////////////////////////////
 // Networking
 FUNC_PTR(HUD_CHAT_TO_NETWORK,					DUO_PTR(K_HUD_CHAT_TO_NETWORK));
 FUNC_PTR(INDEX_RESOLUTION_TABLE_TRANSLATE,		DUO_PTR(K_INDEX_RESOLUTION_TABLE_TRANSLATE));
