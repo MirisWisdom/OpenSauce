@@ -2,7 +2,7 @@
 <definitions game="Halo1">
 	
 	<enums>		
-		<Enum name="unit_transform_resulting_team">
+		<Enum name="actor_variant_transform_in_team">
 			<field>unit default</field>
 			<field>player</field>
 			<field>human</field>
@@ -17,14 +17,14 @@
 			<field>inherit from attacker</field>
 		</Enum>
 		
-		<Enum name="unit_transform_vitality_handling">
+		<Enum name="actor_variant_transform_in_vitality_handling">
 			<field>neither</field>
 			<field>both</field>
 			<field>shield only</field>
 			<field>health only</field>
 		</Enum>
 		
-		<Enum name="unit_transform_actor_state">
+		<Enum name="actor_variant_transform_in_actor_state">
 			<field>none</field>
 			<field>sleeping</field>
 			<field>alert</field>
@@ -41,52 +41,52 @@
 	</enums>
 	
 	<flags>	
-		<Flag name="unit_transform_target_flags">
+		<Flag name="actor_variant_transform_in_target_flags">
 			<field>try to use existing unit</field>
 			<field>inherit encounter/squad</field>
 			<field>drop weapon</field>
 		</Flag>
 		
-		<Flag name="unit_transform_attachment_flags">
+		<Flag name="actor_variant_transform_in_attachment_flags">
 			<field>delete attachments on death</field>
 		</Flag>
 	</flags>
 
 	<blocks>		
-		<TagBlock name="unit_transform_target_block" maxElements="16">
-			<!--s_unit_transform_target-->
+		<TagBlock name="actor_variant_transform_in_target_block" maxElements="16">
+			<!--actor_variant_transform_in_target-->
 			<field type="String" name="target name" blockname="true" />
-			<field type="WordFlags" name="flags" definition="unit_transform_target_flags" />
-			<field type="Enum" name="resulting team" definition="unit_transform_resulting_team" />
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_target_flags" />
+			<field type="Enum" name="resulting team" definition="actor_variant_transform_in_team" />
 			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
-			<field type="Enum" name="actor state" definition="unit_transform_actor_state" />
+			<field type="Enum" name="actor state" definition="actor_variant_transform_in_actor_state" />
 			<field type="Pad" definition="2" />
 			<field type="TagReference" name="transform effect" definition="effect_reference" />
 			<field type="String" name="transform in anim" />
-			<field type="Enum" name="vitality inheritance" definition="unit_transform_vitality_handling" />
-			<field type="Enum" name="vitality override" definition="unit_transform_vitality_handling" />
+			<field type="Enum" name="vitality inheritance" definition="actor_variant_transform_in_vitality_handling" />
+			<field type="Enum" name="vitality override" definition="actor_variant_transform_in_vitality_handling" />
 			<field type="RealFraction" name="shield override" />
 			<field type="RealFraction" name="health override" />
 		</TagBlock>
 		
-		<TagBlock name="unit_transform_object_attachment_block" maxElements="16">
-			<!--s_unit_transform_object_attachment-->
-			<field type="TagReference" name="object" definition="object_reference" blockname="true" />
-			<field type="String" name="object marker" blockname="true" />
+		<TagBlock name="actor_variant_transform_in_attachment_block" maxElements="16">
+			<!--actor_variant_transform_in_attachment-->
+			<field type="TagReference" name="object" definition="object_reference" />
+			<field type="String" name="object marker" />
 			<field type="String" name="destination marker" blockname="true" />
 			<field type="ShortInteger" name="destination marker count" />
-			<field type="Enum" name="attachment team" definition="unit_transform_resulting_team" />
+			<field type="Enum" name="attachment team" definition="actor_variant_transform_in_team" />
 			<field type="RealBounds" name="attachment scale" />
 		</TagBlock>
 	</blocks>
 
 	<groups>
-		<TagGroup name="unit_transform" groupTag="utrn" version="1">
-			<!--s_unit_transform_definition-->
-			<field type="Block" name="targets" definition="unit_transform_target_block" />
-			<field type="WordFlags" name="flags" definition="unit_transform_attachment_flags" />
+		<TagGroup name="actor_variant_transform_in" groupTag="avti" version="1">
+			<!--actor_variant_transform_in_definition-->
+			<field type="Block" name="targets" definition="actor_variant_transform_in_target_block" />
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_attachment_flags" />
 			<field type="Pad" definition="2" />
-			<field type="Block" name="attachments" definition="unit_transform_object_attachment_block" />		
+			<field type="Block" name="attachments" definition="actor_variant_transform_in_attachment_block" />		
 		</TagGroup>
 	</groups>
 

@@ -23,10 +23,14 @@ namespace Yelo
 			g_unit_transform_manager.UnitDamaged(unit_index, damage_data);
 		}
 
-		void InitializeForNewMap() { }
+		void InitializeForNewMap()
+		{
+			g_unit_transform_manager.LoadActorVariantTransforms();
+		}
 
 		void DisposeFromOldMap()
 		{
+			g_unit_transform_manager.UnloadActorVariantTransforms();
 			g_unit_transform_manager.ClearInProgressTransforms();
 		}
 	};};};

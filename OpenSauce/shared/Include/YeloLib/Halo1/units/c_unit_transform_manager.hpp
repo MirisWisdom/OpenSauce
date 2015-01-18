@@ -20,25 +20,28 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct s_unit_transform_definition;
-		struct s_unit_transform_target;
-		struct s_actor_variant_transform;
+		struct actor_variant_transform_in_definition;
+		struct actor_variant_transform_out_definition;
+		struct actor_variant_transform_collection_transform;
+		struct actor_variant_transform_collection_definition;
 	};
 
 	namespace Objects { namespace Units { namespace Transform
 	{
 		class c_unit_transform_manager
 		{
-			struct s_unit_transform_state
+			struct s_actor_variant_transform_state
 			{
-				const TagGroups::s_actor_variant_transform* m_actor_variant_transform;
+				const TagGroups::actor_variant_transform_collection_transform* m_transform_entry;
 				Enums::game_team m_instigator_team;
 				PAD16;
 			};
 
 			bool m_transforms_allowed;
 			PAD24;
-			std::map<datum_index::index_t, s_unit_transform_state> m_transforms_in_progress;
+			std::map<datum_index::index_t, s_actor_variant_transform_state> m_transforms_in_progress;
+
+			TagGroups::actor_variant_transform_collection_definition* m_transform_collection;
 
 		public:
 			c_unit_transform_manager();
@@ -53,12 +56,7 @@ namespace Yelo
 			/// <param name="damage_is_melee">			Whether the damage is melee damage. </param>
 			///
 			/// <returns>	null if it fails, else the found actor transform. </returns>
-			const TagGroups::s_actor_variant_transform* FindTransform(
-#if PLATFORM_IS_EDITOR
-			const TagBlock<TagGroups::s_actor_variant_transform>& transformations
-#else
-			const TagBlock<const TagGroups::s_actor_variant_transform>& transformations
-#endif
+			const TagGroups::actor_variant_transform_collection_transform* FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
 				, const datum_index& unit_index
 				, const datum_index& instigator_unit_index
 				, const bool damage_is_melee);
@@ -67,8 +65,8 @@ namespace Yelo
 			/// <summary>	Deletes attachments on an object that match those in the transform definition. </summary>
 			///
 			/// <param name="unit_datum">		   	The unit datum. </param>
-			/// <param name="transform_definition">	The transform definition. </param>
-			void DeleteAttachments(const datum_index unit_index, const TagGroups::s_unit_transform_definition& transform_definition);
+			/// <param name="transform_definition">	The transform in definition. </param>
+			void DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -99,23 +97,25 @@ namespace Yelo
 			/// <param name="unit_index">		   	Datum index of the unit. </param>
 			/// <param name="unit_datum">		   	The unit datum. </param>
 			/// <param name="instigator_team">	   	The instigator team. </param>
-			/// <param name="transform_definition">	The transform definition. </param>
+			/// <param name="transform_definition">	The transform in definition. </param>
 			void AttachObjects(const datum_index unit_index
 				, const s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
-				, const TagGroups::s_unit_transform_definition& transform_definition);
+				, const TagGroups::actor_variant_transform_in_definition& transform_definition);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Starts a the transform out stage on the target unit. </summary>
 			///
-			/// <param name="unit_index">		   	Datum index of the unit. </param>
-			/// <param name="unit_datum">		   	[in,out] The unit datum. </param>
-			/// <param name="instigator_team">	   	The instigator team. </param>
-			/// <param name="transform_definition">	The transform definition. </param>
+			/// <param name="unit_index">			   	Datum index of the unit. </param>
+			/// <param name="unit_datum">			   	[in,out] The unit datum. </param>
+			/// <param name="instigator_team">		   	The instigator team. </param>
+			/// <param name="transform_out_definition">	The transform out definition. </param>
+			/// <param name="transform_in_definition"> 	The transform in definition. </param>
 			void TransformOut(const datum_index unit_index
 				, s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
-				, const TagGroups::s_actor_variant_transform& transform_definition);
+				, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
+				, const TagGroups::actor_variant_transform_in_definition& transform_in_definition);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Start's the transform in stage on the target unit. </summary>
@@ -124,7 +124,7 @@ namespace Yelo
 			/// <param name="unit_datum">	The unit datum. </param>
 			void TransformIn(const datum_index unit_index
 				, s_unit_datum* unit_datum
-				, const s_unit_transform_state& transform_state);
+				, const s_actor_variant_transform_state& transform_state);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Ends the transform by making the created actor vulnerable. </summary>
@@ -143,6 +143,12 @@ namespace Yelo
 			///
 			/// <param name="value">	The value. </param>
 			void SetTransformsAllowed(const bool value);
+
+			/// <summary>	Loads the actor variant transform collection tag. </summary>
+			void LoadActorVariantTransforms();
+
+			/// <summary>	Unloads the actor variant transform collection tag. </summary>
+			void UnloadActorVariantTransforms();
 
 			/// <summary>	Clears the in progress transforms. </summary>
 			void ClearInProgressTransforms();

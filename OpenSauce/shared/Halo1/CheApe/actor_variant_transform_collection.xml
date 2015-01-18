@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<references>
+		<Reference name="actor_variant_transform_out_reference">
+			<field>avto</field>
+		</Reference>
+		<Reference name="actor_variant_transform_in_reference">
+			<field>avti</field>
+		</Reference>
+	</references>
+		
+	<enums>
+		<Enum name="actor_variant_transform_collection_damage_type">
+			<field>both</field>
+			<field>weapon damage only</field>
+			<field>melee damage only</field>
+		</Enum>
+	</enums>
+	
+	<blocks>		
+		<TagBlock name="actor_variant_transform_collection_instigator_block" maxElements="16">
+			<!--actor_variant_transform_collection_instigator-->
+			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />
+			<field type="Enum" name="damage type" definition="actor_variant_transform_collection_damage_type" />
+			<field type="Pad" definition="2" />
+		</TagBlock>
+		
+		<TagBlock name="actor_variant_transform_collection_transform_block" maxElements="32">
+			<!--actor_variant_transform_collection_transform-->
+			<field type="String" name="transform name" blockname="true" />
+			<field type="TagReference" name="transform out" definition="actor_variant_transform_out_reference" />
+			<field type="Skip" definition="4" /> <!-- actor_variant_transform_out_definition*-->
+			<field type="TagReference" name="transform in" definition="actor_variant_transform_in_reference" />
+			<field type="Skip" definition="4" /> <!-- actor_variant_transform_in_definition*-->
+			<field type="Block" name="instigators" definition="actor_variant_transform_collection_instigator_block" />
+		</TagBlock>
+		
+		<TagBlock name="actor_variant_transform_collection_entry_block" maxElements="32">
+			<!--actor_variant_transform_collection_entry-->
+			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
+			<field type="Block" name="transforms" definition="actor_variant_transform_collection_transform_block" />
+		</TagBlock>
+	</blocks>
+	
+	<groups>
+		<TagGroup name="actor_variant_transform_collection" groupTag="avtc" version="1">
+			<!--actor_variant_transform_collection_definition-->
+			<field type="Block" name="actor variant transforms" definition="actor_variant_transform_collection_entry_block" />		
+		</TagGroup>	
+	</groups>
+	
+</definitions>

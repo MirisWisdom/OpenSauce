@@ -88,45 +88,8 @@ namespace Yelo
 
 			_grenade_stimulus,
 		};
-
-		enum actor_variant_transform_damage_type : _enum
-		{
-			_actor_variant_transform_damage_type_both,
-			_actor_variant_transform_damage_type_weapon_only,
-			_actor_variant_transform_damage_type_melee_only,
-
-			_actor_variant_transform_damage_type
-		};
-
-		enum actor_variant_transform_threshold_type : _enum
-		{
-			_actor_variant_transform_threshold_type_both,
-			_actor_variant_transform_threshold_type_shield_amount_only,
-			_actor_variant_transform_threshold_type_health_amount_only,
-
-			_actor_variant_transform_threshold_type
-		};
-
-		enum actor_variant_transform_rider_handling : _enum
-		{
-			_actor_variant_transform_rider_handling_eject,
-			_actor_variant_transform_rider_handling_kill,
-			_actor_variant_transform_rider_handling_inherit,
-
-			_actor_variant_transform_rider_handling
-		};
 	};
 
-	namespace Flags
-	{
-		enum actor_variant_transform_flags
-		{
-			_actor_variant_transform_flags_ignore_friendly_fire_bit,
-			_actor_variant_transform_flags_invicible_during_transform_out_bit,
-
-			_actor_variant_transform_flags
-		};
-	};
 
 	namespace TagGroups
 	{
@@ -351,35 +314,6 @@ namespace Yelo
 			TAG_PAD(int32, 2);
 		}; BOOST_STATIC_ASSERT( sizeof(s_actor_variant_change_colors) == 0x20 ); // max count: 4
 
-		DOC_TODO("Struct size asserts");
-		DOC_TODO("Padding");
-		struct s_actor_variant_transform_instigator
-		{
-			TAG_FIELD(tag_reference, unit);
-			TAG_FIELD(Enums::actor_variant_transform_damage_type, damage_type);
-			PAD16;
-		};
-
-		struct s_actor_variant_transform
-		{
-			TAG_FIELD(tag_string, transform_name);
-			TAG_FIELD(word_flags, flags);
-			PAD16; //TAG_FIELD(Enums::unit_transform_rider_handling, rider_handling);
-			TAG_FIELD(Enums::actor_variant_transform_threshold_type, threshold_type);
-			PAD16;
-			TAG_FIELD(real_fraction, shield_threshold);
-			TAG_FIELD(real_fraction, health_threshold);
-			TAG_FIELD(tag_string, transform_out_anim);
-			TAG_FIELD(tag_reference, unit_transform);
-			TAG_TBLOCK(instigators, s_actor_variant_transform_instigator);
-		};
-
-		struct s_actor_variant_extension
-		{
-			TAG_TBLOCK(transformations, s_actor_variant_transform);
-			PAD(1, 48);
-		};
-
 		struct s_actor_variant_definition
 		{
 			enum { k_group_tag = 'actv' };
@@ -528,7 +462,7 @@ namespace Yelo
 			TAG_FIELD(int16, forced_shader_permutation, "", "if nonzero, overrides the unit's shader permutation");
 			PAD16;
 			TAG_PAD(int32, 4);
-			TAG_TBLOCK(actor_variant_extension, s_actor_variant_extension);
+			TAG_PAD(tag_block, 1);
 			TAG_TBLOCK(change_colors, s_actor_variant_change_colors);
 		}; BOOST_STATIC_ASSERT( sizeof(s_actor_variant_definition) == 0x238 ); // max count: 1		
 	};

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	
+	<enums>		
+		<Enum name="actor_variant_transform_out_rider_handling">
+			<field>eject</field>
+			<field>kill</field>
+			<field>inherit</field>
+		</Enum>
+		
+		<Enum name="actor_variant_transform_out_threshold_type">
+			<field>both</field>
+			<field>shield amount only</field>
+			<field>health amount only</field>
+		</Enum>
+	</enums>
+	
+	<flags>
+		<Flag name="actor_variant_transform_out_flags">
+			<field>ignore friendly fire</field>
+			<field>invicible during transform out</field>
+		</Flag>
+	</flags>
+
+	<groups>
+		<TagGroup name="actor_variant_transform_out" groupTag="avto" version="1">
+			<!--actor_variant_transform_out_definition-->			
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_out_flags" />			
+			<field type="Pad" definition="2" /><!--field type="Enum" name="rider handling" definition="actor_variant_transform_out_rider_handling" /-->
+			
+			<field type="Enum" name="threshold type" definition="actor_variant_transform_out_threshold_type" />
+			<field type="Pad" definition="2" />
+			<field type="RealFraction" name="shield threshold" />
+			<field type="RealFraction" name="health threshold" />
+			
+			<field type="String" name="transform out anim" />
+		</TagGroup>
+	</groups>
+</definitions>
