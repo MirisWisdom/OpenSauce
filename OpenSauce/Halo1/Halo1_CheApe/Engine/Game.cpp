@@ -11,6 +11,7 @@
 
 #include "Engine/Objects.hpp"
 #include "Engine/Units.hpp"
+#include "Engine/AI.hpp"
 
 namespace Yelo
 {
@@ -23,11 +24,13 @@ namespace Yelo
 		void PLATFORM_API InitializeForNewMap()
 		{
 			Objects::Units::InitializeForNewMap();
+			AI::InitializeForNewMap();
 		}
 
 		void PLATFORM_API DisposeFromOldMap()
 		{
 			Objects::Units::DisposeFromOldMap();
+			AI::DisposeFromOldMap();
 		}
 
 		API_FUNC_NAKED void InitializeForNewMapHook()
@@ -59,9 +62,7 @@ namespace Yelo
 			Memory::WriteRelativeJmp(&DisposeFromOldMapHook, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), true);
 		}
 
-		void Dispose()
-		{
-		}
+		void Dispose() { }
 	};
 };
 #endif

@@ -36,6 +36,7 @@
 #include "Game/GameState.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Game/AI.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
@@ -157,7 +158,7 @@ namespace Yelo
 
 		void PLATFORM_API ObjectsUpdate()
 		{
-			Units::ObjectsUpdate();
+			AI::ObjectsUpdate();
 
 			blam::objects_update();
 		}

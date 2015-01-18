@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <YeloLib/Halo1/units/c_unit_transform_manager.hpp>
+#include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
@@ -26,20 +26,20 @@
 
 namespace Yelo
 {
-	namespace Objects { namespace Units { namespace Transform
+	namespace AI { namespace Transform
 	{
-		c_unit_transform_manager::c_unit_transform_manager()
+		c_actor_variant_transform_manager::c_actor_variant_transform_manager()
 			: m_transforms_allowed(true)
 			, m_transforms_in_progress()
 		{ }
 
-		const TagGroups::actor_variant_transform_collection_transform* c_unit_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+		const TagGroups::actor_variant_transform_collection_transform* c_actor_variant_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
 			, const datum_index& unit_index
 			, const datum_index& instigator_unit_index
 			, const bool damage_is_melee)
 		{
-			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
-			auto* instigator_unit_datum = (instigator_unit_index.IsNull() ? nullptr : blam::object_try_and_get_and_verify_type<s_unit_datum>(instigator_unit_index));
+			auto* unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			auto* instigator_unit_datum = (instigator_unit_index.IsNull() ? nullptr : blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(instigator_unit_index));
 
 			auto test_transform = [&](const TagGroups::actor_variant_transform_collection_transform& transform) -> bool
 			{
@@ -136,16 +136,16 @@ namespace Yelo
 		}
 
 #pragma region Attachments
-		void c_unit_transform_manager::DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition)
+		void c_actor_variant_transform_manager::DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition)
 		{
 			for(auto& attachment : transform_definition.attachments)
 			{
-				DeleteChildrenByDefinition(unit_index, attachment.object_type.tag_index);
+				Objects::DeleteChildrenByDefinition(unit_index, attachment.object_type.tag_index);
 			}
 		}
 
-		void c_unit_transform_manager::AttachObject(const datum_index unit_index
-			, const s_unit_datum* unit_datum
+		void c_actor_variant_transform_manager::AttachObject(const datum_index unit_index
+			, const Objects::s_unit_datum* unit_datum
 			, const datum_index object_type
 			, const tag_string& object_marker_name
 			, const tag_string& destination_marker_name
@@ -177,7 +177,7 @@ namespace Yelo
 			}
 
 			// Set up the placement data to match the target object's
-			s_object_placement_data attachment_placement_data;
+			Objects::s_object_placement_data attachment_placement_data;
 			blam::object_placement_data_new(attachment_placement_data, object_type);
 
 			attachment_placement_data.position = unit_datum->object.position;
@@ -195,8 +195,8 @@ namespace Yelo
 			blam::object_attach_to_marker(unit_index, destination_marker_name, attachment_object, object_marker_name);
 		}
 
-		void c_unit_transform_manager::AttachObjects(const datum_index unit_index
-			, const s_unit_datum* unit_datum
+		void c_actor_variant_transform_manager::AttachObjects(const datum_index unit_index
+			, const Objects::s_unit_datum* unit_datum
 			, const Enums::game_team instigator_team
 			, const TagGroups::actor_variant_transform_in_definition& transform_definition)
 		{
@@ -250,8 +250,9 @@ namespace Yelo
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets up the unit's actor. </summary>
 		///
-		/// <param name="actor_variant_tag_index">	Datum index of the actor variant tag. </param>
 		/// <param name="unit_index">			  	Datum index of the unit. </param>
+		/// <param name="actor_variant_tag_index">	Datum index of the actor variant tag. </param>
+		/// <param name="default_state">		  	The default actor state. </param>
 		/// <param name="source_actor_index">	  	Datum index of the source actor. </param>
 		/// <param name="inherit_encounter_squad">
 		/// 	Flag for whether to inherit the source actor's encounter and squad.
@@ -301,7 +302,7 @@ namespace Yelo
 		///
 		/// <returns>	The new unit index. </returns>
 		static datum_index CreateUnitReuse(const datum_index unit_index
-			, s_unit_datum* unit_datum
+			, Objects::s_unit_datum* unit_datum
 			, const Enums::actor_variant_transform_in_team resulting_team
 			, const Enums::game_team instigator_team)
 		{
@@ -325,20 +326,20 @@ namespace Yelo
 		/// <summary>	Creates a new unit. </summary>
 		///
 		/// <param name="unit_index">	  	Datum index of the old unit. </param>
-		/// <param name="unit_datum">	  	[in] If non-null, the old unit's datum. </param>
+		/// <param name="unit_datum">	  	[in] The old unit's datum. </param>
 		/// <param name="new_unit_type">  	Type of the new unit. </param>
 		/// <param name="resulting_team"> 	The resulting team. </param>
 		/// <param name="instigator_team">	The instigator team. </param>
 		///
 		/// <returns>	The new unit index. </returns>
 		static datum_index CreateUnitNew(const datum_index unit_index
-			, s_unit_datum* unit_datum
+			, Objects::s_unit_datum* unit_datum
 			, const datum_index new_unit_type
 			, const Enums::actor_variant_transform_in_team resulting_team
 			, const Enums::game_team instigator_team)
 		{
 			// Create the new unit based on the target_unit's data
-			s_object_placement_data unit_placement_data;
+			Objects::s_object_placement_data unit_placement_data;
 			PlacementDataNewAndCopy(unit_placement_data, unit_index, new_unit_type);
 
 			// Set the to-be-created unit's team
@@ -365,7 +366,7 @@ namespace Yelo
 		/// <param name="health">	 	The health value. </param>
 		/// <param name="shield">	 	The shield value. </param>
 		static void OverrideDamage(const Enums::actor_variant_transform_in_vitality_handling operation
-			, s_unit_datum* unit_datum
+			, Objects::s_unit_datum* unit_datum
 			, const real health
 			, const real shield)
 		{
@@ -384,8 +385,8 @@ namespace Yelo
 			}
 		}
 
-		void c_unit_transform_manager::TransformOut(const datum_index unit_index
-			, s_unit_datum* unit_datum
+		void c_actor_variant_transform_manager::TransformOut(const datum_index unit_index
+			, Objects::s_unit_datum* unit_datum
 			, const Enums::game_team instigator_team
 			, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
 			, const TagGroups::actor_variant_transform_in_definition& transform_in_definition)
@@ -410,8 +411,8 @@ namespace Yelo
 			SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, true);
 		}
 
-		void c_unit_transform_manager::TransformIn(const datum_index unit_index
-			, s_unit_datum* unit_datum
+		void c_actor_variant_transform_manager::TransformIn(const datum_index unit_index
+			, Objects::s_unit_datum* unit_datum
 			, const s_actor_variant_transform_state& transform_state)
 		{
 			// Get a random transform target
@@ -441,7 +442,7 @@ namespace Yelo
 					, transform_state.m_instigator_team);
 
 				DeleteAttachments(unit_index, transform_in_definition);
-				DetachChildActors(unit_index);
+				Objects::DetachChildActors(unit_index);
 			}
 			else
 			{
@@ -453,7 +454,7 @@ namespace Yelo
 
 				delete_unit = true;
 			}
-			auto* new_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(new_unit_index);
+			auto* new_unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(new_unit_index);
 
 			// Handle seated units
 			// TODO: Add ejection and inheritance
@@ -461,7 +462,7 @@ namespace Yelo
 				!current_child.IsNull();
 				current_child = blam::object_get(current_child)->next_object_index)
 			{
-				auto child_object = blam::object_try_and_get_and_verify_type<s_unit_datum>(current_child);
+				auto child_object = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(current_child);
 				if(!child_object || (child_object->unit.vehicle_seat_index == NONE))
 				{
 					continue;
@@ -515,7 +516,7 @@ namespace Yelo
 			SET_FLAG(new_unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit, true);
 		}
 
-		void c_unit_transform_manager::TransformEnd(s_unit_datum* unit_datum)
+		void c_actor_variant_transform_manager::TransformEnd(Objects::s_unit_datum* unit_datum)
 		{
 			blam::actor_braindead(unit_datum->unit.actor_index, false);
 
@@ -524,21 +525,21 @@ namespace Yelo
 		}
 #pragma endregion
 
-		bool c_unit_transform_manager::GetTransformsAllowed()
+		bool c_actor_variant_transform_manager::GetTransformsAllowed()
 		{
 			return m_transforms_allowed;
 		}
 
-		void c_unit_transform_manager::SetTransformsAllowed(const bool value)
+		void c_actor_variant_transform_manager::SetTransformsAllowed(const bool value)
 		{
 			m_transforms_allowed = value;
 		}
 
-		void c_unit_transform_manager::LoadActorVariantTransforms()
+		void c_actor_variant_transform_manager::LoadActorVariantTransforms()
 		{
 			TagGroups::c_tag_iterator iterator(TagGroups::actor_variant_transform_collection_definition::k_group_tag);
 
-			// Get the first collection tag as that should be the only one
+			// Get the first collection tag as there should be only one
 			auto tag_index = iterator.Next();
 			if(tag_index.IsNull())
 			{
@@ -562,17 +563,17 @@ namespace Yelo
 			}
 		}
 
-		void c_unit_transform_manager::UnloadActorVariantTransforms()
+		void c_actor_variant_transform_manager::UnloadActorVariantTransforms()
 		{
 			m_transform_collection = nullptr;
 		}
 
-		void c_unit_transform_manager::ClearInProgressTransforms()
+		void c_actor_variant_transform_manager::ClearInProgressTransforms()
 		{
 			m_transforms_in_progress.clear();
 		}
 
-		void c_unit_transform_manager::UnitDamaged(const datum_index unit_index, const Objects::s_damage_data* damage_data)
+		void c_actor_variant_transform_manager::UnitDamaged(const datum_index unit_index, const Objects::s_damage_data* damage_data)
 		{
 			if(!m_transform_collection || !m_transforms_allowed)
 			{
@@ -580,7 +581,7 @@ namespace Yelo
 			}
 
 			// Get the unit datums
-			auto* unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(unit_index);
+			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 			if(!unit_datum)
 			{
 				return;
@@ -644,7 +645,7 @@ namespace Yelo
 				}
 			}
 			
-			auto* instigator_unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(damage_data->responsible_unit_index);
+			auto* instigator_unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(damage_data->responsible_unit_index);
 			auto instigator_team = (instigator_unit_datum ? instigator_unit_datum->object.owner_team : Enums::_game_team_none);
 
 			// Start transforming the unit, using the found transform
@@ -661,14 +662,14 @@ namespace Yelo
 			};
 		}
 
-		void c_unit_transform_manager::UnitUpdate(const datum_index unit_index)
+		void c_actor_variant_transform_manager::UnitUpdate(const datum_index unit_index)
 		{
 			if(!m_transform_collection)
 			{
 				return;
 			}
 
-			auto* unit_datum = blam::object_try_and_get_and_verify_type<s_unit_datum>(unit_index);
+			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 			if(!unit_datum)
 			{
 				return;
@@ -716,5 +717,5 @@ namespace Yelo
 				}
 			}
 		}
-	};};}
+	};};
 };

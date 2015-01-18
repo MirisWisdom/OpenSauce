@@ -18,11 +18,12 @@
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/Halo1/units/c_unit_transform_manager.hpp>
+#include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
+#include "Game/AI.hpp"
 #include "Memory/MemoryInterface.hpp"
 
 #include "Objects/Objects.hpp"
@@ -38,7 +39,6 @@ namespace Yelo
 
 #include "Objects/Units.Boarding.inl"
 #include "Objects/Units.Animations.inl"
-#include "Objects/Units.UnitTransform.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 namespace Yelo
@@ -55,17 +55,7 @@ namespace Yelo
 		{
 			blam::unit_damage_aftermath(unit_index, damage_data, damage_flags, shield_amount, body_amount, arg6, damage_part);
 
-			Transform::UnitDamaged(unit_index, damage_data);
-		}
-
-		void ObjectsUpdate()
-		{
-			c_object_iterator iter(Enums::_object_type_mask_unit);
-
-			for(auto object_index : iter)
-			{
-				Transform::UnitUpdate(object_index.index);
-			}
+			AI::UnitDamageAftermath(unit_index, damage_data);
 		}
 
 		void Initialize()
@@ -121,14 +111,9 @@ namespace Yelo
 				// handle the grenade types upgrading, if needed
 				InitializeUnitGrenadeTypesForNewMap(yelo_header);
 			}
-
-			Transform::InitializeForNewMap();
 		}
 
-		void DisposeFromOldMap()
-		{
-			Transform::DisposeFromOldMap();
-		}
+		void DisposeFromOldMap() { }
 
 		void InitializeForNewMapPrologue()
 		{

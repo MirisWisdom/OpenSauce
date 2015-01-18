@@ -11,6 +11,8 @@
 #include <blamlib/Halo1/ai/ai_structures.hpp>
 #include <blamlib/Halo1/ai/prop_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/units/units_yelo.hpp>
@@ -18,6 +20,8 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
+
+#include "Game/AI.Transform.inl"
 
 namespace Yelo
 {
@@ -122,9 +126,34 @@ namespace Yelo
 		void Dispose()
 		{
 		}
+		
+		void InitializeForNewMap()
+		{
+			Transform::InitializeForNewMap();
+		}
+
+		void DisposeFromOldMap()
+		{
+			Transform::DisposeFromOldMap();
+		}
 
 		void PLATFORM_API Update()
 		{
+		}
+
+		void ObjectsUpdate()
+		{
+			Objects::c_object_iterator iter(Enums::_object_type_mask_unit);
+
+			for(auto object_index : iter)
+			{
+				Transform::UnitUpdate(object_index.index);
+			}
+		}
+
+		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data)
+		{
+			Transform::UnitDamaged(object_index, damage_data);
 		}
 	};
 };

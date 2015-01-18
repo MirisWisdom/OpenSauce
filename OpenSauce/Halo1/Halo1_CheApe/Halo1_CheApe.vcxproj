@@ -92,6 +92,7 @@
   </PropertyGroup>
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
+    <ClCompile Include="Engine\AI.cpp" />
     <ClCompile Include="Engine\AnimationUpgrade.cpp" />
     <ClCompile Include="Engine\EngineFunctions.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Halo1_CheApe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\AI.hpp" />
     <ClInclude Include="Engine\AnimationUpgrade.hpp" />
     <ClInclude Include="Engine\EngineFunctions.hpp" />
     <ClInclude Include="Engine\Game.hpp" />
@@ -228,7 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
-    <None Include="Engine\Units.UnitTransform.inl" />
+    <None Include="Engine\AI.Transform.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
