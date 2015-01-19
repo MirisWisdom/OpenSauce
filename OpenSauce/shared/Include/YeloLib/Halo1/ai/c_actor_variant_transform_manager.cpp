@@ -31,11 +31,11 @@ namespace Yelo
 	namespace AI { namespace Transform
 	{
 		c_actor_variant_transform_manager::c_actor_variant_transform_manager()
-			: m_transforms_allowed(true)
+			: m_transforms_enabled(true)
 			, m_transforms_in_progress()
 		{ }
 
-		const TagGroups::actor_variant_transform_collection_transform* c_actor_variant_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+		sbyte c_actor_variant_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
 			, const datum_index& unit_index
 			, const datum_index& instigator_unit_index
 			, const bool damage_is_melee)
@@ -119,22 +119,40 @@ namespace Yelo
 			}
 			
 			// Populate the transforms list
-			std::vector<const TagGroups::actor_variant_transform_collection_transform*> transforms;
-			for(auto& entry : transformations)
+			std::vector<sbyte> transform_indices;
+			for(sbyte index = 0; index < transformations.Count; index++)
 			{
-				if(select_func(entry))
+				if(select_func(transformations[index]))
 				{
-					transforms.push_back(&entry);
+					transform_indices.push_back(index);
 				}
 			}
 			
 			// Pick a random transform from the transforms list
-			if(transforms.size())
+			if(transform_indices.size())
 			{
-				return transforms[rand() % transforms.size()];
+				return transform_indices[rand() % transform_indices.size()];
 			}
 
-			return nullptr;
+			return NONE;
+		}
+
+		sbyte c_actor_variant_transform_manager::FindTransformsEntry(const datum_index tag_index)
+		{
+			auto& actor_variant_transforms = m_transform_collection->actor_variant_transforms;
+			auto found_entry = std::find_if(actor_variant_transforms.begin(), actor_variant_transforms.end(),
+				[&](const TagGroups::actor_variant_transform_collection_entry& entry)
+				{
+					return entry.actor_variant.tag_index == tag_index;
+				}
+			);
+
+			if(found_entry == actor_variant_transforms.end())
+			{
+				return NONE;
+			}
+
+			return found_entry - actor_variant_transforms.begin();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -456,9 +474,21 @@ namespace Yelo
 			, Objects::s_unit_datum* unit_datum
 			, const s_actor_variant_transform_state& transform_state)
 		{
-			// Get a random transform target
-			auto& transform_in_definition = *transform_state.m_transform_entry->transform_in_ptr;
-			auto& transform_target = transform_in_definition.targets[rand() % transform_in_definition.targets.Count];
+			auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_state.m_transform_entry_index];
+			auto& transform = transform_entry.transforms[transform_state.m_transform_index];
+			auto& transform_in_definition = *transform.transform_in_ptr;
+
+			sbyte transform_index;
+			if(transform_state.m_target_index == NONE)
+			{
+				// Get a random transform target
+				transform_index = (sbyte)(rand() % transform_in_definition.targets.Count);
+			}
+			else
+			{
+				transform_index = transform_state.m_target_index;
+			}
+			auto& transform_target = transform_in_definition.targets[transform_index];
 
 			auto* actor_variant_definition = blam::tag_get<TagGroups::s_actor_variant_definition>(transform_target.actor_variant.tag_index);
 
@@ -571,14 +601,9 @@ namespace Yelo
 		}
 #pragma endregion
 
-		bool c_actor_variant_transform_manager::GetTransformsAllowed()
+		bool& c_actor_variant_transform_manager::TransformsEnabled()
 		{
-			return m_transforms_allowed;
-		}
-
-		void c_actor_variant_transform_manager::SetTransformsAllowed(const bool value)
-		{
-			m_transforms_allowed = value;
+			return m_transforms_enabled;
 		}
 
 		void c_actor_variant_transform_manager::LoadActorVariantTransforms()
@@ -621,7 +646,7 @@ namespace Yelo
 
 		void c_actor_variant_transform_manager::UnitDamaged(const datum_index unit_index, const Objects::s_damage_data* damage_data)
 		{
-			if(!m_transform_collection || !m_transforms_allowed)
+			if(!m_transform_collection || !m_transforms_enabled)
 			{
 				return;
 			}
@@ -660,43 +685,36 @@ namespace Yelo
 			}
 			
 			// If the actor variant has no transforms defined, return
-			auto& actor_variant_transforms = m_transform_collection->actor_variant_transforms;
-			auto found_entry = std::find_if(actor_variant_transforms.begin(), actor_variant_transforms.end(),
-				[&](const TagGroups::actor_variant_transform_collection_entry& entry)
-				{
-					return entry.actor_variant.tag_index == actor_datum->meta.actor_variant_definition_index;
-				}
-			);
-
-			if(found_entry == actor_variant_transforms.end())
+			auto transforms_entry_index = FindTransformsEntry(actor_datum->meta.actor_variant_definition_index);
+			if(transforms_entry_index == NONE)
 			{
 				return;
 			}
-			auto& transformations = found_entry->transforms;
+			auto& transform_entry = m_transform_collection->actor_variant_transforms[transforms_entry_index];
 
 			// Try to find a transform for the damage instigator
 			// If no match is found, look for a default transform
 			// Return if no match is found
 			bool is_melee = (unit_datum->unit.damage_result.category == Enums::_damage_category_melee);
-
-			auto* actor_variant_transform = FindTransform(transformations
+			auto transform_index = FindTransform(transform_entry.transforms
 				, unit_index
 				, damage_data->responsible_unit_index
 				, is_melee);
 
-			if(!actor_variant_transform)
+			if(transform_index == NONE)
 			{
-				actor_variant_transform = FindTransform(transformations
+				transform_index = FindTransform(transform_entry.transforms
 					, unit_index
 					, datum_index::null
 					, is_melee);
 
-				if(!actor_variant_transform)
+				if(transform_index == NONE)
 				{
 					return;
 				}
 			}
-			
+			auto& transform = transform_entry.transforms[transform_index];
+
 			auto* instigator_unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(damage_data->responsible_unit_index);
 			auto instigator_team = (instigator_unit_datum ? instigator_unit_datum->object.owner_team : Enums::_game_team_none);
 
@@ -704,13 +722,16 @@ namespace Yelo
 			TransformOut(unit_index
 				, unit_datum
 				, instigator_team
-				, *actor_variant_transform->transform_out_ptr
-				, *actor_variant_transform->transform_in_ptr);
+				, *transform.transform_out_ptr
+				, *transform.transform_in_ptr);
 			
 			m_transforms_in_progress[unit_index.index] = s_actor_variant_transform_state
 			{
-				actor_variant_transform,
-				instigator_team
+				unit_index.index,
+				instigator_team,
+				transforms_entry_index,
+				transform_index,
+				NONE
 			};
 		}
 
@@ -735,9 +756,12 @@ namespace Yelo
 				{
 					SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, false);
 					SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit, false);
-					
+
 					auto& transform_state = m_transforms_in_progress[unit_index.index];
-					auto& transform_in_definition = *transform_state.m_transform_entry->transform_in_ptr;
+					auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_state.m_transform_entry_index];
+					auto& transform = transform_entry.transforms[transform_state.m_transform_index];
+					auto& transform_in_definition = *transform.transform_in_ptr;
+
 					if(TEST_FLAG(transform_in_definition.flags, Flags::_actor_variant_transform_in_attachment_flags_delete_attachments_on_death))
 					{
 						DeleteAttachments(unit_index, transform_in_definition);
@@ -772,6 +796,114 @@ namespace Yelo
 					TransformEnd(unit_datum);
 				}
 			}
+		}
+
+		bool c_actor_variant_transform_manager::TransformActor(const datum_index unit_index
+			, cstring transform_name
+			, cstring target_name)
+		{
+			if(unit_index.IsNull())
+			{
+				return false;
+			}
+
+			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			if(!unit_datum)
+			{
+				return false;
+			}
+
+			if(unit_datum->unit.actor_index.IsNull())
+			{
+				return false;
+			}
+
+			auto* actor_datum = AI::Actors()[unit_datum->unit.actor_index];
+
+			// If the actor variant has no transforms defined, return false
+			auto transform_entry_index = FindTransformsEntry(actor_datum->meta.actor_variant_definition_index);
+			if(transform_entry_index == NONE)
+			{
+				return false;
+			}
+			auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_entry_index];
+			
+			// If the transform name is empty get a random non-instigator transform, otherwise find a matching transform
+			sbyte transform_index = NONE;
+			if(!is_null_or_empty(transform_name))
+			{
+				auto found_transform = std::find_if(transform_entry.transforms.begin(), transform_entry.transforms.end(),
+					[&](const TagGroups::actor_variant_transform_collection_transform& entry)
+					{
+						return strcmp(entry.transform_name, transform_name) == 0;
+					}
+				);
+
+				if(found_transform == transform_entry.transforms.end())
+				{
+					return false;
+				}
+
+				transform_index = found_transform - transform_entry.transforms.begin();
+			}
+			else
+			{
+				// Find a random non-instigator transform
+				std::vector<sbyte> transform_indices;
+				for(sbyte index = 0; index < transform_entry.transforms.Count; index++)
+				{
+					if(transform_entry.transforms[index].instigators.Count == 0)
+					{
+						transform_indices.push_back(index);
+					}
+				}
+			
+				// Pick a random transform from the transforms list
+				if(transform_indices.size() == 0)
+				{
+					return false;
+				}
+
+				transform_index = transform_indices[rand() % transform_indices.size()];
+			}
+			auto& transform = transform_entry.transforms[transform_index];
+
+			// If the target name is null, use a random target, otherwise look for a matching target name
+			sbyte target_index = NONE;
+			if(!is_null_or_empty(target_name))
+			{
+				auto& transform_in = *transform.transform_in_ptr;
+				auto found_target = std::find_if(transform_in.targets.begin(), transform_in.targets.end(),
+					[&](const TagGroups::actor_variant_transform_in_target& entry)
+					{
+						return strcmp(entry.target_name, target_name) == 0;
+					}
+				);
+
+				if(found_target == transform_in.targets.end())
+				{
+					return false;
+				}
+
+				target_index = found_target - transform_in.targets.end();
+			}
+
+			// Start transforming the unit, using the found transform
+			TransformOut(unit_index
+				, unit_datum
+				, Enums::_game_team_none
+				, *transform.transform_out_ptr
+				, *transform.transform_in_ptr);
+			
+			m_transforms_in_progress[unit_index.index] = s_actor_variant_transform_state
+			{
+				unit_index.index,
+				Enums::_game_team_none,
+				transform_entry_index,
+				transform_index,
+				target_index,
+			};
+			return true;
 		}
 	};};
 };

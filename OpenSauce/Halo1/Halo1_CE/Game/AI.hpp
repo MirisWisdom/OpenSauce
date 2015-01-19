@@ -43,5 +43,22 @@ namespace Yelo
 		void PLATFORM_API Update();
 		void ObjectsUpdate();
 		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data);
+
+		namespace Transform
+		{
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Get/Sets whether transforms are enabled. </summary>
+			///
+			/// <returns>	A bool reference; </returns>
+			bool& TransformsEnabled();
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script ai transform actor function. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the transform succeeds, otherwise false. </returns>
+			void* HS_AITransformActor(void** arguments);
+		}
 	};
 };

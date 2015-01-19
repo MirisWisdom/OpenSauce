@@ -32,8 +32,10 @@
 	namespace AI
 	{
 		ENGINE_DPTR(actor_data_t, actor_data,							PTR_NULL, PTR_NULL, 0xE459DC);
+		ENGINE_DPTR(s_ai_globals_data, ai_globals,						PTR_NULL, PTR_NULL, 0x01057384);
 		
-		actor_data_t& Actors()											DPTR_IMP_GET_BYREF(actor_data);
+		actor_data_t& Actors()											DPTR_IMP_GET_BYREF(actor_data)
+		s_ai_globals_data* AIGlobals()									DPTR_IMP_GET(ai_globals);
 	};
 
 	namespace Objects

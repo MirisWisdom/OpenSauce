@@ -32,12 +32,15 @@ namespace Yelo
 		{
 			struct s_actor_variant_transform_state
 			{
-				const TagGroups::actor_variant_transform_collection_transform* m_transform_entry;
+				datum_index::index_t unit_index;
 				Enums::game_team m_instigator_team;
-				PAD16;
+				sbyte m_transform_entry_index;
+				sbyte m_transform_index;
+				sbyte m_target_index;
+				PAD8;
 			};
 
-			bool m_transforms_allowed;
+			bool m_transforms_enabled;
 			PAD24;
 			std::map<datum_index::index_t, s_actor_variant_transform_state> m_transforms_in_progress;
 
@@ -55,11 +58,19 @@ namespace Yelo
 			/// <param name="instigator_unit_index">	Datum index of the instigator unit. </param>
 			/// <param name="damage_is_melee">			Whether the damage is melee damage. </param>
 			///
-			/// <returns>	null if it fails, else the found actor transform. </returns>
-			const TagGroups::actor_variant_transform_collection_transform* FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+			/// <returns>	Index of the found transform. Returns NONE if no transform was found. </returns>
+			sbyte FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
 				, const datum_index& unit_index
 				, const datum_index& instigator_unit_index
 				, const bool damage_is_melee);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for the first transforms entry for an actor variant tag. </summary>
+			///
+			/// <param name="tag_index">	Datum index of the actor variant tag. </param>
+			///
+			/// <returns>	The found transforms entry. </returns>
+			sbyte FindTransformsEntry(const datum_index tag_index);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -137,16 +148,10 @@ namespace Yelo
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Gets whether transforms are allowed. </summary>
+			/// <summary>	Gets/Sets whether transforms are enabled. </summary>
 			///
-			/// <returns>	true if allowed, false if not. </returns>
-			bool GetTransformsAllowed();
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Sets whether transforms are allowed. </summary>
-			///
-			/// <param name="value">	The value. </param>
-			void SetTransformsAllowed(const bool value);
+			/// <returns>	true if enabled, false if not. </returns>
+			bool& TransformsEnabled();
 
 			/// <summary>	Loads the actor variant transform collection tag. </summary>
 			void LoadActorVariantTransforms();
@@ -169,6 +174,18 @@ namespace Yelo
 			///
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void UnitUpdate(const datum_index unit_index);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Transforms an actor to the specified transform. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="transform">  	The transform name. </param>
+			/// <param name="target">	  	The target name. </param>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool TransformActor(const datum_index unit_index
+				, cstring transform_name
+				, cstring target_name);
 		};
 	};};
 };
