@@ -15,10 +15,15 @@ namespace Yelo
 
 	namespace AI
 	{
+		void Initialize();
+		void Dispose();
+
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
 
 		void ObjectsUpdate();
 		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data);
+#endif
 	};
 };

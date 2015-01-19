@@ -16,6 +16,16 @@ namespace Yelo
 {
 	namespace AI
 	{
+		void Initialize()
+		{
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
+			Transform::InitialiseTagBlockProcedures();
+#endif
+		}
+
+		void Dispose() { }
+		
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		void InitializeForNewMap()
 		{
 			Transform::InitializeForNewMap();
@@ -40,5 +50,6 @@ namespace Yelo
 		{
 			Transform::UnitDamaged(object_index, damage_data);
 		}
+#endif
 	};
 };

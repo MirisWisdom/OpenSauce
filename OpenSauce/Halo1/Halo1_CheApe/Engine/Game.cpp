@@ -7,8 +7,6 @@
 #include "Common/Precompile.hpp"
 #include "Engine/Game.hpp"
 
-#if PLATFORM_TYPE == PLATFORM_SAPIEN
-
 #include "Engine/Objects.hpp"
 #include "Engine/Units.hpp"
 #include "Engine/AI.hpp"
@@ -17,6 +15,7 @@ namespace Yelo
 {
 	namespace Game
 	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		FUNC_PTR(UI_WIDGETS_SAFE_TO_LOAD,						PTR_NULL, PTR_NULL, 0x5BC480);
 		FUNC_PTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK,				PTR_NULL, PTR_NULL, 0x618337);
 		FUNC_PTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK,				PTR_NULL, PTR_NULL, 0x617419);
@@ -55,14 +54,21 @@ namespace Yelo
 				retn
 			}
 		}
+#endif
 
 		void Initialize()
 		{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 			Memory::WriteRelativeJmp(&InitializeForNewMapHook, GET_FUNC_VPTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK), true);
 			Memory::WriteRelativeJmp(&DisposeFromOldMapHook, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), true);
+#endif
+
+			AI::Initialize();
 		}
 
-		void Dispose() { }
+		void Dispose()
+		{
+			AI::Dispose();
+		}
 	};
 };
-#endif

@@ -122,6 +122,10 @@
 		// interface/ui_widget_group
 		FUNC_PTR(UI_LOAD_TAGS_FOR_SCENARIO,		0x48ADA0, 0x488960, 0x5A37E0);
 		//////////////////////////////////////////////////////////////////////////
+		// main/console
+		FUNC_PTR(CONSOLE_PRINTF,				FUNC_PTR_NULL, 0x4885A0, 0x547C80);
+		FUNC_PTR(CONSOLE_WARNING,				FUNC_PTR_NULL, 0x4886E0, 0x547DC0);
+		//////////////////////////////////////////////////////////////////////////
 		// math/periodic_functions
 		FUNC_PTR(PERIODIC_FUNCTION_EVALUATE,	0x4DC780, 0x490250, 0x61A620);
 		FUNC_PTR(TRANSITION_FUNCTION_EVALUATE,	0x4DC8C0, 0x490390, 0x61A760);

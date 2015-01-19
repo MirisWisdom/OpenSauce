@@ -194,7 +194,7 @@ namespace Yelo
 		// predicted_resources.c
 #if PLATFORM_TYPE == PLATFORM_TOOL
 		void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources,
-			long_enum resource_type, datum_index tag_index, int32 resource_index = NONE)
+			long_enum resource_type, datum_index tag_index, int32 resource_index)
 		{
 			static void* PREDICTED_RESOURCES_ADD_RESOURCE = CAST_PTR(void*, 0x4B94E0);
 
@@ -254,6 +254,26 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// main
+	namespace blam
+	{
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
+		API_FUNC_NAKED void PLATFORM_API console_printf(bool clear_screen, cstring format, ...)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(CONSOLE_PRINTF);
+
+			__asm	jmp	FUNCTION
+		}
+
+		API_FUNC_NAKED void PLATFORM_API console_warning(cstring format, ...)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(CONSOLE_WARNING);
+
+			__asm	jmp	FUNCTION
+		}
+#endif
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// math
