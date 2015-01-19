@@ -357,7 +357,12 @@
 			<arg type="short" name="bsp-index" />
 			<arg type="string" name="set-name" />
 		</function>
-
+		
+		<function name="ai_transform_actor" returnType="bool" help="Transforms an actor into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+			<arg type="object" name="actor" />
+			<arg type="string" name="transform_name" />
+			<arg type="string" name="target_name" />
+		</function>
 	</scriptFunctions>
 
 	<scriptGlobals>
@@ -370,6 +375,8 @@
 		<global name="pp_fxaa_enabled" type="boolean" help="" internal="true" />
 		<global name="pp_motion_blur_enabled" type="boolean" help="" internal="true" />
 		<global name="pp_motion_blur_amount" type="real" help="" internal="true" />
+		
+		<global name="ai_transforms_enabled" type="bool" help="controls whether ai transforms are enabled (does not stop transforms triggered by scripts)" internal="true" />
 	</scriptGlobals>
 
 </definitions>

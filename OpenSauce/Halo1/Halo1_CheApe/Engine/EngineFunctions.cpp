@@ -21,6 +21,7 @@
 #include <blamlib/Halo1/objects/object_structures.hpp>
 #include <blamlib/Halo1/ai/actors.hpp>
 #include <blamlib/Halo1/ai/actor_structures.hpp>
+#include <blamlib/Halo1/ai/ai_structures.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 

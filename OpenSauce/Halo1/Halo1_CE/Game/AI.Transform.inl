@@ -33,5 +33,25 @@ namespace Yelo
 			g_actor_variant_transform_manager.UnloadActorVariantTransforms();
 			g_actor_variant_transform_manager.ClearInProgressTransforms();
 		}
+
+		bool& TransformsEnabled()
+		{
+			return g_actor_variant_transform_manager.TransformsEnabled();
+		}
+
+		void* HS_AITransformActor(void** arguments)
+		{
+			struct s_arguments {
+				const datum_index unit_index;
+				cstring transform_name;
+				cstring target_name;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			TypeHolder result;
+
+			result.boolean = g_actor_variant_transform_manager.TransformActor(args->unit_index, args->transform_name, args->target_name);
+
+			return result.pointer;
+		}
 	};};
 };

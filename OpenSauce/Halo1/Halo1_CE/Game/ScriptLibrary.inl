@@ -129,8 +129,9 @@
 		
 		_hs_function_structure_bsp_set_lightmap_set,
 		_hs_function_structure_bsp_set_sky_set,
-
 		
+		_hs_function_ai_transform_actor,
+
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
 
@@ -180,6 +181,8 @@
 		_hs_global_pp_fxaa_enabled,
 		_hs_global_pp_motion_blur_enabled,
 		_hs_global_pp_motion_blur_amount,
+
+		_hs_global_ai_transforms_enabled,
 		
 		_hs_global_rasterizer_model_normal_mapping,
 		_hs_global_rasterizer_model_detail_normal_mapping,
@@ -283,6 +286,13 @@
 		HS_TYPE(string)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actor, bool, "Transforms an actor into the specified target. Returns false if it fails", 
+			"<object> <transform_name> <target_name>", 3,
+		HS_TYPE(object),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+
 	// debug functions
 	#ifdef API_DEBUG
 		HS_FUNCTION_WITH_PARAMS(dump_view_state, void, "dump current render view state", "<name>", 1,
@@ -307,6 +317,8 @@
 		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_MotionBlur(), nullptr);
 	HS_GLOBAL2(pp_motion_blur_amount, real, 
 		&Rasterizer::PostProcessing::Scripting::Globals::MotionBlur_Amount(), nullptr);
+
+	HS_GLOBAL2(ai_transforms_enabled, bool, &AI::Transform::TransformsEnabled(), nullptr);
 	
 	HS_GLOBAL2(rasterizer_model_normal_mapping, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_normal_mapping, nullptr);
 	HS_GLOBAL2(rasterizer_model_detail_normal_mapping, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_detail_normal_mapping, nullptr);
@@ -425,6 +437,8 @@
 		&GET_HS_FUNCTION(structure_bsp_set_lightmap_set),
 		&GET_HS_FUNCTION(structure_bsp_set_sky_set),
 
+		&GET_HS_FUNCTION(ai_transform_actor),
+
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 
 		&GET_HS_FUNCTION(sv_httpserver_set_thread_count),
@@ -474,6 +488,8 @@
 		&GET_HS_GLOBAL(pp_fxaa_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_amount),
+
+		&GET_HS_GLOBAL(ai_transforms_enabled),
 		
 		&GET_HS_GLOBAL(rasterizer_model_normal_mapping),
 		&GET_HS_GLOBAL(rasterizer_model_detail_normal_mapping),
