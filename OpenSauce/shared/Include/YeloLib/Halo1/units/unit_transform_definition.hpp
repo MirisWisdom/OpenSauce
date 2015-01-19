@@ -14,22 +14,22 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum actor_variant_transform_in_team : _enum
+		enum actor_variant_transform_in_team_handling : _enum
 		{
-			_actor_variant_transform_in_team_unit_default,
-			_actor_variant_transform_in_team_player,
-			_actor_variant_transform_in_team_human,
-			_actor_variant_transform_in_team_covenant,
-			_actor_variant_transform_in_team_flood,
-			_actor_variant_transform_in_team_sentinel,
-			_actor_variant_transform_in_team_unused1,
-			_actor_variant_transform_in_team_unused2,
-			_actor_variant_transform_in_team_unused3,
-			_actor_variant_transform_in_team_unused4,
-			_actor_variant_transform_in_team_inherit_from_attacked,
-			_actor_variant_transform_in_team_inherit_from_attacker,
+			_actor_variant_transform_in_team_handling_inherit_from_attacked,
+			_actor_variant_transform_in_team_handling_inherit_from_attacker,
+			_actor_variant_transform_in_team_handling_override,
 
 			_actor_variant_transform_in_team
+		};
+
+		enum actor_variant_transform_in_actor_state_handling : _enum
+		{
+			_actor_variant_transform_in_actor_state_handling_inherit,
+			_actor_variant_transform_in_actor_state_handling_override,
+			_actor_variant_transform_in_actor_state_handling_actor_default,
+
+			_actor_variant_transform_in_actor_state_handling
 		};
 
 		enum actor_variant_transform_in_vitality_handling : _enum
@@ -104,18 +104,26 @@ namespace Yelo
 		{
 			TAG_FIELD(tag_string, target_name);
 			TAG_FIELD(word_flags, flags);
-			TAG_FIELD(Enums::actor_variant_transform_in_team, resulting_team);
-			TAG_FIELD(tag_reference, actor_variant);
-			TAG_FIELD(Enums::actor_default_state, actor_state);
 			PAD16;
+			
+			TAG_FIELD(tag_reference, actor_variant);
+			TAG_FIELD(Enums::actor_variant_transform_in_team_handling, team_handling);
+			TAG_FIELD(Enums::game_team, team_override);
+			TAG_FIELD(Enums::actor_variant_transform_in_actor_state_handling, initial_state_handling);
+			TAG_FIELD(Enums::actor_default_state, initial_state_override);
+			TAG_FIELD(Enums::actor_variant_transform_in_actor_state_handling, return_state_handling);
+			TAG_FIELD(Enums::actor_default_state, return_state_override);
+
 			TAG_FIELD(tag_reference, transform_effect);
+
 			TAG_FIELD(tag_string, transform_in_anim);
+
 			TAG_FIELD(Enums::actor_variant_transform_in_vitality_handling, vitality_inheritance);
 			TAG_FIELD(Enums::actor_variant_transform_in_vitality_handling, vitality_override);
 			TAG_FIELD(real, shield_override);
 			TAG_FIELD(real, health_override);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x8C);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x94);
 
 		struct actor_variant_transform_in_attachment
 		{
@@ -123,10 +131,12 @@ namespace Yelo
 			TAG_FIELD(tag_string, object_marker);
 			TAG_FIELD(tag_string, destination_marker);
 			TAG_FIELD(int16, destination_marker_count);
-			TAG_FIELD(Enums::actor_variant_transform_in_team, attachment_team);
+			PAD16;
+			TAG_FIELD(Enums::actor_variant_transform_in_team_handling, team_handling);
+			TAG_FIELD(Enums::game_team, team_override);
 			TAG_FIELD(real_bounds, attachment_scale);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_attachment) == 0x74);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_attachment) == 0x78);
 
 		struct actor_variant_transform_in_definition
 		{

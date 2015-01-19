@@ -12,14 +12,16 @@
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 #include <blamlib/Halo1/units/units.hpp>
-#include <blamlib/Halo1/ai/ai_script.hpp>
+#include <blamlib/Halo1/ai/ai.hpp>
 #include <blamlib/Halo1/ai/actors.hpp>
+#include <blamlib/Halo1/ai/actor_structures.hpp>
+#include <blamlib/Halo1/ai/actor_definitions.hpp>
+#include <blamlib/Halo1/ai/ai_script.hpp>
+#include <blamlib/Halo1/ai/ai_structures.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/hs/hs_library_external.hpp>
 #include <blamlib/Halo1/models/models.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/ai/actor_structures.hpp>
-#include <blamlib/Halo1/ai/actor_definitions.hpp>
 
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
 #include <YeloLib/Halo1/objects/objects_yelo.hpp>
@@ -135,6 +137,35 @@ namespace Yelo
 			return nullptr;
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Gets a team based on whether it is from the attacked, attacker or an override.
+		/// </summary>
+		///
+		/// <param name="option">			The team handling option. </param>
+		/// <param name="attacked_team">	The attacked team. </param>
+		/// <param name="attacker_team">	The attacker team. </param>
+		/// <param name="override_team">	The override team. </param>
+		///
+		/// <returns>	The chosen team. </returns>
+		static Enums::game_team GetTeam(const Enums::actor_variant_transform_in_team_handling option
+			, const Enums::game_team attacked_team
+			, const Enums::game_team attacker_team
+			, const Enums::game_team override_team)
+		{
+			switch(option)
+			{
+			case Enums::_actor_variant_transform_in_team_handling_inherit_from_attacked:
+				return attacked_team;
+			case Enums::_actor_variant_transform_in_team_handling_inherit_from_attacker:
+				return attacker_team;
+			case Enums::_actor_variant_transform_in_team_handling_override:
+				return override_team;
+			}
+
+			return Enums::_game_team_none;
+		}
+
 #pragma region Attachments
 		void c_actor_variant_transform_manager::DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition)
 		{
@@ -202,18 +233,10 @@ namespace Yelo
 		{
 			for(auto& attachment : transform_definition.attachments)
 			{
-				Enums::game_team attachment_team = Enums::_game_team_none;
-				switch(attachment.attachment_team)
-				{
-				case Enums::_actor_variant_transform_in_team_inherit_from_attacked:
-					attachment_team = unit_datum->object.owner_team;
-					break;
-				case Enums::_actor_variant_transform_in_team_inherit_from_attacker:
-					attachment_team = instigator_team;
-					break;
-				default:
-					attachment_team = (Enums::game_team)attachment.attachment_team;
-				}
+				Enums::game_team attachment_team = GetTeam(attachment.team_handling
+					, unit_datum->object.owner_team
+					, instigator_team
+					, attachment.team_override);
 
 				real attachment_scale = attachment.attachment_scale.lower + (((real)rand() / (real)RAND_MAX) * (attachment.attachment_scale.upper - attachment.attachment_scale.lower));
 
@@ -259,7 +282,10 @@ namespace Yelo
 		/// </param>
 		static void SetupUnitActor(const datum_index unit_index
 			, const datum_index actor_variant_tag_index
-			, const Enums::actor_default_state default_state
+			, const Enums::actor_variant_transform_in_actor_state_handling initial_state_handling
+			, const Enums::actor_default_state initial_state_override
+			, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
+			, const Enums::actor_default_state return_state_override
 			, const datum_index source_actor_index
 			, const bool inherit_encounter_squad)
 		{
@@ -270,12 +296,35 @@ namespace Yelo
 			datum_index encounter_index = datum_index::null;
 			int32 squad_index = NONE;
 
+			const auto actor_data = AI::Actors()[source_actor_index];
+
 			if(inherit_encounter_squad)
 			{
-				const auto actor_data = AI::Actors()[source_actor_index];
-
 				encounter_index = actor_data->meta.encounter_index;
 				squad_index = actor_data->meta.squad_index;
+			}
+
+			Enums::actor_default_state initial_state = Enums::_actor_default_state_none;
+			switch(initial_state_handling)
+			{
+			case Enums::_actor_variant_transform_in_actor_state_handling_inherit:
+				initial_state = actor_data->initial_state;
+				break;
+			case Enums::_actor_variant_transform_in_actor_state_handling_override:
+				initial_state = initial_state_override;
+				break;
+			}
+			
+			// 0xFFFF triggers getting the actor default in actor_create_for_unit
+			Enums::actor_default_state return_state = (Enums::actor_default_state)0xFFFF;
+			switch(return_state_handling)
+			{
+			case Enums::_actor_variant_transform_in_actor_state_handling_inherit:
+				return_state = actor_data->return_state;
+				break;
+			case Enums::_actor_variant_transform_in_actor_state_handling_override:
+				return_state = return_state_override;
+				break;
 			}
 
 			blam::actor_create_for_unit(false
@@ -286,10 +335,12 @@ namespace Yelo
 				, 0
 				, NONE
 				, false
-				, default_state
-				, default_state
+				, initial_state
+				, return_state
 				, NONE
 				, 0);
+
+			// _encounters_update_dirty_status
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,21 +354,17 @@ namespace Yelo
 		/// <returns>	The new unit index. </returns>
 		static datum_index CreateUnitReuse(const datum_index unit_index
 			, Objects::s_unit_datum* unit_datum
-			, const Enums::actor_variant_transform_in_team resulting_team
-			, const Enums::game_team instigator_team)
+			, const Enums::actor_variant_transform_in_team_handling team_option
+			, const Enums::game_team instigator_team
+			, const Enums::game_team override_team)
 		{
 			SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, false);
-
-			switch(resulting_team)
-			{
-			case Enums::_actor_variant_transform_in_team_inherit_from_attacked:
-				break;
-			case Enums::_actor_variant_transform_in_team_inherit_from_attacker:
-				unit_datum->object.owner_team = instigator_team;
-				break;
-			default:
-				unit_datum->object.owner_team = (Enums::game_team)resulting_team;
-			}
+			
+			// Set the existing unit's team
+			unit_datum->object.owner_team = GetTeam(team_option
+				, unit_datum->object.owner_team
+				, instigator_team
+				, override_team);
 
 			return unit_index;
 		}
@@ -335,25 +382,19 @@ namespace Yelo
 		static datum_index CreateUnitNew(const datum_index unit_index
 			, Objects::s_unit_datum* unit_datum
 			, const datum_index new_unit_type
-			, const Enums::actor_variant_transform_in_team resulting_team
-			, const Enums::game_team instigator_team)
+			, const Enums::actor_variant_transform_in_team_handling team_option
+			, const Enums::game_team instigator_team
+			, const Enums::game_team override_team)
 		{
 			// Create the new unit based on the target_unit's data
 			Objects::s_object_placement_data unit_placement_data;
 			PlacementDataNewAndCopy(unit_placement_data, unit_index, new_unit_type);
 
 			// Set the to-be-created unit's team
-			switch(resulting_team)
-			{
-			case Enums::_actor_variant_transform_in_team_inherit_from_attacked:
-				unit_placement_data.owner_team = unit_datum->object.owner_team;
-				break;
-			case Enums::_actor_variant_transform_in_team_inherit_from_attacker:
-				unit_placement_data.owner_team = instigator_team;
-				break;
-			default:
-				unit_placement_data.owner_team = (Enums::game_team)resulting_team;
-			}
+			unit_placement_data.owner_team = GetTeam(team_option
+				, unit_datum->object.owner_team
+				, instigator_team
+				, override_team);
 
 			return blam::object_new(unit_placement_data);
 		}
@@ -438,8 +479,9 @@ namespace Yelo
 			{
 				new_unit_index = CreateUnitReuse(unit_index
 					, unit_datum
-					, transform_target.resulting_team
-					, transform_state.m_instigator_team);
+					, transform_target.team_handling
+					, transform_state.m_instigator_team
+					, transform_target.team_override);
 
 				DeleteAttachments(unit_index, transform_in_definition);
 				Objects::DetachChildActors(unit_index);
@@ -449,8 +491,9 @@ namespace Yelo
 				new_unit_index = CreateUnitNew(unit_index
 					, unit_datum
 					, actor_variant_definition->unit.tag_index
-					, transform_target.resulting_team
-					, transform_state.m_instigator_team);
+					, transform_target.team_handling
+					, transform_state.m_instigator_team
+					, transform_target.team_override);
 
 				delete_unit = true;
 			}
@@ -477,7 +520,10 @@ namespace Yelo
 			// Set up the unit's actor
 			SetupUnitActor(new_unit_index
 				, transform_target.actor_variant.tag_index
-				, transform_target.actor_state
+				, transform_target.initial_state_handling
+				, transform_target.initial_state_override
+				, transform_target.return_state_handling
+				, transform_target.return_state_override
 				, unit_datum->unit.actor_index
 				, TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_inherit_encounter_squad));
 
@@ -709,8 +755,12 @@ namespace Yelo
 				auto frames_left = blam::unit_get_custom_animation_time(unit_index);
 				if(frames_left == 0 || (unit_datum->unit.animation.state != Enums::_unit_animation_state_custom_animation))
 				{
-					TransformIn(unit_index, unit_datum, m_transforms_in_progress[unit_index.index]);
-					m_transforms_in_progress.erase(unit_index.index);
+					// Prevent creating a new actor whilst ai is disabled
+					if(AI::AIGlobals()->ai_active)
+					{
+						TransformIn(unit_index, unit_datum, m_transforms_in_progress[unit_index.index]);
+						m_transforms_in_progress.erase(unit_index.index);
+					}
 				}
 			}
 			else if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
