@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/ai/actors.hpp>
+
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
@@ -97,8 +99,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		DOC_TODO("Struct size asserts");
-		DOC_TODO("Padding");
 #pragma region actor_variant_transform_in_definition
 		struct actor_variant_transform_in_target
 		{
@@ -114,7 +114,8 @@ namespace Yelo
 			TAG_FIELD(Enums::actor_variant_transform_in_vitality_handling, vitality_override);
 			TAG_FIELD(real, shield_override);
 			TAG_FIELD(real, health_override);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x8C);
 
 		struct actor_variant_transform_in_attachment
 		{
@@ -124,7 +125,8 @@ namespace Yelo
 			TAG_FIELD(int16, destination_marker_count);
 			TAG_FIELD(Enums::actor_variant_transform_in_team, attachment_team);
 			TAG_FIELD(real_bounds, attachment_scale);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_attachment) == 0x74);
 
 		struct actor_variant_transform_in_definition
 		{
@@ -134,7 +136,8 @@ namespace Yelo
 			TAG_FIELD(word_flags, flags);
 			PAD16;
 			TAG_TBLOCK(attachments, actor_variant_transform_in_attachment);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_definition) == 0x34);
 #pragma endregion
 		
 #pragma region actor_variant_transform_out_definition
@@ -148,8 +151,10 @@ namespace Yelo
 			PAD16;
 			TAG_FIELD(real_fraction, shield_threshold);
 			TAG_FIELD(real_fraction, health_threshold);
+			TAG_PAD(tag_block, 2);
 			TAG_FIELD(tag_string, transform_out_anim);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_out_definition) == 0x60);
 #pragma endregion
 
 #pragma region actor_variant_transform_collection_definition
@@ -158,7 +163,8 @@ namespace Yelo
 			TAG_FIELD(tag_reference, unit);
 			TAG_FIELD(Enums::actor_variant_transform_collection_damage_type, damage_type);
 			PAD16;
-		};
+			TAG_PAD(tag_block, 1);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_collection_instigator) == 0x20);
 
 		struct actor_variant_transform_collection_transform
 		{
@@ -168,20 +174,23 @@ namespace Yelo
 			TAG_FIELD(tag_reference, transform_in);
 			actor_variant_transform_in_definition* transform_in_ptr;
 			TAG_TBLOCK(instigators, actor_variant_transform_collection_instigator);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_collection_transform) == 0x6C);
 
 		struct actor_variant_transform_collection_entry
 		{
 			TAG_FIELD(tag_reference, actor_variant);
 			TAG_TBLOCK_(transforms, actor_variant_transform_collection_transform);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_collection_entry) == 0x34);
 
 		struct actor_variant_transform_collection_definition
 		{
 			enum { k_group_tag = 'avtc' };
 
 			TAG_TBLOCK_(actor_variant_transforms, actor_variant_transform_collection_entry);
-		};
+			TAG_PAD(tag_block, 2);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_collection_definition) == 0x24);
 #pragma endregion
 	};
 };

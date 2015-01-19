@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#if PLATFORM_TYPE == PLATFORM_SAPIEN
-
 namespace Yelo
 {
 	namespace Game
@@ -16,4 +14,3 @@ namespace Yelo
 		void Dispose();
 	};
 };
-#endif

@@ -587,6 +587,12 @@ namespace Yelo
 				return;
 			}
 
+			// Do not allow transforms whilst in a seat
+			if(unit_datum->unit.vehicle_seat_index != NONE)
+			{
+				return;
+			}
+
 			// If the unit is dead or already transforming, return
 			if(TEST_FLAG(unit_datum->object.damage.flags, Flags::_object_killed_bit)
 				|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit)
