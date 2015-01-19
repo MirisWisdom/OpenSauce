@@ -221,9 +221,9 @@ namespace Yelo
 		struct s_actor_firing_position_data
 		{
 			PAD16; // unknown field
-			PAD32;PAD16;
+			PAD(1, 6);
 			PAD32; // unknown field
-			PAD(1, 32); // unknown field
+			PAD(2, 32); // unknown field
 			PAD16; // unknown field
 			PAD8; // unknown field
 			PAD8; // unknown field
@@ -248,8 +248,8 @@ namespace Yelo
 			PAD16; // unknown field
 			PAD16;
 			s_actor_meta_data meta;
-			PAD16; // unknown field
-			PAD16; // unknown field
+			Enums::actor_default_state initial_state;
+			Enums::actor_default_state return_state;
 			PAD32; // unknown field
 			PAD16;
 			_enum state_flags;

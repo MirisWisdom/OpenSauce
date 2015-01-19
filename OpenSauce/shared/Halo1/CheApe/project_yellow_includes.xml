@@ -130,6 +130,34 @@
 			<field>bitmap</field>
 			<field>sound</field>
 		</Enum>
+		
+		<Enum name="game_allegiance_team_enum">
+			<field>unit default</field>
+			<field>player</field>
+			<field>human</field>
+			<field>covenant</field>
+			<field>flood</field>
+			<field>sentinel</field>
+			<field>unused</field>
+			<field>unused</field>
+			<field>unused</field>
+			<field>unused</field>
+		</Enum>
+
+		<Enum name="actor_default_state_enum">
+			<field>none</field>
+			<field>sleeping</field>
+			<field>alert</field>
+			<field>moving repeat same position</field>
+			<field>moving loop</field>
+			<field>moving loop back and forth</field>
+			<field>moving loop randomly</field>
+			<field>moving randomly</field>
+			<field>guarding</field>
+			<field>guarding at guard position</field>
+			<field>searching</field>
+			<field>fleeing</field>
+		</Enum>
 	</enums>
 
 	<blocks>

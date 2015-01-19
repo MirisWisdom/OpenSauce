@@ -2,19 +2,10 @@
 <definitions game="Halo1">
 
 	<enums>
-		<Enum name="actor_variant_transform_in_team">
-			<field>unit default</field>
-			<field>player</field>
-			<field>human</field>
-			<field>covenant</field>
-			<field>flood</field>
-			<field>sentinel</field>
-			<field>unused</field>
-			<field>unused</field>
-			<field>unused</field>
-			<field>unused</field>
+		<Enum name="actor_variant_transform_team_handling">		
 			<field>inherit from attacked</field>
 			<field>inherit from attacker</field>
+			<field>override</field>
 		</Enum>
 
 		<Enum name="actor_variant_transform_in_vitality_handling">
@@ -24,19 +15,15 @@
 			<field>health only</field>
 		</Enum>
 
-		<Enum name="actor_variant_transform_in_actor_state">
-			<field>none</field>
-			<field>sleeping</field>
-			<field>alert</field>
-			<field>moving repeat same position</field>
-			<field>moving loop</field>
-			<field>moving loop back and forth</field>
-			<field>moving loop randomly</field>
-			<field>moving randomly</field>
-			<field>guarding</field>
-			<field>guarding at guard position</field>
-			<field>searching</field>
-			<field>fleeing</field>
+		<Enum name="actor_variant_transform_in_actor_initial_state_handling">
+			<field>inherit</field>
+			<field>override</field>
+		</Enum>
+
+		<Enum name="actor_variant_transform_in_actor_return_state_handling">
+			<field>inherit</field>
+			<field>override</field>
+			<field>actor default</field>
 		</Enum>
 	</enums>
 
@@ -57,12 +44,16 @@
 			<!--actor_variant_transform_in_target-->
 			<field type="String" name="target name" blockname="true" />
 			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_target_flags" />
+			<field type="Pad" definition="2" />
 
 			<field type="Explanation" name="AI" definition="" />
-			<field type="Enum" name="resulting team" definition="actor_variant_transform_in_team" />
 			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
-			<field type="Enum" name="actor state" definition="actor_variant_transform_in_actor_state" />
-			<field type="Pad" definition="2" />
+			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
+			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
+			<field type="Enum" name="initial state handling" definition="actor_variant_transform_in_actor_initial_state_handling" />
+			<field type="Enum" name="initial state override" definition="actor_default_state_enum" />
+			<field type="Enum" name="return state handling" definition="actor_variant_transform_in_actor_return_state_handling" />
+			<field type="Enum" name="return state override" definition="actor_default_state_enum" />
 
 			<field type="Explanation" name="Transform Effect" definition="This effect will be spawned at the location of the old unit at the end of it's transform out animation." />
 			<field type="TagReference" name="transform effect" definition="effect_reference" />
@@ -84,7 +75,9 @@
 			<field type="String" name="object marker" />
 			<field type="String" name="destination marker" blockname="true" />
 			<field type="ShortInteger" name="destination marker count" />
-			<field type="Enum" name="attachment team" definition="actor_variant_transform_in_team" />
+			<field type="Pad" definition="2" />
+			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
+			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
 			<field type="RealBounds" name="attachment scale" />
 			<field type="Pad" definition="24" />
 		</TagBlock>

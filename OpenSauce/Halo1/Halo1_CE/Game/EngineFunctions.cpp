@@ -328,9 +328,11 @@ namespace Yelo
 			API_FUNC_NAKED_END_()
 		}
 
-		void PLATFORM_API actor_delete_props(const datum_index actor_index)
+		API_FUNC_NAKED void PLATFORM_API actor_delete_props(const datum_index actor_index)
 		{
-			return CAST_PTR(void (PLATFORM_API*)(const datum_index), Engine::GET_FUNC_PTR(ACTOR_DELETE_PROPS))(actor_index);
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_DELETE_PROPS);
+
+			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_freeze(const datum_index actor_index)
@@ -366,7 +368,7 @@ namespace Yelo
 			}
 		}
 
-		datum_index PLATFORM_API actor_create_for_unit(const bool is_swarm
+		API_FUNC_NAKED datum_index PLATFORM_API actor_create_for_unit(const bool is_swarm
 			, const datum_index unit_index
 			, const datum_index actor_variant
 			, const datum_index encounter_index
@@ -379,31 +381,9 @@ namespace Yelo
 			, const int32 command_list_index
 			, const int32 sequence_id)
 		{
-			return CAST_PTR(datum_index (PLATFORM_API*)
-				( const bool
-				, const datum_index
-				, const datum_index
-				, const datum_index
-				, const int32
-				, const int32
-				, const int32
-				, const bool
-				, const Enums::actor_default_state
-				, const Enums::actor_default_state
-				, const int32
-				, const int32), Engine::GET_FUNC_PTR(ACTOR_CREATE_FOR_UNIT))
-				( is_swarm
-				, unit_index
-				, actor_variant
-				, encounter_index
-				, squad_index
-				, arg7
-				, arg6
-				, magic_sight_after_timer
-				, initial_state
-				, return_state
-				, command_list_index
-				, sequence_id);
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_CREATE_FOR_UNIT);
+
+			_asm jmp	FUNCTION;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -1336,14 +1316,18 @@ namespace Yelo
 			Engine::Objects::ObjectRenderStateRefresh(object_render_state_index, object_index, level_of_detail_pixels, arg4);
 		}
 
-		void PLATFORM_API objects_update()
+		API_FUNC_NAKED void PLATFORM_API objects_update()
 		{
-			CAST_PTR(void (PLATFORM_API*)(), Engine::GET_FUNC_PTR(OBJECTS_UPDATE))();
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECTS_UPDATE);
+
+			_asm jmp	FUNCTION;
 		}
 
-		void PLATFORM_API object_update(datum_index object_index)
+		API_FUNC_NAKED void PLATFORM_API object_update(datum_index object_index)
 		{
-			CAST_PTR(void (PLATFORM_API*)(const datum_index), Engine::GET_FUNC_PTR(OBJECT_UPDATE))(object_index);
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECT_UPDATE);
+
+			_asm jmp	FUNCTION;
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -1506,9 +1490,11 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// units.c
-		void PLATFORM_API unit_update(const datum_index unit_index)
+		API_FUNC_NAKED void PLATFORM_API unit_update(const datum_index unit_index)
 		{
-			CAST_PTR(void (PLATFORM_API*)(const datum_index), Engine::GET_FUNC_PTR(UNIT_UPDATE))(unit_index);
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_UPDATE);
+
+			_asm jmp	FUNCTION;
 		}
 
 		void PLATFORM_API unit_set_animation(datum_index unit_index
@@ -1624,12 +1610,14 @@ namespace Yelo
 			API_FUNC_NAKED_END_()
 		}
 
-		void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force)
+		API_FUNC_NAKED void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force)
 		{
-			CAST_PTR(void (PLATFORM_API*)(const datum_index, const bool), Engine::GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON))(unit_index, force);
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON);
+
+			_asm jmp	FUNCTION;
 		}
 
-		void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
+		API_FUNC_NAKED void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
 			, const Objects::s_damage_data* damage_data
 			, const _enum damage_flags
 			, const real shield_amount
@@ -1637,14 +1625,9 @@ namespace Yelo
 			, void* arg6
 			, const int32 damage_part)
 		{
-			CAST_PTR(void (PLATFORM_API*)(const datum_index
-				, const s_damage_data*
-				, const _enum
-				, const real
-				, const real
-				, const void*
-				, const int32), Engine::GET_FUNC_PTR(UNIT_DAMAGE_AFTERMATH))
-				(unit_index, damage_data, damage_flags, shield_amount, body_amount, arg6, damage_part);
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DAMAGE_AFTERMATH);
+
+			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_scripting_set_current_vitality(const datum_index unit_index
