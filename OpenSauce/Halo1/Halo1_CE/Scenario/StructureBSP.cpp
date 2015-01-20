@@ -388,13 +388,13 @@ namespace Yelo
 		{
 			switch(life_state)
 			{
-			case Enums::_project_game_state_component_life_cycle_before_save:
+			case Enums::_game_state_life_cycle_before_save:
 				break;
-			case Enums::_project_game_state_component_life_cycle_before_load:
+			case Enums::_game_state_life_cycle_before_load:
 				// reset the gamestate to default values
 				g_bsp_modifier_globals.ResetGamestate();
 				break;
-			case Enums::_project_game_state_component_life_cycle_after_load:
+			case Enums::_game_state_life_cycle_after_load:
 				SetToCurrentGameState(Scenario::StructureBspIndex());
 				break;
 			}

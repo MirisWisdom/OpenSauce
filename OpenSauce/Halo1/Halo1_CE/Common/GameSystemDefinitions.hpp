@@ -10,17 +10,6 @@
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum project_game_state_component_life_cycle {
-			_project_game_state_component_life_cycle_before_save,
-			_project_game_state_component_life_cycle_before_load,
-			_project_game_state_component_life_cycle_after_load,
-
-			k_number_of_project_game_state_component_life_cycles
-		};
-	};
-
 	// [enabled] - true when OS is initializing for OS-modified game states, false if we're shutting down said modifications
 	typedef void (API_FUNC* proc_initialize_for_yelo_game_state)(bool enabled);
 	// [game_state_life_cycle] - See: Enums::project_game_state_component_life_cycle

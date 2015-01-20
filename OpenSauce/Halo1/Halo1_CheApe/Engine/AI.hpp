@@ -19,6 +19,7 @@ namespace Yelo
 		void Dispose();
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
+		void InitializeForNewGameState();
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
 

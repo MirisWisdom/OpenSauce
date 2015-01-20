@@ -9,6 +9,7 @@
 #include <blamlib/Halo1/game/game_allegiance.hpp>
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <YeloLib/Halo1/units/unit_transform_definition.hpp>
 
 namespace Yelo
 {
@@ -18,21 +19,15 @@ namespace Yelo
 		struct s_unit_datum;
 	};
 
-	namespace TagGroups
-	{
-		struct actor_variant_transform_in_definition;
-		struct actor_variant_transform_out_definition;
-		struct actor_variant_transform_collection_transform;
-		struct actor_variant_transform_collection_definition;
-	};
-
 	namespace AI { namespace Transform
 	{
 		class c_actor_variant_transform_manager
 		{
+			enum { k_max_concurrent_transforms = 20 };
+
 			struct s_actor_variant_transform_state
 			{
-				datum_index::index_t unit_index;
+				datum_index::index_t m_unit_index;
 				Enums::game_team m_instigator_team;
 				sbyte m_transform_entry_index;
 				sbyte m_transform_index;
@@ -42,14 +37,15 @@ namespace Yelo
 
 			bool m_transforms_enabled;
 			PAD24;
-			std::map<datum_index::index_t, s_actor_variant_transform_state> m_transforms_in_progress;
-
+			s_actor_variant_transform_state* m_transform_states;
 			TagGroups::actor_variant_transform_collection_definition* m_transform_collection;
 
 		public:
+			/// <summary>	Default constructor. </summary>
 			c_actor_variant_transform_manager();
 
 		private:
+#pragma region Find Transform
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for a matching actor variant transform definition. </summary>
 			///
@@ -71,7 +67,129 @@ namespace Yelo
 			///
 			/// <returns>	The found transforms entry. </returns>
 			sbyte FindTransformsEntry(const datum_index tag_index);
+#pragma endregion
 
+#pragma region Tag Options
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Overrides a units health and shield values. </summary>
+			///
+			/// <param name="operation"> 	The override operation. </param>
+			/// <param name="unit_datum">	[in] If non-null, the old unit's datum. </param>
+			/// <param name="health">	 	The health value. </param>
+			/// <param name="shield">	 	The shield value. </param>
+			void HandleVitality(const Enums::actor_variant_transform_in_vitality_handling operation
+				, Objects::s_unit_datum* unit_datum
+				, const real health
+				, const real shield);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Gets a team based on whether it is from the attacked, attacker or an override.
+			/// </summary>
+			///
+			/// <param name="option">			The team handling option. </param>
+			/// <param name="attacked_team">	The attacked team. </param>
+			/// <param name="attacker_team">	The attacker team. </param>
+			/// <param name="override_team">	The override team. </param>
+			///
+			/// <returns>	The chosen team. </returns>
+			Enums::game_team HandleTeam(const Enums::actor_variant_transform_in_team_handling option
+				, const Enums::game_team attacked_team
+				, const Enums::game_team attacker_team
+				, const Enums::game_team override_team);
+#pragma endregion
+
+#pragma region Unit Creation
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Creates the unit's actor. </summary>
+			///
+			/// <param name="unit_index">			  	Datum index of the unit. </param>
+			/// <param name="actor_variant_tag_index">	Datum index of the actor variant tag. </param>
+			/// <param name="initial_state_handling"> 	The initial actor state handling option. </param>
+			/// <param name="initial_state_override"> 	The initial state override. </param>
+			/// <param name="return_state_handling">  	The return actor state handling option. </param>
+			/// <param name="return_state_override">  	The return state override. </param>
+			/// <param name="source_actor_index">	  	Datum index of the source actor. </param>
+			/// <param name="inherit_encounter_squad">
+			/// 	Flag for whether to inherit the source actor's encounter and squad.
+			/// </param>
+			void CreateUnitActor(const datum_index unit_index
+				, const datum_index actor_variant_tag_index
+				, const Enums::actor_variant_transform_in_actor_state_handling initial_state_handling
+				, const Enums::actor_default_state initial_state_override
+				, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
+				, const Enums::actor_default_state return_state_override
+				, const datum_index source_actor_index
+				, const bool inherit_encounter_squad);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Creates a new unit reusing the old unit. </summary>
+			///
+			/// <param name="unit_index">	  	Datum index of the old unit. </param>
+			/// <param name="unit_datum">	  	[in] The old unit's datum. </param>
+			/// <param name="team_option">	  	The team handling option. </param>
+			/// <param name="instigator_team">	The instigator team. </param>
+			/// <param name="override_team">  	The override team. </param>
+			///
+			/// <returns>	The new unit index. </returns>
+			datum_index CreateUnitReuse(const datum_index unit_index
+				, Objects::s_unit_datum* unit_datum
+				, const Enums::actor_variant_transform_in_team_handling team_option
+				, const Enums::game_team instigator_team
+				, const Enums::game_team override_team);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Creates a new unit. </summary>
+			///
+			/// <param name="unit_index">	  	Datum index of the old unit. </param>
+			/// <param name="unit_datum">	  	[in] The old unit's datum. </param>
+			/// <param name="new_unit_type">  	Type of the new unit. </param>
+			/// <param name="team_option">	  	The team handling option. </param>
+			/// <param name="instigator_team">	The instigator team. </param>
+			/// <param name="State">		  	The state. </param>
+			///
+			/// <returns>	The new unit index. </returns>
+			datum_index CreateUnitNew(const datum_index unit_index
+				, Objects::s_unit_datum* unit_datum
+				, const datum_index new_unit_type
+				, const Enums::actor_variant_transform_in_team_handling team_option
+				, const Enums::game_team instigator_team
+				, const Enums::game_team override_team);
+#pragma endregion
+
+#pragma region Transform State
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for a transform state. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			///
+			/// <returns>	null if it fails, else the found transform state. </returns>
+			s_actor_variant_transform_state* FindTransformState(const datum_index::index_t unit_index);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for a transform state. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			///
+			/// <returns>	null if it fails, else the found transform state. </returns>
+			s_actor_variant_transform_state* FindTransformState(const datum_index unit_index);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Allocate a transform state entry. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			///
+			/// <returns>	null if it fails, else a s_actor_variant_transform_state*. </returns>
+			s_actor_variant_transform_state* AllocateTransformState(const datum_index unit_index);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Frees the transform state described by unit_index. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			void FreeTransformState(const datum_index unit_index);
+#pragma endregion
+			
+#pragma region Attachments
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
 			/// 	Deletes attachments on an object that match those in the transform definition.
@@ -115,7 +233,9 @@ namespace Yelo
 				, const Objects::s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
 				, const TagGroups::actor_variant_transform_in_definition& transform_definition);
+#pragma endregion
 
+#pragma region Transform Stages
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Starts the transform out stage on the target unit. </summary>
 			///
@@ -145,6 +265,7 @@ namespace Yelo
 			///
 			/// <param name="unit_datum">	[in] If non-null, the unit datum. </param>
 			void TransformEnd(Objects::s_unit_datum* unit_datum);
+#pragma endregion
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,16 +273,24 @@ namespace Yelo
 			///
 			/// <returns>	true if enabled, false if not. </returns>
 			bool& TransformsEnabled();
+			
+#pragma region Transform State
+			/// <summary>	Allocates game state memory. </summary>
+			void AllocateGameStateMemory();
 
+			/// <summary>	Clears the in progress transforms. </summary>
+			void ClearInProgressTransforms();
+#pragma endregion
+			
+#pragma region Game State
 			/// <summary>	Loads the actor variant transform collection tag. </summary>
 			void LoadActorVariantTransforms();
 
 			/// <summary>	Unloads the actor variant transform collection tag. </summary>
 			void UnloadActorVariantTransforms();
-
-			/// <summary>	Clears the in progress transforms. </summary>
-			void ClearInProgressTransforms();
-
+#pragma endregion
+			
+#pragma region Transform Trigger/Update
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Attempts to start a transform on a damaged unit if applicable. </summary>
 			///
@@ -174,7 +303,9 @@ namespace Yelo
 			///
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void UnitUpdate(const datum_index unit_index);
+#pragma endregion
 
+#pragma region Scripting
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Transforms an actor to the specified transform. </summary>
 			///
@@ -214,6 +345,7 @@ namespace Yelo
 				, const datum_index tag_index
 				, cstring transform_name
 				, cstring target_name);
+#pragma endregion
 		};
 	};};
 };

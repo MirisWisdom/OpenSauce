@@ -126,6 +126,11 @@ namespace Yelo
 		void Dispose()
 		{
 		}
+
+		void InitializeForNewGameState()
+		{
+			Transform::InitializeForNewGameState();
+		}
 		
 		void InitializeForNewMap()
 		{
@@ -139,6 +144,12 @@ namespace Yelo
 
 		void PLATFORM_API Update()
 		{
+
+		}
+
+		void HandleGameStateLifeCycle(_enum life_state)
+		{
+			Transform::HandleGameStateLifeCycle(life_state);
 		}
 
 		void ObjectsUpdate()

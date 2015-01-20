@@ -8,8 +8,10 @@
 
 namespace Yelo
 {
-	namespace Game
+	namespace GameState
 	{
+		bool YeloGameStateEnabled();
+
 		void Initialize();
 		void Dispose();
 	};

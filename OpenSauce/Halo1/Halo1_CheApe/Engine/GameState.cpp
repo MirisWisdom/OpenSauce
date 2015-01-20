@@ -5,7 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
-#include "Engine/Game.hpp"
+#include "Engine/GameState.hpp"
+
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Engine/Objects.hpp"
 #include "Engine/Units.hpp"
@@ -13,12 +15,18 @@
 
 namespace Yelo
 {
-	namespace Game
+	namespace GameState
 	{
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 		FUNC_PTR(UI_WIDGETS_SAFE_TO_LOAD,						PTR_NULL, PTR_NULL, 0x5BC480);
+		FUNC_PTR(GAME_INITIALIZE_HOOK,							PTR_NULL, PTR_NULL, 0x6171F0);
 		FUNC_PTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK,				PTR_NULL, PTR_NULL, 0x618337);
 		FUNC_PTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK,				PTR_NULL, PTR_NULL, 0x617419);
+
+		void PLATFORM_API InitializeForNewGameState()
+		{
+			AI::InitializeForNewGameState();
+		}
 
 		void PLATFORM_API InitializeForNewMap()
 		{
@@ -30,6 +38,14 @@ namespace Yelo
 		{
 			Objects::Units::DisposeFromOldMap();
 			AI::DisposeFromOldMap();
+		}
+		
+		API_FUNC_NAKED static void PLATFORM_API InitializeForNewGameStateHook()
+		{
+			__asm {
+				call		GameState::InitializeForNewGameState
+				retn
+			}
 		}
 
 		API_FUNC_NAKED void InitializeForNewMapHook()
@@ -56,9 +72,18 @@ namespace Yelo
 		}
 #endif
 
+		static bool g_yelo_game_state_enabled;
+		bool YeloGameStateEnabled()
+		{
+			return g_yelo_game_state_enabled;
+		}
+
 		void Initialize()
 		{
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
+			g_yelo_game_state_enabled = !CMDLINE_GET_PARAM(no_os_gamestate).ParameterSet();
+
+			Memory::WriteRelativeJmp(&InitializeForNewGameStateHook, GET_FUNC_VPTR(GAME_INITIALIZE_HOOK), true);
 			Memory::WriteRelativeJmp(&InitializeForNewMapHook, GET_FUNC_VPTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK), true);
 			Memory::WriteRelativeJmp(&DisposeFromOldMapHook, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), true);
 #endif

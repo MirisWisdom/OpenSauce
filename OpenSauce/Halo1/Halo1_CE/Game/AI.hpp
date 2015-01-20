@@ -36,11 +36,16 @@ namespace Yelo
 
 		void Initialize();
 		void Dispose();
-		
+
+		void InitializeForNewGameState();
+
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
 
 		void PLATFORM_API Update();
+
+		void HandleGameStateLifeCycle(_enum life_state);
+
 		void ObjectsUpdate();
 		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data);
 
