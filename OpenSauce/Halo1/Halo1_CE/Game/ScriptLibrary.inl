@@ -131,6 +131,8 @@
 		_hs_function_structure_bsp_set_sky_set,
 		
 		_hs_function_ai_transform_actor,
+		_hs_function_ai_transform_actors,
+		_hs_function_ai_transform_actors_by_type,
 
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
@@ -286,9 +288,24 @@
 		HS_TYPE(string)
 	);
 
-	HS_FUNCTION_WITH_PARAMS(ai_transform_actor, bool, "Transforms an actor into the specified target. Returns false if it fails", 
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actor, bool, "Transforms an actor into the specified target. Returns false if it fails. Empty names causes random selection.", 
 			"<object> <transform_name> <target_name>", 3,
 		HS_TYPE(object),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actors, bool, "Transforms a list of actors into the specified target. Returns false if it fails. Empty names causes random selection.", 
+			"<objects> <transform_name> <target_name>", 3,
+		HS_TYPE(object_list),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actors_by_type, bool, "Transforms actors in a list of a specific type into the specified target. Returns false if it fails. Empty names causes random selection.", 
+			"<objects> <actor_variant> <transform_name> <target_name>", 4,
+		HS_TYPE(object_list),
+		HS_TYPE(actor_variant),
 		HS_TYPE(string),
 		HS_TYPE(string)
 	);
@@ -436,8 +453,10 @@
 
 		&GET_HS_FUNCTION(structure_bsp_set_lightmap_set),
 		&GET_HS_FUNCTION(structure_bsp_set_sky_set),
-
+		
 		&GET_HS_FUNCTION(ai_transform_actor),
+		&GET_HS_FUNCTION(ai_transform_actors),
+		&GET_HS_FUNCTION(ai_transform_actors_by_type),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

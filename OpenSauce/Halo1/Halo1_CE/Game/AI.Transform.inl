@@ -53,5 +53,36 @@ namespace Yelo
 
 			return result.pointer;
 		}
+
+		void* HS_AITransformActors(void** arguments)
+		{
+			struct s_arguments {
+				const datum_index unit_list_index;
+				cstring transform_name;
+				cstring target_name;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			TypeHolder result;
+
+			result.boolean = g_actor_variant_transform_manager.TransformActors(args->unit_list_index, args->transform_name, args->target_name);
+
+			return result.pointer;
+		}
+
+		void* HS_AITransformActorsByType(void** arguments)
+		{
+			struct s_arguments {
+				const datum_index unit_list_index;
+				const datum_index tag_index;
+				cstring transform_name;
+				cstring target_name;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			TypeHolder result;
+
+			result.boolean = g_actor_variant_transform_manager.TransformActorsByType(args->unit_list_index, args->tag_index, args->transform_name, args->target_name);
+
+			return result.pointer;
+		}
 	};};
 };
