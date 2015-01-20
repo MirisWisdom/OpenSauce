@@ -6,6 +6,7 @@
 */
 
 #include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
+#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 
 namespace Yelo
 {
@@ -23,6 +24,11 @@ namespace Yelo
 			g_actor_variant_transform_manager.UnitDamaged(unit_index, damage_data);
 		}
 
+		void InitializeForNewGameState()
+		{
+			g_actor_variant_transform_manager.AllocateGameStateMemory();
+		}
+
 		void InitializeForNewMap()
 		{
 			g_actor_variant_transform_manager.LoadActorVariantTransforms();
@@ -32,6 +38,14 @@ namespace Yelo
 		{
 			g_actor_variant_transform_manager.UnloadActorVariantTransforms();
 			g_actor_variant_transform_manager.ClearInProgressTransforms();
+		}
+
+		void HandleGameStateLifeCycle(_enum life_state)
+		{
+			if(life_state == Enums::_game_state_life_cycle_before_load)
+			{
+				g_actor_variant_transform_manager.ClearInProgressTransforms();
+			}
 		}
 
 		bool& TransformsEnabled()

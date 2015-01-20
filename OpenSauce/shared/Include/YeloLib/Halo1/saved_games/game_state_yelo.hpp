@@ -9,6 +9,15 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum game_state_life_cycle
+		{
+			_game_state_life_cycle_before_save,
+			_game_state_life_cycle_before_load,
+			_game_state_life_cycle_after_load,
+
+			k_number_of_game_state_life_cycles
+		};
+
 		enum {
 			// How much additional memory, if any, we allocate for the objects pool
 			k_game_state_allocation_size_object_memory_pool_upgrade = 0x10000,

@@ -54,16 +54,6 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"
-
-	namespace GameState
-	{
-		// TODO: code stolen from Halo1_CE. needs to eventually be setup in YeloLib
-		static bool g_yelo_game_state_enabled;
-		bool YeloGameStateEnabled()
-		{
-			return g_yelo_game_state_enabled;
-		}
-	};
 	
 	//////////////////////////////////////////////////////////////////////////
 	// ai
@@ -541,6 +531,21 @@ namespace Yelo
 		}
 #endif
 	}
+	//////////////////////////////////////////////////////////////////////////
+	// save_games
+	namespace blam
+	{
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		//////////////////////////////////////////////////////////////////////////
+		// game_state.c
+		API_FUNC_NAKED void* PLATFORM_API game_state_malloc(cstring name, cstring type, size_t size)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(GAME_STATE_MALLOC);
+
+			__asm	jmp	FUNCTION
+		}
+#endif
+	};
 	//////////////////////////////////////////////////////////////////////////
 	// scenario
 	namespace blam

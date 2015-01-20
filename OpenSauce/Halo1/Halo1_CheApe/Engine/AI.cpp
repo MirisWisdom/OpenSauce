@@ -26,6 +26,11 @@ namespace Yelo
 		void Dispose() { }
 		
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
+		void InitializeForNewGameState()
+		{
+			Transform::InitializeForNewGameState();
+		}
+
 		void InitializeForNewMap()
 		{
 			Transform::InitializeForNewMap();

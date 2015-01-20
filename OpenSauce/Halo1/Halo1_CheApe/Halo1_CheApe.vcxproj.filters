@@ -257,10 +257,10 @@
     <ClCompile Include="Engine\Units.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game.cpp">
+    <ClCompile Include="Engine\AI.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\AI.cpp">
+    <ClCompile Include="Engine\GameState.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -471,10 +471,10 @@
     <ClInclude Include="Engine\Units.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game.hpp">
+    <ClInclude Include="Engine\AI.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\AI.hpp">
+    <ClInclude Include="Engine\GameState.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

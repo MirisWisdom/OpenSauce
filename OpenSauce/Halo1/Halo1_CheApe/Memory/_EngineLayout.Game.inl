@@ -171,8 +171,11 @@
 		FUNC_PTR(OBJECTS_UPDATE,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x5699F0);
 		FUNC_PTR(OBJECT_PLACEMENT_DATA_NEW,		FUNC_PTR_NULL, FUNC_PTR_NULL, 0x563AF0);
 		FUNC_PTR(OBJECT_ITERATOR_NEXT,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x561360);
-		FUNC_PTR(OBJECT_GET_ORIGIN,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x565320);
-		// ///////////////////////////////////////////////////////////////////////
+		FUNC_PTR(OBJECT_GET_ORIGIN,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x565320);		
+		//////////////////////////////////////////////////////////////////////////
+		// saved_games/game_state
+		FUNC_PTR(GAME_STATE_MALLOC,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x50B510);
+		//////////////////////////////////////////////////////////////////////////
 		// scenario/scenario
 		FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP, 0x45FD30, 0x443A50, 0x516D40);
 		FUNC_PTR(SCENARIO_LOAD,					0x4604D0, 0x443C50, 0x5174E0);

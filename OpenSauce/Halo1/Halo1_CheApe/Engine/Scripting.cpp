@@ -8,6 +8,7 @@
 #include "Engine/Scripting.hpp"
 
 #include <blamlib/Halo1/hs/hs_structures.hpp>
+#include <blamlib/Halo1/hs/object_lists.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 
 #include "CheApeCore.hpp"
@@ -23,6 +24,12 @@ namespace Yelo
 
 		FUNC_PTR(HS_ARGUMENTS_EVALUATE,			0x4FC0B0, 0x508610, 0x622E70);
 		FUNC_PTR(HS_RETURN,						0x4FBAE0, 0x5080A0, 0x6228A0);
+
+		ENGINE_DPTR(object_list_header_data_t, object_list_header,			PTR_NULL, PTR_NULL, 0xE43758);
+		ENGINE_DPTR(list_object_reference_data_t, list_object_reference,	PTR_NULL, PTR_NULL, 0xE43768);
+
+		object_list_header_data_t& ObjectListHeader()						DPTR_IMP_GET_BYREF(object_list_header);
+		list_object_reference_data_t& ListObjectReference()					DPTR_IMP_GET_BYREF(list_object_reference);
 
 		static void NullifyScriptFunction(hs_function_definition& function)
 		{

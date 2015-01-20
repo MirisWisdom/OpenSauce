@@ -252,6 +252,11 @@ namespace Yelo
 		{
 			g_actor_variant_transform_manager.UnitDamaged(unit_index, damage_data);
 		}
+		
+		void InitializeForNewGameState()
+		{
+			g_actor_variant_transform_manager.AllocateGameStateMemory();
+		}
 
 		void InitializeForNewMap()
 		{

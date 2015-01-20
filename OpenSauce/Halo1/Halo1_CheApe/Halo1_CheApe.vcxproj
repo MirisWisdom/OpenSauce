@@ -95,7 +95,7 @@
     <ClCompile Include="Engine\AI.cpp" />
     <ClCompile Include="Engine\AnimationUpgrade.cpp" />
     <ClCompile Include="Engine\EngineFunctions.cpp" />
-    <ClCompile Include="Engine\Game.cpp" />
+    <ClCompile Include="Engine\GameState.cpp" />
     <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp" />
     <ClCompile Include="Engine\Objects.cpp" />
     <ClCompile Include="Engine\Scripting.cpp" />
@@ -158,7 +158,7 @@
     <ClInclude Include="Engine\AI.hpp" />
     <ClInclude Include="Engine\AnimationUpgrade.hpp" />
     <ClInclude Include="Engine\EngineFunctions.hpp" />
-    <ClInclude Include="Engine\Game.hpp" />
+    <ClInclude Include="Engine\GameState.hpp" />
     <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp" />
     <ClInclude Include="Engine\Objects.hpp" />
     <ClInclude Include="Engine\Scripting.hpp" />
