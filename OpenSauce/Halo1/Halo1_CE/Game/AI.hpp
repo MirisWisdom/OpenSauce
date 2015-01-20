@@ -59,6 +59,22 @@ namespace Yelo
 			///
 			/// <returns>	True if the transform succeeds, otherwise false. </returns>
 			void* HS_AITransformActor(void** arguments);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script ai transform actors function. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the transform succeeds, otherwise false. </returns>
+			void* HS_AITransformActors(void** arguments);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script ai transform actors by type function. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the transform succeeds, otherwise false. </returns>
+			void* HS_AITransformActorsByType(void** arguments);
 		}
 	};
 };

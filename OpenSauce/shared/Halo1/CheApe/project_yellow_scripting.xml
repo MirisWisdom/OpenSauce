@@ -363,6 +363,17 @@
 			<arg type="string" name="transform_name" />
 			<arg type="string" name="target_name" />
 		</function>
+		<function name="ai_transform_actors" returnType="bool" help="Transforms a list of actors into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+			<arg type="object_list" name="actors" />
+			<arg type="string" name="transform_name" />
+			<arg type="string" name="target_name" />
+		</function>
+		<function name="ai_transform_actors_by_type" returnType="bool" help="Transforms actors in a list of a specific type into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+			<arg type="object_list" name="actors" />
+			<arg type="actor_variant" name="actor_type" />
+			<arg type="string" name="transform_name" />
+			<arg type="string" name="target_name" />
+		</function>
 	</scriptFunctions>
 
 	<scriptGlobals>

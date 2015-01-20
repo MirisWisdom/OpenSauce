@@ -20,6 +20,7 @@
 #include <blamlib/Halo1/ai/ai_structures.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/hs/hs_library_external.hpp>
+#include <blamlib/Halo1/hs/object_lists.hpp>
 #include <blamlib/Halo1/models/models.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 
@@ -357,8 +358,6 @@ namespace Yelo
 				, return_state
 				, NONE
 				, 0);
-
-			// _encounters_update_dirty_status
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -903,6 +902,51 @@ namespace Yelo
 				transform_index,
 				target_index,
 			};
+			return true;
+		}
+		
+		bool c_actor_variant_transform_manager::TransformActors(const datum_index unit_index_list
+			, cstring transform_name
+			, cstring target_name)
+		{
+			for(datum_index list_reference, current_unit = blam::object_list_get_first(unit_index_list, list_reference);
+				!current_unit.IsNull();
+				current_unit = blam::object_list_get_next(unit_index_list, list_reference))
+			{
+				if(!TransformActor(current_unit, transform_name, target_name))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		bool c_actor_variant_transform_manager::TransformActorsByType(const datum_index unit_index_list
+			, const datum_index tag_index
+			, cstring transform_name
+			, cstring target_name)
+		{
+			for(datum_index list_reference, current_unit = blam::object_list_get_first(unit_index_list, list_reference);
+				!current_unit.IsNull();
+				current_unit = blam::object_list_get_next(unit_index_list, list_reference))
+			{
+				auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(current_unit);
+				if(unit_datum && !unit_datum->unit.actor_index.IsNull())
+				{
+					auto* actor_datum = AI::Actors()[unit_datum->unit.actor_index];
+					if(actor_datum->meta.actor_variant_definition_index != tag_index)
+					{
+						continue;
+					}
+
+					if(!TransformActor(current_unit, transform_name, target_name))
+					{
+						return false;
+					}
+				}
+			}
+
 			return true;
 		}
 	};};

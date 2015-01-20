@@ -186,6 +186,34 @@ namespace Yelo
 			bool TransformActor(const datum_index unit_index
 				, cstring transform_name
 				, cstring target_name);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Transforms a list of actors to the specified transform. </summary>
+			///
+			/// <param name="unit_index_list">	Datum index of the unit list. </param>
+			/// <param name="transform_name"> 	The transform name. </param>
+			/// <param name="target_name">	  	The target name. </param>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool TransformActors(const datum_index unit_index_list
+				, cstring transform_name
+				, cstring target_name);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Transforms actors in a list of a particular type to the specified transform.
+			/// </summary>
+			///
+			/// <param name="unit_index_list">	Datum index of the unit list. </param>
+			/// <param name="tag_index">	  	Datum index of the actor variant tag. </param>
+			/// <param name="transform_name"> 	The transform name. </param>
+			/// <param name="target_name">	  	The target name. </param>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool TransformActorsByType(const datum_index unit_index_list
+				, const datum_index tag_index
+				, cstring transform_name
+				, cstring target_name);
 		};
 	};};
 };
