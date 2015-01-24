@@ -14,6 +14,8 @@ namespace Yelo
 		void Dispose();
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
+		
+		void ObjectsUpdate();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>Initialize the Units system for a new map before any of the actual initialize_for_new_map procedures are
@@ -23,5 +25,14 @@ namespace Yelo
 		void InitializeForNewMapPrologue();
 
 		void InitializeForYeloGameState(bool enabled);
+
+		namespace SeatBoarding
+		{
+			void AnimationStateBoardPrimaryKeyframeHandler(const datum_index unit_index);
+			void AnimationStateBoardFinalKeyframeHandler(const datum_index unit_index);
+
+			void AnimationStateEjectionPrimaryKeyframeHandler(const datum_index unit_index);
+			void AnimationStateEjectionFinalKeyframeHandler(const datum_index unit_index);
+		}
 	}; };
 };

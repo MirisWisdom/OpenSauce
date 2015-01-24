@@ -110,7 +110,7 @@ namespace Yelo
 			k_number_of_weapon_class_animations,
 		};
 
-		enum unit_seat_animation
+		enum unit_seat_animation : _enum
 		{
 			_unit_seat_animation_airborne_dead,
 			_unit_seat_animation_landing_dead,

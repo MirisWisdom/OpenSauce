@@ -6,13 +6,15 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/game/game_allegiance.hpp>
-
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum game_team : _enum;
+	};
+
 	namespace Objects
 	{
 		struct s_damage_data;
@@ -21,7 +23,8 @@ namespace Yelo
 
 	namespace AI { namespace Transform
 	{
-		class c_actor_variant_transform_manager
+		/// <summary>	Manager for actor variant transforms. </summary>
+		class c_actor_variant_transform_manager final
 		{
 			enum { k_max_concurrent_transforms = 20 };
 
@@ -58,7 +61,7 @@ namespace Yelo
 			sbyte FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
 				, const datum_index& unit_index
 				, const datum_index& instigator_unit_index
-				, const bool damage_is_melee);
+				, const bool damage_is_melee) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for the first transforms entry for an actor variant tag. </summary>
@@ -66,7 +69,7 @@ namespace Yelo
 			/// <param name="tag_index">	Datum index of the actor variant tag. </param>
 			///
 			/// <returns>	The found transforms entry. </returns>
-			sbyte FindTransformsEntry(const datum_index tag_index);
+			sbyte FindTransformsEntry(const datum_index tag_index) const;
 #pragma endregion
 
 #pragma region Tag Options
@@ -80,7 +83,7 @@ namespace Yelo
 			void HandleVitality(const Enums::actor_variant_transform_in_vitality_handling operation
 				, Objects::s_unit_datum* unit_datum
 				, const real health
-				, const real shield);
+				, const real shield) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -96,7 +99,7 @@ namespace Yelo
 			Enums::game_team HandleTeam(const Enums::actor_variant_transform_in_team_handling option
 				, const Enums::game_team attacked_team
 				, const Enums::game_team attacker_team
-				, const Enums::game_team override_team);
+				, const Enums::game_team override_team) const;
 #pragma endregion
 
 #pragma region Unit Creation
@@ -120,7 +123,7 @@ namespace Yelo
 				, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
 				, const Enums::actor_default_state return_state_override
 				, const datum_index source_actor_index
-				, const bool inherit_encounter_squad);
+				, const bool inherit_encounter_squad) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates a new unit reusing the old unit. </summary>
@@ -136,7 +139,7 @@ namespace Yelo
 				, Objects::s_unit_datum* unit_datum
 				, const Enums::actor_variant_transform_in_team_handling team_option
 				, const Enums::game_team instigator_team
-				, const Enums::game_team override_team);
+				, const Enums::game_team override_team) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates a new unit. </summary>
@@ -154,7 +157,7 @@ namespace Yelo
 				, const datum_index new_unit_type
 				, const Enums::actor_variant_transform_in_team_handling team_option
 				, const Enums::game_team instigator_team
-				, const Enums::game_team override_team);
+				, const Enums::game_team override_team) const;
 #pragma endregion
 
 #pragma region Transform State
@@ -164,7 +167,7 @@ namespace Yelo
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			///
 			/// <returns>	null if it fails, else the found transform state. </returns>
-			s_actor_variant_transform_state* FindTransformState(const datum_index::index_t unit_index);
+			s_actor_variant_transform_state* FindTransformState(const datum_index::index_t unit_index) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for a transform state. </summary>
@@ -172,7 +175,7 @@ namespace Yelo
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			///
 			/// <returns>	null if it fails, else the found transform state. </returns>
-			s_actor_variant_transform_state* FindTransformState(const datum_index unit_index);
+			s_actor_variant_transform_state* FindTransformState(const datum_index unit_index) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Allocate a transform state entry. </summary>
@@ -188,7 +191,7 @@ namespace Yelo
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void FreeTransformState(const datum_index unit_index);
 #pragma endregion
-			
+
 #pragma region Attachments
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -197,7 +200,7 @@ namespace Yelo
 			///
 			/// <param name="unit_index">		   	The unit datum. </param>
 			/// <param name="transform_definition">	[in] The transform in definition. </param>
-			void DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition);
+			void DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -220,7 +223,7 @@ namespace Yelo
 				, const tag_string& destination_marker_name
 				, const int32 destination_marker_index
 				, const Enums::game_team attachment_team
-				, const real attachment_scale);
+				, const real attachment_scale) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Attach the transform definition's attachment objects to the target unit. </summary>
@@ -232,7 +235,7 @@ namespace Yelo
 			void AttachObjects(const datum_index unit_index
 				, const Objects::s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
-				, const TagGroups::actor_variant_transform_in_definition& transform_definition);
+				, const TagGroups::actor_variant_transform_in_definition& transform_definition) const;
 #pragma endregion
 
 #pragma region Transform Stages
@@ -248,7 +251,7 @@ namespace Yelo
 				, Objects::s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
 				, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
-				, const TagGroups::actor_variant_transform_in_definition& transform_in_definition);
+				, const TagGroups::actor_variant_transform_in_definition& transform_in_definition) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Start's the transform in stage on the target unit. </summary>
@@ -258,13 +261,13 @@ namespace Yelo
 			/// <param name="transform_state">	State of the transform. </param>
 			void TransformIn(const datum_index unit_index
 				, Objects::s_unit_datum* unit_datum
-				, const s_actor_variant_transform_state& transform_state);
+				, const s_actor_variant_transform_state& transform_state) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Ends the transform by making the created actor vulnerable. </summary>
 			///
 			/// <param name="unit_datum">	[in] If non-null, the unit datum. </param>
-			void TransformEnd(Objects::s_unit_datum* unit_datum);
+			void TransformEnd(Objects::s_unit_datum* unit_datum) const;
 #pragma endregion
 
 		public:

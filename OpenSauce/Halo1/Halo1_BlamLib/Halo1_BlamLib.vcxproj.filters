@@ -978,6 +978,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\particle_system_definitions.hpp">
       <Filter>effects</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapons.hpp">
+      <Filter>items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1090,9 +1093,6 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario.cpp">
       <Filter>scenario</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.cpp">
-      <Filter>units</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.cpp">
       <Filter>hs</Filter>

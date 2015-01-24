@@ -1931,9 +1931,6 @@
     <None Include="Objects\Units.Animations.inl">
       <Filter>Objects\Impl</Filter>
     </None>
-    <None Include="Objects\Units.Boarding.inl">
-      <Filter>Objects\Impl</Filter>
-    </None>
     <None Include="Objects\Units.GrenadeCounts.inl">
       <Filter>Objects\Impl</Filter>
     </None>
@@ -2237,6 +2234,75 @@
     <None Include="Game\AI.Transform.inl">
       <Filter>Game\Impl\AI</Filter>
     </None>
+    <None Include="Objects\Units.SeatDamage.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Units.SeatBoarding.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\TagGroups.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_EngineFunctions.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_HS.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Interface.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Networking.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Objects.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\OpenSauce.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_DX9.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderDraw.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderExtension.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Scenario.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_EngineFunctions.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_HS.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Networking.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Objects.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\OpenSauce.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Scenario.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\TagGroups.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
@@ -2314,6 +2380,15 @@
     </Filter>
     <Filter Include="Game\Impl\AI">
       <UniqueIdentifier>{62fd605b-7fa9-4b74-8e6a-6cb3209d309a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09\LUA">
+      <UniqueIdentifier>{292c5546-a8f1-4c61-8b6f-e96203133b5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09\LUA\Client">
+      <UniqueIdentifier>{f357d139-2aba-4c05-8b8e-219aef527ab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09\LUA\Server">
+      <UniqueIdentifier>{08f4997f-c50a-4f53-8475-4b3e72b50913}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

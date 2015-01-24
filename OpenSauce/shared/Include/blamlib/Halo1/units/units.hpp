@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
 namespace Yelo
 {
 	namespace Objects
@@ -63,9 +65,9 @@ namespace Yelo
 			, bool can_run_on_client_side
 			, bool );
 
-		void PLATFORM_API unit_can_see_point(datum_index unit_index
+		bool PLATFORM_API unit_can_see_point(const datum_index unit_index
 			, const real_point3d* point
-			, real view_radians);
+			, const real view_radians);
 
 		// Returns the number of frames remaining in an unit's custom animation
 		int16 unit_get_custom_animation_time(datum_index unit_index);
@@ -75,7 +77,17 @@ namespace Yelo
 			, cstring animation_name
 			, const bool interpolate);
 
+		void PLATFORM_API unit_animation_start_action(const datum_index unit_index, const Enums::unit_replacement_animation_state action_type);
+
+		void PLATFORM_API unit_animation_set_state(const datum_index unit_index, const Enums::unit_animation_state state);
+
 		void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force);
+
+		datum_index PLATFORM_API unit_inventory_get_weapon(const datum_index unit_index, const int16 index);
+
+		void PLATFORM_API unit_throw_grenade_release(const datum_index unit_index, const sbyte keyframe);
+
+		void PLATFORM_API unit_cause_player_melee_damage(const datum_index unit_index);
 
 		void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
 			, const Objects::s_damage_data* damage_data

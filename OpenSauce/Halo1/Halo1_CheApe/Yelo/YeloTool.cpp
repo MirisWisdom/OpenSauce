@@ -13,7 +13,7 @@
 
 #include "Settings/Settings.hpp"
 #include "Engine/EngineFunctions.hpp"
-#include "Engine/Game.hpp"
+#include "Engine/GameState.hpp"
 #include "Tool/Tool_AnimationFixups.hpp"
 
 #include "Tool/BuildCacheFile.hpp"
@@ -190,7 +190,7 @@ namespace Yelo
 				Write(CAST_PTR(void*, c_tool_main::HOOK_TRAMPOLINE_START));
 			assert(tramp_byte_count <= c_tool_main::HOOK_TRAMPOLINE_END-c_tool_main::HOOK_TRAMPOLINE_START);
 
-			Game::Initialize();
+			GameState::Initialize();
 		}
 
 		void DisposeBeforeCSeries()
@@ -201,7 +201,7 @@ namespace Yelo
 		}
 		void Dispose()
 		{
-			Game::Dispose();
+			GameState::Dispose();
 		}
 	};
 };

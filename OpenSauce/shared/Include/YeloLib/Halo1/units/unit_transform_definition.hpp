@@ -6,14 +6,15 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/ai/actors.hpp>
-
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
+		enum game_team : _enum;
+		enum actor_default_state : _enum;
+
 		enum actor_variant_transform_in_team_handling : _enum
 		{
 			_actor_variant_transform_in_team_handling_inherit_from_attacked,

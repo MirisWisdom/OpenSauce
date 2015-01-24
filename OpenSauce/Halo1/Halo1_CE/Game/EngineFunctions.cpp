@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/main/main_structures.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -833,6 +834,74 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// items
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// weapons.c
+		API_FUNC_NAKED bool PLATFORM_API weapon_prevents_melee_attack(const datum_index weapon_index)
+		{
+			static uintptr_t FUNCTION = 0x4C62A0;
+
+			API_FUNC_NAKED_START()
+				mov		ecx, weapon_index
+				call	FUNCTION
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED bool PLATFORM_API weapon_prevents_grenade_throwing(const datum_index weapon_index)
+		{
+			static uintptr_t FUNCTION = 0x4C62F0;
+
+			API_FUNC_NAKED_START()
+				mov		ecx, weapon_index
+				call	FUNCTION
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API weapon_stop_reload(const datum_index weapon_index)
+		{
+			static uintptr_t FUNCTION = 0x4C7F10;
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API first_person_weapon_message_from_unit(const datum_index unit_index, const int32 weapon_message_type)
+		{
+			static uintptr_t FUNCTION = 0x4954F0;
+
+			API_FUNC_NAKED_START()
+				mov		eax, unit_index
+				push	weapon_message_type
+				call	FUNCTION
+				add		esp, 4
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED int16 PLATFORM_API weapon_get_first_person_animation_time(const datum_index weapon_index
+			, const int16 frame_type
+			, Enums::first_person_weapon_animation animation
+			, const int32 arg3)
+		{
+			static uintptr_t FUNCTION = 0x4C6340;
+
+			API_FUNC_NAKED_START()
+				xor		ecx, ecx
+				movsx	cx, frame_type
+				push	arg3
+				push	ecx
+				mov		eax, weapon_index
+				movsx	cx, animation
+				call	FUNCTION
+				add		esp, 8
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// main
 	namespace blam
 	{
@@ -1503,6 +1572,13 @@ namespace Yelo
 		{
 			Engine::Objects::UnitSetAnimation(unit_index, animation_graph_index, animation_index);
 		}
+		
+		API_FUNC_NAKED void PLATFORM_API unit_animation_start_action(const datum_index unit_index, const Enums::unit_replacement_animation_state action_type)
+		{
+			static uintptr_t FUNCTION = 0x5692C0;
+
+			_asm jmp	FUNCTION;
+		}
 
 		int16 PLATFORM_API unit_find_nearby_seat(datum_index unit_index
 			, datum_index target_unit_index
@@ -1557,10 +1633,10 @@ namespace Yelo
 
 		API_FUNC_NAKED bool PLATFORM_API unit_try_and_exit_seat(const datum_index unit_index)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_TRY_AND_EXIT_SEAT);
+			static uintptr_t CALL_ADDRESS = 0x56FB70;
 
 			API_FUNC_NAKED_START()
-				mov		eax, unit_index
+				mov		edi, unit_index
 				call	CALL_ADDRESS
 				pop		ebp
 			API_FUNC_NAKED_END_()
@@ -1583,6 +1659,22 @@ namespace Yelo
 			, bool unknown)
 		{
 			Engine::Objects::UnitExitSeatEnd(unit_index, no_network_message, can_run_on_client_side, unknown);
+		}
+		
+		API_FUNC_NAKED bool PLATFORM_API unit_can_see_point(const datum_index unit_index
+			, const real_point3d* point
+			, const real view_radians)
+		{
+			static uintptr_t CALL_ADDRESS = 0x56F800;
+			
+			API_FUNC_NAKED_START()
+				mov		ecx, unit_index
+				mov		edi, point
+				push	view_radians
+				call	CALL_ADDRESS
+				add		esp, 4
+				pop		ebp
+			API_FUNC_NAKED_END_()
 		}
 
 		int16 unit_get_custom_animation_time(datum_index unit_index)
@@ -1610,12 +1702,47 @@ namespace Yelo
 			API_FUNC_NAKED_END_()
 		}
 
+		API_FUNC_NAKED void PLATFORM_API unit_animation_set_state(const datum_index unit_index, const Enums::unit_animation_state state)
+		{
+			static uintptr_t FUNCTION = 0x569450;
+
+			_asm jmp	FUNCTION;
+		}
+
 		API_FUNC_NAKED void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force)
 		{
 			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON);
 
 			_asm jmp	FUNCTION;
 		}
+
+		API_FUNC_NAKED datum_index PLATFORM_API unit_inventory_get_weapon(const datum_index unit_index, const int16 index)
+		{
+			static uintptr_t FUNCTION = 0x56D070;
+			
+			API_FUNC_NAKED_START()
+				mov		eax, unit_index
+				xor		ecx, ecx
+				mov		cx, index
+				call	FUNCTION
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API unit_throw_grenade_release(const datum_index unit_index, const sbyte keyframe)
+		{
+			static uintptr_t FUNCTION = 0x571B40;
+
+			_asm jmp	FUNCTION;
+		}
+		
+		API_FUNC_NAKED void PLATFORM_API unit_cause_player_melee_damage(const datum_index unit_index)
+		{
+			static uintptr_t FUNCTION = 0x572C50;
+
+			_asm jmp	FUNCTION;
+		}
+
 
 		API_FUNC_NAKED void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
 			, const Objects::s_damage_data* damage_data

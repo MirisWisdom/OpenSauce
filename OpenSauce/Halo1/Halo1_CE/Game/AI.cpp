@@ -8,14 +8,9 @@
 #include "Game/AI.hpp"
 
 #include <blamlib/Halo1/ai/actor_structures.hpp>
-#include <blamlib/Halo1/ai/ai_structures.hpp>
 #include <blamlib/Halo1/ai/prop_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+
+#include <YeloLib/Halo1/ai/ai_yelo.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Objects.hpp"
@@ -45,66 +40,31 @@ namespace Yelo
 		ai_communication_reply_events_t& AICommunicationReplies()	DPTR_IMP_GET_BYREF(ai_communication_replies);
 		ai_conversation_data_t& AIConversations()					DPTR_IMP_GET_BYREF(ai_conversations);
 
-
-		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
+		API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
 		{
-			auto unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			static uintptr_t RETN_ADDRESS = 0x40B10A;
 
-			datum_index parent_unit_index = unit->object.parent_object_index;
-			auto parent_unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(parent_unit_index);
-			int16 seat_index = unit->unit.vehicle_seat_index;
-
-			const auto* unit_definition = blam::tag_get<TagGroups::s_unit_definition>(parent_unit->object.definition_index);
-
-			// TODO: Add tag data to get bidirectional references?
-			// Get the boarding seat definition for the current seat
-			int16 boarding_seat_index = 0;
-			const TagGroups::unit_seat_boarding* boarding_seat = nullptr;
-			for(auto& seat : unit_definition->unit.seats)
+			_asm
 			{
-				if(seat.HasBoardingTargetSeat() && (seat.GetSeatBoarding().target_seat_index == seat_index))
-				{
-					boarding_seat = &seat.GetSeatBoarding();
-					break;
-				}
-
-				boarding_seat_index++;
-			}
-
-			// Exit the vehicle like normal if the seat can't be boarded
-			if(!boarding_seat)
-			{
-				unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
-				return;
-			}
-
-			// Check if the seat the actor is in is being boarded. If the seat is being boarded, prevent ai from exiting.
-			datum_index boarding_unit = Objects::GetUnitInSeat(parent_unit_index, boarding_seat_index);
-			if (!boarding_unit.IsNull())
-			{
-				return;
-			}
-
-			// Exit the vehicle like normal if conditions haven't been met
-			unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
-		}
-
-		static API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
-		{
-			__asm {
 				push	eax
 				push	edx
-				push	ecx
+				xor		ecx, ecx
+				mov		cl, [eax + 60h]
 
-				push	ecx		// datum_index unit_index
-				call	AI::ActorActionHandleVehicleExitBoardingSeat
-				
-				pop		ecx
+				push	ecx
+				push	eax
+				push	ebx
+				call	AI::ActorPropShouldCauseExitVehicle
+				add		esp, 0Ch
+
+				mov		cl, al
 				pop		edx
 				pop		eax
 
-				retn
-			}
+				test    cl, cl
+
+				jmp		RETN_ADDRESS
+			};
 		}
 
 		void Initialize()
@@ -112,15 +72,7 @@ namespace Yelo
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
-			static const byte k_null_bytes[7] = {
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop
-            };
-
-            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes);
-			Memory::WriteRelativeCall(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+			Memory::WriteRelativeJmp(&AI::ActorActionHandleVehicleExitHook, CAST_PTR(void*, 0x40B105), true);
 		}
 
 		void Dispose()

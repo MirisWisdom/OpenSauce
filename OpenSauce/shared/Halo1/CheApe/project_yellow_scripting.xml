@@ -358,17 +358,17 @@
 			<arg type="string" name="set-name" />
 		</function>
 		
-		<function name="ai_transform_actor" returnType="bool" help="Transforms an actor into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+		<function name="ai_transform_actor" returnType="boolean" help="Transforms an actor into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
 			<arg type="object" name="actor" />
 			<arg type="string" name="transform_name" />
 			<arg type="string" name="target_name" />
 		</function>
-		<function name="ai_transform_actors" returnType="bool" help="Transforms a list of actors into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+		<function name="ai_transform_actors" returnType="boolean" help="Transforms a list of actors into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
 			<arg type="object_list" name="actors" />
 			<arg type="string" name="transform_name" />
 			<arg type="string" name="target_name" />
 		</function>
-		<function name="ai_transform_actors_by_type" returnType="bool" help="Transforms actors in a list of a specific type into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+		<function name="ai_transform_actors_by_type" returnType="boolean" help="Transforms actors in a list of a specific type into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
 			<arg type="object_list" name="actors" />
 			<arg type="actor_variant" name="actor_type" />
 			<arg type="string" name="transform_name" />
@@ -387,7 +387,7 @@
 		<global name="pp_motion_blur_enabled" type="boolean" help="" internal="true" />
 		<global name="pp_motion_blur_amount" type="real" help="" internal="true" />
 		
-		<global name="ai_transforms_enabled" type="bool" help="controls whether ai transforms are enabled (does not stop transforms triggered by scripts)" internal="true" />
+		<global name="ai_transforms_enabled" type="boolean" help="controls whether ai transforms are enabled (does not stop transforms triggered by scripts)" internal="true" />
 	</scriptGlobals>
 
 </definitions>
