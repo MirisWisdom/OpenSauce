@@ -18,26 +18,6 @@ namespace Yelo
 			g_unit_seat_transition_manager.UnitUpdate(unit_index);
 		}
 
-		void AnimationStateBoardPrimaryKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerBoardPrimaryKeyframe(unit_index);
-		}
-
-		void AnimationStateBoardFinalKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerBoardFinalKeyframe(unit_index);
-		}
-
-		void AnimationStateEjectionPrimaryKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerEjectionPrimaryKeyframe(unit_index);
-		}
-
-		void AnimationStateEjectionFinalKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerEjectionFinalKeyframe(unit_index);
-		}
-
 		void UnitCanEnterBoardingSeat(const datum_index unit_index
 			, const datum_index target_unit_index
 			, const int16 target_seat_index
@@ -52,6 +32,36 @@ namespace Yelo
 			, bool& result)
 		{
 			g_unit_seat_transition_manager.UnitCanEnterTargetSeat(unit_index, target_unit_index, target_seat_index, result);
+		}
+
+		static void AnimationStateBoardPrimaryKeyframeHandler(const datum_index unit_index)
+		{
+			g_unit_seat_transition_manager.UnitTriggerBoardPrimaryKeyframe(unit_index);
+		}
+
+		static void AnimationStateBoardFinalKeyframeHandler(const datum_index unit_index)
+		{
+			g_unit_seat_transition_manager.UnitTriggerBoardFinalKeyframe(unit_index);
+		}
+
+		static void AnimationStateEjectionPrimaryKeyframeHandler(const datum_index unit_index)
+		{
+			g_unit_seat_transition_manager.UnitTriggerEjectionPrimaryKeyframe(unit_index);
+		}
+
+		static void AnimationStateEjectionFinalKeyframeHandler(const datum_index unit_index)
+		{
+			g_unit_seat_transition_manager.UnitTriggerEjectionFinalKeyframe(unit_index);
+		}
+
+		void Initialize()
+		{
+			Animations::SetAnimationStateHandlers(Enums::_unit_animation_state_yelo_seat_board
+				, &AnimationStateBoardPrimaryKeyframeHandler
+				, AnimationStateBoardFinalKeyframeHandler);
+			Animations::SetAnimationStateHandlers(Enums::_unit_animation_state_yelo_seat_ejection
+				, &AnimationStateEjectionPrimaryKeyframeHandler
+				, AnimationStateEjectionFinalKeyframeHandler);
 		}
 	};};};
 };

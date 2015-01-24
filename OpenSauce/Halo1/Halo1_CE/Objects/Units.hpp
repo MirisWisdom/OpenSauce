@@ -25,14 +25,5 @@ namespace Yelo
 		void InitializeForNewMapPrologue();
 
 		void InitializeForYeloGameState(bool enabled);
-
-		namespace SeatBoarding
-		{
-			void AnimationStateBoardPrimaryKeyframeHandler(const datum_index unit_index);
-			void AnimationStateBoardFinalKeyframeHandler(const datum_index unit_index);
-
-			void AnimationStateEjectionPrimaryKeyframeHandler(const datum_index unit_index);
-			void AnimationStateEjectionFinalKeyframeHandler(const datum_index unit_index);
-		}
 	}; };
 };

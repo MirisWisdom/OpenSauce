@@ -841,7 +841,7 @@ namespace Yelo
 		// weapons.c
 		API_FUNC_NAKED bool PLATFORM_API weapon_prevents_melee_attack(const datum_index weapon_index)
 		{
-			static uintptr_t FUNCTION = 0x4C62A0;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_PREVENTS_MELEE_ATTACK);
 
 			API_FUNC_NAKED_START()
 				mov		ecx, weapon_index
@@ -852,7 +852,7 @@ namespace Yelo
 
 		API_FUNC_NAKED bool PLATFORM_API weapon_prevents_grenade_throwing(const datum_index weapon_index)
 		{
-			static uintptr_t FUNCTION = 0x4C62F0;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_PREVENTS_GRENADE_THROWING);;
 
 			API_FUNC_NAKED_START()
 				mov		ecx, weapon_index
@@ -863,14 +863,14 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API weapon_stop_reload(const datum_index weapon_index)
 		{
-			static uintptr_t FUNCTION = 0x4C7F10;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_STOP_RELOAD);;
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API first_person_weapon_message_from_unit(const datum_index unit_index, const int32 weapon_message_type)
 		{
-			static uintptr_t FUNCTION = 0x4954F0;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(FIRST_PERSON_WEAPON_MESSAGE_FROM_UNIT);;
 
 			API_FUNC_NAKED_START()
 				mov		eax, unit_index
@@ -886,7 +886,7 @@ namespace Yelo
 			, Enums::first_person_weapon_animation animation
 			, const int32 arg3)
 		{
-			static uintptr_t FUNCTION = 0x4C6340;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_GET_FIRST_PERSON_ANIMATION_TIME);;
 
 			API_FUNC_NAKED_START()
 				xor		ecx, ecx
@@ -1575,7 +1575,7 @@ namespace Yelo
 		
 		API_FUNC_NAKED void PLATFORM_API unit_animation_start_action(const datum_index unit_index, const Enums::unit_replacement_animation_state action_type)
 		{
-			static uintptr_t FUNCTION = 0x5692C0;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_ANIMATION_START_ACTION);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1633,7 +1633,7 @@ namespace Yelo
 
 		API_FUNC_NAKED bool PLATFORM_API unit_try_and_exit_seat(const datum_index unit_index)
 		{
-			static uintptr_t CALL_ADDRESS = 0x56FB70;
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_TRY_AND_EXIT_SEAT);
 
 			API_FUNC_NAKED_START()
 				mov		edi, unit_index
@@ -1665,7 +1665,7 @@ namespace Yelo
 			, const real_point3d* point
 			, const real view_radians)
 		{
-			static uintptr_t CALL_ADDRESS = 0x56F800;
+			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_CAN_SEE_POINT);
 			
 			API_FUNC_NAKED_START()
 				mov		ecx, unit_index
@@ -1704,7 +1704,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API unit_animation_set_state(const datum_index unit_index, const Enums::unit_animation_state state)
 		{
-			static uintptr_t FUNCTION = 0x569450;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_ANIMATION_SET_STATE);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1718,7 +1718,7 @@ namespace Yelo
 
 		API_FUNC_NAKED datum_index PLATFORM_API unit_inventory_get_weapon(const datum_index unit_index, const int16 index)
 		{
-			static uintptr_t FUNCTION = 0x56D070;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_INVENTORY_GET_WEAPON);
 			
 			API_FUNC_NAKED_START()
 				mov		eax, unit_index
@@ -1731,18 +1731,17 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API unit_throw_grenade_release(const datum_index unit_index, const sbyte keyframe)
 		{
-			static uintptr_t FUNCTION = 0x571B40;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_THROW_GRENADE_RELEASE);
 
 			_asm jmp	FUNCTION;
 		}
 		
 		API_FUNC_NAKED void PLATFORM_API unit_cause_player_melee_damage(const datum_index unit_index)
 		{
-			static uintptr_t FUNCTION = 0x572C50;
+			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_CAUSE_PLAYER_MELEE_DAMAGE);
 
 			_asm jmp	FUNCTION;
 		}
-
 
 		API_FUNC_NAKED void PLATFORM_API unit_damage_aftermath(const datum_index unit_index
 			, const Objects::s_damage_data* damage_data

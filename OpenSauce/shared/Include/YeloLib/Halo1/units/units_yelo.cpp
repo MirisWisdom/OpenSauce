@@ -264,12 +264,55 @@ namespace Yelo
 			}
 		}
 
-		void s_unit_datum_animation_data::ResetOverlayAnimations()
+#pragma region Animation
+		namespace Units { namespace Animations
 		{
-			replacement_animation = { NONE };
-			replacement_animation_state = NONE;	// TODO: pretty sure we need to use _unit_replacement_animation_state_none here
-			overlay_animation = { NONE };
-			overlay_animation_state = NONE;		// TODO: pretty sure we need to use _unit_overlay_animation_state_none here
-		}
+			typedef void (*animation_state_primary_keyframe_handler_t)(const datum_index);
+			typedef void (*animation_state_final_keyframe_handler_t)(const datum_index);
+
+			struct s_animation_state_handler
+			{
+				animation_state_primary_keyframe_handler_t m_primary_keyframe_handler;
+				animation_state_final_keyframe_handler_t m_final_keyframe_handler;
+			};
+
+			static s_animation_state_handler g_animation_state_handlers[] =
+			{
+				//_unit_animation_state_yelo_seat_board
+				{ nullptr, nullptr },
+				//_unit_animation_state_yelo_seat_ejection
+				{ nullptr, nullptr },
+			}; BOOST_STATIC_ASSERT(NUMBEROF(g_animation_state_handlers) == (Enums::_unit_animation_state_yelo - Enums::_unit_animation_state));
+
+			void PLATFORM_API AnimationStatePrimaryKeyframe(const datum_index unit_index, const Enums::unit_animation_state state)
+			{
+				auto& handler = g_animation_state_handlers[state - Enums::_unit_animation_state];
+
+				if(handler.m_primary_keyframe_handler)
+				{
+					handler.m_primary_keyframe_handler(unit_index);
+				}
+			}
+
+			void PLATFORM_API AnimationStateFinalKeyframe(const datum_index unit_index, const Enums::unit_animation_state state)
+			{
+				auto& handler = g_animation_state_handlers[state - Enums::_unit_animation_state];
+
+				if(handler.m_final_keyframe_handler)
+				{
+					handler.m_final_keyframe_handler(unit_index);
+				}
+			}
+
+			void SetAnimationStateHandlers(const Enums::unit_animation_state state
+				, animation_state_primary_keyframe_handler_t primary_handler
+				, animation_state_final_keyframe_handler_t final_handler)
+			{
+				auto& handler = g_animation_state_handlers[state - Enums::_unit_animation_state];
+
+				handler.m_primary_keyframe_handler = primary_handler;
+				handler.m_final_keyframe_handler = final_handler;
+			}
+		};};
 	};
 };
