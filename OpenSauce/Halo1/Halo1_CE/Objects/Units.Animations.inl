@@ -7,6 +7,8 @@
 
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
+#include <YeloLib/Halo1/units/units_yelo.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Units.hpp"
 
@@ -14,29 +16,6 @@ namespace Yelo { namespace Objects { namespace Units {
 
 namespace Animations
 {
-	typedef void (*animation_state_primary_keyframe_handler_t)(const datum_index);
-	typedef void (*animation_state_final_keyframe_handler_t)(const datum_index);
-
-	struct s_animation_state_handler
-	{
-		animation_state_primary_keyframe_handler_t m_primary_keyframe_handler;
-		animation_state_final_keyframe_handler_t m_final_keyframe_handler;
-	};
-
-	static s_animation_state_handler g_animation_state_handlers[] =
-	{
-		//_unit_animation_state_yelo_seat_board
-		{
-			&Units::SeatBoarding::AnimationStateBoardPrimaryKeyframeHandler,
-			&Units::SeatBoarding::AnimationStateBoardFinalKeyframeHandler,
-		},
-		//_unit_animation_state_yelo_seat_ejection
-		{
-			&Units::SeatBoarding::AnimationStateBoardPrimaryKeyframeHandler,
-			&Units::SeatBoarding::AnimationStateBoardFinalKeyframeHandler,
-		}
-	}; BOOST_STATIC_ASSERT(NUMBEROF(g_animation_state_handlers) == (Enums::_unit_animation_state_yelo - Enums::_unit_animation_state));
-
 	static bool UnitAnimationStateInterruptableHook()
 	{
 		const s_unit_datum_animation_data* unit_animation;
@@ -84,20 +63,10 @@ namespace Animations
 		return blam::unit_animation_vehicle_ik(*unit_animation);
 	}
 
-	void PLATFORM_API AnimationStatePrimaryKeyframe(const datum_index unit_index, const Enums::unit_animation_state state)
-	{
-		auto& handler = g_animation_state_handlers[state - Enums::_unit_animation_state];
-
-		if(handler.m_primary_keyframe_handler)
-		{
-			handler.m_primary_keyframe_handler(unit_index);
-		}
-	}
-	
 	API_FUNC_NAKED void AnimationStatePrimaryKeyframeHook()
 	{
-		static uintptr_t STOCK_ANIMATION_RETN = 0x568A56;
-		static uintptr_t SKIP_ANIMATION_RETN = 0x568C77;
+		static uintptr_t STOCK_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_PRIMARY_KEYFRAME_STOCK_RETN);
+		static uintptr_t SKIP_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_PRIMARY_KEYFRAME_SKIP_RETN);
 		
 		static int32 STATE_COUNT_STOCK = Enums::_unit_animation_state;
 		static int32 STATE_COUNT_YELO = Enums::_unit_animation_state_yelo;
@@ -124,21 +93,11 @@ namespace Animations
 			jmp		STOCK_ANIMATION_RETN
 		};
 	}
-
-	void PLATFORM_API AnimationStateFinalKeyframe(const datum_index unit_index, const Enums::unit_animation_state state)
-	{
-		auto& handler = g_animation_state_handlers[state - Enums::_unit_animation_state];
-
-		if(handler.m_final_keyframe_handler)
-		{
-			handler.m_final_keyframe_handler(unit_index);
-		}
-	}
 	
 	API_FUNC_NAKED void AnimationStateFinalKeyframeHook()
 	{
-		static uintptr_t STOCK_ANIMATION_RETN = 0x568AAB;
-		static uintptr_t SKIP_ANIMATION_RETN = 0x568C64;
+		static uintptr_t STOCK_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_FINAL_KEYFRAME_STOCK_RETN);
+		static uintptr_t SKIP_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_FINAL_KEYFRAME_SKIP_RETN);
 		
 		static int32 STATE_COUNT_STOCK = Enums::_unit_animation_state;
 		static int32 STATE_COUNT_YELO = Enums::_unit_animation_state_yelo;
@@ -168,8 +127,8 @@ namespace Animations
 
 	void Initialize()
 	{
-		Memory::WriteRelativeJmp(&AnimationStatePrimaryKeyframeHook, CAST_PTR(void*, 0x568A4F), true);
-		Memory::WriteRelativeJmp(&AnimationStateFinalKeyframeHook, CAST_PTR(void*, 0x568AA4), true);
+		Memory::WriteRelativeJmp(&AnimationStatePrimaryKeyframeHook, GET_FUNC_VPTR(ANIMATION_STATE_PRIMARY_KEYFRAME_HOOK), true);
+		Memory::WriteRelativeJmp(&AnimationStateFinalKeyframeHook, GET_FUNC_VPTR(ANIMATION_STATE_FINAL_KEYFRAME_HOOK), true);
 
 		for(auto ptr : K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALLS)
 			Memory::WriteRelativeCall(&UnitAnimationStateInterruptableHook, ptr, true);

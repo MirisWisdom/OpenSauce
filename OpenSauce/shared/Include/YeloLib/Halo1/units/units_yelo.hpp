@@ -8,6 +8,11 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum unit_animation_state : sbyte;
+	};
+
 	namespace TagGroups
 	{
 		struct unit_seat;
@@ -67,6 +72,20 @@ namespace Yelo
 
 		namespace Units
 		{
+			namespace Animations
+			{
+				typedef void (*animation_state_primary_keyframe_handler_t)(const datum_index);
+				typedef void (*animation_state_final_keyframe_handler_t)(const datum_index);
+
+				void PLATFORM_API AnimationStatePrimaryKeyframe(const datum_index unit_index, const Enums::unit_animation_state state);
+
+				void PLATFORM_API AnimationStateFinalKeyframe(const datum_index unit_index, const Enums::unit_animation_state state);
+
+				void SetAnimationStateHandlers(const Enums::unit_animation_state state
+					, animation_state_primary_keyframe_handler_t primary_handler
+					, animation_state_final_keyframe_handler_t final_handler);
+			}
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
 			/// 	Called by BipedSeatedMelee when melee damage needs to be dealt. Implemented externally.

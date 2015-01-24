@@ -104,7 +104,7 @@ namespace Yelo
 
 		API_FUNC_NAKED static void BipedSeatedMeleeHook()
 		{
-			static uintptr_t RETN_ADDRESS = 0x55D299;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(BIPED_SEATED_MELEE_RETN);
 
 			_asm
 			{
@@ -125,7 +125,7 @@ namespace Yelo
 			}
 		}
 
-		void PLATFORM_API UnitThrowGrenadeReleaseSpawnHook(const datum_index unit_index, const sbyte keyframe)
+		void PLATFORM_API UnitThrowGrenadeReleaseHook(const datum_index unit_index, const sbyte keyframe)
 		{
 			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			if(unit_datum->unit.vehicle_seat_index == NONE)
@@ -153,7 +153,7 @@ namespace Yelo
 
 		API_FUNC_NAKED bool WeaponPreventsGrenadeThrowingHook()
 		{
-			static uintptr_t RETN_ADDRESS = 0x571826;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(WEAPON_PREVENTS_GRENADE_THROWING_RETN);
 
 			_asm
 			{
@@ -169,15 +169,17 @@ namespace Yelo
 		void Initialize()
 		{
 			Animations::Initialize();
+			SeatBoarding::Initialize();
 
 			// Enables biped seats
 			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), Enums::_x86_opcode_nop, 6);
 			Memory::WriteRelativeCall(&UnitDamageAftermathHook, GET_FUNC_VPTR(UNIT_DAMAGE_AFTERMATH_CALL), true);
 
 			Memory::CreateHookRelativeCall(&UnitCanEnterSeatHook, GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_HOOK), Enums::_x86_opcode_ret);
-			Memory::WriteRelativeJmp(&BipedSeatedMeleeHook, CAST_PTR(void*, 0x55D292), true);
-			Memory::WriteRelativeCall(&UnitThrowGrenadeReleaseSpawnHook, CAST_PTR(void*, 0x568A73), true);
-			Memory::WriteRelativeJmp(&WeaponPreventsGrenadeThrowingHook, CAST_PTR(void*, 0x571821), true);
+
+			Memory::WriteRelativeJmp(&BipedSeatedMeleeHook, GET_FUNC_VPTR(BIPED_SEATED_MELEE_HOOK), true);
+			Memory::WriteRelativeCall(&UnitThrowGrenadeReleaseHook, GET_FUNC_VPTR(UNIT_THROW_GRENADE_RELEASE_HOOK), true);
+			Memory::WriteRelativeJmp(&WeaponPreventsGrenadeThrowingHook, GET_FUNC_VPTR(WEAPON_PREVENTS_GRENADE_THROWING_HOOK), true);
 		}
 
 		void Dispose() { }

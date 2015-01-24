@@ -42,7 +42,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
 		{
-			static uintptr_t RETN_ADDRESS = 0x40B10A;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_RETN);
 
 			_asm
 			{
@@ -72,7 +72,7 @@ namespace Yelo
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
-			Memory::WriteRelativeJmp(&AI::ActorActionHandleVehicleExitHook, CAST_PTR(void*, 0x40B105), true);
+			Memory::WriteRelativeJmp(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
 		}
 
 		void Dispose()
