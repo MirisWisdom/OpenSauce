@@ -570,6 +570,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.hpp">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_damage_manager.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\ai_yelo.hpp">
+      <Filter>ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -836,9 +845,6 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp">
       <Filter>hs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.cpp">
-      <Filter>units</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp">
       <Filter>units</Filter>
     </ClCompile>
@@ -870,6 +876,15 @@
       <Filter>objects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_damage_manager.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\ai_yelo.cpp">
       <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>

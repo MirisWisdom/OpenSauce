@@ -249,6 +249,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\item_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\projectiles.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\projectile_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapons.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapon_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapon_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\console.hpp" />
@@ -404,7 +405,6 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_saving.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.cpp" />
-    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\math\real_math.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp" />

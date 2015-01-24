@@ -47,7 +47,7 @@ namespace Yelo
 		sbyte c_actor_variant_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
 			, const datum_index& unit_index
 			, const datum_index& instigator_unit_index
-			, const bool damage_is_melee)
+			, const bool damage_is_melee) const
 		{
 			auto* unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 			auto* instigator_unit_datum = (instigator_unit_index.IsNull() ? nullptr : blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(instigator_unit_index));
@@ -147,7 +147,7 @@ namespace Yelo
 			return NONE;
 		}
 
-		sbyte c_actor_variant_transform_manager::FindTransformsEntry(const datum_index tag_index)
+		sbyte c_actor_variant_transform_manager::FindTransformsEntry(const datum_index tag_index) const
 		{
 			// Find an entry with a matching actor variant tag index
 			auto& actor_variant_transforms = m_transform_collection->actor_variant_transforms;
@@ -171,7 +171,7 @@ namespace Yelo
 		void c_actor_variant_transform_manager::HandleVitality(const Enums::actor_variant_transform_in_vitality_handling operation
 			, Objects::s_unit_datum* unit_datum
 			, const real health
-			, const real shield)
+			, const real shield) const
 		{
 			switch(operation)
 			{
@@ -191,7 +191,7 @@ namespace Yelo
 		Enums::game_team c_actor_variant_transform_manager::HandleTeam(const Enums::actor_variant_transform_in_team_handling option
 			, const Enums::game_team attacked_team
 			, const Enums::game_team attacker_team
-			, const Enums::game_team override_team)
+			, const Enums::game_team override_team) const
 		{
 			switch(option)
 			{
@@ -208,7 +208,7 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Transform State
-		c_actor_variant_transform_manager::s_actor_variant_transform_state* c_actor_variant_transform_manager::FindTransformState(const datum_index::index_t unit_index)
+		c_actor_variant_transform_manager::s_actor_variant_transform_state* c_actor_variant_transform_manager::FindTransformState(const datum_index::index_t unit_index) const
 		{
 			// Find the first entry with a matching unit index
 			auto entry = std::find_if(m_transform_states, &m_transform_states[k_max_concurrent_transforms],
@@ -226,7 +226,7 @@ namespace Yelo
 			return nullptr;
 		}
 
-		c_actor_variant_transform_manager::s_actor_variant_transform_state* c_actor_variant_transform_manager::FindTransformState(const datum_index unit_index)
+		c_actor_variant_transform_manager::s_actor_variant_transform_state* c_actor_variant_transform_manager::FindTransformState(const datum_index unit_index) const
 		{
 			return FindTransformState(unit_index.index);
 		}
@@ -284,7 +284,7 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Attachments
-		void c_actor_variant_transform_manager::DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition)
+		void c_actor_variant_transform_manager::DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition) const
 		{
 			// Delete all of the units children that match the types in the attachments list
 			for(auto& attachment : transform_definition.attachments)
@@ -300,7 +300,7 @@ namespace Yelo
 			, const tag_string& destination_marker_name
 			, const int32 destination_marker_index
 			, const Enums::game_team attachment_team
-			, const real attachment_scale)
+			, const real attachment_scale) const
 		{
 			// If there is only 1 marker do not append a marker index to the name
 			cstring destination_marker = destination_marker_name;
@@ -347,7 +347,7 @@ namespace Yelo
 		void c_actor_variant_transform_manager::AttachObjects(const datum_index unit_index
 			, const Objects::s_unit_datum* unit_datum
 			, const Enums::game_team instigator_team
-			, const TagGroups::actor_variant_transform_in_definition& transform_definition)
+			, const TagGroups::actor_variant_transform_in_definition& transform_definition) const
 		{
 			for(auto& attachment : transform_definition.attachments)
 			{
@@ -397,7 +397,7 @@ namespace Yelo
 			, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
 			, const Enums::actor_default_state return_state_override
 			, const datum_index source_actor_index
-			, const bool inherit_encounter_squad)
+			, const bool inherit_encounter_squad) const
 		{
 			// Set up the unit's inventory
 			blam::actor_customize_unit(actor_variant_tag_index, unit_index);
@@ -457,7 +457,7 @@ namespace Yelo
 			, Objects::s_unit_datum* unit_datum
 			, const Enums::actor_variant_transform_in_team_handling team_option
 			, const Enums::game_team instigator_team
-			, const Enums::game_team override_team)
+			, const Enums::game_team override_team) const
 		{
 			SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, false);
 			
@@ -475,7 +475,7 @@ namespace Yelo
 			, const datum_index new_unit_type
 			, const Enums::actor_variant_transform_in_team_handling team_option
 			, const Enums::game_team instigator_team
-			, const Enums::game_team override_team)
+			, const Enums::game_team override_team) const
 		{
 			// Create the new unit based on the target_unit's data
 			Objects::s_object_placement_data unit_placement_data;
@@ -496,7 +496,7 @@ namespace Yelo
 			, Objects::s_unit_datum* unit_datum
 			, const Enums::game_team instigator_team
 			, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
-			, const TagGroups::actor_variant_transform_in_definition& transform_in_definition)
+			, const TagGroups::actor_variant_transform_in_definition& transform_in_definition) const
 		{
 			// Freeze the actor
 			blam::actor_braindead(unit_datum->unit.actor_index, true);
@@ -520,7 +520,7 @@ namespace Yelo
 
 		void c_actor_variant_transform_manager::TransformIn(const datum_index unit_index
 			, Objects::s_unit_datum* unit_datum
-			, const s_actor_variant_transform_state& transform_state)
+			, const s_actor_variant_transform_state& transform_state) const
 		{
 			auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_state.m_transform_entry_index];
 			auto& transform = transform_entry.transforms[transform_state.m_transform_index];
@@ -642,7 +642,7 @@ namespace Yelo
 			SET_FLAG(new_unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit, true);
 		}
 
-		void c_actor_variant_transform_manager::TransformEnd(Objects::s_unit_datum* unit_datum)
+		void c_actor_variant_transform_manager::TransformEnd(Objects::s_unit_datum* unit_datum) const
 		{
 			// Unfreeze the actor
 			blam::actor_braindead(unit_datum->unit.actor_index, false);
@@ -862,6 +862,13 @@ namespace Yelo
 
 			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 			if(!unit_datum)
+			{
+				return false;
+			}
+			
+			// Cannot overlap transforms
+			if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit)
+				|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
 			{
 				return false;
 			}

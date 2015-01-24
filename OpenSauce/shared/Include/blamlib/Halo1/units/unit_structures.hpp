@@ -68,7 +68,7 @@ namespace Yelo
 			_unit_animation_state,
 
 			// custom unit animation states
-			_unit_animation_state_yelo_seat_board,
+			_unit_animation_state_yelo_seat_board = _unit_animation_state,
 			_unit_animation_state_yelo_seat_ejection,
 
 			_unit_animation_state_yelo,
