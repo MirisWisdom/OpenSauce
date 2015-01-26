@@ -56,7 +56,7 @@ namespace Yelo
 			damage_data.damage_position = target_unit_datum.object.position;
 			damage_data.damage_multiplier = 1.0f;
 
-			SET_FLAG(damage_data.flags, Flags::_damage_data_flags_do_not_pass_to_children_bit, true);
+			SET_FLAG(damage_data.flags, Flags::_damage_data_flags_affect_target_only_bit, true);
 
 			// Damage the target unit
 			blam::object_cause_damage(damage_data, target_unit_index);
@@ -290,9 +290,12 @@ namespace Yelo
 
 				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_animation_bit))
 				{
-					if(StartAnimation(unit_index, &unit_datum, Enums::_unit_seat_animation_yelo_mounted))
+					if(blam::unit_animation_state_interruptable(unit_datum.unit.animation, Enums::_unit_animation_state_yelo_unit_mounted))
 					{
-						unit_datum.unit.animation.state = Enums::_unit_animation_state_yelo_unit_mounted;
+						if(StartAnimation(unit_index, &unit_datum, Enums::_unit_seat_animation_yelo_mounted))
+						{
+							unit_datum.unit.animation.state = Enums::_unit_animation_state_yelo_unit_mounted;
+						}
 					}
 				}
 			}

@@ -30,7 +30,7 @@ namespace Yelo
 		enum damage_data_flags : _enum
 		{
 			// Incomplete
-			_damage_data_flags_do_not_pass_to_children_bit,
+			_damage_data_flags_affect_target_only_bit,
 
 			_damage_data_flags
 		};

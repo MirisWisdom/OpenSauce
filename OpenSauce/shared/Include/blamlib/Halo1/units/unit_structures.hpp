@@ -71,6 +71,7 @@ namespace Yelo
 			_unit_animation_state_yelo_seat_boarding = _unit_animation_state,
 			_unit_animation_state_yelo_seat_ejecting,
 			_unit_animation_state_yelo_unit_mounted,
+			_unit_animation_state_yelo_unit_transforming,
 
 			_unit_animation_state_yelo,
 		};

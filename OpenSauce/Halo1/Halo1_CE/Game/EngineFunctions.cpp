@@ -20,6 +20,7 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <blamlib/Halo1/ai/actor_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/Halo1/units/unit_script.hpp>
 
 #include "Game/Console.hpp"
 #include "Game/GameState.hpp"
@@ -477,7 +478,7 @@ namespace Yelo
 			}
 		}
 
-		API_FUNC_NAKED void PLATFORM_API director_desired_perspective(const datum_index unit_index, Enums::game_perspective& desired_perspective)
+		API_FUNC_NAKED int16 PLATFORM_API director_desired_perspective(const datum_index unit_index, Enums::game_perspective& desired_perspective)
 		{
 			static const uintptr_t FUNCTION = 0x446480;
 

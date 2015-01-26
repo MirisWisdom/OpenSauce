@@ -205,7 +205,7 @@ namespace Yelo
 
 				TAG_FIELD_ENTRY_END()
 			};
-			TAG_GROUP_BLOCK_DEFINE(unit_seat_keyframe_action, 0, 3,
+			TAG_GROUP_BLOCK_DEFINE(unit_seat_keyframe_action, 0, 9,
 				sizeof(unit_seat_keyframe_action)
 			);
 
@@ -310,7 +310,7 @@ namespace Yelo
 
 				TAG_FIELD_ENTRY_END()
 			};
-			TAG_GROUP_BLOCK_DEFINE(unit_mounted_state_keyframe_action, 0, 3,
+			TAG_GROUP_BLOCK_DEFINE(unit_mounted_state_keyframe_action, 0, 9,
 				sizeof(unit_mounted_state_keyframe_action)
 			);
 

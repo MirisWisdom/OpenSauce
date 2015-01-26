@@ -7,6 +7,7 @@
 
 #include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 
 namespace Yelo
 {
@@ -22,6 +23,12 @@ namespace Yelo
 		void UnitDamaged(const datum_index unit_index, const Objects::s_damage_data* damage_data)
 		{
 			g_actor_variant_transform_manager.UnitDamaged(unit_index, damage_data);
+		}
+
+		void Initialize()
+		{
+			Objects::Units::Animations::SetAnimationStateKeyframeHandler(Enums::_unit_animation_state_yelo_unit_transforming,
+				[](const datum_index unit_index, const Enums::unit_animation_keyframe keyframe) { g_actor_variant_transform_manager.TriggerUnitTransformKeyframe(unit_index, keyframe); });
 		}
 
 		void InitializeForNewGameState()
@@ -95,6 +102,19 @@ namespace Yelo
 			TypeHolder result;
 
 			result.boolean = g_actor_variant_transform_manager.TransformActorsByType(args->unit_list_index, args->tag_index, args->transform_name, args->target_name);
+
+			return result.pointer;
+		}
+
+		void* HS_AIActorIsTransforming(void** arguments)
+		{
+			struct s_arguments {
+				const datum_index unit_index;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			TypeHolder result;
+
+			result.boolean = g_actor_variant_transform_manager.ActorIsTransforming(args->unit_index);
 
 			return result.pointer;
 		}

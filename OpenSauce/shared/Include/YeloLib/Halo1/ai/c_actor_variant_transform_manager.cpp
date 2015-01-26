@@ -28,6 +28,7 @@
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
 #include <YeloLib/Halo1/objects/objects_yelo.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 
 namespace Yelo
 {
@@ -54,6 +55,12 @@ namespace Yelo
 
 			auto test_transform = [&](const TagGroups::actor_variant_transform_collection_transform& transform) -> bool
 			{
+				// Ignore transforms that are scripting only
+				if(TEST_FLAG(transform.flags, Flags::_actor_variant_transform_collection_transform_flags_scripted_only))
+				{
+					return false;
+				}
+
 				auto transform_out_definition = *transform.transform_out_ptr;
 
 				// If we should ignore friendly fire, do so
@@ -238,6 +245,7 @@ namespace Yelo
 			if(entry)
 			{
 				entry->m_unit_index = unit_index.index;
+				entry->m_transform_stage = _transform_stage_begin;
 				return entry;
 			}
 
@@ -496,7 +504,8 @@ namespace Yelo
 			, Objects::s_unit_datum* unit_datum
 			, const Enums::game_team instigator_team
 			, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
-			, const TagGroups::actor_variant_transform_in_definition& transform_in_definition) const
+			, const TagGroups::actor_variant_transform_in_definition& transform_in_definition
+			, s_actor_variant_transform_state& transform_state) const
 		{
 			// Freeze the actor
 			blam::actor_braindead(unit_datum->unit.actor_index, true);
@@ -506,6 +515,7 @@ namespace Yelo
 				, unit_datum->object.animation.definition_index
 				, transform_out_definition.transform_out_anim
 				, false);
+			unit_datum->unit.animation.state = Enums::_unit_animation_state_yelo_unit_transforming;
 
 			// Attach the transform objects
 			AttachObjects(unit_index, unit_datum, instigator_team, transform_in_definition);
@@ -516,31 +526,30 @@ namespace Yelo
 			}
 
 			SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, true);
+
+			transform_state.m_transform_stage = _transform_stage_transform_out_begun;
 		}
 
 		void c_actor_variant_transform_manager::TransformIn(const datum_index unit_index
 			, Objects::s_unit_datum* unit_datum
-			, const s_actor_variant_transform_state& transform_state) const
+			, s_actor_variant_transform_state& transform_state) const
 		{
 			auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_state.m_transform_entry_index];
 			auto& transform = transform_entry.transforms[transform_state.m_transform_index];
 			auto& transform_in_definition = *transform.transform_in_ptr;
+			auto& transform_out_definition = *transform.transform_out_ptr;
 
 			// If the target index is NONE select a random target, otherwise use the existing index (set by script)
-			sbyte transform_index;
 			if(transform_state.m_target_index == NONE)
 			{
-				transform_index = (sbyte)(rand() % transform_in_definition.targets.Count);
+				transform_state.m_target_index = (sbyte)(rand() % transform_in_definition.targets.Count);
 			}
 			else
 			{
-				transform_index = transform_state.m_target_index;
+				transform_state.m_target_index = transform_state.m_target_index;
 			}
-			auto& transform_target = transform_in_definition.targets[transform_index];
+			auto& transform_target = transform_in_definition.targets[transform_state.m_target_index];
 
-			// Spawn the transition effect
-			blam::hs_effect_new_from_object_marker(transform_target.transform_effect.tag_index, unit_index);
-			
 			// Drop weapon if needed
 			if(TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_drop_weapon))
 			{
@@ -576,21 +585,6 @@ namespace Yelo
 				delete_unit = true;
 			}
 			auto* new_unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(new_unit_index);
-
-			// Handle seated units
-			// TODO: Add ejection and inheritance
-			for(datum_index current_child = unit_datum->object.first_object_index;
-				!current_child.IsNull();
-				current_child = blam::object_get(current_child)->next_object_index)
-			{
-				auto child_object = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(current_child);
-				if(!child_object || (child_object->unit.vehicle_seat_index == NONE))
-				{
-					continue;
-				}
-
-				blam::unit_kill(current_child);
-			}
 
 			// Creating the units actor sets the units vitality so take a copy
 			real old_unit_health = unit_datum->object.damage.health;
@@ -637,18 +631,27 @@ namespace Yelo
 				, new_unit_datum->object.animation.definition_index
 				, transform_target.transform_in_anim
 				, false);
+			new_unit_datum->unit.animation.state = Enums::_unit_animation_state_yelo_unit_transforming;
 
 			SET_FLAG(new_unit_datum->object.damage.flags, Flags::_object_cannot_take_damage_bit, true);
 			SET_FLAG(new_unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit, true);
+
+			transform_state.m_unit_index = new_unit_index.index;
+			transform_state.m_transform_stage = _transform_stage_transform_in_begun;
 		}
 
-		void c_actor_variant_transform_manager::TransformEnd(Objects::s_unit_datum* unit_datum) const
+		void c_actor_variant_transform_manager::TransformEnd(const datum_index unit_index, Objects::s_unit_datum* unit_datum) const
 		{
 			// Unfreeze the actor
 			blam::actor_braindead(unit_datum->unit.actor_index, false);
 
 			SET_FLAG(unit_datum->object.damage.flags, Flags::_object_cannot_take_damage_bit, false);
 			SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit, false);
+
+			if(unit_datum->unit.animation.state == Enums::_unit_animation_state_yelo_unit_transforming)
+			{
+				blam::unit_animation_set_state(unit_index, Enums::_unit_animation_state_idle);
+			}
 		}
 #pragma endregion
 
@@ -771,7 +774,8 @@ namespace Yelo
 					, unit_datum
 					, instigator_team
 					, *transform.transform_out_ptr
-					, *transform.transform_in_ptr);
+					, *transform.transform_in_ptr
+					, *transform_state);
 			
 				transform_state->m_instigator_team = instigator_team;
 				transform_state->m_transform_entry_index = transforms_entry_index;
@@ -812,6 +816,11 @@ namespace Yelo
 						DeleteAttachments(unit_index, transform_in_definition);
 					}
 
+					if(unit_datum->unit.animation.state == Enums::_unit_animation_state_yelo_unit_transforming)
+					{
+						blam::unit_animation_set_state(unit_index, Enums::_unit_animation_state_idle);
+					}
+
 					FreeTransformState(unit_index);
 					return;
 				}
@@ -820,27 +829,192 @@ namespace Yelo
 			if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit))
 			{
 				// If the transform out animation has finished playing start the transform in stage
-				auto frames_left = blam::unit_get_custom_animation_time(unit_index);
-				if(frames_left == 0 || (unit_datum->unit.animation.state != Enums::_unit_animation_state_custom_animation))
+				auto& transform_state = *FindTransformState(unit_index);
+				if(transform_state.m_transform_stage == _transform_stage_transform_out_ended)
 				{
 					// Prevent creating a new actor whilst ai is disabled
 					if(AI::AIGlobals()->ai_active)
 					{
 						TransformIn(unit_index, unit_datum, *FindTransformState(unit_index));
-
-						// The transform state data is no longer needed once the transform in state has started.
-						FreeTransformState(unit_index);
 					}
 				}
 			}
 			else if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
 			{
 				// If the transform in animation has finished playing end the transformation
-				auto frames_left = blam::unit_get_custom_animation_time(unit_index);
-				if(frames_left == 0 || (unit_datum->unit.animation.state != Enums::_unit_animation_state_custom_animation))
+				auto& transform_state = *FindTransformState(unit_index);
+				if(transform_state.m_transform_stage == _transform_stage_transform_in_ended)
 				{
-					TransformEnd(unit_datum);
+					TransformEnd(unit_index, unit_datum);
+
+					// The transform state data is no longer needed
+					FreeTransformState(unit_index);
 				}
+			}
+		}
+#pragma endregion
+
+#pragma region Animation
+		void c_actor_variant_transform_manager::DoTransformKeyframeAction(const datum_index unit_index, const TagGroups::actor_variant_transform_keyframe_action& action)
+		{
+			auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			auto& unit_definition = *blam::tag_get<TagGroups::s_unit_definition>(unit_datum.object.definition_index);
+
+			std::vector<datum_index> riders;
+			if((action.target == Enums::_actor_variant_transform_keyframe_effect_target_riders)
+				|| (action.rider_handling != Enums::_actor_variant_transform_keyframe_rider_handling_none))
+			{
+				for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+				{
+					auto seated_unit_index = Objects::GetUnitInSeat(unit_index, index);
+					if(seated_unit_index.IsNull())
+					{
+						continue;
+					}
+
+					riders.push_back(seated_unit_index);
+				}
+			}
+
+			// Apply damage to self or riders
+			if(!action.damage_effect.tag_index.IsNull())
+			{
+				Objects::s_damage_data damage_data;
+				blam::damage_data_new(damage_data, action.damage_effect.tag_index);
+
+				SET_FLAG(damage_data.flags, Flags::_damage_data_flags_affect_target_only_bit, true);
+				damage_data.responsible_player_index = unit_datum.unit.controlling_player_index;
+				damage_data.responsible_unit_index = unit_index;
+				damage_data.responsible_units_team = unit_datum.object.owner_team;
+
+				switch(action.target)
+				{
+				case Enums::_actor_variant_transform_keyframe_effect_target_self:
+					{
+						damage_data.location = unit_datum.object.location;
+						damage_data.damage_position = unit_datum.object.position;
+
+						blam::object_cause_damage(damage_data, unit_index);
+					}
+					break;
+				case Enums::_actor_variant_transform_keyframe_effect_target_riders:
+					for(auto& rider : riders)
+					{
+						auto& rider_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(rider);
+
+						damage_data.location = rider_unit_datum.object.location;
+						damage_data.damage_position = rider_unit_datum.object.position;
+
+						blam::object_cause_damage(damage_data, rider);
+					}
+					break;
+				}
+			}
+
+			// Spawn effect on self or riders
+			if(!action.effect.tag_index.IsNull())
+			{
+				switch(action.target)
+				{
+				case Enums::_actor_variant_transform_keyframe_effect_target_self:
+					blam::hs_effect_new_from_object_marker(action.effect.tag_index, unit_index, action.effect_marker);
+					break;
+				case Enums::_actor_variant_transform_keyframe_effect_target_riders:
+					for(auto& rider : riders)
+					{
+						blam::hs_effect_new_from_object_marker(action.effect.tag_index, rider, action.effect_marker);
+					}
+					break;
+				}
+			}
+
+			// Handle rider ejection or killing
+			if(action.rider_handling != Enums::_actor_variant_transform_keyframe_rider_handling_none)
+			{
+				for(auto& rider : riders)
+				{
+					switch(action.rider_handling)
+					{
+					case Enums::_actor_variant_transform_keyframe_rider_handling_kill:
+						blam::unit_kill(rider);
+						break;
+					case Enums::_actor_variant_transform_keyframe_rider_handling_eject:
+						blam::unit_exit_seat_end(rider, false, true, false);
+						break;
+					}
+				}
+			}
+		}
+
+		void c_actor_variant_transform_manager::TransformingOutKeyframe(const datum_index unit_index
+			, Objects::s_unit_datum* unit_datum
+			, const Enums::unit_animation_keyframe keyframe)
+		{
+			auto& transform_state = *FindTransformState(unit_index);
+
+			auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_state.m_transform_entry_index];
+			auto& transform = transform_entry.transforms[transform_state.m_transform_index];
+			auto& transform_out_definition = *transform.transform_out_ptr;
+
+			for(auto& action : transform_out_definition.keyframe_actions)
+			{
+				if(action.keyframe == keyframe)
+				{
+					DoTransformKeyframeAction(unit_index, action);
+				}
+			}
+
+			if(keyframe == Enums::_unit_animation_keyframe_final)
+			{
+				transform_state.m_transform_stage = _transform_stage_transform_out_ended;
+			}
+		}
+
+		void c_actor_variant_transform_manager::TransformingInKeyframe(const datum_index unit_index
+			, Objects::s_unit_datum* unit_datum
+			, const Enums::unit_animation_keyframe keyframe)
+		{
+			auto& transform_state = *FindTransformState(unit_index);
+
+			auto& transform_entry = m_transform_collection->actor_variant_transforms[transform_state.m_transform_entry_index];
+			auto& transform = transform_entry.transforms[transform_state.m_transform_index];
+			auto& transform_in_definition = *transform.transform_in_ptr;
+			auto& target_definition = transform_in_definition.targets[transform_state.m_target_index];
+
+			for(auto& action : target_definition.keyframe_actions)
+			{
+				if(action.keyframe == keyframe)
+				{
+					DoTransformKeyframeAction(unit_index, action);
+				}
+			}
+
+			if(keyframe == Enums::_unit_animation_keyframe_final)
+			{
+				transform_state.m_transform_stage = _transform_stage_transform_in_ended;
+			}
+		}
+
+		void c_actor_variant_transform_manager::TriggerUnitTransformKeyframe(const datum_index unit_index, const Enums::unit_animation_keyframe keyframe)
+		{
+			if(!m_transform_states || !m_transform_collection)
+			{
+				return;
+			}
+
+			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			if(!unit_datum)
+			{
+				return;
+			}
+
+			if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit))
+			{
+				TransformingOutKeyframe(unit_index, unit_datum, keyframe);
+			}
+			else if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
+			{
+				TransformingInKeyframe(unit_index, unit_datum, keyframe);
 			}
 		}
 #pragma endregion
@@ -961,7 +1135,8 @@ namespace Yelo
 				, unit_datum
 				, Enums::_game_team_none
 				, *transform.transform_out_ptr
-				, *transform.transform_in_ptr);
+				, *transform.transform_in_ptr
+				, *transform_state);
 			
 			transform_state->m_instigator_team = Enums::_game_team_none;
 			transform_state->m_transform_entry_index = transform_entry_index;
@@ -1020,6 +1195,21 @@ namespace Yelo
 			}
 
 			return success;
+		}
+
+		bool c_actor_variant_transform_manager::ActorIsTransforming(const datum_index unit_index)
+		{
+			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			if(unit_datum)
+			{
+				if(TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit)
+					|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 #pragma endregion
 	};};

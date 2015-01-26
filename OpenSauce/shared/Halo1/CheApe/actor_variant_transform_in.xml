@@ -55,11 +55,9 @@
 			<field type="Enum" name="return state handling" definition="actor_variant_transform_in_actor_return_state_handling" />
 			<field type="Enum" name="return state override" definition="actor_default_state_enum" />
 
-			<field type="Explanation" name="Transform Effect" definition="This effect will be spawned at the location of the old unit at the end of it's transform out animation." />
-			<field type="TagReference" name="transform effect" definition="effect_reference" />
-
 			<field type="Explanation" name="Animation" definition="Played immediately after the old unit's transform out animation. The new actor is made braindead during the animation, and will be invincible until it ends." />
 			<field type="String" name="transform in anim" />
+			<field type="Block" name="keyframe actions" definition="actor_variant_transform_keyframe_action_block" />
 
 			<field type="Explanation" name="Vitality" definition="" />
 			<field type="Enum" name="vitality inheritance" definition="actor_variant_transform_in_vitality_handling" />

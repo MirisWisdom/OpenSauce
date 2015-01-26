@@ -133,6 +133,7 @@
 		_hs_function_ai_transform_actor,
 		_hs_function_ai_transform_actors,
 		_hs_function_ai_transform_actors_by_type,
+		_hs_function_ai_actor_is_transforming,
 
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
@@ -310,6 +311,11 @@
 		HS_TYPE(string)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(ai_actor_is_transforming, bool, "Returns true if the specified actor is transforming.", 
+			"<object>", 1,
+		HS_TYPE(object)
+	);
+
 	// debug functions
 	#ifdef API_DEBUG
 		HS_FUNCTION_WITH_PARAMS(dump_view_state, void, "dump current render view state", "<name>", 1,
@@ -457,6 +463,7 @@
 		&GET_HS_FUNCTION(ai_transform_actor),
 		&GET_HS_FUNCTION(ai_transform_actors),
 		&GET_HS_FUNCTION(ai_transform_actors_by_type),
+		&GET_HS_FUNCTION(ai_actor_is_transforming),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

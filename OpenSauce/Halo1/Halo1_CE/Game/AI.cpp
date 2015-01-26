@@ -73,6 +73,8 @@ namespace Yelo
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
 			Memory::WriteRelativeJmp(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+
+			Transform::Initialize();
 		}
 
 		void Dispose()

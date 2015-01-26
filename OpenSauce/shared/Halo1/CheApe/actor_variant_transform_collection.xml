@@ -18,6 +18,12 @@
 		</Enum>
 	</enums>
 
+	<flags>
+		<Flag name="actor_variant_transform_collection_transform_flags">
+			<field>scripted only</field>
+		</Flag>
+	</flags>
+
 	<blocks>
 		<TagBlock name="actor_variant_transform_collection_instigator_block" maxElements="16">
 			<!--actor_variant_transform_collection_instigator-->
@@ -29,6 +35,9 @@
 
 		<TagBlock name="actor_variant_transform_collection_transform_block" maxElements="32">
 			<!--actor_variant_transform_collection_transform-->
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_collection_transform_flags" />
+			<field type="Pad" definition="2" />
+			
 			<field type="String" name="transform name" blockname="true" />
 			
 			<field type="Explanation" name="Transform Stages" definition="The transform out stage tag determines the cause of the transform (such as low health) and the animation to play on the attacked unit. The transform in stage tag determines the possible actors to transform into, and optionally the attachments to add during the transform out stage." />

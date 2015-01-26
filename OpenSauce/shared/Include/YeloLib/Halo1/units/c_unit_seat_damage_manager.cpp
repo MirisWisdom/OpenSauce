@@ -92,6 +92,8 @@ namespace Yelo
 			damage_data.location = target_unit_datum->object.location;
 			damage_data.damage_position = target_unit_datum->object.position;
 
+			SET_FLAG(damage_data.flags, Flags::_damage_data_flags_affect_target_only_bit, true);
+
 			blam::object_cause_damage(damage_data, target_unit);
 		}
 
