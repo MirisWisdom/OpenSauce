@@ -297,7 +297,9 @@ namespace Yelo
 				{ nullptr },
 				//_unit_animation_state_yelo_seat_ejecting
 				{ nullptr },
-				//_unit_animation_state_yelo_seat_mounted
+				//_unit_animation_state_yelo_unit_mounted
+				{ nullptr },
+				//_unit_animation_state_yelo_unit_transforming
 				{ nullptr },
 			}; BOOST_STATIC_ASSERT(NUMBEROF(g_animation_state_handlers) == (Enums::_unit_animation_state_yelo - Enums::_unit_animation_state));
 

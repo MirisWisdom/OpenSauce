@@ -353,6 +353,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_control.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_dialogue.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_script.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\vehicles.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\vehicle_definitions.hpp" />

@@ -101,11 +101,6 @@ namespace Yelo
 #endif
 		);
 
-		DOC_TODO("Move to unit_script.hpp?")
-		void PLATFORM_API unit_scripting_set_current_vitality(const datum_index unit_index
-			, const real health
-			, const real shield);
-
 		void PLATFORM_API unit_set_actively_controlled(const datum_index unit_index, const bool controlled);
 	};
 };

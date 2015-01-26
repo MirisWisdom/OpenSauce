@@ -13,6 +13,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum game_team : _enum;
+		enum unit_animation_keyframe : _enum;
 	};
 
 	namespace Objects
@@ -28,6 +29,15 @@ namespace Yelo
 		{
 			enum { k_max_concurrent_transforms = 20 };
 
+			enum transform_stage : byte
+			{
+				_transform_stage_begin,
+				_transform_stage_transform_out_begun,
+				_transform_stage_transform_out_ended,
+				_transform_stage_transform_in_begun,
+				_transform_stage_transform_in_ended,
+			};
+
 			struct s_actor_variant_transform_state
 			{
 				datum_index::index_t m_unit_index;
@@ -35,7 +45,7 @@ namespace Yelo
 				sbyte m_transform_entry_index;
 				sbyte m_transform_index;
 				sbyte m_target_index;
-				PAD8;
+				transform_stage m_transform_stage;
 			};
 
 			bool m_transforms_enabled;
@@ -251,7 +261,8 @@ namespace Yelo
 				, Objects::s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
 				, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
-				, const TagGroups::actor_variant_transform_in_definition& transform_in_definition) const;
+				, const TagGroups::actor_variant_transform_in_definition& transform_in_definition
+				, s_actor_variant_transform_state& transform_state) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Start's the transform in stage on the target unit. </summary>
@@ -261,13 +272,42 @@ namespace Yelo
 			/// <param name="transform_state">	State of the transform. </param>
 			void TransformIn(const datum_index unit_index
 				, Objects::s_unit_datum* unit_datum
-				, const s_actor_variant_transform_state& transform_state) const;
+				, s_actor_variant_transform_state& transform_state) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Ends the transform by making the created actor vulnerable. </summary>
 			///
 			/// <param name="unit_datum">	[in] If non-null, the unit datum. </param>
-			void TransformEnd(Objects::s_unit_datum* unit_datum) const;
+			void TransformEnd(const datum_index unit_index, Objects::s_unit_datum* unit_datum) const;
+#pragma endregion
+
+#pragma region Animation
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the transform keyframe action. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="action">	 	The action. </param>
+			void DoTransformKeyframeAction(const datum_index unit_index, const TagGroups::actor_variant_transform_keyframe_action& action);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Transforming out keyframe handler. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="unit_datum">	[in] If non-null, the unit datum. </param>
+			/// <param name="keyframe">  	The keyframe. </param>
+			void TransformingOutKeyframe(const datum_index unit_index
+				, Objects::s_unit_datum* unit_datum
+				, const Enums::unit_animation_keyframe keyframe);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Transforming in keyframe handler. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="unit_datum">	[in] If non-null, the unit datum. </param>
+			/// <param name="keyframe">  	The keyframe. </param>
+			void TransformingInKeyframe(const datum_index unit_index
+				, Objects::s_unit_datum* unit_datum
+				, const Enums::unit_animation_keyframe keyframe);
 #pragma endregion
 
 		public:
@@ -306,6 +346,15 @@ namespace Yelo
 			///
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void UnitUpdate(const datum_index unit_index);
+#pragma endregion
+
+#pragma region Animation
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Triggers a unit transform keyframe. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="keyframe">  	The keyframe. </param>
+			void TriggerUnitTransformKeyframe(const datum_index unit_index, const Enums::unit_animation_keyframe keyframe);
 #pragma endregion
 
 #pragma region Scripting
@@ -348,6 +397,14 @@ namespace Yelo
 				, const datum_index tag_index
 				, cstring transform_name
 				, cstring target_name);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Returns whether an actor is transforming. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the actor. </param>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool ActorIsTransforming(const datum_index unit_index);
 #pragma endregion
 		};
 	};};

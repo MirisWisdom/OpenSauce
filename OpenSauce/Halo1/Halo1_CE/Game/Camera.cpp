@@ -57,7 +57,7 @@ namespace Yelo
 				}
 			}
 
-			blam::director_desired_perspective(unit_index, perspective);
+			return blam::director_desired_perspective(unit_index, perspective);
 		}
 
 		API_FUNC_NAKED int16 PLATFORM_API DirectorDesiredPerspectiveHook(Enums::game_perspective& perspective)

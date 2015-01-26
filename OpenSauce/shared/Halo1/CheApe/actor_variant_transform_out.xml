@@ -26,7 +26,7 @@
 		<TagGroup name="actor_variant_transform_out" groupTag="avto" version="1">
 			<!--actor_variant_transform_out_definition-->
 			<field type="WordFlags" name="flags" definition="actor_variant_transform_out_flags" />
-			<field type="Pad" definition="2" /><!--field type="Enum" name="rider handling" definition="actor_variant_transform_out_rider_handling" /-->
+			<field type="Pad" definition="2" />
 
 			<field type="Explanation" name="Transform Criteria" definition="" />
 			<field type="Enum" name="threshold type" definition="actor_variant_transform_out_threshold_type" />
@@ -37,6 +37,7 @@
 
 			<field type="Explanation" name="Animation" definition="Played when the transform criteria have been met. The actor is made braindead during the animation, and if the incivibility flag is set they cannot be killed once the animation begins." />
 			<field type="String" name="transform out anim" />
+			<field type="Block" name="keyframe actions" definition="actor_variant_transform_keyframe_action_block" />
 			<field type="Pad" definition="24" />
 		</TagGroup>
 	</groups>

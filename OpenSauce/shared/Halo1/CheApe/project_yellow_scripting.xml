@@ -374,6 +374,9 @@
 			<arg type="string" name="transform_name" />
 			<arg type="string" name="target_name" />
 		</function>
+		<function name="ai_actor_is_transforming" returnType="boolean" help="Returns true if the specified actor is transforming." internal="true" >
+			<arg type="object" name="actor" />
+		</function>
 	</scriptFunctions>
 
 	<scriptGlobals>

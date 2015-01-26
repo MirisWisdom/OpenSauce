@@ -80,6 +80,14 @@ namespace Yelo
 			///
 			/// <returns>	True if the transform succeeds, otherwise false. </returns>
 			void* HS_AITransformActorsByType(void** arguments);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script to get whether an actor is transforming. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the unit is transforming, otherwise false. </returns>
+			void* HS_AIActorIsTransforming(void** arguments);
 		}
 	};
 };
