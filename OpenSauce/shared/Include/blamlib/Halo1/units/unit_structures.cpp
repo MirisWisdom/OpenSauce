@@ -98,8 +98,9 @@ namespace Yelo
 					break;
 
 				// custom animation states
-				case Enums::_unit_animation_state_yelo_seat_board:
-				case Enums::_unit_animation_state_yelo_seat_ejection:
+				case Enums::_unit_animation_state_yelo_seat_boarding:
+				case Enums::_unit_animation_state_yelo_seat_ejecting:
+				case Enums::_unit_animation_state_yelo_unit_mounted:
 					result = false;
 					break;
 
@@ -134,8 +135,9 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_mounted:
 				result = true;
 				break;
 
@@ -171,9 +173,13 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
 				result = false;
+				break;
+
+			case Enums::_unit_animation_state_yelo_unit_mounted:
+				result = true;
 				break;
 
 			default:
@@ -216,8 +222,9 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_mounted:
 				result = false;
 				break;
 
@@ -246,8 +253,9 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_mounted:
 				result = false;
 				break;
 

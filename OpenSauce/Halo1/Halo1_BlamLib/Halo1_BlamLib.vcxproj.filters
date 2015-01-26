@@ -981,6 +981,12 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapons.hpp">
       <Filter>items</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director_structures.hpp">
+      <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\camera_definitions.hpp">
+      <Filter>camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -989,7 +995,7 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp">
       <Filter>cache</Filter>
     </ClCompile>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
       <Filter>cache</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp">

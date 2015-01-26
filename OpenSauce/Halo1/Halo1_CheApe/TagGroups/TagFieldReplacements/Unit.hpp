@@ -17,6 +17,11 @@ namespace Yelo
 {
 	namespace TagGroups { namespace TagFieldReplacements { namespace Unit
 	{
+		enum
+		{
+			k_unit_extensions_pad_field_index = 0x2E
+		};
+
 		static bool PLATFORM_API UnitPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
 			if(mode != Enums::_tag_postprocess_mode_for_runtime)
@@ -107,8 +112,14 @@ namespace Yelo
 		
 		static void InitializeUnitSeatExtension(tag_block_definition* unit_block)
 		{
-			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 6,
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_keyframe_index, 3,
+				"primary",
+				"secondary",
+				"final");
+
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 7,
 				"requires target seat occupied",
+				"triggers mounted state",
 				"exit on unit death",
 				"restrict by unit sight",
 				"restrict by unit shield",
@@ -177,7 +188,26 @@ namespace Yelo
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_damage_flags, 2,
 				"use weapon melee damage effect",
 				"exit after grenade plant");
+			
+			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_seat_keyframe_action) =
+			{
+				TAG_FIELD_ENTRY(_field_enum, "keyframe", &unit_keyframe_index),
+				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_seat_keyframe_action_flags),
+				TAG_FIELD_ENTRY(_field_enum, "self seat action", &unit_seat_keyframe_action_self_seat_action),
+				TAG_FIELD_ENTRY(_field_enum, "target seat unit action", &unit_seat_keyframe_action_target_seat_unit_action),
+				TAG_FIELD_ENTRY(_field_enum, "apply damage to", &unit_seat_keyframe_action_apply_effect),
+				TAG_FIELD_ENTRY_PAD(2),
+				TAG_FIELD_ENTRY(_field_tag_reference, "damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
+				TAG_FIELD_ENTRY(_field_enum, "apply effect to", &unit_seat_keyframe_action_apply_effect),
+				TAG_FIELD_ENTRY_PAD(2),
+				TAG_FIELD_ENTRY(_field_tag_reference, "effect", &Shared::TAG_GROUP_REFERENCE_GET(effect)),
+				TAG_FIELD_ENTRY(_field_string, "effect marker"),
 
+				TAG_FIELD_ENTRY_END()
+			};
+			TAG_GROUP_BLOCK_DEFINE(unit_seat_keyframe_action, 0, 3,
+				sizeof(unit_seat_keyframe_action)
+			);
 
 			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_seat_boarding) =
 			{
@@ -187,32 +217,7 @@ namespace Yelo
 				TAG_FIELD_ENTRY_PAD(2),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit shield threshold"),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit health threshold"),
-				
-				TAG_FIELD_ENTRY(_field_explanation, "Primary Keyframe Action", ""),
-				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_seat_keyframe_action_flags),
-				TAG_FIELD_ENTRY(_field_enum, "self seat action", &unit_seat_keyframe_action_self_seat_action),
-				TAG_FIELD_ENTRY(_field_enum, "target seat unit action", &unit_seat_keyframe_action_target_seat_unit_action),
-				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_enum, "apply damage to", &unit_seat_keyframe_action_apply_effect),
-				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_tag_reference, "damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
-				TAG_FIELD_ENTRY(_field_enum, "apply effect to", &unit_seat_keyframe_action_apply_effect),
-				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_tag_reference, "effect", &Shared::TAG_GROUP_REFERENCE_GET(effect)),
-				TAG_FIELD_ENTRY(_field_string, "effect marker"),
-
-				TAG_FIELD_ENTRY(_field_explanation, "Final Keyframe Action", ""),
-				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_seat_keyframe_action_flags),
-				TAG_FIELD_ENTRY(_field_enum, "self seat action", &unit_seat_keyframe_action_self_seat_action),
-				TAG_FIELD_ENTRY(_field_enum, "target seat unit action", &unit_seat_keyframe_action_target_seat_unit_action),
-				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_enum, "apply damage to", &unit_seat_keyframe_action_apply_effect),
-				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_tag_reference, "damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
-				TAG_FIELD_ENTRY(_field_enum, "apply effect to", &unit_seat_keyframe_action_apply_effect),
-				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_tag_reference, "effect", &Shared::TAG_GROUP_REFERENCE_GET(effect)),
-				TAG_FIELD_ENTRY(_field_string, "effect marker"),
+				TAG_FIELD_ENTRY(_field_block, "keyframe actions", &TAG_GROUP_BLOCK_GET(unit_seat_keyframe_action)),
 
 				TAG_FIELD_ENTRY_END()
 			};
@@ -228,6 +233,7 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_enum, "grenade", &unit_seat_damage_grenade),
 				TAG_FIELD_ENTRY(_field_real, "grenade detonation time"),
 				TAG_FIELD_ENTRY(_field_string, "grenade marker"),
+
 				TAG_FIELD_ENTRY_END()
 			};
 			TAG_GROUP_BLOCK_DEFINE(unit_seat_damage, 0, 1,
@@ -237,6 +243,7 @@ namespace Yelo
 			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_seat_targeting_seat) =
 			{
 				TAG_FIELD_ENTRY(_field_short_integer, "targeting seat", nullptr),
+
 				TAG_FIELD_ENTRY_END()
 			};
 			TAG_GROUP_BLOCK_DEFINE(unit_seat_targeting_seat, 0, 16,
@@ -257,6 +264,7 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_block, "seat boarding", &TAG_GROUP_BLOCK_GET(unit_seat_boarding)),
 				TAG_FIELD_ENTRY(_field_block, "seat damage", &TAG_GROUP_BLOCK_GET(unit_seat_damage)),
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block)*4),
+
 				TAG_FIELD_ENTRY_END()
 			};
 			TAG_GROUP_BLOCK_DEFINE(unit_seat_extensions, 0, 1,
@@ -279,6 +287,63 @@ namespace Yelo
 			UnitSeatBlockUpdateFlags(unit_seats_definition);
 		}
 
+		static void InitializeUnitExtension(tag_block_definition* unit_block)
+		{
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_keyframe_index, 3,
+				"primary",
+				"secondary",
+				"final");
+
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_mounted_state_flags,1,
+				"third person camera");
+
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_mounted_state_keyframe_action_flags, 1,
+				"eject mounted units");
+
+			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_mounted_state_keyframe_action) =
+			{
+				TAG_FIELD_ENTRY(_field_enum, "keyframe", &unit_keyframe_index),
+				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_mounted_state_keyframe_action_flags),
+				TAG_FIELD_ENTRY(_field_tag_reference, "damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
+				TAG_FIELD_ENTRY(_field_tag_reference, "effect", &Shared::TAG_GROUP_REFERENCE_GET(effect)),
+				TAG_FIELD_ENTRY(_field_string, "effect marker"),
+
+				TAG_FIELD_ENTRY_END()
+			};
+			TAG_GROUP_BLOCK_DEFINE(unit_mounted_state_keyframe_action, 0, 3,
+				sizeof(unit_mounted_state_keyframe_action)
+			);
+
+			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_mounted_state) =
+			{
+				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_mounted_state_flags),
+				TAG_FIELD_ENTRY_PAD(2),
+				TAG_FIELD_ENTRY(_field_string, "camera marker"),
+				TAG_FIELD_ENTRY(_field_tag_reference, "camera track", &Shared::TAG_GROUP_REFERENCE_GET(camera_track)),
+				TAG_FIELD_ENTRY(_field_block, "keyframe actions", &TAG_GROUP_BLOCK_GET(unit_mounted_state_keyframe_action)),
+
+				TAG_FIELD_ENTRY_END()
+			};
+			TAG_GROUP_BLOCK_DEFINE(unit_mounted_state, 0, 1,
+				sizeof(unit_mounted_state)
+			);
+
+			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_extensions) =
+			{
+				TAG_FIELD_ENTRY(_field_block, "mounted state", &TAG_GROUP_BLOCK_GET(unit_mounted_state)),
+				TAG_FIELD_ENTRY_PAD(sizeof(tag_block)*4),
+				TAG_FIELD_ENTRY_END()
+			};
+			TAG_GROUP_BLOCK_DEFINE(unit_extensions, 0, 1,
+				sizeof(unit_extensions)
+			);
+
+			auto& tag_field = unit_block->fields[k_unit_extensions_pad_field_index];
+			tag_field.name = "unit extensions";
+			tag_field.type = Enums::_field_block;
+			tag_field.definition = &TAG_GROUP_BLOCK_GET(unit_extensions);
+		}
+
 		static void Initialize()
 		{
 			tag_group* unit = blam::tag_group_get<s_unit_definition>();
@@ -286,6 +351,7 @@ namespace Yelo
 			
 			unit->postprocess_proc = &UnitPostprocess;
 
+			InitializeUnitExtension(unit->header_block_definition);
 			InitializeUnitSeatExtension(unit->header_block_definition);
 		}
 	};};};

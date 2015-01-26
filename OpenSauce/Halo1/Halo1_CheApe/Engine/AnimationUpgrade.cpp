@@ -82,10 +82,12 @@ namespace Yelo
 
 			//////////////////////////////////////////////////////////////////////////
 			// populate yelo's new unit seat animation definitions
-			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_board, Enums::_model_animation_type_base>(
-				"board");
-			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_ejection, Enums::_model_animation_type_base>(
-				"ejection");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_boarding, Enums::_model_animation_type_base>(
+				"boarding");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_ejecting, Enums::_model_animation_type_base>(
+				"ejecting");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_mounted, Enums::_model_animation_type_base>(
+				"mounted");
 
 
 			//////////////////////////////////////////////////////////////////////////
