@@ -10,6 +10,8 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum game_perspective : _enum;
+
 		enum {
 			_director_game_mode_following,
 			_director_game_mode_orbiting,
@@ -28,5 +30,7 @@ namespace Yelo
 
 		// Loads the camera location from "camera.txt" and places the camera there
 		void PLATFORM_API director_load_camera();
+
+		void PLATFORM_API director_desired_perspective(const datum_index unit_index, Enums::game_perspective& desired_perspective);
 	};
 };

@@ -26,6 +26,14 @@ namespace Yelo
 
 			_object_damage_flags
 		};
+
+		enum damage_data_flags : _enum
+		{
+			// Incomplete
+			_damage_data_flags_do_not_pass_to_children_bit,
+
+			_damage_data_flags
+		};
 	};
 
 	namespace Objects

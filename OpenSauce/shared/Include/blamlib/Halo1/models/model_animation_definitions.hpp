@@ -146,8 +146,9 @@ namespace Yelo
 			k_number_of_unit_seat_animations,
 
 			// yelo animation states
-			_unit_seat_animation_yelo_board = k_number_of_unit_seat_animations,
-			_unit_seat_animation_yelo_ejection,
+			_unit_seat_animation_yelo_boarding = k_number_of_unit_seat_animations,
+			_unit_seat_animation_yelo_ejecting,
+			_unit_seat_animation_yelo_mounted,
 
 			k_number_of_unit_seat_animations_yelo,
 		};

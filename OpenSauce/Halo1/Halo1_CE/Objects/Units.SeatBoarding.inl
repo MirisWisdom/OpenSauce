@@ -34,34 +34,14 @@ namespace Yelo
 			g_unit_seat_transition_manager.UnitCanEnterTargetSeat(unit_index, target_unit_index, target_seat_index, result);
 		}
 
-		static void AnimationStateBoardPrimaryKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerBoardPrimaryKeyframe(unit_index);
-		}
-
-		static void AnimationStateBoardFinalKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerBoardFinalKeyframe(unit_index);
-		}
-
-		static void AnimationStateEjectionPrimaryKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerEjectionPrimaryKeyframe(unit_index);
-		}
-
-		static void AnimationStateEjectionFinalKeyframeHandler(const datum_index unit_index)
-		{
-			g_unit_seat_transition_manager.UnitTriggerEjectionFinalKeyframe(unit_index);
-		}
-
 		void Initialize()
 		{
-			Animations::SetAnimationStateHandlers(Enums::_unit_animation_state_yelo_seat_board
-				, &AnimationStateBoardPrimaryKeyframeHandler
-				, AnimationStateBoardFinalKeyframeHandler);
-			Animations::SetAnimationStateHandlers(Enums::_unit_animation_state_yelo_seat_ejection
-				, &AnimationStateEjectionPrimaryKeyframeHandler
-				, AnimationStateEjectionFinalKeyframeHandler);
+			Animations::SetAnimationStateKeyframeHandler(Enums::_unit_animation_state_yelo_seat_boarding,
+				[](const datum_index unit_index, const Enums::unit_animation_keyframe keyframe){ g_unit_seat_transition_manager.UnitTriggerBoardingKeyframe(unit_index, keyframe); });
+			Animations::SetAnimationStateKeyframeHandler(Enums::_unit_animation_state_yelo_seat_ejecting,
+				[](const datum_index unit_index, const Enums::unit_animation_keyframe keyframe){ g_unit_seat_transition_manager.UnitTriggerEjectingKeyframe(unit_index, keyframe); });
+			Animations::SetAnimationStateKeyframeHandler(Enums::_unit_animation_state_yelo_unit_mounted,
+				[](const datum_index unit_index, const Enums::unit_animation_keyframe keyframe){ g_unit_seat_transition_manager.UnitTriggerMountedKeyframe(unit_index, keyframe); });
 		}
 	};};};
 };

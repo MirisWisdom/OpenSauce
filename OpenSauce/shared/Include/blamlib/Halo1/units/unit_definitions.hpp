@@ -263,7 +263,7 @@ namespace Yelo
 			TAG_ENUM(blip_type);
 			PAD16;
 
-			PAD_TYPE(tag_block);
+			TAG_TBLOCK(extensions, unit_extensions);
 
 			TAG_TBLOCK(new_hud_interfaces, unit_hud_reference);
 			TAG_TBLOCK(dialogue_variants, dialogue_variant_definition);

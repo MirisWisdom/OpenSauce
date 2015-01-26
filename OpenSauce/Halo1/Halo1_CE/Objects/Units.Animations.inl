@@ -63,10 +63,10 @@ namespace Animations
 		return blam::unit_animation_vehicle_ik(*unit_animation);
 	}
 
-	API_FUNC_NAKED void AnimationStatePrimaryKeyframeHook()
+	API_FUNC_NAKED void AnimationStateDefinedKeyframeHook()
 	{
-		static uintptr_t STOCK_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_PRIMARY_KEYFRAME_STOCK_RETN);
-		static uintptr_t SKIP_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_PRIMARY_KEYFRAME_SKIP_RETN);
+		static uintptr_t STOCK_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_DEFINED_KEYFRAME_STOCK_RETN);
+		static uintptr_t SKIP_ANIMATION_RETN = GET_FUNC_PTR(ANIMATION_STATE_DEFINED_KEYFRAME_SKIP_RETN);
 		
 		static int32 STATE_COUNT_STOCK = Enums::_unit_animation_state;
 		static int32 STATE_COUNT_YELO = Enums::_unit_animation_state_yelo;
@@ -83,7 +83,7 @@ namespace Animations
 			push	eax
 			push	eax
 			push	ebx
-			call	AnimationStatePrimaryKeyframe
+			call	AnimationStateDefinedKeyframe
 			add		esp, 8
 			pop		eax
 
@@ -127,7 +127,7 @@ namespace Animations
 
 	void Initialize()
 	{
-		Memory::WriteRelativeJmp(&AnimationStatePrimaryKeyframeHook, GET_FUNC_VPTR(ANIMATION_STATE_PRIMARY_KEYFRAME_HOOK), true);
+		Memory::WriteRelativeJmp(&AnimationStateDefinedKeyframeHook, GET_FUNC_VPTR(ANIMATION_STATE_DEFINED_KEYFRAME_HOOK), true);
 		Memory::WriteRelativeJmp(&AnimationStateFinalKeyframeHook, GET_FUNC_VPTR(ANIMATION_STATE_FINAL_KEYFRAME_HOOK), true);
 
 		for(auto ptr : K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALLS)

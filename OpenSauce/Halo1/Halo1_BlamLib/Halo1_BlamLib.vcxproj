@@ -137,8 +137,10 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\predicted_resources.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\sound_cache.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\texture_cache.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\camera_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\dead_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\first_person_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\following_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\observer_structures.hpp" />
@@ -371,7 +373,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp" />
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_texture_cache.cpp" />

@@ -11,6 +11,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum unit_seat_animation : _enum;
+		enum unit_animation_keyframe: _enum;
 	};
 
 	namespace Objects
@@ -21,6 +22,7 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct unit_seat_keyframe_action;
+		struct unit_mounted_state_keyframe_action;
 	};
 
 	namespace Objects { namespace Units { namespace SeatBoarding
@@ -81,13 +83,6 @@ namespace Yelo
 				, const int16 target_seat) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Executes the animation's keyframe action. </summary>
-			///
-			/// <param name="unit_index">	Datum index of the unit. </param>
-			/// <param name="action">	 	The action details. </param>
-			void DoKeyframeAction(const datum_index unit_index, const TagGroups::unit_seat_keyframe_action& action) const;
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Starts a unit seat animation on the target unit. </summary>
 			///
 			/// <param name="unit_index">	Datum index of the unit. </param>
@@ -98,6 +93,51 @@ namespace Yelo
 			bool StartAnimation(const datum_index unit_index
 				, const s_unit_datum* unit_datum
 				, const Enums::unit_seat_animation animation) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the boarding animation's keyframe action. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="action">	 	The action details. </param>
+			void DoBoardingKeyframeAction(const datum_index unit_index, const TagGroups::unit_seat_keyframe_action& action) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Executes the mounted animation's keyframe action. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="action">	 	The action details. </param>
+			void DoMountedKeyframeAction(const datum_index unit_index, const TagGroups::unit_mounted_state_keyframe_action& action) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates the non seated unit described by unit_index. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			void UpdateNonSeatedUnit(const datum_index unit_index) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates the seated unit described by unit_index. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			void UpdateSeatedUnit(const datum_index unit_index) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates the boarding unit described by unit_index. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			void UpdateBoardingUnit(const datum_index unit_index) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates the ejecting unit described by unit_index. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			void UpdateEjectingUnit(const datum_index unit_index) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates the mounted unit described by unit_index. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			void UpdateMountedUnit(const datum_index unit_index) const;
+
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Update's a unit's boarding state. </summary>
@@ -106,28 +146,25 @@ namespace Yelo
 			void UnitUpdate(const datum_index unit_index) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Handles the boarding animations primary keyframe actions. </summary>
+			/// <summary>	Handles the boarding animations keyframe actions. </summary>
 			///
 			/// <param name="unit_index">	Datum index of the animating unit. </param>
-			void UnitTriggerBoardPrimaryKeyframe(const datum_index unit_index) const;
+			/// <param name="keyframe">  	The keyframe. </param>
+			void UnitTriggerBoardingKeyframe(const datum_index unit_index, const Enums::unit_animation_keyframe keyframe) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Handles the boarding animations final keyframe actions. </summary>
+			/// <summary>	Handles the ejection animations keyframe actions. </summary>
 			///
 			/// <param name="unit_index">	Datum index of the animating unit. </param>
-			void UnitTriggerBoardFinalKeyframe(const datum_index unit_index) const;
+			/// <param name="keyframe">  	The keyframe. </param>
+			void UnitTriggerEjectingKeyframe(const datum_index unit_index, const Enums::unit_animation_keyframe keyframe) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Handles the ejection animations primary keyframe actions. </summary>
+			/// <summary>	Handles the mounted animations keyframe actions. </summary>
 			///
 			/// <param name="unit_index">	Datum index of the animating unit. </param>
-			void UnitTriggerEjectionPrimaryKeyframe(const datum_index unit_index) const;
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Handles the ejection animations final keyframe actions. </summary>
-			///
-			/// <param name="unit_index">	Datum index of the animating unit. </param>
-			void UnitTriggerEjectionFinalKeyframe(const datum_index unit_index) const;
+			/// <param name="keyframe">  	The keyframe. </param>
+			void UnitTriggerMountedKeyframe(const datum_index unit_index, const Enums::unit_animation_keyframe keyframe) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Control's whether a unit can enter a boarding seat. </summary>

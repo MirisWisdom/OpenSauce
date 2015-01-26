@@ -11,10 +11,20 @@ namespace Yelo
 	namespace Enums
 	{
 		enum unit_animation_state : sbyte;
+
+		enum unit_animation_keyframe : _enum
+		{
+			_unit_animation_keyframe_primary,
+			_unit_animation_keyframe_secondary,
+			_unit_animation_keyframe_final,
+
+			_unit_animation_keyframe
+		};
 	};
 
 	namespace TagGroups
 	{
+		struct unit_extensions;
 		struct unit_seat;
 		struct unit_seat_extensions;
 	};
@@ -22,6 +32,14 @@ namespace Yelo
 	namespace Objects
 	{
 		struct s_biped_datum;
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the unit extension definition for a unit. </summary>
+		///
+		/// <param name="unit_index">	Datum index of the unit. </param>
+		///
+		/// <returns>	null if it fails, else the unit extension definition. </returns>
+		const TagGroups::unit_extensions* GetUnitExtensionDefinition(const datum_index unit_index);
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the specified seat definition from a unit. </summary>
@@ -74,16 +92,13 @@ namespace Yelo
 		{
 			namespace Animations
 			{
-				typedef void (*animation_state_primary_keyframe_handler_t)(const datum_index);
-				typedef void (*animation_state_final_keyframe_handler_t)(const datum_index);
+				typedef void (*animation_state_keyframe_handler_t)(const datum_index, const Enums::unit_animation_keyframe);
 
-				void PLATFORM_API AnimationStatePrimaryKeyframe(const datum_index unit_index, const Enums::unit_animation_state state);
+				void PLATFORM_API AnimationStateDefinedKeyframe(const datum_index unit_index, const Enums::unit_animation_state state);
 
 				void PLATFORM_API AnimationStateFinalKeyframe(const datum_index unit_index, const Enums::unit_animation_state state);
 
-				void SetAnimationStateHandlers(const Enums::unit_animation_state state
-					, animation_state_primary_keyframe_handler_t primary_handler
-					, animation_state_final_keyframe_handler_t final_handler);
+				void SetAnimationStateKeyframeHandler(const Enums::unit_animation_state state, animation_state_keyframe_handler_t handler);
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,7 @@
 #include "Game/EngineFunctions.hpp"
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/camera/director.hpp>
 #include <blamlib/Halo1/interface/hud_draw.hpp>
 #include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/main/main_structures.hpp>
@@ -465,6 +466,7 @@ namespace Yelo
 				retn
 			}
 		}
+
 		API_FUNC_NAKED void PLATFORM_API director_load_camera()
 		{
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DIRECTOR_LOAD_CAMERA);
@@ -473,6 +475,20 @@ namespace Yelo
 				call	FUNCTION
 				retn
 			}
+		}
+
+		API_FUNC_NAKED void PLATFORM_API director_desired_perspective(const datum_index unit_index, Enums::game_perspective& desired_perspective)
+		{
+			static const uintptr_t FUNCTION = 0x446480;
+
+			API_FUNC_NAKED_START()
+				mov		ecx, unit_index
+				mov		edx, [desired_perspective]
+				push	edx
+				call	FUNCTION
+				add		esp, 4
+				pop		ebp
+			API_FUNC_NAKED_END_()
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -1636,8 +1652,11 @@ namespace Yelo
 			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_TRY_AND_EXIT_SEAT);
 
 			API_FUNC_NAKED_START()
+				push	edi
 				mov		edi, unit_index
 				call	CALL_ADDRESS
+				pop		edi
+
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -1768,6 +1787,20 @@ namespace Yelo
 				push	health
 				call	CALL_ADDRESS
 				add		esp, 8
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+
+		API_FUNC_NAKED void PLATFORM_API unit_set_actively_controlled(const datum_index unit_index, const bool controlled)
+		{
+			static uintptr_t FUNCTION = 0x56D2F0;
+
+			API_FUNC_NAKED_START()
+				xor		ecx, ecx
+				mov		cl, controlled
+				push	unit_index
+				call	FUNCTION
+				add		esp, 4
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}

@@ -12,6 +12,8 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum unit_animation_keyframe : _enum;
+
 		enum unit_seat_keyframe_action_self_seat_action : _enum
 		{
 			_unit_seat_keyframe_action_self_seat_action_none,
@@ -77,9 +79,24 @@ namespace Yelo
 	
 	namespace Flags
 	{
+		enum unit_mounted_state_flags
+		{
+			_unit_mounted_state_flags_third_person_camera,
+
+			_unit_mounted_state_flags
+		};
+
+		enum unit_mounted_state_keyframe_action_flags
+		{
+			_unit_mounted_state_keyframe_action_flags_eject_mounted_units,
+
+			_unit_mounted_state_keyframe_action_flags
+		};
+
 		enum unit_seat_extensions_flags
 		{
 			_unit_seat_extensions_flags_requires_target_seat_occupied_bit,
+			_unit_seat_extensions_flags_triggers_mounted_animation_bit,
 			_unit_seat_extensions_flags_exit_on_unit_death_bit,
 			_unit_seat_extensions_flags_restrict_by_unit_sight_bit,
 			_unit_seat_extensions_flags_restrict_by_unit_shield_bit,
@@ -116,12 +133,37 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+		struct unit_mounted_state_keyframe_action
+		{
+			TAG_FIELD(Enums::unit_animation_keyframe, keyframe);
+			TAG_FIELD(word_flags, flags);
+			TAG_FIELD(tag_reference, damage_effect, "jpt!");
+			TAG_FIELD(tag_reference, effect, "effe");
+			TAG_FIELD(tag_string, effect_marker);
+		};
+
+		struct unit_mounted_state
+		{
+			TAG_FIELD(word_flags, flags);
+			PAD16;
+			TAG_FIELD(tag_string, camera_marker);
+			TAG_FIELD(tag_reference, effect, "trak");
+			TAG_TBLOCK(keyframe_actions, unit_mounted_state_keyframe_action);
+		};
+
+		struct unit_extensions
+		{
+			TAG_TBLOCK(mounted_state, unit_mounted_state);
+			TAG_PAD(tag_block, 4);
+		};
+
+
 		struct unit_seat_keyframe_action
 		{
+			TAG_FIELD(Enums::unit_animation_keyframe, keyframe);
 			TAG_FIELD(word_flags, flags);
 			TAG_FIELD(Enums::unit_seat_keyframe_action_self_seat_action, self_seat_action);
 			TAG_FIELD(Enums::unit_seat_keyframe_action_target_seat_unit_action, target_seat_unit_action);
-			PAD16;
 
 			TAG_FIELD(Enums::unit_seat_keyframe_action_apply_effect, apply_damage_to);
 			PAD16;
@@ -141,9 +183,7 @@ namespace Yelo
 			PAD16;
 			TAG_FIELD(real_fraction, unit_shield_threshold);
 			TAG_FIELD(real_fraction, unit_health_threshold);
-
-			unit_seat_keyframe_action primary_keyframe_action;
-			unit_seat_keyframe_action final_keyframe_action;
+			TAG_TBLOCK(keyframe_actions, unit_seat_keyframe_action);
 		};
 
 		struct unit_seat_damage
