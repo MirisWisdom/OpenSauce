@@ -85,6 +85,8 @@ namespace Yelo
 
 		datum_index PLATFORM_API unit_inventory_get_weapon(const datum_index unit_index, const int16 index);
 
+		void PLATFORM_API unit_ready_desired_weapon(const datum_index unit_index, const bool force);
+
 		void PLATFORM_API unit_throw_grenade_release(const datum_index unit_index, const sbyte keyframe);
 
 		void PLATFORM_API unit_cause_player_melee_damage(const datum_index unit_index);

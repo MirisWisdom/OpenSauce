@@ -1749,6 +1749,13 @@ namespace Yelo
 			API_FUNC_NAKED_END_()
 		}
 
+		API_FUNC_NAKED void PLATFORM_API unit_ready_desired_weapon(const datum_index unit_index, const bool force)
+		{
+			static uintptr_t FUNCTION = 0x570DE0;
+
+			_asm jmp	FUNCTION;
+		}
+
 		API_FUNC_NAKED void PLATFORM_API unit_throw_grenade_release(const datum_index unit_index, const sbyte keyframe)
 		{
 			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_THROW_GRENADE_RELEASE);

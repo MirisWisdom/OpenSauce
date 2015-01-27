@@ -73,5 +73,22 @@ namespace Yelo
 
 			return TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_ignored_by_seated_ai_bit);
 		}
+
+		bool PLATFORM_API ActorShouldPanicAboutMountedUnit(const datum_index unit_index)
+		{
+			auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			if(unit_datum.unit.vehicle_seat_index == NONE)
+			{
+				return true;
+			}
+
+			auto* seat_extension_definition = Objects::GetSeatExtensionDefinition(unit_datum.object.parent_object_index, unit_datum.unit.vehicle_seat_index);
+			if(!seat_extension_definition)
+			{
+				return true;
+			}
+
+			return !TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_ignored_by_mounted_ai_bit);
+		}
 	};
 };

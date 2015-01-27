@@ -320,6 +320,16 @@ namespace Yelo
 				return;
 			}
 
+			if(seat_extension_definition->target_seat_index != NONE)
+			{
+				if(TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_exit_on_target_seat_empty_bit)
+					&& GetUnitInSeat(unit_datum.object.parent_object_index, seat_extension_definition->target_seat_index).IsNull())
+				{
+					UnitExitFromSeat(unit_index);
+					return;
+				}
+			}
+
 			if(seat_extension_definition->seat_boarding.Count != 1)
 			{
 				return;
@@ -504,6 +514,22 @@ namespace Yelo
 			auto* seat_extension = GetSeatExtensionDefinition(target_unit_index, target_seat_index);
 			if(!seat_extension)
 			{
+				return;
+			}
+
+			if(seat_extension->seat_targeting_seats.Count)
+			{
+				// Only allow entry if no other seat targeting this target seat is occupied
+				for(auto& seat_index : seat_extension->seat_targeting_seats)
+				{
+					if(!GetUnitInSeat(target_unit_index, seat_index).IsNull())
+					{
+						result = false;
+						return;
+					}
+				}
+
+				// If the seat is targeted, no other extensions apply
 				return;
 			}
 
