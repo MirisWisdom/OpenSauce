@@ -355,7 +355,7 @@ namespace Yelo
 
 			if(braindead)
 			{
-				actor_data->state_flags = 0;
+				actor_data->current_state = Enums::_actor_default_state_none;
 				actor_data->state.action = Enums::_actor_action_none;
 
 				actor_delete_props(actor_index);
@@ -364,9 +364,9 @@ namespace Yelo
 			}
 			else
 			{
-				if(actor_data->state_flags == 0)
+				if(actor_data->current_state == Enums::_actor_default_state_none)
 				{
-					actor_data->state_flags = 2;
+					actor_data->current_state = Enums::_actor_default_state_alert;
 				}
 			}
 		}
