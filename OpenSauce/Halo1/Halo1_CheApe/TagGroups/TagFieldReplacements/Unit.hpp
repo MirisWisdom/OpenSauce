@@ -117,14 +117,15 @@ namespace Yelo
 				"secondary",
 				"final");
 
-			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 7,
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 8,
 				"requires target seat occupied",
 				"triggers mounted state",
 				"exit on unit death",
 				"restrict by unit sight",
 				"restrict by unit shield",
 				"restrict by unit health",
-				"restrict by ai state");
+				"restrict by ai state",
+				"ignored by seated ai");
 
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_ai_state_flags, 12,
 				"none",
