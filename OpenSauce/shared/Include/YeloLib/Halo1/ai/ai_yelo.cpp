@@ -49,5 +49,29 @@ namespace Yelo
 
 			return true;
 		}
+
+		bool PLATFORM_API ActorShouldIgnoreSeatedProp(const s_prop_datum* prop)
+		{
+			auto& actor_datum = *Actors()[prop->owner_actor_index];
+			auto& actor_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(actor_datum.meta.unit_index);
+			auto& prop_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(prop->unit_index);
+
+			// If the prop is not sitting in the same parent, don't ignore it
+			if(actor_unit_datum.object.parent_object_index.IsNull()
+				|| (prop_unit_datum.unit.vehicle_seat_index == NONE)
+				|| (actor_unit_datum.object.parent_object_index != prop_unit_datum.object.parent_object_index))
+			{
+				return false;
+			}
+
+			// If the prop is seated in the same parent, see if the seat should be ignored by other seated AI
+			auto* seat_extension_definition = Objects::GetSeatExtensionDefinition(actor_unit_datum.object.parent_object_index, prop_unit_datum.unit.vehicle_seat_index);
+			if(!seat_extension_definition)
+			{
+				return false;
+			}
+
+			return TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_ignored_by_seated_ai_bit);
+		}
 	};
 };

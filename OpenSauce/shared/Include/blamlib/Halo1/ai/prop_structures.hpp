@@ -123,7 +123,7 @@ namespace Yelo
 			PAD8; // unknown field						0x130
 			PAD8; // unknown field						0x131
 			PAD8; // unknown field						0x132
-			PAD8; // unknown field						0x133
+			bool ignored;							//	0x133
 			PAD8; // unknown field						0x134
 			PAD8; // unknown field						0x135
 			PAD8; // unknown field						0x136

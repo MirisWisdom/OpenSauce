@@ -32,6 +32,7 @@
 			<field>try to use existing unit</field>
 			<field>inherit encounter/squad</field>
 			<field>drop weapon</field>
+			<field>inherit seated units</field>
 		</Flag>
 
 		<Flag name="actor_variant_transform_in_attachment_flags">

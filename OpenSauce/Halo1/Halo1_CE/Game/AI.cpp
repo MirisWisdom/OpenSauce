@@ -40,7 +40,7 @@ namespace Yelo
 		ai_communication_reply_events_t& AICommunicationReplies()	DPTR_IMP_GET_BYREF(ai_communication_replies);
 		ai_conversation_data_t& AIConversations()					DPTR_IMP_GET_BYREF(ai_conversations);
 
-		API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
+		API_FUNC_NAKED void ActorActionHandleVehicleExitHook()
 		{
 			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_RETN);
 
@@ -67,12 +67,36 @@ namespace Yelo
 			};
 		}
 
+		API_FUNC_NAKED void PropStatusRefreshHook()
+		{
+			static uintptr_t RETN_ADDRESS = 0x41C9D4;
+
+			_asm
+			{
+				push	ecx
+				mov		cl, al
+				push	ecx
+
+				push	ebp
+				call	AI::ActorShouldIgnoreSeatedProp
+				add		esp, 4
+				
+				pop		ecx
+				or		cl, al
+				mov		[ebp + 133h], cl
+				pop		ecx
+
+				jmp		RETN_ADDRESS
+			}
+		}
+
 		void Initialize()
 		{
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
-			Memory::WriteRelativeJmp(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+			Memory::WriteRelativeJmp(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+			Memory::WriteRelativeJmp(&PropStatusRefreshHook, CAST_PTR(void*, 0x41C9CE), true);
 
 			Transform::Initialize();
 		}

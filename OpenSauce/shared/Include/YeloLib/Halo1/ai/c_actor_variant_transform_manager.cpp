@@ -582,6 +582,20 @@ namespace Yelo
 					, transform_state.m_instigator_team
 					, transform_target.team_override);
 
+				if(TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_inherit_seated_units))
+				{
+					auto& unit_definition = *blam::tag_get<TagGroups::s_unit_definition>(unit_datum->object.definition_index);
+					for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+					{
+						auto seated_unit_index = Objects::GetUnitInSeat(unit_index, index);
+						if(!seated_unit_index.IsNull())
+						{
+							blam::unit_exit_seat_end(seated_unit_index, false, true, false);
+							blam::unit_enter_seat(seated_unit_index, new_unit_index, index);
+						}
+					}
+				}
+
 				delete_unit = true;
 			}
 			auto* new_unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(new_unit_index);
