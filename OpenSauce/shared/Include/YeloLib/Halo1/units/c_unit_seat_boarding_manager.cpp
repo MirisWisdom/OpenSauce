@@ -549,8 +549,16 @@ namespace Yelo
 				}
 			}
 
-			// Return false if the entering unit is within the target unit's cone of vision
 			auto* target_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
+
+			// Return false if the target unit is not an enemy
+			if(!blam::game_team_is_enemy(unit_datum->object.owner_team, target_unit_datum->object.owner_team))
+			{
+				result = false;
+				return;
+			}
+
+			// Return false if the entering unit is within the target unit's cone of vision
 			if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_restrict_by_unit_sight_bit))
 			{
 				if(blam::unit_can_see_point(target_unit_index, &unit_datum->object.position, seat_extension->unit_sight_angle))
@@ -586,9 +594,10 @@ namespace Yelo
 				if(!target_unit_datum->unit.actor_index.IsNull())
 				{
 					auto* actor_datum = AI::Actors()[target_unit_datum->unit.actor_index];
-					if(actor_datum)
+					if(actor_datum && !TEST_FLAG(seat_extension->permitted_ai_states, actor_datum->current_state))
 					{
-						
+						result = false;
+						return;
 					}
 				}
 			}

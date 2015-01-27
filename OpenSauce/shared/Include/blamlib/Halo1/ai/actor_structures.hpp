@@ -416,7 +416,7 @@ namespace Yelo
 			Enums::actor_default_state return_state;
 			PAD32; // unknown field
 			PAD16;
-			_enum state_flags;
+			Enums::actor_default_state current_state;
 			s_actor_state_data state;
 			s_actor_input_data input;
 			PAD8; // unknown field
