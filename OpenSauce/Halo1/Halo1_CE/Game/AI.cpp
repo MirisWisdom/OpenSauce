@@ -90,6 +90,25 @@ namespace Yelo
 			}
 		}
 
+		API_FUNC_NAKED void ActorInputUpdateHook()
+		{
+			static uintptr_t RETN_ADDRESS = 0x429CAE;
+
+			_asm
+			{
+				push	eax
+
+				push	ebx
+				call	AI::ActorShouldPanicAboutMountedUnit
+				add		esp, 4
+
+				mov		byte ptr [esi+1B4h], al
+
+				pop		eax
+				jmp		RETN_ADDRESS
+			}
+		}
+
 		void Initialize()
 		{
 #if !PLATFORM_DISABLE_UNUSED_CODE
@@ -97,6 +116,7 @@ namespace Yelo
 #endif
 			Memory::WriteRelativeJmp(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
 			Memory::WriteRelativeJmp(&PropStatusRefreshHook, CAST_PTR(void*, 0x41C9CE), true);
+			Memory::WriteRelativeJmp(&ActorInputUpdateHook, CAST_PTR(void*, 0x429CA7), true);
 
 			Transform::Initialize();
 		}

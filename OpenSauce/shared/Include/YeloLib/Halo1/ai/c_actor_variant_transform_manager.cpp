@@ -24,6 +24,7 @@
 #include <blamlib/Halo1/models/models.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/saved_games/game_state.hpp>
+#include <blamlib/Halo1/items/weapon_structures.hpp>
 
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
 #include <YeloLib/Halo1/objects/objects_yelo.hpp>
@@ -592,6 +593,7 @@ namespace Yelo
 						{
 							blam::unit_exit_seat_end(seated_unit_index, false, true, false);
 							blam::unit_enter_seat(seated_unit_index, new_unit_index, index);
+							blam::unit_animation_set_state(seated_unit_index, Enums::_unit_animation_state_idle);
 						}
 					}
 				}
@@ -616,6 +618,9 @@ namespace Yelo
 
 			// Freeze the actor during the transform in stage
 			blam::actor_braindead(new_unit_datum->unit.actor_index, true);
+
+			// Force the unit to ready it's weapon (weapons such as the stock energy sword would instantly detonate otherwise)
+			blam::unit_ready_desired_weapon(new_unit_index, true);
 
 			// Inherit unit vitality
 			HandleVitality(transform_target.vitality_inheritance

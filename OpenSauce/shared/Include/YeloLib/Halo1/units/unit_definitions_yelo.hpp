@@ -98,11 +98,13 @@ namespace Yelo
 			_unit_seat_extensions_flags_requires_target_seat_occupied_bit,
 			_unit_seat_extensions_flags_triggers_mounted_animation_bit,
 			_unit_seat_extensions_flags_exit_on_unit_death_bit,
+			_unit_seat_extensions_flags_exit_on_target_seat_empty_bit,
+			_unit_seat_extensions_flags_ignored_by_seated_ai_bit,
+			_unit_seat_extensions_flags_ignored_by_mounted_ai_bit,
 			_unit_seat_extensions_flags_restrict_by_unit_sight_bit,
 			_unit_seat_extensions_flags_restrict_by_unit_shield_bit,
 			_unit_seat_extensions_flags_restrict_by_unit_health_bit,
 			_unit_seat_extensions_flags_restrict_by_ai_state_bit,
-			_unit_seat_extensions_flags_ignored_by_seated_ai_bit,
 
 			_unit_seat_extensions_flags
 		};
