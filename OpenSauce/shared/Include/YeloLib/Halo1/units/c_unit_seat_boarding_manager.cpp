@@ -307,6 +307,8 @@ namespace Yelo
 						if(StartAnimation(unit_index, &unit_datum, Enums::_unit_seat_animation_yelo_mounted))
 						{
 							unit_datum.unit.animation.state = Enums::_unit_animation_state_yelo_unit_mounted;
+							SET_FLAG(unit_datum.unit.flags, Flags::_unit_controllable_bit, false);
+							unit_datum.unit.throttle.Set(0.0f, 0.0f, 0.0f);
 						}
 					}
 				}
@@ -443,10 +445,6 @@ namespace Yelo
 			{
 				blam::unit_animation_set_state(unit_index, Enums::_unit_animation_state_idle);
 				SET_FLAG(unit_datum.unit.flags, Flags::_unit_controllable_bit, true);
-			}
-			else
-			{
-				SET_FLAG(unit_datum.unit.flags, Flags::_unit_controllable_bit, false);
 			}
 		}
 
@@ -612,6 +610,7 @@ namespace Yelo
 			// Can't enter seats if mounted
 			if(unit_datum && (unit_datum->unit.animation.state == Enums::_unit_animation_state_yelo_unit_mounted))
 			{
+				result = false;
 				return;
 			}
 

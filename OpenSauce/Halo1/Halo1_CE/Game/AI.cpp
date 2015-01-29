@@ -69,7 +69,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void PropStatusRefreshHook()
 		{
-			static uintptr_t RETN_ADDRESS = 0x41C9D4;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PROP_STATUS_REFRESH_RETN);
 
 			_asm
 			{
@@ -92,7 +92,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void ActorInputUpdateHook()
 		{
-			static uintptr_t RETN_ADDRESS = 0x429CAE;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(ACTOR_INPUT_UPDATE_RETN);
 
 			_asm
 			{
@@ -115,8 +115,8 @@ namespace Yelo
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
 			Memory::WriteRelativeJmp(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
-			Memory::WriteRelativeJmp(&PropStatusRefreshHook, CAST_PTR(void*, 0x41C9CE), true);
-			Memory::WriteRelativeJmp(&ActorInputUpdateHook, CAST_PTR(void*, 0x429CA7), true);
+			Memory::WriteRelativeJmp(&PropStatusRefreshHook, GET_FUNC_VPTR(PROP_STATUS_REFRESH_HOOK), true);
+			Memory::WriteRelativeJmp(&ActorInputUpdateHook, GET_FUNC_VPTR(ACTOR_INPUT_UPDATE_HOOK), true);
 
 			Transform::Initialize();
 		}

@@ -49,7 +49,8 @@ namespace Yelo
 #include "Game/Players.ActionResults.inl"
 #include "Game/Players.NearbyObjects.inl"
 
-		void PLATFORM_API FollowingCameraUpdateUnitCameraInfoImpl(const int16 player_index, Players::s_unit_camera_info& camera_info)
+#if !PLATFORM_IS_DEDI
+		void PLATFORM_API FollowingCameraGetUnitCameraInfoImpl(const int16 player_index, Players::s_unit_camera_info& camera_info)
 		{
 			auto& local_player = PlayerControlGlobals()->local_players[player_index];
 			auto& player_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(local_player.unit_index);
@@ -82,7 +83,7 @@ namespace Yelo
 			blam::player_control_get_unit_camera_info(player_index, camera_info);
 		}
 
-		API_FUNC_NAKED void FollowingCameraUpdateUnitCameraInfoHook()
+		API_FUNC_NAKED void FollowingCameraGetUnitCameraInfoHook()
 		{
 			API_FUNC_NAKED_START()
 				push	ecx
@@ -91,13 +92,14 @@ namespace Yelo
 				movsx	cx, ax
 				push	esi
 				push	ecx
-				call	FollowingCameraUpdateUnitCameraInfoImpl
+				call	FollowingCameraGetUnitCameraInfoImpl
 				add		esp, 8
 
 				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
+#endif
 
 		void Initialize()
 		{
@@ -128,7 +130,9 @@ namespace Yelo
 			Memory::WriteRelativeJmp(UpdateForClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
 			Memory::WriteRelativeJmp(Update, GET_FUNC_VPTR(PLAYERS_UPDATE_AFTER_GAME_HOOK), true);
 
-			Memory::WriteRelativeCall(&FollowingCameraUpdateUnitCameraInfoHook, CAST_PTR(void*, 0x447CE2), true);
+#if !PLATFORM_IS_DEDI
+			Memory::WriteRelativeCall(&FollowingCameraGetUnitCameraInfoHook, GET_FUNC_VPTR(FOLLOWING_CAMERA_GET_UNIT_CAMERA_INFO_CALL), true);
+#endif
 			
 			NearbyObjects::Initialize();
 			ActionResults::Initialize();
