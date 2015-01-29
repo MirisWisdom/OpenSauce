@@ -7,6 +7,8 @@
 #pragma once
 
 #include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/units/unit_camera.hpp>
+
 #include <YeloLib/Halo1/units/unit_definitions_yelo.hpp>
 
 namespace Yelo
@@ -124,20 +126,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct s_unit_camera_track
-		{
-			TAG_FIELD(tag_reference, track, 'trak');
-			PAD32; PAD32; PAD32;
-		};
-		struct s_unit_camera
-		{
-			TAG_FIELD(tag_string, camera_marker_name);
-			TAG_FIELD(tag_string, camera_submerged_marker_name);
-			TAG_FIELD(real, pitch_autolevel, "degrees");
-			TAG_FIELD(real_bounds, pitch_range, "degrees");
-			TAG_TBLOCK(camera_tracks, s_unit_camera_track);
-		};
-
 		struct unit_seat_acceleration
 		{
 			TAG_FIELD(real_vector3d, seat_acceleration_scale);

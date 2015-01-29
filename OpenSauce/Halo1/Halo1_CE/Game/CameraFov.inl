@@ -47,7 +47,7 @@ namespace Yelo
 
 		static void PLATFORM_API observer_update_command_hook()
 		{
-			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() > -1)
+			if (Players::PlayerControlGlobals()->local_players[0].zoom_level > -1)
 			{
 				return;
 			}

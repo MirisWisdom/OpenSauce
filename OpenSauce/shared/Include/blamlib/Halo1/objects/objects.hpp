@@ -94,7 +94,6 @@ namespace Yelo
 									2048>
 			object_header_data_t;
 
-
 		struct s_objects_pool_data
 		{
 			Memory::s_memory_pool header;
@@ -130,7 +129,6 @@ namespace Yelo
 			std::array<datum_index, Enums::k_maximum_object_names_per_scenario> object_name_to_datum_table;
 		};
 
-
 		struct s_object_iterator
 		{
 			enum { k_signature = 0x86868686 };
@@ -145,6 +143,14 @@ namespace Yelo
 			void SetEndHack()		{ signature = Memory::s_data_iterator::k_end_hack_signature; }
 			bool IsEndHack() const	{ return signature == Memory::s_data_iterator::k_end_hack_signature; }
 		};
+
+		struct s_object_marker
+		{
+			int16 node_index;
+			PAD16;
+			real_matrix4x3 matrix;
+			real_matrix4x3 transformed_matrix;
+		}; BOOST_STATIC_ASSERT(sizeof(s_object_marker) == 0x6C);
 
 
 		object_header_data_t&							ObjectHeader();
@@ -200,6 +206,8 @@ namespace Yelo
 		void PLATFORM_API object_reconnect_to_map(datum_index object_index, __in_opt s_scenario_location* location_reference = nullptr);
 
 		void PLATFORM_API object_disconnect_from_map(datum_index object_index);
+
+		int16 PLATFORM_API object_get_marker_by_name(const datum_index object_index, cstring marker_name, s_object_marker* markers, const int16 maximum_marker_count);
 
 		// Attaches the object to the target_object (marker names can be empty strings)
 		void PLATFORM_API object_attach_to_marker(datum_index target_object_index, cstring target_marker_name, datum_index object_index, cstring marker_name);

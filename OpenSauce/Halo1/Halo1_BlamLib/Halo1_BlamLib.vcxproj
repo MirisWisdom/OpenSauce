@@ -350,6 +350,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\biped_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\dialogue_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\units.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_control.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_dialogue.hpp" />

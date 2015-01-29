@@ -138,6 +138,20 @@ namespace Yelo
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void UpdateMountedUnit(const datum_index unit_index) const;
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Determines whether a unit can enter a seat. </summary>
+			///
+			/// <param name="unit_index">			Datum index of the unit. </param>
+			/// <param name="target_unit_index">	Datum index of the target unit. </param>
+			/// <param name="seat_index">			Datum index of the seat. </param>
+			/// <param name="is_targeted_seat"> 	Whether the seat is a targeted seat. </param>
+			/// <param name="result">				[in,out] The result. </param>
+			void CanEnterSeat(const datum_index unit_index
+				, const datum_index target_unit_index
+				, const int16 seat_index
+				, const bool is_targeted_seat
+				, bool& result) const;
+
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Update's a unit's boarding state. </summary>

@@ -230,7 +230,6 @@ namespace Yelo
 			}
 			blam::first_person_weapon_message_from_unit(unit_index, 4);
 
-			DOC_TODO("Recheck this logic");
 			biped_datum->biped.melee_animation_time = melee_animation_length;
 			biped_datum->biped.melee_cause_damage_time = melee_animation_length - melee_damage_keyframe;
 		}

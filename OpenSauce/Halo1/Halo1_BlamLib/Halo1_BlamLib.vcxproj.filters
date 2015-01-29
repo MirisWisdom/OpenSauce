@@ -990,6 +990,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_script.hpp">
       <Filter>units</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_camera.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">

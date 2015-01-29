@@ -44,7 +44,7 @@ namespace Yelo
 		{
 			auto* yelo_globals = Scenario::GetYeloGlobals();
 
-			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() >= 0)
+			if (Players::PlayerControlGlobals()->local_players[0].zoom_level >= 0)
 			{
 				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_health_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, true);

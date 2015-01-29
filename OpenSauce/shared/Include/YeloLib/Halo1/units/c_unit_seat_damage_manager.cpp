@@ -108,15 +108,15 @@ namespace Yelo
 
 				switch(seat_damage_definition.melee)
 				{
-				case Enums::unit_seat_damage_melee::_unit_seat_damage_melee_normal:
+				case Enums::_unit_seat_damage_melee_normal:
 					// Revert to the stock melee damage function
 					blam::unit_cause_player_melee_damage(unit_index);
 					break;
-				case Enums::unit_seat_damage_melee::_unit_seat_damage_melee_mounted_unit:
+				case Enums::_unit_seat_damage_melee_mounted_unit:
 					// Melee attack the parent unit
 					ApplyMeleeDamageToUnit(unit_index, unit_datum->object.parent_object_index, seat_damage_definition);
 					break;
-				case Enums::unit_seat_damage_melee::_unit_seat_damage_melee_target_seat_unit:
+				case Enums::_unit_seat_damage_melee_target_seat_unit:
 					{
 						// Melee attack the unit in the target seat
 						auto seated_unit = GetUnitInSeat(unit_datum->object.parent_object_index, seat_extension_definition->target_seat_index);
