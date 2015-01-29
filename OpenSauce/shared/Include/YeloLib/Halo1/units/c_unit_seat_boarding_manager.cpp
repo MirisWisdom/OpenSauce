@@ -158,7 +158,18 @@ namespace Yelo
 			auto& unit_datum = *blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			auto& seat_extension_definition = *GetSeatExtensionDefinition(unit_datum.object.parent_object_index, unit_datum.unit.vehicle_seat_index);
 			auto target_seat_unit = GetUnitInSeat(unit_datum.object.parent_object_index, seat_extension_definition.target_seat_index);
-			
+
+			// Open/Close the unit as required
+			switch(action.unit_door_action)
+			{
+			case Enums::_unit_seat_keyframe_action_unit_door_action_open:
+				blam::unit_open(unit_datum.object.parent_object_index);
+				break;
+			case Enums::_unit_seat_keyframe_action_unit_door_action_close:
+				blam::unit_close(unit_datum.object.parent_object_index);
+				break;
+			}
+
 			// Spawn a custom effect on a mounted or seated unit's marker
 			switch(action.apply_effect_to)
 			{
@@ -238,7 +249,8 @@ namespace Yelo
 					continue;
 				}
 
-				if(!TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_animation_bit))
+				if(!TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_state_bit)
+					&& (action.target == Enums::_unit_seat_mounted_keyframe_action_target_mounted_trigger_seats))
 				{
 					continue;
 				}
@@ -288,7 +300,7 @@ namespace Yelo
 					continue;
 				}
 
-				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_animation_bit))
+				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_state_bit))
 				{
 					if(blam::unit_animation_state_interruptable(unit_datum.unit.animation, Enums::_unit_animation_state_yelo_unit_mounted))
 					{
@@ -418,7 +430,7 @@ namespace Yelo
 					continue;
 				}
 
-				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_animation_bit)
+				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_triggers_mounted_state_bit)
 					&& !GetUnitInSeat(unit_index, index).IsNull())
 				{
 					is_mounted = true;
@@ -429,7 +441,12 @@ namespace Yelo
 			// If no longer mounted, change animation state
 			if(!is_mounted)
 			{
-				unit_datum.unit.animation.state = Enums::_unit_animation_state_idle;
+				blam::unit_animation_set_state(unit_index, Enums::_unit_animation_state_idle);
+				SET_FLAG(unit_datum.unit.flags, Flags::_unit_controllable_bit, true);
+			}
+			else
+			{
+				SET_FLAG(unit_datum.unit.flags, Flags::_unit_controllable_bit, false);
 			}
 		}
 
@@ -483,7 +500,7 @@ namespace Yelo
 			auto& unit_datum = *blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			auto* unit_extension = GetUnitExtensionDefinition(unit_index);
 
-			if(unit_extension->mounted_state.Count == 1)
+			if(unit_extension && (unit_extension->mounted_state.Count == 1))
 			{
 				for(auto& keyframe_action : unit_extension->mounted_state[0].keyframe_actions)
 				{
@@ -495,137 +512,124 @@ namespace Yelo
 			}
 		}
 
+		void c_unit_seat_boarding_manager::CanEnterSeat(const datum_index unit_index
+			, const datum_index target_unit_index
+			, const int16 seat_index
+			, const bool is_targeted_seat
+			, bool& result) const
+		{
+			auto& unit_datum = *blam::object_get_and_verify_type<s_unit_datum>(unit_index);
+
+			s_unit_datum* target_unit_datum = nullptr;
+			if(is_targeted_seat)
+			{
+				auto target_index = GetUnitInSeat(target_unit_index, seat_index);
+				if(target_index.IsNull())
+				{
+					return;
+				}
+
+				target_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(target_index);
+			}
+			else
+			{
+				target_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
+			}
+
+			auto& seat_extension = *GetSeatExtensionDefinition(target_unit_index, seat_index);
+			if(seat_extension.seat_access.Count == 1)
+			{
+				auto& seat_access_block = seat_extension.seat_access[0];
+
+				// Only allow entry if the target seat unit is your enemy
+				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_enemy_access_only_bit)
+					&& !blam::game_team_is_enemy(unit_datum.object.owner_team, target_unit_datum->object.owner_team))
+				{
+					result = false;
+					return;
+				}
+
+				// Return false if the entering unit is within the target unit's cone of vision
+				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_restrict_by_unit_sight_bit))
+				{
+					if(blam::unit_can_see_point(target_unit_index, &unit_datum.object.position, seat_access_block.unit_sight_angle))
+					{
+						result = false;
+						return;
+					}
+				}
+			
+				//// Return false if the target unit's shield is above the threshold
+				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_restrict_by_unit_shield_bit))
+				{
+					if(target_unit_datum->object.damage.shield > seat_access_block.unit_shield_threshold)
+					{
+						result = false;
+						return;
+					}
+				}
+			
+				// Return false if the target unit's health is above the threshold
+				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_restrict_by_unit_health_bit))
+				{
+					if(target_unit_datum->object.damage.health > seat_access_block.unit_health_threshold)
+					{
+						result = false;
+						return;
+					}
+				}
+			
+				// Return false if the target unit's AI is in a non-permitted state
+				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_restrict_by_ai_state_bit))
+				{
+					if(!target_unit_datum->unit.actor_index.IsNull())
+					{
+						auto* actor_datum = AI::Actors()[target_unit_datum->unit.actor_index];
+						if(actor_datum && !TEST_FLAG(seat_access_block.permitted_ai_states, actor_datum->current_state))
+						{
+							result = false;
+							return;
+						}
+					}
+				}
+			}
+		}
+
 		void c_unit_seat_boarding_manager::UnitCanEnterBoardingSeat(const datum_index unit_index
 			, const datum_index target_unit_index
 			, const int16 target_seat_index
 			, bool& result) const
 		{
 			// Can't enter if there is already a unit in the seat
-			if(!GetUnitInSeat(unit_index, target_seat_index).IsNull())
+			if(!GetUnitInSeat(target_unit_index, target_seat_index).IsNull())
 			{
 				result = false;
 				return;
 			}
 
-			// If the seat has no extensions, pass through the result
 			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
-			auto* unit_definition = blam::tag_get<TagGroups::s_unit_definition>(unit_datum->object.definition_index);
 
+			// Can't enter seats if mounted
+			if(unit_datum && (unit_datum->unit.animation.state == Enums::_unit_animation_state_yelo_unit_mounted))
+			{
+				return;
+			}
+
+			auto* unit_definition = blam::tag_get<TagGroups::s_unit_definition>(unit_datum->object.definition_index);
+			for(int16 index = 0; index < unit_definition->unit.seats.Count; index++)
+			{
+				if(!GetUnitInSeat(unit_index, index).IsNull())
+				{
+					result = false;
+					return;
+				}
+			}
+
+			// If the seat has no extensions, pass through the result
 			auto* seat_extension = GetSeatExtensionDefinition(target_unit_index, target_seat_index);
 			if(!seat_extension)
 			{
 				return;
-			}
-
-			if(seat_extension->seat_targeting_seats.Count)
-			{
-				// Only allow entry if no other seat targeting this target seat is occupied
-				for(auto& seat_index : seat_extension->seat_targeting_seats)
-				{
-					if(!GetUnitInSeat(target_unit_index, seat_index).IsNull())
-					{
-						result = false;
-						return;
-					}
-				}
-
-				// If the seat is targeted, no other extensions apply
-				return;
-			}
-
-			if(seat_extension->target_seat_index != NONE)
-			{
-				// Handle criteria for entering a seat that target's another seat
-
-				// If a seat is targeted it must have an extension block
-				auto* target_seat_extension = GetSeatExtensionDefinition(target_unit_index, seat_extension->target_seat_index);
-				if(!target_seat_extension)
-				{
-					result = false;
-					return;
-				}
-
-				// Only allow entry if the target seat is occupied
-				datum_index target_seat_unit = GetUnitInSeat(target_unit_index, seat_extension->target_seat_index);
-				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_requires_target_seat_occupied_bit) && target_seat_unit.IsNull())
-				{
-					result = false;
-					return;
-				}
-			
-				// Only allow entry if the target seat unit is your enemy
-				if(!target_seat_unit.IsNull())
-				{
-					auto* target_seat_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(target_seat_unit);
-					if(!blam::game_team_is_enemy(unit_datum->object.owner_team, target_seat_unit_datum->object.owner_team))
-					{
-						result = false;
-						return;
-					}
-				}
-
-				// Only allow entry if no other seat targeting the target seat is occupied
-				for(auto& seat_index : target_seat_extension->seat_targeting_seats)
-				{
-					if(!GetUnitInSeat(target_unit_index, seat_index).IsNull())
-					{
-						result = false;
-						return;
-					}
-				}
-			}
-
-			auto* target_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
-
-			// Return false if the target unit is not an enemy
-			if(!blam::game_team_is_enemy(unit_datum->object.owner_team, target_unit_datum->object.owner_team))
-			{
-				result = false;
-				return;
-			}
-
-			// Return false if the entering unit is within the target unit's cone of vision
-			if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_restrict_by_unit_sight_bit))
-			{
-				if(blam::unit_can_see_point(target_unit_index, &unit_datum->object.position, seat_extension->unit_sight_angle))
-				{
-					result = false;
-					return;
-				}
-			}
-			
-			// Return false if the target unit's shield is above the threshold
-			if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_restrict_by_unit_shield_bit))
-			{
-				if(target_unit_datum->object.damage.shield > seat_extension->unit_shield_threshold)
-				{
-					result = false;
-					return;
-				}
-			}
-			
-			// Return false if the target unit's health is above the threshold
-			if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_restrict_by_unit_health_bit))
-			{
-				if(target_unit_datum->object.damage.health > seat_extension->unit_health_threshold)
-				{
-					result = false;
-					return;
-				}
-			}
-			
-			// Return false if the target unit's AI is in a non-permitted state
-			if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_restrict_by_ai_state_bit))
-			{
-				if(!target_unit_datum->unit.actor_index.IsNull())
-				{
-					auto* actor_datum = AI::Actors()[target_unit_datum->unit.actor_index];
-					if(actor_datum && !TEST_FLAG(seat_extension->permitted_ai_states, actor_datum->current_state))
-					{
-						result = false;
-						return;
-					}
-				}
 			}
 
 			// Don't allow entry if there is a unit in a seat targeting this one
@@ -638,7 +642,43 @@ namespace Yelo
 				}
 			}
 
-			result &= true;
+			CanEnterSeat(unit_index, target_unit_index, target_seat_index, false, result);
+
+			if(seat_extension->target_seat_index != NONE)
+			{
+				// If a seat is targeted it must have an extension block
+				auto* target_seat_extension = GetSeatExtensionDefinition(target_unit_index, seat_extension->target_seat_index);
+				if(!target_seat_extension)
+				{
+					result = false;
+					return;
+				}
+
+				// Don't allow entry if there is a unit in a seat targeting the targeted seat
+				for(auto& seat_index : target_seat_extension->seat_targeting_seats)
+				{
+					if(!GetUnitInSeat(target_unit_index, seat_index).IsNull())
+					{
+						result = false;
+						return;
+					}
+				}
+				
+				if(seat_extension->seat_access.Count == 1)
+				{
+					auto& seat_access_block = seat_extension->seat_access[0];
+					auto seated_unit = GetUnitInSeat(target_unit_index, seat_extension->target_seat_index);
+
+					// Only allow entry if the seat is occupied
+					if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_requires_target_seat_occupied_bit) && seated_unit.IsNull())
+					{
+						result = false;
+						return;
+					}
+				}
+
+				CanEnterSeat(unit_index, target_unit_index, seat_extension->target_seat_index, true, result);
+			}
 		}
 
 		void c_unit_seat_boarding_manager::UnitCanEnterTargetSeat(const datum_index unit_index

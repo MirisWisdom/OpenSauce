@@ -307,7 +307,7 @@ namespace Yelo
 			m_globals.m_activation_variables.local_player_in_vehicle = (!player_index.IsNull() ? Players::GetVehicle(player_index) != nullptr : false);
 
 			// is our weapon zoomed?
-			m_globals.m_activation_variables.local_player_zoomed = *(Players::PlayerControlGlobals()->local_players[0].GetZoomLevel()) != NONE;
+			m_globals.m_activation_variables.local_player_zoomed = Players::PlayerControlGlobals()->local_players[0].zoom_level != NONE;
 		}
 	};};
 };

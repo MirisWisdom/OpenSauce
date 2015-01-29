@@ -47,6 +47,11 @@ namespace Yelo
 		struct s_collision_result;
 	};
 
+	namespace Players
+	{
+		struct s_unit_camera_info;
+	};
+
 	namespace TagGroups
 	{
 		struct s_bitmap_data;
@@ -283,68 +288,98 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API actor_update(const datum_index actor_index)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_UPDATE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_UPDATE);
 
 			API_FUNC_NAKED_START()
+				push	esi
+
 				mov		esi, actor_index
-				call	CALL_ADDRESS
+				call	FUNCTION
+
+				pop		esi
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_customize_unit(const datum_index actor_variant, const datum_index unit_index)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_CUSTOMIZE_UNIT);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_CUSTOMIZE_UNIT);
 
 			API_FUNC_NAKED_START()
+				push	eax
+				push	ecx
+				push	edx
+
 				mov		eax, actor_variant
 				push	unit_index
-				call	CALL_ADDRESS
+				call	FUNCTION
 				add		esp, 4
+				
+				pop		edx
+				pop		ecx
+				pop		eax
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_set_active(const datum_index actor_index, const bool active)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_SET_ACTIVE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_SET_ACTIVE);
 
 			API_FUNC_NAKED_START()
+				push	eax
+				push	edi
+
 				xor		eax, eax
 				mov		al, active
 				mov		edi, actor_index
-				call	CALL_ADDRESS
+				call	FUNCTION
+
+				pop		edi
+				pop		eax
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_set_dormant(const datum_index actor_index, const bool dormant)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_SET_DORMANT);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_SET_DORMANT);
 
 			API_FUNC_NAKED_START()
+				pushad
+
 				xor		ebx, ebx
 				mov		bl, dormant
 				mov		eax, actor_index
-				call	CALL_ADDRESS
+				call	FUNCTION
+
+				popad
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_delete_props(const datum_index actor_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_DELETE_PROPS);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_DELETE_PROPS);
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_freeze(const datum_index actor_index)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(ACTOR_FREEZE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_FREEZE);
 
 			API_FUNC_NAKED_START()
+				push	eax
+				push	ecx
+				push	edx
+
 				mov		eax, actor_index
-				call	CALL_ADDRESS
+				call	FUNCTION
+				
+				pop		edx
+				pop		ecx
+				pop		eax
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -384,7 +419,7 @@ namespace Yelo
 			, const int32 command_list_index
 			, const int32 sequence_id)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_CREATE_FOR_UNIT);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_CREATE_FOR_UNIT);
 
 			_asm jmp	FUNCTION;
 		}
@@ -680,6 +715,36 @@ namespace Yelo
 		{
 			Engine::Players::ScreenEffectHealth(player_index);
 		}
+
+		//////////////////////////////////////////////////////////////////////////
+		// player_control.c
+		API_FUNC_NAKED void PLATFORM_API player_control_get_unit_camera_info(const int16 player_index, Players::s_unit_camera_info& camera_info)
+		{
+#if !PLATFORM_IS_DEDI
+			static const uintptr_t FUNCTION = 0x474C00;
+
+			API_FUNC_NAKED_START()
+				push	eax
+				push	ecx
+				push	edx
+				push	esi
+
+				mov		ax, player_index
+				mov		esi, camera_info
+				call	FUNCTION
+				
+				pop		esi
+				pop		edx
+				pop		ecx
+				pop		eax
+				pop		ebp
+			API_FUNC_NAKED_END_()
+#else
+			API_FUNC_NAKED_START()
+				pop		ebp
+			API_FUNC_NAKED_END_()
+#endif
+		}
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// hs
@@ -858,42 +923,58 @@ namespace Yelo
 		// weapons.c
 		API_FUNC_NAKED bool PLATFORM_API weapon_prevents_melee_attack(const datum_index weapon_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_PREVENTS_MELEE_ATTACK);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_PREVENTS_MELEE_ATTACK);
 
 			API_FUNC_NAKED_START()
+				push	ecx
+
 				mov		ecx, weapon_index
 				call	FUNCTION
+
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED bool PLATFORM_API weapon_prevents_grenade_throwing(const datum_index weapon_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_PREVENTS_GRENADE_THROWING);;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_PREVENTS_GRENADE_THROWING);
 
 			API_FUNC_NAKED_START()
+				push	ecx
+
 				mov		ecx, weapon_index
 				call	FUNCTION
+
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API weapon_stop_reload(const datum_index weapon_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_STOP_RELOAD);;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_STOP_RELOAD);
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API first_person_weapon_message_from_unit(const datum_index unit_index, const int32 weapon_message_type)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(FIRST_PERSON_WEAPON_MESSAGE_FROM_UNIT);;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(FIRST_PERSON_WEAPON_MESSAGE_FROM_UNIT);
 
 			API_FUNC_NAKED_START()
+				push	eax
+				push	ecx
+				push	edx
+
 				mov		eax, unit_index
 				push	weapon_message_type
 				call	FUNCTION
 				add		esp, 4
+				
+				pop		edx
+				pop		ecx
+				pop		eax
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -903,9 +984,11 @@ namespace Yelo
 			, Enums::first_person_weapon_animation animation
 			, const int32 arg3)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_GET_FIRST_PERSON_ANIMATION_TIME);;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(WEAPON_GET_FIRST_PERSON_ANIMATION_TIME);
 
 			API_FUNC_NAKED_START()
+				push	ecx
+
 				xor		ecx, ecx
 				movsx	cx, frame_type
 				push	arg3
@@ -914,6 +997,8 @@ namespace Yelo
 				movsx	cx, animation
 				call	FUNCTION
 				add		esp, 8
+				
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -1206,7 +1291,7 @@ namespace Yelo
 		// models.c
 		API_FUNC_NAKED int16 PLATFORM_API model_find_marker(const datum_index render_model_definition_index, cstring marker_name)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(MODEL_FIND_MARKER);
+			static const uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(MODEL_FIND_MARKER);
 
 			API_FUNC_NAKED_START()
 				mov		eax, render_model_definition_index
@@ -1214,6 +1299,7 @@ namespace Yelo
 				push	marker_name
 				call	CALL_ADDRESS
 				add		esp, 8
+
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -1333,6 +1419,16 @@ namespace Yelo
 			Engine::Objects::DisconnectFromMap(object_index);
 		}
 
+		API_FUNC_NAKED int16 PLATFORM_API object_get_marker_by_name(const datum_index object_index
+			, cstring marker_name
+			, s_object_marker* markers
+			, const int16 maximum_marker_count)
+		{
+			static const uintptr_t FUNCTION = 0x4F9990;
+
+			_asm jmp	FUNCTION;
+		}
+
 		void PLATFORM_API object_attach_to_marker(datum_index target_object_index, cstring target_marker_name, datum_index object_index, cstring marker_name)
 		{
 			Engine::Objects::Attach(target_object_index, target_marker_name, object_index, marker_name);
@@ -1404,14 +1500,14 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API objects_update()
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECTS_UPDATE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECTS_UPDATE);
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API object_update(datum_index object_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECT_UPDATE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECT_UPDATE);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1451,8 +1547,9 @@ namespace Yelo
 			, void* rasterizer_target
 			, const bool is_mirror)
 		{
-			CAST_PTR(void (PLATFORM_API*)(const uint16, void*, void*, void*, void*, void*, const bool), Engine::GET_FUNC_PTR(RENDER_WINDOW))
-				(local_player_index, render_camera, render_frustum, rasterizer_camera, rasterizer_frustum, rasterizer_target, is_mirror);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(RENDER_WINDOW);
+
+			_asm jmp	FUNCTION;
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -1578,7 +1675,7 @@ namespace Yelo
 		// units.c
 		API_FUNC_NAKED void PLATFORM_API unit_update(const datum_index unit_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_UPDATE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_UPDATE);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1592,7 +1689,7 @@ namespace Yelo
 		
 		API_FUNC_NAKED void PLATFORM_API unit_animation_start_action(const datum_index unit_index, const Enums::unit_replacement_animation_state action_type)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_ANIMATION_START_ACTION);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_ANIMATION_START_ACTION);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1650,25 +1747,34 @@ namespace Yelo
 
 		API_FUNC_NAKED bool PLATFORM_API unit_try_and_exit_seat(const datum_index unit_index)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_TRY_AND_EXIT_SEAT);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_TRY_AND_EXIT_SEAT);
 
 			API_FUNC_NAKED_START()
+				push	ecx
+				push	edx
 				push	edi
-				mov		edi, unit_index
-				call	CALL_ADDRESS
-				pop		edi
 
+				mov		edi, unit_index
+				call	FUNCTION
+				
+				pop		edi
+				pop		edx
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_detach_from_parent(const datum_index unit_index)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_DETACH_FROM_PARENT);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DETACH_FROM_PARENT);
 
 			API_FUNC_NAKED_START()
+				push	edi
+
 				mov		edi, unit_index
-				call	CALL_ADDRESS
+				call	FUNCTION
+
+				pop		edi
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -1685,14 +1791,22 @@ namespace Yelo
 			, const real_point3d* point
 			, const real view_radians)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_CAN_SEE_POINT);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_CAN_SEE_POINT);
 			
 			API_FUNC_NAKED_START()
+				push	ecx
+				push	edx
+				push	edi
+
 				mov		ecx, unit_index
 				mov		edi, point
 				push	view_radians
-				call	CALL_ADDRESS
+				call	FUNCTION
 				add		esp, 4
+
+				pop		edi
+				pop		edx
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -1707,65 +1821,81 @@ namespace Yelo
 			, cstring animation_name
 			, const bool interpolate)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_START_USER_ANIMATION);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_START_USER_ANIMATION);
 
 			API_FUNC_NAKED_START()
+				push	ebx
+				push	ecx
+				push	edx
+				push	edi
+
 				mov		eax, animation_name
 				mov		edi, animation_definition_index
 				xor		ebx, ebx
 				mov		bl, interpolate
 				push	ebx
 				push	unit_index
-				call	CALL_ADDRESS
+				call	FUNCTION
 				add		esp, 8
+
+				pop		edi
+				pop		edx
+				pop		ecx
+				pop		ebx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_animation_set_state(const datum_index unit_index, const Enums::unit_animation_state state)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_ANIMATION_SET_STATE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_ANIMATION_SET_STATE);
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_drop_current_weapon(const datum_index unit_index, const bool force)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DROP_CURRENT_WEAPON);
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED datum_index PLATFORM_API unit_inventory_get_weapon(const datum_index unit_index, const int16 index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_INVENTORY_GET_WEAPON);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_INVENTORY_GET_WEAPON);
 			
 			API_FUNC_NAKED_START()
+				push	ecx
+				push	edx
+
 				mov		eax, unit_index
 				xor		ecx, ecx
 				mov		cx, index
 				call	FUNCTION
+				
+				pop		edx
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_ready_desired_weapon(const datum_index unit_index, const bool force)
 		{
-			static uintptr_t FUNCTION = 0x570DE0;
+			static const uintptr_t FUNCTION = 0x570DE0;
 
 			_asm jmp	FUNCTION;
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_throw_grenade_release(const datum_index unit_index, const sbyte keyframe)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_THROW_GRENADE_RELEASE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_THROW_GRENADE_RELEASE);
 
 			_asm jmp	FUNCTION;
 		}
 		
 		API_FUNC_NAKED void PLATFORM_API unit_cause_player_melee_damage(const datum_index unit_index)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_CAUSE_PLAYER_MELEE_DAMAGE);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_CAUSE_PLAYER_MELEE_DAMAGE);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1778,7 +1908,7 @@ namespace Yelo
 			, void* arg6
 			, const int32 damage_part)
 		{
-			static uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DAMAGE_AFTERMATH);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_DAMAGE_AFTERMATH);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1787,28 +1917,36 @@ namespace Yelo
 			, const real health
 			, const real shield)
 		{
-			static uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_SCRIPTING_SET_CURRENT_VITALITY);
+			static const uintptr_t CALL_ADDRESS = Engine::GET_FUNC_PTR(UNIT_SCRIPTING_SET_CURRENT_VITALITY);
 
 			API_FUNC_NAKED_START()
+				push	eax
+
 				mov		eax, unit_index
 				push	shield
 				push	health
 				call	CALL_ADDRESS
 				add		esp, 8
+
+				pop		eax
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API unit_set_actively_controlled(const datum_index unit_index, const bool controlled)
 		{
-			static uintptr_t FUNCTION = 0x56D2F0;
+			static const uintptr_t FUNCTION = 0x56D2F0;
 
 			API_FUNC_NAKED_START()
+				push	ecx
+
 				xor		ecx, ecx
 				mov		cl, controlled
 				push	unit_index
 				call	FUNCTION
 				add		esp, 4
+
+				pop		ecx
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
