@@ -24,6 +24,10 @@
 	FUNC_PTR(AI_UPDATE_HOOK,												0x42A949, 0x42A959);
 	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,							0x40B105, 0x40B115);
 	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_RETN,							0x40B10A, 0x40B11A);
+	FUNC_PTR(PROP_STATUS_REFRESH_HOOK,										0x41C9CE, 0x41C9DE);
+	FUNC_PTR(PROP_STATUS_REFRESH_RETN,										0x41C9D4, 0x41C9E4);
+	FUNC_PTR(ACTOR_INPUT_UPDATE_HOOK,										0x429CA7, 0x429CB7);
+	FUNC_PTR(ACTOR_INPUT_UPDATE_RETN,										0x429CAE, 0x429CBE);
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,6 +40,8 @@ namespace Camera
 	ENGINE_DPTR(s_director_scripting_data, director_scripting,		0x816CFC, PTR_NULL);
 	ENGINE_DPTR(s_cinematic_globals_data, cinematic_globals,		0x68C774, PTR_NULL);
 	ENGINE_PTR(s_director_data, global_director,					0x6473C8, PTR_NULL);
+
+	FUNC_PTR(DIRECTOR_CHOOSE_GAME_PERSPECTIVE_HOOK,					0x446745, PTR_NULL);
 
 	#pragma region old third person shit
 	#if 0 // enable for old 3rd person camera hack
@@ -339,6 +345,8 @@ namespace Fov
 	ENGINE_PTR(byte, PLAYER_HANDLE_ACTION_LAST_ENTRY_TYPE,	0x47C178, 0x473BF8);
 	ENGINE_PTR(void**, player_handle_action_jmp_ptr,		0x47C189, 0x473C09);
 	ENGINE_PTR(void**, PLAYER_HANDLE_ACTION_JMP_TABLE,		0x47C478, 0x473EF8);
+
+	FUNC_PTR(FOLLOWING_CAMERA_GET_UNIT_CAMERA_INFO_CALL,	0x447EA2, FUNC_PTR_NULL);
 
 
 //////////////////////////////////////////////////////////////////////////

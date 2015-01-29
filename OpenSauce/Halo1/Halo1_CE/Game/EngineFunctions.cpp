@@ -515,7 +515,7 @@ namespace Yelo
 
 		API_FUNC_NAKED int16 PLATFORM_API director_desired_perspective(const datum_index unit_index, Enums::game_perspective& desired_perspective)
 		{
-			static const uintptr_t FUNCTION = 0x446480;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DIRECTOR_DESIRED_PERSPECTIVE);
 
 			API_FUNC_NAKED_START()
 				mov		ecx, unit_index
@@ -721,7 +721,7 @@ namespace Yelo
 		API_FUNC_NAKED void PLATFORM_API player_control_get_unit_camera_info(const int16 player_index, Players::s_unit_camera_info& camera_info)
 		{
 #if !PLATFORM_IS_DEDI
-			static const uintptr_t FUNCTION = 0x474C00;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(PLAYER_CONTROL_GET_UNIT_CAMERA_INFO);
 
 			API_FUNC_NAKED_START()
 				push	eax
@@ -1424,7 +1424,7 @@ namespace Yelo
 			, s_object_marker* markers
 			, const int16 maximum_marker_count)
 		{
-			static const uintptr_t FUNCTION = 0x4F9990;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECT_GET_MARKER_BY_NAME);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1881,7 +1881,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API unit_ready_desired_weapon(const datum_index unit_index, const bool force)
 		{
-			static const uintptr_t FUNCTION = 0x570DE0;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_READY_DESIRED_WEAPON);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1935,7 +1935,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API unit_set_actively_controlled(const datum_index unit_index, const bool controlled)
 		{
-			static const uintptr_t FUNCTION = 0x56D2F0;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(UNIT_SET_ACTIVELY_CONTROLLED);
 
 			API_FUNC_NAKED_START()
 				push	ecx

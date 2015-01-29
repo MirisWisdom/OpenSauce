@@ -60,7 +60,7 @@ namespace Yelo
 			return blam::director_desired_perspective(unit_index, perspective);
 		}
 
-		API_FUNC_NAKED int16 PLATFORM_API DirectorDesiredPerspectiveHook(Enums::game_perspective& perspective)
+		API_FUNC_NAKED int16 PLATFORM_API DirectorChooseGamePerspectiveHook(Enums::game_perspective& perspective)
 		{
 			API_FUNC_NAKED_START()
 				push	perspective
@@ -86,7 +86,7 @@ namespace Yelo
 #endif
 			#pragma endregion
 
-			Memory::WriteRelativeCall(&DirectorDesiredPerspectiveHook, CAST_PTR(void*, 0x446585), true);
+			Memory::WriteRelativeCall(&DirectorChooseGamePerspectiveHook, GET_FUNC_VPTR(DIRECTOR_CHOOSE_GAME_PERSPECTIVE_HOOK), true);
 
 			Fov::Initialize();
 		}
