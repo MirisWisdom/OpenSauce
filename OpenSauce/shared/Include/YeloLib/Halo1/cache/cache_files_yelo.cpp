@@ -392,11 +392,11 @@ namespace Yelo
 			tm date_tm;
 			localtime_s(&date_tm, &build_info.timestamp); // Convert time to struct tm form
 			// ######.YY.MM.DD.HHMM.stage
-			sprintf_s(build_info.build_string, "%06u." "%02i" "%02i.%02i." "%02i%02i." "%s", 
+			sprintf_s(build_info.build_string, "%06u.%02i.%02i.%02i.%02i%02i.%s", 
 				revision,
-				date_tm.tm_year - 100, // days since 1900, and we want a number relative to 2000
-				date_tm.tm_mon, date_tm.tm_mday, 
-				date_tm.tm_hour, date_tm.tm_sec,
+				date_tm.tm_year - 100, // years since 1900, and we want a number relative to 2000
+				date_tm.tm_mon + 1, date_tm.tm_mday, 
+				date_tm.tm_hour, date_tm.tm_min,
 				stage_string);
 
 			build_info.cheape.maj = CAST(byte, K_OPENSAUCE_VERSION_BUILD_MAJ);
