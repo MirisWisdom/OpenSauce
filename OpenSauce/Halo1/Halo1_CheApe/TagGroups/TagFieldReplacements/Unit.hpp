@@ -13,6 +13,10 @@
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"
 
+#if PLATFORM_TYPE == PLATFORM_TOOL
+#include "Tool/BuildCacheFile.hpp"
+#endif
+
 namespace Yelo
 {
 	namespace TagGroups { namespace TagFieldReplacements { namespace Unit
@@ -22,16 +26,93 @@ namespace Yelo
 			k_unit_extensions_pad_field_index = 0x2E
 		};
 
-		static bool PLATFORM_API UnitPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
+		static void VerifyTargetedSeatOptions(const datum_index tag_index, const TagGroups::_unit_definition& unit_definition)
 		{
-			if(mode != Enums::_tag_postprocess_mode_for_runtime)
+			for(auto& seat : unit_definition.seats)
 			{
-				return true;
-			}
+				if(seat.seat_extensions.Count != 1)
+				{
+					continue;
+				}
 
-			auto& tag_definition = *blam::tag_get<TagGroups::s_unit_definition>(tag_index);
-			auto& unit_definition = tag_definition.unit;
-			
+				auto& seat_extension = seat.seat_extensions[0];
+				if(seat_extension.target_seat_index != NONE)
+				{
+					// Check that the target seat is not itself targeting a seat
+					auto& target_seat = unit_definition.seats[seat_extension.target_seat_index];
+					if(target_seat.seat_extensions.Count == 1)
+					{
+						YELO_ASSERT_DISPLAY(target_seat.seat_extensions[0].target_seat_index == NONE
+							, "Unit set extensions can not target a seat that is itself targeting another seat.\r\nError in: %s"
+							, blam::tag_get_name(tag_index));
+					}
+				}
+				else
+				{
+					// Check all flags and enums are valid for not having a target seat
+					YELO_ASSERT_DISPLAY(!TEST_FLAG(seat_extension.flags, Flags::_unit_seat_extensions_flags_exit_on_target_seat_empty_bit)
+						, "\"exit on target seat empty\" flag is set on a seat extension that does not specify a target seat.\r\nError in: %s"
+						, blam::tag_get_name(tag_index));
+
+					if(seat_extension.seat_access.Count == 1)
+					{
+						auto& seat_access_definition = seat_extension.seat_access[0];
+
+						YELO_ASSERT_DISPLAY(!TEST_FLAG(seat_access_definition.flags, Flags::_unit_seat_access_flags_requires_target_seat_occupied_bit)
+							, "\"requires target seat occupied\" flag is set on a seat extension that does not specify a target seat.\r\nError in: %s"
+							, blam::tag_get_name(tag_index));
+					}
+
+					if(seat_extension.seat_boarding.Count == 1)
+					{
+						auto& seat_boarding_definition = seat_extension.seat_boarding[0];
+
+						YELO_ASSERT_DISPLAY(!TEST_FLAG(seat_boarding_definition.delay_until, Flags::_unit_seat_boarding_delay_until_flags_empty_target_seat_bit)
+							, "Delay until \"empty target seat\" flag is set on a seat extension that does not specify a target seat.\r\nError in: %s"
+							, blam::tag_get_name(tag_index));
+
+						YELO_ASSERT_DISPLAY(seat_boarding_definition.unit_vitality_source != Enums::_unit_seat_boarding_vitality_threshold_source_seated_unit
+							, "Vitality threshold source cannot be the seated unit for a seat extension that does not specify a target seat.\r\nError in: %s"
+							, blam::tag_get_name(tag_index));
+
+						for(auto& keyframe : seat_boarding_definition.keyframe_actions)
+						{
+							YELO_ASSERT_DISPLAY(!TEST_FLAG(keyframe.flags, Flags::_unit_seat_keyframe_action_flags_control_powered_seat_bit)
+								, "\"control powered seat\" flag is set on a boarding keyframe for a seat extension that does not specify a target seat.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+
+							YELO_ASSERT_DISPLAY(keyframe.target_seat_unit_action == Enums::_unit_seat_keyframe_action_target_seat_unit_action_none
+								, "A boarding keyframe has a target seat action set when the seat extension does not specify a target seat.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+
+							YELO_ASSERT_DISPLAY(keyframe.apply_damage_to != Enums::_unit_seat_keyframe_action_apply_effect_seated_unit
+								, "A boarding keyframe has a damage effect targeting the seated unit when the seat extension does not specify a target seat.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+
+							YELO_ASSERT_DISPLAY(keyframe.apply_effect_to != Enums::_unit_seat_keyframe_action_apply_effect_seated_unit
+								, "A boarding keyframe has an effect spawning on the seated unit when the seat extension does not specify a target seat.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+						}
+					}
+
+					if(seat_extension.seat_damage.Count == 1)
+					{
+						auto& seat_damage_definition = seat_extension.seat_damage[0];
+						
+						YELO_ASSERT_DISPLAY(seat_damage_definition.melee != Enums::_unit_seat_damage_melee_target_seat_unit
+							, "A seat damage block has melee targeting the seated unit when the seat extension does not specify a target seat.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+
+						YELO_ASSERT_DISPLAY(seat_damage_definition.grenade != Enums::_unit_seat_damage_grenade_plant_on_target_seat_unit
+							, "A seat damage block has grenade planting on the seated unit when the seat extension does not specify a target seat.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+					}
+				}
+			}
+		}
+
+		static void LinkTargetedSeats(TagGroups::_unit_definition& unit_definition)
+		{
 			// Clear any existing seat target blocks
 			for(auto& seat : unit_definition.seats)
 			{
@@ -80,6 +161,31 @@ namespace Yelo
 					targeting_seat = index;
 				}
 			}
+		}
+
+		static bool PLATFORM_API UnitPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
+		{
+			if(mode != Enums::_tag_postprocess_mode_for_runtime)
+			{
+				return true;
+			}
+
+			auto& tag_definition = *blam::tag_get<TagGroups::s_unit_definition>(tag_index);
+			auto& unit_definition = tag_definition.unit;
+
+#if PLATFORM_TYPE == PLATFORM_TOOL
+			for(auto& seat : unit_definition.seats)
+			{
+				if(seat.seat_extensions.Count)
+				{
+					YELO_ASSERT_DISPLAY(Tool::IsBuildingYeloMap()
+						, "Seat extensions are not supported in non-yelo maps. Build your map with memory upgrades enabled to enable seat extensions");
+				}
+			}
+#endif
+
+			VerifyTargetedSeatOptions(tag_index, unit_definition);
+			LinkTargetedSeats(unit_definition);
 
 			return true;
 		}
