@@ -414,6 +414,22 @@ namespace Yelo
 		{
 			this->InitializeBuildInfo(build_info.build_stage, build_info.revision, build_info.uuid_buffer);
 		}
+		void s_cache_header_yelo::InitializeMinimumBuildInfo(const byte major, const byte minor, const uint16 build)
+		{
+			if(major == 0)
+			{
+				return;
+			}
+			
+			build_info.minimum_os_build.maj = major;
+			build_info.minimum_os_build.min = minor;
+			build_info.minimum_os_build.build = build;
+
+			if(version == 1)
+			{
+				version = k_version_minimum_build;
+			}
+		}
 #endif
 
 		bool s_cache_header_yelo::HasHeader() const
@@ -425,13 +441,32 @@ namespace Yelo
 			return	tag_versioning.project_yellow == TagGroups::project_yellow::k_version &&
 					tag_versioning.project_yellow_globals == TagGroups::project_yellow_globals::k_version;
 		}
+		bool s_cache_header_yelo::BuildVersionIsValid() const
+		{
+			// If the major build number is zero, there is no minimum build version
+			if(build_info.minimum_os_build.maj == 0)
+			{
+				return true;
+			}
+
+			// If the minimum build is less than the current build, return true
+			if((build_info.minimum_os_build.maj <= K_OPENSAUCE_VERSION_BUILD_MAJ)
+				&& (build_info.minimum_os_build.min <= K_OPENSAUCE_VERSION_BUILD_MIN)
+				&& (build_info.minimum_os_build.build <= K_OPENSAUCE_VERSION_BUILD))
+			{
+				return true;
+			}
+
+			return false;
+		}
 		bool s_cache_header_yelo::IsValid() const
 		{
 			if(HasHeader())
 				return	signature == k_signature && 
-						version == k_version && 
+						((version == k_version) || (version == k_version_minimum_build)) && 
 						k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
-						TagVersioningIsValid();
+						TagVersioningIsValid() &&
+						BuildVersionIsValid();
 
 			return true;
 		}

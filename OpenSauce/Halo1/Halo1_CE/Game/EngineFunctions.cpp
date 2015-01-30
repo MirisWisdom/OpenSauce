@@ -1547,9 +1547,8 @@ namespace Yelo
 			, void* rasterizer_target
 			, const bool is_mirror)
 		{
-			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(RENDER_WINDOW);
-
-			_asm jmp	FUNCTION;
+			CAST_PTR(void (PLATFORM_API*)(const uint16, void*, void*, void*, void*, void*, const bool), Engine::GET_FUNC_PTR(RENDER_WINDOW))
+				(local_player_index, render_camera, render_frustum, rasterizer_camera, rasterizer_frustum, rasterizer_target, is_mirror);
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////

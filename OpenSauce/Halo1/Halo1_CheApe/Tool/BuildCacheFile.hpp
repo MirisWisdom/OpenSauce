@@ -20,6 +20,14 @@ namespace Yelo
 	namespace Tool
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Set's the minimum open sauce build for the current cache file. </summary>
+		///
+		/// <param name="major">	The major version. </param>
+		/// <param name="minor">	The minor version. </param>
+		/// <param name="build">	The build version. </param>
+		void build_cache_file_set_minimum_os_build(const byte major, const byte minor, const uint16 build);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>We replace the stock build_cache_file_for_scenario implementation with our own to turn off things
 		/// 	compliant with the stock game, like custom script definitions.
 		/// </summary>

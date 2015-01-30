@@ -180,6 +180,9 @@ namespace Yelo
 				{
 					YELO_ASSERT_DISPLAY(Tool::IsBuildingYeloMap()
 						, "Seat extensions are not supported in non-yelo maps. Build your map with memory upgrades enabled to enable seat extensions");
+
+					Tool::build_cache_file_set_minimum_os_build(4, 0, 0);
+					break;
 				}
 			}
 #endif
