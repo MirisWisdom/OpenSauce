@@ -29,6 +29,27 @@
 #include "Tool/BuildCacheFile/TagPreprocess.inl"
 
 namespace Yelo { namespace Tool {
+
+	struct s_build_version
+	{
+		byte major;
+		byte minor;
+		uint16 build;
+	};
+	static s_build_version g_minimum_build_version;
+
+	void build_cache_file_set_minimum_os_build(const byte major, const byte minor, const uint16 build)
+	{
+		if((g_minimum_build_version.major <= major)
+			&& (g_minimum_build_version.minor <= minor)
+			&& (g_minimum_build_version.build <= build))
+		{
+			g_minimum_build_version.major = major;
+			g_minimum_build_version.minor = minor;
+			g_minimum_build_version.build = build;
+		}
+	}
+
 	void build_cache_file_end_preprocess(Cache::s_cache_header* header, Cache::s_cache_header_yelo& ych)
 	{
 		// NOTE: when build_cache_file_write_header_and_compress calls build_cache_file_end, it performs a printf
@@ -83,11 +104,14 @@ namespace Yelo { namespace Tool {
 		if (auto* yelo = Scenario::TryGetYeloForModification())
 			yelo->LoadGameGlobalsOverride();
 	}
+
 	void build_cache_file_begin_preprocess(cstring scenario_name)
 	{
 		BuildCacheFileInitializeForNewProjectYellow();
 
 		BuildCacheFileEx::TagPreprocess::preprocess_tags_for_build();
+
+		BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsMinimumBuild(g_minimum_build_version.major, g_minimum_build_version.minor, g_minimum_build_version.build);
 	}
 
 	void PLATFORM_API build_cache_file_for_scenario_stock_override(char* arguments[])

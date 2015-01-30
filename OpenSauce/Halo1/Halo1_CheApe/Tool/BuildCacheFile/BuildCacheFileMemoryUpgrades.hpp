@@ -30,6 +30,8 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 
 	// Initializes the yelo header with a scenario's yelo build info
 	void InitializeHeaderGlobalsBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info);
+	
+	void InitializeHeaderGlobalsMinimumBuild(const byte major, const byte minor, const uint16 build);
 
 	void PrintScriptUpgradesUsage();
 
