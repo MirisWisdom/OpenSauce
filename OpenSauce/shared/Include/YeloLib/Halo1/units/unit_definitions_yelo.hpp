@@ -117,6 +117,7 @@ namespace Yelo
 			_unit_seat_access_flags_requires_target_seat_occupied_bit,
 			_unit_seat_access_flags_enemy_access_only_bit,
 			_unit_seat_access_flags_restrict_by_unit_sight_bit,
+			_unit_seat_access_flags_restrict_by_mounting_unit_sight_bit,
 			_unit_seat_access_flags_restrict_by_unit_shield_bit,
 			_unit_seat_access_flags_restrict_by_unit_health_bit,
 			_unit_seat_access_flags_restrict_by_ai_state_bit,
@@ -242,12 +243,15 @@ namespace Yelo
 			TAG_FIELD(word_flags, flags);
 			PAD16;
 			TAG_FIELD(angle, unit_sight_angle);
+			TAG_FIELD(tag_string, unit_sight_marker);
+			TAG_FIELD(angle, mounting_unit_sight_angle);
+			TAG_FIELD(tag_string, mounting_unit_sight_marker);
 			TAG_FIELD(real_fraction, unit_shield_threshold);
 			TAG_FIELD(real_fraction, unit_health_threshold);
 			TAG_FIELD(word_flags, permitted_ai_states);
 			PAD16;
 			TAG_PAD(tag_block, 3);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_access) == 0x38);
+		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_access) == 0x7C);
 
 		struct unit_seat_extensions
 		{
