@@ -550,7 +550,33 @@ namespace Yelo
 				// Return false if the entering unit is within the target unit's cone of vision
 				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_restrict_by_unit_sight_bit))
 				{
-					if(blam::unit_can_see_point(target_unit_index, &unit_datum.object.position, seat_access_block.unit_sight_angle))
+					real_point3d position = target_unit_datum->object.center;
+
+					s_object_marker marker;
+					if(blam::object_get_marker_by_name(target_unit_index, seat_access_block.unit_sight_marker, &marker, 1) == 1)
+					{
+						position = marker.transformed_matrix.Position;
+					}
+
+					if(blam::unit_can_see_point(target_unit_index, &unit_datum.object.center, seat_access_block.unit_sight_angle))
+					{
+						result = false;
+						return;
+					}
+				}
+
+				// Return false if the unit is not within the mounting unit's cone of vision
+				if(TEST_FLAG(seat_access_block.flags, Flags::_unit_seat_access_flags_restrict_by_mounting_unit_sight_bit))
+				{
+					real_point3d position = target_unit_datum->object.center;
+
+					s_object_marker marker;
+					if(blam::object_get_marker_by_name(target_unit_index, seat_access_block.mounting_unit_sight_marker, &marker, 1) == 1)
+					{
+						position = marker.transformed_matrix.Position;
+					}
+
+					if(!blam::unit_can_see_point(unit_index, &position, seat_access_block.mounting_unit_sight_angle))
 					{
 						result = false;
 						return;

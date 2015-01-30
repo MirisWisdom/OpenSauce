@@ -233,10 +233,11 @@ namespace Yelo
 				"ignored by seated ai",
 				"ignored by mounted ai");
 
-			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_access_flags, 6,
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_access_flags, 7,
 				"requires target seat occupied",
 				"enemy access only",
 				"restrict by unit sight",
+				"restrict by mounting unit sight",
 				"restrict by unit shield",
 				"restrict by unit health",
 				"restrict by ai state");
@@ -382,6 +383,9 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_seat_access_flags),
 				TAG_FIELD_ENTRY_PAD(2),
 				TAG_FIELD_ENTRY(_field_angle, "unit sight angle"),
+				TAG_FIELD_ENTRY(_field_string, "unit sight marker"),
+				TAG_FIELD_ENTRY(_field_angle, "mounting unit sight angle"),
+				TAG_FIELD_ENTRY(_field_string, "mounting unit sight marker"),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit shield threshold"),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit health threshold"),
 				TAG_FIELD_ENTRY(_field_word_flags, "permitted ai states", &unit_seat_extensions_ai_state_flags),
