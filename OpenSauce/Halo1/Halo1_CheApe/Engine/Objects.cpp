@@ -23,6 +23,7 @@ namespace Yelo
 		void PLATFORM_API ObjectsUpdate()
 		{
 			AI::ObjectsUpdate();
+			Units::ObjectsUpdate();
 
 			blam::objects_update();
 		}

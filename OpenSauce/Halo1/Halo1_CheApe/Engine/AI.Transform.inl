@@ -12,7 +12,10 @@
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
 #include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 #endif
 
 namespace Yelo
@@ -252,7 +255,13 @@ namespace Yelo
 		{
 			g_actor_variant_transform_manager.UnitDamaged(unit_index, damage_data);
 		}
-		
+
+		void Initialize()
+		{
+			Objects::Units::Animations::SetAnimationStateKeyframeHandler(Enums::_unit_animation_state_yelo_unit_transforming,
+				[](const datum_index unit_index, const Enums::unit_animation_keyframe keyframe) { g_actor_variant_transform_manager.TriggerUnitTransformKeyframe(unit_index, keyframe); });
+		}
+
 		void InitializeForNewGameState()
 		{
 			g_actor_variant_transform_manager.AllocateGameStateMemory();

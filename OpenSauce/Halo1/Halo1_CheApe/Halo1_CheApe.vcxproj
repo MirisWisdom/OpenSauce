@@ -231,6 +231,9 @@
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
     <None Include="Engine\AI.Transform.inl" />
+    <None Include="Engine\Units.Animations.inl" />
+    <None Include="Engine\Units.SeatBoarding.inl" />
+    <None Include="Engine\Units.SeatDamage.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />

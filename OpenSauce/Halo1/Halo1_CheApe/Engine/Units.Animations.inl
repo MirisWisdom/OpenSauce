@@ -5,17 +5,40 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 
 #include <YeloLib/Halo1/units/units_yelo.hpp>
-
-#include "Memory/MemoryInterface.hpp"
-#include "Objects/Units.hpp"
 
 namespace Yelo
 {
 	namespace Objects { namespace Units { namespace Animations
 	{
+		FUNC_PTR(ANIMATION_STATE_DEFINED_KEYFRAME_HOOK,			PTR_NULL, PTR_NULL, 0x58EF52);
+		FUNC_PTR(ANIMATION_STATE_DEFINED_KEYFRAME_STOCK_RETN,	PTR_NULL, PTR_NULL, 0x58EF59);
+		FUNC_PTR(ANIMATION_STATE_DEFINED_KEYFRAME_SKIP_RETN,	PTR_NULL, PTR_NULL, 0x58F161);
+		FUNC_PTR(ANIMATION_STATE_FINAL_KEYFRAME_HOOK,			PTR_NULL, PTR_NULL, 0x58EFA7);
+		FUNC_PTR(ANIMATION_STATE_FINAL_KEYFRAME_STOCK_RETN,		PTR_NULL, PTR_NULL, 0x58EFAE);
+		FUNC_PTR(ANIMATION_STATE_FINAL_KEYFRAME_SKIP_RETN,		PTR_NULL, PTR_NULL, 0x58F14D);
+		
+		void* K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALLS[] =
+		{
+			CAST_PTR(void*, 0x58EED5),
+			CAST_PTR(void*, 0x58F212),
+			CAST_PTR(void*, 0x58F760),
+		};
+		void* K_UNIT_ANIMATION_BUSY_CALLS[] =
+		{
+			CAST_PTR(void*, 0x5923CD),
+			CAST_PTR(void*, 0x5931B5),
+			CAST_PTR(void*, 0x593213),
+			CAST_PTR(void*, 0x593A1A),
+			CAST_PTR(void*, 0x595430),
+		};
+
+		FUNC_PTR(UNIT_ANIMATION_STATE_LOOPS_CALL,				PTR_NULL, PTR_NULL, 0x58F153);
+		FUNC_PTR(UNIT_ANIMATION_WEAPON_IK_CALL,					PTR_NULL, PTR_NULL, 0x58EC63);
+		FUNC_PTR(UNIT_ANIMATION_VEHICLE_IK_CALL,				PTR_NULL, PTR_NULL, 0x58EC02);
+
 		API_FUNC_NAKED bool PLATFORM_API UnitAnimationStateInterruptable()
 		{
 			API_FUNC_NAKED_START()
@@ -107,7 +130,7 @@ namespace Yelo
 
 			_asm
 			{
-				movsx	eax, byte ptr [esi + 2A3h]
+				movsx	eax, byte ptr [edi + 2A3h]
 				cmp		eax, STATE_COUNT_STOCK
 				jl		stock_animation
 			
@@ -115,10 +138,12 @@ namespace Yelo
 				jge		skip_animation
 			
 				push	eax
+
 				push	eax
-				push	ebx
+				push	esi
 				call	AnimationStateDefinedKeyframe
 				add		esp, 8
+
 				pop		eax
 
 			skip_animation:
@@ -138,7 +163,7 @@ namespace Yelo
 
 			_asm
 			{
-				movsx	eax, byte ptr [esi + 2A3h]
+				movsx	eax, byte ptr [edi + 2A3h]
 				cmp		eax, STATE_COUNT_STOCK
 				jl		stock_animation
 			
@@ -146,10 +171,12 @@ namespace Yelo
 				jge		skip_animation
 			
 				push	eax
+
 				push	eax
-				push	ebx
+				push	esi
 				call	AnimationStateFinalKeyframe
 				add		esp, 8
+
 				pop		eax
 
 			skip_animation:
@@ -177,7 +204,6 @@ namespace Yelo
 			Memory::WriteRelativeCall(&UnitAnimationWeaponIK, GET_FUNC_VPTR(UNIT_ANIMATION_WEAPON_IK_CALL), true);
 			Memory::WriteRelativeCall(&UnitAnimationVehicleIK, GET_FUNC_VPTR(UNIT_ANIMATION_VEHICLE_IK_CALL), true);
 		}
-
-		void Dispose() { }
 	};};};
 };
+#endif
