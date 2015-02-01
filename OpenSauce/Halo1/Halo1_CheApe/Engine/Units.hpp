@@ -15,6 +15,8 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
+		void ObjectsUpdate();
+
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
 	};};

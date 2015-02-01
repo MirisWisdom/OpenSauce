@@ -23,7 +23,7 @@ namespace Yelo
 {
 	namespace Objects { namespace Units { namespace SeatDamage
 	{
-		const void c_unit_seat_damage_manager::AttachGrenadeToUnit(const datum_index unit_index
+		void c_unit_seat_damage_manager::AttachGrenadeToUnit(const datum_index unit_index
 			, s_unit_datum* unit_datum
 			, const datum_index projectile_index
 			, const TagGroups::unit_seat_damage& seat_damage) const
@@ -134,54 +134,59 @@ namespace Yelo
 			}
 		}
 
-		void c_unit_seat_damage_manager::UnitSpawnSeatedPlayerGrenade(const datum_index unit_index) const
+		void c_unit_seat_damage_manager::UnitThrowSeatedPlayerGrenade(const datum_index unit_index) const
 		{
 			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum->object.parent_object_index, unit_datum->unit.vehicle_seat_index);
 
-			// If the grenade state is not "in hand", the projectile index is null of the seat has no extensions revert to the stock function
+			// If the grenade state is not "in hand", the projectile index is null or the seat has no extensions revert to the stock function
 			if(!seat_extension_definition
 				|| (unit_datum->unit.throwing_grenade_state != Enums::_unit_throwing_grenade_state_in_hand)
-				|| (unit_datum->unit.throwing_grenade_projectile_index.IsNull()))
+				|| (unit_datum->unit.throwing_grenade_projectile_index.IsNull())
+				|| (seat_extension_definition->seat_damage.Count != 1))
 			{
 				blam::unit_throw_grenade_release(unit_index, 0);
 				return;
 			}
 
-			if(seat_extension_definition->seat_damage.Count == 1)
+			auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
+
+			datum_index target_unit = datum_index::null;
+			switch(seat_damage_definition.grenade)
 			{
-				auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
+			case Enums::_unit_seat_damage_grenade_normal:
+				// Revert to the stock function
+				blam::unit_throw_grenade_release(unit_index, 0);
+				return;
+			case Enums::_unit_seat_damage_grenade_plant_on_mounted_unit:
+				// Plant the grenade onto the parent unit
+				target_unit = unit_datum->object.parent_object_index;
+				break;
+			case Enums::_unit_seat_damage_grenade_plant_on_target_seat_unit:
+				// Plant the grenade onto the unit in the target seat
+				target_unit = GetUnitInSeat(unit_datum->object.parent_object_index, seat_extension_definition->target_seat_index);
+				break;
+			};
 
-				datum_index target_unit = datum_index::null;
-				switch(seat_damage_definition.grenade)
+			if(!target_unit.IsNull())
+			{
+				AttachGrenadeToUnit(target_unit
+					, unit_datum
+					, unit_datum->unit.throwing_grenade_projectile_index
+					, seat_damage_definition);
+
+				// If the player/unit should leave the seat after planting a grenade, do so
+				if(TEST_FLAG(seat_damage_definition.flags, Flags::_unit_seat_damage_flags_exit_after_grenade_plant_bit))
 				{
-				case Enums::_unit_seat_damage_grenade_normal:
-					// Revert to the stock function
-					blam::unit_throw_grenade_release(unit_index, 0);
-					return;
-				case Enums::_unit_seat_damage_grenade_plant_on_mounted_unit:
-					// Plant the grenade onto the parent unit
-					target_unit = unit_datum->object.parent_object_index;
-					break;
-				case Enums::_unit_seat_damage_grenade_plant_on_target_seat_unit:
-					// Plant the grenade onto the unit in the target seat
-					target_unit = GetUnitInSeat(unit_datum->object.parent_object_index, seat_extension_definition->target_seat_index);
-					break;
-				};
+					// The player should gracefully exit the seat, but will only do so if it isn't mid animation
+					// Force the unit to it's idle animation state so that it can then exit the seat
+					blam::unit_animation_set_state(unit_index, Enums::_unit_animation_state_idle);
 
-				if(!target_unit.IsNull())
-				{
-					AttachGrenadeToUnit(target_unit
-						, unit_datum
-						, unit_datum->unit.throwing_grenade_projectile_index
-						, seat_damage_definition);
-
-					// If the player/unit should leave the seat after planting a grenade, do so
-					if(TEST_FLAG(seat_damage_definition.flags, Flags::_unit_seat_damage_flags_exit_after_grenade_plant_bit))
-					{
-						blam::unit_animation_set_state(unit_index, Enums::_unit_animation_state_idle);
-						blam::unit_try_and_exit_seat(unit_index);
-					}
+#if PLATFORM_IS_EDITOR
+					blam::unit_try_and_exit_seat(unit_index, true);
+#else
+					blam::unit_try_and_exit_seat(unit_index);
+#endif
 				}
 			}
 		}

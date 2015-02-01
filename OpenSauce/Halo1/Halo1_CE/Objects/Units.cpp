@@ -134,7 +134,7 @@ namespace Yelo
 			}
 			else
 			{
-				SeatDamage::UnitSpawnSeatedPlayerGrenade(unit_index);
+				SeatDamage::UnitThrowSeatedPlayerGrenade(unit_index);
 			}
 		}
 
@@ -173,10 +173,9 @@ namespace Yelo
 
 			// Enables biped seats
 			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), Enums::_x86_opcode_nop, 6);
+
 			Memory::WriteRelativeCall(&UnitDamageAftermathHook, GET_FUNC_VPTR(UNIT_DAMAGE_AFTERMATH_CALL), true);
-
 			Memory::CreateHookRelativeCall(&UnitCanEnterSeatHook, GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_HOOK), Enums::_x86_opcode_ret);
-
 			Memory::WriteRelativeJmp(&BipedSeatedMeleeHook, GET_FUNC_VPTR(BIPED_SEATED_MELEE_HOOK), true);
 			Memory::WriteRelativeCall(&UnitThrowGrenadeReleaseHook, GET_FUNC_VPTR(UNIT_THROW_GRENADE_RELEASE_HOOK), true);
 			Memory::WriteRelativeJmp(&WeaponPreventsGrenadeThrowingHook, GET_FUNC_VPTR(WEAPON_PREVENTS_GRENADE_THROWING_HOOK), true);

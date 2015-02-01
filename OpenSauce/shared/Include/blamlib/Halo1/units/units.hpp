@@ -56,7 +56,11 @@ namespace Yelo
 
 		void PLATFORM_API unit_scripting_exit_vehicle(datum_index unit_index);
 
-		bool PLATFORM_API unit_try_and_exit_seat(const datum_index unit_index);
+		bool PLATFORM_API unit_try_and_exit_seat(const datum_index unit_index
+#if PLATFORM_IS_EDITOR
+			, bool can_run_on_client_side
+#endif
+			);
 
 		void PLATFORM_API unit_detach_from_parent(const datum_index unit_index);
 

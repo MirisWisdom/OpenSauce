@@ -551,6 +551,15 @@
     <None Include="Engine\AI.Transform.inl">
       <Filter>Engine\Impl</Filter>
     </None>
+    <None Include="Engine\Units.SeatBoarding.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.SeatDamage.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.Animations.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CheApe_Readme.txt" />

@@ -30,6 +30,7 @@ namespace Yelo
 		/// <summary>	Manager for unit seat boarding. </summary>
 		class c_unit_seat_boarding_manager final
 		{
+#pragma region Unit Actions
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Applies an effect on a unit at the specified marker. </summary>
 			///
@@ -53,8 +54,17 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Makes a unit exit it's current seat. </summary>
 			///
-			/// <param name="unit_index">	Zero-based index of the unit. </param>
-			void UnitExitFromSeat(const datum_index unit_index) const;
+			/// <param name="unit_index"> 	Zero-based index of the unit. </param>
+			/// <param name="force_state">
+			/// 	(Optional) Whether to force the idle state so that the unit is guaranteed to exit
+			/// 	gracefully.
+			/// </param>
+			/// <param name="force_exit">
+			/// 	(Optional) Whether to forcibly remove the unit from the seat.
+			/// </param>
+			void UnitExitFromSeat(const datum_index unit_index
+				, const bool force_state = false
+				, const bool force_exit = false) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Eject's a unit from a seat. </summary>
@@ -81,19 +91,9 @@ namespace Yelo
 			void UnitEnterPoweredSeat(const datum_index unit_index
 				, const datum_index target_unit_index
 				, const int16 target_seat) const;
+#pragma endregion
 
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Starts a unit seat animation on the target unit. </summary>
-			///
-			/// <param name="unit_index">	Datum index of the unit. </param>
-			/// <param name="unit_datum">	The unit datum. </param>
-			/// <param name="animation"> 	The animation type. </param>
-			///
-			/// <returns>	true if it succeeds, false if it fails. </returns>
-			bool StartAnimation(const datum_index unit_index
-				, const s_unit_datum* unit_datum
-				, const Enums::unit_seat_animation animation) const;
-
+#pragma region Animation
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Executes the boarding animation's keyframe action. </summary>
 			///
@@ -108,6 +108,20 @@ namespace Yelo
 			/// <param name="action">	 	The action details. </param>
 			void DoMountedKeyframeAction(const datum_index unit_index, const TagGroups::unit_mounted_state_keyframe_action& action) const;
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Starts a unit seat animation on the target unit. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			/// <param name="unit_datum">	The unit datum. </param>
+			/// <param name="animation"> 	The animation type. </param>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool StartAnimation(const datum_index unit_index
+				, const s_unit_datum* unit_datum
+				, const Enums::unit_seat_animation animation) const;
+#pragma endregion
+
+#pragma region State Update
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Updates the non seated unit described by unit_index. </summary>
 			///
@@ -137,7 +151,9 @@ namespace Yelo
 			///
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void UpdateMountedUnit(const datum_index unit_index) const;
+#pragma endregion
 
+#pragma region Seat Access
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Determines whether a unit can enter a seat. </summary>
 			///
@@ -151,14 +167,18 @@ namespace Yelo
 				, const int16 seat_index
 				, const bool is_targeted_seat
 				, bool& result) const;
+#pragma endregion
 
 		public:
+#pragma region State Update
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Update's a unit's boarding state. </summary>
 			///
 			/// <param name="unit_index">	Datum index of the unit. </param>
 			void UnitUpdate(const datum_index unit_index) const;
+#pragma endregion
 
+#pragma region Animation
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Handles the boarding animations keyframe actions. </summary>
 			///
@@ -179,7 +199,9 @@ namespace Yelo
 			/// <param name="unit_index">	Datum index of the animating unit. </param>
 			/// <param name="keyframe">  	The keyframe. </param>
 			void UnitTriggerMountedKeyframe(const datum_index unit_index, const Enums::unit_animation_keyframe keyframe) const;
+#pragma endregion
 
+#pragma region Seat Access
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Control's whether a unit can enter a boarding seat. </summary>
 			///
@@ -203,6 +225,7 @@ namespace Yelo
 				, const datum_index target_unit_index
 				, const int16 target_seat_index
 				, bool& result) const;
+#pragma endregion
 		};
 	};};};
 };
