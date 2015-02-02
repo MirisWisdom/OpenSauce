@@ -414,7 +414,7 @@ namespace Yelo
 			if(TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_exit_on_unit_death_bit)
 				&& TEST_FLAG(parent_unit_datum.object.damage.flags, Flags::_object_body_depleted_bit))
 			{
-				UnitExitFromSeat(unit_index, true);
+				UnitExitFromSeat(unit_index, false, true);
 				return;
 			}
 			
