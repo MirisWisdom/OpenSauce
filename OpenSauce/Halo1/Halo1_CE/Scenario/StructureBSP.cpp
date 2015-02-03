@@ -72,9 +72,12 @@ namespace Yelo
 			/// <summary>	Resets the modifier gamestate. </summary>
 			void ResetGamestate()
 			{
-				memset(m_bsp_modifier_gamestate
-					, 0
-					, Enums::k_maximum_structure_bsps_per_scenario_upgrade * sizeof(s_bsp_modifier_globals::s_bsp_modifier_state));
+				if(m_bsp_modifier_gamestate)
+				{
+					memset(m_bsp_modifier_gamestate
+						, 0
+						, Enums::k_maximum_structure_bsps_per_scenario_upgrade * sizeof(s_bsp_modifier_globals::s_bsp_modifier_state));
+				}
 			}
 		};
 
@@ -92,6 +95,11 @@ namespace Yelo
 		/// <returns>	true if it succeeds, false if it fails. </returns>
 		static bool SetLightmapSet(const sbyte modifier_index, const sbyte bsp_index, const sbyte set_index)
 		{
+			if(!GameState::YeloGameStateEnabled())
+			{
+				return false;
+			}
+
 			auto& lightmap_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].lightmap_sets;
 			if((set_index < 0) || (set_index >= lightmap_sets.Count))
 			{
@@ -183,6 +191,11 @@ namespace Yelo
 		/// <returns>	true if it succeeds, false if it fails. </returns>
 		static bool SetLightmapSetByName(const sbyte bsp_index, cstring set_name)
 		{
+			if(!GameState::YeloGameStateEnabled())
+			{
+				return false;
+			}
+
 			if((bsp_index < 0) || (bsp_index >= Enums::k_maximum_structure_bsps_per_scenario_upgrade))
 			{
 				return false;
@@ -233,6 +246,11 @@ namespace Yelo
 		/// <returns>	true if it succeeds, false if it fails. </returns>
 		static bool SetSkySetByName(const sbyte bsp_index, cstring set_name)
 		{
+			if(!GameState::YeloGameStateEnabled())
+			{
+				return false;
+			}
+
 			if((bsp_index < 0) || (bsp_index >= Enums::k_maximum_structure_bsps_per_scenario_upgrade))
 			{
 				return false;
@@ -299,7 +317,9 @@ namespace Yelo
 		/// <param name="bsp_index">	Zero-based index of the bsp. </param>
 		void SetToCurrentGameState(const int16 bsp_index)
 		{
-			if((bsp_index != NONE) && (g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index] != NONE))
+			if(GameState::YeloGameStateEnabled()
+				&& (bsp_index != NONE)
+				&& (g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index] != NONE))
 			{
 				const sbyte modifier_index = g_bsp_modifier_globals.m_bsp_modifier_bsp_map[bsp_index];
 
@@ -403,6 +423,11 @@ namespace Yelo
 		/// <summary>	Initializes for new game state. </summary>
 		void InitializeForNewGameState()
 		{
+			if(!GameState::YeloGameStateEnabled())
+			{
+				return;
+			}
+
 			g_bsp_modifier_globals.m_bsp_modifier_gamestate = GameState::GameStateMalloc<s_bsp_modifier_globals::s_bsp_modifier_state>(true
 				, Enums::k_maximum_structure_bsps_per_scenario_upgrade);
 

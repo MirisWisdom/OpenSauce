@@ -28,7 +28,7 @@
 		</File>
 		<File>
 			<ID>UI_OpenSauceUI_PAK</ID>
-			<MD5>758f3d77b24c6698b2f7c47590ceb2d4</MD5>
+			<MD5>d4d3c4184ea330ce49b5c02f79ee39f6</MD5>
 			<Path>$(CommonAppData)OpenSauceUI.pak</Path>
 		</File>
 	</Checksums>

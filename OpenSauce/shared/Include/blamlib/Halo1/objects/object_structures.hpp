@@ -181,8 +181,8 @@ namespace Yelo
 
 		struct s_object_datumn_damage_data
 		{
-			real maximum_vitality;				// 0xD8
-			real current_vitality;				// 0xDC
+			real maximum_health;				// 0xD8
+			real maximum_shield;				// 0xDC
 			real health;						// 0xE0, health = body
 			real shield;						// 0xE4
 			real shield_damage_current;			// 0xE8

@@ -62,7 +62,7 @@
 				},
 				"Property": {
 					"Name": "InnerSize",
-					"Value": "640 600"
+					"Value": "640 630"
 				},
 				"Property": {
 					"Name": "ScrollV",
@@ -76,7 +76,7 @@
 					"Type": "Rectangle",
 					"Property": {
 						"Name": "Size",
-						"Value": "640 600"
+						"Value": "640 630"
 					},
 					"Property": {
 						"Name": "Color",
