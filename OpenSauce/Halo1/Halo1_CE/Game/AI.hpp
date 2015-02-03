@@ -16,6 +16,11 @@
 
 namespace Yelo
 {
+	namespace Objects
+	{
+		struct s_damage_data;
+	};
+
 	namespace AI
 	{
 		encounter_data_t&				Encounters();
@@ -31,6 +36,58 @@ namespace Yelo
 
 		void Initialize();
 		void Dispose();
+
+		void InitializeForNewGameState();
+
+		void InitializeForNewMap();
+		void DisposeFromOldMap();
+
 		void PLATFORM_API Update();
+
+		void HandleGameStateLifeCycle(_enum life_state);
+
+		void ObjectsUpdate();
+		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data);
+
+		namespace Transform
+		{
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Get/Sets whether transforms are enabled. </summary>
+			///
+			/// <returns>	A bool reference; </returns>
+			bool& TransformsEnabled();
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script ai transform actor function. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the transform succeeds, otherwise false. </returns>
+			void* HS_AITransformActor(void** arguments);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script ai transform actors function. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the transform succeeds, otherwise false. </returns>
+			void* HS_AITransformActors(void** arguments);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script ai transform actors by type function. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the transform succeeds, otherwise false. </returns>
+			void* HS_AITransformActorsByType(void** arguments);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Halo script to get whether an actor is transforming. </summary>
+			///
+			/// <param name="arguments">	[in] The function arguments. </param>
+			///
+			/// <returns>	True if the unit is transforming, otherwise false. </returns>
+			void* HS_AIActorIsTransforming(void** arguments);
+		}
 	};
 };

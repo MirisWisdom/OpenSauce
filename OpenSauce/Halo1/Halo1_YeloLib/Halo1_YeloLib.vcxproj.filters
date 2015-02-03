@@ -130,6 +130,9 @@
     <Filter Include="configuration\type_containers">
       <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ai">
+      <UniqueIdentifier>{d649cd04-3dcb-4e6c-a4fb-65e77fd8efd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -250,9 +253,6 @@
       <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp">
-      <Filter>open_sauce</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp">
       <Filter>open_sauce</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp">
@@ -561,6 +561,24 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_point2d_container.hpp">
       <Filter>configuration\type_containers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_transform_definition.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\objects\objects_yelo.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.hpp">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_damage_manager.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\ai_yelo.hpp">
+      <Filter>ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -827,9 +845,6 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp">
       <Filter>hs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.cpp">
-      <Filter>units</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp">
       <Filter>units</Filter>
     </ClCompile>
@@ -856,6 +871,21 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_point2d_container.cpp">
       <Filter>configuration\type_containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\objects\objects_yelo.cpp">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_damage_manager.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\ai_yelo.cpp">
+      <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<enums>
+		<Enum name="actor_variant_transform_team_handling">		
+			<field>inherit from attacked</field>
+			<field>inherit from attacker</field>
+			<field>override</field>
+		</Enum>
+
+		<Enum name="actor_variant_transform_in_vitality_handling">
+			<field>neither</field>
+			<field>both</field>
+			<field>shield only</field>
+			<field>health only</field>
+		</Enum>
+
+		<Enum name="actor_variant_transform_in_actor_initial_state_handling">
+			<field>inherit</field>
+			<field>override</field>
+		</Enum>
+
+		<Enum name="actor_variant_transform_in_actor_return_state_handling">
+			<field>inherit</field>
+			<field>override</field>
+			<field>actor default</field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="actor_variant_transform_in_target_flags">
+			<field>try to use existing unit</field>
+			<field>inherit encounter/squad</field>
+			<field>drop weapon</field>
+			<field>inherit seated units</field>
+		</Flag>
+
+		<Flag name="actor_variant_transform_in_attachment_flags">
+			<field>delete attachments on death</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="actor_variant_transform_in_target_block" maxElements="16">
+			<!--actor_variant_transform_in_target-->
+			<field type="String" name="target name" blockname="true" />
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_target_flags" />
+			<field type="Pad" definition="2" />
+
+			<field type="Explanation" name="AI" definition="" />
+			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
+			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
+			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
+			<field type="Enum" name="initial state handling" definition="actor_variant_transform_in_actor_initial_state_handling" />
+			<field type="Enum" name="initial state override" definition="actor_default_state_enum" />
+			<field type="Enum" name="return state handling" definition="actor_variant_transform_in_actor_return_state_handling" />
+			<field type="Enum" name="return state override" definition="actor_default_state_enum" />
+
+			<field type="Explanation" name="Animation" definition="Played immediately after the old unit's transform out animation. The new actor is made braindead during the animation, and will be invincible until it ends." />
+			<field type="String" name="transform in anim" />
+			<field type="Block" name="keyframe actions" definition="actor_variant_transform_keyframe_action_block" />
+
+			<field type="Explanation" name="Vitality" definition="" />
+			<field type="Enum" name="vitality inheritance" definition="actor_variant_transform_in_vitality_handling" />
+			<field type="Enum" name="vitality override" definition="actor_variant_transform_in_vitality_handling" />
+			<field type="RealFraction" name="shield override" />
+			<field type="RealFraction" name="health override" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+
+		<TagBlock name="actor_variant_transform_in_attachment_block" maxElements="16">
+			<!--actor_variant_transform_in_attachment-->
+			<field type="TagReference" name="object" definition="object_reference" />
+			<field type="String" name="object marker" />
+			<field type="String" name="destination marker" blockname="true" />
+			<field type="ShortInteger" name="destination marker count" />
+			<field type="Pad" definition="2" />
+			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
+			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
+			<field type="RealBounds" name="attachment scale" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="actor_variant_transform_in" groupTag="avti" version="1">
+			<!--actor_variant_transform_in_definition-->
+			<field type="Block" name="targets" definition="actor_variant_transform_in_target_block" />
+
+			<field type="Explanation" name="Attachments" definition="The listed attachments will be added to the old unit when it's transformation begins. When specifying a single destination marker the destination marker name will be used as-is ('marker'), however when the marker count is more than 1 an index will be appended ('marker0', 'marker1', etc.)" />
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_attachment_flags" />
+			<field type="Pad" definition="2" />
+			<field type="Block" name="attachments" definition="actor_variant_transform_in_attachment_block" />
+			<field type="Pad" definition="24" />
+		</TagGroup>
+	</groups>
+
+</definitions>

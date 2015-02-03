@@ -13,6 +13,7 @@
 
 #include "Settings/Settings.hpp"
 #include "Engine/EngineFunctions.hpp"
+#include "Engine/GameState.hpp"
 #include "Tool/Tool_AnimationFixups.hpp"
 
 #include "Tool/BuildCacheFile.hpp"
@@ -188,6 +189,8 @@ namespace Yelo
 			size_t tramp_byte_count = Memory::c_naked_func_writer<main__hook_trampoline>::
 				Write(CAST_PTR(void*, c_tool_main::HOOK_TRAMPOLINE_START));
 			assert(tramp_byte_count <= c_tool_main::HOOK_TRAMPOLINE_END-c_tool_main::HOOK_TRAMPOLINE_START);
+
+			GameState::Initialize();
 		}
 
 		void DisposeBeforeCSeries()
@@ -198,6 +201,7 @@ namespace Yelo
 		}
 		void Dispose()
 		{
+			GameState::Dispose();
 		}
 	};
 };

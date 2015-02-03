@@ -167,7 +167,7 @@ namespace Yelo
 			TagGroups::s_damage_effect_definition::k_group_tag,	// damage
 			TagGroups::looping_sound_definition::k_group_tag,
 			TagGroups::model_animation_graph::k_group_tag,
-			TagGroups::actor_variant_definition::k_group_tag,
+			TagGroups::s_actor_variant_definition::k_group_tag,
 			TagGroups::s_damage_effect_definition::k_group_tag,	// damage_effect
 			TagGroups::s_object_definition::k_group_tag,
 		};

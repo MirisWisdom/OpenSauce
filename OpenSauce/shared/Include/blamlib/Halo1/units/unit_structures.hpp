@@ -68,8 +68,10 @@ namespace Yelo
 			_unit_animation_state,
 
 			// custom unit animation states
-			_unit_animation_state_yelo_seat_board,
-			_unit_animation_state_yelo_seat_ejection,
+			_unit_animation_state_yelo_seat_boarding = _unit_animation_state,
+			_unit_animation_state_yelo_seat_ejecting,
+			_unit_animation_state_yelo_unit_mounted,
+			_unit_animation_state_yelo_unit_transforming,
 
 			_unit_animation_state_yelo,
 		};
@@ -193,8 +195,6 @@ namespace Yelo
 			real_rectangle2d looking_bounds;			// 0x2B8
 			real_rectangle2d aiming_bounds;				// 0x2C8
 			PAD64;										// 0x2D8
-
-			void ResetOverlayAnimations();
 		}; BOOST_STATIC_ASSERT( sizeof(s_unit_datum_animation_data) == 0x48 );
 
 		struct s_unit_data

@@ -9,6 +9,8 @@
 
 namespace Yelo { namespace Tool
 {
+	bool IsBuildingYeloMap();
+
 	void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[]);
 }; };
 #endif

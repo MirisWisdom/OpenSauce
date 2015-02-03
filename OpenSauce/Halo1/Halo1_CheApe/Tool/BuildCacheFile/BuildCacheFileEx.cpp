@@ -37,6 +37,12 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx
 
 namespace Yelo { namespace Tool {
 
+bool g_is_building_yelo = false;
+bool IsBuildingYeloMap()
+{
+	return g_is_building_yelo;
+}
+
 void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[])
 {
 	//////////////////////////////////////////////////////////////////////////
@@ -55,6 +61,8 @@ void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[])
 	ValueConversion::FromString(args->use_memory_upgrades_str, use_memory_upgrades);
 
 	//////////////////////////////////////////////////////////////////////////
+
+	g_is_building_yelo = use_memory_upgrades;
 
 	if(!use_memory_upgrades)
 	{

@@ -16,231 +16,435 @@
 #include <blamlib/Halo1/ai/actor_stimulus.hpp>
 #include <blamlib/Halo1/ai/actors.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/game/game_allegiance.hpp>
 
 namespace Yelo
 {
 	namespace AI
 	{
-		struct s_actor_datum : TStructImpl(1828)
+		struct s_actor_meta_data
 		{
-			TStructGetPtrImpl(bool,				MetaSwarm, 0x6);
-			//TStructGetPtrImpl(bool,				Meta, 0x7);
-			TStructGetPtrImpl(bool,				MetaActive, 0x8);
-			TStructGetPtrImpl(bool,				MetaEncounterless, 0x9);
-			//TStructGetPtrImpl(bool,				Meta, 0xA);
+			int16 type;
+			bool swarm;
+			PAD8; // unknown field
+			bool active;
+			bool encounterless;
+			PAD8; // unknown field
+			PAD8;
+			PAD32; // unknown field
+			PAD16; // unknown field
+			PAD8; // unknown field
+			bool dormant;
+			PAD16; // unknown field
+			PAD16;
+			datum_index unit_index;
+			PAD8; // unknown field
+			PAD8;
+			int16 swarm_unit_count;
+			PAD16; // unknown field
+			PAD16; // unknown field
+			datum_index swarm_unit_index;
+			datum_index swarm_cache_index;
+			datum_index encounter_next_actor_index;
+			PAD32; // unknown field
+			datum_index encounter_index;
+			PAD16; // unknown field
+			int16 squad_index;
+			int16 platoon_index;
+			Enums::game_team team;
+			PAD8; // unknown field
+			PAD24;
+			PAD32; // unknown field
+			PAD16; // unknown field
+			PAD16; // unknown field
+			bool timeslice;
+			PAD24;
+			datum_index first_prop_index;
+			PAD32; // unknown field
+			datum_index actor_definition_index;
+			datum_index actor_variant_definition_index;
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_meta_data) == 0x5C );
 
-			//TStructGetPtrImpl(int16,			Meta, 0x10); // ticks
-			//TStructGetPtrImpl(bool,				Meta, 0x12);
-			TStructGetPtrImpl(bool,				MetaDormant, 0x13);
-			//TStructGetPtrImpl(int16,			Meta, 0x14);
+		struct s_actor_state_data
+		{
+			Enums::actor_action action;
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8;
+			PAD16; // unknown field
+			PAD16; // unknown field
+			PAD(1, 14);
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD8;
+			PAD16; // unknown field
+			PAD16;
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD16;
+			byte action_data[132];
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_state_data) == 0xB4 );
 
-			TStructGetPtrImpl(datum_index,		MetaUnitIndex, 0x18);
-			// 0x1C ?
-			TStructGetPtrImpl(int16,			MetaSwarmUnitCount, 0x1E); // MAXIMUM_NUMBER_OF_UNITS_PER_SWARM = 16
-			//TStructGetPtrImpl(int16,			MetaSwarmUnit, 0x20);
-			// 0x22 ?
-			TStructGetPtrImpl(datum_index,		MetaSwarmUnitIndex, 0x24);
-			TStructGetPtrImpl(datum_index,		MetaSwarmCacheIndex, 0x28);
-			TStructGetPtrImpl(datum_index,		MetaEncounterNextActorIndex, 0x2C);
-			//TStructGetPtrImpl(datum_index,		Meta, 0x30);
-			TStructGetPtrImpl(datum_index,		MetaEncounterIndex, 0x34);
+		struct s_actor_input_data
+		{
+			PAD_TYPE(real_point3d); // unknown field
+			PAD_TYPE(real_vector3d); // unknown field
+			PAD(1, 32);
+			datum_index vehicle_index;
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD16; // unknown field
+			bool vehicle_passenger;
+			bool vehicle_driver;
+			PAD16;
+			int32 surface_index;
+			real_point3d position;
+			real_vector3d facing_vector;
+			real_vector3d aiming_vector;
+			real_vector3d looking_vector;
+			PAD(2, 24);
+			PAD32; // unknown field
+			PAD8; // unknown field
+			bool burning_to_death;
+			PAD16;
+			real unit_damage_body;
+			real unit_damage_shield;
+			real unit_damage_body_recent;
+			real unit_damage_shield_recent;
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_input_data) == 0xA8 );
 
-			TStructGetPtrImpl(int16,			MetaSquadIndex, 0x3A);
-			TStructGetPtrImpl(int16,			MetaPlatoonIndex, 0x3C);
-			TStructGetPtrImpl(_enum,			MetaTeam, 0x3E); // Enums::game_team
+		struct s_actor_target_data
+		{
+			PAD16; // unknown field
+			PAD16;
+			PAD32; // unknown field
+			datum_index target_prop_index;
+			PAD8; // unknown field
+			PAD24;
+			PAD16; // unknown field
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8;
+			PAD8; // unknown field
+			PAD8; // unknown field
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_target_data) == 0x18 );
 
-			TStructGetPtrImpl(bool,				MetaTimeslice, 0x4C);
-			TStructGetPtrImpl(datum_index,		MetaFirstPropIndex, 0x50);
-			// 0x54 int32
-			TStructGetPtrImpl(datum_index,		MetaActorDefinitionIndex, 0x58);
-			TStructGetPtrImpl(datum_index,		MetaActorVariantDefinitionIndex, 0x5C);
+		struct s_actor_danger_zone_data
+		{
+			PAD(1, 104);
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_danger_zone_data) == 0x6C );
 
-			//TStructGetPtrImpl(_enum,		, 0x6A);
-			TStructGetPtrImpl(Enums::actor_action,		StateAction, 0x6C);
+		struct s_actor_stimulus_data
+		{
+			PAD8; // unknown field
+			PAD8;
+			PAD16; // unknown field
+			PAD32;
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD24;
+			PAD_TYPE(real_vector3d); // unknown field
+			PAD16; // unknown field
+			PAD16;
+			PAD32; // unknown field
+			PAD16; // unknown field
+			_enum combat_transition;
+			PAD8; // unknown field
+			PAD24;
+			PAD_TYPE(real_vector3d); // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD24;
+			PAD_TYPE(real_vector3d); // unknown field
+			PAD32; // unknown field
+			datum_index combat_transition_prop_index;
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD8;
+			PAD16; // unknown field
+			PAD32; // unknown field
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_stimulus_data) == 0x64 );
 
-			//TStructGetPtrImpl(bool,				State, 0x8D);
+		struct s_actor_emotion_data
+		{
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD16; // unknown field
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			int16 crouch_switching_change_timer;
+			PAD16; // unknown field
+			PAD16; // unknown field
+			PAD16;
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			bool ignorant;
+			PAD8; // unknown field
+			bool berserking;
+			PAD8; // unknown field
+			PAD16;
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD8; // unknown field
+			PAD24;
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD16; // unknown field
+			PAD16;
+			PAD32; // unknown field
+			PAD32; // unknown field
+			PAD32; // unknown field
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_emotion_data) == 0x68 );
 
-			// 0x9C union state.action_data (total size: 0x84)
+		struct s_actor_firing_position_data
+		{
+			PAD16; // unknown field
+			PAD(1, 6);
+			PAD32; // unknown field
+			PAD(2, 32); // unknown field
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_firing_position_data) == 0x30 );
 
-			TStructGetPtrImpl(bool,				StateActionDataChargeFinishedMeleeAttack, 0xA3);
-			TStructGetPtrImpl(bool,				StateActionDataChargeAbortedMeleeAttack, 0xA4);
+		struct s_actor_orders_data
+		{
+			PAD(1, 128); // unknown field
+			PAD16; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_orders_data) == 0x84 );
 
-			TStructGetPtrImpl(bool,				StateActionDataChargeUnableToAdvance, 0xC5);
+		struct s_path
+		{
+			bool valid;															//	0x0
+			PAD(1, 3);															//	0x1
+			byte destination[20];												//	0x4
+			PAD8; // unknown field												//	0x18
+			PAD8; // unknown field												//	0x19
+			PAD8; // unknown field												//	0x1A
+			PAD8;
+			PAD(2, 16);															//	0x1C
+			PAD(3, 16);															//	0x2C
+			PAD(4, 16);															//	0x3C
+			PAD(5, 16);															//	0x4C
+		}; BOOST_STATIC_ASSERT( sizeof(s_path) == 0x5C );
 
-			//////////////////////////////////////////////////////////////////////////
-			// input @ 0x120, sizeof(0xA8)
-			//TStructGetPtrImpl(real_point3d,	Input, 0x120);
+		struct s_actor_control_direction_specification
+		{
+			_enum type;															//	0x0
+			PAD16;
+			datum_index prop_index;												//	0x4
+			PAD(1, 6);
+			PAD8; // unknown field												//	0xE
+			PAD8; // unknown field												//	0xF
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_control_direction_specification) == 0x10 );
 
-			TStructGetPtrImpl(bool,				InputVehiclePassenger, 0x160);
-			//TStructGetPtrImpl(int32,			InputSurfaceIndex, 0x164);
-			//TStructGetPtrImpl(real_vector3d,	InputPosition, 0x168);
-			TStructGetPtrImpl(real_vector3d,	InputFacingVector, 0x174);
-			TStructGetPtrImpl(real_vector3d,	InputAimingVector, 0x180);
-			TStructGetPtrImpl(real_vector3d,	InputLookingVector, 0x18C);
+		struct s_actor_control_data
+		{
+			PAD16; // unknown field												//	0x0
+			PAD16;
+			PAD32; // unknown field												//	0x4
+			PAD(1, 12);
 
-			TStructGetPtrImpl(bool,				InputIsBurningToDeath, 0x1B5);
-			//PAD16
-			TStructGetPtrImpl(real,				InputUnitDamageBody, 0x1B8);
-			TStructGetPtrImpl(real,				InputUnitDamageShield, 0x1BC);
-			TStructGetPtrImpl(real,				InputUnitDamageBodyRecent, 0x1C0);
-			TStructGetPtrImpl(real,				InputUnitDamageShieldRecent, 0x1C4);
-			//////////////////////////////////////////////////////////////////////////
-
-			//TStructGetPtrImpl(_enum,			, 0x1E4);
-			//TStructGetPtrImpl(datum_index,		, 0x1E8); // prop_index
-			//////////////////////////////////////////////////////////////////////////
-			// situation @ 0x1EC, sizeof(0x7B)
-			//////////////////////////////////////////////////////////////////////////
-
-			TStructGetPtrImpl(Enums::actor_target_type,		TargetTargetType, 0x268);
-
-			TStructGetPtrImpl(datum_index,		TargetTargetPropIndex, 0x270);
-
-			TStructGetPtrImpl(Enums::actor_danger_zone,		DangerZoneDangerType, 0x280);
-
-			TStructGetPtrImpl(bool,				DangerZoneNoticedDanager, 0x287);
-
-			TStructGetPtrImpl(datum_index,		DangerZoneObjectIndex, 0x28C);
-
-			//TStructGetPtrImpl(real,				, 0x294);
-
-			//TStructGetPtrImpl(real_point3d,		, 0x2B0);
-			//TStructGetPtrImpl(real_vector3d,	, 0x2BC);
-
-			//TStructGetPtrImpl(real,				, 0x2D8);
-			//TStructGetPtrImpl(real_point3d,	, 0x2DC);
-
-			//////////////////////////////////////////////////////////////////////////
-			// stimulus @ 0x2EC, sizeof(0x64)
-			TStructGetPtrImpl(bool,				StimuliVehicleEviction, 0x2ED);
-
-			TStructGetPtrImpl(bool,				StimuliWasSurprised, 0x2F0);
-
-			TStructGetPtrImpl(_enum,			StimuliPanicType, 0x308);
-			TStructGetPtrImpl(datum_index,		StimuliPanicPropIndex, 0x30C);
-
-			TStructGetPtrImpl(_enum,			StimuliCombatTransition, 0x312);
-
-			TStructGetPtrImpl(datum_index,		StimuliCombatTransitionPropIndex, 0x340);
-
-			//////////////////////////////////////////////////////////////////////////
-			// emotions @ 350, sizeof(0x68)
-			//TStructGetPtrImpl(real,				, 0x354);
-			//TStructGetPtrImpl(bool,				, 0x358);
-			//PAD8;
-			//TStructGetPtrImpl(int16,				, 0x35A);
-
-			//TStructGetPtrImpl(bool,					, 0x363);
-			TStructGetPtrImpl(int16,				EmotionsCrouchSwitchingChangeTimer, 0x364);
-
-			//////////////////////////////////////////////////////////////////////////
-			// firing_positions @ 0x3B8, sizeof( ? )
-			TStructGetPtrImpl(int16,			FiringPositionsCurrentPositionIndex, 0x3B8);
-			//TStructGetPtrImpl(bool,					, 0x3BA);
-
-			//TStructGetPtrImpl(int16,			FiringPositions, 0x3C6); // a count of sorts
-			// 0x3C8, array of [4] elements, struct made of 2 int16
-			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D8);
-			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D9);
-			//TStructGetPtrImpl(real_vector3d,	FiringPositions, 0x3DC);
-
-			//////////////////////////////////////////////////////////////////////////
-			// orders  @ 0x3E8, sizeof(0x84)
-
-			//TStructGetPtrImpl(int16,			Orders, 0x418);
-
-			//TStructGetPtrImpl(int16,			Orders, 0x42C);
-			//TStructGetPtrImpl(int16,			Orders, 0x42E);
-
-			//////////////////////////////////////////////////////////////////////////
-			// control
-			struct s_direction_specification
+			struct
 			{
-				// 1 = _direction_specification_prop
-				_enum type;
+				struct
+				{
+					datum_index	ignore_target_object_index;						//	0x14
+					bool at_destination;										//	0x18
+					PAD24;
+				} destination_orders;
+
+				PAD_TYPE(real_vector3d); // unknown field						//	0x1C
+				PAD32; // unknown field											//	0x28
+				PAD32; // unknown field											//	0x2C
+				PAD32;
+				PAD32; // unknown field											//	0x34
+				PAD8; // unknown field											//	0x38
+				PAD24;
+				s_path path;													//	0x3C
+			} path;
+
+			PAD8; // unknown field												//	0x98
+			PAD8; // unknown field												//	0x99
+			PAD8; // unknown field												//	0x9A
+			PAD8; // unknown field												//	0x9B
+			PAD8; // unknown field												//	0x9C
+			PAD8;
+			PAD16; // unknown field												//	0x9E
+			PAD_TYPE(real_point3d); // unknown field							//	0xA0
+			PAD_TYPE(real_vector3d); // unknown field							//	0xAC
+			PAD(2, 12);
+			PAD8; // unknown field												//	0xC4
+			PAD24;
+			PAD32; // unknown field												//	0xC8
+			PAD32; // unknown field												//	0xCC
+			PAD32; // unknown field												//	0xD0
+			PAD32; // unknown field												//	0xD4
+			int16 secondary_look_type;											//	0xD8
+			PAD16;
+			PAD16; // unknown field												//	0xDC
+			PAD16;
+			s_actor_control_direction_specification secondary_look_direction;	//	0xE0
+			bool idle_major_active;												//	0xF0
+			PAD8; // unknown field												//	0xF1
+			PAD8; // unknown field												//	0xF2
+			bool idle_minor_active;												//	0xF3
+			PAD32; // unknown field												//	0xF4
+			int32 idle_major_timer;												//	0xF8
+			int32 idle_minor_timer;												//	0xFC
+			s_actor_control_direction_specification idle_major_direction;		//	0x100
+			s_actor_control_direction_specification idle_minor_direction;		//	0x110
+			PAD8; // unknown field												//	0x120
+			PAD8; // unknown field												//	0x121
+			PAD8; // unknown field												//	0x122
+			PAD8; // unknown field												//	0x123
+			PAD8; // unknown field												//	0x124
+			PAD8; // unknown field												//	0x125
+			PAD(3, 6);
+			PAD_TYPE(real_vector3d); // unknown field							//	0x12C
+			real_vector3d  desired_facing_vector;								//	0x138
+			PAD_TYPE(real_vector3d); // unknown field							//	0x144
+			PAD_TYPE(real_vector3d); // unknown field							//	0x150
+			PAD(4, 16); // unknown field										//	0x15C
+			PAD16; // unknown field												//	0x16C
+			PAD16;
+			PAD_TYPE(real_vector3d); // unknown field							//	0x170
+			PAD(5, 8);
+			PAD16; // unknown field												//	0x184
+			int16 fire_state;													//	0x186
+			PAD16; // unknown field												//	0x188
+			PAD16; // unknown field												//	0x18A
+			PAD16; // unknown field												//	0x18C
+			PAD16; // unknown field												//	0x18E
+			PAD16; // unknown field												//	0x190
+			PAD16; // unknown field												//	0x192
+			PAD8; // unknown field												//	0x194
+			PAD8; // unknown field												//	0x195
+			PAD8; // unknown field												//	0x196
+			PAD8; // unknown field												//	0x197
+			PAD8; // unknown field												//	0x198
+			PAD24;
+			PAD32; // unknown field												//	0x19C
+			int16 current_fire_target_type;										//	0x1A0
+			PAD16;
+			datum_index	current_fire_target_prop_index;							//	0x1A4
+			PAD(6, 8);
+			PAD32; // unknown field												//	0x1B0
+			PAD8; // unknown field												//	0x1B4
+			PAD8; // unknown field												//	0x1B5
+			PAD8; // unknown field												//	0x1B6
+			PAD8; // unknown field												//	0x1B7
+			PAD8; // unknown field												//	0x1B8
+			PAD8;
+			PAD16; // unknown field												//	0x1BA
+			PAD8; // unknown field												//	0x1BC
+			PAD24;
+			PAD_TYPE(real_vector3d); // unknown field							//	0x1C0
+			PAD32; // unknown field												//	0x1CC
+			real_vector3d  fire_target_aim_vector;								//	0x1D0
+			PAD32; // unknown field												//	0x1DC
+			PAD_TYPE(real_vector3d); // unknown field							//	0x1E0
+			PAD_TYPE(real_point3d); // unknown field							//	0x1EC
+			PAD(7, 12);
+			PAD_TYPE(real_point3d); // unknown field							//	0x204
+			PAD_TYPE(real_point3d); // unknown field							//	0x210
+			PAD8; // unknown field												//	0x21C
+			PAD24;
+			real_vector3d  burst_aim_vector;									//	0x220
+			PAD(8, 8);
+			PAD8; // unknown field												//	0x234
+			PAD24;
+			PAD32; // unknown field												//	0x238
+			PAD_TYPE(real_vector3d); // unknown field							//	0x23C
+			PAD32; // unknown field												//	0x248
+			PAD(9, 20);
+			PAD8; // unknown field												//	0x260
+			PAD8;
+			PAD16; // unknown field												//	0x262
+			struct
+			{
+				word_flags	control_flags;										//	0x264
 				PAD16;
-				datum_index prop_index;
-				PAD32; PAD32;
-			}; BOOST_STATIC_ASSERT( sizeof(s_direction_specification) == 0x10 );
+				int16	persistent_control_ticks;								//	0x268
+				PAD16;
+				long_flags	persistent_control_flags;							//	0x26C
+				PAD16; // unknown field											//	0x270
+				PAD16;
+				real_vector3d  throttle;										//	0x274
+				PAD16; // unknown field											//	0x280
+				PAD16;
+				PAD_TYPE(real_point2d); // unknown field						//	0x284
+				sbyte	aiming_speed;											//	0x28C
+				PAD24;
+				real_vector3d  facing_vector;									//	0x290
+				real_vector3d  aiming_vector;									//	0x29C
+				real_vector3d  looking_vector;									//	0x2A8
+				datum_index	primary_trigger;									//	0x2B4
+			} output;
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_control_data) == 0x2B8 );
 
-			//TStructGetPtrImpl(_enum,			control.path.destination_orders, 0x46C);
-			//TStructGetPtrImpl(int16,			control.path.destination_orders, 0x470);
+		struct s_actor_datum
+		{
+			PAD16; // unknown field
+			PAD16;
+			s_actor_meta_data meta;
+			Enums::actor_default_state initial_state;
+			Enums::actor_default_state return_state;
+			PAD32; // unknown field
+			PAD16;
+			Enums::actor_default_state current_state;
+			s_actor_state_data state;
+			s_actor_input_data input;
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD8; // unknown field
+			PAD8;
+			PAD8; // unknown field
+			PAD24;
+			PAD32; // unknown field
+			PAD16; // unknown field
+			PAD32;PAD16;
+			PAD32; // unknown field
+			PAD_TYPE(datum_index); // unknown field
+			_enum postcombat_state;
+			PAD16;
+			PAD32; // unknown field
+			byte situation[123];
+			PAD8; // unknown field
+			s_actor_target_data target;
+			s_actor_danger_zone_data danger_zone;
+			s_actor_stimulus_data stimulus;
+			s_actor_emotion_data emotions;
+			s_actor_firing_position_data firing_positions;
+			s_actor_orders_data orders;
+			s_actor_control_data control;
+		}; BOOST_STATIC_ASSERT( sizeof(s_actor_datum) == 0x724 );
 
-			//TStructGetPtrImpl(datum_index,	control.path.destination_orders.ignore_target_object_index, 0x480);
-			TStructGetPtrImpl(bool,				ControlPathDestinationOrdersComplete, 0x484); // true when at destination
-
-			//TStructGetPtrImpl(int32,			control.path, 0x4A0);
-
-			//TStructGetPtrImpl(,	control.path, 0x4A8); // 0x5C byte structure
-
-			TStructGetPtrImpl(_enum,			ControlSecondaryLookType, 0x544);
-			// 0x48 ?
-			TStructGetPtrImpl(s_direction_specification,	ControlSecondaryLookDirection, 0x54C);
-
-			TStructGetPtrImpl(bool,				ControlIdleMajorActive, 0x55C);
-			// 0x55D ?
-			//TStructGetPtrImpl(bool,				Control, 0x55E);
-			TStructGetPtrImpl(bool,				ControlIdleMinorActive, 0x55F);
-			//TStructGetPtrImpl(int32,	Control, 0x560); // timer. secondary look?
-			TStructGetPtrImpl(int32,	ControlIdleMajorTimer, 0x564);
-			TStructGetPtrImpl(int32,	ControlIdleMinorTimer, 0x568);
-			TStructGetPtrImpl(s_direction_specification,	ControlIdleMajorDirection, 0x56C);
-			TStructGetPtrImpl(s_direction_specification,	ControlIdleMinorDirection, 0x57C);
-
-			//TStructGetPtrImpl(bool,				Control, 0x591);
-			//PAD24
-			//TStructGetPtrImpl(real,				Control, 0x594);
-
-			TStructGetPtrImpl(real_vector3d,	ControlDesiredFacingVector, 0x5A4);
-			TStructGetPtrImpl(real_vector3d,	ControlDesiredAimingVector, 0x5B0);
-			TStructGetPtrImpl(real_vector3d,	ControlDesiredLookingVector, 0x5BC);
-			// 0x5C8, 0x10 byte structure
-
-			TStructGetPtrImpl(_enum,			ControlFireState, 0x5F2);
-
-			TStructGetPtrImpl(Enums::actor_fire_target,		ControlCurrentFireTargetType, 0x60C);
-			//////////////////////////////////////////////////////////////////////////
-			// _actor_fire_target_prop
-			TStructGetPtrImpl(datum_index,		ControlCurrentFireTargetPropIndex, 0x610);
-			//////////////////////////////////////////////////////////////////////////
-			// _actor_fire_target_manual_point
-			//TStructGetPtrImpl(real_point3d,		ControlCurrentFireTargetManualPoint?, 0x610);
-			//TStructGetPtrImpl(int32,				Control, 0x61C);
-
-			//TStructGetPtrImpl(bool,				Control, 0x621);
-			//TStructGetPtrImpl(bool,				Control, 0x622);
-			//TStructGetPtrImpl(bool,				Control, 0x623);
-			//TStructGetPtrImpl(sbyte,				Control, 0x624);
-			//TStructGetPtrImpl(int16,				Control, 0x626);
-
-			//TStructGetPtrImpl(real_vector3d,	Control, 0x62C);
-
-			//TStructGetPtrImpl(real,				Control, 0x638);
-
-			TStructGetPtrImpl(real_vector3d,	ControlBurstAimVector, 0x68C);
-
-			TStructGetPtrImpl(word_flags,		ControlDataFlags, 0x6D0); // unit_control_flags
-			// PAD16?
-			TStructGetPtrImpl(int16,			ControlPersistentControlTicks, 0x6D4);
-			// PAD16?
-			TStructGetPtrImpl(long_flags,		ControlPersistentControlFlags, 0x6D8);
-
-			TStructGetPtrImpl(Enums::actor_movement_state,			ControlMovementState, 0x6DC);
-			TStructGetPtrImpl(real_vector3d,	ControlDataThrottle, 0x6E0);
-
-			//TStructGetPtrImpl(int16,			ControlAnimation, 0x6EC);
-			TStructGetPtrImpl(real_vector2d,	ControlAnimationFacing, 0x6F0);
-			TStructGetPtrImpl(_enum,			ControlDataAimingType, 0x6F8); // 0=alert, 1=casual, casted to byte then set to ctrl_data's aiming_speed
-			// PAD24
-			TStructGetPtrImpl(real_vector3d,	ControlDataFacingVector, 0x6FC);
-			TStructGetPtrImpl(real_vector3d,	ControlDataAimingVector, 0x708);
-			TStructGetPtrImpl(real_vector3d,	ControlDataLookingVector, 0x714);
-			TStructGetPtrImpl(real,				ControlDataPrimaryTrigger, 0x720);
-		};
-		typedef Memory::DataArray<	s_actor_datum, 
-									256>
-			actor_data_t;
-
+		typedef Memory::DataArray<s_actor_datum, 256> actor_data_t;
 
 		struct s_swarm_datum : Memory::s_datum_base
 		{
@@ -252,21 +456,19 @@ namespace Yelo
 			datum_index unit_indices[Enums::k_maximum_number_of_units_per_swarm];
 			datum_index component_indices[Enums::k_maximum_number_of_units_per_swarm];
 		}; BOOST_STATIC_ASSERT( sizeof(s_swarm_datum) == 0x98 );
-		typedef Memory::DataArray<	s_swarm_datum, 
-									Enums::k_maximum_number_of_active_swarms> 
-			swarm_data_t;
+
+		typedef Memory::DataArray<	s_swarm_datum, Enums::k_maximum_number_of_active_swarms> swarm_data_t;
 
 		struct s_swarm_component_datum : TStructImpl(64)
 		{
 		};
-		typedef Memory::DataArray<	s_swarm_component_datum, 
-									256>
-			swarm_component_data_t;
 
-
+		typedef Memory::DataArray<s_swarm_component_datum, 256> swarm_component_data_t;
+		
 		actor_data_t&					Actors();
 
 		swarm_data_t&					Swarms();
+
 		swarm_component_data_t&			SwarmComponents();
 	};
 };
