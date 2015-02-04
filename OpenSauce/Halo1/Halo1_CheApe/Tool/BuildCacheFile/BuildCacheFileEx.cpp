@@ -8,6 +8,8 @@
 #include "Tool/BuildCacheFile/BuildCacheFileEx.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
+#include "Tool/BuildCacheFile.hpp"
+
 #include <YeloLib/Halo1/cache/cache_files_structures_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 #include <YeloLib/cseries/value_conversion.hpp>
@@ -54,6 +56,8 @@ void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[])
 		cstring use_memory_upgrades_str;
 		cstring scenario_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
+
+	is_building_cache_file() = true;
 
 	bool copy_data_files_first, store_resources, use_memory_upgrades;
 	ValueConversion::FromString(args->copy_data_files_first_str, copy_data_files_first);
