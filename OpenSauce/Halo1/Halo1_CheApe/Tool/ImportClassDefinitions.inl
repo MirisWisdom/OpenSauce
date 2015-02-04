@@ -37,9 +37,9 @@
 			0, "", 
 		&runtime_cache_view),
 
-	IMPORT_CLASS_DEFINITION("remove-os-mods-from-scenario", 
-			1, "<scenario-name>", 
-		&scenario_cleanse_of_yelo_data),
+	IMPORT_CLASS_DEFINITION("remove-os-tag-data", 
+			3, "<tag-name> <tag-type> <recursive>", 
+		&remove_os_tag_data),
 
 	IMPORT_CLASS_DEFINITION("tag-load-test", 
 			7, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <print-size> <verbose>", 

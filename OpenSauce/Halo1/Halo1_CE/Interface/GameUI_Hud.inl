@@ -13,6 +13,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/type_containers/c_real_point2d_container.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
 namespace Yelo
@@ -106,15 +107,13 @@ namespace Yelo
 		public:
 			Yelo::Configuration::c_configuration_value<bool> m_show_hud;
 			Yelo::Configuration::c_configuration_value<bool> m_scale_hud;
-			Yelo::Configuration::c_configuration_value<real> m_hud_scale_x;
-			Yelo::Configuration::c_configuration_value<real> m_hud_scale_y;
+			Yelo::Configuration::c_real_point2d_container m_hud_scale;
 
 			c_settings_container()
 				: Yelo::Configuration::c_configuration_container("HUD")
 				, m_show_hud("ShowHUD", true)
 				, m_scale_hud("ScaleHUD", true)
-				, m_hud_scale_x("HUDScaleX", 1.0f)
-				, m_hud_scale_y("HUDScaleY", 1.0f)
+				, m_hud_scale("HUDScale", 1.0f, 1.0f)
 			{ }
 			
 		protected:
@@ -124,8 +123,7 @@ namespace Yelo
 				{
 					&m_show_hud,
 					&m_scale_hud,
-					&m_hud_scale_x,
-					&m_hud_scale_y
+					&m_hud_scale,
 				};
 			}
 		};
@@ -139,8 +137,8 @@ namespace Yelo
 				auto& settings_instance = Get();
 				g_hud_globals.m_flags.scale_hud = settings_instance.m_scale_hud;
 				g_hud_globals.m_flags.show_hud = settings_instance.m_show_hud;
-				g_hud_globals.m_hud_screen.scale.x = settings_instance.m_hud_scale_x;
-				g_hud_globals.m_hud_screen.scale.y = settings_instance.m_hud_scale_y;
+				g_hud_globals.m_hud_screen.scale.x = settings_instance.m_hud_scale.GetConst().x;
+				g_hud_globals.m_hud_screen.scale.y = settings_instance.m_hud_scale.GetConst().y;
 			}
 
 			void PreSave() final override
@@ -148,8 +146,8 @@ namespace Yelo
 				auto& settings_instance = Get();
 				settings_instance.m_scale_hud = g_hud_globals.m_flags.scale_hud;
 				settings_instance.m_show_hud = g_hud_globals.m_flags.show_hud;
-				settings_instance.m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
-				settings_instance.m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
+				settings_instance.m_hud_scale.Get().x = g_hud_globals.m_hud_screen.scale.x;
+				settings_instance.m_hud_scale.Get().y = g_hud_globals.m_hud_screen.scale.y;
 			}
 		};
 #pragma endregion

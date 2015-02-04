@@ -25,6 +25,7 @@
 #include "Tool/Shader/Compiler/Compiler.hpp"
 #include "Tool/PackedFile/BuildPackedFiles.hpp"
 #include "Tool/ToolMisc.hpp"
+#include "Tool/RemoveOSTagData.hpp"
 
 namespace Yelo
 {

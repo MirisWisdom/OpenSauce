@@ -11,89 +11,6 @@ int32 PrintBlock(const uintptr_t address, const Yelo::tag_block_definition* bloc
 
 #pragma region User interface functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-/// <summary>	Requests a command from the user. </summary>
-///
-/// <param name="command_list">
-/// 	A semi-colon delimited list of commands the user can input.
-/// </param>
-/// <param name="arguments_string">
-/// 	[out] A pointer to a std::string that arguments will be copied to.
-/// </param>
-/// <param name="line_start">
-/// 	(Optional) The text string to use at the start of the command line, defaults to "command".
-/// </param>
-///
-/// <returns>
-/// 	Returns the index of the command entered, or -1 if the command did not match.
-/// </returns>
-int32 EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_string, const char* line_start = "command")
-{
-	std::vector<std::string> command_array;
-	std::string commands(command_list);
-
-	bool newline_command = false;
-
-	// split the command list into an array
-	while(commands.length())
-	{
-		std::string segment;
-		// get the next command in the list and add it to the command array
-		StringEditing::GetStringSegment(commands, segment, nullptr, ";");
-		command_array.push_back(segment);
-
-		// remove the command from the commands string
-		StringEditing::RemoveStringSegment(commands, nullptr, ";");
-
-		// if the user can just press enter, we need to know to interpret that as a command
-		if(!segment.compare("\n") && !newline_command)
-			newline_command = true;
-	}
-
-	char command[128];
-	puts("");
-	// get the users command
-	Console::ColorPrintF(k_color_command_line, "%s: ", line_start);
-	do
-	{
-		fgets(command, sizeof(command), stdin);
-		//ignore newlines unless it is a valid command
-	}while(!newline_command && command[0] == '\n');
-
-	// seperate into command and arguments
-	std::string command_string(command);
-
-	// if the command is just a newline no parsing is necessary
-	if(command[0] != '\n')
-		StringEditing::GetStringSegment(command_string, command_string, nullptr, " \n");
-
-	// if arguments are requested, set the passed strings value
-	if(arguments_string)
-	{
-		// set the arguments string to the whole string, then remove the command
-		arguments_string->assign(command);
-		StringEditing::RemoveStringSegment(*arguments_string, nullptr, " ");
-		StringEditing::GetStringSegment(*arguments_string, *arguments_string, nullptr, "\n");
-	}
-
-	int index = 0;
-	bool command_found = false;
-
-	// iterate through the commands until a matching one is/is not found
-	for( auto& command : command_array )
-	{
-		if(!command_string.compare(command))
-		{
-			command_found = true;
-			break;
-		}
-		index++;
-	}
-
-	// return the index of the matching command, or -1 if it did not match
-	return command_found ? index : -1;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>	Prints a human friendly string response to a commands status. </summary>
 ///
 /// <param name="status_error">	The status error to print a string for. </param>
@@ -535,7 +452,7 @@ void DisplayEditWarning()
 	puts("");
 	Console::ColorPrint(k_color_status_warning, "manually writing to Halo's memory can cause unexpected results\nif incorrect values are entered.", true);
 
-	int answer = EnterCommand("y;n", nullptr, "do you want to continue (y/n)?");
+	int answer = Console::EnterCommand("y;n", nullptr, "do you want to continue (y/n)?");
 
 	g_cache_view_globals.m_accepted_edit_warning = (answer == 0);
 }
@@ -1133,7 +1050,7 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, cons
 				
 					Console::ColorPrint(k_color_command_line, "press enter to continue, \"s\" to skip this block type, or \"q\" to quit");
 
-					int command = EnterCommand("q;s;\n", nullptr);
+					int command = Console::EnterCommand("q;s;\n", nullptr);
 
 					if(command == 0)
 						return k_action_end_function;
@@ -1163,7 +1080,7 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, cons
 		{
 			puts("");
 			Console::ColorPrint(k_color_command_line, "press enter to continue or \"q\" to quit");
-			int command = EnterCommand("q;\n", nullptr);
+			int command = Console::EnterCommand("q;\n", nullptr);
 
 			if(command == 0)
 				return k_action_end_function;
@@ -1311,7 +1228,7 @@ int32 PrintTagIndex(const char* filter)
 		{
 			puts("");
 			Console::ColorPrint(k_color_command_line, "press enter to continue, or \"q\" to quit", true);
-			int command = EnterCommand("q;\n", nullptr);
+			int command = Console::EnterCommand("q;\n", nullptr);
 			if(command == 0)
 				return k_action_end_function;
 			count = 0;

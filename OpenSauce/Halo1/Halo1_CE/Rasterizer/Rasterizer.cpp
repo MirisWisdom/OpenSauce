@@ -129,7 +129,9 @@ namespace Yelo
 		c_settings_container::c_upgrades_container::c_upgrades_container()
 			: Configuration::c_configuration_container("Upgrades")
 			, m_maximum_rendered_triangles("MaximumRenderedTriangles", true)
+#if PLATFORM_VERSION <= 0x1090
 			, m_model_node_stretching_fix("MaximumModelNodes", true)
+#endif
 		{ }
 
 		const std::vector<Configuration::i_configuration_value* const> c_settings_container::c_upgrades_container::GetMembers()
@@ -137,19 +139,29 @@ namespace Yelo
 			return std::vector<Configuration::i_configuration_value* const>
 			{
 				&m_maximum_rendered_triangles,
+#if PLATFORM_VERSION <= 0x1090
 				&m_model_node_stretching_fix,
+#endif
 			};
 		}
 
 		c_settings_container::c_settings_container()
 			: Configuration::c_configuration_container("Rasterizer")
+#if PLATFORM_VERSION <= 0x1090
 			, m_use_nvidia_camo("UseNvidiaCamo", false)
+#endif
 			, m_upgrades()
 		{ }
 
 		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const> { &m_use_nvidia_camo, &m_upgrades };
+			return std::vector<i_configuration_value* const>
+			{
+#if PLATFORM_VERSION <= 0x1090
+				&m_use_nvidia_camo,
+#endif
+				&m_upgrades
+			};
 		}
 		
 		void c_settings_rasterizer::PostLoad()

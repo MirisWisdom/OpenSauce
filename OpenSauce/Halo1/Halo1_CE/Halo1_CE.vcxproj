@@ -875,7 +875,9 @@
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
     <Xml Include="YeloFileChecksums.xml" />
-    <Xml Include="YeloSettingsTemplate.xml" />
+    <Xml Include="YeloSettingsTemplate.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Halo1_CE.rc" />

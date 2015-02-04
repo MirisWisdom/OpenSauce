@@ -69,10 +69,10 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 		printf_s(
 			"Replaces the lightmap UVs of a bsp with custom ones loaded from\n"
 			"an obj file. The obj file must have lightmaps grouped by object\n"
-			"and in ascending order (lightmap_0 to lightmap_n). Best way to ensure\n"
-			"this is to export a fresh lightmaps obj using Aether, import it into\n"
-			"your modelling program then ONLY edit the UV's to ensure the model\n"
-			"matches the bsp.\n"
+			"and have the group index appending the group name (lightmap_0).\n"
+			"Best way to ensure this is to export a fresh lightmaps obj using\n"
+			"Aether, import it into your modelling program then ONLY edit the\n"
+			"UV's to ensure the model matches the bsp.\n"
 			"Arguments:\n"
 			"	<obj-file>\n"
 			"		location of the source obj, relative to the data directory\n"
@@ -98,15 +98,24 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 	}
 	else if( !strcmp(args->tool_command, "runtime-cache-view") )
 	{
+		printf_s(
+			"This tool allows you to view the contents of the tag cache in an\n"
+			"executing instance of Halo CE. See the tools own help for more details\n"
+			);
 	}
-	else if( !strcmp(args->tool_command, "remove-os-mods-from-scenario") )
+	else if( !strcmp(args->tool_command, "remove-os-tag-data") )
 	{
 		printf_s(
-			"Formats a scenario into a tag that can be read by stock tools\n"
-			"Back up your tag before hand to be safe"
+			"Removes OS tag data that would prevent loading in the stock tools\n"
+			"Back up your tags before hand to be safe"
 			"Arguments:\n"
-			"	<scenario-name>\n"
-			"		TagName: Name of the .scenario cleanse to of OS-modifications\n"
+			"	<tag-name>\n"
+			"		TagName: Name of the tag to clean\n"
+			"	<tag-type>\n"
+			"		TagType: Type of the tag (file extension)\n"
+			"	<recursive>\n"
+			"		Boolean: When true, all tags refrenced by the specified tag\n"
+			"		will also be processed\n"
 			);
 	}
 	else if( !strcmp(args->tool_command, "tag-load-test") )
