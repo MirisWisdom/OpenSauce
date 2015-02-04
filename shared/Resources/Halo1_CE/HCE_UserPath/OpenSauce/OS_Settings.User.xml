@@ -8,10 +8,8 @@
 		<GBuffer>
 			<Enabled>true</Enabled>
 		</GBuffer>
-		<UseNvidiaCamo>false</UseNvidiaCamo>
 		<Upgrades>
 			<MaximumRenderedTriangles>true</MaximumRenderedTriangles>
-			<MaximumModelNodes>true</MaximumModelNodes>
 		</Upgrades>
 		<ShaderExtensions>
 			<Enabled>true</Enabled>
@@ -71,7 +69,9 @@
 	<HUD>
 		<ShowHUD>true</ShowHUD>
 		<ScaleHUD>true</ScaleHUD>
-		<HUDScaleX>1</HUDScaleX>
-		<HUDScaleY>1</HUDScaleY>
+		<HUDScale>
+			<X>1</X>
+			<Y>1</Y>
+		</HUDScale>
 	</HUD>
 </OpenSauce>

@@ -117,6 +117,7 @@
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.cpp" />
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp" />
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.cpp" />
+    <ClCompile Include="Tool\RemoveOSTagData.cpp" />
     <ClCompile Include="Tool\Shader\Collection\c_collection_definition.cpp" />
     <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer.cpp" />
     <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.hpp" />
     <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.hpp" />
     <ClInclude Include="Tool\PackedFile\Processing\i_packed_file_processor.hpp" />
+    <ClInclude Include="Tool\RemoveOSTagData.hpp" />
     <ClInclude Include="Tool\Shader\Collection\c_collection_definition.hpp" />
     <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer.hpp" />
     <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.hpp" />
@@ -235,6 +237,7 @@
     <None Include="Engine\Units.SeatBoarding.inl" />
     <None Include="Engine\Units.SeatDamage.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl" />
+    <None Include="Tool\RemoveOSTagData.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
     <None Include="Tool\BuildCppDefinition.inl" />

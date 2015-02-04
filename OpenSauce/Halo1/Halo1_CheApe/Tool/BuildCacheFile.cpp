@@ -37,6 +37,12 @@ namespace Yelo { namespace Tool {
 		uint16 build;
 	};
 	static s_build_version g_minimum_build_version;
+	static bool g_is_building_cache_file = false;
+
+	bool is_building_cache_file()
+	{
+		return g_is_building_cache_file;
+	}
 
 	void build_cache_file_set_minimum_os_build(const byte major, const byte minor, const uint16 build)
 	{
@@ -123,6 +129,8 @@ namespace Yelo { namespace Tool {
 		}*args = CAST_PTR(s_arguments*, arguments);
 		//////////////////////////////////////////////////////////////////////////
 
+		g_is_building_cache_file = true;
+
 		printf_s("CheApe: reminder: stock build-cache-file doesn't support\n");
 		printf_s("\t* "	"OS script definitions\n");
 		printf_s("\t* "	"additional grenade types\n");
@@ -148,6 +156,8 @@ namespace Yelo { namespace Tool {
 			cstring use_memory_upgrades_str;
 			char* scenario_name;
 		}* args = CAST_PTR(s_arguments*, arguments);
+
+		g_is_building_cache_file = true;
 
 		bool copy_data_files_first, store_resources, use_memory_upgrades;
 		ValueConversion::FromString(args->copy_data_files_first_str, copy_data_files_first);

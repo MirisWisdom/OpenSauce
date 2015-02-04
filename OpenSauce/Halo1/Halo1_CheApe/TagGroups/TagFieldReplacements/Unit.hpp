@@ -174,6 +174,11 @@ namespace Yelo
 			auto& unit_definition = tag_definition.unit;
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
+			if(!Tool::is_building_cache_file())
+			{
+				return true;
+			}
+
 			for(auto& seat : unit_definition.seats)
 			{
 				if(seat.seat_extensions.Count)

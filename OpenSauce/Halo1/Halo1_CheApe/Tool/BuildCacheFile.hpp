@@ -20,6 +20,12 @@ namespace Yelo
 	namespace Tool
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Query if tool is building a cache file. </summary>
+		///
+		/// <returns>	true if building a cache file, false if not. </returns>
+		bool is_building_cache_file();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Set's the minimum open sauce build for the current cache file. </summary>
 		///
 		/// <param name="major">	The major version. </param>

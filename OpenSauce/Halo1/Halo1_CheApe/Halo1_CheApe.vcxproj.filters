@@ -263,6 +263,9 @@
     <ClCompile Include="Engine\GameState.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Tool\RemoveOSTagData.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -477,6 +480,9 @@
     <ClInclude Include="Engine\GameState.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\RemoveOSTagData.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -559,6 +565,9 @@
     </None>
     <None Include="Engine\Units.Animations.inl">
       <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Tool\RemoveOSTagData.inl">
+      <Filter>Tool\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

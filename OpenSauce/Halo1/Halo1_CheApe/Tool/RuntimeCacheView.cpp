@@ -185,7 +185,7 @@ namespace Yelo
 			do
 			{
 				std::string arguments;
-				int index = EnterCommand("quit;load;help;list;open;set;findaddr", &arguments);
+				int index = Console::EnterCommand("quit;load;help;list;open;set;findaddr", &arguments);
 
 				// determine what command has been issued
 				switch(index)
