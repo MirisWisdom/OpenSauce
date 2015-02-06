@@ -33,6 +33,7 @@
 			<field>inherit encounter/squad</field>
 			<field>drop weapon</field>
 			<field>inherit seated units</field>
+			<field>delete attached actors</field>
 		</Flag>
 
 		<Flag name="actor_variant_transform_in_attachment_flags">
@@ -46,6 +47,7 @@
 			<field type="String" name="target name" blockname="true" />
 			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_target_flags" />
 			<field type="Pad" definition="2" />
+			<field type="RealFraction" name="selection chance" />
 
 			<field type="Explanation" name="AI" definition="" />
 			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />

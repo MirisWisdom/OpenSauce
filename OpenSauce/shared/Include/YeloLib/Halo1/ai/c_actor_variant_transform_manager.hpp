@@ -58,9 +58,48 @@ namespace Yelo
 			c_actor_variant_transform_manager();
 
 		private:
+#pragma region Validation
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Returns whether a unit is valid for transforming. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the unit. </param>
+			///
+			/// <returns>	true if valid, false if not. </returns>
+			bool UnitIsValid(const datum_index unit_index) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Returns whether an actor is valid for transforming. </summary>
+			///
+			/// <param name="unit_index">	Datum index of the actor. </param>
+			///
+			/// <returns>	true if valid, false if not. </returns>
+			bool ActorIsValid(const datum_index actor_index) const;
+#pragma endregion
+
 #pragma region Find Transform
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			/// <summary>	Searches for a matching actor variant transform definition. </summary>
+			/// <summary>	Tests the vitality transform criteria for a unit. </summary>
+			///
+			/// <param name="unit_index">   	Datum index of the unit. </param>
+			/// <param name="transform_out">	The transform out. </param>
+			///
+			/// <returns>	true if the test passes, false if the test fails. </returns>
+			bool TestVitalityCriteria(const datum_index unit_index, const TagGroups::actor_variant_transform_out_definition& transform_out_definition) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets a transform using the provided selection function. </summary>
+			///
+			/// <param name="transformations">	The transformations. </param>
+			/// <param name="select_func">	  	The select function. </param>
+			///
+			/// <returns>	The found transform. </returns>
+			sbyte FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+				, std::function<bool (const TagGroups::actor_variant_transform_collection_transform&)> select_func) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Searches for a matching actor variant transform definition based on damage received.
+			/// </summary>
 			///
 			/// <param name="transformations">			[in] The transformations list. </param>
 			/// <param name="unit_index">				Datum index of the unit. </param>
@@ -68,10 +107,20 @@ namespace Yelo
 			/// <param name="damage_is_melee">			Whether the damage is melee damage. </param>
 			///
 			/// <returns>	Index of the found transform. Returns NONE if no transform was found. </returns>
-			sbyte FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
-				, const datum_index& unit_index
-				, const datum_index& instigator_unit_index
+			sbyte FindDamageTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+				, const datum_index unit_index
+				, const datum_index instigator_unit_index
 				, const bool damage_is_melee) const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Searches for the first transform matching the criteria for a unit update. </summary>
+			///
+			/// <param name="transformations">	The transformations. </param>
+			/// <param name="unit_index">	  	Datum index of the unit. </param>
+			///
+			/// <returns>	The found update transform. </returns>
+			sbyte FindUpdateTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+				, const datum_index unit_index) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Searches for the first transforms entry for an actor variant tag. </summary>

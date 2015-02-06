@@ -39,6 +39,7 @@
 			<field type="Pad" definition="2" />
 			
 			<field type="String" name="transform name" blockname="true" />
+			<field type="RealFraction" name="selection chance" />
 			
 			<field type="Explanation" name="Transform Stages" definition="The transform out stage tag determines the cause of the transform (such as low health) and the animation to play on the attacked unit. The transform in stage tag determines the possible actors to transform into, and optionally the attachments to add during the transform out stage." />
 			<field type="TagReference" name="transform out" definition="actor_variant_transform_out_reference" />

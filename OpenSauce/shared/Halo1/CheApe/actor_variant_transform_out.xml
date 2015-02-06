@@ -7,18 +7,52 @@
 			<field>kill</field>
 			<field>inherit</field>
 		</Enum>
-
-		<Enum name="actor_variant_transform_out_threshold_type">
-			<field>both</field>
-			<field>shield amount only</field>
-			<field>health amount only</field>
-		</Enum>
 	</enums>
 
 	<flags>
 		<Flag name="actor_variant_transform_out_flags">
+			<field>invincible during transform out</field>
+		</Flag>
+		
+		<Flag name="actor_variant_transform_out_criteria_flags">
+			<field>transform on damage</field>
 			<field>ignore friendly fire</field>
-			<field>invicible during transform out</field>
+			<field>transform on actor action</field>
+			<field>transform on actor state</field>
+			<field>transform on shield range</field>
+			<field>transform on health range</field>
+		</Flag>
+		
+		<Flag name="actor_variant_transform_out_actor_action_flags">
+			<field>none</field>
+			<field>sleep</field>
+			<field>alert</field>
+			<field>fight</field>
+			<field>flee</field>
+			<field>uncover</field>
+			<field>guard</field>
+			<field>search</field>
+			<field>wait</field>
+			<field>vehicle</field>
+			<field>charge</field>
+			<field>obey</field>
+			<field>converse</field>
+			<field>avoid</field>
+		</Flag>
+		
+		<Flag name="actor_variant_transform_out_actor_state_flags">
+			<field>none</field>
+			<field>sleeping</field>
+			<field>alert</field>
+			<field>moving repeat same position</field>
+			<field>moving loop</field>
+			<field>moving loop back and forth</field>
+			<field>moving loop randomly</field>
+			<field>moving randomly</field>
+			<field>guarding</field>
+			<field>guarding at guard position</field>
+			<field>searching</field>
+			<field>fleeing</field>
 		</Flag>
 	</flags>
 
@@ -27,15 +61,16 @@
 			<!--actor_variant_transform_out_definition-->
 			<field type="WordFlags" name="flags" definition="actor_variant_transform_out_flags" />
 			<field type="Pad" definition="2" />
-
 			<field type="Explanation" name="Transform Criteria" definition="" />
-			<field type="Enum" name="threshold type" definition="actor_variant_transform_out_threshold_type" />
+			<field type="WordFlags" name="criteria flags" definition="actor_variant_transform_out_criteria_flags" />
 			<field type="Pad" definition="2" />
-			<field type="RealFraction" name="shield threshold" />
-			<field type="RealFraction" name="health threshold" />
+			<field type="WordFlags" name="actor action" definition="actor_variant_transform_out_actor_action_flags" />
+			<field type="WordFlags" name="actor state" definition="actor_variant_transform_out_actor_state_flags" />
+			<field type="RealBounds" name="shield range" />
+			<field type="RealBounds" name="health range" />
 			<field type="Pad" definition="24" />
 
-			<field type="Explanation" name="Animation" definition="Played when the transform criteria have been met. The actor is made braindead during the animation, and if the incivibility flag is set they cannot be killed once the animation begins." />
+			<field type="Explanation" name="Animation" definition="Played when the transform criteria have been met. The actor is made braindead during the animation, and if the invincibility flag is set they cannot be killed once the animation begins." />
 			<field type="String" name="transform out anim" />
 			<field type="Block" name="keyframe actions" definition="actor_variant_transform_keyframe_action_block" />
 			<field type="Pad" definition="24" />

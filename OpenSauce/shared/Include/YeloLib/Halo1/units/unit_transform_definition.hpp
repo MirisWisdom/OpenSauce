@@ -14,6 +14,7 @@ namespace Yelo
 	{
 		enum game_team : _enum;
 		enum actor_default_state : _enum;
+		enum actor_action : _enum;
 		enum unit_animation_keyframe : _enum;
 
 		enum actor_variant_transform_keyframe_rider_handling : _enum
@@ -95,6 +96,7 @@ namespace Yelo
 			_actor_variant_transform_in_target_flags_inherit_encounter_squad,
 			_actor_variant_transform_in_target_flags_drop_weapon,
 			_actor_variant_transform_in_target_flags_inherit_seated_units,
+			_actor_variant_transform_in_target_flags_delete_attached_actors,
 
 			_actor_variant_transform_in_target_flags
 		};
@@ -105,13 +107,24 @@ namespace Yelo
 
 			_actor_variant_transform_in_attachment_flags
 		};
-
+		
 		enum actor_variant_transform_out_flags
 		{
-			_actor_variant_transform_out_flags_ignore_friendly_fire_bit,
 			_actor_variant_transform_out_flags_invicible_during_transform_out_bit,
 
 			_actor_variant_transform_out_flags
+		};
+
+		enum actor_variant_transform_out_criteria_flags
+		{
+			_actor_variant_transform_out_criteria_flags_transform_on_damage_bit,
+			_actor_variant_transform_out_criteria_flags_ignore_friendly_fire_bit,
+			_actor_variant_transform_out_criteria_flags_transform_on_actor_action_bit,
+			_actor_variant_transform_out_criteria_flags_transform_on_actor_state_bit,
+			_actor_variant_transform_out_criteria_flags_transform_on_shield_range_bit,
+			_actor_variant_transform_out_criteria_flags_transform_on_health_range_bit,
+
+			_actor_variant_transform_out_criteria_flags
 		};
 	};
 
@@ -134,6 +147,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, target_name);
 			TAG_FIELD(word_flags, flags);
 			PAD16;
+			TAG_FIELD(real_fraction, selection_chance);
 			
 			TAG_FIELD(tag_reference, actor_variant);
 			TAG_FIELD(Enums::actor_variant_transform_in_team_handling, team_handling);
@@ -151,7 +165,7 @@ namespace Yelo
 			TAG_FIELD(real, shield_override);
 			TAG_FIELD(real, health_override);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x90);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x94);
 
 		struct actor_variant_transform_in_attachment
 		{
@@ -185,15 +199,18 @@ namespace Yelo
 
 			TAG_FIELD(word_flags, flags);
 			PAD16;
-			TAG_FIELD(Enums::actor_variant_transform_out_threshold_type, threshold_type);
+
+			TAG_FIELD(word_flags, criteria_flags);
 			PAD16;
-			TAG_FIELD(real_fraction, shield_threshold);
-			TAG_FIELD(real_fraction, health_threshold);
+			TAG_FIELD(word_flags, actor_action);
+			TAG_FIELD(word_flags, actor_state);
+			TAG_FIELD(real_bounds, shield_range);
+			TAG_FIELD(real_bounds, health_range);
 			TAG_PAD(tag_block, 2);
 			TAG_FIELD(tag_string, transform_out_anim);
 			TAG_TBLOCK(keyframe_actions, actor_variant_transform_keyframe_action);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_out_definition) == 0x6C);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_out_definition) == 0x78);
 #pragma endregion
 
 #pragma region actor_variant_transform_collection_definition
@@ -210,13 +227,15 @@ namespace Yelo
 			TAG_FIELD(word_flags, flags);
 			PAD16;
 			TAG_FIELD(tag_string, transform_name);
+			TAG_FIELD(real_fraction, selection_chance);
+
 			TAG_FIELD(tag_reference, transform_out);
 			actor_variant_transform_out_definition* transform_out_ptr;
 			TAG_FIELD(tag_reference, transform_in);
 			actor_variant_transform_in_definition* transform_in_ptr;
 			TAG_TBLOCK(instigators, actor_variant_transform_collection_instigator);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_collection_transform) == 0x70);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_collection_transform) == 0x74);
 
 		struct actor_variant_transform_collection_entry
 		{

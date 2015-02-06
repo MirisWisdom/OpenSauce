@@ -84,6 +84,15 @@ namespace Yelo
 						}
 					}
 				}
+
+				// Process the transform probabilities
+				for(auto& transform : actor_variant.transforms)
+				{
+					if(transform.selection_chance == 0.0f)
+					{
+						transform.selection_chance = 1.0f;
+					}
+				}
 			}
 
 			return true;
@@ -162,6 +171,24 @@ namespace Yelo
 					attachment.attachment_scale.lower = 1.0f;
 					attachment.attachment_scale.upper = 1.0f;
 				}
+			}
+
+			// Normalise the target probabilities
+			real probability_total = 0.0f;
+			for(auto& target : tag_definition.targets)
+			{
+				if(target.selection_chance == 0.0f)
+				{
+					target.selection_chance = 1.0f;
+				}
+
+				probability_total += target.selection_chance;
+			}
+
+			real normalisation_value = 1.0f / probability_total;
+			for(auto& target : tag_definition.targets)
+			{
+				target.selection_chance *= normalisation_value;
 			}
 
 			return true;

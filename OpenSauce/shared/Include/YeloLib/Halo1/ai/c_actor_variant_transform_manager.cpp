@@ -45,54 +45,185 @@ namespace Yelo
 			return m_transforms_enabled;
 		}
 
-#pragma region Find Transform
-		sbyte c_actor_variant_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
-			, const datum_index& unit_index
-			, const datum_index& instigator_unit_index
-			, const bool damage_is_melee) const
-		{
-			auto* unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
-			auto* instigator_unit_datum = (instigator_unit_index.IsNull() ? nullptr : blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(instigator_unit_index));
-
-			auto test_transform = [&](const TagGroups::actor_variant_transform_collection_transform& transform) -> bool
+#pragma region Validation
+			bool c_actor_variant_transform_manager::UnitIsValid(const datum_index unit_index) const
 			{
-				// Ignore transforms that are scripting only
-				if(TEST_FLAG(transform.flags, Flags::_actor_variant_transform_collection_transform_flags_scripted_only))
+				auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+				if(!unit_datum)
 				{
 					return false;
 				}
 
-				auto transform_out_definition = *transform.transform_out_ptr;
+				// Do not allow transforms whilst in a seat
+				if(unit_datum->unit.vehicle_seat_index != NONE)
+				{
+					return false;
+				}
+
+				// If the unit is dead or already transforming, return
+				if(TEST_FLAG(unit_datum->object.damage.flags, Flags::_object_killed_bit)
+					|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit)
+					|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
+				{
+					return false;
+				}
+
+				// Transforms only apply to actors
+				if(unit_datum->unit.actor_index.IsNull())
+				{
+					return false;
+				}
+
+				auto* actor_datum = AI::Actors()[unit_datum->unit.actor_index];
+				if(!actor_datum)
+				{
+					return false;
+				}
+
+				return true;
+			}
+
+			bool c_actor_variant_transform_manager::ActorIsValid(const datum_index actor_index) const
+			{
+				if(actor_index.IsNull())
+				{
+					return false;
+				}
+
+				auto* actor_datum = Actors()[actor_index];
+				if(!actor_datum)
+				{
+					return false;
+				}
+
+				if(actor_datum->meta.unit_index.IsNull())
+				{
+					return false;
+				}
+
+				auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(actor_datum->meta.unit_index);
+				if(!unit_datum)
+				{
+					return false;
+				}
+
+				// Do not allow transforms whilst in a seat
+				if(unit_datum->unit.vehicle_seat_index != NONE)
+				{
+					return false;
+				}
+
+				// If the unit is dead or already transforming, return
+				if(TEST_FLAG(unit_datum->object.damage.flags, Flags::_object_killed_bit)
+					|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit)
+					|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
+				{
+					return false;
+				}
+
+				return true;
+			}
+#pragma endregion
+
+#pragma region Find Transform
+		bool c_actor_variant_transform_manager::TestVitalityCriteria(const datum_index unit_index, const TagGroups::actor_variant_transform_out_definition& transform_out_definition) const
+		{
+			auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+
+			// Test whether the transform is valid based on the unit's vitality
+			bool health_within_range = (unit_datum.object.damage.health >= transform_out_definition.health_range.lower) && (unit_datum.object.damage.health <= transform_out_definition.health_range.upper);
+			bool shield_within_range = (unit_datum.object.damage.shield >= transform_out_definition.shield_range.lower) && (unit_datum.object.damage.shield <= transform_out_definition.shield_range.upper);
+
+			bool do_transform = true;
+			if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_health_range_bit)
+				&& !health_within_range)
+			{
+				do_transform = false;
+			}
+
+			if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_shield_range_bit)
+				&& !shield_within_range)
+			{
+				do_transform = false;
+			}
+
+			return do_transform;
+		}
+
+		sbyte c_actor_variant_transform_manager::FindTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+			, std::function<bool (const TagGroups::actor_variant_transform_collection_transform&)> select_func) const
+		{
+			// Populate the transform index list
+			std::vector<sbyte> transform_indices;
+			for(sbyte index = 0; index < transformations.Count; index++)
+			{
+				// Ignore transforms that are scripting only
+				if(TEST_FLAG(transformations[index].flags, Flags::_actor_variant_transform_collection_transform_flags_scripted_only))
+				{
+					continue;
+				}
+
+				// Randomly decide whether to include this transform
+				real random = (real)rand() / (real)RAND_MAX;
+				if(random > transformations[index].selection_chance)
+				{
+					continue;
+				}
+
+				// Determine whether the inclusion criteria are met
+				// Include the transform if they are
+				if(select_func(transformations[index]))
+				{
+					transform_indices.push_back(index);
+				}
+			}
+			
+			// Pick a random transform index from the transforms list
+			if(transform_indices.size())
+			{
+				return transform_indices[rand() % transform_indices.size()];
+			}
+
+			return NONE;
+		}
+
+		sbyte c_actor_variant_transform_manager::FindDamageTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+			, const datum_index unit_index
+			, const datum_index instigator_unit_index
+			, const bool damage_is_melee) const
+		{
+			auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			auto* instigator_unit_datum = (instigator_unit_index.IsNull() ? nullptr : blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(instigator_unit_index));
+
+			auto test_transform = [&](const TagGroups::actor_variant_transform_collection_transform& transform) -> bool
+			{
+				auto& transform_out_definition = *transform.transform_out_ptr;
+
+				// If this transform doesn't occur when damaged, return false;
+				if(!TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_damage_bit))
+				{
+					return false;
+				}
 
 				// If we should ignore friendly fire, do so
 				if(instigator_unit_datum)
 				{
-					if(TEST_FLAG(transform_out_definition.flags, Flags::_actor_variant_transform_out_flags_ignore_friendly_fire_bit)
-						&& !blam::game_team_is_enemy(unit_datum->object.owner_team, instigator_unit_datum->object.owner_team))
+					if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_ignore_friendly_fire_bit)
+						&& !blam::game_team_is_enemy(unit_datum.object.owner_team, instigator_unit_datum->object.owner_team))
 					{
 						return false;
 					}
 				}
 
-				// Test whether the transform is valid based on the unit's damage
-				bool health_below_threshold = unit_datum->object.damage.health <= transform_out_definition.health_threshold;
-				bool shield_below_threshold = unit_datum->object.damage.shield <= transform_out_definition.shield_threshold;
+				auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 
-				bool valid_transform = false;
-				switch(transform_out_definition.threshold_type)
+				if(!TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_health_range_bit)
+					&& !TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_health_range_bit))
 				{
-				case Enums::_actor_variant_transform_out_threshold_type_both:
-					valid_transform = health_below_threshold && shield_below_threshold;
-					break;
-				case Enums::_actor_variant_transform_out_threshold_type_shield_amount_only:
-					valid_transform = shield_below_threshold;
-					break;
-				case Enums::_actor_variant_transform_out_threshold_type_health_amount_only:
-					valid_transform = health_below_threshold;
-					break;
-				};
+					return false;
+				}
 
-				return valid_transform;
+				return TestVitalityCriteria(unit_index, transform_out_definition);
 			};
 
 			std::function<bool (const TagGroups::actor_variant_transform_collection_transform&)> select_func;
@@ -127,32 +258,38 @@ namespace Yelo
 				// If the instigator is null select entries that have no instigators defined
 				select_func = [&](const TagGroups::actor_variant_transform_collection_transform& entry) -> bool
 					{
-						if((entry.instigators.Count == 0) && test_transform(entry))
-						{
-							return true;
-						}
-
-						return false;
+						return (entry.instigators.Count == 0) && test_transform(entry);
 					};
 			}
-			
-			// Populate the transform index list
-			std::vector<sbyte> transform_indices;
-			for(sbyte index = 0; index < transformations.Count; index++)
-			{
-				if(select_func(transformations[index]))
-				{
-					transform_indices.push_back(index);
-				}
-			}
-			
-			// Pick a random transform index from the transforms list
-			if(transform_indices.size())
-			{
-				return transform_indices[rand() % transform_indices.size()];
-			}
 
-			return NONE;
+			return FindTransform(transformations, select_func);
+		}
+
+		sbyte c_actor_variant_transform_manager::FindUpdateTransform(const TagBlock<TagGroups::actor_variant_transform_collection_transform>& transformations
+			, const datum_index unit_index) const
+		{
+			return FindTransform(transformations,
+				[&](const TagGroups::actor_variant_transform_collection_transform& transform) -> bool
+				{
+					auto& transform_out_definition = *transform.transform_out_ptr;
+					auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+					auto& actor_datum = *Actors()[unit_datum.unit.actor_index];
+
+					if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_actor_action_bit)
+						&& !TEST_FLAG(transform_out_definition.actor_action, actor_datum.state.action))
+					{
+						return false;
+					}
+
+					if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_actor_state_bit)
+						&& !TEST_FLAG(transform_out_definition.actor_state, actor_datum.current_state))
+					{
+						return false;
+					}
+
+					return TestVitalityCriteria(unit_index, transform_out_definition);
+				}
+			);
 		}
 
 		sbyte c_actor_variant_transform_manager::FindTransformsEntry(const datum_index tag_index) const
@@ -543,7 +680,20 @@ namespace Yelo
 			// If the target index is NONE select a random target, otherwise use the existing index (set by script)
 			if(transform_state.m_target_index == NONE)
 			{
-				transform_state.m_target_index = (sbyte)(rand() % transform_in_definition.targets.Count);
+				real test_value = (real)rand() / (real)RAND_MAX;
+
+				real lower_value = 0.0f;
+				for(sbyte index = 0; index < transform_in_definition.targets.Count; index++)
+				{
+					auto& target = transform_in_definition.targets[index];
+					if((lower_value + target.selection_chance) > test_value)
+					{
+						transform_state.m_target_index = index;
+						break;
+					}
+
+					lower_value += target.selection_chance;
+				}
 			}
 			else
 			{
@@ -555,6 +705,12 @@ namespace Yelo
 			if(TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_drop_weapon))
 			{
 				blam::unit_drop_current_weapon(unit_index, true);
+			}
+
+			// Delete child actors if needed
+			if(TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_delete_attached_actors))
+			{
+				Objects::DeleteChildActors(unit_index);
 			}
 
 			// Create the new unit, or reuse the existing unit if the flag is set and it matches the type in the actor variant tag
@@ -601,6 +757,9 @@ namespace Yelo
 				delete_unit = true;
 			}
 			auto* new_unit_datum = blam::object_get_and_verify_type<Objects::s_unit_datum>(new_unit_index);
+
+			// Force the base seat animation to "stand", if we don't do this the unit could be "flaming" and a weapon might not be added
+			new_unit_datum->unit.animation.base_seat = Enums::_unit_base_seat_stand;
 
 			// Creating the units actor sets the units vitality so take a copy
 			real old_unit_health = unit_datum->object.damage.health;
@@ -717,66 +876,32 @@ namespace Yelo
 				return;
 			}
 
-			auto* unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
-			if(!unit_datum)
+			if(!UnitIsValid(unit_index))
 			{
 				return;
 			}
-
-			// Do not allow transforms whilst in a seat
-			if(unit_datum->unit.vehicle_seat_index != NONE)
-			{
-				return;
-			}
-
-			// If the unit is dead or already transforming, return
-			if(TEST_FLAG(unit_datum->object.damage.flags, Flags::_object_killed_bit)
-				|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit)
-				|| TEST_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_in_bit))
-			{
-				return;
-			}
-
-			// Transforms only apply to actors
-			if(unit_datum->unit.actor_index.IsNull())
-			{
-				return;
-			}
-
-			auto* actor_datum = AI::Actors()[unit_datum->unit.actor_index];
-			if(!actor_datum)
-			{
-				return;
-			}
+			auto& unit_datum = *blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			auto& actor_datum = *Actors()[unit_datum.unit.actor_index];
 			
 			// If the actor variant has no transforms defined, return
-			auto transforms_entry_index = FindTransformsEntry(actor_datum->meta.actor_variant_definition_index);
+			auto transforms_entry_index = FindTransformsEntry(actor_datum.meta.actor_variant_definition_index);
 			if(transforms_entry_index == NONE)
 			{
 				return;
 			}
 			auto& transform_entry = m_transform_collection->actor_variant_transforms[transforms_entry_index];
 
-			// Try to find a transform for the damage instigator
-			// If no match is found, look for a non-instigator transform
+			// Try to find a transform for the damage instigator If no match is found, look for a non-instigator transform
 			// Return if no match is found
-			bool is_melee = (unit_datum->unit.damage_result.category == Enums::_damage_category_melee);
-			auto transform_index = FindTransform(transform_entry.transforms
+			bool is_melee = (unit_datum.unit.damage_result.category == Enums::_damage_category_melee);
+			auto transform_index = FindDamageTransform(transform_entry.transforms
 				, unit_index
 				, damage_data->responsible_unit_index
 				, is_melee);
 
 			if(transform_index == NONE)
 			{
-				transform_index = FindTransform(transform_entry.transforms
-					, unit_index
-					, datum_index::null
-					, is_melee);
-
-				if(transform_index == NONE)
-				{
-					return;
-				}
+				return;
 			}
 			auto& transform = transform_entry.transforms[transform_index];
 
@@ -790,7 +915,7 @@ namespace Yelo
 			{
 				// Start transforming the unit, using the found transform
 				TransformOut(unit_index
-					, unit_datum
+					, &unit_datum
 					, instigator_team
 					, *transform.transform_out_ptr
 					, *transform.transform_in_ptr
@@ -868,6 +993,46 @@ namespace Yelo
 
 					// The transform state data is no longer needed
 					FreeTransformState(unit_index);
+				}
+			}
+			else if(UnitIsValid(unit_index))
+			{
+				auto& unit_datum = *blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+				auto& actor_datum = *Actors()[unit_datum.unit.actor_index];
+
+				// If the actor variant has no transforms defined, return
+				auto transforms_entry_index = FindTransformsEntry(actor_datum.meta.actor_variant_definition_index);
+				if(transforms_entry_index == NONE)
+				{
+					return;
+				}
+				auto& transform_entry = m_transform_collection->actor_variant_transforms[transforms_entry_index];
+
+				// Try to find a transform for the actor action If no match is found, look for a non-instigator transform
+				// Return if no match is found
+				auto transform_index = FindUpdateTransform(transform_entry.transforms, unit_index);
+				if(transform_index == NONE)
+				{
+					return;
+				}
+				auto& transform = transform_entry.transforms[transform_index];
+
+				// Get a free transform state entry, if an entry is unavailable skip the transform
+				auto* transform_state = AllocateTransformState(actor_datum.meta.unit_index);
+				if(transform_state)
+				{
+					// Start transforming the unit, using the found transform
+					TransformOut(actor_datum.meta.unit_index
+						, &unit_datum
+						, Enums::_game_team_none
+						, *transform.transform_out_ptr
+						, *transform.transform_in_ptr
+						, *transform_state);
+			
+					transform_state->m_instigator_team = Enums::_game_team_none;
+					transform_state->m_transform_entry_index = transforms_entry_index;
+					transform_state->m_transform_index = transform_index;
+					transform_state->m_target_index = NONE;
 				}
 			}
 		}

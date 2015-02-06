@@ -69,34 +69,6 @@ namespace Yelo
 
 		#include "Game/EngineFunctions._Misc.inl"
 
-		namespace AI
-		{
-			void API_FUNC_NAKED Delete(datum_index actor_index, bool is_dead)
-			{
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(ACTOR_DELETE);
-
-				API_FUNC_NAKED_START()
-					movzx	eax, is_dead
-					push	eax
-					mov		ebx, actor_index
-					call	FUNCTION
-					add		esp, 4 * 1
-				API_FUNC_NAKED_END(2)
-			}
-
-			void API_FUNC_NAKED AttachFree(datum_index unit_index, datum_index actor_variant_definition)
-			{
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(AI_SCRIPTING_ATTACH_FREE);
-
-				API_FUNC_NAKED_START()
-					mov		eax, actor_variant_definition
-					push	unit_index
-					call	FUNCTION
-					add		esp, 4 * 1
-				API_FUNC_NAKED_END(2)
-			}
-		};
-
 		namespace Cache
 		{
 			API_FUNC_NAKED bool FileReadRequest(/*datum_index tag_index,*/
@@ -134,6 +106,7 @@ namespace Yelo
 				API_FUNC_NAKED_START()
 					push	esi
 					push	edi
+					push	ecx
 
 					mov		ecx, marker_name
 					push	ecx
@@ -142,6 +115,7 @@ namespace Yelo
 					call	FUNCTION
 					add		esp, 4 * 1
 
+					pop		ecx
 					pop		edi
 					pop		esi
 				API_FUNC_NAKED_END(3)
@@ -173,17 +147,6 @@ namespace Yelo
 		namespace Objects
 		{
 			#include "Game/EngineFunctions.Objects.inl"
-		};
-
-		namespace Physics
-		{
-			API_FUNC_NAKED bool PLATFORM_API CollisionTestVector(long_flags flags, real_point3d& location, real_vector3d& vector, 
-				datum_index object_index, Yelo::Physics::s_collision_result& collision)
-			{
-				static const uintptr_t JMP_ADDR = GET_FUNC_PTR(COLLISION_TEST_VECTOR);
-
-				__asm jmp	JMP_ADDR
-			}
 		};
 
 		namespace Players
@@ -281,9 +244,22 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// actors.c
-		void PLATFORM_API actor_delete(datum_index actor_index, bool is_dead)
+		API_FUNC_NAKED void PLATFORM_API actor_delete(datum_index actor_index, bool is_dead)
 		{
-			Engine::AI::Delete(actor_index, is_dead);
+				static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_DELETE);
+
+				API_FUNC_NAKED_START()
+					pushad
+
+					movzx	eax, is_dead
+					push	eax
+					mov		ebx, actor_index
+					call	FUNCTION
+					add		esp, 4
+
+					popad
+					pop		ebp
+			API_FUNC_NAKED_END_()
 		}
 
 		API_FUNC_NAKED void PLATFORM_API actor_update(const datum_index actor_index)
@@ -291,12 +267,18 @@ namespace Yelo
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_UPDATE);
 
 			API_FUNC_NAKED_START()
+				push	eax
+				push	ecx
+				push	edx
 				push	esi
 
 				mov		esi, actor_index
 				call	FUNCTION
 
 				pop		esi
+				pop		edx
+				pop		ecx
+				pop		eax
 				pop		ebp
 			API_FUNC_NAKED_END_()
 		}
@@ -426,9 +408,21 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// ai_script.c
-		void PLATFORM_API ai_scripting_attach_free(datum_index unit_index, datum_index actor_variant_definition_index)
+		API_FUNC_NAKED void PLATFORM_API ai_scripting_attach_free(datum_index unit_index, datum_index actor_variant_definition_index)
 		{
-			Engine::AI::AttachFree(unit_index, actor_variant_definition_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(AI_SCRIPTING_ATTACH_FREE);
+
+			API_FUNC_NAKED_START()
+				push	eax
+				
+				mov		eax, actor_variant_definition_index
+				push	unit_index
+				call	FUNCTION
+				add		esp, 4
+
+				pop		eax
+				pop		ebp
+			API_FUNC_NAKED_END_()
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -1518,10 +1512,12 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// collisions.c
-		bool PLATFORM_API collision_test_vector(long_flags flags, real_point3d& location, real_vector3d& vector, 
+		API_FUNC_NAKED bool PLATFORM_API collision_test_vector(long_flags flags, real_point3d& location, real_vector3d& vector, 
 			datum_index object_index, Physics::s_collision_result& collision)
 		{
-			return Engine::Physics::CollisionTestVector(flags, location, vector, object_index, collision);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(COLLISION_TEST_VECTOR);
+
+			__asm jmp	FUNCTION;
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
