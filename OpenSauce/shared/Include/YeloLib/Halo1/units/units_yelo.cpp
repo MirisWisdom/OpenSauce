@@ -336,5 +336,6 @@ namespace Yelo
 				g_animation_state_handlers[state - Enums::_unit_animation_state] = handler;
 			}
 		};};
+#pragma endregion
 	};
 };

@@ -158,6 +158,23 @@
 			<field>searching</field>
 			<field>fleeing</field>
 		</Enum>
+		
+		<Enum name="actor_action_enum">
+			<field>none</field>
+			<field>sleep</field>
+			<field>alert</field>
+			<field>fight</field>
+			<field>flee</field>
+			<field>uncover</field>
+			<field>guard</field>
+			<field>search</field>
+			<field>wait</field>
+			<field>vehicle</field>
+			<field>charge</field>
+			<field>obey</field>
+			<field>converse</field>
+			<field>avoid</field>
+		</Enum>
 	</enums>
 
 	<blocks>
