@@ -314,6 +314,12 @@ namespace Yelo
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_damage_flags, 2,
 				"use weapon melee damage effect",
 				"exit after grenade plant");
+
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_damage_permitted_grenade_types, 4,
+				"fragmentation grenade",
+				"plasma grenade",
+				"custom grenade 1",
+				"custom grenade 2");
 			
 			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_seat_keyframe_action) =
 			{
@@ -362,7 +368,7 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_enum, "melee", &unit_seat_damage_melee),
 				TAG_FIELD_ENTRY(_field_tag_reference, "melee damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
 				TAG_FIELD_ENTRY(_field_enum, "grenade", &unit_seat_damage_grenade),
-				TAG_FIELD_ENTRY_PAD(2),
+				TAG_FIELD_ENTRY(_field_word_flags, "permitted grenade types", &unit_seat_damage_permitted_grenade_types),
 				TAG_FIELD_ENTRY(_field_real, "grenade detonation time"),
 				TAG_FIELD_ENTRY(_field_string, "grenade marker"),
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),
