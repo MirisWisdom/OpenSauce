@@ -8,17 +8,15 @@
 #include "Game/AI.hpp"
 
 #include <blamlib/Halo1/ai/actor_structures.hpp>
-#include <blamlib/Halo1/ai/ai_structures.hpp>
 #include <blamlib/Halo1/ai/prop_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+
+#include <YeloLib/Halo1/ai/ai_yelo.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
+
+#include "Game/AI.Transform.inl"
 
 namespace Yelo
 {
@@ -42,65 +40,72 @@ namespace Yelo
 		ai_communication_reply_events_t& AICommunicationReplies()	DPTR_IMP_GET_BYREF(ai_communication_replies);
 		ai_conversation_data_t& AIConversations()					DPTR_IMP_GET_BYREF(ai_conversations);
 
-
-		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
+		API_FUNC_NAKED void ActorActionHandleVehicleExitHook()
 		{
-			const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
-			auto unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_RETN);
 
-			// Exit the vehicle like normal if a globals tag doesn't exist
-			if(cv_globals == nullptr)
+			_asm
 			{
-				unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
-				return;
-			}
-
-			datum_index parent_unit_index = unit->object.parent_object_index;
-			auto parent_unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(parent_unit_index);
-			int16 seat_index = unit->unit.vehicle_seat_index;
-
-			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
-				cv_globals->FindUnitExternalUpgradeBlock(parent_unit->object.definition_index);
-
-			// Check if a unit upgrades definition exists for the vehicle the actor is in
-			if (unit_upgrades_definition != nullptr)
-			{
-				// Check if the seat the actor is in is being boarded
-				for(const auto& boarding_seat : unit_upgrades_definition->boarding_seats)
-				{
-					int16 boarding_seat_index = boarding_seat.seat_index;
-					int16 target_seat_index = boarding_seat.target_seat_index;
-
-					if (seat_index == target_seat_index)
-					{
-						datum_index boarding_unit = Objects::GetUnitInSeat(parent_unit_index, boarding_seat_index);
-
-						// If the seat is being boarded, prevent ai from exiting
-						if (boarding_unit != datum_index::null)
-							return;
-					}
-				}
-			}
-
-			// Exit the vehicle like normal if conditions haven't been met
-			unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
-		}
-
-		static API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
-		{
-			__asm {
 				push	eax
 				push	edx
-				push	ecx
+				xor		ecx, ecx
+				mov		cl, [eax + 60h]
 
-				push	ecx		// datum_index unit_index
-				call	AI::ActorActionHandleVehicleExitBoardingSeat
-				
-				pop		ecx
+				push	ecx
+				push	eax
+				push	ebx
+				call	AI::ActorPropShouldCauseExitVehicle
+				add		esp, 0Ch
+
+				mov		cl, al
 				pop		edx
 				pop		eax
 
-				retn
+				test    cl, cl
+
+				jmp		RETN_ADDRESS
+			};
+		}
+
+		API_FUNC_NAKED void PropStatusRefreshHook()
+		{
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PROP_STATUS_REFRESH_RETN);
+
+			_asm
+			{
+				push	ecx
+				mov		cl, al
+				push	ecx
+
+				push	ebp
+				call	AI::ActorShouldIgnoreSeatedProp
+				add		esp, 4
+				
+				pop		ecx
+				or		cl, al
+				mov		[ebp + 133h], cl
+				pop		ecx
+
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		API_FUNC_NAKED void ActorInputUpdateHook()
+		{
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(ACTOR_INPUT_UPDATE_RETN);
+
+			_asm
+			{
+				push	eax
+
+				push	ebx
+				call	AI::ActorShouldPanicAboutMountedUnit
+				add		esp, 4
+
+				mov		byte ptr [esi+1B4h], al
+
+				pop		eax
+				jmp		RETN_ADDRESS
 			}
 		}
 
@@ -109,23 +114,55 @@ namespace Yelo
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
-			static const byte k_null_bytes[7] = {
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop
-            };
+			Memory::WriteRelativeJmp(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+			Memory::WriteRelativeJmp(&PropStatusRefreshHook, GET_FUNC_VPTR(PROP_STATUS_REFRESH_HOOK), true);
+			Memory::WriteRelativeJmp(&ActorInputUpdateHook, GET_FUNC_VPTR(ACTOR_INPUT_UPDATE_HOOK), true);
 
-            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes);
-			Memory::WriteRelativeCall(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+			Transform::Initialize();
 		}
 
 		void Dispose()
 		{
 		}
 
+		void InitializeForNewGameState()
+		{
+			Transform::InitializeForNewGameState();
+		}
+		
+		void InitializeForNewMap()
+		{
+			Transform::InitializeForNewMap();
+		}
+
+		void DisposeFromOldMap()
+		{
+			Transform::DisposeFromOldMap();
+		}
+
 		void PLATFORM_API Update()
 		{
+
+		}
+
+		void HandleGameStateLifeCycle(_enum life_state)
+		{
+			Transform::HandleGameStateLifeCycle(life_state);
+		}
+
+		void ObjectsUpdate()
+		{
+			Objects::c_object_iterator iter(Enums::_object_type_mask_unit);
+
+			for(auto object_index : iter)
+			{
+				Transform::UnitUpdate(object_index.index);
+			}
+		}
+
+		void UnitDamageAftermath(const datum_index object_index, const Objects::s_damage_data* damage_data)
+		{
+			Transform::UnitDamaged(object_index, damage_data);
 		}
 	};
 };

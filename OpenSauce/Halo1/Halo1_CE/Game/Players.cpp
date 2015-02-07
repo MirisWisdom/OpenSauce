@@ -48,6 +48,59 @@ namespace Yelo
 #include "Game/Players.Scripting.inl"
 #include "Game/Players.ActionResults.inl"
 #include "Game/Players.NearbyObjects.inl"
+
+#if !PLATFORM_IS_DEDI
+		void PLATFORM_API FollowingCameraGetUnitCameraInfoImpl(const int16 player_index, Players::s_unit_camera_info& camera_info)
+		{
+			auto& local_player = PlayerControlGlobals()->local_players[player_index];
+			auto& player_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(local_player.unit_index);
+
+			// If the player has been mounted, see if a third person camera should be used
+			bool info_set = false;
+			if(player_unit_datum.unit.animation.state == Enums::_unit_animation_state_yelo_unit_mounted)
+			{
+				auto& unit_definition = *blam::tag_get<TagGroups::s_unit_definition>(player_unit_datum.object.definition_index);
+				if((unit_definition.unit.extensions.Count == 1)
+					&& (unit_definition.unit.extensions[0].mounted_state.Count == 1))
+				{
+					auto& mounted_state_definition = unit_definition.unit.extensions[0].mounted_state[0];
+					if(TEST_FLAG(mounted_state_definition.flags, Flags::_unit_mounted_state_flags_third_person_camera))
+					{
+						// Return the camera info for the mounted state camera
+						Objects::s_object_marker marker;
+						if(blam::object_get_marker_by_name(local_player.unit_index, mounted_state_definition.unit_camera.camera_marker_name, &marker, 1) == 1)
+						{
+							camera_info.unit_index = local_player.unit_index;
+							camera_info.seat_index = NONE;
+							camera_info.unit_camera_definition = &mounted_state_definition.unit_camera;
+							camera_info.position = marker.transformed_matrix.Position;
+							return;
+						}
+					}
+				}
+			}
+
+			blam::player_control_get_unit_camera_info(player_index, camera_info);
+		}
+
+		API_FUNC_NAKED void FollowingCameraGetUnitCameraInfoHook()
+		{
+			API_FUNC_NAKED_START()
+				push	ecx
+
+				xor		ecx, ecx
+				movsx	cx, ax
+				push	esi
+				push	ecx
+				call	FollowingCameraGetUnitCameraInfoImpl
+				add		esp, 8
+
+				pop		ecx
+				pop		ebp
+			API_FUNC_NAKED_END_()
+		}
+#endif
+
 		void Initialize()
 		{
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_volume_test_player_team, 
@@ -72,11 +125,14 @@ namespace Yelo
  			Scripting::InitializeScriptFunction(Enums::_hs_function_player_local_get, 
  				scripting_player_local_get_evaluate);
 
-
 			Memory::WriteRelativeJmp(PlayerSpawnCreateUnitMultiplayerHook, GET_FUNC_VPTR(PLAYER_SPAWN__CREATE_UNIT_MP_HOOK));
 			Memory::WriteRelativeJmp(UpdateForServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
 			Memory::WriteRelativeJmp(UpdateForClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
 			Memory::WriteRelativeJmp(Update, GET_FUNC_VPTR(PLAYERS_UPDATE_AFTER_GAME_HOOK), true);
+
+#if !PLATFORM_IS_DEDI
+			Memory::WriteRelativeCall(&FollowingCameraGetUnitCameraInfoHook, GET_FUNC_VPTR(FOLLOWING_CAMERA_GET_UNIT_CAMERA_INFO_CALL), true);
+#endif
 			
 			NearbyObjects::Initialize();
 			ActionResults::Initialize();

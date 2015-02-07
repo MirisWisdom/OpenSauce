@@ -31,6 +31,11 @@
 
 	FUNC_PTR(AI_UPDATE_HOOK,												DUO_PTR(K_AI_UPDATE_HOOK));
 	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,							DUO_PTR(K_ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK));
+	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_RETN,							DUO_PTR(K_ACTOR_ACTION_HANDLE_VEHICLE_EXIT_RETN));
+	FUNC_PTR(PROP_STATUS_REFRESH_HOOK,										DUO_PTR(K_PROP_STATUS_REFRESH_HOOK));
+	FUNC_PTR(PROP_STATUS_REFRESH_RETN,										DUO_PTR(K_PROP_STATUS_REFRESH_RETN));
+	FUNC_PTR(ACTOR_INPUT_UPDATE_HOOK,										DUO_PTR(K_ACTOR_INPUT_UPDATE_HOOK));
+	FUNC_PTR(ACTOR_INPUT_UPDATE_RETN,										DUO_PTR(K_ACTOR_INPUT_UPDATE_RETN));
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,6 +48,8 @@ namespace Camera
 	ENGINE_DPTR(s_director_scripting_data, director_scripting,		K_DIRECTOR_SCRIPTING, PTR_NULL);
 	ENGINE_DPTR(s_cinematic_globals_data, cinematic_globals,		K_CINEMATIC_GLOBALS, PTR_NULL);
 	ENGINE_PTR(s_director_data, global_director,					K_GLOBAL_DIRECTOR, PTR_NULL);
+
+	FUNC_PTR(DIRECTOR_CHOOSE_GAME_PERSPECTIVE_HOOK,					K_DIRECTOR_CHOOSE_GAME_PERSPECTIVE_HOOK, PTR_NULL);
 
 	#pragma region old third person shit
 	#if 0 // enable for old 3rd person camera hack
@@ -381,6 +388,7 @@ namespace Fov
 	ENGINE_PTR(void**, player_handle_action_jmp_ptr,			DUO_PTR(K_PLAYER_HANDLE_ACTION_JMP_PTR));
 	ENGINE_PTR(void**, PLAYER_HANDLE_ACTION_JMP_TABLE,			DUO_PTR(K_PLAYER_HANDLE_ACTION_JMP_TABLE));
 
+	FUNC_PTR(FOLLOWING_CAMERA_GET_UNIT_CAMERA_INFO_CALL,		K_FOLLOWING_CAMERA_GET_UNIT_CAMERA_INFO_CALL, FUNC_PTR_NULL);
 
 //////////////////////////////////////////////////////////////////////////
 // Scripting.cpp

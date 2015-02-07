@@ -8,6 +8,8 @@
 #include "Engine/GrenadeTypesUpgrade.hpp"
 
 #include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/game/game_globals_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/units/biped_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
@@ -106,7 +108,6 @@ namespace Yelo
 				GrenadeTypesUpgradeTagDefinitions(false);
 		}
 
-
 		void GrenadeTypesUpgrade(bool enabled)
 		{
 			g_grenade_types_upgrade_enabled = enabled;
@@ -156,5 +157,11 @@ namespace Yelo
 			}
 		}
 
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+		void InitializeGrenadesForNewMap()
+		{
+			Items::GrenadeTypesUpgrade(GameState::GlobalGameGlobals()->grenades.Count > 2);
+		}
+#endif
 	}; };
 };

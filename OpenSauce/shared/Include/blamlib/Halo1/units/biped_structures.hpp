@@ -64,8 +64,8 @@ namespace Yelo
 			sbyte slipping_ticks;							// 0x502
 			UNKNOWN_TYPE(byte);								// 0x503 sbyte
 			UNKNOWN_TYPE(byte);								// 0x504 sbyte
-			UNKNOWN_TYPE(byte);								// 0x505 sbyte timer, melee related
-			UNKNOWN_TYPE(byte);								// 0x506 sbyte timer, melee related
+			sbyte melee_animation_time;						// 0x505 sbyte timer, melee related
+			sbyte melee_cause_damage_time;					// 0x506 sbyte timer, melee related
 			PAD8;
 			UNKNOWN_TYPE(int16);							// 0x508
 			PAD16;

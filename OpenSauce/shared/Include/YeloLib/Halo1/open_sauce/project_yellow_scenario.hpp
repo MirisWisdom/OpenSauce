@@ -15,7 +15,6 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		struct project_yellow_globals_cv;
 		struct project_yellow_globals;
 		struct project_yellow;
 	};
@@ -27,7 +26,6 @@ namespace Yelo
 		void ProjectYellowInitializeForNewMap();// should be called in scenario_tags_load
 		void ProjectYellowDisposeFromOldMap();	// should be called in scenario_tags_unload
 
-		const TagGroups::project_yellow_globals_cv* GetYeloCvGlobals();
 		const TagGroups::project_yellow_globals* GetYeloGlobals();
 		const TagGroups::project_yellow* GetYelo();
 

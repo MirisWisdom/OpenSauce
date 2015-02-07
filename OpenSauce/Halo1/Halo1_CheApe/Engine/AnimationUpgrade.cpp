@@ -82,22 +82,18 @@ namespace Yelo
 
 			//////////////////////////////////////////////////////////////////////////
 			// populate yelo's new unit seat animation definitions
-			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_board, Enums::_model_animation_type_base>(
-				"board");
-			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_ejection, Enums::_model_animation_type_base>(
-				"ejection");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_boarding, Enums::_model_animation_type_base>(
+				"boarding");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_ejecting, Enums::_model_animation_type_base>(
+				"ejecting");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_mounted, Enums::_model_animation_type_base>(
+				"mounted");
 
 
 			//////////////////////////////////////////////////////////////////////////
 			// Setup the engine's weapon class s_animation_list with yelo's changes
 			s_animation_list* weapon_class_animation_list = GET_PTR2(weapon_class_animation_list);
 			assert( weapon_class_animation_list->count == Enums::k_number_of_weapon_class_animations );
-
-			//////////////////////////////////////////////////////////////////////////
-			// populate yelo's new weapon class animation definitions
-			s_animation_list_entry* weapon_class_animation_list_entries = weapon_class_animation_list->entries;
-			weapon_class_animation_list_entries[Enums::_weapon_class_animation_yelo_infect].name = "infect";
-			weapon_class_animation_list_entries[Enums::_weapon_class_animation_yelo_infect].type = Enums::_model_animation_type_base;
 		}
 		
 		void AnimationUpgradesDispose()

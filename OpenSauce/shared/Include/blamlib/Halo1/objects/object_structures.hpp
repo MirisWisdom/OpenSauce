@@ -92,8 +92,8 @@ namespace Yelo
 			_object_has_collision_model_bit,
 			_object_unk26_bit, // HaloPC, message delta related. see object_type_should_force_baseline_update
 			_object_unk27_bit, // HaloPC, message delta related. see *_process_update_delta
-			_object_yelo_is_being_infected_bit,
-			//_object_29_bit,
+			_object_yelo_is_transforming_out_bit,
+			_object_yelo_is_transforming_in_bit,
 			//_object_30_bit,
 			//_object_31_bit,
 
@@ -179,7 +179,7 @@ namespace Yelo
 			int16 interpolation_frame_count;// 0xD6
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_animation_data) == 0xC );
 
-		struct s_object_datumn_damage_data
+		struct s_object_datum_damage_data
 		{
 			real maximum_health;				// 0xD8
 			real maximum_shield;				// 0xDC
@@ -196,7 +196,7 @@ namespace Yelo
 			int32 body_damage_update_tick;		// 0x100
 			int16 stun_ticks;					// 0x104, based on ftol(s_shield_damage_resistance->stun_time * 30f)
 			word_flags flags;					// 0x106
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_datumn_damage_data) == 0x30 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_damage_data) == 0x30 );
 
 		struct s_object_datum_attachments_data
 		{
@@ -247,7 +247,7 @@ namespace Yelo
 			datum_index owner_object_index;													// 0xC4
 			PAD32;																			// 0xC8 unused
 			s_object_datum_animation_data animation;										// 0xCC
-			s_object_datumn_damage_data damage;												// 0xD8
+			s_object_datum_damage_data damage;												// 0xD8
 			PAD32;																			// 0x108 unused
 			datum_index cluster_partition_index;											// 0x10C
 			UNKNOWN_TYPE(datum_index);														// 0x110, object_index, garbage collection related
@@ -298,6 +298,12 @@ namespace Yelo
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );
 
+		struct s_object_datum
+		{
+			enum { k_object_types_mask = Enums::_object_type_object };
+
+			s_object_data object;
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum) == Enums::k_object_size_object );
 
 		//////////////////////////////////////////////////////////////////////////
 		// scenery
@@ -308,7 +314,7 @@ namespace Yelo
 
 		struct s_scenery_datum
 		{
-			enum { k_object_type = Enums::_object_type_scenery };
+			enum { k_object_types_mask = Enums::_object_type_scenery };
 
 			s_object_data object;
 			s_scenery_data scenery;
@@ -324,7 +330,7 @@ namespace Yelo
 
 		struct s_placeholder_datum
 		{
-			enum { k_object_type = Enums::_object_type_placeholder };
+			enum { k_object_types_mask = Enums::_object_type_placeholder };
 
 			s_object_data object;
 			s_placeholder_data placeholder;
@@ -340,7 +346,7 @@ namespace Yelo
 
 		struct s_sound_scenery_datum
 		{
-			enum { k_object_type = Enums::_object_type_sound_scenery };
+			enum { k_object_types_mask = Enums::_object_type_sound_scenery };
 
 			s_object_data object;
 			s_sound_scenery_data sound_scenery;

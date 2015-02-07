@@ -7,22 +7,25 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Units.hpp"
 
+#include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
+#include <blamlib/Halo1/items/weapons.hpp>
 
 #include <blamlib/Halo1/units/biped_structures.hpp>
 #include <blamlib/Halo1/units/vehicle_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
+#include "Game/AI.hpp"
 #include "Memory/MemoryInterface.hpp"
 
 #include "Objects/Objects.hpp"
@@ -36,32 +39,158 @@ namespace Yelo
 	}; };
 };
 
-#include "Objects/Units.Boarding.inl"
+#include "Objects/Units.SeatBoarding.inl"
+#include "Objects/Units.SeatDamage.inl"
 #include "Objects/Units.Animations.inl"
-#include "Objects/Units.UnitInfections.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 namespace Yelo
 {
-	namespace Objects { namespace Units {
+	namespace Objects { namespace Units
+	{
+		static void PLATFORM_API UnitDamageAftermathHook(const datum_index unit_index
+			, const s_damage_data* damage_data
+			, const Flags::object_damage_flags damage_flags
+			, const real shield_amount
+			, const real body_amount
+			, void* arg6
+			, const int32 damage_part)
+		{
+			blam::unit_damage_aftermath(unit_index, damage_data, damage_flags, shield_amount, body_amount, arg6, damage_part);
+
+			AI::UnitDamageAftermath(unit_index, damage_data);
+		}
+
+		bool PLATFORM_API UnitCanEnterSeat(datum_index unit_index
+			, datum_index target_unit_index
+			, int16 target_seat_index,
+			_Out_opt_ datum_index* return_unit_in_seat)
+		{
+			bool result = true;
+
+			Objects::UnitCanEnterSeatMultiteam(unit_index, target_unit_index, target_seat_index, return_unit_in_seat, result);
+			SeatBoarding::UnitCanEnterBoardingSeat(unit_index, target_unit_index, target_seat_index, result);
+			SeatBoarding::UnitCanEnterTargetSeat(unit_index, target_unit_index, target_seat_index, result);
+
+			return result;
+		}
+
+		API_FUNC_NAKED static void PLATFORM_API UnitCanEnterSeatHook()
+		{
+			API_FUNC_NAKED_START_()
+				push	ebx
+				push	ecx
+				push	edx
+
+				mov		ecx, [esp+24]
+				mov		ebx, [esp+20]
+				push	ecx		// datum_index* unit_in_seat_index
+				push	ebx		// int16 target_seat_index
+				push	edx		// datum_index target_unit_index
+				push	eax		// datum_index unit_index
+				call	UnitCanEnterSeat
+				add		esp, 10h
+
+				pop		edx
+				pop		ecx
+				pop		ebx
+			API_FUNC_NAKED_END_()
+		}
+
+		void UnitCausePlayerSeatedMelee(const datum_index unit_index)
+		{
+			SeatDamage::UnitCauseSeatedPlayerMelee(unit_index);
+		}
+
+		API_FUNC_NAKED static void BipedSeatedMeleeHook()
+		{
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(BIPED_SEATED_MELEE_RETN);
+
+			_asm
+			{
+				push	esi
+				pushad
+
+				push	esi
+				call	BipedSeatedMelee
+				add		esp, 4
+
+				popad
+				pop		esi
+
+				mov		esi, [ebp+8]
+				push	esi
+				lea		ecx, [ebp-4]
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		void PLATFORM_API UnitThrowGrenadeReleaseHook(const datum_index unit_index, const sbyte keyframe)
+		{
+			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
+			if(unit_datum->unit.vehicle_seat_index == NONE)
+			{
+				blam::unit_throw_grenade_release(unit_index, keyframe);
+			}
+			else
+			{
+				SeatDamage::UnitThrowSeatedPlayerGrenade(unit_index);
+			}
+		}
+
+		bool PLATFORM_API WeaponPreventsGrenadeThrowing(const datum_index unit_index, const datum_index weapon_index)
+		{
+			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
+			if(unit_datum->unit.vehicle_seat_index == NONE)
+			{
+				return blam::weapon_prevents_grenade_throwing(weapon_index);
+			}
+			else
+			{
+				return SeatDamage::PreventSeatedPlayerGrenade(unit_index, weapon_index);
+			}
+		}
+
+		API_FUNC_NAKED bool WeaponPreventsGrenadeThrowingHook()
+		{
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(WEAPON_PREVENTS_GRENADE_THROWING_RETN);
+
+			_asm
+			{
+				push	ecx
+				push	edi
+				call	WeaponPreventsGrenadeThrowing
+				add		esp, 8
+
+				jmp		RETN_ADDRESS
+			};
+		}
 
 		void Initialize()
 		{
 			Animations::Initialize();
-			Infections::Initialize();
-			Boarding::Initialize();
-			
-			static const byte opcode_null[] = { 
-				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, 
-				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop 
-			};
+			SeatBoarding::Initialize();
 
-			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), opcode_null);
+			// Enables biped seats
+			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), Enums::_x86_opcode_nop, 6);
+
+			Memory::WriteRelativeCall(&UnitDamageAftermathHook, GET_FUNC_VPTR(UNIT_DAMAGE_AFTERMATH_CALL), true);
+			Memory::CreateHookRelativeCall(&UnitCanEnterSeatHook, GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_HOOK), Enums::_x86_opcode_ret);
+			Memory::WriteRelativeJmp(&BipedSeatedMeleeHook, GET_FUNC_VPTR(BIPED_SEATED_MELEE_HOOK), true);
+			Memory::WriteRelativeCall(&UnitThrowGrenadeReleaseHook, GET_FUNC_VPTR(UNIT_THROW_GRENADE_RELEASE_HOOK), true);
+			Memory::WriteRelativeJmp(&WeaponPreventsGrenadeThrowingHook, GET_FUNC_VPTR(WEAPON_PREVENTS_GRENADE_THROWING_HOOK), true);
 		}
 
-		void Dispose()
+		void Dispose() { }
+
+		void ObjectsUpdate()
 		{
-			Infections::Dispose();
+			Objects::c_object_iterator iter(Enums::_object_type_mask_unit);
+
+			for(auto object_index : iter)
+			{
+				SeatBoarding::UnitUpdate(object_index.index);
+			}
 		}
 
 		static void InitializeUnitGrenadeTypesForNewMap(GameState::s_yelo_header_data& yelo_header)
@@ -91,6 +220,7 @@ namespace Yelo
 
 			yelo_header.flags.update_unit_grenade_types_count = false;
 		}
+
 		void InitializeForNewMap()
 		{
 			if(GameState::YeloGameStateEnabled())
@@ -102,9 +232,7 @@ namespace Yelo
 			}
 		}
 
-		void DisposeFromOldMap()
-		{
-		}
+		void DisposeFromOldMap() { }
 
 		void InitializeForNewMapPrologue()
 		{
@@ -128,6 +256,5 @@ namespace Yelo
 		void InitializeForYeloGameState(bool enabled)
 		{
 		}
-
 	}; };
 };

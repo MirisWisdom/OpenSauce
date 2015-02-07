@@ -63,6 +63,7 @@ namespace Yelo
 		struct s_cache_header_yelo : public s_cache_header_yelo_base {
 			enum {
 				k_version = 1,
+				k_version_minimum_build = 2
 			};
 
 			struct s_flags {
@@ -107,7 +108,14 @@ namespace Yelo
 				}cheape;
 
 				byte uuid_buffer[Enums::k_uuid_buffer_size]; // future UUID bytes
-				PAD128; // unused for now
+				
+				struct {
+					byte maj;
+					byte min;
+					uint16 build;
+				}minimum_os_build;
+
+				PAD32; PAD32; PAD32; // unused for now
 			}build_info; // User-defined build info
 
 			struct {
@@ -127,11 +135,14 @@ namespace Yelo
 			void InitializeBuildInfo();
 			// Initializes the build info with a scenario's yelo build info
 			void InitializeBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info);
+			// Initializes the minimum os build info
+			void InitializeMinimumBuildInfo(const byte major, const byte minor, const uint16 build);
 #endif
 
 			// Is there a yelo header present?
 			bool HasHeader() const;
 			bool TagVersioningIsValid() const;
+			bool BuildVersionIsValid() const;
 			// Is the yelo header valid?
 			bool IsValid() const;
 			// Does the build info have a valid UUID?

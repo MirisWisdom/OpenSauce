@@ -6,12 +6,88 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/Console.hpp"
+
 #if PLATFORM_TYPE == PLATFORM_TOOL
+
+#include "Common/StringEditing.hpp"
 
 namespace Yelo
 {
 	namespace Tool { namespace Console
 	{
+		int32 EnterCommand(const char* command_list
+			, _Out_opt_ std::string* arguments_string
+			, const char* line_start)
+		{
+			std::vector<std::string> command_array;
+			std::string commands(command_list);
+
+			bool newline_command = false;
+
+			// split the command list into an array
+			while(commands.length())
+			{
+				std::string segment;
+				// get the next command in the list and add it to the command array
+				StringEditing::GetStringSegment(commands, segment, nullptr, ";");
+				command_array.push_back(segment);
+
+				// remove the command from the commands string
+				StringEditing::RemoveStringSegment(commands, nullptr, ";");
+
+				// if the user can just press enter, we need to know to interpret that as a command
+				if(!segment.compare("\n") && !newline_command)
+				{
+					newline_command = true;
+				}
+			}
+
+			char command[128];
+			puts("");
+			// get the users command
+			Console::ColorPrintF(Enums::_console_color_lightyellow, "%s: ", line_start);
+			do
+			{
+				fgets(command, sizeof(command), stdin);
+				//ignore newlines unless it is a valid command
+			}while(!newline_command && command[0] == '\n');
+
+			// seperate into command and arguments
+			std::string command_string(command);
+
+			// if the command is just a newline no parsing is necessary
+			if(command[0] != '\n')
+			{
+				StringEditing::GetStringSegment(command_string, command_string, nullptr, " \n");
+			}
+
+			// if arguments are requested, set the passed strings value
+			if(arguments_string)
+			{
+				// set the arguments string to the whole string, then remove the command
+				arguments_string->assign(command);
+				StringEditing::RemoveStringSegment(*arguments_string, nullptr, " ");
+				StringEditing::GetStringSegment(*arguments_string, *arguments_string, nullptr, "\n");
+			}
+
+			int index = 0;
+			bool command_found = false;
+
+			// iterate through the commands until a matching one is/is not found
+			for( auto& command : command_array )
+			{
+				if(!command_string.compare(command))
+				{
+					command_found = true;
+					break;
+				}
+				index++;
+			}
+
+			// return the index of the matching command, or -1 if it did not match
+			return command_found ? index : -1;
+		}
+
 		void PrintNewLine()
 		{
 			puts("");

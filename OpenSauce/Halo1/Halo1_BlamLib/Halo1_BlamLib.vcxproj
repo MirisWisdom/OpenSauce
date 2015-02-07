@@ -137,8 +137,10 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\predicted_resources.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\sound_cache.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\texture_cache.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\camera_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\dead_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\first_person_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\following_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\observer_structures.hpp" />
@@ -249,6 +251,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\item_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\projectiles.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\projectile_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapons.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapon_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapon_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\console.hpp" />
@@ -347,9 +350,11 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\biped_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\dialogue_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\units.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_control.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_dialogue.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_script.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\vehicles.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\vehicle_definitions.hpp" />
@@ -370,7 +375,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp" />
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_texture_cache.cpp" />
@@ -404,7 +409,6 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_saving.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.cpp" />
-    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\math\real_math.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp" />

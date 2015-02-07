@@ -84,7 +84,6 @@ namespace Yelo
 
 	namespace blam
 	{
-		void PLATFORM_API render_frame(void* windows, const int32 window_count, void* arg3, const real delta_time, void* arg5);
 		void PLATFORM_API render_window(const uint16 local_player_index
 			, void* render_camera
 			, void* render_frustum

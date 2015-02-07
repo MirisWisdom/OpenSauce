@@ -16,6 +16,8 @@
 #include "Settings/SettingsSapien.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"
+#include "Engine/Objects.hpp"
+#include "Engine/GameState.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"
 
@@ -121,6 +123,8 @@ namespace Yelo
 
 			InitializeProfileLoadOverride();
 
+			GameState::Initialize();
+			Objects::Initialize();
 			Objects::ObjectDamageAftermath_UpgradesInitialize();
 		}
 
@@ -134,7 +138,9 @@ namespace Yelo
 		{
 			for(auto ptr : AddressOf::MaxTagsCheck)
 				*ptr = Enums::k_maximum_simultaneous_tag_instances;
-
+			
+			GameState::Dispose();
+			Objects::Dispose();
 			TagGroups::ScenarioYeloLoadHookDispose();
 		}
 	};

@@ -98,9 +98,14 @@ namespace Yelo
 					break;
 
 				// custom animation states
-				case Enums::_unit_animation_state_yelo_seat_board:
-				case Enums::_unit_animation_state_yelo_seat_ejection:
+				case Enums::_unit_animation_state_yelo_seat_boarding:
+				case Enums::_unit_animation_state_yelo_seat_ejecting:
+				case Enums::_unit_animation_state_yelo_unit_transforming:
 					result = false;
+					break;
+
+				case Enums::_unit_animation_state_yelo_unit_mounted:
+					result = (next_animation_state == Enums::_unit_animation_state_yelo_unit_transforming);
 					break;
 
 				default:
@@ -134,8 +139,10 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_mounted:
+			case Enums::_unit_animation_state_yelo_unit_transforming:
 				result = true;
 				break;
 
@@ -171,9 +178,14 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_transforming:
 				result = false;
+				break;
+
+			case Enums::_unit_animation_state_yelo_unit_mounted:
+				result = true;
 				break;
 
 			default:
@@ -216,8 +228,10 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_mounted:
+			case Enums::_unit_animation_state_yelo_unit_transforming:
 				result = false;
 				break;
 
@@ -246,8 +260,10 @@ namespace Yelo
 				break;
 
 				// custom animation states
-			case Enums::_unit_animation_state_yelo_seat_board:
-			case Enums::_unit_animation_state_yelo_seat_ejection:
+			case Enums::_unit_animation_state_yelo_seat_boarding:
+			case Enums::_unit_animation_state_yelo_seat_ejecting:
+			case Enums::_unit_animation_state_yelo_unit_mounted:
+			case Enums::_unit_animation_state_yelo_unit_transforming:
 				result = false;
 				break;
 

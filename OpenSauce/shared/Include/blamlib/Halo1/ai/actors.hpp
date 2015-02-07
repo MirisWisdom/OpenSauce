@@ -70,5 +70,32 @@ namespace Yelo
 
 		// Deletes and detaches the specified actor from all AI (encounters, etc.)
 		void PLATFORM_API actor_delete(datum_index actor_index, bool is_dead = false);
+
+		void PLATFORM_API actor_update(const datum_index actor_index);
+
+		void PLATFORM_API actor_customize_unit(const datum_index actor_variant, const datum_index unit_index);
+
+		void PLATFORM_API actor_set_active(const datum_index actor_index, const bool active);
+
+		void PLATFORM_API actor_set_dormant(const datum_index actor_index, const bool dormant);
+
+		void PLATFORM_API actor_delete_props(const datum_index actor_index);
+
+		void PLATFORM_API actor_freeze(const datum_index actor_index);
+
+		void PLATFORM_API actor_braindead(const datum_index actor_index, const bool braindead);
+
+		datum_index PLATFORM_API actor_create_for_unit(const bool is_swarm
+			, const datum_index unit_index
+			, const datum_index actor_variant
+			, const datum_index encounter_index
+			, const int32 squad_index
+			, const int32 arg7
+			, const int32 arg6
+			, const bool magic_sight_after_timer
+			, const Enums::actor_default_state initial_state
+			, const Enums::actor_default_state return_state
+			, const int32 command_list_index
+			, const int32 sequence_id);
 	};
 };

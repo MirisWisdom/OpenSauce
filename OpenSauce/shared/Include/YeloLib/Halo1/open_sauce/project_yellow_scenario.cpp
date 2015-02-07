@@ -14,7 +14,6 @@
 
 #include <YeloLib/Halo1/hs/hs_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 namespace Yelo
@@ -148,17 +147,6 @@ namespace Yelo
 			InitializeForNewYeloDefinitions(datum_index::null, datum_index::null);
 		}
 
-		const project_yellow_globals_cv* GetYeloCvGlobals()
-		{
-			auto* py_globals = GetYeloGlobals();
-
-			if (py_globals->HasCvGlobals())
-			{
-				return blam::tag_get<project_yellow_globals_cv>(py_globals->cv_globals.tag_index);
-			}
-
-			return nullptr;
-		}
 		const project_yellow_globals* GetYeloGlobals()
 		{
 			YELO_ASSERT(g_py_globals);

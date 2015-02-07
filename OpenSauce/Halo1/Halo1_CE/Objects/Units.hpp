@@ -8,11 +8,14 @@
 
 namespace Yelo
 {
-	namespace Objects { namespace Units {
+	namespace Objects { namespace Units
+	{
 		void Initialize();
 		void Dispose();
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
+		
+		void ObjectsUpdate();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>Initialize the Units system for a new map before any of the actual initialize_for_new_map procedures are

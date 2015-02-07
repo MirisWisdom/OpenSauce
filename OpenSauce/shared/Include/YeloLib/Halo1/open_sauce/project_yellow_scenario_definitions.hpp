@@ -177,13 +177,5 @@ namespace Yelo
 
 			static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 		};
-
-#if PLATFORM_IS_EDITOR
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// 	Removes Yelo-related data so that the scenario may be opened with no conflicts in the stock HEK.
-		/// </summary>
-		void YeloCleanseScenario(scenario* scnr);
-#endif
 	};
 };

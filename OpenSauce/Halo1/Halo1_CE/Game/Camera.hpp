@@ -167,11 +167,6 @@ namespace Yelo
 		};
 		s_cinematic_globals_data*		CinematicGlobals();
 
-		struct s_director_data : TStructImpl(0xF8)
-		{
-		};
-		s_director_data*				GlobalDirector();
-
 
 		void Initialize();
 		void Dispose();
