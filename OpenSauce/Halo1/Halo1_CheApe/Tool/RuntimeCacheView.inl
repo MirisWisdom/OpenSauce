@@ -1451,6 +1451,8 @@ int32 FindFieldByAddress(const char* address)
 	StringEditing::StringTruncate(tag_name, __max(Console::GetConsoleWidth() - 10, 0), 10);
 
 	// Print the tag name and type
+	Console::ColorPrint(k_color_block, "tag index: ");
+	Console::ColorPrintF(k_color_index, "%i\n", found_tag->handle.index);
 	Console::ColorPrintF(k_color_block, "tag type: %s\n", tag_group_def->name);
 	Console::ColorPrint(k_color_block, "tag name:\n");
 	Console::ColorPrintF(k_color_name, "\t%s\n\n", tag_name.c_str());
