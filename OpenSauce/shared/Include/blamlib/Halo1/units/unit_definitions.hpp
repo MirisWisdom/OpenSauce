@@ -7,6 +7,8 @@
 #pragma once
 
 #include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/units/unit_camera.hpp>
+
 #include <YeloLib/Halo1/units/unit_definitions_yelo.hpp>
 
 namespace Yelo
@@ -105,17 +107,17 @@ namespace Yelo
 
 			k_number_of_unit_seat_definition_flags,
 
-			_unit_seat_boarding_seat_bit =				// Halo2
+			_unit_seat_reserved11_bit =				// Halo2
 				k_number_of_unit_seat_definition_flags,
 			_unit_seat_reserved12_bit,					// Halo2: ai firing disabled by max acceleration
-			_unit_seat_boarding_enters_seat_bit,		// Halo2
-			_unit_seat_boarding_need_any_passenger_bit,	// Halo2
-			_unit_seat_controls_open_and_close_bit,		// Halo2
+			_unit_seat_reserved13_bit,		// Halo2
+			_unit_seat_reserved14_bit,	// Halo2
+			_unit_seat_reserved15_bit,		// Halo2
 			_unit_seat_reserved16_bit,	// Halo2: invalid for player
 			_unit_seat_reserved17_bit,	// Halo2: invalid for non-player
 			_unit_seat_reserved18_bit,	// Halo2: gunner (player only)
 			_unit_seat_reserved19_bit,	// Halo2: invisible under major damage
-			_unit_seat_boarding_ejects_seat_yelo_bit,	// YELO
+			_unit_seat_allows_melee_bit,	// YELO
 
 			k_number_of_unit_seat_definition_flags_yelo,
 		};
@@ -124,20 +126,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct s_unit_camera_track
-		{
-			TAG_FIELD(tag_reference, track, 'trak');
-			PAD32; PAD32; PAD32;
-		};
-		struct s_unit_camera
-		{
-			TAG_FIELD(tag_string, camera_marker_name);
-			TAG_FIELD(tag_string, camera_submerged_marker_name);
-			TAG_FIELD(real, pitch_autolevel, "degrees");
-			TAG_FIELD(real_bounds, pitch_range, "degrees");
-			TAG_TBLOCK(camera_tracks, s_unit_camera_track);
-		};
-
 		struct unit_seat_acceleration
 		{
 			TAG_FIELD(real_vector3d, seat_acceleration_scale);
@@ -196,12 +184,8 @@ namespace Yelo
 
 			TAG_FIELD(tag_reference, built_in_gunner, 'actv');
 
-			TAG_TBLOCK(yelo_extensions, unit_seat_yelo_extensions);
+			TAG_TBLOCK(seat_extensions, unit_seat_extensions);
 			TAG_PAD(int32, 2); // 8
-
-			bool HasYeloExtensions() const;
-			bool HasBoardingTargetSeat() const;
-			const unit_seat_boarding& GetSeatBoarding() const;
 
 		private:
 			bool Postprocess(Enums::tag_postprocess_mode mode,
@@ -267,7 +251,7 @@ namespace Yelo
 			TAG_ENUM(blip_type);
 			PAD16;
 
-			PAD_TYPE(tag_block);
+			TAG_TBLOCK(extensions, unit_extensions);
 
 			TAG_TBLOCK(new_hud_interfaces, unit_hud_reference);
 			TAG_TBLOCK(dialogue_variants, dialogue_variant_definition);

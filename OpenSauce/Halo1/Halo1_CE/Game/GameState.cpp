@@ -293,9 +293,9 @@ namespace Yelo
 				if( components[x].InitializeForYeloGameState != nullptr )
 					components[x].InitializeForYeloGameState(enabled);
 		}
-		static void HandleGameStateLifeCycle(Enums::project_game_state_component_life_cycle life_cycle)
+		static void HandleGameStateLifeCycle(Enums::game_state_life_cycle life_cycle)
 		{
-			YELO_ASSERT_DISPLAY( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_project_game_state_component_life_cycles), "What fucking life cycle is this shit?");
+			YELO_ASSERT_DISPLAY( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_game_state_life_cycles), "What fucking life cycle is this shit?");
 
 			Main::s_project_game_state_component* components;
 			const int32 component_count = Main::GetProjectComponents(components);
@@ -306,15 +306,15 @@ namespace Yelo
 		}
 		void PLATFORM_API HandleBeforeSaveLifeCycle()
 		{
-			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_before_save);
+			HandleGameStateLifeCycle(Enums::_game_state_life_cycle_before_save);
 		}
 		void PLATFORM_API HandleBeforeLoadLifeCycle()
 		{
-			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_before_load);
+			HandleGameStateLifeCycle(Enums::_game_state_life_cycle_before_load);
 		}
 		void PLATFORM_API HandleAfterLoadLifeCycle()
 		{
-			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_after_load);
+			HandleGameStateLifeCycle(Enums::_game_state_life_cycle_after_load);
 		}
 
 		static void DataArrayInfoDumpToConsole(cstring data_array_name)

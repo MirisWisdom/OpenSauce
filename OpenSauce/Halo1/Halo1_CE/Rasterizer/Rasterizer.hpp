@@ -26,7 +26,9 @@ namespace Yelo
 			{
 			public:
 				Configuration::c_configuration_value<bool> m_maximum_rendered_triangles;
+#if PLATFORM_VERSION <= 0x1090
 				Configuration::c_configuration_value<bool> m_model_node_stretching_fix;
+#endif
 	
 				c_upgrades_container();
 
@@ -35,7 +37,9 @@ namespace Yelo
 			};
 
 		public:
+#if PLATFORM_VERSION <= 0x1090
 			Configuration::c_configuration_value<bool> m_use_nvidia_camo;
+#endif
 			c_upgrades_container m_upgrades;
 
 			c_settings_container();

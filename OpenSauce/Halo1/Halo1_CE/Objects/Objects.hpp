@@ -156,37 +156,6 @@ namespace Yelo
 		bool VehicleRemapperEnabled();
 		// Turn the engine's vehicle remapper on or off
 		void VehicleRemapperEnable(bool enabled);
-
-
-		// Don't call me. Use IteratorNext<T>
-		s_object_data* IteratorNextAndVerifyType(s_object_iterator& iter, long_enum object_type);
-		template<typename T>
-		T* IteratorNext(s_object_iterator& iter)
-		{
-			return CAST_PTR(T*, IteratorNextAndVerifyType(iter, T::k_object_type));
-		}
-
-		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
-			datum_index tag_index_override = datum_index::null, datum_index owner_object_index = datum_index::null);
-
-		// Walks the parent object datums of [object_index] until it gets
-		// to the upper most parent and returns that parent's
-		// datum index
-		datum_index GetUltimateObject(datum_index object_index);
-		// Walks the next object datums of [object_index] [n] amount of
-		// times, and returns the result datum_index.
-		// Say, if [n] is zero, it will return the datum_index
-		// that is returned by [object_index]'s GetNextObjectIndex
-		datum_index GetNextObjectN(datum_index object_index, int32 n = 0);
-
-		real GetObjectDistanceFromPoint(datum_index object_index, const real_vector3d& dest_point);
-
-		// Delete all children of the specified type(s) on the parent object
-		void DeleteChildrenByType(datum_index parent, long_flags object_type_mask);
-		// Detach all children of the specified type(s) from the parent object
-		void DetachChildrenByType(datum_index parent, long_flags object_type_mask);
-
-		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades = false);
 	};
 };
 

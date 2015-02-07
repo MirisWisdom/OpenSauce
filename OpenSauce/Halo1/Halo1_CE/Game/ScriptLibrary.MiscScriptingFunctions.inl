@@ -309,6 +309,14 @@ static void InitializeMiscFunctions()
 		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMinimumColor);
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_bloom_set_maximum_color, 
 		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMaximumColor);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_ai_transform_actor, 
+		AI::Transform::HS_AITransformActor);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_ai_transform_actors, 
+		AI::Transform::HS_AITransformActors);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_ai_transform_actors_by_type, 
+		AI::Transform::HS_AITransformActorsByType);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_ai_actor_is_transforming, 
+		AI::Transform::HS_AIActorIsTransforming);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Numbers

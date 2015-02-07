@@ -251,6 +251,21 @@
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.cpp">
       <Filter>Tool\PackedFile\Processing</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Objects.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Units.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\AI.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameState.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\RemoveOSTagData.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -453,6 +468,21 @@
     <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.hpp">
       <Filter>Tool\PackedFile\Processing</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Objects.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Units.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\AI.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameState.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\RemoveOSTagData.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -523,6 +553,21 @@
     </None>
     <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl">
       <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Engine\AI.Transform.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.SeatBoarding.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.SeatDamage.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.Animations.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Tool\RemoveOSTagData.inl">
+      <Filter>Tool\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

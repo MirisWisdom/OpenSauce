@@ -21,7 +21,6 @@
 #include <blamlib/Halo1/units/unit_structures.hpp>
 #include <blamlib/Halo1/items/weapon_structures.hpp>
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
@@ -37,6 +36,7 @@
 #include "Game/GameState.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Game/AI.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
@@ -155,6 +155,15 @@ namespace Yelo
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_vehicle_remapper_enabled, 
 				scripting_vehicle_remapper_enabled_evaluate);
 		}
+
+		void PLATFORM_API ObjectsUpdate()
+		{
+			AI::ObjectsUpdate();
+			Units::ObjectsUpdate();
+
+			blam::objects_update();
+		}
+
 		void Initialize()
 		{
 			c_settings_objects::Register(Settings::Manager());
@@ -175,6 +184,8 @@ namespace Yelo
 			InitializeScripting();
 			InitializeObjectFieldDefinitions();
 			ObjectDamageAftermath_UpgradesInitialize();
+
+			Memory::WriteRelativeCall(&ObjectsUpdate, GET_FUNC_VPTR(OBJECTS_UPDATE_CALL), true);
 		}
 
 		void Dispose()
@@ -275,168 +286,6 @@ namespace Yelo
 			static const byte k_disable_code[] = {Enums::_x86_opcode_nop, Enums::_x86_opcode_nop};
 
 			Memory::WriteMemory(GET_FUNC_VPTR(OBJECT_TYPES_PLACE_ALL_MOD_VEHI_REMAP), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
-		}
-
-
-		s_object_data* IteratorNextAndVerifyType(s_object_iterator& iter, long_enum object_type)
-		{
-			YELO_ASSERT_DISPLAY( TEST_FLAG(iter.type_mask, object_type), "Wrong object_type given to IteratorNext<T>" );
-
-			return blam::object_iterator_next(iter);
-		}
-
-		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
-			datum_index tag_index_override, datum_index owner_object_index)
-		{
-			s_object_data* src_object = blam::object_get(src_object_index);
-
-			if(tag_index_override.IsNull())
-				tag_index_override = src_object->definition_index;
-
-			blam::object_placement_data_new(data, tag_index_override, owner_object_index);
-			src_object->CopyToPlacementData(data);
-		}
-
-		datum_index GetUltimateObject(datum_index object_index)
-		{
-			if(!object_index.IsNull())
-			{
-				s_object_header_datum* object_header_datums = Objects::ObjectHeader().Datums();
-				s_object_data* current_obj = object_header_datums[object_index.index]._object;
-
-				datum_index parent_index;
-				while( !(parent_index = current_obj->parent_object_index).IsNull() )
-				{
-					current_obj = object_header_datums[parent_index.index]._object;
-				}
-			}
-
-			return object_index;
-		}
-
-		datum_index GetNextObjectN(datum_index object_index, int32 n)
-		{
-			if(!object_index.IsNull())
-			{
-				s_object_header_datum* object_header_datums = Objects::ObjectHeader().Datums();
-				s_object_data* current_obj = object_header_datums[object_index.index]._object;
-
-				for(object_index = current_obj->next_object_index;
-					!object_index.IsNull() && n > 0;
-					object_index = current_obj->next_object_index, --n)
-					current_obj = object_header_datums[object_index.index]._object;
-			}
-
-			return n == 0 ? object_index : datum_index::null;
-		}
-
-		TagGroups::s_object_definition const* GetObjectDefinition(datum_index object_index)
-		{
-			if(!object_index.IsNull())
-			{
-				s_object_data* object = blam::object_get(object_index);
-
-				return blam::tag_get<TagGroups::s_object_definition>(object->definition_index);
-			}
-
-			return nullptr;
-		}
-
-		TagGroups::model_animation_graph const* GetObjectAnimations(datum_index object_index)
-		{
-			if(!object_index.IsNull())
-			{
-				s_object_data* object = blam::object_get(object_index);
-				datum_index tag_index = object->animation.definition_index;
-
-				return blam::tag_get<TagGroups::model_animation_graph>(tag_index);
-			}
-
-			return nullptr;
-		}
-
-		real GetObjectDistanceFromPoint(datum_index obj, const real_vector3d& dest_point)
-		{
-			real dist = -1.0f;
-
-			if(!obj.IsNull())
-			{
-				real_vector3d object_origin;
-				blam::object_get_origin(obj, object_origin);
-
-				real_vector3d relative_pos = object_origin - dest_point;
-				dist = relative_pos.Magnitude();
-			}
-
-			return dist;
-		}
-
-		typedef void (API_FUNC* proc_object_action_perfomer)(datum_index object_index);
-		static void PerformActionOnChildrenByType(datum_index parent, long_flags object_type_mask,
-			proc_object_action_perfomer action_performer)
-		{
-			s_object_header_datum* object_header_datums = Objects::ObjectHeader().Datums();
-			s_object_data* parent_object = object_header_datums[parent.index]._object;
-			s_object_data* child_object;
-
-			for(datum_index child_index = parent_object->first_object_index;
-				!child_index.IsNull();
-				child_index = child_object->next_object_index)
-			{
-				child_object = object_header_datums[child_index.index]._object;
-
-				if(child_object->VerifyType(object_type_mask))
-					action_performer(child_index);
-			}
-		}
-
-		static void API_FUNC object_delete_thunk(datum_index object_index)
-		{
-			blam::object_delete(object_index);
-		}
-		void DeleteChildrenByType(datum_index parent, long_flags object_type_mask)
-		{
-			PerformActionOnChildrenByType(parent, object_type_mask, object_delete_thunk);
-		}
-		static void API_FUNC object_detach_thunk(datum_index object_index)
-		{
-			blam::object_detach(object_index);
-		}
-		void DetachChildrenByType(datum_index parent, long_flags object_type_mask)
-		{
-			PerformActionOnChildrenByType(parent, object_type_mask, object_detach_thunk);
-		}
-
-		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades)
-		{
-			size_t total_headers_size = sizeof(Memory::s_memory_pool_block);
-			size_t total_node_memory_size = (sizeof(real_orientation3d) * 2) + sizeof(real_matrix4x3);
-			total_node_memory_size *= node_count;
-
-			size_t object_type_size = 0;
-			switch(type)
-			{
-			case Enums::_object_type_biped:			object_type_size = Enums::k_object_size_biped; break;
-			case Enums::_object_type_vehicle:		object_type_size = Enums::k_object_size_vehicle; break;
-
-			case Enums::_object_type_weapon:		object_type_size = Enums::k_object_size_weapon; break;
-			case Enums::_object_type_equipment:		object_type_size = Enums::k_object_size_equipment; break;
-			case Enums::_object_type_garbage:		object_type_size = Enums::k_object_size_garbage; break;
-
-			case Enums::_object_type_projectile:	object_type_size = Enums::k_object_size_projectile; break;
-			case Enums::_object_type_scenery:		object_type_size = Enums::k_object_size_scenery; break;
-
-			case Enums::_object_type_machine:		object_type_size = Enums::k_object_size_machine; break;
-			case Enums::_object_type_control:		object_type_size = Enums::k_object_size_control; break;
-			case Enums::_object_type_light_fixture:	object_type_size = Enums::k_object_size_light_fixture; break;
-
-			case Enums::_object_type_placeholder:	object_type_size = Enums::k_object_size_placeholder; break;
-			case Enums::_object_type_sound_scenery:	object_type_size = Enums::k_object_size_sound_scenery; break;
-
-			default: return 0;
-			}
-
-			return object_type_size + total_node_memory_size + total_headers_size;
 		}
 	};
 

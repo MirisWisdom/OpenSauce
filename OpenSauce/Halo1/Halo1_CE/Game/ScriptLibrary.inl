@@ -129,8 +129,12 @@
 		
 		_hs_function_structure_bsp_set_lightmap_set,
 		_hs_function_structure_bsp_set_sky_set,
-
 		
+		_hs_function_ai_transform_actor,
+		_hs_function_ai_transform_actors,
+		_hs_function_ai_transform_actors_by_type,
+		_hs_function_ai_actor_is_transforming,
+
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
 
@@ -180,6 +184,8 @@
 		_hs_global_pp_fxaa_enabled,
 		_hs_global_pp_motion_blur_enabled,
 		_hs_global_pp_motion_blur_amount,
+
+		_hs_global_ai_transforms_enabled,
 		
 		_hs_global_rasterizer_model_normal_mapping,
 		_hs_global_rasterizer_model_detail_normal_mapping,
@@ -283,6 +289,33 @@
 		HS_TYPE(string)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actor, bool, "Transforms an actor into the specified target. Returns false if it fails. Empty names causes random selection.", 
+			"<object> <transform_name> <target_name>", 3,
+		HS_TYPE(object),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actors, bool, "Transforms a list of actors into the specified target. Returns false if it fails. Empty names causes random selection.", 
+			"<objects> <transform_name> <target_name>", 3,
+		HS_TYPE(object_list),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(ai_transform_actors_by_type, bool, "Transforms actors in a list of a specific type into the specified target. Returns false if it fails. Empty names causes random selection.", 
+			"<objects> <actor_variant> <transform_name> <target_name>", 4,
+		HS_TYPE(object_list),
+		HS_TYPE(actor_variant),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(ai_actor_is_transforming, bool, "Returns true if the specified actor is transforming.", 
+			"<object>", 1,
+		HS_TYPE(object)
+	);
+
 	// debug functions
 	#ifdef API_DEBUG
 		HS_FUNCTION_WITH_PARAMS(dump_view_state, void, "dump current render view state", "<name>", 1,
@@ -307,6 +340,8 @@
 		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_MotionBlur(), nullptr);
 	HS_GLOBAL2(pp_motion_blur_amount, real, 
 		&Rasterizer::PostProcessing::Scripting::Globals::MotionBlur_Amount(), nullptr);
+
+	HS_GLOBAL2(ai_transforms_enabled, bool, &AI::Transform::TransformsEnabled(), nullptr);
 	
 	HS_GLOBAL2(rasterizer_model_normal_mapping, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_normal_mapping, nullptr);
 	HS_GLOBAL2(rasterizer_model_detail_normal_mapping, bool, &Rasterizer::ShaderExtension::Model::g_rasterizer_model_detail_normal_mapping, nullptr);
@@ -424,6 +459,11 @@
 
 		&GET_HS_FUNCTION(structure_bsp_set_lightmap_set),
 		&GET_HS_FUNCTION(structure_bsp_set_sky_set),
+		
+		&GET_HS_FUNCTION(ai_transform_actor),
+		&GET_HS_FUNCTION(ai_transform_actors),
+		&GET_HS_FUNCTION(ai_transform_actors_by_type),
+		&GET_HS_FUNCTION(ai_actor_is_transforming),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 
@@ -474,6 +514,8 @@
 		&GET_HS_GLOBAL(pp_fxaa_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_amount),
+
+		&GET_HS_GLOBAL(ai_transforms_enabled),
 		
 		&GET_HS_GLOBAL(rasterizer_model_normal_mapping),
 		&GET_HS_GLOBAL(rasterizer_model_detail_normal_mapping),

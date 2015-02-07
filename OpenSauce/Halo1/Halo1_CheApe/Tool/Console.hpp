@@ -35,6 +35,26 @@ namespace Yelo
 	};
 	namespace Tool { namespace Console
 	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Requests a command from the user. </summary>
+		///
+		/// <param name="command_list">
+		/// 	A semi-colon delimited list of commands the user can input.
+		/// </param>
+		/// <param name="arguments_string">
+		/// 	[out] A pointer to a std::string that arguments will be copied to.
+		/// </param>
+		/// <param name="line_start">
+		/// 	(Optional) The text string to use at the start of the command line, defaults to "command".
+		/// </param>
+		///
+		/// <returns>
+		/// 	Returns the index of the command entered, or -1 if the command did not match.
+		/// </returns>
+		int32 EnterCommand(const char* command_list
+			, _Out_opt_ std::string* arguments_string
+			, const char* line_start = "command");
+
 		/// <summary>	Print's an empty new line. </summary>
 		void PrintNewLine();
 

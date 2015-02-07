@@ -43,12 +43,20 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 		byte nil_uuid[Enums::k_uuid_buffer_size] = {};
 		header.InitializeBuildInfo(Enums::_production_build_stage_ship, 0, nil_uuid);
 	}
+
 	// Initializes the yelo header with a scenario's yelo build info
 	void InitializeHeaderGlobalsBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info)
 	{
 		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
 		header.InitializeBuildInfo(build_info.build_stage, build_info.revision, build_info.uuid_buffer);
+	}
+
+	void InitializeHeaderGlobalsMinimumBuild(const byte major, const byte minor, const uint16 build)
+	{
+		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
+
+		header.InitializeMinimumBuildInfo(major, minor, build);
 	}
 
 	namespace AddressOf

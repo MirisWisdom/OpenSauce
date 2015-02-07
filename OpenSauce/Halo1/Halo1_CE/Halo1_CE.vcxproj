@@ -693,6 +693,27 @@
     <Text Include="Halo1_CE_Readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_EngineFunctions.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_HS.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Interface.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Networking.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Objects.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\OpenSauce.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_DX9.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderDraw.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderExtension.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Scenario.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\TagGroups.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_EngineFunctions.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_HS.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Networking.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Objects.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\OpenSauce.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Scenario.lua" />
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\TagGroups.lua" />
     <None Include="Common\GameSystemComponent.Definitions.inl" />
     <None Include="Common\GameSystemComponent.IterationRoundBegin.inl" />
     <None Include="Common\GameSystemComponent.IterationRoundEnd.inl" />
@@ -706,6 +727,7 @@
     <None Include="Common\GameSystemComponents.Scripting.inl" />
     <None Include="Common\GameSystemComponents.Startup.inl" />
     <None Include="Common\GameSystemComponents.Tags.inl" />
+    <None Include="Game\AI.Transform.inl" />
     <None Include="Game\CameraFov.inl" />
     <None Include="Game\Campaign.inl" />
     <None Include="Game\ScriptLibrary.Definitions.HTTPServer.inl" />
@@ -791,11 +813,11 @@
     <None Include="Objects\ObjectFieldDefinitions.inl" />
     <None Include="Objects\Objects.Damage.inl" />
     <None Include="Objects\Objects.Scripting.inl" />
-    <None Include="Objects\Units.UnitInfections.inl" />
     <None Include="Objects\Objects.VehicleSettings.inl" />
     <None Include="Objects\Objects.WeaponSettings.inl" />
     <None Include="Objects\Units.Animations.inl" />
-    <None Include="Objects\Units.Boarding.inl" />
+    <None Include="Objects\Units.SeatDamage.inl" />
+    <None Include="Objects\Units.SeatBoarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl" />
     <None Include="Resources\OpenSauceUI\InGameDefinition.json" />
@@ -853,7 +875,9 @@
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
     <Xml Include="YeloFileChecksums.xml" />
-    <Xml Include="YeloSettingsTemplate.xml" />
+    <Xml Include="YeloSettingsTemplate.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Halo1_CE.rc" />

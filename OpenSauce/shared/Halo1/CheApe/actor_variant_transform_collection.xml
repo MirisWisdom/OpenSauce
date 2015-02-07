@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<references>
+		<Reference name="actor_variant_transform_out_reference">
+			<field>avto</field>
+		</Reference>
+		<Reference name="actor_variant_transform_in_reference">
+			<field>avti</field>
+		</Reference>
+	</references>
+
+	<enums>
+		<Enum name="actor_variant_transform_collection_damage_type">
+			<field>both</field>
+			<field>weapon damage only</field>
+			<field>melee damage only</field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="actor_variant_transform_collection_transform_flags">
+			<field>scripted only</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="actor_variant_transform_collection_instigator_block" maxElements="16">
+			<!--actor_variant_transform_collection_instigator-->
+			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />
+			<field type="Enum" name="damage type" definition="actor_variant_transform_collection_damage_type" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="12" />
+		</TagBlock>
+
+		<TagBlock name="actor_variant_transform_collection_transform_block" maxElements="32">
+			<!--actor_variant_transform_collection_transform-->
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_collection_transform_flags" />
+			<field type="Pad" definition="2" />
+			
+			<field type="String" name="transform name" blockname="true" />
+			<field type="RealFraction" name="selection chance" />
+			
+			<field type="Explanation" name="Transform Stages" definition="The transform out stage tag determines the cause of the transform (such as low health) and the animation to play on the attacked unit. The transform in stage tag determines the possible actors to transform into, and optionally the attachments to add during the transform out stage." />
+			<field type="TagReference" name="transform out" definition="actor_variant_transform_out_reference" />
+			<field type="Skip" definition="4" /> <!-- actor_variant_transform_out_definition*-->
+			<field type="TagReference" name="transform in" definition="actor_variant_transform_in_reference" />
+			<field type="Skip" definition="4" /> <!-- actor_variant_transform_in_definition*-->
+			
+			<field type="Explanation" name="Transform Instigators" definition="Controls which transform to use when attacked by a particular unit.~N ~NIf no instigators are added then the transform can occur when any damage is received, otherwise the transform can only occur when attacked by a listed unit. If multiple transforms have no instigators/the same instigators a random matching transform will be chosen. Transforms with instigators defined will take priority over those without." />
+			<field type="Block" name="instigators" definition="actor_variant_transform_collection_instigator_block" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+
+		<TagBlock name="actor_variant_transform_collection_entry_block" maxElements="32">
+			<!--actor_variant_transform_collection_entry-->
+			<field type="TagReference" name="actor variant" definition="actor_variant_reference" blockname="true" />
+			<field type="Block" name="transforms" definition="actor_variant_transform_collection_transform_block" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="actor_variant_transform_collection" groupTag="avtc" version="1">
+			<!--actor_variant_transform_collection_definition-->
+			<field type="Block" name="actor variant transforms" definition="actor_variant_transform_collection_entry_block" />
+			<field type="Pad" definition="24" />
+		</TagGroup>	
+	</groups>
+
+</definitions>

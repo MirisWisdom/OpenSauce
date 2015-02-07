@@ -11,6 +11,31 @@
 
 namespace Yelo
 {
+	namespace Flags
+	{
+		enum object_damage_flags
+		{
+			_object_damage_flag_body_depleted		= 1 << 0,
+			_object_damage_flag_destroyed_a_region	= 1 << 1,
+			_object_damage_flag_destroyed_object	= 1 << 2,
+			_object_damage_flag_shield_depleted		= 1 << 3,
+			_object_damage_flag_is_enemy_team		= 1 << 4,
+			_object_damage_flag_unknown5			= 1 << 5,
+			_object_damage_flag_unknown6			= 1 << 6,
+			_object_damage_flag_unknown7			= 1 << 7,
+
+			_object_damage_flags
+		};
+
+		enum damage_data_flags : _enum
+		{
+			// Incomplete
+			_damage_data_flags_affect_target_only_bit,
+
+			_damage_data_flags
+		};
+	};
+
 	namespace Objects
 	{
 		struct s_damage_data

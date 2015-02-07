@@ -8,9 +8,12 @@
 CMDLINE_DEFINE_SWITCH(full_dump)
 CMDLINE_DEFINE_SWITCH(disable_exception_handling)
 
+#if (PLATFORM_TYPE == PLATFORM_SAPIEN) || (!PLATFORM_IS_EDITOR)
+	CMDLINE_DEFINE_SWITCH(no_os_gamestate)
+#endif
+
 #if !PLATFORM_IS_EDITOR
 	CMDLINE_DEFINE_ARG(path, cstring)
-	CMDLINE_DEFINE_SWITCH(no_os_gamestate)
 
 	CMDLINE_DEFINE_ARG(freeze_dump, real)
 	CMDLINE_DEFINE_ARG(freeze_dump_delay, real)
