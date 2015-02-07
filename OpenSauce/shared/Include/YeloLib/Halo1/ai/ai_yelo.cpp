@@ -53,6 +53,13 @@ namespace Yelo
 		bool PLATFORM_API ActorShouldIgnoreSeatedProp(const s_prop_datum* prop)
 		{
 			auto& actor_datum = *Actors()[prop->owner_actor_index];
+
+			// Return false if the unit is null (will be null if the actor is a swarm actor)
+			if(actor_datum.meta.unit_index.IsNull())
+			{
+				return false;
+			}
+
 			auto& actor_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(actor_datum.meta.unit_index);
 			auto& prop_unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(prop->unit_index);
 
