@@ -686,7 +686,7 @@ namespace Yelo
 				for(sbyte index = 0; index < transform_in_definition.targets.Count; index++)
 				{
 					auto& target = transform_in_definition.targets[index];
-					if((lower_value + target.selection_chance) > test_value)
+					if((lower_value + target.selection_chance) > test_value - K_REAL_EPSILON)
 					{
 						transform_state.m_target_index = index;
 						break;
