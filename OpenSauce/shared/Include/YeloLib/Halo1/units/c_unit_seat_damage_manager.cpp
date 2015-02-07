@@ -205,6 +205,16 @@ namespace Yelo
 			{
 				auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
 
+				if((unit_datum->unit.current_grenade_index == NONE) || (unit_datum->unit.current_grenade_index >= Enums::k_unit_grenade_types_count_yelo))
+				{
+					return true;
+				}
+
+				if(!TEST_FLAG(seat_damage_definition.permitted_grenade_types, unit_datum->unit.current_grenade_index))
+				{
+					return true;
+				}
+
 				switch(seat_damage_definition.grenade)
 				{
 				case Enums::_unit_seat_damage_grenade_normal:
