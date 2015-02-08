@@ -210,7 +210,7 @@ namespace Yelo
 					return true;
 				}
 
-				if(!TEST_FLAG(seat_damage_definition.permitted_grenade_types, unit_datum->unit.current_grenade_index))
+				if(TEST_FLAG(seat_damage_definition.disabled_grenade_types, unit_datum->unit.current_grenade_index))
 				{
 					return true;
 				}

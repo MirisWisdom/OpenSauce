@@ -26,6 +26,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_DEVICEHOOKS
 #include "Memory/_EngineLayout.inl"
 
+		static bool g_corruption_hack_enabled = false;
 		static real g_corruption_hack_null_data[12264];
 
 		static void CreateD3DHook(void* call_address, void* hook_address)
@@ -41,6 +42,13 @@ namespace Yelo
 
 			if(SUCCEEDED(hr) && Yelo::Main::IsYeloEnabled())
 			{
+				// If the device vendor is ATI, enabled the corruption hack fix
+				D3DADAPTER_IDENTIFIER9 device_identifier;
+				if(SUCCEEDED(d3d->GetAdapterIdentifier(0, 0, &device_identifier)))
+				{
+					g_corruption_hack_enabled = device_identifier.VendorId == 0x1002;
+				}
+
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
 
@@ -90,7 +98,10 @@ namespace Yelo
 		{
 			if(Yelo::Main::IsYeloEnabled())
 			{
-				DX9::Direct3DDevice()->DrawPrimitiveUP(D3DPT_LINESTRIP, 0x1FF, &g_corruption_hack_null_data, 0x18);
+				if(g_corruption_hack_enabled)
+				{
+					DX9::Direct3DDevice()->DrawPrimitiveUP(D3DPT_LINESTRIP, 0x1FF, &g_corruption_hack_null_data, 0x18);
+				}
 
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
