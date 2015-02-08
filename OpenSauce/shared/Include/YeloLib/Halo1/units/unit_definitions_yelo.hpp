@@ -232,7 +232,7 @@ namespace Yelo
 			TAG_FIELD(Enums::unit_seat_damage_melee, melee);
 			TAG_FIELD(tag_reference, melee_damage_effect, "jpt!");
 			TAG_FIELD(Enums::unit_seat_damage_grenade, grenade);
-			TAG_FIELD(word_flags, permitted_grenade_types);
+			TAG_FIELD(word_flags, disabled_grenade_types);
 			TAG_FIELD(real, grenade_detonation_time_scale);
 			TAG_FIELD(tag_string, grenade_marker);
 			TAG_PAD(tag_block, 2);
