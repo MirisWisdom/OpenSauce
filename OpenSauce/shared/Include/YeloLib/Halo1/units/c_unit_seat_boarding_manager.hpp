@@ -47,9 +47,11 @@ namespace Yelo
 			/// <param name="unit_index">			Datum index of the unit. </param>
 			/// <param name="target_unit_index">	Datum index of the target unit. </param>
 			/// <param name="damage_effect">		The damage effect. </param>
+			/// <param name="region_index">			(Optional) Zero-based index of the region to target. </param>
 			void UnitApplyDamage(const datum_index unit_index
 				, const datum_index target_unit_index
-				, const datum_index damage_effect) const;
+				, const datum_index damage_effect
+				, const int16 region_index = NONE) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Makes a unit exit it's current seat. </summary>

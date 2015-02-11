@@ -14,6 +14,8 @@ namespace Yelo
 			_object_field_real_function_out,
 			_object_field_real_radius,
 			_object_field_real_scale,
+			_object_field_real_maximum_vitality, // Keep for backwards compatibility ONLY, value is incorrect
+			_object_field_real_current_vitality, // Keep for backwards compatibility ONLY, value is incorrect
 			_object_field_real_maximum_health,
 			_object_field_real_maximum_shield,
 			_object_field_real_current_health,

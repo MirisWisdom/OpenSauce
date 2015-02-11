@@ -25,12 +25,17 @@
 			<field>override</field>
 			<field>actor default</field>
 		</Enum>
+
+		<Enum name="actor_variant_transform_in_encounter_squad_handling">
+			<field>inherit from attacked</field>
+			<field>inherit from attacker</field>
+			<field>free actor</field>
+		</Enum>
 	</enums>
 
 	<flags>
 		<Flag name="actor_variant_transform_in_target_flags">
 			<field>try to use existing unit</field>
-			<field>inherit encounter/squad</field>
 			<field>drop weapon</field>
 			<field>inherit seated units</field>
 			<field>delete attached actors</field>
@@ -51,6 +56,8 @@
 
 			<field type="Explanation" name="AI" definition="" />
 			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
+			<field type="Enum" name="encounter/squad handling" definition="actor_variant_transform_in_encounter_squad_handling" />
+			<field type="Pad" definition="2" />
 			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
 			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
 			<field type="Enum" name="initial state handling" definition="actor_variant_transform_in_actor_initial_state_handling" />

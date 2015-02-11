@@ -9,6 +9,8 @@ static s_object_field_definition g_object_real_fields[] = {
 	FIELD_ENTRY(object, real, real, function_out,				false, true),
 	FIELD_ENTRY(object, real, real, radius,						false, true),
 	FIELD_ENTRY(object, real, real, scale,						false, true),
+	FIELD_ENTRY(object, real, real, maximum_vitality,			false), // Keep for backwards compatibility ONLY, value is incorrect
+	FIELD_ENTRY(object, real, real, current_vitality,			false), // Keep for backwards compatibility ONLY, value is incorrect
 	FIELD_ENTRY(object, real, real, maximum_health,				false),
 	FIELD_ENTRY(object, real, real, maximum_shield,				false),
 	FIELD_ENTRY(object, real, real, current_health,				false),
