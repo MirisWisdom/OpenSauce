@@ -42,15 +42,6 @@ namespace Yelo
 			_unit_seat_keyframe_action_seat_action_target
 		};
 
-		enum unit_seat_keyframe_action_apply_effect : _enum
-		{
-			_unit_seat_keyframe_action_apply_effect_none,
-			_unit_seat_keyframe_action_apply_effect_mounted_unit,
-			_unit_seat_keyframe_action_apply_effect_seated_unit,
-
-			_unit_seat_keyframe_action_apply_effect
-		};
-
 		enum unit_seat_keyframe_action_unit_door_action : _enum
 		{
 			_unit_seat_keyframe_action_unit_door_action_neither,
@@ -58,6 +49,25 @@ namespace Yelo
 			_unit_seat_keyframe_action_unit_door_action_close,
 
 			_unit_seat_keyframe_action_unit_door_action
+		};
+
+		enum unit_seat_keyframe_action_apply_damage_effect : _enum
+		{
+			_unit_seat_keyframe_action_apply_damage_effect_none,
+			_unit_seat_keyframe_action_apply_damage_effect_mounted_unit,
+			_unit_seat_keyframe_action_apply_damage_effect_mounted_unit_region,
+			_unit_seat_keyframe_action_apply_damage_effect_seated_unit,
+
+			_unit_seat_keyframe_action_apply_damage_effect
+		};
+
+		enum unit_seat_keyframe_action_apply_effect : _enum
+		{
+			_unit_seat_keyframe_action_apply_effect_none,
+			_unit_seat_keyframe_action_apply_effect_mounted_unit,
+			_unit_seat_keyframe_action_apply_effect_seated_unit,
+
+			_unit_seat_keyframe_action_apply_effect
 		};
 
 		enum unit_seat_boarding_type : _enum
@@ -130,6 +140,7 @@ namespace Yelo
 			_unit_seat_extensions_flags_triggers_mounted_state_bit,
 			_unit_seat_extensions_flags_exit_on_unit_death_bit,
 			_unit_seat_extensions_flags_exit_on_target_seat_empty_bit,
+			_unit_seat_extensions_flags_prevent_death_when_unit_dies,
 			_unit_seat_extensions_flags_ignored_by_seated_ai_bit,
 			_unit_seat_extensions_flags_ignored_by_mounted_ai_bit,
 
@@ -158,6 +169,13 @@ namespace Yelo
 			_unit_seat_damage_flags_exit_after_grenade_plant_bit,
 
 			_unit_seat_damage_flags
+		};
+
+		enum unit_seat_region_damage_flags
+		{
+			_unit_seat_region_damage_flags_disable_grenades_until_destroyed_bit,
+
+			_unit_seat_region_damage_flags
 		};
 	};
 
@@ -202,8 +220,9 @@ namespace Yelo
 			TAG_FIELD(Enums::unit_seat_keyframe_action_unit_door_action, unit_door_action);
 			PAD16;
 
-			TAG_FIELD(Enums::unit_seat_keyframe_action_apply_effect, apply_damage_to);
-			PAD16;
+			TAG_FIELD(Enums::unit_seat_keyframe_action_apply_damage_effect, apply_damage_to);
+			TAG_FIELD(int16, region_index);
+			TAG_FIELD(tag_string, region_name);
 			TAG_FIELD(tag_reference, damage_effect, "jpt!");
 
 			TAG_FIELD(Enums::unit_seat_keyframe_action_apply_effect, apply_effect_to);
@@ -211,7 +230,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, effect, "effe");
 			TAG_FIELD(tag_string, effect_marker);
 			TAG_PAD(tag_block, 3);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_keyframe_action) == 0x78);
+		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_keyframe_action) == 0x98);
 
 		struct unit_seat_boarding
 		{
@@ -235,8 +254,12 @@ namespace Yelo
 			TAG_FIELD(word_flags, disabled_grenade_types);
 			TAG_FIELD(real, grenade_detonation_time_scale);
 			TAG_FIELD(tag_string, grenade_marker);
+			TAG_FIELD(word_flags, region_flags);
+			TAG_FIELD(int16, region_index);
+			TAG_FIELD(tag_string, region_name);
+			TAG_FIELD(tag_reference, region_damage_effect, "jpt!");
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_damage) == 0x54);
+		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_damage) == 0x88);
 
 		struct unit_seat_access
 		{

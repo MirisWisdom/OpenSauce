@@ -218,7 +218,7 @@ namespace Yelo
 				auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 
 				if(!TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_health_range_bit)
-					&& !TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_health_range_bit))
+					&& !TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_shield_range_bit))
 				{
 					return false;
 				}
@@ -274,6 +274,12 @@ namespace Yelo
 					auto& transform_out_definition = *transform.transform_out_ptr;
 					auto& unit_datum = *blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 					auto& actor_datum = *Actors()[unit_datum.unit.actor_index];
+
+					// Ignore transforms with instigators
+					if(transform.instigators.Count)
+					{
+						return false;
+					}
 
 					if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_actor_action_bit)
 						&& !TEST_FLAG(transform_out_definition.actor_action, actor_datum.state.action))
@@ -543,21 +549,29 @@ namespace Yelo
 			, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
 			, const Enums::actor_default_state return_state_override
 			, const datum_index source_actor_index
-			, const bool inherit_encounter_squad) const
+			, const Enums::actor_variant_transform_in_encounter_squad_handling encounter_squad_handling
+			, const datum_index instigator_encounter
+			, const int16 instigator_squad) const
 		{
 			// Set up the unit's inventory
 			blam::actor_customize_unit(actor_variant_tag_index, unit_index);
 
 			// Inherit the encounter and squad if desired
 			datum_index encounter_index = datum_index::null;
-			int32 squad_index = NONE;
+			int16 squad_index = NONE;
 
 			const auto actor_data = AI::Actors()[source_actor_index];
 
-			if(inherit_encounter_squad)
+			switch(encounter_squad_handling)
 			{
-				encounter_index = actor_data->meta.encounter_index;
+			case Enums::_actor_variant_transform_in_encounter_squad_handling_inherit_from_attacked:
+				encounter_index = actor_data->meta.encounter_index.index;
 				squad_index = actor_data->meta.squad_index;
+				break;
+			case Enums::_actor_variant_transform_in_encounter_squad_handling_inherit_from_attacker:
+				encounter_index = instigator_encounter;
+				squad_index = instigator_squad;
+				break;
 			}
 
 			// Get the intended actor states
@@ -773,7 +787,9 @@ namespace Yelo
 				, transform_target.return_state_handling
 				, transform_target.return_state_override
 				, unit_datum->unit.actor_index
-				, TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_inherit_encounter_squad));
+				, transform_target.encounter_squad_handling
+				, transform_state.m_instigator_encounter
+				, transform_state.m_instigator_squad);
 
 			// Freeze the actor during the transform in stage
 			blam::actor_braindead(new_unit_datum->unit.actor_index, true);
@@ -920,7 +936,32 @@ namespace Yelo
 					, *transform.transform_out_ptr
 					, *transform.transform_in_ptr
 					, *transform_state);
-			
+
+				// Store the instigators encounter and squad for later use
+				s_actor_datum* actor_datum = nullptr;
+				if(instigator_unit_datum)
+				{
+					if(!instigator_unit_datum->unit.swarm_actor_index.IsNull())
+					{
+						actor_datum = AI::Actors()[instigator_unit_datum->unit.swarm_actor_index];
+					}
+					else if(!instigator_unit_datum->unit.actor_index.IsNull())
+					{
+						actor_datum = AI::Actors()[instigator_unit_datum->unit.actor_index];
+					}
+				}
+
+				if(actor_datum)
+				{
+					transform_state->m_instigator_encounter = actor_datum->meta.encounter_index;
+					transform_state->m_instigator_squad = actor_datum->meta.squad_index;
+				}
+				else
+				{
+					transform_state->m_instigator_encounter = NONE;
+					transform_state->m_instigator_squad = NONE;
+				}
+
 				transform_state->m_instigator_team = instigator_team;
 				transform_state->m_transform_entry_index = transforms_entry_index;
 				transform_state->m_transform_index = transform_index;
@@ -1029,6 +1070,8 @@ namespace Yelo
 						, *transform.transform_in_ptr
 						, *transform_state);
 			
+					transform_state->m_instigator_encounter = NONE;
+					transform_state->m_instigator_squad = NONE;
 					transform_state->m_instigator_team = Enums::_game_team_none;
 					transform_state->m_transform_entry_index = transforms_entry_index;
 					transform_state->m_transform_index = transform_index;
@@ -1321,7 +1364,9 @@ namespace Yelo
 				, *transform.transform_out_ptr
 				, *transform.transform_in_ptr
 				, *transform_state);
-			
+
+			transform_state->m_instigator_encounter = NONE;
+			transform_state->m_instigator_squad = NONE;
 			transform_state->m_instigator_team = Enums::_game_team_none;
 			transform_state->m_transform_entry_index = transform_entry_index;
 			transform_state->m_transform_index = transform_index;

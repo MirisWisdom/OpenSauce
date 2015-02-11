@@ -1,4 +1,4 @@
-= OpenSauce for Halo Custom Edition v1.09 =
+= OpenSauce for Halo Custom Edition v1.10 =
 
 == Change Log ==
 === Version 2015 ===
@@ -15,6 +15,7 @@
   * CHANGE		Installer now checks for CPU support of SSE2
   * CHANGE		Installer now forces the user to manually uninstall builds older than 4.0.0
   * CHANGE		Map downloading will now try to save the maps to your My Games/Halo CE/maps directory
+  * ADD			Added actor variant transforms
   * ADD			Added settings to ignore FOV changes on the main menu and in cutscenes
   * ADD			Added GUI for changing OpenSauce settings (Uses GWEN)
   * ADD			Added soft particles to the engine
@@ -30,6 +31,7 @@
   * ADD			Added unit boarding
   * ADD			Added entering biped unit seats
   * ADD			disableVehicleRemapper setting, along with a vehicle_remapper_enabled script function, to turn off the PC's vehicle respawning nonsense
+  * FIX			Fixed incorrect object data real mapping of "maximum/current_vitality", replaced with "maximum/current_health" and "maximum/current_shield"
   * FIX			Fixed map download client not trying master servers if the dedicated server can't serve the map
   * FIX			Fixed map download server not handling certain map names
   * FIX [69]	Object_data_get_real logic will no longer cause exceptions

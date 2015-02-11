@@ -45,7 +45,8 @@ namespace Yelo
 			/// <param name="seat_damage">	The seat damage definition. </param>
 			void ApplyMeleeDamageToUnit(const datum_index unit_index
 				, const datum_index target_unit
-				, const TagGroups::unit_seat_damage& seat_damage) const;
+				, const TagGroups::unit_seat_damage& seat_damage
+				, const int16 region_index = NONE) const;
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

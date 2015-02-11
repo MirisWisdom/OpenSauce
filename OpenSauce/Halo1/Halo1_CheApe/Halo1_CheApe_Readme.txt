@@ -3,11 +3,13 @@
 == Change Log ==
 === Version 2015 ===
   * UPGRADE		We now use Visual Studio 2013 instead of 2008 for development
+  * ADD			Added actor variant transforms
+  * ADD			Added seat boarding, damage and unit mounting
   * ADD			tag system was rewritten in OS code, providing better diagnostic messages and tag utilities. However, the engine's tag saving code is still used
   * ADD			tag system now supports tag fields of the _field_string kind with a custom string length (stock is fixed to 31-character strings)
   * ADD			Custom event handlers for Guerilla's Source Control and Xsync menu items, for use in a future system (they still don't do anything currently)
   * ADD			Introduced "tag-load-test" command to Tool.
-  * ADD			model_animations tag features two new unit_seat_animation types for seat boarding and ejection
+  * ADD			model_animations tag features new unit_seat_animation types for boarding, ejection and unit mounting
   * ADD			Added model extractor to OpenSauceIDE
   * ADD			Added a lightmap rendering script for 3ds MAX
   * ADD			Added COLLADA lightmap importing to OpenSauceIDE

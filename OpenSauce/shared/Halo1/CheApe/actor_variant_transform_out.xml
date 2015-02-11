@@ -66,8 +66,8 @@
 			<field type="Pad" definition="2" />
 			<field type="WordFlags" name="actor action" definition="actor_variant_transform_out_actor_action_flags" />
 			<field type="WordFlags" name="actor state" definition="actor_variant_transform_out_actor_state_flags" />
-			<field type="RealBounds" name="shield range" />
-			<field type="RealBounds" name="health range" />
+			<field type="RealFractionBounds" name="shield range" />
+			<field type="RealFractionBounds" name="health range" />
 			<field type="Pad" definition="24" />
 
 			<field type="Explanation" name="Animation" definition="Played when the transform criteria have been met. The actor is made braindead during the animation, and if the invincibility flag is set they cannot be killed once the animation begins." />

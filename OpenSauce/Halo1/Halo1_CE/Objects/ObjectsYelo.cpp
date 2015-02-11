@@ -28,6 +28,7 @@
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 
 #include "Objects/ObjectFieldDefinitions.hpp"
 #include "Objects/Equipment.hpp"
@@ -155,6 +156,51 @@ namespace Yelo
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_vehicle_remapper_enabled, 
 				scripting_vehicle_remapper_enabled_evaluate);
 		}
+		
+		bool PLATFORM_API ShouldKillChildObject(const s_object_datum* object_datum)
+		{
+			if(object_datum->object.VerifyType(s_unit_datum::k_object_types_mask))
+			{
+				auto& unit_datum = *CAST_PTR(const s_unit_datum*, object_datum);
+				if(unit_datum.unit.vehicle_seat_index != NONE)
+				{
+					auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum.object.parent_object_index, unit_datum.unit.vehicle_seat_index);
+					if(seat_extension_definition)
+					{
+						return !TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_prevent_death_when_unit_dies);
+					}
+				}
+			}
+
+			return true;
+		}
+
+		API_FUNC_NAKED static void ObjectDepleteBodyKillChildHook()
+		{
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(OBJECT_DEPLETE_BODY_KILL_CHILD_RETN);
+
+			_asm
+			{
+				push	eax
+				push	ecx
+				push	edx
+
+				push	eax
+				call	ShouldKillChildObject
+				add		esp, 4
+				cmp		al, al
+				
+				pop		edx
+				pop		ecx
+				pop		eax
+
+				jz		skip_kill
+				or		[eax + 106h], cx
+
+			skip_kill:
+				jmp		RETN_ADDRESS
+			};
+		}
 
 		void PLATFORM_API ObjectsUpdate()
 		{
@@ -186,6 +232,7 @@ namespace Yelo
 			ObjectDamageAftermath_UpgradesInitialize();
 
 			Memory::WriteRelativeCall(&ObjectsUpdate, GET_FUNC_VPTR(OBJECTS_UPDATE_CALL), true);
+			Memory::WriteRelativeJmp(&ObjectDepleteBodyKillChildHook, GET_FUNC_VPTR(OBJECT_DEPLETE_BODY_KILL_CHILD_HOOK), true);
 		}
 
 		void Dispose()

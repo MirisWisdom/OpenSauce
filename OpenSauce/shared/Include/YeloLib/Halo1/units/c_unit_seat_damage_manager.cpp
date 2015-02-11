@@ -46,7 +46,8 @@ namespace Yelo
 
 		void c_unit_seat_damage_manager::ApplyMeleeDamageToUnit(const datum_index unit_index
 			, const datum_index target_unit
-			, const TagGroups::unit_seat_damage& seat_damage) const
+			, const TagGroups::unit_seat_damage& seat_damage
+			, const int16 region_index) const
 		{
 			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			auto* target_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(target_unit);
@@ -61,7 +62,11 @@ namespace Yelo
 			}
 
 			datum_index damage_effect = datum_index::null;
-			if(use_weapon_melee)
+			if((region_index != NULL) && !seat_damage.region_damage_effect.tag_index.IsNull())
+			{
+				damage_effect = seat_damage.region_damage_effect.tag_index;
+			}
+			else if(use_weapon_melee)
 			{
 				// Get the melee damage effect
 				auto* weapon_datum = blam::object_get_and_verify_type<s_weapon_datum>(weapon_index);
@@ -94,17 +99,28 @@ namespace Yelo
 
 			SET_FLAG(damage_data.flags, Flags::_damage_data_flags_affect_target_only_bit, true);
 
-			blam::object_cause_damage(damage_data, target_unit);
+			blam::object_cause_damage(damage_data, target_unit, NONE, region_index);
 		}
 
 		void c_unit_seat_damage_manager::UnitCauseSeatedPlayerMelee(const datum_index unit_index) const
 		{
 			auto* unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
+			auto* parent_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_datum->object.parent_object_index);
 			auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum->object.parent_object_index, unit_datum->unit.vehicle_seat_index);
 
 			if(seat_extension_definition && (seat_extension_definition->seat_damage.Count != 0))
 			{
 				auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
+
+				// If a region is defined melee should target it first
+				if(seat_damage_definition.region_index != NONE)
+				{
+					if(!TEST_FLAG(parent_unit_datum->object.regions_destroyed_flags, seat_damage_definition.region_index))
+					{
+						ApplyMeleeDamageToUnit(unit_index, unit_datum->object.parent_object_index, seat_damage_definition, seat_damage_definition.region_index);
+						return;
+					}
+				}
 
 				switch(seat_damage_definition.melee)
 				{
@@ -199,11 +215,22 @@ namespace Yelo
 			{
 				return true;
 			}
-
+			
+			auto* parent_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_datum->object.parent_object_index);
 			auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum->object.parent_object_index, unit_datum->unit.vehicle_seat_index);
 			if(seat_extension_definition && (seat_extension_definition->seat_damage.Count != 0))
 			{
 				auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
+
+				// If a region is targeted but not destroyed, and grenades are disabled until it is destroyed, return true
+				if(seat_damage_definition.region_index != NONE)
+				{
+					if(!TEST_FLAG(parent_unit_datum->object.regions_destroyed_flags, seat_damage_definition.region_index)
+						&& TEST_FLAG(seat_damage_definition.region_flags, Flags::_unit_seat_region_damage_flags_disable_grenades_until_destroyed_bit))
+					{
+						return true;
+					}
+				}
 
 				if((unit_datum->unit.current_grenade_index == NONE) || (unit_datum->unit.current_grenade_index >= Enums::k_unit_grenade_types_count_yelo))
 				{

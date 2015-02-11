@@ -37,10 +37,11 @@ namespace Yelo
 
 			blam::hs_effect_new_from_object_marker(effect, unit_index, effect_marker);
 		}
-		
+
 		void c_unit_seat_boarding_manager::UnitApplyDamage(const datum_index unit_index
 			, const datum_index target_unit_index
-			, const datum_index damage_effect) const
+			, const datum_index damage_effect
+			, const int16 region_index) const
 		{
 			if(damage_effect.IsNull())
 			{
@@ -63,7 +64,7 @@ namespace Yelo
 			SET_FLAG(damage_data.flags, Flags::_damage_data_flags_affect_target_only_bit, true);
 
 			// Damage the target unit
-			blam::object_cause_damage(damage_data, target_unit_index);
+			blam::object_cause_damage(damage_data, target_unit_index, NONE, region_index);
 		}
 		
 		void c_unit_seat_boarding_manager::UnitExitFromSeat(const datum_index unit_index
@@ -181,10 +182,13 @@ namespace Yelo
 			// Apply a damage effect on a mounted or seated unit
 			switch(action.apply_damage_to)
 			{
-			case Enums::_unit_seat_keyframe_action_apply_effect_mounted_unit:
+			case Enums::_unit_seat_keyframe_action_apply_damage_effect_mounted_unit:
 				UnitApplyDamage(unit_index, unit_datum.object.parent_object_index, action.damage_effect.tag_index);
 				break;
-			case Enums::_unit_seat_keyframe_action_apply_effect_seated_unit:
+			case Enums::_unit_seat_keyframe_action_apply_damage_effect_mounted_unit_region:
+				UnitApplyDamage(unit_index, unit_datum.object.parent_object_index, action.damage_effect.tag_index, action.region_index);
+				break;
+			case Enums::_unit_seat_keyframe_action_apply_damage_effect_seated_unit:
 				if(!target_seat_unit.IsNull())
 				{
 					UnitApplyDamage(unit_index, target_seat_unit, action.damage_effect.tag_index);

@@ -163,6 +163,92 @@ namespace Yelo
 			}
 		}
 
+		static void GetRegionIndices(const datum_index tag_index
+			, TagGroups::_object_definition& object_definition
+			, TagGroups::_unit_definition& unit_definition)
+		{
+			TagGroups::gbxmodel_definition* model = nullptr;
+			if(!object_definition.references.render_model.tag_index.IsNull())
+			{
+				model = blam::tag_get<TagGroups::gbxmodel_definition>(object_definition.references.render_model.tag_index);
+			}
+
+			auto find_region =
+				[&](const tag_string& name) -> int16
+				{
+					// If the unit has no model or the name is empty, return NONE
+					if(!model)
+					{
+						return NONE;
+					}
+
+					if(is_null_or_empty(name))
+					{
+						return NONE;
+					}
+
+					// If a name was defined but a matching region was not found, throw an error
+					auto found_region = std::find_if(model->regions.begin(), model->regions.end(),
+						[&](TagGroups::gbxmodel_region& entry)
+						{
+							return strcmp(entry.name, name) == 0;
+						}
+					);
+					
+					YELO_ASSERT_DISPLAY(found_region != model->regions.end()
+						, "Unable to find the specified region %s.\r\nError in: %s"
+						, name
+						, blam::tag_get_name(tag_index));
+
+					return found_region - model->regions.begin();
+				};
+
+			for(auto& seat : unit_definition.seats)
+			{
+				if(seat.seat_extensions.Count != 1)
+				{
+					continue;
+				}
+
+				auto& seat_extension = seat.seat_extensions[0];
+
+				if(seat_extension.seat_boarding.Count == 1)
+				{
+					auto& seat_boarding = seat_extension.seat_boarding[0];
+
+					// Get the targeted region for the keyframe
+					for(auto& keyframe : seat_boarding.keyframe_actions)
+					{
+						keyframe.region_index = NONE;
+
+						if(keyframe.apply_damage_to == Enums::_unit_seat_keyframe_action_apply_damage_effect_mounted_unit_region)
+						{
+							YELO_ASSERT_DISPLAY(!is_null_or_empty(keyframe.region_name)
+								, "No region specified in a boarding keyframe.\r\nError in: %s"
+								, blam::tag_get_name(tag_index));
+
+							keyframe.region_index = find_region(keyframe.region_name);
+						}
+					}
+				}
+
+				if(seat_extension.seat_damage.Count == 1)
+				{
+					auto& seat_damage = seat_extension.seat_damage[0];
+					
+					// Get the targeted region for melee damage
+					if(!is_null_or_empty(seat_damage.region_name))
+					{
+						seat_damage.region_index = find_region(seat_damage.region_name);
+					}
+					else
+					{
+						seat_damage.region_index = NONE;
+					}
+				}
+			}
+		}
+
 		static bool PLATFORM_API UnitPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
 			if(mode != Enums::_tag_postprocess_mode_for_runtime)
@@ -194,6 +280,7 @@ namespace Yelo
 
 			VerifyTargetedSeatOptions(tag_index, unit_definition);
 			LinkTargetedSeats(unit_definition);
+			GetRegionIndices(tag_index, tag_definition.object, tag_definition.unit);
 
 			return true;
 		}
@@ -231,10 +318,11 @@ namespace Yelo
 				"secondary",
 				"final");
 
-			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 5,
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 6,
 				"triggers mounted state",
 				"exit on unit death",
 				"exit on target seat empty",
+				"prevent death when unit dies",
 				"ignored by seated ai",
 				"ignored by mounted ai");
 
@@ -285,6 +373,12 @@ namespace Yelo
 				"mounted unit",
 				"seated unit");
 
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_keyframe_action_apply_damage_effect, 4,
+				"none",
+				"mounted unit",
+				"mounted unit region",
+				"seated unit");
+
 
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_boarding_type, 2,
 				"immediate",
@@ -315,6 +409,9 @@ namespace Yelo
 				"use weapon melee damage effect",
 				"exit after grenade plant");
 
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_damage_region_flags, 1,
+				"disable grenades until destroyed");
+
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_damage_disabled_grenade_types, 4,
 				"fragmentation grenade",
 				"plasma grenade",
@@ -329,8 +426,9 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_enum, "target seat unit action", &unit_seat_keyframe_action_target_seat_unit_action),
 				TAG_FIELD_ENTRY(_field_enum, "unit door action", &unit_seat_keyframe_action_target_unit_door_action),
 				TAG_FIELD_ENTRY_PAD(2),
-				TAG_FIELD_ENTRY(_field_enum, "apply damage to", &unit_seat_keyframe_action_apply_effect),
-				TAG_FIELD_ENTRY_PAD(2),
+				TAG_FIELD_ENTRY(_field_enum, "apply damage to", &unit_seat_keyframe_action_apply_damage_effect),
+				TAG_FIELD_ENTRY(_field_skip, "", (void*)2), // region_index
+				TAG_FIELD_ENTRY(_field_string, "region name"),
 				TAG_FIELD_ENTRY(_field_tag_reference, "damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
 				TAG_FIELD_ENTRY(_field_enum, "apply effect to", &unit_seat_keyframe_action_apply_effect),
 				TAG_FIELD_ENTRY_PAD(2),
@@ -365,12 +463,22 @@ namespace Yelo
 			TAG_GROUP_BLOCK_FIELDS_DEFINE(unit_seat_damage) =
 			{
 				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_seat_damage_flags),
+
+				TAG_FIELD_ENTRY(_field_explanation, "Melee Damage", ""),
 				TAG_FIELD_ENTRY(_field_enum, "melee", &unit_seat_damage_melee),
 				TAG_FIELD_ENTRY(_field_tag_reference, "melee damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
+
+				TAG_FIELD_ENTRY(_field_explanation, "Grenade Damage", ""),
 				TAG_FIELD_ENTRY(_field_enum, "grenade", &unit_seat_damage_grenade),
 				TAG_FIELD_ENTRY(_field_word_flags, "disabled grenade types", &unit_seat_damage_disabled_grenade_types),
 				TAG_FIELD_ENTRY(_field_real, "grenade detonation time"),
 				TAG_FIELD_ENTRY(_field_string, "grenade marker"),
+
+				TAG_FIELD_ENTRY(_field_explanation, "Region Targeting", "When a target region is defined melee damage is directed at it first until it is destroyed."),
+				TAG_FIELD_ENTRY(_field_word_flags, "region flags", &unit_seat_damage_region_flags),
+				TAG_FIELD_ENTRY(_field_skip, "", (void*)2), // region_index
+				TAG_FIELD_ENTRY(_field_string, "region name"),
+				TAG_FIELD_ENTRY(_field_tag_reference, "region damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),
 
 				TAG_FIELD_ENTRY_END()
@@ -394,9 +502,9 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_word_flags, "flags", &unit_seat_access_flags),
 				TAG_FIELD_ENTRY_PAD(2),
 				TAG_FIELD_ENTRY(_field_angle, "unit sight angle"),
-				TAG_FIELD_ENTRY(_field_string, "unit sight marker"),
+				TAG_FIELD_ENTRY(_field_string, "unit sight marker" TAG_FIELD_MARKUP_PREFIX_HELP "The marker on the mounting unit to use as the visible point"),
 				TAG_FIELD_ENTRY(_field_angle, "mounting unit sight angle"),
-				TAG_FIELD_ENTRY(_field_string, "mounting unit sight marker"),
+				TAG_FIELD_ENTRY(_field_string, "mounting unit sight marker" TAG_FIELD_MARKUP_PREFIX_HELP "The marker on the target unit to use as the visible point"),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit shield threshold"),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit health threshold"),
 				TAG_FIELD_ENTRY(_field_word_flags, "permitted ai states", &unit_seat_extensions_ai_state_flags),

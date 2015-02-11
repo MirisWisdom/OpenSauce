@@ -25,7 +25,9 @@ static real* ObjectDataFieldGetRealImpl(const s_object_field_definition& field, 
 
 	case _object_field_real_radius:				return &object.radius; break;
 	case _object_field_real_scale:				return &object.scale; break;
+	case _object_field_real_maximum_vitality: // Keep for backwards compatibility ONLY, value is incorrect
 	case _object_field_real_maximum_health:		return &object.damage.maximum_health; break;
+	case _object_field_real_current_vitality: // Keep for backwards compatibility ONLY, value is incorrect
 	case _object_field_real_maximum_shield:		return &object.damage.maximum_shield; break;
 	case _object_field_real_current_health:		return &object.damage.health; break;
 	case _object_field_real_current_shield:		return &object.damage.shield; break;

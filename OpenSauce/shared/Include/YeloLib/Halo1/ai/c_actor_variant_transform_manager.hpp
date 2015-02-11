@@ -42,6 +42,8 @@ namespace Yelo
 			{
 				datum_index::index_t m_unit_index;
 				Enums::game_team m_instigator_team;
+				datum_index m_instigator_encounter;
+				int16 m_instigator_squad;
 				sbyte m_transform_entry_index;
 				sbyte m_transform_index;
 				sbyte m_target_index;
@@ -162,19 +164,20 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Unit Creation
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates the unit's actor. </summary>
 			///
-			/// <param name="unit_index">			  	Datum index of the unit. </param>
-			/// <param name="actor_variant_tag_index">	Datum index of the actor variant tag. </param>
-			/// <param name="initial_state_handling"> 	The initial actor state handling option. </param>
-			/// <param name="initial_state_override"> 	The initial state override. </param>
-			/// <param name="return_state_handling">  	The return actor state handling option. </param>
-			/// <param name="return_state_override">  	The return state override. </param>
-			/// <param name="source_actor_index">	  	Datum index of the source actor. </param>
-			/// <param name="inherit_encounter_squad">
-			/// 	Flag for whether to inherit the source actor's encounter and squad.
-			/// </param>
+			/// <param name="unit_index">			   	Datum index of the unit. </param>
+			/// <param name="actor_variant_tag_index"> 	Datum index of the actor variant tag. </param>
+			/// <param name="initial_state_handling">  	The initial actor state handling option. </param>
+			/// <param name="initial_state_override">  	The initial state override. </param>
+			/// <param name="return_state_handling">   	The return actor state handling option. </param>
+			/// <param name="return_state_override">   	The return state override. </param>
+			/// <param name="source_actor_index">	   	Datum index of the source actor. </param>
+			/// <param name="encounter_squad_handling">	The encounter squad handling type. </param>
+			/// <param name="instigator_encounter">	   	Datum index of the instigators encounter. </param>
+			/// <param name="instigator_squad">		   	Index of the instigators squad. </param>
 			void CreateUnitActor(const datum_index unit_index
 				, const datum_index actor_variant_tag_index
 				, const Enums::actor_variant_transform_in_actor_state_handling initial_state_handling
@@ -182,7 +185,9 @@ namespace Yelo
 				, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
 				, const Enums::actor_default_state return_state_override
 				, const datum_index source_actor_index
-				, const bool inherit_encounter_squad) const;
+				, const Enums::actor_variant_transform_in_encounter_squad_handling encounter_squad_handling
+				, const datum_index instigator_encounter
+				, const int16 instigator_squad) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates a new unit reusing the old unit. </summary>
