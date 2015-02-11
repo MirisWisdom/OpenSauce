@@ -52,6 +52,15 @@ namespace Yelo
 			_actor_variant_transform_in_actor_state_handling
 		};
 
+		enum actor_variant_transform_in_encounter_squad_handling : _enum
+		{
+			_actor_variant_transform_in_encounter_squad_handling_inherit_from_attacked,
+			_actor_variant_transform_in_encounter_squad_handling_inherit_from_attacker,
+			_actor_variant_transform_in_encounter_squad_handling_free_actor,
+
+			_actor_variant_transform_in_encounter_squad_handling
+		};
+
 		enum actor_variant_transform_in_vitality_handling : _enum
 		{
 			_actor_variant_transform_in_vitality_handling_neither,
@@ -150,6 +159,8 @@ namespace Yelo
 			TAG_FIELD(real_fraction, selection_chance);
 			
 			TAG_FIELD(tag_reference, actor_variant);
+			TAG_FIELD(Enums::actor_variant_transform_in_encounter_squad_handling, encounter_squad_handling);
+			PAD16;
 			TAG_FIELD(Enums::actor_variant_transform_in_team_handling, team_handling);
 			TAG_FIELD(Enums::game_team, team_override);
 			TAG_FIELD(Enums::actor_variant_transform_in_actor_state_handling, initial_state_handling);
@@ -165,7 +176,7 @@ namespace Yelo
 			TAG_FIELD(real, shield_override);
 			TAG_FIELD(real, health_override);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x94);
+		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_in_target) == 0x98);
 
 		struct actor_variant_transform_in_attachment
 		{
