@@ -156,6 +156,12 @@ void Canvas::ReleaseChildren()
 {
 	Base::List::iterator iter = Children.begin();
 
+	// If the currently hovered control is on this canvas, and the canvas is being cleared, null the hovered control
+	if ( Gwen::HoveredControl && (Gwen::HoveredControl->GetCanvas() == this) )
+	{
+		Gwen::HoveredControl = nullptr;
+	}
+
 	while ( iter != Children.end() )
 	{
 		Base* pChild = *iter;

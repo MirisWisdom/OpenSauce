@@ -403,12 +403,12 @@ namespace Yelo
 				// override the WinMain catch all exception filter
 				Memory::WriteRelativeCall(ExceptionFilter, GET_FUNC_VPTR(WINMAIN_EXCEPTION_FILTER_CALL), true);
 
-				// add a screenshot to the report
-				Debug::AddScreenshotToCrashReport();
-
 				// add custom properties to the report
 				Debug::AddPropertyToCrashReport("CommandLine", GetCommandLine());
-				
+
+				// add the build date to the report
+				Debug::AddPropertyToCrashReport("BuildDate", K_OPENSAUCE_BUILD_DATE_STR);
+
 				// add settings files to the report
 				char file_path[MAX_PATH];
 				if(Settings::GetSettingsFilePath(Settings::K_USER_FILENAME_XML, file_path))
