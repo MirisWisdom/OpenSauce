@@ -157,35 +157,24 @@ namespace Yelo
 			/// <param name="override_team">	The override team. </param>
 			///
 			/// <returns>	The chosen team. </returns>
-			Enums::game_team HandleTeam(const Enums::actor_variant_transform_in_team_handling option
+			Enums::game_team HandleTeam(const Enums::actor_variant_transform_team_handling option
 				, const Enums::game_team attacked_team
 				, const Enums::game_team attacker_team
 				, const Enums::game_team override_team) const;
 #pragma endregion
 
 #pragma region Unit Creation
-
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates the unit's actor. </summary>
 			///
-			/// <param name="unit_index">			   	Datum index of the unit. </param>
-			/// <param name="actor_variant_tag_index"> 	Datum index of the actor variant tag. </param>
-			/// <param name="initial_state_handling">  	The initial actor state handling option. </param>
-			/// <param name="initial_state_override">  	The initial state override. </param>
-			/// <param name="return_state_handling">   	The return actor state handling option. </param>
-			/// <param name="return_state_override">   	The return state override. </param>
-			/// <param name="source_actor_index">	   	Datum index of the source actor. </param>
-			/// <param name="encounter_squad_handling">	The encounter squad handling type. </param>
-			/// <param name="instigator_encounter">	   	Datum index of the instigators encounter. </param>
-			/// <param name="instigator_squad">		   	Index of the instigators squad. </param>
+			/// <param name="unit_index">			  	Datum index of the unit. </param>
+			/// <param name="target">				  	The transform target definition. </param>
+			/// <param name="source_actor_index">	  	Datum index of the source actor. </param>
+			/// <param name="instigator_encounter">   	Datum index of the instigators encounter. </param>
+			/// <param name="instigator_squad">		  	Index of the instigators squad. </param>
 			void CreateUnitActor(const datum_index unit_index
-				, const datum_index actor_variant_tag_index
-				, const Enums::actor_variant_transform_in_actor_state_handling initial_state_handling
-				, const Enums::actor_default_state initial_state_override
-				, const Enums::actor_variant_transform_in_actor_state_handling return_state_handling
-				, const Enums::actor_default_state return_state_override
+				, const TagGroups::actor_variant_transform_in_target& target
 				, const datum_index source_actor_index
-				, const Enums::actor_variant_transform_in_encounter_squad_handling encounter_squad_handling
 				, const datum_index instigator_encounter
 				, const int16 instigator_squad) const;
 
@@ -201,7 +190,7 @@ namespace Yelo
 			/// <returns>	The new unit index. </returns>
 			datum_index CreateUnitReuse(const datum_index unit_index
 				, Objects::s_unit_datum* unit_datum
-				, const Enums::actor_variant_transform_in_team_handling team_option
+				, const Enums::actor_variant_transform_team_handling team_option
 				, const Enums::game_team instigator_team
 				, const Enums::game_team override_team) const;
 
@@ -219,7 +208,7 @@ namespace Yelo
 			datum_index CreateUnitNew(const datum_index unit_index
 				, Objects::s_unit_datum* unit_datum
 				, const datum_index new_unit_type
-				, const Enums::actor_variant_transform_in_team_handling team_option
+				, const Enums::actor_variant_transform_team_handling team_option
 				, const Enums::game_team instigator_team
 				, const Enums::game_team override_team) const;
 #pragma endregion
@@ -259,12 +248,12 @@ namespace Yelo
 #pragma region Attachments
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
-			/// 	Deletes attachments on an object that match those in the transform definition.
+			/// 	Destroys attachments on an object that match those in the transform definition.
 			/// </summary>
 			///
 			/// <param name="unit_index">		   	The unit datum. </param>
-			/// <param name="transform_definition">	[in] The transform in definition. </param>
-			void DeleteAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_in_definition& transform_definition) const;
+			/// <param name="transform_definition">	[in] The transform out definition. </param>
+			void DestroyAttachments(const datum_index unit_index, const TagGroups::actor_variant_transform_out_definition& transform_definition) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -295,11 +284,11 @@ namespace Yelo
 			/// <param name="unit_index">		   	Datum index of the unit. </param>
 			/// <param name="unit_datum">		   	The unit datum. </param>
 			/// <param name="instigator_team">	   	The instigator team. </param>
-			/// <param name="transform_definition">	[in] The transform in definition. </param>
+			/// <param name="transform_definition">	[in] The transform out definition. </param>
 			void AttachObjects(const datum_index unit_index
 				, const Objects::s_unit_datum* unit_datum
 				, const Enums::game_team instigator_team
-				, const TagGroups::actor_variant_transform_in_definition& transform_definition) const;
+				, const TagGroups::actor_variant_transform_out_definition& transform_definition) const;
 #pragma endregion
 
 #pragma region Transform Stages

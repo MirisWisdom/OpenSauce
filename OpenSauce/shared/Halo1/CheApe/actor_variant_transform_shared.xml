@@ -18,6 +18,12 @@
 			<field>self</field>
 			<field>riders</field>
 		</Enum>
+		
+		<Enum name="actor_variant_transform_team_handling">		
+			<field>inherit from old unit</field>
+			<field>inherit from attacker</field>
+			<field>override</field>
+		</Enum>
 	</enums>
 
 	<blocks>

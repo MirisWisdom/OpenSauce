@@ -8,8 +8,13 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <blamlib/Halo1/tag_files/tag_files_structures.hpp>
 #include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/Halo1/tag_files/tag_collection_definitions.hpp>
+#include <blamlib/Halo1/ai/actor_definitions.hpp>
 
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
+#include <YeloLib/Halo1/units/unit_transform_definition.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 #include <blamlib/Halo1/units/unit_structures.hpp>
@@ -71,26 +76,17 @@ namespace Yelo
 						}
 						return false;
 					}
-
-					for(auto& instigator : transform.instigators)
-					{
-						if(instigator.unit.tag_index.IsNull())
-						{
-							if(print_errors)
-							{
-								PRINT_ERROR("Missing instigator type tag in %s", blam::tag_get_name(tag_index));
-							}
-							return false;
-						}
-					}
 				}
 
 				// Process the transform probabilities
 				for(auto& transform : actor_variant.transforms)
 				{
-					if(transform.selection_chance == 0.0f)
+					for(auto& selection_chance : transform.selection_chance)
 					{
-						transform.selection_chance = 1.0f;
+						if(selection_chance == 0.0f)
+						{
+							selection_chance = 1.0f;
+						}
 					}
 				}
 			}
@@ -118,36 +114,13 @@ namespace Yelo
 				return false;
 			}
 
-			return true;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Validates an actor variant transform in tag. </summary>
-		///
-		/// <param name="tag_index">   	Datum index of the tag. </param>
-		/// <param name="print_errors">	(Optional) Flag for whether to print errors. </param>
-		///
-		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool ValidateTransformIn(const datum_index tag_index, const bool print_errors = true)
-		{
-			auto& tag_definition = *blam::tag_get<TagGroups::actor_variant_transform_in_definition>(tag_index);
-
-			for(auto& target : tag_definition.targets)
+			for(auto& instigator : tag_definition.instigators)
 			{
-				if(target.actor_variant.tag_index.IsNull())
+				if(instigator.unit.tag_index.IsNull())
 				{
 					if(print_errors)
 					{
-						PRINT_ERROR("Missing actor variant tag in %s", blam::tag_get_name(tag_index));
-					}
-					return false;
-				}
-
-				if(is_null_or_empty(target.transform_in_anim))
-				{
-					if(print_errors)
-					{
-						PRINT_ERROR("Missing transform in animation name in %s", blam::tag_get_name(tag_index));
+						PRINT_ERROR("Missing instigator type tag in %s", blam::tag_get_name(tag_index));
 					}
 					return false;
 				}
@@ -173,23 +146,197 @@ namespace Yelo
 				}
 			}
 
-			// Normalise the target probabilities
-			real probability_total = 0.0f;
+			return true;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Validates an actor variant transform in tag. </summary>
+		///
+		/// <param name="tag_index">   	Datum index of the tag. </param>
+		/// <param name="print_errors">	(Optional) Flag for whether to print errors. </param>
+		///
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		static bool ValidateTransformIn(const datum_index tag_index, const bool print_errors = true)
+		{
+			auto& tag_definition = *blam::tag_get<TagGroups::actor_variant_transform_in_definition>(tag_index);
+
+			if(tag_definition.targets.Count == 0)
+			{
+				if(print_errors)
+				{
+					PRINT_ERROR("An actor_variant_transform_in has no targets: %s", blam::tag_get_name(tag_index));
+				}
+				return false;
+			}
+
 			for(auto& target : tag_definition.targets)
 			{
-				if(target.selection_chance == 0.0f)
+				if(target.actor_variant.tag_index.IsNull())
 				{
-					target.selection_chance = 1.0f;
+					if(print_errors)
+					{
+						PRINT_ERROR("Missing actor variant tag in %s", blam::tag_get_name(tag_index));
+					}
+					return false;
 				}
 
-				probability_total += target.selection_chance;
+				if(is_null_or_empty(target.transform_in_anim))
+				{
+					if(print_errors)
+					{
+						PRINT_ERROR("Missing transform in animation name in %s", blam::tag_get_name(tag_index));
+					}
+					return false;
+				}
 			}
 
-			real normalisation_value = 1.0f / probability_total;
-			for(auto& target : tag_definition.targets)
+			// Normalise the target probabilities
+			auto normalize_probability =
+				[&](const Enums::game_difficulty_level difficulty)
+				{
+					real probability_total = 0.0f;
+
+					if(tag_definition.targets.Count == 0)
+					{
+						return;
+					}
+
+					for(auto& target : tag_definition.targets)
+					{
+						if(target.selection_chance[difficulty] == 0.0f)
+						{
+							target.selection_chance[difficulty] = 1.0f;
+						}
+
+						probability_total += target.selection_chance[difficulty];
+					}
+
+					real normalisation_value = 1.0f / probability_total;
+					for(auto& target : tag_definition.targets)
+					{
+						target.selection_chance[difficulty] *= normalisation_value;
+					}
+				};
+
+			normalize_probability(Enums::_game_difficulty_level_easy);
+			normalize_probability(Enums::_game_difficulty_level_normal);
+			normalize_probability(Enums::_game_difficulty_level_hard);
+			normalize_probability(Enums::_game_difficulty_level_impossible);
+
+			return true;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Builds all sparse transform collections into a single transform collection tag.
+		/// </summary>
+		///
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		bool CollateTransformCollections()
+		{
+			// Get the tag collection
+			auto* yelo_definition = Scenario::GetYelo();
+			if(!yelo_definition)
 			{
-				target.selection_chance *= normalisation_value;
+				return false;
 			}
+
+			if(yelo_definition->explicit_references.tag_index.IsNull())
+			{
+				return false;
+			}
+			auto& tag_collection = *blam::tag_get<TagGroups::s_tag_collection_definition>(yelo_definition->explicit_references.tag_index);
+
+			// Create a new transform collection tag
+			if(!blam::find_tag_instance(TagGroups::actor_variant_transform_collection_definition::k_group_tag, "actor_variant_transform_collection_complete").IsNull())
+			{
+				return false;
+			}
+
+			auto collection_index = blam::tag_new<TagGroups::actor_variant_transform_collection_definition>("actor_variant_transform_collection_complete");
+			if(collection_index.IsNull())
+			{
+				return false;
+			}
+
+			auto& collection_complete = *blam::tag_get<TagGroups::actor_variant_transform_collection_definition>(collection_index);
+			auto& collection_complete_entries = collection_complete.actor_variant_transforms;
+
+			for(auto& tag_reference_entry : tag_collection.tag_references)
+			{
+				// Ignore tag references that aren't transform collections
+				if(tag_reference_entry.tag.tag_index.IsNull() || (tag_reference_entry.tag.group_tag != TagGroups::actor_variant_transform_collection_definition::k_group_tag))
+				{
+					continue;
+				}
+				auto tag_index = tag_reference_entry.tag.tag_index;
+				auto& collection = *blam::tag_get<TagGroups::actor_variant_transform_collection_definition>(tag_index);
+
+				for(auto& actor_variant_entry : collection.actor_variant_transforms)
+				{
+					// Find an existing transform block for the actor variant
+					auto found_actor_variant_entry = std::find_if(collection_complete_entries.begin(), collection_complete_entries.end(),
+						[&](const TagGroups::actor_variant_transform_collection_entry& entry)
+						{
+							return entry.actor_variant.tag_index == actor_variant_entry.actor_variant.tag_index;
+						}
+					);
+
+					// If no match is found, add a new block
+					TagGroups::actor_variant_transform_collection_entry* transforms_entry = nullptr;
+					if(found_actor_variant_entry == collection_complete_entries.end())
+					{
+						transforms_entry = blam::tag_block_add_and_get_element(collection_complete_entries);
+
+						blam::tag_reference_set<TagGroups::s_actor_variant_definition>(transforms_entry->actor_variant, actor_variant_entry.actor_variant.name);
+						transforms_entry->actor_variant.tag_index = actor_variant_entry.actor_variant.tag_index;
+					}
+					else
+					{
+						transforms_entry = found_actor_variant_entry;
+					}
+
+					// Add the transform types to the complete collection
+					for(auto& transform : actor_variant_entry.transforms)
+					{
+						auto& collection_complete_entry_transform = *blam::tag_block_add_and_get_element(transforms_entry->transforms);
+
+						collection_complete_entry_transform.flags = transform.flags;
+						strcpy_s(collection_complete_entry_transform.transform_name, transform.transform_name);
+
+						collection_complete_entry_transform.selection_chance[Enums::_game_difficulty_level_easy] = transform.selection_chance[Enums::_game_difficulty_level_easy];
+						collection_complete_entry_transform.selection_chance[Enums::_game_difficulty_level_normal] = transform.selection_chance[Enums::_game_difficulty_level_normal];
+						collection_complete_entry_transform.selection_chance[Enums::_game_difficulty_level_hard] = transform.selection_chance[Enums::_game_difficulty_level_hard];
+						collection_complete_entry_transform.selection_chance[Enums::_game_difficulty_level_impossible] = transform.selection_chance[Enums::_game_difficulty_level_impossible];
+
+						blam::tag_reference_set<TagGroups::actor_variant_transform_out_definition>(collection_complete_entry_transform.transform_out, transform.transform_out.name);
+						collection_complete_entry_transform.transform_out.tag_index = transform.transform_out.tag_index;
+						collection_complete_entry_transform.transform_out_ptr = nullptr;
+
+						blam::tag_reference_set<TagGroups::actor_variant_transform_in_definition>(collection_complete_entry_transform.transform_in, transform.transform_in.name);
+						collection_complete_entry_transform.transform_in.tag_index = transform.transform_in.tag_index;
+						collection_complete_entry_transform.transform_in_ptr = nullptr;
+					}
+				}
+
+				// Unload the sparse collection
+				blam::tag_unload(tag_reference_entry.tag.tag_index);
+			}
+
+			// Remove sparse collection references from the item collection
+			for(int32 index = tag_collection.tag_references.Count - 1; index >= 0; --index)
+			{
+				if(tag_collection.tag_references[index].tag.group_tag == TagGroups::actor_variant_transform_collection_definition::k_group_tag)
+				{
+					blam::tag_block_delete_element(tag_collection.tag_references, index);
+				}
+			}
+
+			// Add the complete collection to the item collection
+			auto& new_entry = *blam::tag_block_add_and_get_element(tag_collection.tag_references);
+
+			blam::tag_reference_set<TagGroups::actor_variant_transform_collection_definition>(new_entry.tag, "actor_variant_transform_collection_complete");
+			new_entry.tag.tag_index = collection_index;
 
 			return true;
 		}
@@ -296,6 +443,11 @@ namespace Yelo
 
 		void InitializeForNewMap()
 		{
+			if(!CollateTransformCollections())
+			{
+				return;
+			}
+
 			TagGroups::c_tag_iterator iterator(TagGroups::actor_variant_transform_collection_definition::k_group_tag);
 
 			// Get the first collection tag as there should be only one

@@ -7,6 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Engine/GameState.hpp"
 
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/game/game_globals_structures.hpp>
+
+#include <YeloLib/cseries/random.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Engine/Objects.hpp"
@@ -30,6 +34,8 @@ namespace Yelo
 
 		void PLATFORM_API InitializeForNewMap()
 		{
+			Random::InitializeSeed(GameGlobals()->options.game_random_seed);
+
 			Objects::Units::InitializeForNewMap();
 			AI::InitializeForNewMap();
 		}

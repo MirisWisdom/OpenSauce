@@ -102,6 +102,15 @@ namespace Yelo
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
+		/// 	Destroys all children of the specified definition type from the parent object.
+		/// </summary>
+		///
+		/// <param name="parent">	 	The parent. </param>
+		/// <param name="definition">	The object definition index. </param>
+		void DestroyChildrenByDefinition(const datum_index parent, const datum_index definition);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
 		/// 	Deletes all children of the specified definition type from the parent object.
 		/// </summary>
 		///

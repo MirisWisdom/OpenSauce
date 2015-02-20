@@ -216,6 +216,9 @@ namespace Yelo
 				{
 					auto& seat_boarding = seat_extension.seat_boarding[0];
 
+					// Get the targeted region for delayed boarding
+					seat_boarding.region_index = find_region(seat_boarding.region_name);
+
 					// Get the targeted region for the keyframe
 					for(auto& keyframe : seat_boarding.keyframe_actions)
 					{
@@ -384,10 +387,11 @@ namespace Yelo
 				"immediate",
 				"delayed");
 
-			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_boarding_delay_until, 3,
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_boarding_delay_until, 4,
 				"empty target seat",
 				"unit shield threshold",
-				"unit health threshold");
+				"unit health threshold",
+				"region destroyed");
 
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_boarding_vitality_threshold_source, 2,
 				"mounted unit",
@@ -427,7 +431,7 @@ namespace Yelo
 				TAG_FIELD_ENTRY(_field_enum, "unit door action", &unit_seat_keyframe_action_target_unit_door_action),
 				TAG_FIELD_ENTRY_PAD(2),
 				TAG_FIELD_ENTRY(_field_enum, "apply damage to", &unit_seat_keyframe_action_apply_damage_effect),
-				TAG_FIELD_ENTRY(_field_skip, "", (void*)2), // region_index
+				TAG_FIELD_ENTRY_SKIP(2), // region_index
 				TAG_FIELD_ENTRY(_field_string, "region name"),
 				TAG_FIELD_ENTRY(_field_tag_reference, "damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
 				TAG_FIELD_ENTRY(_field_enum, "apply effect to", &unit_seat_keyframe_action_apply_effect),
@@ -450,6 +454,9 @@ namespace Yelo
 				TAG_FIELD_ENTRY_PAD(2),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit shield threshold"),
 				TAG_FIELD_ENTRY(_field_real_fraction, "unit health threshold"),
+				TAG_FIELD_ENTRY_PAD(2),
+				TAG_FIELD_ENTRY_SKIP(2), // region_index
+				TAG_FIELD_ENTRY(_field_string, "region name"),
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),
 				TAG_FIELD_ENTRY(_field_block, "keyframe actions", &TAG_GROUP_BLOCK_GET(unit_seat_keyframe_action)),
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),
@@ -476,7 +483,7 @@ namespace Yelo
 
 				TAG_FIELD_ENTRY(_field_explanation, "Region Targeting", "When a target region is defined melee damage is directed at it first until it is destroyed."),
 				TAG_FIELD_ENTRY(_field_word_flags, "region flags", &unit_seat_damage_region_flags),
-				TAG_FIELD_ENTRY(_field_skip, "", (void*)2), // region_index
+				TAG_FIELD_ENTRY_SKIP(2), // region_index
 				TAG_FIELD_ENTRY(_field_string, "region name"),
 				TAG_FIELD_ENTRY(_field_tag_reference, "region damage effect", &Shared::TAG_GROUP_REFERENCE_GET(damage_effect)),
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),

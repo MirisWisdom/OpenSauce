@@ -188,7 +188,7 @@ namespace Yelo
 				push	eax
 				call	ShouldKillChildObject
 				add		esp, 4
-				cmp		al, al
+				cmp		al, 0
 				
 				pop		edx
 				pop		ecx

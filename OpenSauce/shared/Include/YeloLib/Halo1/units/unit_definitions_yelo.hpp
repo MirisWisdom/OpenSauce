@@ -159,6 +159,7 @@ namespace Yelo
 			_unit_seat_boarding_delay_until_flags_empty_target_seat_bit,
 			_unit_seat_boarding_delay_until_flags_unit_shield_threshold_bit,
 			_unit_seat_boarding_delay_until_flags_unit_health_threshold_bit,
+			_unit_seat_boarding_delay_until_flags_region_destroyed_bit,
 
 			_unit_seat_boarding_delay_until_flags
 		};
@@ -240,10 +241,13 @@ namespace Yelo
 			PAD16;
 			TAG_FIELD(real_fraction, unit_shield_threshold);
 			TAG_FIELD(real_fraction, unit_health_threshold);
+			PAD16;
+			TAG_FIELD(int16, region_index);
+			TAG_FIELD(tag_string, region_name);
 			TAG_PAD(tag_block, 2);
 			TAG_TBLOCK(keyframe_actions, unit_seat_keyframe_action);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_boarding) == 0x4C);
+		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_boarding) == 0x70);
 
 		struct unit_seat_damage
 		{

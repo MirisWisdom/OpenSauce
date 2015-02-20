@@ -22,6 +22,9 @@
 #include <blamlib/Halo1/ai/actors.hpp>
 #include <blamlib/Halo1/ai/actor_structures.hpp>
 #include <blamlib/Halo1/ai/ai_structures.hpp>
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/game/game_globals_structures.hpp>
+
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 
@@ -609,6 +612,13 @@ namespace Yelo
 			, const int16 maximum_marker_count)
 		{
 			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_GET_MARKER_BY_NAME);
+
+			_asm jmp	FUNCTION;
+		}
+
+		API_FUNC_NAKED void PLATFORM_API object_destroy(datum_index object_index)
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_DESTROY);
 
 			_asm jmp	FUNCTION;
 		}

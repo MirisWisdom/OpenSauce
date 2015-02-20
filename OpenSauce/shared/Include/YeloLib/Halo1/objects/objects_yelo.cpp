@@ -177,6 +177,19 @@ namespace Yelo
 			);
 		}
 
+		void DestroyChildrenByDefinition(const datum_index parent, const datum_index definition)
+		{
+			PerformActionOnChildrenByType(parent, Enums::_object_type_mask_all,
+				[&](const datum_index object_index)
+				{
+					auto* object_datum = blam::object_get(object_index);
+					if(object_datum && (object_datum->definition_index == definition))
+					{
+						blam::object_destroy(object_index);
+					}
+				});
+		}
+
 		void DeleteChildrenByDefinition(const datum_index parent, const datum_index definition)
 		{
 			PerformActionOnChildrenByType(parent, Enums::_object_type_mask_all,

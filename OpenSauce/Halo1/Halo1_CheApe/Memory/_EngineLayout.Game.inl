@@ -14,16 +14,19 @@
 		ENGINE_PTR(s_main_globals, main_globals,						0xAA6D40, 0xFC9B40, 0xBD7E28);
 
 		ENGINE_PTR(s_physical_memory_map_globals, physical_memory_globals,	0xCBF510, 0xFC9010, 0xDB4688);
-
+		
+		ENGINE_PTR(GameState::s_game_globals*, game_globals,			PTR_NULL, PTR_NULL, 0xDF3694);
 		ENGINE_PTR(s_game_state_globals, game_state_globals,			0xCB2888, 0xFC9038, 0xBD7D24);
 		ENGINE_PTR(TagGroups::s_game_globals*, global_game_globals,		PTR_NULL, 0x12E577C, 0x107EDC8);
-
+		
 
 		s_main_globals* MainGlobals()									PTR_IMP_GET2(main_globals);
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals()		PTR_IMP_GET2(physical_memory_globals);
 
 		s_game_state_globals* GameStateGlobals()						PTR_IMP_GET2(game_state_globals);
 		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
+		
+		GameState::s_game_globals* GameGlobals()						PTR_IMP_GET(game_globals);
 
 		TagGroups::s_game_globals** GlobalGameGlobalsReference()		PTR_IMP_GET2(global_game_globals);
 	};
@@ -183,6 +186,7 @@
 		FUNC_PTR(OBJECT_CAUSE_DAMAGE,			FUNC_PTR_NULL, FUNC_PTR_NULL, 0x64B5A0);
 		FUNC_PTR(OBJECT_START_INTERPOLATION,	FUNC_PTR_NULL, FUNC_PTR_NULL, 0x564250);
 		FUNC_PTR(OBJECT_GET_MARKER_BY_NAME,		FUNC_PTR_NULL, FUNC_PTR_NULL, 0x5650D0);
+		FUNC_PTR(OBJECT_DESTROY,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x64AE40);
 		//////////////////////////////////////////////////////////////////////////
 		// saved_games/game_state
 		FUNC_PTR(GAME_STATE_MALLOC,				FUNC_PTR_NULL, FUNC_PTR_NULL, 0x50B510);

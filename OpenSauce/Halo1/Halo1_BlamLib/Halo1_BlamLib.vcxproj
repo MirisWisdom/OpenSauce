@@ -333,6 +333,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\cluster_partitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\structure_bsp_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\files.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_collection_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_field_scanner.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files_structures.hpp" />

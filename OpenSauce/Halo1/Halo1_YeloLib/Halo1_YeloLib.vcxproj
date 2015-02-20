@@ -113,6 +113,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\handle_abi.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\random.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\value_conversion.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\ai_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.hpp" />
@@ -296,6 +297,7 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_point2d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\random.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\cseries\value_conversion.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\ai_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\ai\c_actor_variant_transform_manager.cpp" />

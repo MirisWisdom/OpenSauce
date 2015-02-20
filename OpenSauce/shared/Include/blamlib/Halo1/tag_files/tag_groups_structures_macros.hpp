@@ -18,6 +18,8 @@
 	{Yelo::Enums::type, name, __VA_ARGS__}
 #define TAG_FIELD_ENTRY_PAD(size)								\
 	TAG_FIELD_ENTRY(_field_pad, nullptr, CAST_PTR(void*, size))
+#define TAG_FIELD_ENTRY_SKIP(size)								\
+	TAG_FIELD_ENTRY(_field_pad, nullptr, CAST_PTR(void*, size))
 #define TAG_FIELD_ENTRY_END()									\
 	TAG_FIELD_ENTRY(_field_terminator, nullptr)
 
