@@ -13,6 +13,7 @@
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
+#include "Engine/AI.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
@@ -76,6 +77,8 @@ namespace Yelo
 				YELO_WARN("CheApe: scenario_yelo_load failed to do anything! %s", 
 					scenario_name != nullptr ? scenario_name : "nullptr");
 			}
+
+			AI::Transform::CollateTransformCollections();
 		}
 
 		static const uintptr_t SCENARIO_LOAD_HOOK = 

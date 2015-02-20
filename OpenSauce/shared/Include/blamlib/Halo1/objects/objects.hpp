@@ -265,6 +265,8 @@ namespace Yelo
 		{
 			return CAST_PTR(T*, object_get_and_verify_type(object_index, T::k_object_types_mask));
 		}
+
+		void PLATFORM_API object_destroy(const datum_index object_index);
 	};
 
 	namespace Objects

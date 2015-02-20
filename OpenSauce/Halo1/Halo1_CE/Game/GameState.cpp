@@ -17,6 +17,7 @@
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 
+#include <YeloLib/cseries/random.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
@@ -215,6 +216,8 @@ namespace Yelo
 			}
 
 			yelo_header.flags.game_state_upgrades_on = YeloGameStateEnabled();
+
+			Random::InitializeSeed(GameGlobals()->options.game_random_seed);
 
 			Objects::Units::InitializeForNewMapPrologue();
 		}

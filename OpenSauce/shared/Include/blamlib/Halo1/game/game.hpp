@@ -31,10 +31,10 @@ namespace Yelo
 
 			UNKNOWN_TYPE(int32); // never see this referenced or explicitly set. due to memset, this will always be set to zero
 			UNKNOWN_TYPE(int16); // never see this referenced besides in game_options_new code where it's set to 0, even after a memset call. highly likely to be an enum field, albeit unused
-			_enum difficulty_level;
-			int32 random_seed;
+			Enums::game_difficulty_level difficulty_level;
+			int32 game_random_seed;
 			// not always the actual path, sometimes just the name, go figure
-			char scenario_path[/*Enums::k_max_tag_name_length*/255+1];
+			char map_name[/*Enums::k_max_tag_name_length*/255+1];
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_options) == 0x10C );
 	};
 

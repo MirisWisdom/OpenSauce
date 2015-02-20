@@ -146,8 +146,8 @@ namespace Yelo
 			k_color_tag = Enums::_console_color_lightpurple,
 			k_color_name = Enums::_console_color_lightyellow,
 
-			k_color_bad_tag = Enums::_console_color_lightred,
-			k_color_bad_name = Enums::_console_color_red,
+			k_color_bad_tag = Enums::_console_color_lightaqua,
+			k_color_bad_name = Enums::_console_color_lightred,
 		};
 		static void PrintTagPath(cstring group_name, cstring tag_name)
 		{
@@ -392,22 +392,19 @@ namespace Yelo
 
 		static bool UserWantsToContinue(datum_index tag_index)
 		{
-			auto* group = TagGroups::TagGetGroup(tag_index);
-			cstring tag_name = blam::tag_get_name(tag_index);
-
-			Console::ColorPrint(k_color_default, "press enter to continue, anything else to stop\n\t");
-			PrintTagPath(group->name, tag_name);
+			auto result = Console::EnterCommand("\n;q", nullptr, "press enter to continue or \"q\" to quit");
 			Console::PrintNewLine();
 
-			return getc(stdin) != '\n';
+			return result == 0;
 		}
+
 		void PLATFORM_API tag_load_maintenance(char* arguments[])
 		{
 			struct s_arguments {
 				cstring tag_name;
 				cstring group_name;
 				cstring prompt_to_continue;
-				cstring prompt_to_fix_unresolved;
+				// cstring prompt_to_fix_unresolved;
 				cstring load_non_resolving;
 				cstring print_size;
 				cstring verbose;
@@ -429,13 +426,14 @@ namespace Yelo
 			}
 
 			bool prompt_to_continue = true;
-			bool prompt_to_fix_unresolved = true;
+			// Disabled until implemented
+			bool prompt_to_fix_unresolved = false;
 			bool load_non_resolving = true;
 			bool print_size = true;
 			bool verbose = true;
-			
+
 			ValueConversion::FromString(args->prompt_to_continue, prompt_to_continue);
-			ValueConversion::FromString(args->prompt_to_fix_unresolved, prompt_to_fix_unresolved);
+			//ValueConversion::FromString(args->prompt_to_fix_unresolved, prompt_to_fix_unresolved);
 			ValueConversion::FromString(args->load_non_resolving, load_non_resolving);
 			ValueConversion::FromString(args->print_size, print_size);
 			ValueConversion::FromString(args->verbose, verbose);
@@ -456,10 +454,9 @@ namespace Yelo
 			bool is_root_tag = true;
 			datum_index tag_index = datum_index::null;
 			size_t tag_hierarchy_size = 0;
-			do {
-				if (verbose)
-					Console::ColorPrintF(k_color_default, "%d ", debug_count++);
-
+			bool cancelled = false;
+			do
+			{
 				if (is_root_tag)
 				{
 					is_root_tag = false;
@@ -475,21 +472,33 @@ namespace Yelo
 				}
 				else
 				{
-					tag_index = maintenance_globals.NextChildNeedingResolving();
+					if (prompt_to_continue)
+					{
+						cancelled = !UserWantsToContinue(tag_index);
 
-					if (prompt_to_continue && !UserWantsToContinue(tag_index))
-						break;
+						if(cancelled)
+						{
+							break;
+						}
+					}
+
+					tag_index = maintenance_globals.NextChildNeedingResolving();
 				}
 
 				if (print_size)
 				{
 					if (verbose)
+					{
+						Console::ColorPrintF(k_color_default, "%d ", debug_count++);
 						PrintTagPath(blam::tag_group_get(blam::tag_get_group_tag(tag_index))->name, 
 							blam::tag_get_name(tag_index));
+					}
 
 					tag_hierarchy_size +=
 						TagGroups::c_tag_group_allocation_statistics::BuildStatsForTag(tag_index);
 				}
+
+				Console::PrintNewLine();
 
 				c_tag_maintenance_children_controller controller(tag_index, mode, options);
 				controller.QueueReferences();
@@ -497,22 +506,33 @@ namespace Yelo
 				tag_hierarchy_size += controller.GetTagHierarchySize();
 
 				maintenance_globals.MarkAsResolved(tag_index);
-
-				if (verbose)
-					Console::ColorPrint(k_color_default, "\n");
-
 			} while (maintenance_globals.ChildrenNeedResolving());
 
-			Console::ColorPrint(k_color_default, "\nfinished");
-			if (print_size)
+			if(cancelled)
 			{
-				TagGroups::c_tag_group_allocation_statistics::DumpToFile();
-				Console::ColorPrintF(k_color_default, ". total size: %d bytes", tag_hierarchy_size);
+				Console::ColorPrint(k_color_default, "\ncancelled");
 			}
-			Console::PrintNewLine();
+			else
+			{
+				Console::ColorPrint(k_color_default, "\nfinished");
+			}
 
-			if (print_size)
-				TagGroups::c_tag_group_allocation_statistics::Dispose();
+			if(!cancelled)
+			{
+				if (print_size)
+				{
+					TagGroups::c_tag_group_allocation_statistics::DumpToFile();
+					Console::ColorPrintF(k_color_default, ". total size: %d bytes", tag_hierarchy_size);
+				}
+
+				Console::PrintNewLine();
+
+				if (print_size)
+				{
+					TagGroups::c_tag_group_allocation_statistics::Dispose();
+				}
+			}
+
 			maintenance_globals.Dispose();
 		}
 	};

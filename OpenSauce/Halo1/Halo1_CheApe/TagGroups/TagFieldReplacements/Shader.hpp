@@ -31,8 +31,8 @@ namespace Yelo
 				// Depth fade
 				TAG_FIELD_ENTRY(_field_explanation, "Fade Controls", "Controls the softness of an effect"),
 
-				TAG_FIELD_ENTRY(_field_real, "Depth Fade Distance", "Controls the softness of an effect when intersecting opaque geometry"),
-				TAG_FIELD_ENTRY(_field_real, "Camera Fade Distance", "Controls the softness of an effect when nearing the near clip plane"),
+				TAG_FIELD_ENTRY(_field_real, "depth fade distance", "Controls the softness of an effect when intersecting opaque geometry"),
+				TAG_FIELD_ENTRY(_field_real, "camera fade distance", "Controls the softness of an effect when nearing the near clip plane"),
 				
 				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 3),
 				TAG_FIELD_ENTRY_END()

@@ -406,6 +406,15 @@ namespace Yelo
 			_asm jmp	FUNCTION;
 		}
 
+		API_FUNC_NAKED void PLATFORM_API actor_action_change(const datum_index actor_index
+			, const Enums::actor_action new_action_type
+			, const byte* new_action_data)
+		{
+			static const uintptr_t FUNCTION = 0x40D8D0;
+
+			_asm jmp	FUNCTION;
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 		// ai_script.c
 		API_FUNC_NAKED void PLATFORM_API ai_scripting_attach_free(datum_index unit_index, datum_index actor_variant_definition_index)
@@ -1504,6 +1513,27 @@ namespace Yelo
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECT_UPDATE);
 
 			_asm jmp	FUNCTION;
+		}
+		
+		API_FUNC_NAKED void PLATFORM_API object_destroy(const datum_index object_index)
+		{
+			static const uintptr_t FUNCTION = 0x4F1590;
+
+			API_FUNC_NAKED_START()
+				push	eax
+				push	ecx
+				push	edx
+				push	edi
+
+				mov		eax, object_index
+				call	FUNCTION
+
+				pop		edi
+				pop		edx
+				pop		ecx
+				pop		eax
+				pop		ebp
+			API_FUNC_NAKED_END_()
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////

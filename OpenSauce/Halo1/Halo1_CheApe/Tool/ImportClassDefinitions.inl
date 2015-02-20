@@ -42,7 +42,7 @@
 		&remove_os_tag_data),
 
 	IMPORT_CLASS_DEFINITION("tag-load-test", 
-			7, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <print-size> <verbose>", 
+			6, "<tag-name> <group> <prompt-to-continue> <load-non-resolving-refs> <print-size> <verbose>", 
 		&tag_load_maintenance),
 
 #ifdef API_DEBUG

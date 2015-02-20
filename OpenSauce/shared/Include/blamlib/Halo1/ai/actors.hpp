@@ -10,6 +10,8 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum actor_action : _enum;
+
 		enum {
 			k_maximum_number_of_units_per_swarm = 16,
 
@@ -97,5 +99,9 @@ namespace Yelo
 			, const Enums::actor_default_state return_state
 			, const int32 command_list_index
 			, const int32 sequence_id);
+
+		void PLATFORM_API actor_action_change(const datum_index actor_index
+			, const Enums::actor_action new_action_type
+			, const byte* new_action_data);
 	};
 };
