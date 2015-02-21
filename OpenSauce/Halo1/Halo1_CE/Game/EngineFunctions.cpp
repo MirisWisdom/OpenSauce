@@ -410,7 +410,7 @@ namespace Yelo
 			, const Enums::actor_action new_action_type
 			, const byte* new_action_data)
 		{
-			static const uintptr_t FUNCTION = 0x40D8D0;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_ACTION_CHANGE);
 
 			_asm jmp	FUNCTION;
 		}
@@ -1517,7 +1517,7 @@ namespace Yelo
 		
 		API_FUNC_NAKED void PLATFORM_API object_destroy(const datum_index object_index)
 		{
-			static const uintptr_t FUNCTION = 0x4F1590;
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(OBJECT_DESTROY);
 
 			API_FUNC_NAKED_START()
 				push	eax
