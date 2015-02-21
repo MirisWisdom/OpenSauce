@@ -478,7 +478,7 @@ namespace Yelo
 				if(TEST_FLAG(seat_boarding.delay_until, Flags::_unit_seat_boarding_delay_until_flags_region_destroyed_bit)
 					&& (seat_boarding.region_index != NONE))
 				{
-					start_boarding &= TEST_FLAG(unit_datum.object.regions_destroyed_flags, seat_boarding.region_index);
+					start_boarding &= TEST_FLAG(parent_unit_datum.object.regions_destroyed_flags, seat_boarding.region_index);
 				}
 			}
 
