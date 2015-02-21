@@ -111,17 +111,19 @@ FOR %%A IN (%BuildPath%\*.*) DO DEL %%A
 
 IF %BuildDebug% NEQ 0 (
 	FOR %%A IN ("%osBinPath%\Debug\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_Debug.msi"
-	copy "%osBinPath%\Debug\Win32\Halo1_CE\dinput8.dll" "%BuildPath%\dinput8_debug.dll"
-	copy "%osBinPath%\Debug\Win32\Halo1_CE\dinput8.pdb" "%BuildPath%\dinput8_debug.pdb"
-	copy "%osBinPath%\DebugDedi\Win32\Halo1_CE\OpenSauceDedi.dll" "%BuildPath%\OpenSauceDedi_debug.dll"
-	copy "%osBinPath%\DebugDedi\Win32\Halo1_CE\OpenSauceDedi.pdb" "%BuildPath%\OpenSauceDedi_debug.pdb"
+	mkdir "%BuildPath%\Debug"
+	copy "%osBinPath%\Debug\Win32\Halo1_CE\dinput8.dll" "%BuildPath%\Debug\dinput8.dll"
+	copy "%osBinPath%\Debug\Win32\Halo1_CE\dinput8.pdb" "%BuildPath%\Debug\dinput8.pdb"
+	copy "%osBinPath%\DebugDedi\Win32\Halo1_CE\OpenSauceDedi.dll" "%BuildPath%\Debug\OpenSauceDedi.dll"
+	copy "%osBinPath%\DebugDedi\Win32\Halo1_CE\OpenSauceDedi.pdb" "%BuildPath%\Debug\OpenSauceDedi.pdb"
 )
 IF %BuildRelease% NEQ 0 (
 	FOR %%A IN ("%osBinPath%\Release\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA.msi"
-	copy "%osBinPath%\Release\Win32\Halo1_CE\dinput8.dll" "%BuildPath%\dinput8_release.dll"
-	copy "%osBinPath%\Release\Win32\Halo1_CE\dinput8.pdb" "%BuildPath%\dinput8_release.pdb"
-	copy "%osBinPath%\ReleaseDedi\Win32\Halo1_CE\OpenSauceDedi.dll" "%BuildPath%\OpenSauceDedi_release.dll"
-	copy "%osBinPath%\ReleaseDedi\Win32\Halo1_CE\OpenSauceDedi.pdb" "%BuildPath%\OpenSauceDedi_release.pdb"
+	mkdir "%BuildPath%\Release"
+	copy "%osBinPath%\Release\Win32\Halo1_CE\dinput8.dll" "%BuildPath%\Release\dinput8.dll"
+	copy "%osBinPath%\Release\Win32\Halo1_CE\dinput8.pdb" "%BuildPath%\Release\dinput8.pdb"
+	copy "%osBinPath%\ReleaseDedi\Win32\Halo1_CE\OpenSauceDedi.dll" "%BuildPath%\Release\OpenSauceDedi.dll"
+	copy "%osBinPath%\ReleaseDedi\Win32\Halo1_CE\OpenSauceDedi.pdb" "%BuildPath%\Release\OpenSauceDedi.pdb"
 )
 IF %BuildReleaseSymbols% NEQ 0 (
 	FOR %%A IN ("%osBinPath%\ReleaseSymbols\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_ReleaseSymbols.msi"
@@ -144,8 +146,8 @@ ECHO Creating build archive using 7-Zip
 ECHO Output: "%BuildPath%\..\%FolderName%.7z"
 
 FOR /f %%A IN ("%BuildPath%\*.msi") DO "%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%%A"
-FOR /f %%A IN ("%BuildPath%\*.dll") DO "%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%%A"
-FOR /f %%A IN ("%BuildPath%\*.pdb") DO "%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%%A"
+"%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%BuildPath%\Debug\"
+"%ArchiveExe%" a -t7z "%BuildPath%\..\%FolderName%.7z" "%BuildPath%\Release\"
 GOTO END
 
 :INVALID_VS
