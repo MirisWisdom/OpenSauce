@@ -143,6 +143,7 @@ namespace Yelo
 			_unit_seat_extensions_flags_prevent_death_when_unit_dies,
 			_unit_seat_extensions_flags_ignored_by_seated_ai_bit,
 			_unit_seat_extensions_flags_ignored_by_mounted_ai_bit,
+			_unit_seat_extensions_flags_cant_enter_seats_when_occupied_bit,
 
 			_unit_seat_extensions_flags
 		};

@@ -154,7 +154,20 @@ namespace Yelo
 
 			TAG_PAD(int32, 23); // 92
 
+			project_yellow(const bool invalid = false)
+				: version(project_yellow::k_version)
+			{
+				flags = FLAG(Flags::_project_yellow_null_definition_bit);
 
+				if(invalid)
+				{
+					SET_FLAG(flags, Flags::_project_yellow_invalid_version_bit, true);
+				}
+
+				yelo_globals.tag_index = datum_index::null;
+				game_globals.tag_index = datum_index::null;
+				explicit_references.tag_index = datum_index::null;
+			}
 
 			bool IsNull() const;
 			bool IsCacheProtected() const;

@@ -22,15 +22,10 @@ namespace Yelo
 	{
 		using namespace TagGroups;
 
-		static project_yellow_globals null_yelo_globals = { project_yellow_globals::k_version };
+		static project_yellow_globals null_yelo_globals;
 
-		static project_yellow null_yelo =			{project_yellow::k_version, 
-			FLAG(Flags::_project_yellow_null_definition_bit),
-		};
-		static project_yellow null_yelo_invalid =	{project_yellow::k_version, 
-			FLAG(Flags::_project_yellow_null_definition_bit) |
-			FLAG(Flags::_project_yellow_invalid_version_bit),
-		};
+		static project_yellow null_yelo;
+		static project_yellow null_yelo_invalid(true);
 
 		static project_yellow_globals* g_py_globals = &null_yelo_globals;
 		static project_yellow* g_project_yellow = &null_yelo;

@@ -7,6 +7,7 @@
 #pragma once
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
@@ -162,6 +163,13 @@ namespace Yelo
 
 
 			TAG_PAD(int32, 20); // 80
+
+			project_yellow_globals()
+				: version(project_yellow::k_version)
+			{
+				flags = FLAG(Flags::_project_yellow_null_definition_bit) | FLAG(Flags::_project_yellow_invalid_version_bit);
+				explicit_references.tag_index = datum_index::null;
+			}
 
 #if PLATFORM_IS_EDITOR
 		private:

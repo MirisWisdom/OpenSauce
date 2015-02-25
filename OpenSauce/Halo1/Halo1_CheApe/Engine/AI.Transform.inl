@@ -241,6 +241,11 @@ namespace Yelo
 				return false;
 			}
 
+			if(yelo_definition->IsNull())
+			{
+				return false;
+			}
+
 			if(yelo_definition->explicit_references.tag_index.IsNull())
 			{
 				return false;

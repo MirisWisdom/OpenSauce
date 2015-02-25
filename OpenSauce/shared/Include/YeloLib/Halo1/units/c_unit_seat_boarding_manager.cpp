@@ -702,10 +702,18 @@ namespace Yelo
 				return;
 			}
 
+			// Can't enter seats if an occupied seat disallows it
 			auto* unit_definition = blam::tag_get<TagGroups::s_unit_definition>(unit_datum->object.definition_index);
 			for(int16 index = 0; index < unit_definition->unit.seats.Count; index++)
 			{
-				if(!GetUnitInSeat(unit_index, index).IsNull())
+				auto* seat_extension = GetSeatExtensionDefinition(unit_index, index);
+				if(!seat_extension)
+				{
+					continue;
+				}
+
+				if(TEST_FLAG(seat_extension->flags, Flags::_unit_seat_extensions_flags_cant_enter_seats_when_occupied_bit)
+					&& !GetUnitInSeat(unit_index, index).IsNull())
 				{
 					result = false;
 					return;
