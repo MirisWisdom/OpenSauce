@@ -321,13 +321,14 @@ namespace Yelo
 				"secondary",
 				"final");
 
-			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 6,
+			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_extensions_flags, 7,
 				"triggers mounted state",
 				"exit on unit death",
 				"exit on target seat empty",
 				"prevent death when unit dies",
 				"ignored by seated ai",
-				"ignored by mounted ai");
+				"ignored by mounted ai",
+				"can't enter seats when occupied");
 
 			TAG_GROUP_STRING_TABLE_DEFINE(unit_seat_access_flags, 7,
 				"requires target seat occupied",
