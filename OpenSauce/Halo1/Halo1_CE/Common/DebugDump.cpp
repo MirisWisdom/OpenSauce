@@ -16,6 +16,9 @@
 #if PLATFORM_IS_USER
 #include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/game/game_globals_structures.hpp>
+
 #include <YeloLib/cseries/pc_crashreport.hpp>
 
 #include "Common/FileIO.hpp"
@@ -152,9 +155,7 @@ namespace Yelo
 			{ PF_CHANNELS_ENABLED,					"CHANNELS" },
 		};
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Adds details about the users CPU to the crash report. </summary>
-		///-------------------------------------------------------------------------------------------------
 		static void AddCPUInfo()
 		{
 			// get system information
@@ -194,34 +195,43 @@ namespace Yelo
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds map information. </summary>
+		static void AddMapInfo()
+		{
+			Debug::AddPropertyToCrashReport("MapName", GameState::GameGlobals()->options.map_name);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
 		/// 	Adds data to the crash report that should be done before the dump itself is taken.
 		/// </summary>
-		///-------------------------------------------------------------------------------------------------
 		static void PreDump()
 		{
-			// unlock the page for read and write
+			// Unlock the page for read and write
 			VirtualProtect(GET_PTR(VIRTUALPROTECT_LOCK), 1, PAGE_READWRITE, GET_PTR2(VIRTUALPROTECT_OLD_PROTECT));
 			*GET_PTR(VIRTUALPROTECT_LOCK) = nullptr;
 
-			// add a gamestate dump to the report
+			// Add a gamestate dump to the report
 			AddGameStateDump();
 
-			// add a frame dump to the report
+			// Add a frame dump to the report
 			AddFrameDump();
 
-			// add CPU information to the report
+			// Add CPU information to the report
 			AddCPUInfo();
+
+			// Add the current map info
+			AddMapInfo();
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
 		/// 	Exception filter used to override the stock handling and create a crash report.
 		/// </summary>
+		///
 		/// <param name="ptrs">	The exception ptrs. </param>
+		///
 		/// <returns>	Whether the exception was handled by this filter or not. </returns>
-		///-------------------------------------------------------------------------------------------------
 		static int WINAPI ExceptionFilter(PEXCEPTION_POINTERS ptrs)
 		{
 			typedef void (PLATFORM_API* proc_simple_function)(void);
@@ -263,14 +273,11 @@ namespace Yelo
 			return result;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
 		/// 	Runs on a separate thread and creates a crash report if the main thread becomes
 		/// 	unresponsive.
 		/// </summary>
-		/// <param name="parameter1">	[in,out] Unused. </param>
-		/// <returns>	Returns 0. </returns>
-		///-------------------------------------------------------------------------------------------------
 		static void FreezeDumpCount()
 		{
 			g_freeze_dump_globals.m_thread_running = true;
@@ -330,10 +337,10 @@ namespace Yelo
 			g_freeze_dump_globals.m_thread_running = false;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Updates the crash handler to reset the freeze dump timer if needed. </summary>
+		///
 		/// <param name="delta">	The time that has passed since the last update. </param>
-		///-------------------------------------------------------------------------------------------------
 		void Update(real delta)
 		{
 			if(!g_freeze_dump_globals.m_thread_running)
@@ -345,9 +352,7 @@ namespace Yelo
 			g_freeze_dump_globals.m_wait.current = 0.0f;
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Initializes the crash handler. </summary>
-		///-------------------------------------------------------------------------------------------------
 		void DumpInitialize()
 		{
 			// output path
@@ -418,9 +423,7 @@ namespace Yelo
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Clean up the crash handler and uninstall crasrpt. </summary>
-		///-------------------------------------------------------------------------------------------------
 		void DumpDispose()
 		{
 			if(g_freeze_dump_globals.m_thread_running)
