@@ -271,7 +271,11 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if(!unit)
+		{
+			return result.pointer;
+		}
 
 		UnitDataGetObjectIndexByName(unit, args->data_name, result);
 	}
@@ -290,7 +294,11 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if(!unit)
+		{
+			return result.pointer;
+		}
 
 		UnitDataGetIntegerByName(unit, args->data_name, result);
 	}
@@ -307,7 +315,11 @@ static void* scripting_unit_data_set_integer_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if(!unit)
+		{
+			return nullptr;
+		}
 
 		UnitDataSetIntegerByName(unit, args->data_name, args->data_value);
 	}
@@ -326,7 +338,11 @@ static void* scripting_unit_data_get_real_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if(!unit)
+		{
+			return result.pointer;
+		}
 
 		UnitDataGetRealByName(unit, args->data_name, result);
 	}
@@ -343,7 +359,11 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 
 	if(GameState::IsLocal() && !args->unit_index.IsNull())
 	{
-		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if(!unit)
+		{
+			return nullptr;
+		}
 
 		UnitDataSetRealByName(unit, args->data_name,args->data_value);
 	}
