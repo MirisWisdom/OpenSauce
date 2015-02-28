@@ -112,7 +112,6 @@ namespace Yelo
 		enum actor_variant_transform_in_target_flags
 		{
 			_actor_variant_transform_in_target_flags_try_to_use_existing_unit,
-			_actor_variant_transform_in_target_flags_inherit_encounter_squad,
 			_actor_variant_transform_in_target_flags_drop_weapon,
 			_actor_variant_transform_in_target_flags_inherit_seated_units,
 			_actor_variant_transform_in_target_flags_delete_attached_actors,
