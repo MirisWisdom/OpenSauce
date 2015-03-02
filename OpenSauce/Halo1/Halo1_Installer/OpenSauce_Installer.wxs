@@ -76,7 +76,7 @@
 
 		<Property Id='INSTALLVALIDATORDEF' Secure='yes' Value='Unset'/>
 		<Property Id='INSTALLVALIDATORPATH' Secure='yes' Value='Unset'/>
-		<Property Id='WEBLAUNCHER_URL' Secure='yes' Value='http://code.google.com/p/open-sauce'/>
+		<Property Id='WEBLAUNCHER_URL' Secure='yes' Value='https://bitbucket.org/KornnerStudios/opensauce-release'/>
 
 		<Directory Id='TARGETDIR' Name='SourceDir'>
 			<Merge Id="VCRedist100_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>

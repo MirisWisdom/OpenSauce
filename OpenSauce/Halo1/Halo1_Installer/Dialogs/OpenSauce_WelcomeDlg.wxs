@@ -31,8 +31,8 @@
 						<Condition Action="show">Installed AND PATCH</Condition>
 						<Condition Action="hide">NOT Installed OR NOT PATCH</Condition>
 					</Control>
-					<Control Id="OSWebLinkDescription" Type="Text" X="135" Y="160" Width="220" Height="20" Transparent="yes" NoPrefix="yes" Text="Please visit the OpenSauce Google Code website to view the Wiki and report any issues." />
-					<Control Id="OSWebLinkButton" Type="PushButton" X="135" Y="180" Width="150" Height="17" Disabled="no" Text="code.google.com/p/open-sauce">
+					<Control Id="OSWebLinkDescription" Type="Text" X="135" Y="160" Width="220" Height="20" Transparent="yes" NoPrefix="yes" Text="Please visit the OpenSauce Bitbucket website to view the Wiki and report any issues." />
+					<Control Id="OSWebLinkButton" Type="PushButton" X="135" Y="180" Width="200" Height="17" Disabled="no" Text="bitbucket.org/KornnerStudios/opensauce-release">
 						<Publish Event="DoAction" Value="OSLaunchWebSite_CACT">1</Publish>
 					</Control>
 					<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgTitle)" />
