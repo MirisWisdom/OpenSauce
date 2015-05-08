@@ -19,7 +19,7 @@ namespace Yelo
 			_networked_datum_master,
 			_networked_datum_puppet,
 			_networked_datum_puppet_controlled_by_local_player,
-			_networked_datum_3,
+			_networked_datum_local_only,
 		};
 
 		enum object_sizes
