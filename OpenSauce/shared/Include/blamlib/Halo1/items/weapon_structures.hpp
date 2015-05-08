@@ -32,14 +32,14 @@ namespace Yelo
 		enum weapon_trigger_state : byte_enum
 		{
 			_weapon_trigger_state_idle,
-			_weapon_trigger_state_fire1,
-			_weapon_trigger_state_fire2,
-			_weapon_trigger_state_unknown3, // overcharged related
+			_weapon_trigger_state_unknown1, // alternate shot/overload related
+			_weapon_trigger_state_charging,
+			_weapon_trigger_state_charged,
 			_weapon_trigger_state_unknown4, // locked related (tracking)
 			_weapon_trigger_state_unknown5, // tracking related
-			_weapon_trigger_state_unknown6,
-			_weapon_trigger_state_unknown7, // 1
-			_weapon_trigger_state_unknown8, // 2
+			_weapon_trigger_state_spewing,
+			_weapon_trigger_state_frozen_while_triggered,
+			_weapon_trigger_state_frozen_timed, 
 
 			_weapon_trigger_state,
 		};
@@ -69,7 +69,7 @@ namespace Yelo
 		{
 			struct s_trigger_state
 			{
-				PAD8; // sbyte
+				sbyte idle_time;					// 0x0 used for determining when to fire next projectile (rounds per second)
 				Enums::weapon_trigger_state state;
 				int16 time;
 				UNKNOWN_TYPE(long_flags);			// 0x4
@@ -82,7 +82,9 @@ namespace Yelo
 				real illumination_recovery_time;	// 0x18
 				UNKNOWN_TYPE(real);					// 0x1C used in the calculation of projectile error angle
 				datum_index charging_effect_index;	// 0x20
-				PAD32; // ?
+				sbyte network_delay_time;			// 0x24 hardedcoded to delay fire/reload by 10 frames in networked game
+				PAD8;
+				PAD16;
 			}; BOOST_STATIC_ASSERT( sizeof(s_trigger_state) == 0x28 );
 			struct s_magazine_state // '?' means IDK if its actually padding or there are values there. If there are, IDK their types (could be a boolean!)
 			{
@@ -108,7 +110,7 @@ namespace Yelo
 			real primary_trigger;					// 0x234
 			Enums::weapon_state weapon_state;		// 0x238
 			PAD8;
-			UNKNOWN_TYPE(int16);					// 0x23A some kind of tick countdown
+			int16 ready_time;						// 0x23A in ticks
 			real heat;								// 0x23C
 			real age;								// 0x240
 			real illumination_fraction;				// 0x244
