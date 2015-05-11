@@ -14,7 +14,7 @@ namespace Yelo
 		enum item_flags : long_flags {
 			_item_in_unit_inventory_bit,
 			_item_hidden_in_unit_inventory_bit, // I think? this bit is either/or with the above bit. name taken from H2
-			_item_unk2_bit,
+			_item_rotating_bit, // no epsilon check on rotation (bug?), thus always set after it starts rotating
 			_item_collided_with_bsp_bit,
 			_item_collided_with_object_bit,
 			_item_at_reset_bit, // see _object_at_reset_bit
