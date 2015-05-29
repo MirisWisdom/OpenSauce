@@ -87,6 +87,7 @@ namespace Yelo
 			_unit_replacement_animation_state_weapon_reload2,
 			_unit_replacement_animation_state_melee,
 			_unit_replacement_animation_state_throw_grenade,
+			_unit_replacement_animation_state_overheat,
 			
 			k_number_of_unit_replacement_animation_states
 		};
@@ -124,7 +125,7 @@ namespace Yelo
 		enum
 		{
 			_unit_animation_unk0_bit,
-			_unit_animation_unk1_bit,
+			_unit_animation_seat_has_acceleration_animations_bit,
 			_unit_animation_unk2_bit,
 			_unit_animation_unk3_bit,
 		};
@@ -243,8 +244,8 @@ namespace Yelo
 			// also set to the same PersistentControlTicks value when an actor dies and they fire-wildely
 			UNKNOWN_TYPE(byte);												// 0x28C sbyte
 			byte_enum throwing_grenade_state;								// 0x28D
-			UNKNOWN_TYPE(int16);											// 0x28E
-			UNKNOWN_TYPE(int16);											// 0x290
+			int16 throwing_grenade_time;									// 0x28E
+			int16 throwing_grenade_key_frame_time;							// 0x290
 			PAD16;															// 0x292
 			datum_index throwing_grenade_projectile_index;					// 0x294
 			s_unit_datum_animation_data animation;								// 0x298
