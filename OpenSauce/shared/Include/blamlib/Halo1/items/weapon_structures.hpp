@@ -54,6 +54,22 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum
+		{
+			// --- 0x230
+
+			_weapon_owner_light_bit = 0,
+			_weapon_owner_primary_trigger_bit,
+			_weapon_owner_secondary_trigger_bit,
+			_weapon_owner_reload_bit,
+			_weapon_owner_unk4_bit,				// unit animation state / biped melee related
+			_weapon_owner_unk5_bit,				// only bit set when unit's next weapon is not its' current one
+			_weapon_owner_zoomed_bit,
+		};
+	};
+
 	namespace Objects
 	{
 		struct s_weapon_datum_network_data
