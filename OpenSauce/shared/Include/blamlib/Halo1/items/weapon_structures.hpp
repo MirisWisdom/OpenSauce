@@ -47,8 +47,8 @@ namespace Yelo
 		enum weapon_magazine_state : _enum
 		{
 			_weapon_magazine_state_idle,
+			_weapon_magazine_state_reloading,
 			_weapon_magazine_state_chambering_start,
-			_weapon_magazine_state_chambering_finish,
 			_weapon_magazine_state_chambering,
 			_weapon_magazine_state,
 		};
@@ -58,13 +58,21 @@ namespace Yelo
 	{
 		enum
 		{
+
+			// --- 0x22C
+
+			_weapon_unk0_bit,
+			_weapon_unk1_bit,
+			_weapon_unk2_bit,
+			_weapon_reload_bit,
+
 			// --- 0x230
 
 			_weapon_owner_light_bit = 0,
 			_weapon_owner_primary_trigger_bit,
 			_weapon_owner_secondary_trigger_bit,
 			_weapon_owner_reload_bit,
-			_weapon_owner_unk4_bit,				// unit animation state / biped melee related
+			_weapon_owner_occupied_bit,			// used to prevent interrupting certain unit interactions (like meleeing)
 			_weapon_owner_unk5_bit,				// only bit set when unit's next weapon is not its' current one
 			_weapon_owner_zoomed_bit,
 		};
