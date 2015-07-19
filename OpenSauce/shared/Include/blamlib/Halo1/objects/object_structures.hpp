@@ -71,7 +71,7 @@ namespace Yelo
 			_object_unk4_bit,
 			_object_at_reset_bit, // when set, physics aren't updated
 			_object_unk6_bit,
-			_object_unk7_bit,
+			_object_unk7_bit, // when set, picks random frame of current animation
 			_object_unk8_bit, // set when object has a light attachment
 			_object_unk9_bit,
 			_object_unk10_bit, // set when the object has a looping sound attachment

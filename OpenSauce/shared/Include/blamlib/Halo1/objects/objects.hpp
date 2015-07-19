@@ -39,10 +39,10 @@ namespace Yelo
 			_object_header_visible_bit,
 			_object_header_newly_created_bit, // true until after the first call to the 
 			_object_header_being_deleted_bit,
-			_object_header_child_bit, // attached to another object (at a marker/node)
+			_object_header_unk4_bit, // disables logic update entirely
 			_object_header_connected_to_map_bit,
 			_object_header_automatic_deactivation_bit,
-			_object_header_unk7_bit,
+			_object_header_unk7_bit, // set when connecting to parent, not unset when disconnecting though (?)
 		};
 
 		enum objects_find_flags : long_flags
