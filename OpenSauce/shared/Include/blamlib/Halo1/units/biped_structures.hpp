@@ -69,7 +69,7 @@ namespace Yelo
 			PAD8;
 			UNKNOWN_TYPE(int16);							// 0x508
 			PAD16;
-			UNKNOWN_TYPE(real);								// 0x50C
+			real crouch_percent;							// 0x50C
 			UNKNOWN_TYPE(real);								// 0x510
 			UNKNOWN_TYPE(real_plane3d);						// 0x514 physics related
 			UNKNOWN_TYPE(byte);								// 0x524 sbyte

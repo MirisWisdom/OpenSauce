@@ -145,7 +145,7 @@ namespace Yelo
 			_unit_unk10_bit,
 			_unit_unk11_bit,
 			_unit_unk12_bit,
-			_unit_unk13_bit,
+			_unit_unk13_bit, // feign death related (set in unit_new)
 			_unit_unk14_bit,
 			_unit_unk15_bit,
 			_unit_unk16_bit,
