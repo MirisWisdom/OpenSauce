@@ -61,9 +61,9 @@ namespace Yelo
 
 			// --- 0x22C
 
-			_weapon_unk0_bit,
-			_weapon_unk1_bit,
-			_weapon_unk2_bit,
+			_weapon_overheated_bit,
+			_weapon_recovering_bit,
+			_weapon_charge_fired_bit, // only used if weapon type == plasma pistol
 			_weapon_reload_bit,
 
 			// --- 0x230
@@ -97,9 +97,9 @@ namespace Yelo
 				Enums::weapon_trigger_state state;
 				int16 time;
 				UNKNOWN_TYPE(long_flags);			// 0x4
-				UNKNOWN_TYPE(int16);				// 0x8 firing effect related
-				UNKNOWN_TYPE(int16);				// 0xA firing effect related
-				UNKNOWN_TYPE(int16);				// 0xC firing effect related
+				UNKNOWN_TYPE(int16);				// 0x8 firing effect related (bits, set if firing effect was used)
+				UNKNOWN_TYPE(int16);				// 0xA firing effect related (firing effect index ?)
+				UNKNOWN_TYPE(int16);				// 0xC firing effect related (shot count ?)
 				int16 rounds_since_last_tracer;
 				real rate_of_fire;					// 0x10
 				real ejection_port_recovery_time;	// 0x14
@@ -118,8 +118,7 @@ namespace Yelo
 				int16 rounds_unloaded;				// 0x6
 				int16 rounds_loaded;				// 0x8
 				int16 rounds_left_to_recharge;		// 0xA number of rounds left to apply to rounds_loaded (based on tag's rounds_recharged)
-				UNKNOWN_TYPE(int16);				// 0xC I just know a WORD is here, may be an _enum
-				PAD16; // ?
+				datum_index overheat_effect_index;	// 0xC only used by magazine[1] it seems ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
 			struct s_start_reload_data
 			{
