@@ -80,8 +80,8 @@ namespace Yelo
 			_object_unk13_bit, // set in device_machine's 'new' function, always
 			_object_unk14_bit, // set in device_machine's 'new' function, if _machine_is_elevator_bit is true
 			_object_unk15_bit, // set in device_machine's 'new' function, if _machine_is_elevator_bit is true
-			_object_garbage_bit,
-			_object_unk17_bit, // unit and weapon 'place' functions set this, but I don't see any code which tests for it
+			_object_unk16_bit, // set if in a global linked list (contains "items" at rest that have player_index == NONE, singleplayer only)
+			_object_unk17_bit, // unit and weapon 'place' functions set this, if set this prevents being added to the above flag's linked list
 			_object_does_not_cast_shadow_bit,
 			_object_deactivation_is_deletion_bit, // instead of deactivating (and persisting), the object is deleted
 			_object_unk20_bit, // prohibits the object from ever being activated again
@@ -250,7 +250,7 @@ namespace Yelo
 			s_object_datum_damage_data damage;												// 0xD8
 			PAD32;																			// 0x108 unused
 			datum_index cluster_partition_index;											// 0x10C
-			UNKNOWN_TYPE(datum_index);														// 0x110, object_index, garbage collection related
+			UNKNOWN_TYPE(datum_index);														// 0x110, linked list object_index, related to _object_unk16_bit
 			datum_index next_object_index;													// 0x114
 			datum_index first_object_index;													// 0x118
 			datum_index parent_object_index;												// 0x11C
