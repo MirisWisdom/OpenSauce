@@ -20,7 +20,7 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index, WeaponIndex, 0x8);
 
 			////////////////////////////////////////////////
-			// this enum is used for setting the one below
+			// this enum is used for changing animation state
 			// 0  - fire 1
 			// 1  - fire 2
 			// 2  - misfire 1
@@ -69,20 +69,23 @@ namespace Yelo
 			TStructGetPtrImpl(_enum, AnimationState, 0xC);
 			// 0xE = unknown 2 bytes
 			TStructGetPtrImpl(game_time_t, IdleTime, 0x10);
-			// TStructGetPtrImpl(Objects::s_animation_state, CurrentBaseAnimation, 0x12); // frame index of current base animation (idle or moving) --- don't think this is correct
-			// 0x14 = overlay animation index
+			// 0x12?
+			// 0x14 = overlay animation index (doesnt seem to be used, though it is set)
 			TStructGetPtrImpl(Objects::s_animation_state, CurrentAnimation, 0x16);
 			TStructGetPtrImpl(Objects::s_animation_state, CurrentMovingOverlayAnimation, 0x1A);
+			
 			//TStructGetPtrImpl(Objects::s_animation_state, , 0x1E);
+			//TStructGetPtrImpl(Objects::s_animation_state, OverchargedJitterAnimation, 0x20);
+			//TStructGetPtrImpl(real, , 0x24); // jitter frame as real ?
 
-			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim state
+			//TStructGetPtrImpl(real, , 0x28); // firing overlay
 			//TStructGetPtrImpl(real, , 0x2C); // adds 0.05f when entering firing state ?
-			// 0x30?
-			//TStructGetPtrImpl(real, , 0x34);
+			//TStructGetPtrImpl(real, , 0x30)  // move forward/backward overlay
+			//TStructGetPtrImpl(real, , 0x34); // move left/right overlay
 			// 0x38?
 			// 0x3C?
-			//TStructGetPtrImpl(real, , 0x40);
-			//TStructGetPtrImpl(real, , 0x44);
+			//TStructGetPtrImpl(real, , 0x40); // look left/right overlay
+			//TStructGetPtrImpl(real, , 0x44); // look up/down overlay
 			// 0x48?
 			// 0x4C?
 			// 0x50 bool
@@ -92,8 +95,8 @@ namespace Yelo
 			// 0x70 real_point3d
 			// 0x7C real_point3d?
 			//////////////////////////////////////////////////////////////////////////
-			// 0x88 int16 frame index
-			// 0x8A int16 frame count
+			// 0x88 int16 interpolation frame index
+			// 0x8A int16 interpolation frame count
 			// 0x8C real_orientation3d node orientations[128]
 			// 0x108C real_matrix4x3 node matrices[64]
 			//////////////////////////////////////////////////////////////////////////
