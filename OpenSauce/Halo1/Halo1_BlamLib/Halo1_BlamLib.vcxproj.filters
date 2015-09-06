@@ -999,6 +999,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_transparent.hpp">
       <Filter>render</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
