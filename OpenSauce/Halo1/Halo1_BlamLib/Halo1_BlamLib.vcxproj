@@ -329,6 +329,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\shaders\shader_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\shell\shell.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_environment_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\cluster_partitions.hpp" />
