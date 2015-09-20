@@ -8,31 +8,26 @@
 #include "Rasterizer/GBuffer.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/game/game_time_structures.hpp>
+
+#include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/Halo1/objects/object_structures.hpp>
 #include <blamlib/Halo1/game/player_structures.hpp>
-#include <blamlib/Halo1/main/main_structures.hpp>
-
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-
+#include <blamlib/Halo1/game/game_time.hpp>
+#include <blamlib/Halo1/game/game_time_structures.hpp>
+#include <blamlib/Halo1/game/game_allegiance.hpp>
+#include <YeloLib/memory/memory_interface_base.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"
-#include "Settings/Settings.hpp"
-#include "Memory/MemoryInterface.hpp"
-#include "Rasterizer/Rasterizer.hpp"
-#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
-#include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 #include "Game/GameEngine.hpp"
-#include "Game/GameState.hpp"
-#include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"
-#include "Objects/Objects.hpp"
-#include "GBuffer/Effects/c_gbuffer_debug_effect.hpp"
-#include "GBuffer/c_gbuffer.hpp"
-#include "GBuffer/c_gbuffer_settings.hpp"
-#include "GBuffer/Effects/c_gbuffer_effect_factory.hpp"
+#include "Memory/MemoryInterface.hpp"
+#include "Rasterizer/RenderTargetChain.hpp"
+#include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"
+#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
+#include "Rasterizer/GBuffer/Effects/c_gbuffer_rtclear_effect.hpp"
+#include "Rasterizer/GBuffer/Effects/c_gbuffer_debug_effect.hpp"
+#include "Rasterizer/GBuffer/c_gbuffer_settings.hpp"
+#include "Rasterizer/GBuffer/Effects/c_gbuffer_effect_factory.hpp"
 
 namespace Yelo
 {
@@ -44,15 +39,24 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_GBUFFER
 #include "Memory/_EngineLayout.inl"
 
-#define LOG_GBUFFER(verbosity, log) LOG(verbosity, "GBuffer", log)
+            enum render_progress
+            {
+                _render_progress_sky,
+                _render_progress_objects,
+                _render_progress_objects_transparent,
+                _render_progress_structure,
+                _render_progress_none,
 
-            std::unique_ptr<c_gbuffer> g_gbuffer_system;
+                _render_progress
+            };
+
+            std::unique_ptr<c_gbuffer> g_gbuffer;
             std::unique_ptr<c_gbuffer_rtclear_effect> g_gbuffer_clear;
             std::unique_ptr<c_gbuffer_debug_effect> g_gbuffer_debug;
 
             bool g_enabled;
             bool g_rendered;
-            static Enums::render_progress g_render_progress;
+            static render_progress g_render_progress;
             int16 g_debug_index;
             datum_index g_object_index;
             int32 g_object_level_of_detail;
@@ -175,11 +179,11 @@ namespace Yelo
             {
                 auto result = device->DrawIndexedPrimitive(type, base_vertex_index, min_vertex_index, num_vertices, start_index, primitive_count);
                 if (g_rendered && Available() && !Render::IsRenderingReflection() &&
-                    (g_render_progress == Enums::_render_progress_sky || g_render_progress == Enums::_render_progress_objects))
+                    (g_render_progress == _render_progress_sky || g_render_progress == _render_progress_objects))
                 {
                     byte mesh_index = 0;
                     byte team_index = 0;
-                    if (g_render_progress == Enums::_render_progress_sky)
+                    if (g_render_progress == _render_progress_sky)
                     {
                         mesh_index = 1;
                     }
@@ -220,7 +224,7 @@ namespace Yelo
                     draw_call.m_primitive.m_num_vertices = num_vertices;
                     draw_call.m_primitive.m_start_index = start_index;
                     draw_call.m_primitive.m_primitive_count = primitive_count;
-                    if (g_render_progress != Enums::_render_progress_sky)
+                    if (g_render_progress != _render_progress_sky)
                     {
                         draw_call.m_option_flags |= g_output_tbn ?
                                                         SET_FLAG(draw_call.m_option_flags, Flags::gbuffer_render_options_flags::_gbuffer_render_options_tangent_normals_binormals_bit, true) :
@@ -235,7 +239,7 @@ namespace Yelo
                     draw_call.m_team_index = team_index;
                     draw_call.m_mesh_index = mesh_index;
 
-                    result &= g_gbuffer_system->DrawObject(*device, draw_call);
+                    result &= g_gbuffer->DrawObject(*device, draw_call);
                 }
                 return result;
             }
@@ -244,7 +248,7 @@ namespace Yelo
             {
                 auto result = device->DrawIndexedPrimitive(type, base_vertex_index, min_vertex_index, num_vertices, start_index, primitive_count);
                 if (g_rendered && Available() && !Render::IsRenderingReflection() &&
-                    g_render_progress == Enums::_render_progress_structure)
+                    g_render_progress == _render_progress_structure)
                 {
                     s_draw_call draw_call;
                     draw_call.m_primitive.m_type = type;
@@ -259,16 +263,16 @@ namespace Yelo
                         SET_FLAG(draw_call.m_option_flags, Flags::gbuffer_render_options_flags::_gbuffer_render_options_velocity_bit, true);
                     }
 
-                    result &= g_gbuffer_system->DrawStructure(*device, draw_call);
+                    result &= g_gbuffer->DrawStructure(*device, draw_call);
                 }
                 return result;
             }
 
             void DestroyGBuffer()
             {
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
-                    g_gbuffer_system->Destroy();
+                    g_gbuffer->Destroy();
                 }
                 if (g_gbuffer_clear)
                 {
@@ -304,9 +308,9 @@ namespace Yelo
                     return;
                 }
 
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
-                    if (!g_gbuffer_system->Create(device, params->BackBufferWidth, params->BackBufferHeight))
+                    if (!g_gbuffer->Create(device, params->BackBufferWidth, params->BackBufferHeight))
                     {
                         DestroyGBuffer();
                         return;
@@ -340,8 +344,8 @@ namespace Yelo
                 }
 
                 c_gbuffer_effect_factory::Get().Initialize();
-                g_gbuffer_system = std::make_unique<c_gbuffer>(ShaderExtension::ExtensionsEnabled());
-                g_gbuffer_clear = std::make_unique<c_gbuffer_rtclear_effect>(g_gbuffer_system->OutputMap());
+                g_gbuffer = std::make_unique<c_gbuffer>(ShaderExtension::ExtensionsEnabled());
+                g_gbuffer_clear = std::make_unique<c_gbuffer_rtclear_effect>(g_gbuffer->OutputMap());
                 g_gbuffer_debug = std::make_unique<c_gbuffer_debug_effect>();
 
                 Memory::WriteRelativeJmp(&Hook_RenderObjectList_GetObjectIndex, GET_FUNC_VPTR(RENDER_OBJECT_LIST_HOOK), true);
@@ -371,9 +375,9 @@ namespace Yelo
             {
                 c_settings_gbuffer::Unregister(Settings::Manager());
 
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
-                    g_gbuffer_system.reset();
+                    g_gbuffer.reset();
                 }
                 if (g_gbuffer_clear)
                 {
@@ -388,7 +392,7 @@ namespace Yelo
 
             void Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)
             {
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
                     CreateGBuffer(*device, params);
                 }
@@ -396,7 +400,7 @@ namespace Yelo
 
             void OnLostDevice()
             {
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
                     DestroyGBuffer();
                 }
@@ -404,7 +408,7 @@ namespace Yelo
 
             void OnResetDevice(D3DPRESENT_PARAMETERS* params)
             {
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
                     CreateGBuffer(*DX9::Direct3DDevice(), params);
                 }
@@ -414,7 +418,7 @@ namespace Yelo
 
             void Release()
             {
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
                     DestroyGBuffer();
                 }
@@ -422,16 +426,16 @@ namespace Yelo
 
             void Update(real delta_time)
             {
-                if (g_gbuffer_system)
+                if (g_gbuffer)
                 {
                     g_output_velocity = true;
-                    g_gbuffer_system->Update();
+                    g_gbuffer->Update();
                 }
             }
 
             void Clear(IDirect3DDevice9* device)
             {
-                if (g_gbuffer_system && g_gbuffer_clear)
+                if (g_gbuffer && g_gbuffer_clear)
                 {
                     g_gbuffer_clear->Render(*device);
                 }
@@ -439,45 +443,45 @@ namespace Yelo
 
             void SetWorldViewProjection(const D3DMATRIX& matrix)
             {
-                if (g_gbuffer_system && !Render::IsRenderingReflection())
+                if (g_gbuffer && !Render::IsRenderingReflection())
                 {
-                    g_gbuffer_system->StoreWorldViewProj(matrix);
+                    g_gbuffer->StoreWorldViewProj(matrix);
                 }
             }
 
             void SkyPreProcess()
             {
-                g_render_progress = Enums::_render_progress_sky;
+                g_render_progress = _render_progress_sky;
             }
 
             void SkyPostProcess()
             {
-                g_render_progress = Enums::_render_progress_none;
+                g_render_progress = _render_progress_none;
             }
 
             void ObjectsPreProcess()
             {
-                g_render_progress = Enums::_render_progress_objects;
+                g_render_progress = _render_progress_objects;
             }
 
             void ObjectsPostProcess()
             {
-                g_render_progress = Enums::_render_progress_none;
+                g_render_progress = _render_progress_none;
             }
 
             void StructurePreProcess()
             {
-                g_render_progress = Enums::_render_progress_structure;
+                g_render_progress = _render_progress_structure;
             }
 
             void StructurePostProcess()
             {
-                g_render_progress = Enums::_render_progress_none;
+                g_render_progress = _render_progress_none;
             }
 
             void UIPreProcess()
             {
-                if (g_gbuffer_system && g_gbuffer_debug && g_debug_index != 0)
+                if (g_gbuffer && g_gbuffer_debug && g_debug_index != 0)
                 {
                     g_gbuffer_debug->SetDebugTarget(g_debug_index);
                     g_gbuffer_debug->Render(*DX9::Direct3DDevice());
@@ -491,7 +495,7 @@ namespace Yelo
 
             bool Available()
             {
-                return g_gbuffer_system != nullptr && g_enabled;
+                return g_gbuffer != nullptr && g_enabled;
             }
 
             bool& Enabled()
@@ -506,7 +510,7 @@ namespace Yelo
 
             c_gbuffer& GetGBuffer()
             {
-                return *g_gbuffer_system;
+                return *g_gbuffer;
             }
 
             int16& DebugIndex()
