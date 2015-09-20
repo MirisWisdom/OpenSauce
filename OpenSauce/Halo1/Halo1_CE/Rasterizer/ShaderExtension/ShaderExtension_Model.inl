@@ -479,7 +479,7 @@ no_extension:
 
 		auto* shader_base = CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
 
-		DX9::c_gbuffer_system::OutputObjectTBN() = false;
+		GBuffer::OutputTbn() = false;
 
 		// disable feature as per the users settings
 		_enum feature_usage = shader_base->shader.extension_usage & g_extension_usage_mask;
@@ -516,7 +516,7 @@ no_extension:
 				// base normal map is present
 				if(feature_usage & Flags::_shader_extension_usage_normal_map)
 				{
-					DX9::c_gbuffer_system::OutputObjectTBN() = true;
+					GBuffer::OutputTbn() = true;
 					SetTexture(Yelo::DX9::Direct3DDevice(), 4, extension.base_normal.map.tag_index);
 
 					g_pixel_shader_variables.base_normal_map_coefficient = extension.base_normal.modifiers.coefficient;
@@ -600,7 +600,7 @@ no_extension:
 			{
 				g_current_feature_mix = &g_feature_mix_list[1];
 
-				DX9::c_gbuffer_system::OutputObjectTBN() = true;
+				GBuffer::OutputTbn() = true;
 
 				SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump.bump_map.map.tag_index);
 

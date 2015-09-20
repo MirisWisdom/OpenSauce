@@ -5,8 +5,8 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-DEFINE_HOOK_PROCESS(func_gbuffer_render_sky_preprocess, DX9::c_gbuffer_system::render_progress::SkyPreProcess);
-DEFINE_HOOK_PROCESS(func_gbuffer_render_sky_postprocess, DX9::c_gbuffer_system::render_progress::SkyPostProcess);
+DEFINE_HOOK_PROCESS(func_gbuffer_render_sky_preprocess, Rasterizer::GBuffer::SkyPreProcess);
+DEFINE_HOOK_PROCESS(func_gbuffer_render_sky_postprocess, Rasterizer::GBuffer::SkyPostProcess);
 
 DEFINE_HOOK_BLOCK_PREPROCESS(render_sky) = {
 	GET_HOOK_PROCESS(func_gbuffer_render_sky_preprocess).FunctionHook,
@@ -16,8 +16,8 @@ DEFINE_HOOK_BLOCK_POSTPROCESS(render_sky) = {
 };
 
 
-DEFINE_HOOK_PROCESS(func_gbuffer_render_objects_preprocess, DX9::c_gbuffer_system::render_progress::ObjectsPreProcess);
-DEFINE_HOOK_PROCESS(func_gbuffer_render_objects_postprocess, DX9::c_gbuffer_system::render_progress::ObjectsPostProcess);	
+DEFINE_HOOK_PROCESS(func_gbuffer_render_objects_preprocess, Rasterizer::GBuffer::ObjectsPreProcess);
+DEFINE_HOOK_PROCESS(func_gbuffer_render_objects_postprocess, Rasterizer::GBuffer::ObjectsPostProcess);	
 
 DEFINE_HOOK_BLOCK_PREPROCESS(render_objects) = {
 	GET_HOOK_PROCESS(func_gbuffer_render_objects_preprocess).FunctionHook,
@@ -27,8 +27,8 @@ DEFINE_HOOK_BLOCK_POSTPROCESS(render_objects) = {
 };
 
 
-DEFINE_HOOK_PROCESS(func_gbuffer_render_structure_preprocess, DX9::c_gbuffer_system::render_progress::StructurePreProcess);
-DEFINE_HOOK_PROCESS(func_gbuffer_render_structure_postprocess, DX9::c_gbuffer_system::render_progress::StructurePostProcess);
+DEFINE_HOOK_PROCESS(func_gbuffer_render_structure_preprocess, Rasterizer::GBuffer::StructurePreProcess);
+DEFINE_HOOK_PROCESS(func_gbuffer_render_structure_postprocess, Rasterizer::GBuffer::StructurePostProcess);
 
 DEFINE_HOOK_BLOCK_PREPROCESS(render_structure) = {
 	GET_HOOK_PROCESS(func_gbuffer_render_structure_preprocess).FunctionHook,
@@ -48,7 +48,7 @@ DEFINE_HOOK_PROCESS(func_gameui_enable_widget_offset, Hud::EnableWidgetScale);
 DEFINE_HOOK_PROCESS(func_gameui_enable_hud_offset, Hud::EnableHUDScale);
 DEFINE_HOOK_PROCESS(func_gameui_disable_offset, Hud::DisableScale);
 
-DEFINE_HOOK_PROCESS(func_gbuffer_render_hud_preprocess, DX9::c_gbuffer_system::render_progress::UIPreProcess);
+DEFINE_HOOK_PROCESS(func_gbuffer_render_hud_preprocess, Rasterizer::GBuffer::UIPreProcess);
 DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_preprocess, Rasterizer::PostProcessing::RenderPreHUD);
 DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_postprocess, Rasterizer::PostProcessing::RenderPreMenu);
 

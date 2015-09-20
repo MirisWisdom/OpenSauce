@@ -327,8 +327,8 @@
 
 	//////////////////////////////////////////////////////////////////////////
 	// Globals
-	HS_GLOBAL2(rasterizer_rt_display, short, &DX9::c_gbuffer_system::g_debug_index, nullptr);
-	HS_GLOBAL2(rasterizer_gbuffer_enabled, bool, &DX9::c_gbuffer_system::g_system_enabled, nullptr);
+	HS_GLOBAL2(rasterizer_rt_display, short, &Rasterizer::GBuffer::DebugIndex(), nullptr);
+	HS_GLOBAL2(rasterizer_gbuffer_enabled, bool, &Rasterizer::GBuffer::Enabled(), nullptr);
 
 	HS_GLOBAL2(pp_external_post_processes_enabled, bool, 
 		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_External(), nullptr);
