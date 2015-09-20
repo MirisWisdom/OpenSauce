@@ -12,7 +12,7 @@
 #include "Rasterizer/GBuffer/Effects/c_gbuffer_rtclear_effect.hpp"
 
 namespace Yelo
-{    
+{
     namespace Flags
     {
         enum gbuffer_render_options_flags
@@ -60,6 +60,14 @@ namespace Yelo
                 uint32 m_num_vertices;
                 uint32 m_start_index;
                 uint32 m_primitive_count;
+
+                s_draw_primitive_parameters()
+                    : m_type(),
+                      m_base_vertex_index(0),
+                      m_min_vertex_index(0),
+                      m_num_vertices(0),
+                      m_start_index(0),
+                      m_primitive_count(0) {}
             };
 
             struct s_draw_call
@@ -67,6 +75,10 @@ namespace Yelo
                 s_draw_primitive_parameters m_primitive;
                 uint32 m_option_flags;
                 PAD16;
+
+                s_draw_call()
+                    : m_primitive(),
+                      m_option_flags(0) {}
             };
 
             struct s_draw_call_object : s_draw_call
@@ -74,6 +86,12 @@ namespace Yelo
                 int16 m_team_index;
                 int16 m_mesh_index;
                 int32 m_level_of_detail;
+
+                s_draw_call_object()
+                    : s_draw_call(),
+                      m_team_index(0),
+                      m_mesh_index(0),
+                      m_level_of_detail(0) {}
             };
 
             struct s_gbuffer_output_map
@@ -92,15 +110,6 @@ namespace Yelo
 
                 LPD3DXEFFECT m_pixel_shader;
                 LPD3DXEFFECT m_vertex_shader;
-
-                struct s_vertex_shader_input
-                {
-                    D3DXMATRIX m_previous_world_view_proj;
-                    D3DXMATRIX m_world_view_transpose;
-                    float m_linear_depth_mul;
-                    PAD64;
-                    PAD32;
-                } m_vertex_shader_input;
 
                 D3DXVECTOR4 m_pixel_shader_input;
 
@@ -175,7 +184,7 @@ namespace Yelo
                 bool CreateShaders(IDirect3DDevice9& device);
                 void PushState(IDirect3DDevice9& device);
                 void PopState(IDirect3DDevice9& device);
-                void SetVertexShaderConstants(IDirect3DDevice9& device);
+                void SetVertexShaderConstants(IDirect3DDevice9& device) const;
                 void PreDrawStructure(const s_draw_call& parameters);
                 void PreDrawObject(const s_draw_call_object& parameters);
                 HRESULT Draw(IDirect3DDevice9& device, const s_draw_primitive_parameters& parameters);

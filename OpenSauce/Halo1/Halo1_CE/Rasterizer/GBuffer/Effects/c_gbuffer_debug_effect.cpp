@@ -22,7 +22,7 @@ namespace Yelo
         namespace GBuffer
         {
             c_gbuffer_debug_effect::c_gbuffer_debug_effect()
-                : c_gbuffer_fullscreen_effect(std::vector<D3DRENDERSTATETYPE> { D3DRS_FILLMODE, D3DRS_ZWRITEENABLE, D3DRS_ALPHABLENDENABLE, D3DRS_SRCBLEND, D3DRS_DESTBLEND }),
+                : c_gbuffer_fullscreen_effect(),
                   m_technique_single(nullptr),
                   m_technique_all(nullptr),
                   m_far_clip_handle(nullptr),
@@ -53,7 +53,10 @@ namespace Yelo
 
             bool c_gbuffer_debug_effect::Create(IDirect3DDevice9& device, const uint32 width, const uint32 height)
             {
-                c_gbuffer_fullscreen_effect::Create(device, width, height);
+                if(!c_gbuffer_fullscreen_effect::Create(device, width, height))
+                {
+                    return false;
+                }
 
                 if (!c_gbuffer_effect_factory::Get().CreateEffect(device, &GetEffectPtr(), "GBuffer_Debug"))
                 {
@@ -95,8 +98,16 @@ namespace Yelo
                 return m_debug_target == NONE ? m_technique_all : m_technique_single;
             }
 
-            void c_gbuffer_debug_effect::SetState(IDirect3DDevice9& device)
+            void c_gbuffer_debug_effect::PreRender(IDirect3DDevice9& device, ID3DXEffect& effect)
             {
+                device.GetRenderState(D3DRS_DEPTHBIAS, &old_depthbias);
+                device.GetRenderState(D3DRS_FILLMODE, &old_fillmode);
+                device.GetRenderState(D3DRS_SRCBLEND, &old_srcblend);
+                device.GetRenderState(D3DRS_DESTBLEND, &old_dest_blend);
+                device.GetRenderState(D3DRS_ZENABLE, &old_zenable);
+                device.GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);
+                device.GetRenderState(D3DRS_STENCILENABLE, &old_stencilenable);
+
                 device.SetRenderState(D3DRS_DEPTHBIAS, 0);
                 device.SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
                 device.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
@@ -104,15 +115,23 @@ namespace Yelo
                 device.SetRenderState(D3DRS_ZENABLE, FALSE);
                 device.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
                 device.SetRenderState(D3DRS_STENCILENABLE, FALSE);
-            }
 
-            void c_gbuffer_debug_effect::PreRender(IDirect3DDevice9& device, ID3DXEffect& effect)
-            {
                 auto& rt = Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
 
                 device.SetRenderTarget(0, rt.surface);
                 effect.SetFloat(m_far_clip_handle, Render::RenderGlobals()->frustum.z_far);
                 effect.SetInt(m_target_handle, m_debug_target);
+            }
+
+            void c_gbuffer_debug_effect::PostRender(IDirect3DDevice9& device, ID3DXEffect& effect)
+            {
+                device.SetRenderState(D3DRS_DEPTHBIAS, old_depthbias);
+                device.SetRenderState(D3DRS_FILLMODE, old_fillmode);
+                device.SetRenderState(D3DRS_SRCBLEND, old_srcblend);
+                device.SetRenderState(D3DRS_DESTBLEND, old_dest_blend);
+                device.SetRenderState(D3DRS_ZENABLE, old_zenable);
+                device.SetRenderState(D3DRS_ZWRITEENABLE, old_zwriteenable);
+                device.SetRenderState(D3DRS_STENCILENABLE, old_stencilenable);
             }
         };
     };

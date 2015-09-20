@@ -27,7 +27,6 @@ namespace Yelo
                   m_stored_wvp_index(0),
                   m_pixel_shader(nullptr),
                   m_vertex_shader(nullptr),
-                  m_vertex_shader_input(),
                   m_pixel_shader_input(),
                   m_techniques(),
                   m_rt_depth(),
@@ -102,17 +101,21 @@ namespace Yelo
                 m_wvp_stored = false;
             }
 
-            void c_gbuffer::SetVertexShaderConstants(IDirect3DDevice9& device)
+            void c_gbuffer::SetVertexShaderConstants(IDirect3DDevice9& device) const
             {
                 auto& render_globals = *Render::RenderGlobals();
                 Render::s_render_frustum_matricies matrices;
                 render_globals.frustum.GetMatricies(matrices);
 
-                m_vertex_shader_input.m_previous_world_view_proj = m_stored_worldviewproj[m_stored_wvp_index];
-                matrices.world_view_transpose->ConvertTo4x4(m_vertex_shader_input.m_world_view_transpose);
-                m_vertex_shader_input.m_linear_depth_mul = pow(render_globals.frustum.z_far, -1.0f);
+                device.SetVertexShaderConstantF(222, m_stored_worldviewproj[m_stored_wvp_index], 4);
 
-                device.SetVertexShaderConstantF(222, reinterpret_cast<float*>(&m_vertex_shader_input), 8);
+                D3DXMATRIX world_view_transpose;
+                matrices.world_view_transpose->ConvertTo4x4(world_view_transpose);
+                device.SetVertexShaderConstantF(226, world_view_transpose, 3);
+
+                D3DXVECTOR4 linear_depth_multiplier;
+                linear_depth_multiplier.x = pow(render_globals.frustum.z_far, -1.0f);
+                device.SetVertexShaderConstantF(229, linear_depth_multiplier, 1);
             }
 
             HRESULT c_gbuffer::Draw(IDirect3DDevice9& device, const s_draw_primitive_parameters& parameters)
