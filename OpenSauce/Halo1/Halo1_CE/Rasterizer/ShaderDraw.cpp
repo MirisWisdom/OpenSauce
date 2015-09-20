@@ -35,14 +35,14 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	{
 		typedef void (PLATFORM_API *shader_draw_func_t)(const TagGroups::s_shader_definition*, void*, void*, void*, void*, void*);
 
-		DX9::c_gbuffer_system::RenderGBuffer() = true;
+		GBuffer::SetRendered(true);
 
 		ShaderExtension::Environment::SetupLightmapShader(shader, Flags::_shader_extension_usage_bit_directional_lightmaps_diff);
 
 		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP));
 		STOCK_DRAW_FUNC(shader, arg2, arg3, arg4, arg5, arg6);
-
-		DX9::c_gbuffer_system::RenderGBuffer() = false;
+        
+		GBuffer::SetRendered(false);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,15 +58,15 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	static void PLATFORM_API Model_ShaderEnvironmentDraw(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
 	{
 		typedef void (PLATFORM_API *shader_draw_func_t)(void*, void*, void*, void*, void*, void*, void*);
-
-		DX9::c_gbuffer_system::RenderGBuffer() = true;
+        
+		GBuffer::SetRendered(true);
 
 		Rasterizer::ShaderExtension::Model::SetModelNormSpec(shader_pointer);
 
 		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_ENVIRONMENT));
 		STOCK_DRAW_FUNC(shader_pointer, arg2, arg3, arg4, arg5, arg6, arg7);
-
-		DX9::c_gbuffer_system::RenderGBuffer() = false;
+        
+		GBuffer::SetRendered(false);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,15 +82,15 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	static void PLATFORM_API Model_ShaderModelDraw(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
 	{
 		typedef void (PLATFORM_API *shader_draw_func_t)(void*, void*, void*, void*, void*, void*, void*);
-
-		DX9::c_gbuffer_system::RenderGBuffer() = true;
+        
+		GBuffer::SetRendered(true);
 
 		Rasterizer::ShaderExtension::Model::SetModelNormSpec(shader_pointer);
 
 		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_MODEL));
 		STOCK_DRAW_FUNC(shader_pointer, arg2, arg3, arg4, arg5, arg6, arg7);
-
-		DX9::c_gbuffer_system::RenderGBuffer() = false;
+        
+		GBuffer::SetRendered(false);
 	}
 
 	/// <summary>	Hooks the shader draw functions. </summary>
