@@ -106,7 +106,7 @@ namespace Yelo
 			do
 			{
 				if(!c_post_processing_main::Instance().Globals().gbuffer) break;
-				if(!c_post_processing_main::Instance().Globals().gbuffer->m_rt_velocity.IsEnabled()) break;
+				if(!c_post_processing_main::Instance().Globals().gbuffer->GetVelocityTarget().IsEnabled()) break;
 				if(!m_members_motionblur.definition->blur_amount_var.IsUsed()) break;
 				if(!m_members_motionblur.definition->vignette_amount_var.IsUsed()) break;
 

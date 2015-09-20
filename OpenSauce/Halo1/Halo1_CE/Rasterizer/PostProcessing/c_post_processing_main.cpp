@@ -15,6 +15,7 @@
 #include "Game/GameState.hpp"
 #include "Game/Camera.hpp"
 #include "Game/Players.hpp"
+#include "Rasterizer/GBuffer.hpp"
 
 namespace Yelo
 {
@@ -196,7 +197,7 @@ namespace Yelo
 				1.0f, 10.0f);
 			D3DXMatrixMultiply(&m_globals.ortho_proj_matrix, &m_globals.ortho_proj_matrix, &ortho_translation);
 
-			m_globals.gbuffer = &DX9::c_gbuffer_system::GBuffer();
+			m_globals.gbuffer = &GBuffer::GetGBuffer();
 		}
 
 		bool c_post_processing_main::CreateScreenBufferChain()

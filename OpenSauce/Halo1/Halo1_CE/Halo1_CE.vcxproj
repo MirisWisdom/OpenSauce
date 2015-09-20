@@ -448,6 +448,12 @@
     <ClCompile Include="Objects\ObjectFieldDefinitions.cpp" />
     <ClCompile Include="Objects\ObjectsYelo.cpp" />
     <ClCompile Include="Objects\Units.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\c_gbuffer_settings.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\c_gbuffer.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_debug_effect.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_effect_factory.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.cpp" />
     <ClCompile Include="Rasterizer\Lightmaps.cpp" />
     <ClCompile Include="Rasterizer\Sky.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
@@ -618,6 +624,12 @@
     <ClInclude Include="Objects\Objects.hpp" />
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\c_gbuffer_settings.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\c_gbuffer.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_debug_effect.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_effect_factory.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.hpp" />
     <ClInclude Include="Rasterizer\Lightmaps.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
     <ClInclude Include="Rasterizer\Sky.hpp" />
