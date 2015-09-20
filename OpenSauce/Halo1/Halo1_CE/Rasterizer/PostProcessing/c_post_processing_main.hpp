@@ -14,9 +14,8 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 
-#include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/RenderTargetChain.hpp"
-#include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/GBuffer/c_gbuffer.hpp"
 
 namespace Yelo
 {
@@ -72,7 +71,7 @@ namespace Yelo
 				DX9::s_render_target_chain_scene
 											scene_buffer_chain;
 				DX9::s_render_target_chain	secondary_buffer_chain;
-				DX9::c_gbuffer*				gbuffer;
+			    GBuffer::c_gbuffer*				gbuffer;
 
 				c_packed_file				shader_file;
 				TagGroups::s_shader_postprocess_globals*

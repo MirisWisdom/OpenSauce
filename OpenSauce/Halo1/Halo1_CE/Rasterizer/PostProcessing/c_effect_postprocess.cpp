@@ -11,6 +11,7 @@
 #include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
+#include <Rasterizer/GBuffer.hpp>
 
 namespace Yelo
 {
@@ -193,8 +194,10 @@ namespace Yelo
 		bool c_effect_postprocess::IsActive()
 		{
 			bool active = m_members.effect_definition->runtime.flags.valid_effect_bit;
-			if(m_members.effect_definition->runtime.flags.uses_gbuffer_bit && !DX9::c_gbuffer_system::g_system_enabled)
-				active = false;
+			if(m_members.effect_definition->runtime.flags.uses_gbuffer_bit && !GBuffer::Available())
+			{
+			    active = false;
+			}
 			return active;
 		}
 	}; };

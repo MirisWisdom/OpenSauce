@@ -86,10 +86,12 @@ namespace Yelo
 
 		static HRESULT BeginScene(IDirect3DDevice9* device)
 		{
-			HRESULT hr = device->BeginScene();
+		    auto hr = device->BeginScene();
 
-			if(Yelo::Main::IsYeloEnabled())
-				Yelo::DX9::c_gbuffer_system::ClearGBuffer(device);
+			if(Main::IsYeloEnabled())
+			{
+			    GBuffer::Clear(device);
+			}
 
 			return hr;
 		}
@@ -115,8 +117,8 @@ namespace Yelo
 
 		static HRESULT SetVertexShaderConstantF_ViewProj(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 		{
-			DX9::c_gbuffer_system::SetViewProj(device, pConstantData, Vector4fCount);
-			Rasterizer::ShaderExtension::Model::SetViewProj(device, pConstantData, Vector4fCount);
+			GBuffer::SetWorldViewProjection(*(D3DMATRIX*)pConstantData);
+			ShaderExtension::Model::SetViewProj(device, pConstantData, Vector4fCount);
 
 			return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 		}

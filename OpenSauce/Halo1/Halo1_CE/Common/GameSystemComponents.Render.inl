@@ -24,15 +24,15 @@
 #	endif
 #elif	BOOST_PP_ITERATION() == 3
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE			DX9::c_gbuffer_system::Initialize
-#		define __GS_COMPONENT_DISPOSE				DX9::c_gbuffer_system::Dispose
-#		define __GS_COMPONENT_UPDATE				DX9::c_gbuffer_system::Update
+#		define __GS_COMPONENT_INITIALIZE			Rasterizer::GBuffer::Initialize
+#		define __GS_COMPONENT_DISPOSE				Rasterizer::GBuffer::Dispose
+#		define __GS_COMPONENT_UPDATE				Rasterizer::GBuffer::Update
 #	elif	__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
-#		define __GS_COMPONENT_DX9_INITIALIZE		DX9::c_gbuffer_system::Initialize3D
-#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	DX9::c_gbuffer_system::OnLostDevice
-#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	DX9::c_gbuffer_system::OnResetDevice
-#		define __GS_COMPONENT_DX9_RENDER			DX9::c_gbuffer_system::Render
-#		define __GS_COMPONENT_DX9_RELEASE			DX9::c_gbuffer_system::Release
+#		define __GS_COMPONENT_DX9_INITIALIZE		Rasterizer::GBuffer::Initialize3D
+#		define __GS_COMPONENT_DX9_ON_LOST_DEVICE	Rasterizer::GBuffer::OnLostDevice
+#		define __GS_COMPONENT_DX9_ON_RESET_DEVICE	Rasterizer::GBuffer::OnResetDevice
+#		define __GS_COMPONENT_DX9_RENDER			Rasterizer::GBuffer::Render
+#		define __GS_COMPONENT_DX9_RELEASE			Rasterizer::GBuffer::Release
 #	endif
 #elif	BOOST_PP_ITERATION() == 4
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE

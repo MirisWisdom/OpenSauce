@@ -494,16 +494,16 @@ namespace Yelo
 			m_members.definition->tex_buffer.SetVariable(effect,		NULL);
 
 			bool variable_used = false;
-			globals.gbuffer->SetDepth(effect, variable_used);
+			globals.gbuffer->SetDepth(*effect, variable_used);
 			m_members.definition->runtime.flags.uses_gbuffer_bit |= variable_used;
 
-			globals.gbuffer->SetVelocity(effect, variable_used);
+			globals.gbuffer->SetVelocity(*effect, variable_used);
 			m_members.definition->runtime.flags.uses_gbuffer_bit |= variable_used;
 
-			globals.gbuffer->SetNormals(effect, variable_used);
+			globals.gbuffer->SetNormals(*effect, variable_used);
 			m_members.definition->runtime.flags.uses_gbuffer_bit |= variable_used;
 
-			globals.gbuffer->SetIndex(effect, variable_used);
+			globals.gbuffer->SetIndex(*effect, variable_used);
 			m_members.definition->runtime.flags.uses_gbuffer_bit |= variable_used;
 		}
 
