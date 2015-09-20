@@ -10,20 +10,6 @@
 
 namespace Yelo
 {
-    namespace Enums
-    {
-        enum render_progress
-        {
-            _render_progress_sky,
-            _render_progress_objects,
-            _render_progress_objects_transparent,
-            _render_progress_structure,
-            _render_progress_none,
-
-            _render_progress
-        };
-    };
-
     namespace Rasterizer
     {
         namespace GBuffer
