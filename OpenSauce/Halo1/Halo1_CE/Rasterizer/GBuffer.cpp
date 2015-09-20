@@ -174,8 +174,8 @@ namespace Yelo
             HRESULT DrawObject(IDirect3DDevice9* device, D3DPRIMITIVETYPE type, INT base_vertex_index, UINT min_vertex_index, UINT num_vertices, UINT start_index, UINT primitive_count)
             {
                 auto result = device->DrawIndexedPrimitive(type, base_vertex_index, min_vertex_index, num_vertices, start_index, primitive_count);
-                if (Available())// && !Render::IsRenderingReflection() &&
-                    //(g_render_progress == Enums::_render_progress_sky || g_render_progress == Enums::_render_progress_objects))
+                if (g_rendered && Available() && !Render::IsRenderingReflection() &&
+                    (g_render_progress == Enums::_render_progress_sky || g_render_progress == Enums::_render_progress_objects))
                 {
                     byte mesh_index = 0;
                     byte team_index = 0;
@@ -225,10 +225,6 @@ namespace Yelo
                         draw_call.m_option_flags |= g_output_tbn ?
                                                         SET_FLAG(draw_call.m_option_flags, Flags::gbuffer_render_options_flags::_gbuffer_render_options_tangent_normals_binormals_bit, true) :
                                                         SET_FLAG(draw_call.m_option_flags, Flags::gbuffer_render_options_flags::_gbuffer_render_options_normals_bit, true);
-                        if (g_output_velocity && !(GameState::GameTimeGlobals() && GameState::GameTimeGlobals()->paused))
-                        {
-                            SET_FLAG(draw_call.m_option_flags, Flags::gbuffer_render_options_flags::_gbuffer_render_options_velocity_bit, true);
-                        }
                     }
                     else
                     {
@@ -247,7 +243,7 @@ namespace Yelo
             HRESULT DrawStructure(IDirect3DDevice9* device, D3DPRIMITIVETYPE type, INT base_vertex_index, UINT min_vertex_index, UINT num_vertices, UINT start_index, UINT primitive_count)
             {
                 auto result = device->DrawIndexedPrimitive(type, base_vertex_index, min_vertex_index, num_vertices, start_index, primitive_count);
-                if (Available() && !Render::IsRenderingReflection() &&
+                if (g_rendered && Available() && !Render::IsRenderingReflection() &&
                     g_render_progress == Enums::_render_progress_structure)
                 {
                     s_draw_call draw_call;
@@ -437,7 +433,7 @@ namespace Yelo
             {
                 if (g_gbuffer_system && g_gbuffer_clear)
                 {
-                    //g_gbuffer_clear->Render(*device);
+                    g_gbuffer_clear->Render(*device);
                 }
             }
 

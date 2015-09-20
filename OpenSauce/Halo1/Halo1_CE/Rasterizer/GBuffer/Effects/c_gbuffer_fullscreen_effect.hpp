@@ -20,10 +20,9 @@ namespace Yelo
             {
                 LPD3DXEFFECT m_effect;
                 TEXTURE_VERTEX m_vertices[4];
-                const std::vector<D3DRENDERSTATETYPE> m_preserved_states;
 
             public:
-                explicit c_gbuffer_fullscreen_effect(const std::vector<D3DRENDERSTATETYPE>& preserved_states);
+                explicit c_gbuffer_fullscreen_effect();
 
                 virtual ~c_gbuffer_fullscreen_effect() { }
 
