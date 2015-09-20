@@ -29,6 +29,7 @@ namespace Yelo
                 bool m_index_set;
 
                 int16 m_debug_target;
+                DWORD old_depthbias, old_fillmode, old_srcblend, old_dest_blend, old_zenable, old_zwriteenable, old_stencilenable;
 
             public:
                 explicit c_gbuffer_debug_effect();
@@ -41,8 +42,8 @@ namespace Yelo
 
             private:
                 D3DXHANDLE GetTechnique() override;
-                void SetState(IDirect3DDevice9& device) override;
                 void PreRender(IDirect3DDevice9& device, ID3DXEffect& effect) override;
+                void PostRender(IDirect3DDevice9& device, ID3DXEffect& effect) override;
             };
         };
     };

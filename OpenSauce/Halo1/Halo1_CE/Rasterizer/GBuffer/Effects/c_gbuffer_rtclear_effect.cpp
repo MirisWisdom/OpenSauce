@@ -18,7 +18,7 @@ namespace Yelo
         namespace GBuffer
         {
             c_gbuffer_rtclear_effect::c_gbuffer_rtclear_effect(const s_gbuffer_output_map& output_map)
-                : c_gbuffer_fullscreen_effect(std::vector<D3DRENDERSTATETYPE> { D3DRS_FILLMODE, D3DRS_ZWRITEENABLE, D3DRS_ALPHABLENDENABLE, D3DRS_SRCBLEND, D3DRS_DESTBLEND }),
+                : c_gbuffer_fullscreen_effect(),
                   m_technique(nullptr),
                   m_original_target(nullptr),
                   m_output_map(&output_map) { }
@@ -53,18 +53,21 @@ namespace Yelo
                 return m_technique;
             }
 
-            void c_gbuffer_rtclear_effect::SetState(IDirect3DDevice9& device)
+            void c_gbuffer_rtclear_effect::PreRender(IDirect3DDevice9& device, ID3DXEffect& effect)
             {
+                device.GetRenderTarget(0, &m_original_target);
+
+                device.GetRenderState(D3DRS_FILLMODE, &old_fillmode);
+                device.GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);
+                device.GetRenderState(D3DRS_ALPHABLENDENABLE, &old_alphablenenable);
+                device.GetRenderState(D3DRS_SRCBLEND, &old_srcblend);
+                device.GetRenderState(D3DRS_DESTBLEND, &old_destblend);
+
                 device.SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
                 device.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
                 device.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
                 device.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
                 device.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-            }
-
-            void c_gbuffer_rtclear_effect::PreRender(IDirect3DDevice9& device, ID3DXEffect& effect)
-            {
-                device.GetRenderTarget(0, &m_original_target);
             }
 
             void c_gbuffer_rtclear_effect::PostRender(IDirect3DDevice9& device, ID3DXEffect& effect)
