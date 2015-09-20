@@ -15,9 +15,8 @@ namespace Yelo
     {
         namespace GBuffer
         {
-            c_gbuffer_fullscreen_effect::c_gbuffer_fullscreen_effect(const std::vector<D3DRENDERSTATETYPE>& preserved_states)
-                : m_effect(nullptr),
-                  m_preserved_states(preserved_states) { }
+            c_gbuffer_fullscreen_effect::c_gbuffer_fullscreen_effect()
+                : m_effect(nullptr) { }
 
             bool c_gbuffer_fullscreen_effect::IsAvailable()
             {
@@ -49,18 +48,10 @@ namespace Yelo
                     return;
                 }
 
-                std::map<D3DRENDERSTATETYPE, uint32> state_store;
-                for (auto state : m_preserved_states)
-                {
-                    uint32 render_state;
-                    device.GetRenderState(state, &render_state);
-                    state_store[state] = render_state;
-                }
+                PreRender(device, *m_effect);
 
                 device.SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
                 m_effect->SetTechnique(GetTechnique());
-
-                PreRender(device, *m_effect);
 
                 UINT pass_count;
                 m_effect->Begin(&pass_count, 0);
@@ -77,11 +68,6 @@ namespace Yelo
                 m_effect->End();
 
                 PostRender(device, *m_effect);
-
-                for (auto preserved_state : state_store)
-                {
-                    device.SetRenderState(preserved_state.first, preserved_state.second);
-                }
             }
 
             ID3DXEffect& c_gbuffer_fullscreen_effect::GetEffect()

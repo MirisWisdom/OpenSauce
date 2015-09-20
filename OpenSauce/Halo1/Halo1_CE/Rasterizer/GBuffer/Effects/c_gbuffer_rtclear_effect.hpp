@@ -24,6 +24,7 @@ namespace Yelo
                 D3DXHANDLE m_technique;
                 LPDIRECT3DSURFACE9 m_original_target;
                 const s_gbuffer_output_map* m_output_map;
+                DWORD old_fillmode, old_zwriteenable, old_alphablenenable, old_srcblend, old_destblend;
 
             public:
                 explicit c_gbuffer_rtclear_effect(const s_gbuffer_output_map& output_map);
@@ -34,8 +35,6 @@ namespace Yelo
 
             private:
                 D3DXHANDLE GetTechnique() override;
-
-                void SetState(IDirect3DDevice9& device) override;
 
                 void PreRender(IDirect3DDevice9& device, ID3DXEffect& effect) override;
                 void PostRender(IDirect3DDevice9& device, ID3DXEffect& effect) override;
