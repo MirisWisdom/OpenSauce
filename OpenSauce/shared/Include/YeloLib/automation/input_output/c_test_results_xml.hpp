@@ -10,6 +10,7 @@
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_container_list.hpp>
+#include <YeloLib/configuration/c_configuration_value_list.hpp>
 
 namespace Yelo
 {
@@ -22,11 +23,12 @@ namespace Yelo
             Configuration::c_configuration_value<bool> m_test_started;
             Configuration::c_configuration_value<bool> m_test_finished;
             Configuration::c_configuration_value<bool> m_test_result;
+            Configuration::c_configuration_value_list<std::string> m_test_messages;
 
             c_test_result();
 
         protected:
-            Configuration::t_configuration_value_node_list GetMembers() override;
+            const std::vector<i_configuration_value* const> GetMembers() override;
         };
 
         class c_test_results_xml : public Configuration::c_configuration_container
@@ -37,7 +39,7 @@ namespace Yelo
             c_test_results_xml();
 
         protected:
-            Configuration::t_configuration_value_node_list GetMembers() override;
+            const std::vector<i_configuration_value* const> GetMembers() override;
         };
     };
 };
