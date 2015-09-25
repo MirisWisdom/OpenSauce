@@ -9,6 +9,8 @@
 #ifdef API_DEBUG
 
 #include <YeloLib/automation/i_automated_test.hpp>
+#include <snowhouse/snowhouse.h>
+using namespace snowhouse;
 
 #define YELO_UNIT_TEST(name, category) \
     class c_automation_##name final : public i_automated_test \

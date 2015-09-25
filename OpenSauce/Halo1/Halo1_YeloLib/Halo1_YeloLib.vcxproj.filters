@@ -82,24 +82,6 @@
     <Filter Include="units">
       <UniqueIdentifier>{c33dd034-9dd7-4069-8fd7-28d112bfcccc}</UniqueIdentifier>
     </Filter>
-    <Filter Include=".CrashRpt">
-      <UniqueIdentifier>{1f99dd5f-3a87-4a71-997c-10f14d04c742}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".7zip">
-      <UniqueIdentifier>{46324fce-5767-4f4c-84df-33ece46a5eff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".TinyXml">
-      <UniqueIdentifier>{71ea82eb-1e73-4ff0-9899-3ebfa4dd4198}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".zlib">
-      <UniqueIdentifier>{cdbb3149-b3bd-47d4-903b-fa555f35400c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".zlib\contrib">
-      <UniqueIdentifier>{95d4aec8-b6fb-40b5-8268-1738d3950da3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".zlib\contrib\minizip">
-      <UniqueIdentifier>{7ca274bf-65d7-4318-a2b0-e2e8ad6a050a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="_Resources">
       <UniqueIdentifier>{481b5378-6faf-472e-b7e7-0c936916af1a}</UniqueIdentifier>
     </Filter>
@@ -132,6 +114,51 @@
     </Filter>
     <Filter Include="ai">
       <UniqueIdentifier>{d649cd04-3dcb-4e6c-a4fb-65e77fd8efd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="automation">
+      <UniqueIdentifier>{8a0e0cff-b10b-4d2a-8f27-ec4615b0ef88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="automation\output">
+      <UniqueIdentifier>{01c64629-6a89-412a-b813-2c3a0dd8f617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{a98ca0a4-e4a5-475a-9540-6e99c798c268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\7zip">
+      <UniqueIdentifier>{46324fce-5767-4f4c-84df-33ece46a5eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\CrashRpt">
+      <UniqueIdentifier>{1f99dd5f-3a87-4a71-997c-10f14d04c742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\TinyXml">
+      <UniqueIdentifier>{71ea82eb-1e73-4ff0-9899-3ebfa4dd4198}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\zlib">
+      <UniqueIdentifier>{cdbb3149-b3bd-47d4-903b-fa555f35400c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\zlib\contrib">
+      <UniqueIdentifier>{95d4aec8-b6fb-40b5-8268-1738d3950da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\zlib\contrib\minizip">
+      <UniqueIdentifier>{7ca274bf-65d7-4318-a2b0-e2e8ad6a050a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Snowhouse">
+      <UniqueIdentifier>{ff357772-ed11-4323-b86c-f5dce73863c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Snowhouse\fluent">
+      <UniqueIdentifier>{7f61a4a6-ac54-47e9-9c46-1183c210aa90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Snowhouse\constraints">
+      <UniqueIdentifier>{428c238f-6b00-49da-ae06-bed21639725b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Snowhouse\fluent\operators">
+      <UniqueIdentifier>{19aa26da-8f4c-4cc1-bd4a-14709080eb06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Snowhouse\fluent\operators\collections">
+      <UniqueIdentifier>{3e3a8ee4-8738-46ea-b5eb-6501244a3f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Snowhouse\constraints\expressions">
+      <UniqueIdentifier>{8a216dce-30e9-4d1d-9117-e5691370b8dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -331,91 +358,91 @@
       <Filter>cseries</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\CrashRpt\CrashRpt.h">
-      <Filter>.CrashRpt</Filter>
+      <Filter>ThirdParty\CrashRpt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\7z.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\7zAlloc.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\7zBuf.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\7zCrc.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\7zFile.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\7zVersion.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\Bcj2.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\Bra.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\CpuArch.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\Lzma2Dec.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\LzmaDec.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\7zip\Types.h">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\TinyXml\tinystr.hpp">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\TinyXml\tinyxml.hpp">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.h">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\unzip.h">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\zip.h">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\crc32.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\deflate.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\gzguts.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\inffast.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\inffixed.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\inflate.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\inftrees.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\trees.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\zconf.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\zlib.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\zlib\zutil.h">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp">
       <Filter>.Common</Filter>
@@ -582,6 +609,147 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\random.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_xml.hpp">
+      <Filter>automation\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output_xml.hpp">
+      <Filter>automation\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\i_test_run_output.hpp">
+      <Filter>automation\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\automation_macros.hpp">
+      <Filter>automation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.hpp">
+      <Filter>automation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\i_automated_test.hpp">
+      <Filter>automation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\assert.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\assertionexception.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\assertmacro.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\exceptions.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\snowhouse.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\stringize.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\stringizers.h">
+      <Filter>ThirdParty\Snowhouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\andexpression.h">
+      <Filter>ThirdParty\Snowhouse\constraints\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\expression.h">
+      <Filter>ThirdParty\Snowhouse\constraints\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\expression_fwd.h">
+      <Filter>ThirdParty\Snowhouse\constraints\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\notexpression.h">
+      <Filter>ThirdParty\Snowhouse\constraints\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\orexpression.h">
+      <Filter>ThirdParty\Snowhouse\constraints\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\constraints.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\containsconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\endswithconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\equalsconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\equalscontainerconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\equalswithdeltaconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\fulfillsconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\haslengthconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\isgreaterthanconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\isgreaterthanorequaltoconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\islessthanconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\islessthanorequaltoconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\startswithconstraint.h">
+      <Filter>ThirdParty\Snowhouse\constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\constraintadapter.h">
+      <Filter>ThirdParty\Snowhouse\fluent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\constraintlist.h">
+      <Filter>ThirdParty\Snowhouse\fluent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\expressionbuilder.h">
+      <Filter>ThirdParty\Snowhouse\fluent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\fluent.h">
+      <Filter>ThirdParty\Snowhouse\fluent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\andoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\constraintoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\invalidexpressionexception.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\notoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\oroperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\alloperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\atleastoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\atmostoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\collectionconstraintevaluator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\collectionoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\exactlyoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\noneoperator.h">
+      <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -696,112 +864,112 @@
       <Filter>tag_files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zAlloc.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zBuf.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zCrc.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zCrcOpt.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zDec.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zFile.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zIn.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\7zStream.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\Bcj2.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\Bra.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\Bra86.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\CpuArch.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\Lzma2Dec.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\7zip\LzmaDec.c">
-      <Filter>.7zip</Filter>
+      <Filter>ThirdParty\7zip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\TinyXml\tinystr.cpp">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.c">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\unzip.c">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\zip.c">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\compress.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\crc32.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\deflate.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\gzclose.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\gzlib.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\gzread.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\gzwrite.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\infback.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\inffast.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\inflate.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\inftrees.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\trees.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\uncompr.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\zutil.c">
-      <Filter>.zlib</Filter>
+      <Filter>ThirdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.cpp">
       <Filter>configuration</Filter>
@@ -893,6 +1061,15 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\cseries\random.cpp">
       <Filter>cseries</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_xml.cpp">
+      <Filter>automation\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output_xml.cpp">
+      <Filter>automation\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.cpp">
+      <Filter>automation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\shared\Include\YeloLib\memory\function_interface.inl">
@@ -958,10 +1135,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\shared\Include\TinyXml\OpenSauce.Readme.txt">
-      <Filter>.TinyXml</Filter>
+      <Filter>ThirdParty\TinyXml</Filter>
     </Text>
     <Text Include="..\..\shared\Include\zlib\contrib\minizip\OpenSauce.Readme.txt">
-      <Filter>.zlib\contrib\minizip</Filter>
+      <Filter>ThirdParty\zlib\contrib\minizip</Filter>
     </Text>
     <Text Include="Halo1_Readme.txt" />
   </ItemGroup>

@@ -86,6 +86,8 @@
 #define __GS_COMPONENT_GAMESTATE_LIFECYCLE 3
 #define __GS_COMPONENT_DX9_LIFECYCLE 4
 #define __GS_COMPONENT_BSP_LIFECYCLE 5
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/automation/c_automation_runner.hpp>
 
 
 namespace Yelo
@@ -204,6 +206,13 @@ namespace Yelo
 				components[x].Initialize();
 			
 			Settings::Load();
+
+#ifdef API_DEBUG
+            if(CMDLINE_GET_PARAM(run_tests).ParameterSet())
+            {
+                Automation::c_automation_runner::Get().Run(CMDLINE_GET_PARAM(run_tests).GetValue());
+            }
+#endif
 		}
 
 		static void PLATFORM_API DisposeOnExit()
