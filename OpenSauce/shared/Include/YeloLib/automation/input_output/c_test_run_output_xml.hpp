@@ -24,6 +24,7 @@ namespace Yelo
             explicit c_test_run_output_xml();
 
             void TestStarted(const std::string& name) override;
+            void TestMessage(const std::string& name, const TestMessageVerbosity verbosity, const std::string& message) override;
             void TestFinished(const std::string& name, const bool passed) override;
             void Save(const std::string& output);
         };
