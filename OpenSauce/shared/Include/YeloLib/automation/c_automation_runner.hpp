@@ -13,8 +13,6 @@ namespace Yelo
     namespace Automation
     {
         class i_automated_test;
-        class i_test_list_output;
-        class i_test_run_input;
         class i_test_run_output;
 
         class c_automation_runner final
@@ -28,13 +26,11 @@ namespace Yelo
 
             c_automation_runner();
 
-            void ListTests(i_test_list_output& output) const;
-            void RunTests(i_test_run_input& input, i_test_run_output& output);
+            void RunTests(i_test_run_output& output);
 
         public:
             void RegisterTest(const std::string& name, i_automated_test* test);
-            void CreateTestList(const std::string& test_list_file) const;
-            void Run(const std::string& test_list_file, const std::string& test_results_file);
+            void Run(const std::string& test_results_file);
             bool RunTest(const std::string& name);
         };
     };

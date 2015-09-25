@@ -21,16 +21,18 @@ namespace Yelo
               m_test_name("Name", ""),
               m_test_started("Started", false),
               m_test_finished("Finished", false),
-              m_test_result("Result", false) {}
+              m_test_result("Result", false),
+              m_test_messages("Message", "") {}
 
-        Configuration::t_configuration_value_node_list c_test_result::GetMembers()
+        const std::vector<Configuration::i_configuration_value* const> c_test_result::GetMembers()
         {
-            return Configuration::t_configuration_value_node_list
+            return std::vector<i_configuration_value* const>
             {
                 &m_test_name,
                 &m_test_started,
                 &m_test_finished,
-                &m_test_result
+                &m_test_result,
+                &m_test_messages
             };
         }
 
@@ -41,9 +43,9 @@ namespace Yelo
                           return c_test_result();
                       }) {}
 
-        Configuration::t_configuration_value_node_list c_test_results_xml::GetMembers()
+        const std::vector<Configuration::i_configuration_value* const> c_test_results_xml::GetMembers()
         {
-            return Configuration::t_configuration_value_node_list
+            return std::vector<i_configuration_value* const>
             {
                 &m_tests
             };

@@ -27,6 +27,11 @@ namespace Yelo
             m_current_test->m_test_started = true;
         }
 
+        void c_test_run_output_xml::TestMessage(const std::string& name, const TestMessageVerbosity verbosity, const std::string& message)
+        {
+            
+        }
+
         void c_test_run_output_xml::TestFinished(const std::string& name, const bool passed)
         {
             m_current_test->m_test_finished = true;
