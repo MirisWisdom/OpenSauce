@@ -8,14 +8,17 @@
 
 #ifdef API_DEBUG
 
-namespace Yelo { namespace Automation
+namespace Yelo
 {
-    class i_automated_test
+    namespace Automation
     {
-    public:
-        virtual ~i_automated_test() {}
+        class i_automated_test
+        {
+        public:
+            virtual ~i_automated_test() {}
 
-        virtual bool Run() = 0;
+            virtual void Run() = 0;
+        };
     };
-};};
+};
 #endif
