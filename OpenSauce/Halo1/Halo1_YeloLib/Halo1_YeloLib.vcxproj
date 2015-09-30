@@ -81,6 +81,11 @@
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
     <ClCompile>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugGuerilla|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugDedi|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugSapien|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugTool|Win32'">Async</ExceptionHandling>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -127,9 +132,8 @@
     <ClInclude Include="..\..\shared\Include\snowhouse\stringizers.h" />
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\automation_macros.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_xml.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output_xml.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\i_test_run_output.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\i_automated_test.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container_list.hpp" />
@@ -329,8 +333,8 @@
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_xml.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output_xml.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.cpp" />
