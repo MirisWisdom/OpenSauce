@@ -13,10 +13,7 @@ namespace snowhouse {
 
   struct ConstraintOperator
   {
-#if __cplusplus > 199711L
-#else
     virtual ~ConstraintOperator() {}
-#endif
 
     virtual void PerformOperation(ResultStack& result) = 0;
     virtual int Precedence() const = 0;
