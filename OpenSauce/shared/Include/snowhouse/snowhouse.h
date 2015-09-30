@@ -3,12 +3,10 @@
 
 #define SNOWHOUSE_VERSION "2.1.0"
 
-#if __cplusplus > 199711L
 #ifdef _MSC_VER
 // Visual Studio (including 2013) does not support the noexcept keyword
 #define _ALLOW_KEYWORD_MACROS
 #define noexcept
-#endif
 #endif
 
 

@@ -609,15 +609,6 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\random.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_xml.hpp">
-      <Filter>automation\output</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output_xml.hpp">
-      <Filter>automation\output</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\i_test_run_output.hpp">
-      <Filter>automation\output</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\automation_macros.hpp">
       <Filter>automation</Filter>
     </ClInclude>
@@ -749,6 +740,12 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\noneoperator.h">
       <Filter>ThirdParty\Snowhouse\fluent\operators\collections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.hpp">
+      <Filter>automation\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.hpp">
+      <Filter>automation\output</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1061,14 +1058,14 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\cseries\random.cpp">
       <Filter>cseries</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_xml.cpp">
-      <Filter>automation\output</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output_xml.cpp">
-      <Filter>automation\output</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.cpp">
       <Filter>automation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.cpp">
+      <Filter>automation\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.cpp">
+      <Filter>automation\output</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
