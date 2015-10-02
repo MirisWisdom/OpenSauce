@@ -31,7 +31,7 @@ namespace Yelo
 
             const c_test_result* GetCurrentTest() const;
             void TestStarted(const std::string& name);
-            void TestMessage(const TestMessageVerbosity verbosity, const std::string& message);
+            void TestLog(const TestMessageVerbosity verbosity, const std::string& message);
             void TestFinished(const std::string& name, const bool passed);
             void Save(const std::string& output);
         };

@@ -49,7 +49,7 @@ namespace Yelo
             m_current_test->m_started = true;
         }
 
-        void c_test_run_output::TestMessage(const TestMessageVerbosity verbosity, const std::string& message)
+        void c_test_run_output::TestLog(const TestMessageVerbosity verbosity, const std::string& message)
         {
             if (!m_current_test)
             {
@@ -67,7 +67,8 @@ namespace Yelo
                 default:
                     break;
             }
-            m_current_test->m_messages.AddEntry().Get() = verbosity_prefix + message;
+            auto testMessage = verbosity_prefix + message;
+            m_current_test->m_messages.AddEntry().Get() = testMessage;
         }
 
         void c_test_run_output::TestFinished(const std::string& name, const bool passed)
@@ -179,7 +180,7 @@ namespace Yelo
         {
             c_test_run_output output;
 
-            AssertThrows(std::exception, output.TestMessage(TestMessageVerbosity::Log, "anyMessage"));
+            AssertThrows(std::exception, output.TestLog(TestMessageVerbosity::Log, "anyMessage"));
         }
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestMessage_WithTestInProgress_AddsMessageToTest)
@@ -187,7 +188,7 @@ namespace Yelo
             c_test_run_output output;
 
             output.TestStarted(g_any_test_name);
-            output.TestMessage(TestMessageVerbosity::Log, "anyMessage");
+            output.TestLog(TestMessageVerbosity::Log, "anyMessage");
             auto result = output.GetCurrentTest()->m_messages.GetConst()[0];
 
             AssertThat(result.GetConst(), Equals("anyMessage"));
@@ -198,7 +199,7 @@ namespace Yelo
             c_test_run_output output;
 
             output.TestStarted(g_any_test_name);
-            output.TestMessage(TestMessageVerbosity::Warning, "anyMessage");
+            output.TestLog(TestMessageVerbosity::Warning, "anyMessage");
             auto result = output.GetCurrentTest()->m_messages.GetConst()[0];
 
             AssertThat(result.GetConst(), Equals("Warning: anyMessage"));
@@ -209,7 +210,7 @@ namespace Yelo
             c_test_run_output output;
 
             output.TestStarted(g_any_test_name);
-            output.TestMessage(TestMessageVerbosity::Error, "anyMessage");
+            output.TestLog(TestMessageVerbosity::Error, "anyMessage");
             auto result = output.GetCurrentTest()->m_messages.GetConst()[0];
 
             AssertThat(result.GetConst(), Equals("Error: anyMessage"));
