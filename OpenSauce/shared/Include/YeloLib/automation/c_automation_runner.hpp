@@ -8,6 +8,8 @@
 
 #ifdef API_DEBUG
 
+#include <YeloLib/cseries/c_singleton.hpp>
+
 namespace Yelo
 {
     namespace Automation
@@ -17,21 +19,20 @@ namespace Yelo
 
         class c_automation_runner final
         {
-        public:
-            static c_automation_runner& Get();
-
-        private:
             std::map<std::string, i_automated_test*> m_registered_tests;
 
+        public:
             c_automation_runner();
 
-            void RunTests(c_test_run_output& output);
-
-        public:
             void RegisterTest(const std::string& name, i_automated_test* test);
             void Run(const std::string& test_results_file);
             void RunTest(const std::string& name);
+
+        private:
+            void RunTests(c_test_run_output& output);
         };
+
+        class c_automation_runner_singleton : public c_singleton<c_automation_runner> {};
     };
 };
 #endif

@@ -101,3 +101,8 @@
 #include <YeloLib/cseries/errors_yelo.hpp>
 #include <blamlib/Halo1/cseries/errors.hpp>
 #include <YeloLib/Halo1/cseries/memory_yelo.hpp>
+
+#ifdef API_DEBUG
+#include <YeloLib/logging/logging_macros.hpp>
+#include <YeloLib/automation/automation_macros.hpp>
+#endif
