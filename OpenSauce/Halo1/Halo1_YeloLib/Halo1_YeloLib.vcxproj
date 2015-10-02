@@ -162,6 +162,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\c_singleton.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\handle_abi.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\random.hpp" />
@@ -187,6 +188,12 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_transform_definition.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\i_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\logging_macros.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_log_collection.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_logger_base.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
@@ -363,6 +370,10 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_damage_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_logger_base.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_log_collection.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">

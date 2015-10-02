@@ -35,8 +35,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Debug only includes
-	#ifdef API_DEBUG
-
+#ifdef API_DEBUG
+    #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+    #include <YeloLib/automation/c_automation_runner.hpp>
+    #include <YeloLib/logging/c_debug_output_logger.hpp>
 #endif
 	// this is for debugging but it needs to be in the release build too
 	#include "Common/DebugDump.hpp"
@@ -86,8 +88,6 @@
 #define __GS_COMPONENT_GAMESTATE_LIFECYCLE 3
 #define __GS_COMPONENT_DX9_LIFECYCLE 4
 #define __GS_COMPONENT_BSP_LIFECYCLE 5
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
-#include <YeloLib/automation/c_automation_runner.hpp>
 
 
 namespace Yelo
@@ -208,9 +208,12 @@ namespace Yelo
 			Settings::Load();
 
 #ifdef API_DEBUG
+            static Logging::c_debug_output_logger debug_output_logger(Logging::LogVerbosity::Verbose);
+		    Logging::c_log_singleton::Get().AddLogger(&debug_output_logger);
+
             if(CMDLINE_GET_PARAM(run_tests).ParameterSet())
             {
-                Automation::c_automation_runner::Get().Run(CMDLINE_GET_PARAM(run_tests).GetValue());
+                Automation::c_automation_runner_singleton::Get().Run(CMDLINE_GET_PARAM(run_tests).GetValue());
             }
 #endif
 		}

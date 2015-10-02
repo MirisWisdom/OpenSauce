@@ -160,6 +160,9 @@
     <Filter Include="ThirdParty\Snowhouse\constraints\expressions">
       <UniqueIdentifier>{8a216dce-30e9-4d1d-9117-e5691370b8dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="logging">
+      <UniqueIdentifier>{d6d3fb0d-3b68-47c1-aedc-d99a8038746a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -747,6 +750,27 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.hpp">
       <Filter>automation\output</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_log_collection.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\c_singleton.hpp">
+      <Filter>cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\logging_macros.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_logger_base.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\i_logger.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1066,6 +1090,18 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.cpp">
       <Filter>automation\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_log_collection.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_logger_base.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.cpp">
+      <Filter>logging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

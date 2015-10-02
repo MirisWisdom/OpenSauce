@@ -17,7 +17,7 @@ using namespace snowhouse;
     class c_automation_##name final : public Yelo::Automation::i_automated_test \
     { \
         static c_automation_##name m_instance; \
-        c_automation_##name##() { Yelo::Automation::c_automation_runner::Get().RegisterTest(#category "." #name, this); } \
+        c_automation_##name##() { Yelo::Automation::c_automation_runner_singleton::Get().RegisterTest(#category "." #name, this); } \
     public: \
         void Run() override; \
     }; \
