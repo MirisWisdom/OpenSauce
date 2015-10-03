@@ -133,7 +133,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\automation_macros.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\i_automated_test.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container_list.hpp" />
@@ -189,6 +189,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_transform_definition.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_file_logger.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\i_logger.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\logging_macros.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_log_collection.hpp" />
@@ -341,7 +342,7 @@
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.cpp" />
@@ -371,6 +372,7 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_file_logger.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_logger_base.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_log_collection.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.cpp" />

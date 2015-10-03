@@ -17,7 +17,9 @@ namespace Yelo
         public:
             virtual ~i_automated_test() {}
 
+            virtual void BeforeTest() {}
             virtual void Run() = 0;
+            virtual void AfterTest() {}
         };
     };
 };

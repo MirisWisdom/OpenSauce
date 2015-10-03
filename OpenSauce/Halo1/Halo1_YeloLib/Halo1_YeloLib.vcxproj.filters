@@ -747,9 +747,6 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.hpp">
       <Filter>automation\output</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.hpp">
-      <Filter>automation\output</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.hpp">
       <Filter>logging</Filter>
     </ClInclude>
@@ -770,6 +767,12 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\i_logger.hpp">
       <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_file_logger.hpp">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.hpp">
+      <Filter>automation\output</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1088,9 +1091,6 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.cpp">
       <Filter>automation\output</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_output.cpp">
-      <Filter>automation\output</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.cpp">
       <Filter>logging</Filter>
     </ClCompile>
@@ -1102,6 +1102,12 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.cpp">
       <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_file_logger.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.cpp">
+      <Filter>automation\output</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
