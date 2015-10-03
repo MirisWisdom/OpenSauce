@@ -17,8 +17,11 @@ namespace Yelo
 
         void c_debug_output_logger::Write(const std::string& message)
         {
-            OutputDebugString(message.c_str());
-            OutputDebugString("\r\n");
+            if(IsDebuggerPresent())
+            {
+                OutputDebugString(message.c_str());
+                OutputDebugString("\r\n");
+            }
         }
     };
 };
