@@ -10,7 +10,7 @@
 #ifdef API_DEBUG
 
 #include <YeloLib/automation/i_automated_test.hpp>
-#include <YeloLib/automation/input_output/c_test_run_output.hpp>
+#include <YeloLib/automation/input_output/c_test_run_logger.hpp>
 
 namespace Yelo
 {
@@ -25,7 +25,7 @@ namespace Yelo
             LOG(Log, "Test Registered: " + name);
         }
 
-        void c_automation_runner::RunTests(c_test_run_output& output)
+        void c_automation_runner::RunTests(c_test_run_logger& output)
         {
             for (const auto& test : m_registered_tests)
             {
@@ -35,22 +35,22 @@ namespace Yelo
                     LOG(Log, "Test Started: " + test.first);
 
                     RunTest(test.first);
-
-                    output.TestFinished(test.first, true);
+                    
                     LOG(Log, "Test Passed: " + test.first);
+                    output.TestFinished(test.first, true);
                     continue;
                 }
                 catch (AssertionException& exception)
                 {
-                    output.TestLog(TestMessageVerbosity::Error, exception.GetMessageA());
+                    LOG(Error, exception.GetMessageA());
                 }
                 catch (std::exception& exception)
                 {
-                    output.TestLog(TestMessageVerbosity::Error, exception.what());
+                    LOG(Error, exception.what());
                 }
                 catch (...)
                 {
-                    output.TestLog(TestMessageVerbosity::Error, "Unknown exception occurred");
+                    LOG(Error, "Unknown exception occurred");
                 }
                 output.TestFinished(test.first, false);
                 LOG(Log, "Test Failed: " + test.first);
@@ -59,14 +59,19 @@ namespace Yelo
 
         void c_automation_runner::RunTest(const std::string& name)
         {
-            m_registered_tests[name]->Run();
+            auto& test = *m_registered_tests[name];
+            test.BeforeTest();
+            test.Run();
+            test.AfterTest();
         }
 
         void c_automation_runner::Run(const std::string& test_results_file)
         {
-            c_test_run_output output;
-
+            c_test_run_logger output;
+            Logging::c_log_singleton::Get().AddLogger(&output);
             RunTests(output);
+            Logging::c_log_singleton::Get().RemoveLogger(&output);
+
             output.Save(test_results_file);
         }
     };

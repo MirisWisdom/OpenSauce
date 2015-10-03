@@ -15,7 +15,7 @@ namespace Yelo
     namespace Automation
     {
         class i_automated_test;
-        class c_test_run_output;
+        class c_test_run_logger;
 
         class c_automation_runner final
         {
@@ -29,7 +29,7 @@ namespace Yelo
             void RunTest(const std::string& name);
 
         private:
-            void RunTests(c_test_run_output& output);
+            void RunTests(c_test_run_logger& output);
         };
 
         class c_automation_runner_singleton : public c_singleton<c_automation_runner> {};
