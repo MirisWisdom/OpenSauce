@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <YeloLib/automation/input_output/c_test_run_output.hpp>
+#include <YeloLib/automation/input_output/c_test_run_logger.hpp>
 
 #ifdef API_DEBUG
 
@@ -16,16 +16,17 @@ namespace Yelo
 {
     namespace Automation
     {
-        c_test_run_output::c_test_run_output()
-            : m_results(),
+        c_test_run_logger::c_test_run_logger()
+            : c_logger_base(Logging::LogVerbosity::Warning)
+            , m_results(),
               m_current_test(nullptr) { }
 
-        const c_test_result* c_test_run_output::GetCurrentTest() const
+        const c_test_result* c_test_run_logger::GetCurrentTest() const
         {
             return m_current_test;
         }
 
-        void c_test_run_output::TestStarted(const std::string& name)
+        void c_test_run_logger::TestStarted(const std::string& name)
         {
             if (name.empty())
             {
@@ -49,29 +50,7 @@ namespace Yelo
             m_current_test->m_started = true;
         }
 
-        void c_test_run_output::TestLog(const TestMessageVerbosity verbosity, const std::string& message)
-        {
-            if (!m_current_test)
-            {
-                throw std::exception("Test message called when no test is in progress");
-            }
-            auto verbosity_prefix = "";
-            switch (verbosity)
-            {
-                case TestMessageVerbosity::Warning:
-                    verbosity_prefix = "Warning: ";
-                    break;
-                case TestMessageVerbosity::Error:
-                    verbosity_prefix = "Error: ";
-                    break;
-                default:
-                    break;
-            }
-            auto testMessage = verbosity_prefix + message;
-            m_current_test->m_messages.AddEntry().Get() = testMessage;
-        }
-
-        void c_test_run_output::TestFinished(const std::string& name, const bool passed)
+        void c_test_run_logger::TestFinished(const std::string& name, const bool passed)
         {
             if (name.empty())
             {
@@ -90,7 +69,7 @@ namespace Yelo
             m_current_test = nullptr;
         }
 
-        void c_test_run_output::Save(const std::string& output)
+        void c_test_run_logger::Save(const std::string& output)
         {
             auto output_file = Configuration::c_configuration_file_factory::CreateConfigurationFile(output);
             if (!output_file)
@@ -106,13 +85,21 @@ namespace Yelo
             output_file->Save();
         }
 
-#define YELO_UNIT_TEST_TEST_RUN_OUTPUT(name) YELO_UNIT_TEST(name, Automation.TestRunOutput)
+        void c_test_run_logger::Write(const std::string& message)
+        {
+            if(m_current_test)
+            {
+                m_current_test->m_messages.AddEntry().Get() = message;
+            }
+        }
+
+#define YELO_UNIT_TEST_TEST_RUN_OUTPUT(name) YELO_UNIT_TEST(name, Yelo.Automation.c_test_run_logger)
 
         static const char* g_any_test_name = "anyTestName";
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(GetCurrentTest_BeforeTestStarted_ReturnsNull)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             auto result = output.GetCurrentTest();
 
@@ -121,7 +108,7 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(GetCurrentTest_AfterTestStarted_ReturnsTest)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
             auto result = output.GetCurrentTest();
@@ -132,7 +119,7 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(GetCurrentTest_AfterTestFinished_ReturnsNull)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
             output.TestFinished(g_any_test_name, true);
@@ -143,14 +130,14 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestStarted_WithEmptyTestName_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             AssertThrows(std::exception, output.TestStarted(""));
         }
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestStarted_WithTestInProcess_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
 
@@ -159,7 +146,7 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestStarted_WithAlreadyCompletedTest_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
             output.TestFinished(g_any_test_name, false);
@@ -169,70 +156,63 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestStarted_WithTestName_StartsTest)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
 
             AssertThat(output.GetCurrentTest()->m_started.GetConst(), Is().True());
         }
 
-        YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestMessage_WithNoTestInProgress_Throws)
+        YELO_UNIT_TEST_TEST_RUN_OUTPUT(Log_WithLogMessageProgress_DoesNotAddMessageToTest)
         {
-            c_test_run_output output;
-
-            AssertThrows(std::exception, output.TestLog(TestMessageVerbosity::Log, "anyMessage"));
-        }
-
-        YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestMessage_WithTestInProgress_AddsMessageToTest)
-        {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
-            output.TestLog(TestMessageVerbosity::Log, "anyMessage");
-            auto result = output.GetCurrentTest()->m_messages.GetConst()[0];
+            output.Log(Logging::LogVerbosity::Log, "anyMessage");
+            auto result = output.GetCurrentTest()->m_messages.size();
 
-            AssertThat(result.GetConst(), Equals("anyMessage"));
+            AssertThat(result, Equals(0));
         }
 
-        YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestMessage_WithWarningMessage_AddsWarningPrefix)
+        YELO_UNIT_TEST_TEST_RUN_OUTPUT(Log_WithWarningMessage_AddsMessageToTest)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
-            output.TestLog(TestMessageVerbosity::Warning, "anyMessage");
-            auto result = output.GetCurrentTest()->m_messages.GetConst()[0];
+            output.Log(Logging::LogVerbosity::Warning, "anyMessage");
+            auto& result = output.GetCurrentTest()->m_messages.GetConst()[0];
 
             AssertThat(result.GetConst(), Equals("Warning: anyMessage"));
         }
 
-        YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestMessage_WithErrorMessage_AddsErrorPrefix)
+        YELO_UNIT_TEST_TEST_RUN_OUTPUT(Log_WithErrorMessage_AddsMessageToTest)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             output.TestStarted(g_any_test_name);
-            output.TestLog(TestMessageVerbosity::Error, "anyMessage");
-            auto result = output.GetCurrentTest()->m_messages.GetConst()[0];
+            output.Log(Logging::LogVerbosity::Error, "anyMessage");
+            auto& result = output.GetCurrentTest()->m_messages.GetConst()[0];
 
             AssertThat(result.GetConst(), Equals("Error: anyMessage"));
         }
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestFinished_BeforeTestStarted_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             AssertThrows(std::exception, output.TestFinished(g_any_test_name, false));
         }
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestFinished_WithEmptyTestName_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             AssertThrows(std::exception, output.TestFinished("", false));
         }
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestFinished_WithDifferentTestName_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
             output.TestStarted(g_any_test_name);
 
             AssertThrows(std::exception, output.TestFinished("anyOtherTestName", false));
@@ -240,7 +220,7 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(TestFinished_WithCurrentTestName_FinishesTestWithResult)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
             output.TestStarted(g_any_test_name);
 
             auto in_progress_test = output.GetCurrentTest();
@@ -251,7 +231,7 @@ namespace Yelo
 
         YELO_UNIT_TEST_TEST_RUN_OUTPUT(Save_WithUnknownExtension_Throws)
         {
-            c_test_run_output output;
+            c_test_run_logger output;
 
             AssertThrows(std::exception, output.Save("anyPath.unknownExtension"));
         }

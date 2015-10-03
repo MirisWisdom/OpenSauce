@@ -13,8 +13,8 @@
 #include <snowhouse/snowhouse.h>
 using namespace snowhouse;
 
-#define YELO_UNIT_TEST(name, category) \
-    class c_automation_##name final : public Yelo::Automation::i_automated_test \
+#define YELO_UNIT_TEST_WITH_FIXTURE(name, category, fixture) \
+    class c_automation_##name final : public fixture \
     { \
         static c_automation_##name m_instance; \
         c_automation_##name##() { Yelo::Automation::c_automation_runner_singleton::Get().RegisterTest(#category "." #name, this); } \
@@ -23,4 +23,7 @@ using namespace snowhouse;
     }; \
     c_automation_##name c_automation_##name##::m_instance; \
     void c_automation_##name##::Run()
+
+#define YELO_UNIT_TEST(name, category) YELO_UNIT_TEST_WITH_FIXTURE(name, category, Yelo::Automation::i_automated_test)
+
 #endif
