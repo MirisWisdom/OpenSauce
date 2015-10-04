@@ -197,6 +197,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_logger_base.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\i_render_device.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\targetver.h" />
