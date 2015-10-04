@@ -628,6 +628,9 @@
     <ClInclude Include="Rasterizer\GBuffer\c_gbuffer.hpp">
       <Filter>Rasterizer\GBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="Render\c_render_device.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1251,6 +1254,9 @@
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\c_render_device.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer\GBuffer\c_gbuffer_settings.cpp">
       <Filter>Rasterizer\GBuffer</Filter>
@@ -2432,6 +2438,9 @@
     </Filter>
     <Filter Include="Rasterizer\GBuffer\Effects">
       <UniqueIdentifier>{c8c5cff5-e75f-4991-b187-4b6294ec9ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{e8cf408e-581c-4d8d-be3c-7eae251b69df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

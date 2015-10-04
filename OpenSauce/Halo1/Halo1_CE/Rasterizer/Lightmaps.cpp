@@ -16,6 +16,7 @@
 #include "TagGroups/TagGroups.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 #include "DX9/DX9.hpp"
+#include <Render/c_render_device.hpp>
 
 namespace Yelo
 {
@@ -132,16 +133,9 @@ namespace Yelo
 		void SetLightmapSamplers(const bool use_directional)
 		{
 			g_lightmap_globals.m_lightmap_manager.SetLightmapSamplers(
-				DX9::Direct3DDevice(),
+				c_render_device_singleton::Get(),
 				g_lightmap_globals.m_lightmap_index,
-				use_directional,
-				[](const datum_index tag_index, const int32 index) -> TagGroups::s_bitmap_data*
-				{
-					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(tag_index);
-					auto bitmap_data = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[index]);
-
-					return bitmap_data;
-				}
+				use_directional
 			);
 		}
 

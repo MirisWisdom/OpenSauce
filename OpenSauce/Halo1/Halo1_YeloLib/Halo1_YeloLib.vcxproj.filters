@@ -774,6 +774,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.hpp">
       <Filter>automation\output</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\i_render_device.hpp">
+      <Filter>render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
