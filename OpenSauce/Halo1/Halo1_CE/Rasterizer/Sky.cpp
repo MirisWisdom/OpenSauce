@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/render/render.hpp>
 #include <YeloLib/Halo1/render/sky/c_sky_manager.hpp>
 #include <blamlib/Halo1/scenario/sky_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "TagGroups/TagGroups.hpp"
