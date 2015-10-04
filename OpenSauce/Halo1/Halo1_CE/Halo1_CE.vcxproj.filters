@@ -610,6 +610,9 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
     </ClInclude>
+    <ClInclude Include="Render\c_render_device.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1233,6 +1236,9 @@
     </ClCompile>
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\c_render_device.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2389,6 +2395,9 @@
     </Filter>
     <Filter Include="_Resources\1.09\LUA\Server">
       <UniqueIdentifier>{08f4997f-c50a-4f53-8475-4b3e72b50913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{e8cf408e-581c-4d8d-be3c-7eae251b69df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
