@@ -870,7 +870,6 @@
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl" />
     <None Include="Rasterizer\PostProcessing\PostProcessing_RenderStates.inl" />
     <None Include="Rasterizer\PostProcessing\PostProcessing_Systems.inl" />
-    <None Include="Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl" />
   </ItemGroup>
