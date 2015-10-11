@@ -8,14 +8,9 @@
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
-#include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_pp_shaders.hpp"
-#include "Rasterizer/PostProcessing/c_quad_manager.hpp"
-
-#include "Rasterizer/PostProcessing/Fade/s_shader_fade_definition.hpp"
-
 #include "Rasterizer/PostProcessing/Fade/c_shader_fade.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_shader_instance_fade.hpp"
+#include <Rasterizer/PostProcessing/c_post_processing_main.hpp>
 
 namespace Yelo
 {
@@ -30,7 +25,7 @@ namespace Yelo
 		static c_shader_instance_fade			g_shader_instance_fade;
 		static TagGroups::s_effect_postprocess_quad_definition
 												g_quad_definition;
-		static c_quad_instance*					g_quad_instance;
+		static Render::c_quad_instance*					g_quad_instance;
 
 		/////////////////////////////////////////////////
 		// static member accessors
@@ -176,7 +171,7 @@ namespace Yelo
 		// system setup
 		HRESULT c_system_fade::CreateShader()
 		{
-			g_quad_instance = c_quad_manager::Instance().CreateQuad(g_quad_definition);
+			g_quad_instance = c_post_processing_main::Instance().Globals().quad_collection.CreateQuadInstance(g_quad_definition);
 
 			return g_shader_fade.LoadShader(c_post_processing_main::Instance().Globals().render_device);
 		}

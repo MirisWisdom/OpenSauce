@@ -631,6 +631,9 @@
     <ClInclude Include="Render\c_render_device.hpp">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_quad_collection.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -808,9 +811,6 @@
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer\PostProcessing\c_post_processing_main.cpp">
-      <Filter>Rasterizer\PostProcessing</Filter>
-    </ClCompile>
-    <ClCompile Include="Rasterizer\PostProcessing\c_quad_manager.cpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_include_manager.cpp">
@@ -1276,6 +1276,9 @@
     <ClCompile Include="Rasterizer\GBuffer\c_gbuffer.cpp">
       <Filter>Rasterizer\GBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_quad_collection.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
@@ -1666,9 +1669,6 @@
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\c_post_processing_main.hpp">
-      <Filter>Rasterizer\PostProcessing</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\c_quad_manager.hpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_include_manager.hpp">

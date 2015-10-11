@@ -8,8 +8,11 @@
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_instance_motionblur.hpp"
 
 #if !PLATFORM_IS_DEDI
+
 #include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
+#include "Rasterizer/PostProcessing/MotionBlur/s_shader_motionblur_definition.hpp"
+#include "Rasterizer/PostProcessing/MotionBlur/c_shader_motionblur.hpp"
 
 namespace Yelo
 {

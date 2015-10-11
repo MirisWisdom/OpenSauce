@@ -198,6 +198,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\render\i_render_device.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\c_quad_builder.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\c_quad_instance.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\s_quad.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\targetver.h" />
@@ -379,6 +382,8 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\render\quad\c_quad_builder.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\render\quad\c_quad_instance.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
       <PrecompiledHeader />
     </ClCompile>
