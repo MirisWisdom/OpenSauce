@@ -7,94 +7,76 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace FXAA
-	{
-		class c_system_fxaa
-			: public IPostProcessingComponent
-			, public IPostProcessingRenderable
-		{
-			/////////////////////////////////////////////////
-			// static members
-		private:
-			static c_system_fxaa g_fxaa_system;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace FXAA
+            {
+                class c_system_fxaa
+                    : public IPostProcessingComponent,
+                      public IPostProcessingRenderable
+                {
+                    static c_system_fxaa g_fxaa_system;
+                public:
+                    static c_system_fxaa& Instance();
 
-			/////////////////////////////////////////////////
-			// static member accessors
-		public:
-			static c_system_fxaa& Instance();
+                private:
+                    struct
+                    {
+                        struct
+                        {
+                            bool is_ready;
+                            bool is_unloaded;
+                            bool is_enabled;
+                            PAD8;
+                        } m_flags;
 
-			/////////////////////////////////////////////////
-			// members
-		private:
-			struct
-			{
-				struct
-				{
-					bool is_ready;
-					bool is_unloaded;
-					bool is_enabled;
-					PAD8;
-				}m_flags;
+                        Enums::pp_component_status status;
+                        PAD16;
+                    } m_members;
 
-				Enums::pp_component_status status;
-				PAD16;
-			}m_members;
+                public:
+                    bool& Enabled();
+                    bool IsReady() override;
+                    bool IsUnloaded() override;
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			bool& Enabled();
-			bool IsReady();
-			bool IsUnloaded();
+                    void Initialize() override;
+                    void Dispose() override;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingComponent
-		public:
-			void Initialize();
-			void Dispose();
+                    void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters) override;
+                    void OnLostDevice_Base() override;
+                    void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters) override;
+                    void ReleaseResources_Base() override;
 
-			void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters);
-			void OnLostDevice_Base();
-			void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters);
-			void ReleaseResources_Base();
+                    void Unload() override;
+                    void Load() override;
+                    bool Render(Enums::postprocess_render_stage render_stage) override;
 
-			void Unload();
-			void Load();
+                private:
+                    HRESULT CreateShader();
+                    void DestroyShader();
 
-			/////////////////////////////////////////////////
-			// IPostProcessingRenderable
-		public:
-			bool Render(Enums::postprocess_render_stage render_stage);
+                    HRESULT CreateEffect();
+                    void DestroyEffect();
 
-			/////////////////////////////////////////////////
-			// system setup
-		private:
-			HRESULT CreateShader();
-			void DestroyShader();
+                    void SetDeviceLost();
+                    HRESULT SetDeviceReset();
 
-			HRESULT CreateEffect();
-			void DestroyEffect();
+                    void Validate();
 
-			void SetDeviceLost();
-			HRESULT SetDeviceReset();
+                    void UpdateStatus();
 
-			void Validate();
-
-			void UpdateStatus();
-
-			/////////////////////////////////////////////////
-			// system application
-		private:
-			bool Render(IDirect3DDevice9* render_device);
-		};
-	};};};
-};
+                    bool Render(IDirect3DDevice9* render_device);
+                };
+            }
+        }
+    }
+}
 #endif
