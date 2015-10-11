@@ -22,7 +22,9 @@ namespace Yelo
 		}
 
 	public:
-		T* GetNext() const { return m_next; }
+	    virtual ~LinkedListNode() {}
+
+	    T* GetNext() const { return m_next; }
 		T* GetPrevious() const { return m_prev; }
 
 		void SetNext(T* next) { m_next = next; }

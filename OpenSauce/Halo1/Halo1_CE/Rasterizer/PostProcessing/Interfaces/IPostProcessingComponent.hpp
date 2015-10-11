@@ -15,7 +15,9 @@ namespace Yelo
 		interface IPostProcessingComponent
 			abstract
 		{
-			virtual void Initialize() {}
+	            virtual ~IPostProcessingComponent() {}
+
+	            virtual void Initialize() {}
 			virtual void Dispose() {}
 
 			virtual void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters) {}
