@@ -474,7 +474,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\c_effect_postprocess.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_effect_render_set.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_post_processing_main.cpp" />
-    <ClCompile Include="Rasterizer\PostProcessing\c_quad_manager.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\c_quad_collection.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_include_manager.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_instance.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_postprocess.cpp" />
@@ -648,7 +648,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\c_effect_postprocess.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_effect_render_set.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_post_processing_main.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\c_quad_manager.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\c_quad_collection.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_include_manager.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_instance.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_postprocess.hpp" />

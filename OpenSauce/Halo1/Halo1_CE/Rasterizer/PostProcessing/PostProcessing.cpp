@@ -8,18 +8,9 @@
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #if !PLATFORM_IS_DEDI
+
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
-
-#include "Settings/Settings.hpp"
-
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
-#include "Rasterizer/PostProcessing/c_quad_manager.hpp"
-
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_system_motionblur.hpp"
 #include "Rasterizer/PostProcessing/Bloom/c_system_bloom.hpp"
@@ -97,9 +88,6 @@ namespace Yelo
 			// initialise all of the subsystems
 			for (auto& subsystem : g_postprocess_subsystems)
 				subsystem.m_component->Initialize();
-
-			// initialize the quad manager
-			c_quad_manager::Instance().Initialize();
 		}
 
 		/*!
@@ -116,8 +104,6 @@ namespace Yelo
 			
 			// dispose of the main post processing component and quad manager
 			c_post_processing_main::Instance().Dispose();
-
-			c_quad_manager::Instance().Dispose();
 		}
 
 		/*!
@@ -159,8 +145,7 @@ namespace Yelo
 				subsystem.is_ready = subsystem.m_component->IsReady();
 			}
 
-			// create the quad buffers
-			c_quad_manager::Instance().InitializeResources_Base(pDevice, pParameters);
+            c_post_processing_main::Instance().Globals().quad_collection.CreateQuadBuffers(*pDevice, c_post_processing_main::Instance().Globals().screen_dimensions);
 		}
 
 		/*!
@@ -184,9 +169,8 @@ namespace Yelo
 
 			// run device lost logic for the main system resources
 			c_post_processing_main::Instance().OnLostDevice_Base();
-
-			// release the quad buffers
-			c_quad_manager::Instance().OnLostDevice_Base();
+            
+			c_post_processing_main::Instance().Globals().quad_collection.DestroyQuadBuffers();
 		}
 
 		/*!
@@ -222,8 +206,7 @@ namespace Yelo
 			for (auto& cache_subsystem : g_postprocess_cache_subsystems)
 				g_postprocess_subsystems[cache_subsystem.component_index].is_ready = cache_subsystem.m_component->IsReady();
 
-			// create the quad buffers
-			c_quad_manager::Instance().OnResetDevice_Base(pParameters);
+            c_post_processing_main::Instance().Globals().quad_collection.CreateQuadBuffers(*DX9::Direct3DDevice(), c_post_processing_main::Instance().Globals().screen_dimensions);
 		}
 
 		void		Render() {}
@@ -243,8 +226,7 @@ namespace Yelo
 			// release the main system resources
 			c_post_processing_main::Instance().ReleaseResources_Base();
 
-			// release the quad buffers
-			c_quad_manager::Instance().ReleaseResources_Base();
+			c_post_processing_main::Instance().Globals().quad_collection.DestroyQuadBuffers();
 		}
 
 		/*!
@@ -281,9 +263,8 @@ namespace Yelo
 				g_postprocess_cache_subsystems[i].m_component->InitializeResources_Cache();
 				g_postprocess_subsystems[g_postprocess_cache_subsystems[i].component_index].is_ready = g_postprocess_cache_subsystems[i].m_component->IsReady();
 			}
-
-			// create the quad buffers
-			c_quad_manager::Instance().InitializeResources_Cache();
+            
+            c_post_processing_main::Instance().Globals().quad_collection.CreateQuadBuffers(*DX9::Direct3DDevice(), c_post_processing_main::Instance().Globals().screen_dimensions);
 		}
 
 		/*!
@@ -312,9 +293,8 @@ namespace Yelo
 				g_postprocess_cache_subsystems[i].m_component->Dispose_Cache();
 
 			c_post_processing_main::Instance().Dispose_Cache();
-
-			// release the quad buffers
-			c_quad_manager::Instance().ReleaseResources_Cache();
+            
+			c_post_processing_main::Instance().Globals().quad_collection.DestroyQuadBuffers();
 		}
 
 		/*!
@@ -390,9 +370,8 @@ namespace Yelo
 					g_postprocess_subsystems[i].m_component->Load();
 					g_postprocess_subsystems[i].is_ready = g_postprocess_subsystems[i].m_component->IsReady();
 				}
-
-			// recreate the quad buffers
-			c_quad_manager::Instance().CreateBuffers();
+            
+            c_post_processing_main::Instance().Globals().quad_collection.CreateQuadBuffers(*DX9::Direct3DDevice(), c_post_processing_main::Instance().Globals().screen_dimensions);
 		}
 
 		/*!
@@ -421,9 +400,8 @@ namespace Yelo
 
 			// unload the main post process components resources
 			c_post_processing_main::Instance().Unload();
-
-			// release the quad buffers
-			c_quad_manager::Instance().DestroyBuffers();
+            
+			c_post_processing_main::Instance().Globals().quad_collection.DestroyQuadBuffers();
 		}
 
 		/*!
@@ -448,7 +426,7 @@ namespace Yelo
 			c_post_processing_main::Instance().Globals().scene_buffer_chain.ResetTargets();
 
 			// set the devices vertex and index sources to the quad buffers
-			HRESULT hr = c_quad_manager::Instance().SetBuffers();
+			HRESULT hr = c_post_processing_main::Instance().Globals().quad_collection.SetRenderDeviceBuffers(*render_device);
 			if(SUCCEEDED(hr))
 			{
 				// store and set the necessary render states for this render stage
