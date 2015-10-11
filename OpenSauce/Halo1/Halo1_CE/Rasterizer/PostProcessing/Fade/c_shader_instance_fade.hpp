@@ -22,8 +22,6 @@ namespace Yelo
 
                 class c_shader_instance_fade : public c_shader_instance
                 {
-                    /////////////////////////////////////////////////
-                    // members
                 protected:
                     struct
                     {
@@ -32,36 +30,17 @@ namespace Yelo
                         real fade_amount;
                     } m_members_fade;
 
-                    /////////////////////////////////////////////////
-                    // member accessors
                 public:
-                    void SetShader(c_shader_postprocess* definition);
+                    void SetShader(c_shader_postprocess* definition) override;
 
-                    /////////////////////////////////////////////////
-                    // initializers
-                public:
-                    void Ctor()
-                    {
-                        c_shader_instance::Ctor();
+                    void Ctor() override;
+                    void Dtor() override;
 
-                        m_members_fade.definition = NULL;
-                    }
-
-                    void Dtor()
-                    {
-                        c_shader_instance::Dtor();
-
-                        m_members_fade.definition = NULL;
-                    }
-
-                    /////////////////////////////////////////////////
-                    // shader instance application
-                public:
-                    void SetShaderInstanceVariables();
+                    void SetShaderInstanceVariables() override;
                     HRESULT Render(IDirect3DDevice9* render_device, Render::c_quad_instance* quad_instance, real fade_amount);
                 };
-            };
-        };
-    };
-};
+            }
+        }
+    }
+}
 #endif
