@@ -2036,9 +2036,6 @@
     <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl">
       <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
     </None>
-    <None Include="Rasterizer\PostProcessing\Bloom\BloomDefinitions.inl">
-      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
-    </None>
     <None Include="Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl">
       <Filter>Rasterizer\PostProcessing\Generic\Impl</Filter>
     </None>
