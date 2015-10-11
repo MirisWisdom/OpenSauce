@@ -867,7 +867,6 @@
     <None Include="Memory\1.09\_EngineLayout.TagGroups.inl" />
     <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl" />
     <None Include="Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl" />
-    <None Include="Rasterizer\PostProcessing\Fade\FadeDefinitions.inl" />
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl" />
     <None Include="Rasterizer\PostProcessing\PostProcessing_RenderStates.inl" />
     <None Include="Rasterizer\PostProcessing\PostProcessing_Systems.inl" />
