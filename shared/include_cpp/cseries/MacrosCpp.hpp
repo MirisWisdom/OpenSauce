@@ -116,6 +116,7 @@
 
 #pragma endregion
 
+#define ASSERT_SIZE(type, expected) static_assert(sizeof(type) == expected, "The size of " #type " does not equal " #expected )
 
 // Library's function convention
 #define API_FUNC __stdcall
