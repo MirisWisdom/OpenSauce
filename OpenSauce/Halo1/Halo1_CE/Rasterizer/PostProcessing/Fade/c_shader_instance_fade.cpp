@@ -9,6 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
+#include "s_shader_fade_definition.hpp"
 
 namespace Yelo
 {
@@ -44,8 +45,7 @@ namespace Yelo
 			YELO_ASSERT_DISPLAY(definition != nullptr, "Fade shader has no tag definition");
 
 			LPD3DXEFFECT effect = m_members.definition->GetEffect();
-			// TODO: why are we reasserting definition?
-			YELO_ASSERT_DISPLAY(definition != nullptr, "Fade shader has no valid effect");
+			YELO_ASSERT_DISPLAY(effect != nullptr, "Fade shader has no valid effect");
 
 			definition->fade_amount_handle.SetVariable(effect, &m_members_fade.fade_amount, false);
 		};
@@ -69,7 +69,7 @@ namespace Yelo
 		 * Custom render function for fading an effects result. The fade effect swaps the current target with the scene texture, and re draws 
 		 * it with alpha blending to fade the result in/out.
 		 */
-		HRESULT c_shader_instance_fade::Render(IDirect3DDevice9* render_device, c_quad_instance* quad_instance, real fade_amount)
+		HRESULT c_shader_instance_fade::Render(IDirect3DDevice9* render_device, Render::c_quad_instance* quad_instance, real fade_amount)
 		{
 			m_members_fade.fade_amount = fade_amount;
 

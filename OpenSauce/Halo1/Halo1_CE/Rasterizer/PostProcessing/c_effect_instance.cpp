@@ -7,10 +7,13 @@
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/c_effect_instance.hpp"
 
-#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
-#include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
-
 #if !PLATFORM_IS_DEDI
+
+#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
+
+#include "Rasterizer/PostProcessing/c_quad_collection.hpp"
+#include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
+#include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 
 namespace Yelo
 {
@@ -69,14 +72,14 @@ namespace Yelo
 			YELO_ASSERT_DISPLAY(m_members.quad_definition != nullptr, "no quad definition has been set for an effect instance");
 
 			if(m_members.quad_definition)
-				m_members.render_quad = c_quad_manager::Instance().CreateQuad(*m_members.quad_definition);
+				m_members.render_quad = c_post_processing_main::Instance().Globals().quad_collection.CreateQuadInstance(*m_members.quad_definition);
 
 			return (m_members.render_quad ? S_OK : E_FAIL);
 		}
 
 		void c_effect_instance::UnloadEffectInstance()
 		{
-			safe_release<c_quad_instance>(m_members.render_quad);
+			safe_release(m_members.render_quad);
 		}
 
 		/*!

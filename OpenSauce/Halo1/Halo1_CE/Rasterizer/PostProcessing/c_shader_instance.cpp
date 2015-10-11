@@ -9,6 +9,8 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing
