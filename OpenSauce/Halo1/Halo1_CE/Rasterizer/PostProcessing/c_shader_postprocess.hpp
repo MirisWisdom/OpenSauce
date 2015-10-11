@@ -46,6 +46,8 @@ namespace Yelo
                 /////////////////////////////////////////////////
                 // member accessors
             public:
+                virtual ~c_shader_postprocess() {}
+
                 virtual void SetShaderDefinition(TagGroups::s_shader_postprocess_definition* definition);
 
                 template<class T>

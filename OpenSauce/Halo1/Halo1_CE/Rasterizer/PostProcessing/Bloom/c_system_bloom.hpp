@@ -7,118 +7,92 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Bloom
-	{
-		class c_system_bloom
-			: public IPostProcessingCacheComponent
-			, public IPostProcessingUpdatable
-			, public IPostProcessingRenderable
-		{
-			/////////////////////////////////////////////////
-			// static members
-		private:
-			static c_system_bloom g_bloom_system;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Bloom
+            {
+                class c_system_bloom
+                    : public IPostProcessingCacheComponent,
+                      public IPostProcessingUpdatable,
+                      public IPostProcessingRenderable
+                {
+                    static c_system_bloom g_bloom_system;
 
-			/////////////////////////////////////////////////
-			// static member accessors
-		public:
-			static c_system_bloom& Instance();
+                public:
+                    static c_system_bloom& Instance();
 
-			/////////////////////////////////////////////////
-			// members
-		private:
-			struct
-			{
-				struct
-				{
-					bool is_ready;
-					bool is_unloaded;
-					bool is_enabled;
-					PAD8;
-				}m_flags;
+                private:
+                    struct
+                    {
+                        struct
+                        {
+                            bool is_ready;
+                            bool is_unloaded;
+                            bool is_enabled;
+                            PAD8;
+                        } m_flags;
 
-				Enums::pp_component_status status;
-				PAD16;
-			}m_members;
+                        Enums::pp_component_status status;
+                        PAD16;
+                    } m_members;
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			bool& Enabled();
-			bool IsReady();
-			bool IsUnloaded();
+                public:
+                    bool& Enabled();
+                    bool IsReady() override;
+                    bool IsUnloaded() override;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingComponent
-		public:
-			void Initialize();
-			void Dispose();
+                    void Initialize() override;
+                    void Dispose() override;
 
-			void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters);
-			void OnLostDevice_Base();
-			void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters);
-			void ReleaseResources_Base();
+                    void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters) override;
+                    void OnLostDevice_Base() override;
+                    void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters) override;
+                    void ReleaseResources_Base() override;
 
-			void Unload();
-			void Load();
+                    void Unload() override;
+                    void Load() override;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingRenderable
-		public:
-			bool Render(Enums::postprocess_render_stage render_stage);
+                    bool Render(Enums::postprocess_render_stage render_stage) override;
+                    void Update(real delta_time) override;
+                    void Initialize_Cache() override;
+                    void Dispose_Cache() override;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingUpdatable
-		public:
-			void Update(real delta_time);
+                private:
+                    HRESULT CreateShader() const;
+                    void DestroyShader() const;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingCacheComponent
-		public:
-			void Initialize_Cache();
-			void Dispose_Cache();
+                    HRESULT CreateEffect() const;
+                    void DestroyEffect() const;
 
-			/////////////////////////////////////////////////
-			// system setup
-		private:
-			HRESULT CreateShader();
-			void DestroyShader();
+                    void SetDeviceLost() const;
+                    HRESULT SetDeviceReset() const;
 
-			HRESULT CreateEffect();
-			void DestroyEffect();
+                    void SetBloomShaderVariables() const;
 
-			void SetDeviceLost();
-			HRESULT SetDeviceReset();
+                    void Validate() const;
 
-			void SetBloomShaderVariables();
+                    void UpdateStatus();
 
-			void Validate();
+                    bool RenderBloom(IDirect3DDevice9* render_device) const;
 
-			void UpdateStatus();
-
-			/////////////////////////////////////////////////
-			// system application
-		private:
-			bool RenderBloom(IDirect3DDevice9* render_device);
-
-			/////////////////////////////////////////////////
-			// scripting
-		public:
-			void SetBloomSize(real size, real change_time);
-			void SetBloomExposure(real exposure, real change_time);
-			void SetBloomMixAmount(real mix_amount, real change_time);
-			void SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time);
-			void SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time);
-		};
-	};};};
-};
+                public:
+                    void SetBloomSize(real size, real change_time);
+                    void SetBloomExposure(real exposure, real change_time);
+                    void SetBloomMixAmount(real mix_amount, real change_time);
+                    void SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time);
+                    void SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time);
+                };
+            }
+        }
+    }
+}
 #endif
