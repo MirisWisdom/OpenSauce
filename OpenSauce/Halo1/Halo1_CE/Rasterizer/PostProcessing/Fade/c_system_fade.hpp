@@ -7,81 +7,74 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
-#include "Rasterizer/PostProcessing/PostProcessing.hpp"
+#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Fade
-	{
-		class c_system_fade : public IPostProcessingComponent
-		{
-			/////////////////////////////////////////////////
-			// static members
-		private:
-			static c_system_fade g_fade_system;
+    namespace Enums
+    {
+        enum pp_component_status : _enum;
+    }
 
-			/////////////////////////////////////////////////
-			// static member accessors
-		public:
-			static c_system_fade& Instance();
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Fade
+            {
+                class c_system_fade : public IPostProcessingComponent
+                {
+                    static c_system_fade g_fade_system;
 
-			/////////////////////////////////////////////////
-			// members
-		private:
-			struct
-			{
-				struct
-				{
-					bool is_ready;
-					bool is_unloaded;
-					PAD16;
-				}m_flags;
+                public:
+                    static c_system_fade& Instance();
 
-				Enums::pp_component_status status;
-				PAD16;
-			}m_members;
+                private:
+                    struct
+                    {
+                        struct
+                        {
+                            bool is_ready;
+                            bool is_unloaded;
+                            PAD16;
+                        } m_flags;
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			bool IsReady();
-			bool IsUnloaded();
+                        Enums::pp_component_status status;
+                        PAD16;
+                    } m_members;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingComponent
-		public:
-			void Initialize();
-			void Dispose();
+                public:
+                    bool IsReady() override;
+                    bool IsUnloaded() override;
 
-			void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters);
-			void OnLostDevice_Base();
-			void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters);
-			void ReleaseResources_Base();
+                    void Initialize() override;
+                    void Dispose() override;
 
-			void Unload();
-			void Load();
+                    void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters) override;
+                    void OnLostDevice_Base() override;
+                    void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters) override;
+                    void ReleaseResources_Base() override;
 
-			/////////////////////////////////////////////////
-			// system setup
-		private:
-			HRESULT CreateShader();
-			void DestroyShader();
+                    void Unload() override;
+                    void Load() override;
 
-			void SetDeviceLost();
-			HRESULT SetDeviceReset();
+                private:
+                    HRESULT CreateShader();
+                    void DestroyShader();
 
-			void Validate();
+                    void SetDeviceLost();
+                    HRESULT SetDeviceReset();
 
-			void UpdateStatus();
+                    void Validate();
 
-			/////////////////////////////////////////////////
-			// system application
-		public:
-			HRESULT FadeCurrentResult(real fade_amount);
-		};
-	};};};
-};
+                    void UpdateStatus();
+
+                public:
+                    HRESULT FadeCurrentResult(real fade_amount);
+                };
+            }
+        }
+    }
+}
 #endif

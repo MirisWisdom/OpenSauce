@@ -15,7 +15,7 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum pp_component_status : uint32
+		enum pp_component_status : _enum
 		{
 			pp_component_status_initialised,
 			pp_component_status_uninitialised,
