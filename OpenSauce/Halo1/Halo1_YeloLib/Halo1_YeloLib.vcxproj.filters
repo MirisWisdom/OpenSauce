@@ -163,6 +163,9 @@
     <Filter Include="logging">
       <UniqueIdentifier>{d6d3fb0d-3b68-47c1-aedc-d99a8038746a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\quad">
+      <UniqueIdentifier>{42d2b9eb-4608-4df2-bb3e-0b73e20a1a95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -777,6 +780,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\render\i_render_device.hpp">
       <Filter>render</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\c_quad_builder.hpp">
+      <Filter>render\quad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\c_quad_instance.hpp">
+      <Filter>render\quad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\s_quad.hpp">
+      <Filter>render\quad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1111,6 +1123,12 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.cpp">
       <Filter>automation\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\render\quad\c_quad_builder.cpp">
+      <Filter>render\quad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\render\quad\c_quad_instance.cpp">
+      <Filter>render\quad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

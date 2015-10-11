@@ -8,12 +8,14 @@
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
+
 #include <blamlib/Halo1/cache/predicted_resources.hpp>
 
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_shader_include_manager.hpp"
+#include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_base.hpp"
 
 namespace Yelo
 {
@@ -539,7 +541,7 @@ namespace Yelo
 		 * 
 		 * Renders the shader.
 		 */
-		HRESULT c_shader_postprocess::Render(IDirect3DDevice9* render_device, c_quad_instance* render_quad)
+		HRESULT c_shader_postprocess::Render(IDirect3DDevice9* render_device, Render::c_quad_instance* render_quad)
 		{
 			LPD3DXEFFECT effect = m_members.definition->runtime.dx_effect;
 

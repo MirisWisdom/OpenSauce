@@ -7,105 +7,116 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/memory/linked_list.hpp>
 
-#include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
+#include <YeloLib/memory/linked_list.hpp>
+#include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
+#include <YeloLib/render/quad/c_quad_instance.hpp>
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		class c_effect_instance : public LinkedListNode<c_effect_instance>
-		{
-			/////////////////////////////////////////////////
-			// members
-		protected:
-			struct
-			{
-				struct
-				{
-					bool is_valid;
-					bool is_active;
-					PAD16;
-				}m_flags;
+    namespace TagGroups
+    {
+        struct s_effect_postprocess_quad_definition;
+    }
 
-				c_effect_postprocess* definition;
-				TagGroups::s_effect_postprocess_quad_definition* quad_definition;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            class c_effect_postprocess;
 
-				c_quad_instance* render_quad;
+            class c_effect_instance : public LinkedListNode<c_effect_instance>
+            {
+                /////////////////////////////////////////////////
+                // members
+            protected:
+                struct
+                {
+                    struct
+                    {
+                        bool is_valid;
+                        bool is_active;
+                        PAD16;
+                    } m_flags;
 
-				struct
-				{
-					real start;
-					real end;
-					real current;
+                    c_effect_postprocess* definition;
+                    TagGroups::s_effect_postprocess_quad_definition* quad_definition;
 
-					Time::Interpolation::c_interp_linear<1> interpolator;
-				}m_fade;
-			}m_members;
+                    Render::c_quad_instance* render_quad;
 
-		private:
-			void ClearMembers()
-			{
-				ClearNodeData();
+                    struct
+                    {
+                        real start;
+                        real end;
+                        real current;
 
-				m_members.m_flags.is_valid = false;
-				m_members.m_flags.is_active = true;
-				m_members.definition = nullptr;
-				m_members.quad_definition = nullptr;
-				m_members.render_quad = nullptr;
-				m_members.m_fade.start = 1;
-				m_members.m_fade.end = 1;
-				m_members.m_fade.current = 1;
+                        Time::Interpolation::c_interp_linear<1> interpolator;
+                    } m_fade;
+                } m_members;
 
-				m_members.m_fade.interpolator.Begin(0);
-			}
+            private:
+                void ClearMembers()
+                {
+                    ClearNodeData();
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			virtual void SetEffect(c_effect_postprocess* definition);
-			void SetQuadDefinition(TagGroups::s_effect_postprocess_quad_definition* definition);
-			bool IsValid();
-			real GetCurrentFade();
-			int16 GetFadeDirection();
-			void SetIsActive(bool active);
+                    m_members.m_flags.is_valid = false;
+                    m_members.m_flags.is_active = true;
+                    m_members.definition = nullptr;
+                    m_members.quad_definition = nullptr;
+                    m_members.render_quad = nullptr;
+                    m_members.m_fade.start = 1;
+                    m_members.m_fade.end = 1;
+                    m_members.m_fade.current = 1;
 
-			/////////////////////////////////////////////////
-			// initializers
-		public:
-			virtual void Ctor()
-			{
-				ClearMembers();
-			}
+                    m_members.m_fade.interpolator.Begin(0);
+                }
 
-			virtual void Dtor()
-			{
-				ClearMembers();
-			}
+                /////////////////////////////////////////////////
+                // member accessors
+            public:
+                virtual void SetEffect(c_effect_postprocess* definition);
+                void SetQuadDefinition(TagGroups::s_effect_postprocess_quad_definition* definition);
+                bool IsValid();
+                real GetCurrentFade();
+                int16 GetFadeDirection();
+                void SetIsActive(bool active);
 
-			/////////////////////////////////////////////////
-			// effect instance setup
-		public:
-			virtual void SetupEffectInstance() {}
-			void Validate();
+                /////////////////////////////////////////////////
+                // initializers
+            public:
+                virtual void Ctor()
+                {
+                    ClearMembers();
+                }
 
-			HRESULT LoadEffectInstance();
-			void UnloadEffectInstance();
-		protected:
-			virtual bool ValidateImpl();
+                virtual void Dtor()
+                {
+                    ClearMembers();
+                }
 
-			/////////////////////////////////////////////////
-			// effect instance application
-		protected:
-			virtual bool IsActive();
-		public:
-			HRESULT Render(IDirect3DDevice9* render_device);
+                /////////////////////////////////////////////////
+                // effect instance setup
+            public:
+                virtual void SetupEffectInstance() {}
 
-			virtual void UpdateEffectInstance(real delta_time);
-			void SetEffectFade(real start, real end, real change_time);
+                void Validate();
 
-		};
-	};};
+                HRESULT LoadEffectInstance();
+                void UnloadEffectInstance();
+            protected:
+                virtual bool ValidateImpl();
+
+                /////////////////////////////////////////////////
+                // effect instance application
+            protected:
+                virtual bool IsActive();
+            public:
+                HRESULT Render(IDirect3DDevice9* render_device);
+
+                virtual void UpdateEffectInstance(real delta_time);
+                void SetEffectFade(real start, real end, real change_time);
+            };
+        };
+    };
 };
 #endif

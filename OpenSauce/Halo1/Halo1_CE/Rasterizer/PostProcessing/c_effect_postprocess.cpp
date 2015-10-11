@@ -8,7 +8,10 @@
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
+
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
+#include "Rasterizer/PostProcessing/c_shader_instance.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 
@@ -124,7 +127,7 @@ namespace Yelo
 		 * Renders the effects shaders in order. Each shader instance in the shader list will be instructed to set its
 		 * variables to the base shaders effect before being drawn using the supplied render device.
 		 */
-		HRESULT c_effect_postprocess::Render(IDirect3DDevice9* render_device, c_quad_instance* render_quad)
+		HRESULT c_effect_postprocess::Render(IDirect3DDevice9* render_device, Render::c_quad_instance* render_quad)
 		{
 			return Render(render_device, render_quad, 1.0f);
 		}
@@ -148,7 +151,7 @@ namespace Yelo
 		 * Renders the effects shaders in order. Each shader instance in the shader list will be instructed to set its
 		 * variables to the base shaders effect before being drawn using the supplied render device.
 		 */
-		HRESULT c_effect_postprocess::Render(IDirect3DDevice9* render_device, c_quad_instance* render_quad, real fade_amount)
+		HRESULT c_effect_postprocess::Render(IDirect3DDevice9* render_device, Render::c_quad_instance* render_quad, real fade_amount)
 		{
 			// if the effect is invalid, return
 			if(!IsActive())
