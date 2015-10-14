@@ -1240,6 +1240,9 @@
     <ClCompile Include="Rasterizer\PostProcessing\c_quad_collection.cpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.cpp">
+      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
