@@ -30,8 +30,6 @@ namespace Yelo
 
             class c_effect_postprocess
             {
-                /////////////////////////////////////////////////
-                // members
             protected:
                 struct
                 {
@@ -45,15 +43,8 @@ namespace Yelo
                 } m_members;
 
             private:
-                void ClearMembers()
-                {
-                    m_members.effect_definition = nullptr;
-                    m_members.m_shaders.list = nullptr;
-                    m_members.m_shaders.count = 0;
-                }
+                void ClearMembers();
 
-                /////////////////////////////////////////////////
-                // member accessors
             public:
                 virtual void SetEffectDefinition(TagGroups::s_effect_postprocess_definition* definition);
                 bool IsValid();
@@ -66,22 +57,10 @@ namespace Yelo
                     return CAST_PTR(T*, GetNodeByIndex(m_members.m_shaders.list, index));
                 }
 
-                /////////////////////////////////////////////////
-                // initializers
             public:
-                virtual void Ctor()
-                {
-                    ClearMembers();
-                }
+                virtual void Ctor();
+                virtual void Dtor();
 
-                virtual void Dtor()
-                {
-                    ClearMembers();
-                }
-
-                /////////////////////////////////////////////////
-                // effect setup
-            public:
                 virtual void SetupEffect() {}
 
                 virtual void SetupEffectPostCreation();
@@ -90,8 +69,6 @@ namespace Yelo
             private:
                 virtual bool ValidateImpl();
 
-                /////////////////////////////////////////////////
-                // effect application
             public:
                 void Update(real delta_time);
                 HRESULT Render(IDirect3DDevice9* render_device, Render::c_quad_instance* render_quad);
@@ -99,7 +76,7 @@ namespace Yelo
             protected:
                 virtual bool IsActive();
             };
-        };
-    };
-};
+        }
+    }
+}
 #endif

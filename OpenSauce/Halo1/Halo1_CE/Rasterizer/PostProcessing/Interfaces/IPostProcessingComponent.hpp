@@ -17,6 +17,8 @@ namespace Yelo
             class IPostProcessingComponent
             {
             public:
+                virtual ~IPostProcessingComponent() {}
+
                 virtual void Initialize() {}
 
                 virtual void Dispose() {}

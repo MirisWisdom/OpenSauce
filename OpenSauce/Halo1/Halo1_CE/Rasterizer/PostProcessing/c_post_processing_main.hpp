@@ -9,19 +9,31 @@
 #if !PLATFORM_IS_DEDI
 
 #include <YeloLib/Halo1/files/packed_file.hpp>
-#include <YeloLib/Halo1/shaders/shader_postprocess_globals_definitions.hpp>
-
-#include "Rasterizer/PostProcessing/PostProcessing.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 
 #include "Rasterizer/RenderTargetChain.hpp"
+#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
+#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "c_quad_collection.hpp"
 #include "Rasterizer/GBuffer/c_gbuffer.hpp"
 
 namespace Yelo
 {
+    namespace TagGroups
+    {
+        struct s_shader_postprocess_globals;
+    }
+
+    namespace DX9
+    {
+        struct c_gbuffer;
+    }
+
+    namespace Enums
+    {
+        enum pp_component_status : _enum;
+    }
+
     namespace Rasterizer
     {
         namespace PostProcessing
@@ -30,18 +42,10 @@ namespace Yelo
                 public IPostProcessingCacheComponent,
                 public IPostProcessingUpdatable
             {
-                /////////////////////////////////////////////////
-                // static members
-            private:
                 static c_post_processing_main g_post_processing_main;
-
-                /////////////////////////////////////////////////
-                // static member accessors
             public:
                 static c_post_processing_main& Instance();
 
-                /////////////////////////////////////////////////
-                // members
             private:
                 struct
                 {
@@ -79,8 +83,7 @@ namespace Yelo
 				DX9::c_gbuffer*				gbuffer;
 
                     c_packed_file shader_file;
-                    TagGroups::s_shader_postprocess_globals*
-                    map_postprocess_globals;
+                    TagGroups::s_shader_postprocess_globals* map_postprocess_globals;
                     c_quad_collection quad_collection;
 
                     D3DXMATRIX ortho_proj_matrix;
@@ -109,35 +112,24 @@ namespace Yelo
                     } m_activation_variables;
                 } m_globals;
 
-                /////////////////////////////////////////////////
-                // member accessors
-            public:
                 s_post_processing_globals& Globals();
-                bool IsReady();
-                bool IsUnloaded();
+                bool IsReady() override;
+                bool IsUnloaded() override;
 
-                /////////////////////////////////////////////////
-                // IPostProcessingComponent
-            public:
-                void Initialize();
-                void Dispose();
+                void Initialize() override;
+                void Dispose() override;
 
-                void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters);
-                void OnLostDevice_Base();
-                void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters);
-                void ReleaseResources_Base();
+                void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters) override;
+                void OnLostDevice_Base() override;
+                void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters) override;
+                void ReleaseResources_Base() override;
 
-                void Unload();
-                void Load();
+                void Unload() override;
+                void Load() override;
 
-                /////////////////////////////////////////////////
-                // IPostProcessingCacheComponent
-            public:
-                void Initialize_Cache();
-                void Dispose_Cache();
+                void Initialize_Cache() override;
+                void Dispose_Cache() override;
 
-                /////////////////////////////////////////////////
-                // system setup
             private:
                 void GetRenderProperties(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters);
 
@@ -154,12 +146,10 @@ namespace Yelo
 
                 void UpdateStatus();
 
-                /////////////////////////////////////////////////
-                // system application
             public:
                 void PollUpdate();
             };
-        };
-    };
-};
+        }
+    }
+}
 #endif

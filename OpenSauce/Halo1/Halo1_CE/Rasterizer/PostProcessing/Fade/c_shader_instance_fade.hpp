@@ -12,6 +12,11 @@
 
 namespace Yelo
 {
+    namespace Render
+    {
+        class c_quad_instance;
+    }
+
     namespace Rasterizer
     {
         namespace PostProcessing

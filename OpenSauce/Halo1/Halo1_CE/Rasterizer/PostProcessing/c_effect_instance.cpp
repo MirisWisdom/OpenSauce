@@ -11,132 +11,153 @@
 
 #include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
 
-#include "Rasterizer/PostProcessing/c_quad_collection.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		/////////////////////////////////////////////////
-		// member accessors
-		void c_effect_instance::SetEffect(c_effect_postprocess* definition)
-		{
-			m_members.definition = definition;
-		}
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            void c_effect_instance::ClearMembers()
+            {
+                ClearNodeData();
 
-		void c_effect_instance::SetQuadDefinition(TagGroups::s_effect_postprocess_quad_definition* definition)
-		{
-			m_members.quad_definition = definition;
-		}
+                m_members.m_flags.is_valid = false;
+                m_members.m_flags.is_active = true;
+                m_members.definition = nullptr;
+                m_members.quad_definition = nullptr;
+                m_members.render_quad = nullptr;
+                m_members.m_fade.start = 1;
+                m_members.m_fade.end = 1;
+                m_members.m_fade.current = 1;
 
-		bool c_effect_instance::IsValid()
-		{
-			return m_members.m_flags.is_valid;
-		}
+                m_members.m_fade.interpolator.Begin(0);
+            }
 
-		real c_effect_instance::GetCurrentFade()
-		{
-			return m_members.m_fade.current;
-		}
+            void c_effect_instance::SetEffect(c_effect_postprocess* definition)
+            {
+                m_members.definition = definition;
+            }
 
-		int16 c_effect_instance::GetFadeDirection()
-		{
-			if(m_members.m_fade.current == m_members.m_fade.end)
-				return -1;
+            void c_effect_instance::SetQuadDefinition(TagGroups::s_effect_postprocess_quad_definition* definition)
+            {
+                m_members.quad_definition = definition;
+            }
 
-			return m_members.m_fade.start < m_members.m_fade.end ? 1 : 0;
-		}
+            bool c_effect_instance::IsValid()
+            {
+                return m_members.m_flags.is_valid;
+            }
 
-		void c_effect_instance::SetIsActive(bool active)
-		{
-			m_members.m_flags.is_active = active;
-		}
+            real c_effect_instance::GetCurrentFade()
+            {
+                return m_members.m_fade.current;
+            }
 
-		/////////////////////////////////////////////////
-		// effect instance setup
-		/*!
-		 * \brief
-		 * Sets the is_valid flag.
-		 * 
-		 * Sets the is_valid flag.
-		 */
-		void c_effect_instance::Validate()
-		{
-			m_members.m_flags.is_valid = ValidateImpl();
-		}
+            int16 c_effect_instance::GetFadeDirection()
+            {
+                if (m_members.m_fade.current == m_members.m_fade.end)
+                {
+                    return -1;
+                }
 
-		HRESULT c_effect_instance::LoadEffectInstance()
-		{
-			YELO_ASSERT_DISPLAY(m_members.quad_definition != nullptr, "no quad definition has been set for an effect instance");
+                return m_members.m_fade.start < m_members.m_fade.end ? 1 : 0;
+            }
 
-			if(m_members.quad_definition)
-				m_members.render_quad = c_post_processing_main::Instance().Globals().quad_collection.CreateQuadInstance(*m_members.quad_definition);
+            void c_effect_instance::SetIsActive(bool active)
+            {
+                m_members.m_flags.is_active = active;
+            }
 
-			return (m_members.render_quad ? S_OK : E_FAIL);
-		}
+            void c_effect_instance::Ctor()
+            {
+                ClearMembers();
+            }
 
-		void c_effect_instance::UnloadEffectInstance()
-		{
-			safe_release(m_members.render_quad);
-		}
+            void c_effect_instance::Dtor()
+            {
+                ClearMembers();
+            }
 
-		/*!
-		 * \brief
-		 * Returns whether this effect instance is valid.
-		 * 
-		 * \returns
-		 * True if the effect instance is valid.
-		 * 
-		 * Returns whether this effect instance is valid. An effect instance is valid if it points to a valid effect.
-		 */
-		bool c_effect_instance::ValidateImpl()
-		{
-			bool valid = false;
-			do
-			{
-				if(!m_members.definition) break;
-				if(!m_members.render_quad) break;
+            void c_effect_instance::Validate()
+            {
+                m_members.m_flags.is_valid = ValidateImpl();
+            }
 
-				valid = true;
-			}while(false);
+            HRESULT c_effect_instance::LoadEffectInstance()
+            {
+                YELO_ASSERT_DISPLAY(m_members.quad_definition != nullptr, "no quad definition has been set for an effect instance");
 
-			if(valid)
-				valid &= m_members.definition->IsValid();
-			return valid;
-		}
+                if (m_members.quad_definition)
+                {
+                    m_members.render_quad = c_post_processing_main::Instance().Globals().quad_collection.CreateQuadInstance(*m_members.quad_definition);
+                }
 
-		/////////////////////////////////////////////////
-		// effect instance application
-		bool c_effect_instance::IsActive()
-		{
-			return m_members.m_flags.is_active;
-		}
+                return (m_members.render_quad ? S_OK : E_FAIL);
+            }
 
-		HRESULT c_effect_instance::Render(IDirect3DDevice9* render_device)
-		{
-			if(!IsActive())
-				return E_FAIL;
+            void c_effect_instance::UnloadEffectInstance()
+            {
+                safe_release(m_members.render_quad);
+            }
 
-			return m_members.definition->Render(render_device, m_members.render_quad, m_members.m_fade.current);
-		}
+            bool c_effect_instance::ValidateImpl()
+            {
+                auto valid = false;
+                do
+                {
+                    if (!m_members.definition)
+                    {
+                        break;
+                    }
+                    if (!m_members.render_quad)
+                    {
+                        break;
+                    }
 
-		void c_effect_instance::UpdateEffectInstance(real delta_time)
-		{
-			m_members.m_fade.interpolator.Update(delta_time);
+                    valid = true;
+                } while (false);
 
-			Time::Interpolation::InterpolateValues<1>(&m_members.m_fade.start, &m_members.m_fade.end, m_members.m_fade.interpolator.GetValues(), &m_members.m_fade.current);
-		}
+                if (valid)
+                {
+                    valid &= m_members.definition->IsValid();
+                }
+                return valid;
+            }
 
-		void c_effect_instance::SetEffectFade(real start, real end, real change_time)
-		{
-			m_members.m_fade.start = start;
-			m_members.m_fade.end = end;
-			m_members.m_fade.current = start;
+            bool c_effect_instance::IsActive()
+            {
+                return m_members.m_flags.is_active;
+            }
 
-			m_members.m_fade.interpolator.Begin(change_time);
-		}
-	};};
-};
+            HRESULT c_effect_instance::Render(IDirect3DDevice9* render_device)
+            {
+                if (!IsActive())
+                {
+                    return E_FAIL;
+                }
+
+                return m_members.definition->Render(render_device, m_members.render_quad, m_members.m_fade.current);
+            }
+
+            void c_effect_instance::UpdateEffectInstance(real delta_time)
+            {
+                m_members.m_fade.interpolator.Update(delta_time);
+
+                Time::Interpolation::InterpolateValues<1>(&m_members.m_fade.start, &m_members.m_fade.end, m_members.m_fade.interpolator.GetValues(), &m_members.m_fade.current);
+            }
+
+            void c_effect_instance::SetEffectFade(real start, real end, real change_time)
+            {
+                m_members.m_fade.start = start;
+                m_members.m_fade.end = end;
+                m_members.m_fade.current = start;
+
+                m_members.m_fade.interpolator.Begin(change_time);
+            }
+        }
+    }
+}
 #endif

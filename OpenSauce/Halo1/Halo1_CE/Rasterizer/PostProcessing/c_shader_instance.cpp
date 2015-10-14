@@ -11,75 +11,87 @@
 
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
+#include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
+
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		/////////////////////////////////////////////////
-		// member accessors
-		void c_shader_instance::SetShader(c_shader_postprocess* definition)
-		{
-			m_members.definition = definition;
-		}
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            void c_shader_instance::ClearMembers()
+            {
+                ClearNodeData();
 
-		c_shader_postprocess* c_shader_instance::GetShader() 
-		{
-			return m_members.definition;
-		}
+                m_members.m_flags.is_valid = false;
+                m_members.m_flags.is_active = true;
+                m_members.definition = nullptr;
+            }
 
-		bool c_shader_instance::IsValid()
-		{
-			return m_members.m_flags.is_valid;
-		}
+            void c_shader_instance::SetShader(c_shader_postprocess* definition)
+            {
+                m_members.definition = definition;
+            }
 
-		bool& c_shader_instance::IsActive()
-		{
-			return m_members.m_flags.is_active;
-		}
-		
-		bool c_shader_instance::UsesGBuffer()
-		{
-			if(!GetShader() || !GetShader()->GetShaderDefinition<TagGroups::s_shader_postprocess_definition>())
-				return false;
-			return GetShader()->GetShaderDefinition<TagGroups::s_shader_postprocess_definition>()->runtime.flags.uses_gbuffer_bit;
-		}
+            c_shader_postprocess* c_shader_instance::GetShader()
+            {
+                return m_members.definition;
+            }
 
-		/////////////////////////////////////////////////
-		// shader instance setup
-		/*!
-		 * \brief
-		 * Sets the is_valid flag.
-		 * 
-		 * Sets the is_valid flag.
-		 */
-		void c_shader_instance::Validate()
-		{
-			m_members.m_flags.is_valid = ValidateImpl();
-		}
+            bool c_shader_instance::IsValid()
+            {
+                return m_members.m_flags.is_valid;
+            }
 
-		/*!
-		 * \brief
-		 * Returns whether this shader instance is valid.
-		 * 
-		 * \returns
-		 * True if the shader instance is valid.
-		 * 
-		 * Returns whether this shader instance is valid. A shader instance is valid if it points to a valid shader.
-		 */
-		bool c_shader_instance::ValidateImpl()
-		{
-			bool valid = false;
-			do
-			{
-				if(!m_members.definition) break;
+            bool& c_shader_instance::IsActive()
+            {
+                return m_members.m_flags.is_active;
+            }
 
-				valid = true;
-			}while(false);
+            bool c_shader_instance::UsesGBuffer()
+            {
+                if (!GetShader() || !GetShader()->GetShaderDefinition<TagGroups::s_shader_postprocess_definition>())
+                {
+                    return false;
+                }
+                return GetShader()->GetShaderDefinition<TagGroups::s_shader_postprocess_definition>()->runtime.flags.uses_gbuffer_bit;
+            }
 
-			if(valid)
-				valid &= m_members.definition->IsValid();
-			return valid;
-		}
-	};};
-};
+            void c_shader_instance::Ctor()
+            {
+                ClearMembers();
+            }
+
+            void c_shader_instance::Dtor()
+            {
+                ClearMembers();
+            }
+
+            void c_shader_instance::Validate()
+            {
+                m_members.m_flags.is_valid = ValidateImpl();
+            }
+
+            bool c_shader_instance::ValidateImpl()
+            {
+                auto valid = false;
+                do
+                {
+                    if (!m_members.definition)
+                    {
+                        break;
+                    }
+
+                    valid = true;
+                } while (false);
+
+                if (valid)
+                {
+                    valid &= m_members.definition->IsValid();
+                }
+                return valid;
+            }
+        }
+    }
+}
 #endif
