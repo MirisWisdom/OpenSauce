@@ -11,6 +11,7 @@
 
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/s_shader_motionblur_definition.hpp"
+#include "Rasterizer/GBuffer.hpp"
 
 #ifdef EXTERNAL_SUBSYSTEM_SHADERS
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_external.hpp"

@@ -9,6 +9,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include <YeloLib/memory/linked_list.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
@@ -27,13 +28,6 @@ namespace Yelo
 
             _shader_model_mask
         };
-    }
-
-    namespace TagGroups
-    {
-        struct s_shader_postprocess_parameter;
-        struct s_shader_postprocess_generic;
-        struct s_effect_postprocess_generic_effect_instance;
     }
 
     namespace Rasterizer

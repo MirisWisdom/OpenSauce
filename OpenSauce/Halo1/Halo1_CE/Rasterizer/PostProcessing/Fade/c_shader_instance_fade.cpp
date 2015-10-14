@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
+#include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 #include "Rasterizer/PostProcessing/Fade/s_shader_fade_definition.hpp"
 
 namespace Yelo
