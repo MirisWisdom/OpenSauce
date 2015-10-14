@@ -37,14 +37,8 @@ namespace Yelo
                 } m_members;
 
             private:
-                void ClearMembers()
-                {
-                    m_members.definition = nullptr;
-                    m_members.source_data = nullptr;
-                }
+                void ClearMembers();
 
-                /////////////////////////////////////////////////
-                // member accessors
             public:
                 virtual ~c_shader_postprocess() {}
 
@@ -60,22 +54,9 @@ namespace Yelo
                 LPD3DXEFFECT GetEffect();
                 bool IsValid();
 
-                /////////////////////////////////////////////////
-                // initializers
-            public:
-                virtual void Ctor()
-                {
-                    ClearMembers();
-                }
+                virtual void Ctor();
+                virtual void Dtor();
 
-                virtual void Dtor()
-                {
-                    ClearMembers();
-                }
-
-                /////////////////////////////////////////////////
-                // shader setup
-            public:
                 virtual void SetupShader() {}
 
                 HRESULT LoadShader(IDirect3DDevice9* render_device);
@@ -96,15 +77,13 @@ namespace Yelo
                 TagGroups::s_technique_definition* GetActiveTechnique();
                 D3DXHANDLE GetTechniqueHandle();
 
-                /////////////////////////////////////////////////
-                // shader application
             public:
                 virtual void SetVariables();
                 virtual void UpdateVariables();
 
                 HRESULT Render(IDirect3DDevice9* render_device, Render::c_quad_instance* render_quad);
             };
-        };
-    };
-};
+        }
+    }
+}
 #endif

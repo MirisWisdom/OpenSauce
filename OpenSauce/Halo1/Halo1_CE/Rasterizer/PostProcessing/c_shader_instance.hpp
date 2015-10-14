@@ -7,77 +7,57 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/memory/linked_list.hpp>
 
-#include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
+#include <YeloLib/memory/linked_list.hpp>
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		class c_shader_instance : public LinkedListNode<c_shader_instance>
-		{
-			/////////////////////////////////////////////////
-			// members
-		protected:
-			struct
-			{
-				struct
-				{
-					bool is_valid;
-					bool is_active;
-					PAD16;
-				}m_flags;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            class c_shader_postprocess;
 
-				c_shader_postprocess* definition;
-			}m_members;
+            class c_shader_instance : public LinkedListNode<c_shader_instance>
+            {
+            protected:
+                struct
+                {
+                    struct
+                    {
+                        bool is_valid;
+                        bool is_active;
+                        PAD16;
+                    } m_flags;
 
-		private:
-			void ClearMembers()
-			{
-				ClearNodeData();
+                    c_shader_postprocess* definition;
+                } m_members;
 
-				m_members.m_flags.is_valid = false;
-				m_members.m_flags.is_active = true;
-				m_members.definition = nullptr;
-			}
+            private:
+                void ClearMembers();
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			virtual void SetShader(c_shader_postprocess* definition);
-			c_shader_postprocess* GetShader();
-			bool IsValid();
-			bool& IsActive();
-			bool UsesGBuffer();
+            public:
+                virtual void SetShader(c_shader_postprocess* definition);
+                c_shader_postprocess* GetShader();
+                bool IsValid();
+                bool& IsActive();
+                bool UsesGBuffer();
 
-			/////////////////////////////////////////////////
-			// initializers
-		public:
-			virtual void Ctor()
-			{
-				ClearMembers();
-			}
+                virtual void Ctor();
+                virtual void Dtor();
 
-			virtual void Dtor()
-			{
-				ClearMembers();
-			}
+                virtual void SetupShaderInstance() {}
 
-			/////////////////////////////////////////////////
-			// shader instance setup
-		public:
-			virtual void SetupShaderInstance() {}
-			void Validate();
-		protected:
-			virtual bool ValidateImpl();
+                void Validate();
+            protected:
+                virtual bool ValidateImpl();
 
-			/////////////////////////////////////////////////
-			// shader instance application
-		public:
-			virtual void UpdateShaderInstance(real delta_time) { }
-			virtual void SetShaderInstanceVariables() {}
-		};
-	};};
-};
+            public:
+                virtual void UpdateShaderInstance(real delta_time) { }
+
+                virtual void SetShaderInstanceVariables() {}
+            };
+        }
+    }
+}
 #endif

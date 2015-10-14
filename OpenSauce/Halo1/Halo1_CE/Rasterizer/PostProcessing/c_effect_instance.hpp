@@ -27,8 +27,6 @@ namespace Yelo
 
             class c_effect_instance : public LinkedListNode<c_effect_instance>
             {
-                /////////////////////////////////////////////////
-                // members
             protected:
                 struct
                 {
@@ -55,24 +53,8 @@ namespace Yelo
                 } m_members;
 
             private:
-                void ClearMembers()
-                {
-                    ClearNodeData();
+                void ClearMembers();
 
-                    m_members.m_flags.is_valid = false;
-                    m_members.m_flags.is_active = true;
-                    m_members.definition = nullptr;
-                    m_members.quad_definition = nullptr;
-                    m_members.render_quad = nullptr;
-                    m_members.m_fade.start = 1;
-                    m_members.m_fade.end = 1;
-                    m_members.m_fade.current = 1;
-
-                    m_members.m_fade.interpolator.Begin(0);
-                }
-
-                /////////////////////////////////////////////////
-                // member accessors
             public:
                 virtual void SetEffect(c_effect_postprocess* definition);
                 void SetQuadDefinition(TagGroups::s_effect_postprocess_quad_definition* definition);
@@ -81,22 +63,9 @@ namespace Yelo
                 int16 GetFadeDirection();
                 void SetIsActive(bool active);
 
-                /////////////////////////////////////////////////
-                // initializers
-            public:
-                virtual void Ctor()
-                {
-                    ClearMembers();
-                }
+                virtual void Ctor();
+                virtual void Dtor();
 
-                virtual void Dtor()
-                {
-                    ClearMembers();
-                }
-
-                /////////////////////////////////////////////////
-                // effect instance setup
-            public:
                 virtual void SetupEffectInstance() {}
 
                 void Validate();
@@ -106,9 +75,6 @@ namespace Yelo
             protected:
                 virtual bool ValidateImpl();
 
-                /////////////////////////////////////////////////
-                // effect instance application
-            protected:
                 virtual bool IsActive();
             public:
                 HRESULT Render(IDirect3DDevice9* render_device);
@@ -116,7 +82,7 @@ namespace Yelo
                 virtual void UpdateEffectInstance(real delta_time);
                 void SetEffectFade(real start, real end, real change_time);
             };
-        };
-    };
-};
+        }
+    }
+}
 #endif
