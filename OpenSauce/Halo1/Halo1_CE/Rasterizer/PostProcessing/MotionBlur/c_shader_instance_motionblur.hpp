@@ -9,6 +9,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
+
 #include "Rasterizer/PostProcessing/c_shader_instance.hpp"
 
 namespace Yelo
@@ -25,8 +26,6 @@ namespace Yelo
 
                 class c_shader_instance_motionblur : public c_shader_instance
                 {
-                    /////////////////////////////////////////////////
-                    // members
                 protected:
                     struct
                     {
@@ -46,51 +45,18 @@ namespace Yelo
                         Time::Interpolation::c_interp_linear<1> vignette_interp;
                     } m_members_motionblur;
 
-                    /////////////////////////////////////////////////
-                    // member accessors
                 public:
-                    void SetShader(c_shader_postprocess* shader);
+                    void SetShader(c_shader_postprocess* shader) override;
                     real& BlurAmount();
 
-                    /////////////////////////////////////////////////
-                    // initializers
-                public:
-                    void Ctor()
-                    {
-                        c_shader_instance::Ctor();
+                    void Ctor() override;
+                    void Dtor() override;
 
-                        m_members_motionblur.m_flags.vignette_enabled_prev = false;
-                        m_members_motionblur.m_flags.vignette_enabled = false;
-
-                        m_members_motionblur.definition = NULL;
-
-                        m_members_motionblur.start_vignette = 0.0f;
-                        m_members_motionblur.target_vignette = 0.0f;
-                        m_members_motionblur.vignette_interp.Ctor();
-                    }
-
-                    void Dtor()
-                    {
-                        c_shader_instance::Dtor();
-
-                        m_members_motionblur.m_flags.vignette_enabled_prev = false;
-                        m_members_motionblur.m_flags.vignette_enabled = false;
-
-                        m_members_motionblur.definition = NULL;
-
-                        m_members_motionblur.start_vignette = 0.0f;
-                        m_members_motionblur.target_vignette = 0.0f;
-                        m_members_motionblur.vignette_interp.Ctor();
-                    }
-
-                    /////////////////////////////////////////////////
-                    // shader instance application
-                public:
-                    void UpdateShaderInstance(real delta_time);
-                    void SetShaderInstanceVariables();
+                    void UpdateShaderInstance(real delta_time) override;
+                    void SetShaderInstanceVariables() override;
                 };
-            };
-        };
-    };
-};
+            }
+        }
+    }
+}
 #endif

@@ -2033,9 +2033,6 @@
     <None Include="Memory\1.09\_EngineLayout.TagGroups.inl">
       <Filter>_Resources\1.09</Filter>
     </None>
-    <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl">
-      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
-    </None>
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl">
       <Filter>Rasterizer\PostProcessing\Impl</Filter>
     </None>
