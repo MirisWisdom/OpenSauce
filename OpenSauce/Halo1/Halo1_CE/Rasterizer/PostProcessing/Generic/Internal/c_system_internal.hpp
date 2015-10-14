@@ -7,178 +7,170 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include "Rasterizer/PostProcessing/PostProcessing.hpp"
+
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-
 #include "Rasterizer/PostProcessing/c_effect_render_set.hpp"
-#include "Rasterizer/PostProcessing/Generic/c_shader_instance_generic.hpp"
-#include "Rasterizer/PostProcessing/Generic/Internal/c_shader_internal.hpp"
-#include "Rasterizer/PostProcessing/Generic/Internal/c_effect_internal.hpp"
-#include "Rasterizer/PostProcessing/Generic/c_effect_instance_generic.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Generic { namespace Internal
-	{
-		class c_system_internal
-			: public IPostProcessingCacheComponent
-			, public IPostProcessingUpdatable
-			, public IPostProcessingRenderable
-		{
-			struct s_effect_set
-			{
-				c_effect_internal* effect;
+    namespace TagGroups
+    {
+        struct s_effect_postprocess_generic_effect_instance;
+        struct s_effect_postprocess_collection_effect;
+        struct s_effect_postprocess_collection;
+    }
 
-				uint32 shader_instance_count;
-				c_shader_instance_generic* shader_instances;
-			};
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            class c_shader_postprocess;
 
-			/////////////////////////////////////////////////
-			// static members
-		private:
-			static c_system_internal g_internal_system;
+            namespace Generic
+            {
+                class c_shader_instance_generic;
+                class c_effect_instance_generic;
 
-			/////////////////////////////////////////////////
-			// static member accessors
-		public:
-			static c_system_internal& Instance();
+                namespace Internal
+                {
+                    class c_effect_internal;
+                    class c_shader_internal;
 
-			/////////////////////////////////////////////////
-			// members
-		private:
-			struct
-			{
-				struct
-				{
-					bool is_ready;
-					bool is_unloaded;
-					bool is_enabled;
-					PAD8;
-				}m_flags;
+                    class c_system_internal
+                        : public IPostProcessingCacheComponent,
+                          public IPostProcessingUpdatable,
+                          public IPostProcessingRenderable
+                    {
+                        struct s_effect_set
+                        {
+                            c_effect_internal* effect;
 
-				Enums::pp_component_status status;
-				PAD16;
-			}m_members;
+                            uint32 shader_instance_count;
+                            c_shader_instance_generic* shader_instances;
+                        };
 
-			struct
-			{
-				TagGroups::s_effect_postprocess_collection* cache_shader_collection;
+                        static c_system_internal g_internal_system;
+                    public:
+                        static c_system_internal& Instance();
 
-				c_effect_render_set m_render_sets[5];
+                    private:
+                        struct
+                        {
+                            struct
+                            {
+                                bool is_ready;
+                                bool is_unloaded;
+                                bool is_enabled;
+                                PAD8;
+                            } m_flags;
 
-				struct
-				{
-					uint16 count;
-					PAD16;
-					c_shader_internal* shader_list;
-				}m_shaders;
+                            Enums::pp_component_status status;
+                            PAD16;
+                        } m_members;
 
-				struct
-				{
-					uint16 count;
-					PAD16;
-					s_effect_set* effect_list;
-				}m_effects;
+                        struct
+                        {
+                            TagGroups::s_effect_postprocess_collection* cache_shader_collection;
 
-				struct
-				{
-					uint16 count;
-					PAD16;
-					c_effect_instance_generic* effect_instance_list;
-				}m_effect_instances;
-			}m_members_internal;
+                            c_effect_render_set m_render_sets[5];
 
-			void ClearMembers();
+                            struct
+                            {
+                                uint16 count;
+                                PAD16;
+                                c_shader_internal* shader_list;
+                            } m_shaders;
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			bool& Enabled();
-			bool IsReady();
-			bool IsUnloaded();
+                            struct
+                            {
+                                uint16 count;
+                                PAD16;
+                                s_effect_set* effect_list;
+                            } m_effects;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingComponent
-		public:
-			void Initialize();
-			void Dispose();
+                            struct
+                            {
+                                uint16 count;
+                                PAD16;
+                                c_effect_instance_generic* effect_instance_list;
+                            } m_effect_instances;
+                        } m_members_internal;
 
-			void OnLostDevice_Base();
-			void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters);
-			
-			void Unload();
-			void Load();
+                        void ClearMembers();
 
-			/////////////////////////////////////////////////
-			// IPostProcessingRenderable
-		public:
-			bool Render(Enums::postprocess_render_stage render_stage);
+                    public:
+                        bool& Enabled();
+                        bool IsReady() override;
+                        bool IsUnloaded() override;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingUpdatable
-		public:
-			void Update(real delta_time);
+                        void Initialize() override;
+                        void Dispose() override;
 
-			/////////////////////////////////////////////////
-			// IPostProcessingCacheComponent
-		public:
-			void Initialize_Cache();
-			void Dispose_Cache();
+                        void OnLostDevice_Base() override;
+                        void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters) override;
 
-			void InitializeResources_Cache();
-			void ReleaseResources_Cache();
+                        void Unload() override;
+                        void Load() override;
 
-			/////////////////////////////////////////////////
-			// system setup
-		private:
-			void GetShaderCollection();
-			void ClearShaderCollection();
+                        bool Render(Enums::postprocess_render_stage render_stage) override;
+                        void Update(real delta_time) override;
 
-			void GetInternalShaders();
-			void ClearInternalShaders();
-			void GetInternalEffects();
-			void ClearInternalEffects();
+                        void Initialize_Cache() override;
+                        void Dispose_Cache() override;
 
-			HRESULT LoadShaders();
-			void UnloadShaders();
-			HRESULT LoadEffects();
-			void UnloadEffects();
+                        void InitializeResources_Cache() override;
+                        void ReleaseResources_Cache() override;
 
-			void SetupEffect(s_effect_set& effect_set, TagGroups::s_effect_postprocess_collection_effect* definition);
-			void DestroyEffect(s_effect_set& effect_set);
-			void SetupEffectInstance(c_effect_instance_generic* instance, TagGroups::s_effect_postprocess_generic_effect_instance* definition);
-			void DestroyEffectInstance(c_effect_instance_generic* instance);
+                    private:
+                        void GetShaderCollection();
+                        void ClearShaderCollection();
 
-			c_shader_postprocess* GetShaderByIndex(datum_index index);
+                        void GetInternalShaders();
+                        void ClearInternalShaders();
+                        void GetInternalEffects();
+                        void ClearInternalEffects();
 
-			void SetupRenderSets();
-			void ClearRenderSets();
-			void SetRenderSet(c_effect_render_set& set, Enums::postprocess_render_stage render_stage);
+                        HRESULT LoadShaders();
+                        void UnloadShaders();
+                        HRESULT LoadEffects();
+                        void UnloadEffects();
 
-			void ValidateSystem();
+                        void SetupEffect(s_effect_set& effect_set, TagGroups::s_effect_postprocess_collection_effect* definition);
+                        void DestroyEffect(s_effect_set& effect_set);
+                        void SetupEffectInstance(c_effect_instance_generic* instance, TagGroups::s_effect_postprocess_generic_effect_instance* definition);
+                        void DestroyEffectInstance(c_effect_instance_generic* instance);
 
-			void UpdateStatus();
+                        c_shader_postprocess* GetShaderByIndex(datum_index index);
 
-			/////////////////////////////////////////////////
-			// scripting
-		public:
-			int16 GetEffectInstanceIndexByName(const char* name);
-			void SetEffectInstanceActive(int16 index, bool active);
-			void SetEffectInstanceFade(int16 index, real start, real end, real time);
-			real GetEffectInstanceCurrentFade(int16 index);
-			int16 GetEffectInstanceFadeDirection(int16 index);
+                        void SetupRenderSets();
+                        void ClearRenderSets();
+                        void SetRenderSet(c_effect_render_set& set, Enums::postprocess_render_stage render_stage);
 
-			int16 GetEffectIndexByName(const char* name);
-			bool GetEffectIsValid(int16 index);
-			int16 GetEffectShaderVariableIndexByName(int16 index, const char* name);
-			void SetEffectShaderVariableBoolean(int16 index, int16 variable_index, bool value, real time);
-			void SetEffectShaderVariableInteger(int16 index, int16 variable_index, int32 value, real time);
-			void SetEffectShaderVariableReal(int16 index, int16 variable_index, real value0, real value1, real value2, real value3, real time);
+                        void ValidateSystem();
 
-			void SetEffectShaderInstanceActive(int16 index, int16 instance_index, bool active);
-		};
-	};};};};
+                        void UpdateStatus();
+
+                    public:
+                        int16 GetEffectInstanceIndexByName(const char* name);
+                        void SetEffectInstanceActive(int16 index, bool active);
+                        void SetEffectInstanceFade(int16 index, real start, real end, real time);
+                        real GetEffectInstanceCurrentFade(int16 index);
+                        int16 GetEffectInstanceFadeDirection(int16 index);
+
+                        int16 GetEffectIndexByName(const char* name);
+                        bool GetEffectIsValid(int16 index);
+                        int16 GetEffectShaderVariableIndexByName(int16 index, const char* name);
+                        void SetEffectShaderVariableBoolean(int16 index, int16 variable_index, bool value, real time);
+                        void SetEffectShaderVariableInteger(int16 index, int16 variable_index, int32 value, real time);
+                        void SetEffectShaderVariableReal(int16 index, int16 variable_index, real value0, real value1, real value2, real value3, real time);
+
+                        void SetEffectShaderInstanceActive(int16 index, int16 instance_index, bool active);
+                    };
+                };
+            };
+        };
+    };
 };
 #endif

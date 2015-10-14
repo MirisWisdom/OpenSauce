@@ -7,16 +7,26 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
+#include <YeloLib/Halo1/shaders/effect_postprocess_generic_definitions.hpp>
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Generic { namespace External
-	{
-		struct s_effect_postprocess_external : TagGroups::s_effect_postprocess_generic
-		{
-			TAG_TBLOCK_(shader_ids, tag_string);
-		};
-	};};};};
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Generic
+            {
+                namespace External
+                {
+                    struct s_effect_postprocess_external : TagGroups::s_effect_postprocess_generic
+                    {
+                        TAG_TBLOCK_(shader_ids, tag_string);
+                    };
+                };
+            };
+        };
+    };
 };
 #endif
