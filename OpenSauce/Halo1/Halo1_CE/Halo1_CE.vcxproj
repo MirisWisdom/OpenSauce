@@ -457,6 +457,7 @@
     <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.cpp" />
     <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.cpp" />
     <ClCompile Include="Rasterizer\Lightmaps.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.cpp" />
     <ClCompile Include="Rasterizer\Sky.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp" />

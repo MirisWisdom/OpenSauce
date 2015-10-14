@@ -7,17 +7,24 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing 
-	{
-		interface IPostProcessingRenderable
-			abstract
-		{
-			virtual bool Render(Enums::postprocess_render_stage render_stage) { return false; }
-		};
-	};};
-};
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            class IPostProcessingRenderable
+            {
+            public:
+                virtual bool Render(Enums::postprocess_render_stage render_stage)
+                {
+                    return false;
+                }
+            };
+        }
+    }
+}
 #endif
