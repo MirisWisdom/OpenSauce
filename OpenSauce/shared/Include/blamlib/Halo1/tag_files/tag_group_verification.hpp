@@ -10,7 +10,9 @@
 
 namespace Yelo
 {
-	namespace TagGroups
+    struct tag_field;
+
+    namespace TagGroups
 	{
 		void CheckForUnreferencedGroups();
 

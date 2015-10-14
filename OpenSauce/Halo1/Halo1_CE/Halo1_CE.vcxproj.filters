@@ -127,9 +127,6 @@
     <Filter Include="Rasterizer\PostProcessing\Generic\External">
       <UniqueIdentifier>{f94e76e4-8be8-4fa6-8105-4126e6d6468a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rasterizer\PostProcessing\Generic\Impl">
-      <UniqueIdentifier>{92af7d3e-3fce-4edb-9431-5df421b5c9aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rasterizer\PostProcessing\Interpolation">
       <UniqueIdentifier>{f11da961-318a-453c-8211-152245753d01}</UniqueIdentifier>
     </Filter>
@@ -2035,9 +2032,6 @@
     </None>
     <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl">
       <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl">
-      <Filter>Rasterizer\PostProcessing\Generic\Impl</Filter>
     </None>
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl">
       <Filter>Rasterizer\PostProcessing\Impl</Filter>
