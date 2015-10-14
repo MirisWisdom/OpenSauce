@@ -13,6 +13,8 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+        struct s_effect_postprocess_generic_effect_instance;
+
 		struct s_effect_postprocess_collection_script_variable
 		{
 			TAG_FIELD(tag_string, script_variable_name);

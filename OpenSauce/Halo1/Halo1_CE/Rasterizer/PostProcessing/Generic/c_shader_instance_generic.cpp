@@ -9,132 +9,140 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <YeloLib/Halo1/shaders/shader_postprocess_generic_definitions.hpp>
+
+#include "Rasterizer/PostProcessing/Generic/c_parameter_instance.hpp"
+#include "Rasterizer/PostProcessing/Generic/c_shader_generic.hpp"
+
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Generic
-	{
-		/////////////////////////////////////////////////
-		// member accessors
-		void c_shader_instance_generic::SetShader(c_shader_postprocess* shader)
-		{
-			m_members_generic.shader = CAST_PTR(c_shader_generic*, shader);
-			c_shader_instance::SetShader(shader);
-		}
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Generic
+            {
+                void c_shader_instance_generic::SetShader(c_shader_postprocess* shader)
+                {
+                    m_members_generic.shader = CAST_PTR(c_shader_generic*, shader);
+                    c_shader_instance::SetShader(shader);
+                }
 
-		/////////////////////////////////////////////////
-		// shader instance setup
-		/*!
-		 * \brief
-		 * Sets up the generic instances members.
-		 * 
-		 * Sets up the generic instances members. The parameter set up function is called here, and any other
-		 * per instance additions should be set up here too.
-		 */
-		void c_shader_instance_generic::SetupShaderInstance()
-		{
-			c_shader_instance::SetupShaderInstance();
+                void c_shader_instance_generic::Ctor()
+                {
+                    c_shader_instance::Ctor();
 
-			CreateParameterInstances();
-		}
+                    m_members_generic.shader = nullptr;
+                    m_members_generic.parameter_count = 0;
+                    m_members_generic.parameters = nullptr;
+                }
 
-		c_parameter_instance* c_shader_instance_generic::GetParameterInstance(const char* name)
-		{
-			c_parameter_instance* instance = nullptr;
+                void c_shader_instance_generic::Dtor()
+                {
+                    c_shader_instance::Dtor();
 
-			uint32 index = 0;
-			while((index < m_members_generic.parameter_count) && !instance)
-			{
-				TagGroups::s_shader_postprocess_parameter* parameter = m_members_generic.parameters[index].GetParameter();
+                    DestroyParameterInstances();
+                    m_members_generic.shader = nullptr;
+                }
 
-				YELO_ASSERT_DISPLAY(parameter != nullptr, "parameter instance has no assigned parameter");
+                /// <summary>Sets up the shader instance.</summary>
+                void c_shader_instance_generic::SetupShaderInstance()
+                {
+                    c_shader_instance::SetupShaderInstance();
 
-				// compare the parameter instances name with the requested name
-				if(strcmp(parameter->value_name, name) == 0)
-					instance = &m_members_generic.parameters[index];
+                    CreateParameterInstances();
+                }
 
-				index++;
-			}
-			return instance;
-		}
+                c_parameter_instance* c_shader_instance_generic::GetParameterInstance(const char* name)
+                {
+                    c_parameter_instance* instance = nullptr;
 
-		/*!
-		 * \brief
-		 * Creates and sets up the parameter instances of the shader.
-		 *
-		 * Creates and sets up the parameter instances of the shader.
-		 */
-		void c_shader_instance_generic::CreateParameterInstances()
-		{
-			TagGroups::s_shader_postprocess_generic* definition = m_members_generic.shader->GetShader();
+                    uint32 index = 0;
+                    while (index < m_members_generic.parameter_count && !instance)
+                    {
+                        auto parameter = m_members_generic.parameters[index].GetParameter();
 
-			// if the shader has no parameters no further set up is needed
-			if(definition->parameters.Count == 0)
-				return;
+                        YELO_ASSERT_DISPLAY(parameter != nullptr, "parameter instance has no assigned parameter");
 
-			// create the parameter instances
-			m_members_generic.parameter_count = definition->parameters.Count;
-			m_members_generic.parameters = new c_parameter_instance[m_members_generic.parameter_count];
+                        // compare the parameter instances name with the requested name
+                        if (strcmp(parameter->value_name, name) == 0)
+                        {
+                            instance = &m_members_generic.parameters[index];
+                        }
 
-			for(uint32 i = 0; i < m_members_generic.parameter_count; i++)
-			{
-				// initialise each parameter instance and run its set up logic
-				m_members_generic.parameters[i].Ctor();
-				m_members_generic.parameters[i].SetParameter(&definition->parameters[i]);
-				m_members_generic.parameters[i].SetupParameterInstance();
-			}
-		}
+                        index++;
+                    }
+                    return instance;
+                }
 
-		/*!
-		 * \brief
-		 * Destructs and deletes all parameter instances.
-		 * 
-		 * Destructs and deletes all parameter instances.
-		 */
-		void c_shader_instance_generic::DestroyParameterInstances()
-		{
-			// if there are no parameters no further action is needed
-			if(m_members_generic.parameter_count == 0)
-				return;
+                /// <summary>Creates parameter instances.</summary>
+                void c_shader_instance_generic::CreateParameterInstances()
+                {
+                    auto definition = m_members_generic.shader->GetShader();
 
-			// run the destruction logic on each instance to delete memory and reset to defaults
-			for(uint32 i = 0; i < m_members_generic.parameter_count; i++)
-				m_members_generic.parameters[i].Dtor();
+                    // if the shader has no parameters no further set up is needed
+                    if (definition->parameters.Count == 0)
+                    {
+                        return;
+                    }
 
-			// delete the parameter instance array
-			delete [] m_members_generic.parameters;
-			m_members_generic.parameters = nullptr;
+                    // create the parameter instances
+                    m_members_generic.parameter_count = definition->parameters.Count;
+                    m_members_generic.parameters = new c_parameter_instance[m_members_generic.parameter_count];
 
-			m_members_generic.parameter_count = 0;
-		}
+                    for (uint32 i = 0; i < m_members_generic.parameter_count; i++)
+                    {
+                        // initialise each parameter instance and run its set up logic
+                        m_members_generic.parameters[i].Ctor();
+                        m_members_generic.parameters[i].SetParameter(&definition->parameters[i]);
+                        m_members_generic.parameters[i].SetupParameterInstance();
+                    }
+                }
+                
+                /// <summary>Destroys the parameter instances.</summary>
+                void c_shader_instance_generic::DestroyParameterInstances()
+                {
+                    // if there are no parameters no further action is needed
+                    if (m_members_generic.parameter_count == 0)
+                    {
+                        return;
+                    }
 
-		/////////////////////////////////////////////////
-		// shader instance application
-		/*!
-		 * \brief
-		 * Updates the time based parameter instances.
-		 * 
-		 * \param delta_time
-		 * The time that has passed since the last update.
-		 * 
-		 * Updates the time based parameter instances.
-		 */
-		void c_shader_instance_generic::UpdateShaderInstance(real delta_time)
-		{
-			for(uint32 i = 0; i < m_members_generic.parameter_count; i++)
-				m_members_generic.parameters[i].Update(delta_time);
-		}
+                    // run the destruction logic on each instance to delete memory and reset to defaults
+                    for (uint32 i = 0; i < m_members_generic.parameter_count; i++)
+                    {
+                        m_members_generic.parameters[i].Dtor();
+                    }
 
-		/*!
-		 * \brief
-		 * Sets the variable values in the effect to those of the shader instance's parameters.
-		 * 
-		 * Sets the variable values in the effect to those of the shader instance's parameters.
-		 */
-		void c_shader_instance_generic::SetShaderInstanceVariables()
-		{
-			for(uint32 i = 0; i < m_members_generic.parameter_count; i++)
-				m_members_generic.parameters[i].SetParameterVariable(m_members_generic.shader->GetEffect());
-		}
-	};};};
-};
+                    // delete the parameter instance array
+                    delete [] m_members_generic.parameters;
+                    m_members_generic.parameters = nullptr;
+
+                    m_members_generic.parameter_count = 0;
+                }
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////
+                /// <summary>Updates the shader instance described by delta_time.</summary>
+                ///
+                /// <param name="delta_time">The delta time.</param>
+                void c_shader_instance_generic::UpdateShaderInstance(real delta_time)
+                {
+                    for (uint32 i = 0; i < m_members_generic.parameter_count; i++)
+                    {
+                        m_members_generic.parameters[i].Update(delta_time);
+                    }
+                }
+
+                /// <summary>Sets shader instance variables.</summary>
+                void c_shader_instance_generic::SetShaderInstanceVariables()
+                {
+                    for (uint32 i = 0; i < m_members_generic.parameter_count; i++)
+                    {
+                        m_members_generic.parameters[i].SetParameterVariable(m_members_generic.shader->GetEffect());
+                    }
+                }
+            }
+        }
+    }
+}
 #endif
