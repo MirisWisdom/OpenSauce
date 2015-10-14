@@ -7,40 +7,39 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_base.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		class c_shader_data_pp_shaders : public c_shader_data_base
-		{
-			char m_shader_id[MAX_PATH];
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            class c_shader_data_pp_shaders : public c_shader_data_base
+            {
+                char m_shader_id[MAX_PATH];
 
-			void ClearMembers()
-			{
-				m_shader_id[0] = '\0';
-			}
+                void ClearMembers();
 
-		public:
-			void SetShaderID(const char* id) { strcpy_s(m_shader_id, MAX_PATH, id); }
+            public:
+                void SetShaderID(const char* id);
 
-			void Ctor()
-			{
-				ClearMembers();
-			}
-			void Dtor()
-			{
-				ClearMembers();
-			}
+                void Ctor() override;
+                void Dtor() override;
 
-			const char* DataSourceID();
-			const void* GetData(uint32& data_size);
-			void Dispose() {}
-			const bool IsBinary() { return true; }
-			const char* GetIncludePath() { return nullptr; }
-			const D3DXMACRO* GetMacros() { return nullptr; }
-		};
-	};};
-};
+                const char* DataSourceID() override;
+                const void* GetData(uint32& data_size) override;
+
+                void Dispose() override {}
+
+                const bool IsBinary() override;
+
+                const char* GetIncludePath() override;
+
+                const D3DXMACRO* GetMacros() override;
+            };
+        }
+    }
+}
 #endif
