@@ -2036,12 +2036,6 @@
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl">
       <Filter>Rasterizer\PostProcessing\Impl</Filter>
     </None>
-    <None Include="Rasterizer\PostProcessing\PostProcessing_RenderStates.inl">
-      <Filter>Rasterizer\PostProcessing\Impl</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\PostProcessing_Systems.inl">
-      <Filter>Rasterizer\PostProcessing\Impl</Filter>
-    </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
     </None>

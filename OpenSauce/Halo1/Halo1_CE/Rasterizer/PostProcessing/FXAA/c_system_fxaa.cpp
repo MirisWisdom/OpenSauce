@@ -9,6 +9,8 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_effect_instance.hpp"
 #include "Rasterizer/PostProcessing/c_shader_instance.hpp"

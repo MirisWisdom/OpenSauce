@@ -11,6 +11,8 @@
 
 #include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
 
+#include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
+
 namespace Yelo
 {
     namespace Rasterizer

@@ -9,6 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_shader_fade.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_shader_instance_fade.hpp"

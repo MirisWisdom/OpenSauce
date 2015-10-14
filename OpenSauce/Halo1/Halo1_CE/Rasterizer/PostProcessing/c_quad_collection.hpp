@@ -47,7 +47,7 @@ namespace Yelo
                 int32 GetTotalVertexCount();
                 int32 GetTotalIndexCount();
             };
-        };
-    };
-};
+        }
+    }
+}
 #endif
