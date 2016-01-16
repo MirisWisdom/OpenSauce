@@ -321,7 +321,8 @@ namespace BlamLib.TagInterface
 				c.InputStream.ReadInt32();
 
 				// ie, sound samples are stored as a resource, not in tag data
-				if (relativeOffset > c.Header.OffsetToIndex) relativeOffset -= c.AddressMask;
+				if (relativeOffset > c.Header.OffsetToIndex)
+					relativeOffset -= c.AddressMask;
 			}
 		}
 		/// <summary>
@@ -330,12 +331,14 @@ namespace BlamLib.TagInterface
 		/// <param name="c"></param>
 		public override void Read(BlamLib.Blam.CacheFile c)
 		{
-			if (size == 0 || relativeOffset == 0) return;
+			if (size == 0 || relativeOffset == 0)
+				return;
 
 			c.InputStream.Seek(relativeOffset, System.IO.SeekOrigin.Begin);
 			Value = c.InputStream.ReadBytes(size);
 
-			if (bysw != null && c.InputStream.State == IO.EndianState.Big) bysw(this.owner, this);
+			if (bysw != null && c.InputStream.State == IO.EndianState.Big)
+				bysw(this.owner, this);
 		}
 		/// <summary>
 		/// Stream the field's header data to a buffer
@@ -393,14 +396,16 @@ namespace BlamLib.TagInterface
 		/// <param name="c"></param>
 		public override void Write(BlamLib.Blam.CacheFile c)
 		{
-			if (bysw != null && c.OutputStream.State == IO.EndianState.Big) bysw(this.owner, this);
+			if (bysw != null && c.OutputStream.State == IO.EndianState.Big)
+				bysw(this.owner, this);
 
 			relativeOffset = c.OutputStream.PositionUnsigned; // store offset
 			c.OutputStream.Seek(headerOffset); // go to the reflexive header
 			c.OutputStream.WritePointer(relativeOffset); // write address
 			c.OutputStream.Seek(relativeOffset); // go back to where we were
 
-			if (Value != null) c.OutputStream.Write(Value);
+			if (Value != null)
+				c.OutputStream.Write(Value);
 		}
 		#endregion
 

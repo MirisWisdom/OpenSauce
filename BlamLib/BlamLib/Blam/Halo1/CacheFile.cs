@@ -142,7 +142,7 @@ namespace BlamLib.Blam.Halo1
 
 		public override void Read(BlamLib.IO.EndianReader s)
 		{
-			CacheFile cache = s.Owner as CacheFile;
+			var cache = s.Owner as CacheFileBase;
 			bool isPC = cache.EngineVersion.IsPc() || cache.EngineVersion == BlamVersion.Halo1_XboxX;
 
 			#region base address
