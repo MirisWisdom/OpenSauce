@@ -9,7 +9,7 @@
 #if NDEBUG || defined(YELO_KILL_CXX_EXCEPTIONS)
 	#define _HAS_EXCEPTIONS 0
 
-	bool __uncaught_exception();
+	_CRTIMP bool __cdecl __uncaught_exception();
 
 // Should no longer need this after VS2008
 //	#ifndef __cplusplus_cli
