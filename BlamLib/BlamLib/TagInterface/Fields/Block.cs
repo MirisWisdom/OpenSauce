@@ -538,7 +538,7 @@ namespace BlamLib.TagInterface
 			relativeOffset = c.InputStream.PositionUnsigned;
 #endif
 			VersionCtorAttribute upgrade_parameters;
-			if ((c.EngineVersion & BlamVersion.Halo1) != 0)
+			if ((c.EngineVersion & BlamVersion.Halo1) != 0 || (c.EngineVersion & BlamVersion.Stubbs) != 0)
 			{
 				Resize(c.InputStream.ReadInt32()); // element count
 				relativeOffset = c.InputStream.ReadPointer();
@@ -603,7 +603,8 @@ namespace BlamLib.TagInterface
 			c.InputStream.Seek(relativeOffset, System.IO.SeekOrigin.Begin);
 			elements.Read(c);
 
-			if (NeedsUpgrading) elements.Upgrade();
+			if (NeedsUpgrading)
+				elements.Upgrade();
 		}
 
 		/// <summary>
@@ -612,7 +613,7 @@ namespace BlamLib.TagInterface
 		/// <param name="c">Cache file</param>
 		public override void WriteHeader(BlamLib.Blam.CacheFile c)
 		{
-			if ((c.EngineVersion & BlamVersion.Halo1) != 0)
+			if ((c.EngineVersion & BlamVersion.Halo1) != 0 || (c.EngineVersion & BlamVersion.Stubbs) != 0)
 			{
 				c.OutputStream.Write(elements.Count);
 				headerOffset = c.OutputStream.PositionUnsigned;
@@ -640,7 +641,6 @@ namespace BlamLib.TagInterface
 				c.OutputStream.Write(0);
 				c.OutputStream.Write(0);
 			}
-			// TODO: what happened? where's stubbs?
 		}
 
 		/// <summary>
@@ -654,10 +654,13 @@ namespace BlamLib.TagInterface
 			c.OutputStream.WritePointer(relativeOffset); // write offset
 			c.OutputStream.Seek(relativeOffset, System.IO.SeekOrigin.Begin); // go back to where we were
 
-			if ((c.EngineVersion & BlamVersion.Halo1) != 0)			elements.Write(c);
-			else if ((c.EngineVersion & BlamVersion.Halo2) != 0)	elements.Write(c);
+			if ((c.EngineVersion & BlamVersion.Halo1) != 0 || (c.EngineVersion & BlamVersion.Stubbs) != 0)
+				elements.Write(c);
+			else if ((c.EngineVersion & BlamVersion.Halo2) != 0)
+				elements.Write(c);
 			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-					 (c.EngineVersion & BlamVersion.HaloReach) != 0)elements.Write(c);
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0)
+				elements.Write(c);
 		}
 		#endregion
 
