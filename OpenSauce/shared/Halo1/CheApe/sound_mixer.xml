@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<flags>
+		<Flag name="sound_attributes_flags">
+			<field>looping sound</field>
+			<field>fade-in at start</field>
+			<field>fade-out at end</field>
+			<field>overrides min/max distance</field>
+			<field>set minimum distance as min starting</field>
+			<field>first-person only (2d)</field>
+			<field>deafening to players</field>
+			<field>sync audio tracks (perfect timing with ogg)</field>
+		</Flag>
+	</flags>
+	
+	<enums>
+		<Enum name="channel_mapping_enum" >
+			<field>front left</field>
+			<field>front right</field>
+			<field>center</field>
+			<field>low frequency effect</field>
+			<field>rear left</field>
+			<field>rear right</field>
+			<field>front stereo</field>
+			<field>rear stereo</field>
+			<field>surround</field>
+		</Enum>
+	</enums>
+
+	
+	<blocks>
+		<TagBlock name="output_settings_block" maxElements="1"  >
+			<field type="ShortInteger" name="minimum distance" definition="" units="world units" tooltip="If override box checked, the distance the sound STARTS at."  />
+			<field type="ShortInteger" name="maximum distance" definition="" units="world units" tooltip="The distance the sound cuts off at."/>
+			<field type="RealFraction" name="gain" definition="" units="[0.1]" tooltip="Gain modifier for the sound."/>
+			<field type="ShortInteger" name="fade-in time" definition="" units="seconds" tooltip="For sounds that loop, the fade-in time, or time until the sound is completely audible." />
+			<field type="ShortInteger" name="fade-out time" definition="" units="seconds" tooltip="For looping sounds, the time it takes to fade out a sound from start to finish."/>
+			<field type="ShortBounds" name="detail sound period" definition="" units="seconds" tooltip="The period in which a sound plays with a delay between each time the sound plays." />
+		</TagBlock>
+
+		<TagBlock name="sound_references_block" maxElements="64">
+			<field type="LongFlags" name="flags" definition="sound_attributes_flags" tooltip="Select from a set of options the choice(s) you need." />
+			<field type="Enum" name="channel mapping" definition="channel_mapping_enum" tooltip="Channel mapping.  Select a channel mode for mixing here."/>
+			<field type="Pad" definition="16" />
+			<field type="TagReference" name="sound" definition="sound_reference" tooltip="The desired sound to fit the application goes here." />
+			<field type="Block" name="Output Settings" definition="output_settings_block" tooltip="Output options block for various functions for the above-listed sound application applicant use." />
+		</TagBlock>
+
+		<TagBlock name="sound_mixer_reference_block" maxElements="1" tooltip="Main mxer.  Governs all mixer settings.">
+			<field type="Block" name="Sound References" definition="sound_references_block" tooltip="The main input.  This is where it's all at, where all sound data is defined, plain and simply put."/>
+			<field type="Pad" definition="80" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="sound_mixer" groupTag="sndm" version="2">
+			<field type="ShortInteger" name="version" definition="2" locked="true" />
+			<field type="Explanation" name="Sound Mixer" definition="This is the sound mixer, where you can mix and match several different tags to form rich 5.1 Dolby Digital Multi-Channel audio experiences in your game without having to map it out personally in the population editor.  A good example of this tag's use is for weapons with a center bang and reverbrant echo in surround from the gunshot, or a wind track to agment the rest of the sounds as a complementary backing to the feel of your game.  The sound mixer has many features, so enjoy them and use them well and use them wisely.  Final, know that this can also be used to allocate detail sounds, and that this sound mixer is a general all-purpose replacement for the sound_looping tag, but is also a complementary tag to it, as in it is intended to interface with the sound_looping tag as a backdoor to the Sapien populator tool's environmental adio system for cluster portal data.  This robust and yet simple tag should qualify for every sound application need you have." />
+			<field type="Block" name="Sound Mixer" definition="sound_mixer_reference_block" />
+		</TagGroup>
+	</groups>
+</definitions>
