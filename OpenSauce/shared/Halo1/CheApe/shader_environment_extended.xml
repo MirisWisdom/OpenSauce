@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<flags>
+		<Flag name="environment_type_properties_flags">
+			<field>alpha-tested</field>
+			<field>two-sided</field>
+			<field>true atmospheric fog</field>
+		</Flag>
+
+		<Flag name="bitmap_effect_flags">
+			<field>rescale detail maps</field>
+			<field>rescale detail normal maps</field>
+			<field>rescale detail specular maps</field>
+		</Flag>
+		<Flag name="dynamic_mirror_flags">
+			<field>dynamic mirror</field>
+			<field>...after other bitmaps</field>
+		</Flag>
+		<Flag name="radiosity_properties_flags">
+			<field>simple perameterization</field>
+			<field>ignore normals</field>
+			<field>transparent lit</field>
+		</Flag>
+	</flags>
+
+	<enums>
+		<Enum name="environment_type_enum">
+			<field>normal</field>
+			<field>blended</field>
+		</Enum>
+		<Enum name="detail_level_enum">
+			<field>high</field>
+			<field>medium</field>
+			<field>low</field>
+			<field>turd</field>
+		</Enum>
+
+		<Enum name="material_type_enum">
+			<field>dirt</field>
+			<field>sand</field>
+			<field>stone</field>
+			<field>snow</field>
+			<field>wood</field>
+			<field>metal (hollow)</field>
+			<field>metal (thin)</field>
+			<field>metal (thick)</field>
+			<field>rubber</field>
+			<field>glass</field>
+			<field>force field</field>
+			<field>grunt</field>
+			<field>hunter armor</field>
+			<field>hunter skin</field>
+			<field>elite</field>
+			<field>jackal</field>
+			<field>jackal energy shield</field>
+			<field>engineer swkin</field>
+			<field>engineer force field</field>
+			<field>flood combat fiorm</field>
+			<field>flood carrier form</field>
+			<field>cyborg armor</field>
+			<field>cyborg energy shield</field>
+			<field>human armor</field>
+			<field>human skin</field>
+			<field>sentinel</field>
+			<field>monitor</field>
+			<field>plastic</field>
+			<field>water</field>
+			<field>leaves</field>
+			<field>elite energy shield</field>
+			<field>ice</field>
+			<field>hunter shield</field>
+		</Enum>
+	</enums>
+
+	<groups>
+		<TagGroup name="shader_environment_extended" groupTag="shee" version="2">
+			<field type="ShortInteger" name="version" definition="2" locked="true" />
+			<field type="Explanation" name="radiosity properties" definition="" />
+			<field type="LongFlags" name="flags" definition="radiosity_properties_flags" />
+			<field type="Enum" name="detail level" definition="detail_level_enum" />
+			<field type="ShortInteger" name="power" definition="" />
+			<field type="RealRgbColor" name="color of emitted light" definition="" />
+			<field type="RealRgbColor" name="tint color" definition="" />
+
+			<field type="Explanation" name="physics properties" definition="" />
+			<field type="Enum" name="material type" definition="material_type_enum" />
+
+			<field type="Explanation" name="environment extended shader" definition="Setting true atmospheric fog enables per-pixel atmospheric fog but disables disables point/spot lights, planar gof, and the ability to control the atmospheric fog density for this shader." />
+			<field type="LongFlags" name="flags" definition="environment_type_properties_flags" />
+			<field type="Explanation" name="environment shader type" definition="The settings in this section govern how the shader is to be displayed as an output result.  If NORMAL is used, the result will be base map having the base texture, with detail maps accordingly.  Alphas will not blend grass with dirt on ground maps.  If BLENDED is chosen, however, they will be used (they, being the detail maps) as a ground map definition scheme.  Feel free to explore the potential of the shader's capabilities." />
+			<field type="Enum" name="type" definition="environment_type_enum" />
+			<field type="Explanation" name="shader mapping" definition="Set all your shader maps here." />
+
+			<field type="LongFlags" name="flags" definition="bitmap_effect_flags" />
+			<field type="TagReference" name="base map" definition="bitmap_reference" />
+			<field type="ShortInteger" name="primary detail map scale" definition="" />
+			<field type="TagReference" name="primary detail map" definition="bitmap_reference" />
+			<field type="ShortInteger" name="secondary detail map scale" definition="" />
+			<field type="TagReference" name="secondary detail map" definition="bitmap_reference" />
+			<field type="TagReference" name="normal map" definition="bitmap_reference" />
+			<field type="ShortInteger" name="detail normal map 1 scale" definition="" />
+			<field type="TagReference" name="detail normal map 1" definition="bitmap_reference" />
+			<field type="ShortInteger" name="detail normal map 2 scale" definition="" />
+			<field type="TagReference" name="detail normal map 2" definition="bitmap_reference" />
+			<field type="TagReference" name="specular map" definition="bitmap_reference" />
+			<field type="ShortInteger" name="detail specular map 1 scale" definition="" />
+			<field type="TagReference" name="detail specular map 1" definition="bitmap_reference" />
+			<field type="ShortInteger" name="detail specular map 2 scale" definition="" />
+			<field type="TagReference" name="detail specular map 2" definition="bitmap_reference" />
+			<field type="TagReference" name="displacement map" definition="bitmap_reference" />
+			<field type="Explanation" name="self-illumination properties" definition="Self-Illumination works as follows.  RED = Primary Color.  GREEN = Secondary Color.  Blue = Plasma Color.  MAGENTA = normal, without shine.  CYAN = Shiny." />
+			<field type="RealRgbColor" name="primary on color" definition="" />
+			<field type="RealRgbColor" name="primary off color" definition="" />
+			<field type="RealRgbColor" name="secondary on color" definition="" />
+			<field type="RealRgbColor" name="secondary off color" definition="" />
+			<field type="RealRgbColor" name="plasma on color" definition="" />
+			<field type="RealRgbColor" name="plasma off color" definition="" />
+			<field type="TagReference" name="map" definition="bitmap_reference" />
+
+			<field type="Explanation" name="specular properties" definition="" />
+			<field type="RealFraction" name="brightness" definition="" units="[0.1]" />
+			<field type="RealRgbColor" name="perpendicular color" definition="" />
+			<field type="RealRgbColor" name="parallel color" definition="" />
+
+			<field type="Explanation" name="reflection properties" definition="" />
+			<field type="LongFlags" name="flags" definition="dynamic_mirror_flags" />
+			<field type="RealFraction" name="lightmap brightness scale" definition="" units="[0.1]" />
+			<field type="RealFraction" name="perpendicular brightness scale" definition="" units="[0.1]" />
+			<field type="RealFraction" name="parallel brightness scale" definition="" units="[0.1]" />"
+			<field type="TagReference" name="reflection cube map" definition="bitmap_reference" />
+			<field type="Pad" definition="80" />
+		</TagGroup>
+	</groups>
+</definitions>
