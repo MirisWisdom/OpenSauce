@@ -374,8 +374,24 @@
 			<arg type="string" name="transform_name" />
 			<arg type="string" name="target_name" />
 		</function>
-		<function name="ai_actor_is_transforming" returnType="boolean" help="Returns true if the specified actor is transforming." internal="true" >
+		<function name="ai_actor_is_transforming" returnType="boolean" help="Returns true if the specified key is pressed ad that keypress matches its DEC value." internal="true" >
 			<arg type="object" name="actor" />
+		</function>
+		<function name="unit_is_key_down" returnType="boolean" help="Returns true if the specified actor is transforming." internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="short" name="keypress" />
+		</function>
+		<function name="unit_camera_fov_set" returnType="boolean" help="Sets the camera's field-of-view value using a real value.  70.0 is camera default." internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="real" name="camera-fov" />
+		</function>
+		<function name="unit_weapon_set_position" returnType="boolean" help="Sets the weapon's FP position via three real values." internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="real" name="position-x" />
+			<arg type="real" name="position-y" />
+			<arg type="real" name="position-z" />
+		</function>
+		<function name="camera_fov_get" returnType="real" help="Returns the camera's ield-of-view value as a real value." internal="true" >
 		</function>
 	</scriptFunctions>
 
