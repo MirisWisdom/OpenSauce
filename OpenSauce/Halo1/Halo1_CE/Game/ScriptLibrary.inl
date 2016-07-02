@@ -134,6 +134,11 @@
 		_hs_function_ai_transform_actors,
 		_hs_function_ai_transform_actors_by_type,
 		_hs_function_ai_actor_is_transforming,
+		_hs_function_unit_is_key_down,
+		_hs_function_unit_camera_fov_set,
+		_hs_function_unit_weapon_set_position,
+		_hs_function_unit_switch_weapon,
+		_hs_function_camera_fov_get,
 
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
@@ -161,7 +166,6 @@
 		_hs_function_sv_mapdownload_reload_map_part_definitions,
 
 		_hs_function_data_array_info,
-
 	// debug functions
 	#ifdef API_DEBUG
 		_hs_function_dump_view_state,
@@ -316,6 +320,30 @@
 		HS_TYPE(object)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(unit_is_key_down, bool, "Returns true if the specified key is pressed and that keypress matches its DEC value.",
+		"<unit> <keypress", 2,
+		HS_TYPE(unit),
+		HS_TYPE(short)
+		);
+	HS_FUNCTION_WITH_PARAMS(unit_camera_fov_set, bool, "Sets the camera's field-of-view value using a real value.  70.0 is camera default.",
+		"<unit> <camera-fov>", 2,
+		HS_TYPE(unit),
+		HS_TYPE(real)
+		);
+	HS_FUNCTION_WITH_PARAMS(unit_weapon_set_position, bool, "Sets the weapon's FP position via three real values.",
+		"<unit> <weapon-position-x> <weapon-position-y> <weapon-position-z>", 4,
+		HS_TYPE(unit),
+		HS_TYPE(real),
+		HS_TYPE(real),
+		HS_TYPE(real)
+		);
+	HS_FUNCTION_WITH_PARAMS(unit_switch_weapon, bool, "",
+		"<unit> <weapon-name>", 2,
+		HS_TYPE(unit),
+		HS_TYPE(string)
+		);
+	HS_FUNCTION(camera_fov_get, real, "returns the camera's field-of-view value as a real value.");
+
 	// debug functions
 	#ifdef API_DEBUG
 		HS_FUNCTION_WITH_PARAMS(dump_view_state, void, "dump current render view state", "<name>", 1,
@@ -464,6 +492,11 @@
 		&GET_HS_FUNCTION(ai_transform_actors),
 		&GET_HS_FUNCTION(ai_transform_actors_by_type),
 		&GET_HS_FUNCTION(ai_actor_is_transforming),
+		&GET_HS_FUNCTION(unit_is_key_down),
+		&GET_HS_FUNCTION(unit_camera_fov_set),
+		&GET_HS_FUNCTION(unit_weapon_set_position),
+		&GET_HS_FUNCTION(unit_switch_weapon),
+		&GET_HS_FUNCTION(camera_fov_get),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

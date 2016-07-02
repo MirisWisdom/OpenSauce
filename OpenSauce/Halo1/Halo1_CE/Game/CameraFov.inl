@@ -47,11 +47,6 @@ namespace Yelo
 
 		static void PLATFORM_API observer_update_command_hook()
 		{
-			if (Players::PlayerControlGlobals()->local_players[0].zoom_level > -1)
-			{
-				return;
-			}
-
 			bool in_main_menu = Yelo::Cache::CacheFileGlobals()->cache_header.cache_type == Enums::_shared_cache_type_main_menu;
 			if(in_main_menu && c_settings_fov::Instance()->m_ignore_fov_change_in_main_menu)
 			{

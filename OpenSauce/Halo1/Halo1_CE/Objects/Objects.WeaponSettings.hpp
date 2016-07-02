@@ -4,6 +4,8 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+
+
 #pragma once
 
 namespace Yelo
@@ -14,7 +16,6 @@ namespace Yelo
 		{
 			void Initialize();
 			void Dispose();
-
 			real_vector3d GetWeaponPosition();
 			void SetWeaponPosition(const real_vector3d& position);
 		};
