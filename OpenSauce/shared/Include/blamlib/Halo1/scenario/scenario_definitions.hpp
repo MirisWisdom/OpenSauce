@@ -24,7 +24,7 @@ namespace Yelo
 			k_maximum_structure_bsps_per_scenario = 16,
 
 			// How much OS-upgrades [k_maximum_structure_bsps_per_scenario]
-			k_maximum_structure_bsps_per_scenario_upgrade = k_maximum_structure_bsps_per_scenario * 2,
+			k_maximum_structure_bsps_per_scenario_upgrade = k_maximum_structure_bsps_per_scenario * 16,
 		};
 
 		enum scenario_netgame_type

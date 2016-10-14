@@ -21,6 +21,8 @@ namespace Yelo
 			UNKNOWN_TYPE(int32);  // 0xF0
 			int32 last_completed_update_id;
 			real_point3d position;
+			real_point3d yelo_data;
+			real_point3d update_data;
 
 			// 0x104 datum_index or int32
 			// 0x108 boolean, PAD24
@@ -49,7 +51,8 @@ namespace Yelo
 
 		struct update_server_queues_datum : TStructImpl(100)
 		{
-			//s_action_update current_action
+			s_action_update current_action, yelo_data, update_data;
+			Game::s_vehicle_update_queue vehicle_update_queue;	// 0x1D0
 
 			TStructGetPtrImpl(Memory::s_simple_circular_queue, ActionQueue, 0x28);
 		};
