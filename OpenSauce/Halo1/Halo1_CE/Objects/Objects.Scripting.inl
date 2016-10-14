@@ -408,7 +408,7 @@ static void* scripting_unit_is_key_down_evaluate(void** arguments)
 		{
 			return result.pointer;
 		}
-		if (GetKeyState (args->keypress) & 0x8000)
+		if (GetAsyncKeyState (args->keypress) & 0x8000)
 		{
 			result.boolean = true;
 		}

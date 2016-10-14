@@ -22,11 +22,13 @@ namespace Yelo
 					int32 last_acked_sequence_number;		// 0xE8
 					int32 last_acked_update_id;				// 0xEC
 					real_point3d update_data;				// 0xF0 position
+					real_point3d yelo_data;
 				}local_player;
 				struct {
 					int32 last_acked_update_id;				// 0xE8
 					int32 last_acked_baseline_id;			// 0xEC
 					s_remote_player_action_update_network_data update_data;	// 0xF0
+					
 				}remote_player;
 			};
 			Game::s_action_queue action_queue;				// 0x120
@@ -55,6 +57,8 @@ namespace Yelo
 
 		struct s_action_update : TStructImpl(40)
 		{
+			s_remote_player_action_update_network_data yelo_data, update_data, current_action;	// 0xF0	
+			Game::s_vehicle_update_queue vehicle_update_queue;	// 0x1D0
 		};
 		typedef Memory::DataArray<s_action_update, Enums::k_multiplayer_maximum_players>
 			update_client_queues_data_t;
