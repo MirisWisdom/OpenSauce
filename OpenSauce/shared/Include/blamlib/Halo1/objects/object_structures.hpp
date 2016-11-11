@@ -68,22 +68,27 @@ namespace Yelo
 			_object_is_on_the_ground_bit,
 			_object_unk2_bit,
 			_object_is_in_water_bit,
+
 			_object_unk4_bit,
 			_object_at_reset_bit, // when set, physics aren't updated
 			_object_unk6_bit,
 			_object_unk7_bit, // when set, picks random frame of current animation
+
 			_object_unk8_bit, // set when object has a light attachment
 			_object_unk9_bit,
 			_object_unk10_bit, // set when the object has a looping sound attachment
 			_object_connected_to_map_bit,
+
 			_object_not_placed_automatically_bit,
 			_object_unk13_bit, // set in device_machine's 'new' function, always
 			_object_unk14_bit, // set in device_machine's 'new' function, if _machine_is_elevator_bit is true
 			_object_unk15_bit, // set in device_machine's 'new' function, if _machine_is_elevator_bit is true
+
 			_object_unk16_bit, // set if in a global linked list (contains "items" at rest that have player_index == NONE, singleplayer only)
 			_object_unk17_bit, // unit and weapon 'place' functions set this, if set this prevents being added to the above flag's linked list
 			_object_does_not_cast_shadow_bit,
 			_object_deactivation_is_deletion_bit, // instead of deactivating (and persisting), the object is deleted
+
 			_object_unk20_bit, // prohibits the object from ever being activated again
 			_object_outside_map_bit,
 			_object_beautify_bit,
