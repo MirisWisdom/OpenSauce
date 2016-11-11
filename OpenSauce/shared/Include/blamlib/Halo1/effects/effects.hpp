@@ -21,7 +21,7 @@ namespace Yelo
 		struct s_effect_datum : Memory::s_datum_base
 		{
 			// BIT(0) - ?
-			// BIT(1) - loops
+			// BIT(1) - attached to object or loops ?
 			// BIT(2) - loop stopped with event
 			// BIT(3) - loop stopped without event
 			// BIT(4) - ?
@@ -40,6 +40,7 @@ namespace Yelo
 			real_vector3d transitional_velocity;	// 0x24
 			//////////////////////////////////////////////////////////////////////////
 			// no code which creates effects seems to actually set this struct up
+			// seems to be related to particle "radius animation", calculates scale factor?
 			PAD(0, 12);
 			// 0x30 UNKNOWN_TYPE(int32)
 			// 0x34 void (PLATFORM_API* )(__out real_vector3d&, __out real_point3d&, ?) // last arg is the value at 0x30
@@ -53,7 +54,7 @@ namespace Yelo
 			int16 event_index;						// 0x4E
 			real time;								// 0x50
 			real event_delay_time;					// 0x54
-			UNKNOWN_TYPE(real);						// 0x58
+			UNKNOWN_TYPE(real);						// 0x58 last percentage (time / event_delay_time)
 			datum_index location_datum_indices[Enums::k_maximum_effect_locations_count];	// 0x5C
 			byte particles_counts[Enums::k_maximum_effect_particles_per_event_count];		// 0xDC
 		}; BOOST_STATIC_ASSERT( sizeof(s_effect_datum) == 0xFC );
