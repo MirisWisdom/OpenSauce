@@ -103,15 +103,19 @@ namespace Yelo
 
 		struct s_object_globals_data
 		{
-			bool object_is_being_placed;
-			bool object_marker_initialized;
-			bool garbage_collect_now;
-			UNKNOWN_TYPE(bool);
-			int16 object_type_being_placed; // hs type
-			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(datum_index);
-			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];
-			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];
+			bool object_is_being_placed;						// 0x0
+			bool object_marker_initialized;						// 0x1
+			bool garbage_collect_now;							// 0x2
+			UNKNOWN_TYPE(bool);									// 0x3
+			int16 object_type_being_placed;						// 0x4 hs type
+			UNKNOWN_TYPE(int16);								// 0x6
+			UNKNOWN_TYPE(datum_index);							// 0x8
+			int16 particleLifespanDivisor;						// 0xC could just be detail level?
+			PAD16;												// 0xA unknown
+			PAD32;												// 0x10 unknown
+			PAD32;												// 0x14 unknown
+			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];		// 0x18
+			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];	// 0x58
 			int32 last_garbage_collection_tick;					// 0x8C
 			// none = 0
 			// object = 1

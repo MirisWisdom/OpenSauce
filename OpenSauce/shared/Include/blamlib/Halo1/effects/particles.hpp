@@ -18,7 +18,7 @@ namespace Yelo
 		enum particle_flags : word_flags
 		{
 			_particle_animating_backwards_bit,
-			_particle_unk1_bit,
+			_particle_unk1_bit,		// at rest ?
 			_particle_unk2_bit,		// horizontally mirrored
 			_particle_unk3_bit,		// vertically mirrored
 
@@ -36,6 +36,28 @@ namespace Yelo
 
 	namespace Effects
 	{
+
+		struct s_particle_placement_data
+		{
+			datum_index definition_index;				// 0x0
+			datum_index object_index;					// 0x4
+			int16 node_index;							// 0x8
+			int16 local_player_index;					// 0xA
+			bool is_node_first_person;					// 0xC
+			bool is_third_person_only;					// 0xD
+			bool is_first_person_only;					// 0xE
+			PAD8;										// 0xF
+			real_vector3d offset;						// 0x10
+			real_vector3d direction;					// 0x1C
+			real_vector3d velocity;						// 0x28
+			real_vector3d scales;						// 0x34 multiplied by animation radius, never used ?
+			real initial_angle;							// 0x40
+			real angular_velocity;						// 0x44
+			real radius;								// 0x48
+			real_argb_color tint;						// 0x4C
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_particle_placement_data) == 0x5C ); // guessed size
+		
 		//////////////////////////////////////////////////////////////////////////
 		// game-state: particles
 		struct s_particle_datum : Memory::s_datum_base
@@ -44,18 +66,19 @@ namespace Yelo
 			datum_index definition_index;			// 0x4
 			datum_index object_index;				// 0x8
 			int16 node_index;						// 0xC
-			UNKNOWN_TYPE(int16);					// 0xE initialized with zero (sequence count ?)
+			UNKNOWN_TYPE(byte);						// 0xE some sort of staging, init -> loop -> final
+			byte local_player_index;				// 0xF
 			UNKNOWN_TYPE(int32);					// 0x10 frame counter (for rendering ?)
 			real life;								// 0x14
 			real lifespan;							// 0x18
-			UNKNOWN_TYPE(real);						// 0x1C animation (initialized to -1.0f which causes it to go to next sprite)
+			UNKNOWN_TYPE(real);						// 0x1C animation (initialized to -1.0f which means needs sprite to be advanced)
 			real animation_rate;					// 0x20
 			int16 sequence_index;					// 0x24
-			int16 sprite_index;						// 0x26 off by one ? (initialized to -1 instead of 0)
+			int16 sprite_index;						// 0x26
 			s_scenario_location location;			// 0x28
 			real_point3d position;					// 0x30
 			real_point3d forward;					// 0x3C 
-			UNKNOWN_TYPE(real_point3d);				// 0x48
+			real_point3d velocity;					// 0x48
 			real angle;								// 0x54
 			real angular_velocity;					// 0x58
 			real radius;							// 0x5C
