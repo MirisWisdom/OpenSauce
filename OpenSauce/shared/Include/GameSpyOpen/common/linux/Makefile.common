@@ -1,0 +1,53 @@
+# Common Makefile include for Linux
+# Copyright 2009 GameSpy Industries
+
+# Project Makefile must define the following:
+# TARGET - name of output executable
+# SRC - list of source files
+# THREADS - "no" if project should not use threads
+# DEBUG - "yes" if project should use debugging flags
+#
+# Optionally it may define CFLAGS and LDFLAGS for additional compiler or linker
+# options, respectively, before including this file.
+
+DEBUG_TARGET=$(TARGET)_debug
+
+CC=gcc
+BASE_CFLAGS=-D_LINUX -Wall -Werror -pipe -I ../../../common/
+
+ifeq ($(THREADS),no)
+	BASE_CFLAGS:=$(BASE_CFLAGS) -DGSI_NO_THREADS
+else
+	LDFLAGS:=$(LDFLAGS) -lpthread
+endif
+
+ifeq ($(DEBUG),yes)
+	BASE_CFLAGS:=$(BASE_CFLAGS) -DGSI_COMMON_DEBUG -D_DEBUG
+endif
+
+DEBUG_CFLAGS:=$(BASE_CFLAGS) $(CFLAGS) -g
+CFLAGS:=$(BASE_CFLAGS) $(CFLAGS) -O2
+
+OBJ=$(SRC:.c=.o)
+
+#############################################################################
+# SETUP AND BUILD
+#############################################################################
+
+all: $(TARGET)
+$(TARGET): $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $(OBJ)
+
+#############################################################################
+# MISC
+#############################################################################
+debug: $(DEBUG_TARGET)
+$(DEBUG_TARGET): $(SRC)
+	$(CC) $(LDFLAGS) $(DEBUG_CFLAGS) -o $@ $(SRC)
+
+.PHONY: clean
+clean:	
+	rm -f $(TARGET) $(DEBUG_TARGET) $(OBJ)
+
+depend:
+	gcc $(CFLAGS) -MM $(SRC)
