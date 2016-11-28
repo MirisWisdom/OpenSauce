@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BlamLib.Test</RootNamespace>
+    <AssemblyName>BlamLib.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\BlamLib.props" />
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blam.cs" />
+    <Compile Include="Halo1\Halo1.cs" />
+    <Compile Include="Halo2\Extraction.cs" />
+    <Compile Include="Halo2\Halo2.cs" />
+    <Compile Include="Halo2\TagIndex.cs" />
+    <Compile Include="Halo3\CacheLoadResource.cs" />
+    <Compile Include="Halo3\DumpZoneData.cs" />
+    <Compile Include="Halo3\Halo3.cs" />
+    <Compile Include="Halo3\Scripting.cs" />
+    <Compile Include="Halo3\SoundComparer.cs" />
+    <Compile Include="Halo3\SoundExtract.cs" />
+    <Compile Include="Halo4\Halo4.cs" />
+    <Compile Include="HaloOdst\HaloOdst.cs" />
+    <Compile Include="HaloReach\HaloReach.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts.cs" />
+    <Compile Include="Stubbs\Stubbs.cs" />
+    <Compile Include="_Paths.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BlamLib\BlamLib.csproj">
+      <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
+      <Name>BlamLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
+      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
+      <Name>LowLevel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,3 @@
+This folder contains the source code to the minizip library. Kornner Studios did not make nor contribute to this code base in any way.
+
+The ONLY modifications done to these source files were to #include statements so that they use the zlib folder path.

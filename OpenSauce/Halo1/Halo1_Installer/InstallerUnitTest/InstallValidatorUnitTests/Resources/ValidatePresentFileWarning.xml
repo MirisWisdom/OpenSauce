@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="PresentFileWarning">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<File id="FILE_TestFileOne" name="TestFileOne.txt" onpresent="MSG_TestFileOne_presentwarning">
+			<Message id="MSG_TestFileOne_presentwarning" type="warn">Present file warning</Message>
+		</File>
+	</Directory>
+</Installation>

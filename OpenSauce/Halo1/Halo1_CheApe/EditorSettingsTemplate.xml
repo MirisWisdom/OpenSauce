@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSauce>
+  <Profiles>
+    <Profile>
+      <Name></Name>
+      <Paths>
+        <Root></Root>
+        <DataDirectory></DataDirectory>
+        <MapsDirectory></MapsDirectory>
+        <TagsDirectory></TagsDirectory>
+      </Paths>
+    </Profile>
+  </Profiles>
+  <Tool>
+    <DisableExceptionHandling>false</DisableExceptionHandling>
+    <DoFullCrashdump>false</DoFullCrashdump>
+  </Tool>
+  <Sapien>
+    <AffinityMask>1</AffinityMask>
+  </Sapien>
+</OpenSauce>

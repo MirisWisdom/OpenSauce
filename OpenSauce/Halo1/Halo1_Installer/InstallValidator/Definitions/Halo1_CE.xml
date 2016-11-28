@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="Halo1_CE">
+	<Directory id="DIR_HCERoot" name="Halo Custom Edition">
+		
+		<File id="FILE_haloce" name="haloce.exe" onmissing="MSG_haloce_misserror">
+			<Version md5="13cb8d87f46a2f1118d3020228ed90d7" onmatch="MSG_haloce_1_08_matcherror">
+				<Message id="MSG_haloce_1_08_matcherror" type="error">Your Halo CE installation's haloce.exe is from version 1.08, please update to version 1.10</Message>
+			</Version>
+			
+			<Version md5="149f685e50c11da1a8c516f3bd9c8aff" onmatch="MSG_haloce_1_09_matcherror">
+				<Message id="MSG_haloce_1_09_matcherror" type="error">Your Halo CE installation's haloce.exe is from version 1.09, please update to version 1.10</Message>
+			</Version>
+
+			<Version md5="6388cf3d1f162ce1766a562481f61432" ondiff="MSG_haloce_1_10_differror">
+				<Message id="MSG_haloce_1_10_differror" type="error">Your Halo CE installation's haloce.exe does not match the exe from version 1.10, please reinstall version 1.10</Message>
+			</Version>
+
+			<Message id="MSG_haloce_misserror" type="error">Your Halo CE installation has no haloce.exe, please reinstall Halo CE version 1.10</Message>
+		</File>
+		
+		<File id="FILE_haloceded" name="haloceded.exe" onmissing="MSG_haloceded_misserror">
+			<Version md5="23de458cca52c33edda17e5c71a29106" onmatch="MSG_haloceded_1_08_matcherror">
+				<Message id="MSG_haloceded_1_08_matcherror" type="error">Your Halo CE installation's haloceded.exe is from version 1.08, please update to version 1.10</Message>
+			</Version>
+			
+			<Version md5="01c8ea32b424d037c56360a66dd5c291" onmatch="MSG_haloceded_1_09_matcherror">
+				<Message id="MSG_haloceded_1_09_matcherror" type="error">Your Halo CE installation's haloceded.exe is from version 1.09, please update to version 1.10</Message>
+			</Version>
+
+			<Version md5="850eaf2b614abe59fb8ef76b641c68a6" ondiff="MSG_haloceded_1_10_differror">
+				<Message id="MSG_haloceded_1_10_differror" type="error">Your Halo CE installation's haloceded.exe does not match the exe from version 1.10, please reinstall version 1.10</Message>
+			</Version>
+
+			<Message id="MSG_haloceded_misserror" type="error">Your Halo CE installation has no haloceded.exe, please reinstall Halo CE version 1.10</Message>
+		</File>
+		
+		<File id="FILE_Strings" name="Strings.dll" onmissing="MSG_strings_misserror">
+			<Version md5="2b9843c3d537f2262afb4803bc6eef84" onmatch="MSG_strings_1_08_matcherror">
+				<Message id="MSG_strings_1_08_matcherror" type="error">Your Halo CE installation's Strings.dll is from version 1.08, please update to version 1.10</Message>
+			</Version>
+			
+			<Version md5="a30b72574a6bdfd4ea48cfb5d73f689f" onmatch="MSG_strings_1_09_matcherror">
+				<Message id="MSG_strings_1_09_matcherror" type="error">Your Halo CE installation's Strings.dll is from version 1.09, please update to version 1.10</Message>
+			</Version>
+			
+			<Version md5="4d488ea9bdad16b36a6ea90357debe23" ondiff="MSG_strings_1_10_differror">
+				<Message id="MSG_strings_1_10_differror" type="error">Your Halo CE installation's Strings.dll does not match the stock file from version 1.10, please reinstall version 1.10</Message>
+			</Version>
+
+			<Message id="MSG_strings_misserror" type="error">Your Halo CE installation has no Strings.dll, please reinstall Halo CE version 1.10</Message>
+		</File>
+		
+	</Directory>
+</Installation>

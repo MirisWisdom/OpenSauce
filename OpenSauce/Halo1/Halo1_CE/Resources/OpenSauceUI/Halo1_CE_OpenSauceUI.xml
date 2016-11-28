@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<OpenSauce>
+	<PackedFile>
+		<Name>OpenSauceUI.pak</Name>
+		<File>
+			<ID>OpenSauceUISkin</ID>
+			<Type>Texture</Type>
+			<Path>textures\OpenSauceUISkin.png</Path>
+		</File>
+		<File>
+			<ID>MainMenu</ID>
+			<Type>Archive</Type>
+			<Path>MainMenuDefinition.json</Path>
+		</File>
+		<File>
+			<ID>MainMenuBottomBar</ID>
+			<Type>Archive</Type>
+			<Path>MainMenuBottomBarDefinition.json</Path>
+		</File>
+		<File>
+			<ID>InGame</ID>
+			<Type>Archive</Type>
+			<Path>InGameDefinition.json</Path>
+		</File>
+		<File>
+			<ID>MapDownload</ID>
+			<Type>Archive</Type>
+			<Path>MapDownloadDefinition.json</Path>
+		</File>
+	</PackedFile>
+</OpenSauce>

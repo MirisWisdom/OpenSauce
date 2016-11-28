@@ -1,0 +1,10 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    >
+	<ClInclude Include="..\..\shared\Include\mongoose\mongoose.h" />
+	<ClCompile Include="..\..\shared\Include\mongoose\mongoose.c">
+      <PrecompiledHeader />
+      <DisableSpecificWarnings>4090;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemGroup>
+</Project>

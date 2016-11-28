@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\cache\cache_files.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo2\cache\predicted_resources.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\cseries\cseries.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo2\cseries\errors.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--game-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--hs-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--interface-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--memory-->
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\memory\resource_database.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--networking-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--shaders-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\shaders\shader_definitions.hpp">
+      <Filter>.blamlib\shaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--sound-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\sound\sound_definitions.hpp">
+      <Filter>.blamlib\sound</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\tag_files\files.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--tag_files EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\tag_files\tag_groups.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

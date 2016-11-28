@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<enums>
+		<Enum name="hs_types_enum">
+			<field>unparsed</field>
+			<field>special form</field>
+			<field>function name</field>
+			<field>passthrough</field>
+			<field>void</field>
+			<field>boolean</field>
+			<field>real</field>
+			<field>short</field>
+			<field>long</field>
+			<field>string</field>
+			<field>script</field>
+			<field>trigger_volume</field>
+			<field>cutscene_flag</field>
+			<field>cutscene_camera_point</field>
+			<field>cutscene_title</field>
+			<field>cutscene_recording</field>
+			<field>device_group</field>
+			<field>ai</field>
+			<field>ai_command_list</field>
+			<field>starting_profile</field>
+			<field>conversation</field>
+			<field>navpoint</field>
+			<field>hud_message</field>
+			<field>object_list</field>
+			<field>sound</field>
+			<field>effect</field>
+			<field>damage</field>
+			<field>looping_sound</field>
+			<field>animation_graph</field>
+			<field>actor_variant</field>
+			<field>damage_effect</field>
+			<field>object_definition</field>
+			<field>game_difficulty</field>
+			<field>team</field>
+			<field>ai_default_state</field>
+			<field>actor_type</field>
+			<field>hud_corner</field>
+			<field>object</field>
+			<field>unit</field>
+			<field>vehicle</field>
+			<field>weapon</field>
+			<field>device</field>
+			<field>scenery</field>
+			<field>object_name</field>
+			<field>unit_name</field>
+			<field>vehicle_name</field>
+			<field>weapon_name</field>
+			<field>device_name</field>
+			<field>scenery_name</field>
+		</Enum>
+	</enums>
+
+	<blocks>
+		<TagBlock name="script_function_parameter_block" maxElements="32">
+			<field type="Enum" name="type" definition="hs_types_enum" blockname="true" locked="true" />
+		</TagBlock>
+		<TagBlock name="script_function_block" maxElements="464"> <!-- (k_hs_script_functions_count_upgrade - k_hs_functions_count) - 17 -->
+			<field type="ArrayStart" definition="2" />
+			<field type="String" name="name" locked="true" />
+			<field type="ArrayEnd" />
+			<field type="ShortInteger" name="override index" locked="true" />
+
+			<field type="Enum" name="return type" definition="hs_types_enum" locked="true" />
+			<field type="Block" name="parameters" definition="script_function_parameter_block" locked="true" />
+		</TagBlock>
+		<TagBlock name="script_global_block" maxElements="880"> <!-- k_hs_external_globals_count_upgrade - 16 -->
+			<field type="ArrayStart" definition="2" />
+			<field type="String" name="name" locked="true" />
+			<field type="ArrayEnd" />
+			<field type="ShortInteger" name="override index" locked="true" />
+
+			<field type="Enum" name="type" definition="hs_types_enum" locked="true" />
+		</TagBlock>
+		<TagBlock name="scripting_block" maxElements="1">
+			<field type="Block" name="new functions" definition="script_function_block" locked="true" />
+			<field type="Block" name="new globals" definition="script_global_block" locked="true" />
+		</TagBlock>
+
+		<TagBlock name="project_yellow_scripted_ui_widget_block" maxElements="128">
+			<field type="String" name="name" blockname="true" />
+			<field type="TagReference" name="definition" definition="ui_widget_definition_reference" />
+
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+	</blocks>
+
+</definitions>

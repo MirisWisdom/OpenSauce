@@ -1,0 +1,114 @@
+{
+	"Screen": {
+		"Control": {
+			"Type": "Rectangle",
+			"Property": {
+				"Name": "Size",
+				"Value": "0 20"
+			},
+			"Property": {
+				"Name": "Dock",
+				"Value": "Bottom"
+			},
+			"Property": {
+				"Name": "Color",
+				"Value": "0 0 0 0"
+			},
+			"Control": {
+				"IDStr": "#LBL_opensauce_new_version",
+				"ID": "2274080402",
+				"Type": "Label",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Left"
+				},
+				"Property": {
+					"Name": "Size",
+					"Value": "300 0"
+				},
+				"Property": {
+					"Name": "TextSize",
+					"Value": "14"
+				},
+				"Property": {
+					"Name": "TextHAlignment",
+					"Value": "Left"
+				},
+				"Property": {
+					"Name": "TextVAlignment",
+					"Value": "Centre"
+				},
+				"Property": {
+					"Name": "Margin",
+					"Value": "0 5 2 0"
+				},
+				"Property": {
+					"Name": "TextColor",
+					"Value": "255 255 255 255"
+				}
+			},
+			"Control": {
+				"IDStr": "#LBL_opensauce_current_version",
+				"ID": "2897289841",
+				"Type": "Label",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Fill"
+				},
+				"Property": {
+					"Name": "TextSize",
+					"Value": "14"
+				},
+				"Property": {
+					"Name": "TextHAlignment",
+					"Value": "Centre"
+				},
+				"Property": {
+					"Name": "TextVAlignment",
+					"Value": "Centre"
+				},
+				"Property": {
+					"Name": "Margin",
+					"Value": "0 0 2 0"
+				},
+				"Property": {
+					"Name": "TextColor",
+					"Value": "127 127 127 255"
+				}
+			},
+			"Control": {
+				"IDStr": "#LBL_opensauce_settings_button_text",
+				"ID": "1833966503",
+				"Type": "Label",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Right"
+				},
+				"Property": {
+					"Name": "Size",
+					"Value": "300 0"
+				},
+				"Property": {
+					"Name": "TextSize",
+					"Value": "14"
+				},
+				"Property": {
+					"Name": "TextHAlignment",
+					"Value": "Right"
+				},
+				"Property": {
+					"Name": "TextVAlignment",
+					"Value": "Centre"
+				},
+				"Property": {
+					"Name": "Margin",
+					"Value": "0 0 2 5"
+				},
+				"Property": {
+					"Name": "TextColor",
+					"Value": "127 127 127 255"
+				}
+			}
+		}
+	}
+}

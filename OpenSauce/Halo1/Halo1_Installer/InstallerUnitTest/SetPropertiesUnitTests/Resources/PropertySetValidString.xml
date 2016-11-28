@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PropertySet Id="PROPERTYSET_VALIDSTRING">
+	<Property Name="STRING_PROPERTY" Type="string" Value="StringValue"/>
+</PropertySet>

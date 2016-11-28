@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- See documentation at: http://code.google.com/p/open-sauce/wiki/Doc_Halo1_Settings#OS_Settings.PostProcessing.xml -->
+<OpenSauce>
+	<PostProcessing>
+		<ShaderDirectory></ShaderDirectory>
+		<TextureDirectory></TextureDirectory>
+		<!--
+		<Shader>
+			<ID>shader_id</ID>
+			<File>shader</File>
+		</Shader>
+		<Effect>
+			<ID>effect_id</ID>
+			<ShaderID>shader_id</ShaderID>
+		</Effect>
+		<EffectInstance>
+			<Name>name</Name>
+			<Effect>effect_id</Effect>
+			<RenderStage>2</RenderStage>
+			<ActivationOperation>0</ActivationOperation>
+			<Quad>
+				<Tessellation>
+					<X>5</X>
+					<Y>5</Y>
+				</Tessellation>
+				<BoundsX>
+					<Lower>0.0f</Lower>
+					<Upper>1.0f</Upper>
+				</BoundsX>
+				<BoundsY>
+					<Lower>0.0f</Lower>
+					<Upper>1.0f</Upper>
+				</BoundsY>
+			</Quad>
+			<ActivationControl>
+				<State>0</State>
+				<Invert>False</Invert>
+			</ActivationControl>
+		</EffectInstance>
+		-->
+	</PostProcessing>
+</OpenSauce>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="PresentFileError">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<File id="FILE_TestFileOne" name="TestFileOne.txt" onpresent="MSG_TestFileOne_presenterror">
+			<Message id="MSG_TestFileOne_presenterror" type="error">Present file error</Message>
+		</File>
+	</Directory>
+</Installation>

@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{1afd4c84-ee02-4f32-b91d-8562dabbe9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XNA">
+      <UniqueIdentifier>{69ac43ae-3e8b-447d-8bb2-35b56ac14def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XNA\Impl">
+      <UniqueIdentifier>{913bf667-b97c-4a30-88cd-9017375e9529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XNA\Impl\Math">
+      <UniqueIdentifier>{8d10d53b-6e83-4f53-9b4b-a176b3f214be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compression">
+      <UniqueIdentifier>{db293f0c-7679-4f06-9608-5d49c47dcfaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compression\LZMA">
+      <UniqueIdentifier>{e8fb8e3e-8f0d-4c3f-877a-89ae49ce9601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cryptography">
+      <UniqueIdentifier>{0648481d-d752-43dd-aa92-f280abcb2f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XMA">
+      <UniqueIdentifier>{738598de-8d44-4f10-9565-a29ddc80b734}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Precompile.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="XNA\XNA.cpp">
+      <Filter>XNA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA.cpp">
+      <Filter>Compression</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\Alloc.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\LzFind.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\LzFindMt.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\LzmaDec.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\LzmaEnc.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\LzmaLib.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Compression\LZMA\Threads.c">
+      <Filter>Compression\LZMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Cryptography\XXTEA.cpp">
+      <Filter>Cryptography</Filter>
+    </ClCompile>
+    <ClCompile Include="IntelAsm.cpp" />
+    <ClCompile Include="LowLevel.cpp" />
+    <ClCompile Include="XMA\Xma.cpp">
+      <Filter>XMA</Filter>
+    </ClCompile>
+    <ClCompile Include="XMA\XmaParse.cpp">
+      <Filter>XMA</Filter>
+    </ClCompile>
+    <ClCompile Include="XMA\XmaUtil.cpp">
+      <Filter>XMA</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Precompile.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Math.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathTypes.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MatrixMath.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="XNA\XNA.hpp">
+      <Filter>XNA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA.hpp">
+      <Filter>Compression</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\Alloc.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\LzFind.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\LzFindMt.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\LzHash.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\LzmaDec.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\LzmaEnc.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\LzmaLib.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\Threads.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression\LZMA\Types.h">
+      <Filter>Compression\LZMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Cryptography\XXTEA.hpp">
+      <Filter>Cryptography</Filter>
+    </ClInclude>
+    <ClInclude Include="IntelAsm.hpp" />
+    <ClInclude Include="LowLevel.hpp" />
+    <ClInclude Include="$(SolutionDir)..\shared\include_cpp\cseries\MacrosClr.hpp" />
+    <ClInclude Include="XMA\Xma.hpp">
+      <Filter>XMA</Filter>
+    </ClInclude>
+    <ClInclude Include="XMA\XmaParse.hpp">
+      <Filter>XMA</Filter>
+    </ClInclude>
+    <ClInclude Include="XMA\XmaUtil.hpp">
+      <Filter>XMA</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Math\MatrixMath.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="XNA\XNA.inl">
+      <Filter>XNA</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Byte4N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Color.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Dec3N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.DHen3N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Float16Four.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Float16Two.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Halfs.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.HenD3N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Short2.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Short2N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Short4.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.Short4N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UByte4.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UByte4N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UDec3.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UDec4N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UDHen3N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UHenD3N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UShort2.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UShort2N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UShort4.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XNA\MathImpl.UShort4N.inl">
+      <Filter>XNA\Impl\Math</Filter>
+    </None>
+    <None Include="XMA\Xma.Lib.inl">
+      <Filter>XMA</Filter>
+    </None>
+  </ItemGroup>
+</Project>

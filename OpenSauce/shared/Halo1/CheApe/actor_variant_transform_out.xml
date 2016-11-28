@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<enums>		
+		<Enum name="actor_variant_transform_out_rider_handling">
+			<field>eject</field>
+			<field>kill</field>
+			<field>inherit</field>
+		</Enum>
+		
+		<Enum name="actor_variant_transform_out_damage_type">
+			<field>both</field>
+			<field>weapon damage only</field>
+			<field>melee damage only</field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="actor_variant_transform_out_flags">
+			<field>invincible during transform out</field>
+		</Flag>
+		
+		<Flag name="actor_variant_transform_out_criteria_flags">
+			<field>transform on damage</field>
+			<field>ignore friendly fire</field>
+			<field>transform on actor action</field>
+			<field>transform on actor state</field>
+			<field>transform on shield range</field>
+			<field>transform on health range</field>
+		</Flag>
+		
+		<Flag name="actor_variant_transform_out_actor_action_flags">
+			<field>none</field>
+			<field>sleep</field>
+			<field>alert</field>
+			<field>fight</field>
+			<field>flee</field>
+			<field>uncover</field>
+			<field>guard</field>
+			<field>search</field>
+			<field>wait</field>
+			<field>vehicle</field>
+			<field>charge</field>
+			<field>obey</field>
+			<field>converse</field>
+			<field>avoid</field>
+		</Flag>
+		
+		<Flag name="actor_variant_transform_out_actor_state_flags">
+			<field>none</field>
+			<field>sleeping</field>
+			<field>alert</field>
+			<field>moving repeat same position</field>
+			<field>moving loop</field>
+			<field>moving loop back and forth</field>
+			<field>moving loop randomly</field>
+			<field>moving randomly</field>
+			<field>guarding</field>
+			<field>guarding at guard position</field>
+			<field>searching</field>
+			<field>fleeing</field>
+		</Flag>
+
+		<Flag name="actor_variant_transform_out_attachment_flags">
+			<field>destroy attachments on death</field>
+		</Flag>
+	</flags>
+	
+	<blocks>	
+		<TagBlock name="actor_variant_transform_out_instigator_block" maxElements="16">
+			<!--actor_variant_transform_out_instigator-->
+			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />
+			<field type="Enum" name="damage type" definition="actor_variant_transform_out_damage_type" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="12" />
+		</TagBlock>
+		
+		<TagBlock name="actor_variant_transform_out_attachment_block" maxElements="16">
+			<!--actor_variant_transform_out_attachment-->
+			<field type="TagReference" name="object" definition="object_reference" />
+			<field type="String" name="object marker" />
+			<field type="String" name="destination marker" blockname="true" />
+			<field type="ShortInteger" name="destination marker count" />
+			<field type="Pad" definition="2" />
+			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
+			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
+			<field type="RealBounds" name="attachment scale" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="actor_variant_transform_out" groupTag="avto" version="1">
+			<!--actor_variant_transform_out_definition-->
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_out_flags" />
+			<field type="Pad" definition="2" />
+			<field type="Explanation" name="Transform Criteria" definition="" />
+			<field type="WordFlags" name="criteria flags" definition="actor_variant_transform_out_criteria_flags" />
+			<field type="Pad" definition="2" />
+			<field type="WordFlags" name="actor action" definition="actor_variant_transform_out_actor_action_flags" />
+			<field type="WordFlags" name="actor state" definition="actor_variant_transform_out_actor_state_flags" />
+			<field type="RealFractionBounds" name="shield range" />
+			<field type="RealFractionBounds" name="health range" />
+			<field type="Pad" definition="24" />
+			
+			<field type="Explanation" name="Transform Instigators" definition="Controls which attacking unit type can trigger this transform. Transforms with instigators will only be used when transform on damage is enabled." />
+			<field type="Block" name="instigators" definition="actor_variant_transform_out_instigator_block" />
+
+			<field type="Explanation" name="Animation" definition="Played when the transform criteria have been met. The actor is made braindead during the animation, and if the invincibility flag is set they cannot be killed once the animation begins." />
+			<field type="String" name="transform out anim" />
+			<field type="Block" name="keyframe actions" definition="actor_variant_transform_keyframe_action_block" />			
+
+			<field type="Explanation" name="Attachments" definition="The listed attachments will be added to the unit when it's transformation begins. When specifying a single destination marker the destination marker name will be used as-is ('marker'), however when the marker count is more than 1 an index will be appended ('marker0', 'marker1', etc.)" />
+			<field type="WordFlags" name="attachment flags" definition="actor_variant_transform_out_attachment_flags" />
+			<field type="Pad" definition="2" />
+			<field type="Block" name="attachments" definition="actor_variant_transform_out_attachment_block" />
+			<field type="Pad" definition="24" />
+		</TagGroup>
+	</groups>
+</definitions>

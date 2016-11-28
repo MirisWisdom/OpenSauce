@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vertexBuffers game="Halo2_PC">
+	<types>
+		<type opcode="0xFF" name="None" declUsage="Sample" />
+
+		<type opcode="0x00" name="Position"				declUsage="Position" />
+		<type opcode="0x01" name="NodeIndices"			declUsage="BlendIndices" />
+		<type opcode="0x02" name="NodeWeights"			declUsage="BlendWeight" />
+		<type opcode="0x03" name="TexCoord"				declUsage="TextureCoordinate" />
+		<type opcode="0x04" name="Normal"				declUsage="Normal" />
+		<type opcode="0x05" name="Binormal"				declUsage="Binormal" />
+		<type opcode="0x06" name="Tangent"				declUsage="Tangent" />
+		<type opcode="0x07" name="AnisoBinormal"		declUsage="Binormal"			usageIndex="1" />
+		<type opcode="0x08" name="IncidentRadiosity"	declUsage="Color"				usageIndex="1" />
+		<type opcode="0x09" name="SecondaryTexCoord"	declUsage="TextureCoordinate"	usageIndex="1" />
+		<type opcode="0x0A" name="SecondaryPosition"	declUsage="Position"			usageIndex="1" />
+		<type opcode="0x0B" name="SecondaryNodeIndices" declUsage="BlendIndices"		usageIndex="1" />
+		<type opcode="0x0C" name="SecondaryNodeWeights" declUsage="BlendWeight"			usageIndex="1" />
+		<type opcode="0x0D" name="SecondaryIsqSelect"	declUsage="TextureCoordinate"	usageIndex="2" />
+		<type opcode="0x0E" name="Color"				declUsage="Color" />
+		<type opcode="0x0F" name="TintFactor"			declUsage="Color"				usageIndex="2" />
+		<type opcode="0x10" name="DsqPlane"				declUsage="TextureCoordinate"	usageIndex="3" />
+		<type opcode="0x11" name="BillboardOffset"		declUsage="TextureCoordinate"	usageIndex="4" />
+		<type opcode="0x12" name="BillboardAxis"		declUsage="TextureCoordinate"	usageIndex="5" />
+		<type opcode="0x13" name="PcaClusterId"			declUsage="TextureCoordinate"	usageIndex="6" />
+		<type opcode="0x14" name="PcaVertexWeights"		declUsage="TextureCoordinate"	usageIndex="7" />
+	</types>
+
+	<definitions>
+		<definition opcode="0x00" name="Null" >
+		</definition>
+		<definition opcode="0x01" >
+			<element type="Position"				declType="Float3" />
+		</definition>
+		<definition opcode="0x02" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+		</definition>
+		<definition opcode="0x03" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+		</definition>
+		<definition opcode="0x04" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />	<!--UbyteN,UbyteN,0,0-->
+		</definition>
+		<definition opcode="0x05" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />	<!--UbyteN,UbyteN,0,0-->
+		</definition>
+		<definition opcode="0x06" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />	<!--UbyteN,UbyteN,UbyteN,0-->
+		</definition>
+		<definition opcode="0x07" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />	<!--UbyteN,UbyteN,UbyteN,0-->
+		</definition>
+		<definition opcode="0x08" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />	<!--UbyteN,UbyteN,UbyteN,UbyteN-->
+		</definition>
+		<definition opcode="0x09" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN4" />	<!--0,0,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />	<!--UbyteN,UbyteN,UbyteN,UbyteN-->
+		</definition>
+		
+		<!--definition on Xbox here, not present in PC-->
+		
+		<definition opcode="0x0A" >
+			<!--0,0,0,0-->
+			<element type="NodeIndices"				declType="UbyteN4" />
+		</definition>
+		<definition opcode="0x0B" >
+			<!--0,0,0,0-->
+			<element type="NodeIndices"				declType="UbyteN4" />
+			<!--UbyteN,UbyteN,0,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />
+		</definition>
+		<definition opcode="0x0C" >
+			<!--0,0,0,0-->
+			<element type="NodeIndices"				declType="UbyteN4" />
+			<!--UbyteN,UbyteN,UbyteN,0-->
+			<element type="NodeWeights"				declType="UbyteN4" />
+		</definition>
+		<definition opcode="0x0D" >
+			<!--0,0,0,0-->
+			<element type="NodeIndices"				declType="UbyteN4" />
+			<!--UbyteN,UbyteN,UbyteN,UbyteN-->
+			<element type="NodeWeights"				declType="UbyteN4" />
+		</definition>
+		<definition opcode="0x0E" >
+			<element type="SecondaryPosition"		declType="Float3" />
+		</definition>
+		<definition opcode="0x0F" >
+			<element type="SecondaryPosition"		declType="ShortN3" />
+		</definition>
+		<definition opcode="0x10" >
+			<element type="SecondaryPosition"		declType="Float3" />
+			<element type="SecondaryNodeIndices"	declType="UbyteN" />
+		</definition>
+		<definition opcode="0x11" >
+			<element type="SecondaryPosition"		declType="ShortN3" />
+			<element type="SecondaryNodeIndices"	declType="UbyteN" />
+		</definition>
+		<definition opcode="0x12" >
+			<element type="SecondaryIsqSelect"		declType="UbyteN" />
+		</definition>
+		<definition opcode="0x13" >
+			<element type="Position"				declType="Float3" />
+		</definition>
+		<definition opcode="0x14" >
+			<element type="Position"				declType="ShortN3" />
+		</definition>
+		<definition opcode="0x15" >
+			<element type="Position"				declType="Float3" />
+			<element type="NodeIndices"				declType="UbyteN" />
+		</definition>
+		<definition opcode="0x16" >
+			<element type="Position"				declType="ShortN3" />
+			<element type="NodeIndices"				declType="UbyteN" />
+		</definition>
+		<definition opcode="0x17" >
+			<element type="TexCoord"				declType="Float2" />
+		</definition>
+		<definition opcode="0x18" >
+			<element type="TexCoord"				declType="ShortN2" />
+		</definition>
+		<definition opcode="0x19" >
+			<element type="Normal"					declType="Float3" />
+			<element type="Binormal"				declType="Float3" />
+			<element type="Tangent"					declType="Float3" />
+		</definition>
+		<definition opcode="0x1A" >
+			<element type="Normal"					declType="Float3" />
+			<element type="Binormal"				declType="Float3" />
+			<element type="Tangent"					declType="Float3" />
+		</definition>
+		<definition opcode="0x1B" >
+			<element type="AnisoBinormal"			declType="Float3" />
+		</definition>
+		<definition opcode="0x1C" >
+			<element type="AnisoBinormal"			declType="Float3" />
+		</definition>
+		<definition opcode="0x1D"	name="geometry_section.secondary_texcoord" >
+			<element type="SecondaryTexCoord"		declType="Float2"	name="secondary_texcoord" />
+		</definition>
+		<definition opcode="0x1E" >
+			<element type="SecondaryTexCoord"		declType="Float2" />
+		</definition>
+		<definition opcode="0x1F" >
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Normal"					declType="Float3" />
+		</definition>
+		<definition opcode="0x20" >
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Normal"					declType="Float3" />
+		</definition>
+		<definition opcode="0x21" >
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Normal"					declType="Float3" />
+			<element type="Binormal"				declType="Float3" />
+			<element type="Tangent"					declType="Float3" />
+		</definition>
+		<definition opcode="0x22" >
+			<element type="TexCoord"				declType="ShortN2" />
+			<element type="Normal"					declType="HenD3N" />
+			<element type="Binormal"				declType="HenD3N" />
+			<element type="Tangent"					declType="HenD3N" />
+		</definition>
+		<definition opcode="0x23" >
+			<element type="Position"				declType="Float2" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x24" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x25" >
+			<element type="Position"				declType="Float4" />
+			<element type="NodeIndices"				declType="Float2" />
+			<element type="NodeWeights"				declType="Float2" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Normal"					declType="Float2" />
+		</definition>
+		<definition opcode="0x26" >
+			<element type="Position"				declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x27" >
+			<element type="Position"				declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x28" >
+			<element type="Position"				declType="Float3" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x29"	name="dynamic_vertex" > <!-- name pulled out of my ass based on the context it was used in game code-->
+			<element type="Position"				declType="Float4" />
+			<element type="NodeIndices"				declType="Float3" />
+			<element type="NodeWeights"				declType="Float1" />
+			<element type="TexCoord"				declType="Float4" />
+			<element type="Normal"					declType="Float3" />
+			<element type="Binormal"				declType="Float2" />
+			<element type="Tangent"					declType="Float4" />
+			<element type="AnisoBinormal"			declType="Float4" />
+			<element type="SecondaryTexCoord"		declType="Color" />
+		</definition>
+		<definition opcode="0x2A" >
+			<element type="Position"				declType="UShortN4" />
+		</definition>
+		<definition opcode="0x2B" >
+			<element type="Position"				declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x2C" >
+			<element type="Position"				declType="Float3" />
+			<element type="TexCoord"				declType="ShortN2" />
+		</definition>
+		<definition opcode="0x2D"	name="lightmap_bucket_vertex.color::uncompressed" >
+			<element type="Color"					declType="Color"	name="primary_lightmap_color" />
+		</definition>
+		<definition opcode="0x2E"	name="lightmap_bucket_vertex.color::compressed" > <!-- lightmap_vertex_buffer_bucket -->
+			<element type="Color"					declType="UbyteN4"	name="primary_lightmap_color" />
+		</definition>
+		<definition opcode="0x2F"	name="lightmap_bucket_vertex.incident_direction" > <!-- lightmap_vertex_buffer_bucket -->
+			<element type="IncidentRadiosity"		declType="Float3"	name="primary_lightmap_incident_direction" />
+		</definition>
+		<definition opcode="0x30" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Color"					declType="Color" />
+			<element type="TintFactor"				declType="Float2" />
+		</definition>
+		<definition opcode="0x31"	name="s_decorator_model_vertex::uncompressed" >
+			<element type="Position"				declType="Float3" />
+			<element type="Normal"					declType="Float3" />
+			<element type="Tangent"					declType="Float3" />
+			<element type="Binormal"				declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+		</definition>
+		<definition opcode="0x32"	name="s_decorator_model_vertex::compressed" >
+			<element type="Position"				declType="Float3" />
+			<element type="Normal"					declType="HenD3N" />
+			<element type="Tangent"					declType="HenD3N" />
+			<element type="Binormal"				declType="HenD3N" />
+			<element type="TexCoord"				declType="Float2" />
+		</definition>
+		<definition opcode="0x33"	name="rasterizer_vertex_decorator_decal" >
+			<element type="Position"				declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="SecondaryTexCoord"		declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		
+		
+		<definition opcode="0x34" >
+			<element type="Position"				declType="Float3" />
+			<element type="TexCoord"				declType="ShortN2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		
+		<definition opcode="0x35"	name="rasterizer_vertex_decorator_sprite::uncompressed" >
+			<element type="Position"				declType="Float3" />
+			<element type="BillboardOffset"			declType="Float3" />
+			<element type="BillboardAxis"			declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		
+		
+		<definition opcode="0x36"	name="rasterizer_vertex_decorator_sprite::compressed" >
+			<element type="Position"				declType="Float3" />
+			<element type="BillboardOffset"			declType="HenD3N" />
+			<element type="BillboardAxis"			declType="HenD3N" />
+			<element type="TexCoord"				declType="ShortN2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		
+		<definition opcode="0x37" >
+			<element type="PcaClusterId"			declType="Float1" />
+			<element type="PcaVertexWeights"		declType="Float4" />
+		</definition>
+		
+		<definition opcode="0x38" >
+			<element type="PcaClusterId"			declType="Float1" />
+			<element type="PcaVertexWeights"		declType="ShortN4" />
+		</definition>
+		
+		<definition opcode="0x39" >
+			<element type="Position"				declType="Float2" />
+			<element type="NodeIndices"				declType="Float2" />
+			<element type="Binormal"				declType="Color" />
+		</definition>
+		<definition opcode="0x3A"	name="s_particle_model_vertex::uncompressed" >
+			<element type="Position"				declType="Float3" />
+			<element type="Normal"					declType="Float3" />
+			<element type="Tangent"					declType="Float3" />
+			<element type="Binormal"				declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+		</definition>
+		<definition opcode="0x3B"	name="s_particle_model_vertex::uncompressed2" >
+			<element type="Position"				declType="Float3" />
+			<element type="Normal"					declType="Float3" />
+			<element type="Tangent"					declType="Float3" />
+			<element type="Binormal"				declType="Float3" />
+			<element type="TexCoord"				declType="Float2" />
+		</definition>
+		<definition opcode="0x3C"	name="s_particle_model_vertex::compressed?" >
+			<element type="Position"				declType="Float3" />
+			<element type="Normal"					declType="HenD3N" />
+			<element type="Tangent"					declType="HenD3N" />
+			<element type="Binormal"				declType="HenD3N" />
+			<element type="TexCoord"				declType="Float2" />
+		</definition>
+		
+		<!--Starts majorly differing from Xbox here-->
+		<definition opcode="0x3D" >
+			<element type="Position"				declType="Float4" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x3E" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="SecondaryTexCoord"		declType="Float2" />
+			<element type="SecondaryIsqSelect"		declType="Float2" />
+			<element type="DsqPlane"				declType="Float2" />
+		</definition>
+		<definition opcode="0x3F" >
+			<element type="Position"				declType="Float2" />
+			<element type="TexCoord"				declType="Float2" />
+			<element type="SecondaryTexCoord"		declType="Float2" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x40" >
+			<element type="Position"				declType="Float4" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x41" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x42" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="SecondaryTexCoord"		declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x43" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="SecondaryTexCoord"		declType="Float3" />
+			<element type="SecondaryIsqSelect"		declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x44" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="SecondaryTexCoord"		declType="Float3" />
+			<element type="SecondaryIsqSelect"		declType="Float3" />
+			<element type="DsqPlane"				declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x45" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="SecondaryTexCoord"		declType="Float3" />
+			<element type="SecondaryIsqSelect"		declType="Float3" />
+			<element type="DsqPlane"				declType="Float3" />
+			<element type="BillboardOffset"			declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x46" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="SecondaryTexCoord"		declType="Float3" />
+			<element type="SecondaryIsqSelect"		declType="Float3" />
+			<element type="DsqPlane"				declType="Float3" />
+			<element type="BillboardOffset"			declType="Float3" />
+			<element type="BillboardAxis"			declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+		<definition opcode="0x47" >
+			<element type="Position"				declType="Float4" />
+			<element type="TexCoord"				declType="Float3" />
+			<element type="SecondaryTexCoord"		declType="Float3" />
+			<element type="SecondaryIsqSelect"		declType="Float3" />
+			<element type="DsqPlane"				declType="Float3" />
+			<element type="BillboardOffset"			declType="Float3" />
+			<element type="BillboardAxis"			declType="Float3" />
+			<element type="PcaClusterId"			declType="Float3" />
+			<element type="Color"					declType="Color" />
+		</definition>
+	</definitions>
+</vertexBuffers>

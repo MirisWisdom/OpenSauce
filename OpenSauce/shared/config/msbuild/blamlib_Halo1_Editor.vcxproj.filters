@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  If you update this file you need to update
+  Halo1_CheApe.vcxproj.filters
+  as well. Look for the commented out Import (of this file) element
+  -->
+  <ItemGroup
+    > <!--cache EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--cseries EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.cpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--guerilla EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\field_dialog_structures.hpp">
+      <Filter>.blamlib\guerilla</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\tags_interface.hpp">
+      <Filter>.blamlib\guerilla</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--hs EDITOR-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.cpp">
+      <Filter>.blamlib\hs</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.cpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tag_files EDITOR-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_field_scanner.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_field_scan.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_system.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tool EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tool\tool.hpp">
+      <Filter>.blamlib\tool</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

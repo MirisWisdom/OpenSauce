@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp -->
+	
+	<enums>
+		<Enum name="production_build_stage_enum">
+			<field>ship</field>
+			<field>alpha</field>
+			<field>beta</field>
+			<field>delta</field>
+			<field>epsilon</field>
+			<field>release</field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="project_yellow_flags">
+			<field>don't fix ui game globals#when building a ui cache file, don't let tool's stock code muck with the game globals definition</field>
+			<field>game updates ignore player pvs hack#mainmenu scenarios only; overrides various game update logic to allow game entities to update without them being within the player's supposed view</field>
+		</Flag>
+		
+		<Flag name="gameplay_flags">
+			<field>prohibit multi-team vehicles</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="project_yellow_scenario_build_info_block" maxElements="1">
+			<field type="Pad" definition="2" />
+			<field type="Enum" name="build stage" definition="production_build_stage_enum" />
+			<field type="LongInteger" name="revision" />
+			<field type="Pad" definition="8" />
+
+			<field type="Pad" definition="32" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="project_yellow" groupTag="yelo" version="2">
+			<field type="ShortInteger" name="version" locked="true" />
+			<field type="WordFlags" name="flags" definition="project_yellow_flags" />
+
+			<field type="Explanation" name="Scenario Definitions" definition="" />
+			<field type="TagReference" name="yelo globals" definition="project_yellow_globals_reference" />
+			<field type="TagReference" name="globals override" definition="globals_reference_non_resolving" tooltip="use this to override the globals tag used for the scenario" />
+			<field type="TagReference" name="scenario explicit references" definition="tag_collection_reference" />
+			<field type="Block" name="build info" definition="project_yellow_scenario_build_info_block" />
+			<field type="Pad" definition="40" />
+
+			<field type="Explanation" name="UI/GUI" definition="" />
+			<field type="Block" name="scripted ui widgets" definition="project_yellow_scripted_ui_widget_block" />
+			<field type="Pad" definition="16" />
+
+			<field type="Explanation" name="Physics" definition="" />
+			<field type="Real" name="gravity scale" units="[0,2]" tooltip="amount to scale gravity ingame" />
+			<field type="Real" name="player speed scale" units="[0,6]" locked="true" tooltip="amount to scale each player's speed" />
+			<field type="Pad" definition="20" />
+
+			<!--<field type="Explanation" name="Netgame" definition="" />-->
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="20" />
+
+			<field type="Explanation" name="Gameplay" definition="" />
+			<field type="LongFlags" name="flags" definition="gameplay_flags" />
+			<field type="Pad" definition="20" />
+
+			<field type="Explanation" name="Scripting" definition="External scripting definitions (User)" />
+			<field type="Block" name="yelo scripting" definition="scripting_block" />
+
+			<field type="Pad" definition="92" />
+		</TagGroup>
+	</groups>
+</definitions>

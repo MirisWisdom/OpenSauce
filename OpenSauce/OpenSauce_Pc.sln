@@ -1,0 +1,100 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo1", "Halo1", "{F0CB6288-8B6C-45B8-93D7-EC703558F574}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo2", "Halo2", "{84D64AD9-C6B7-4CFD-867B-9D4058A5CFF9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_CE", "Halo1\Halo1_CE\Halo1_CE.vcxproj", "{2647697B-680F-4155-B6A2-041C184A479D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07} = {56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E} = {ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_YeloLib", "Halo1\Halo1_YeloLib\Halo1_YeloLib.vcxproj", "{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_BlamLib", "Halo1\Halo1_BlamLib\Halo1_BlamLib.vcxproj", "{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E} = {ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DebugDedi|Win32 = DebugDedi|Win32
+		DebugGuerilla|Win32 = DebugGuerilla|Win32
+		DebugSapien|Win32 = DebugSapien|Win32
+		DebugTool|Win32 = DebugTool|Win32
+		Release|Win32 = Release|Win32
+		ReleaseDedi|Win32 = ReleaseDedi|Win32
+		ReleaseGuerilla|Win32 = ReleaseGuerilla|Win32
+		ReleaseSapien|Win32 = ReleaseSapien|Win32
+		ReleaseTool|Win32 = ReleaseTool|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2647697B-680F-4155-B6A2-041C184A479D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.Debug|Win32.Build.0 = Debug|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.DebugDedi|Win32.ActiveCfg = DebugDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.DebugDedi|Win32.Build.0 = DebugDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.DebugGuerilla|Win32.ActiveCfg = DebugDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.DebugSapien|Win32.ActiveCfg = DebugDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.DebugTool|Win32.ActiveCfg = DebugDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.Release|Win32.ActiveCfg = Release|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.Release|Win32.Build.0 = Release|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseDedi|Win32.ActiveCfg = ReleaseDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseDedi|Win32.Build.0 = ReleaseDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseGuerilla|Win32.ActiveCfg = ReleaseDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseSapien|Win32.ActiveCfg = ReleaseDedi|Win32
+		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseTool|Win32.ActiveCfg = ReleaseDedi|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Debug|Win32.Build.0 = Debug|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugDedi|Win32.ActiveCfg = DebugDedi|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugDedi|Win32.Build.0 = DebugDedi|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugGuerilla|Win32.ActiveCfg = DebugGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugGuerilla|Win32.Build.0 = DebugGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugSapien|Win32.ActiveCfg = DebugSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugSapien|Win32.Build.0 = DebugSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugTool|Win32.ActiveCfg = DebugTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugTool|Win32.Build.0 = DebugTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Release|Win32.ActiveCfg = Release|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Release|Win32.Build.0 = Release|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseDedi|Win32.ActiveCfg = ReleaseDedi|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseDedi|Win32.Build.0 = ReleaseDedi|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseGuerilla|Win32.ActiveCfg = ReleaseGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseGuerilla|Win32.Build.0 = ReleaseGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseSapien|Win32.ActiveCfg = ReleaseSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseSapien|Win32.Build.0 = ReleaseSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseTool|Win32.ActiveCfg = ReleaseTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseTool|Win32.Build.0 = ReleaseTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Debug|Win32.ActiveCfg = Debug|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Debug|Win32.Build.0 = Debug|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugDedi|Win32.ActiveCfg = DebugDedi|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugDedi|Win32.Build.0 = DebugDedi|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugGuerilla|Win32.ActiveCfg = DebugGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugGuerilla|Win32.Build.0 = DebugGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugSapien|Win32.ActiveCfg = DebugSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugSapien|Win32.Build.0 = DebugSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugTool|Win32.ActiveCfg = DebugTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugTool|Win32.Build.0 = DebugTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Release|Win32.ActiveCfg = Release|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Release|Win32.Build.0 = Release|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseDedi|Win32.ActiveCfg = ReleaseDedi|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseDedi|Win32.Build.0 = ReleaseDedi|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseGuerilla|Win32.ActiveCfg = ReleaseGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseGuerilla|Win32.Build.0 = ReleaseGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseSapien|Win32.ActiveCfg = ReleaseSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseSapien|Win32.Build.0 = ReleaseSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseTool|Win32.ActiveCfg = ReleaseTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseTool|Win32.Build.0 = ReleaseTool|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2647697B-680F-4155-B6A2-041C184A479D} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
+	EndGlobalSection
+EndGlobal

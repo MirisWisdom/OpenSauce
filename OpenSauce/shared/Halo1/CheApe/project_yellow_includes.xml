@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<references>
+		<Reference name="shader_postprocess_generic_reference">
+			<field>shpg</field>
+		</Reference>
+
+		<Reference name="project_yellow_globals_reference">
+			<field>gelo</field>
+		</Reference>
+
+		<Reference name="text_value_pair_definition_reference">
+			<field>sily</field>
+		</Reference>
+
+		<Reference name="multilingual_unicode_string_list_reference">
+			<field>unic</field>
+		</Reference>
+
+
+		<Reference name="globals_reference_non_resolving" isNonResolving="true">
+			<field>matg</field>
+		</Reference>
+
+		<Reference name="scenario_reference_non_resolving" isNonResolving="true">
+			<field>scnr</field>
+		</Reference>
+
+		<Reference name="sky_reference">
+			<field>sky </field>
+		</Reference>
+		<Reference name="sky_reference_non_resolving" isNonResolving="true">
+			<field>sky </field>
+		</Reference>
+
+		<Reference name="fog_reference">
+			<field>fog </field>
+		</Reference>
+		<Reference name="weather_particle_system_reference">
+			<field>rain</field>
+		</Reference>
+
+		<Reference name="structure_bsp_reference">
+			<field>sbsp</field>
+		</Reference>
+		<Reference name="structure_bsp_reference_non_resolving" isNonResolving="true">
+			<field>sbsp</field>
+		</Reference>
+
+		<Reference name="bitmap_reference">
+			<field>bitm</field>
+		</Reference>
+
+		<Reference name="tag_collection_reference">
+			<field>tagc</field>
+		</Reference>
+
+		<Reference name="string_list_reference">
+			<field>str#</field>
+		</Reference>
+
+		<Reference name="animation_graph_reference">
+			<field>antr</field>
+		</Reference>
+
+		<Reference name="effect_reference">
+			<field>effe</field>
+		</Reference>
+		<Reference name="damage_effect_reference">
+			<field>jpt!</field>
+		</Reference>
+
+		<Reference name="sound_reference">
+			<field>snd!</field>
+		</Reference>
+
+		<Reference name="object_reference">
+			<field>obje</field>
+		</Reference>
+		<Reference name="unit_reference">
+			<field>unit</field>
+		</Reference>
+		<Reference name="weapon_reference">
+			<field>weap</field>
+		</Reference>
+
+		<Reference name="actor_variant_reference">
+			<field>actv</field>
+		</Reference>
+		<Reference name="actor_variant_reference_non_resolving" isNonResolving="true">
+			<field>actv</field>
+		</Reference>
+
+		<Reference name="ui_widget_definition_reference">
+			<field>DeLa</field>
+		</Reference>
+	</references>
+
+	<enums>
+		<Enum name="boolean_enum">
+			<field>false</field>
+			<field>true</field>
+		</Enum>
+
+		<Enum name="text_style_enum"> <!-- padding in scenario_cutscene_title_block needs to be changed to this-->
+			<field>plain</field>
+			<field>bold</field>
+			<field>italic</field>
+			<field>condense</field>
+			<field>underline</field>
+		</Enum>
+
+		<Enum name="periodic_function_type_enum">
+			<field>one</field>
+			<field>zero</field>
+			<field>cosine</field>
+			<field>cosine (variable period)</field>
+			<field>diagonal wave</field>
+			<field>diagonal wave (variable period)</field>
+			<field>slide</field>
+			<field>slide (variable period)</field>
+			<field>noise</field>
+			<field>jitter</field>
+			<field>wander</field>
+			<field>spark</field>
+		</Enum>
+
+		<Enum name="predicted_resource_type_enum">
+			<field>bitmap</field>
+			<field>sound</field>
+		</Enum>
+		
+		<Enum name="game_allegiance_team_enum">
+			<field>unit default</field>
+			<field>player</field>
+			<field>human</field>
+			<field>covenant</field>
+			<field>flood</field>
+			<field>sentinel</field>
+			<field>unused</field>
+			<field>unused</field>
+			<field>unused</field>
+			<field>unused</field>
+		</Enum>
+
+		<Enum name="actor_default_state_enum">
+			<field>none</field>
+			<field>sleeping</field>
+			<field>alert</field>
+			<field>moving repeat same position</field>
+			<field>moving loop</field>
+			<field>moving loop back and forth</field>
+			<field>moving loop randomly</field>
+			<field>moving randomly</field>
+			<field>guarding</field>
+			<field>guarding at guard position</field>
+			<field>searching</field>
+			<field>fleeing</field>
+		</Enum>
+		
+		<Enum name="actor_action_enum">
+			<field>none</field>
+			<field>sleep</field>
+			<field>alert</field>
+			<field>fight</field>
+			<field>flee</field>
+			<field>uncover</field>
+			<field>guard</field>
+			<field>search</field>
+			<field>wait</field>
+			<field>vehicle</field>
+			<field>charge</field>
+			<field>obey</field>
+			<field>converse</field>
+			<field>avoid</field>
+		</Enum>
+	</enums>
+
+	<blocks>
+		<TagBlock name="predicted_resource_block" maxElements="1024">
+			<field type="Enum" name="type" definition="predicted_resource_type_enum" />
+			<field type="ShortInteger" name="resource index" />
+			<field type="LongInteger" name="tag index" />
+		</TagBlock>
+	</blocks>
+
+
+	<fixups>
+		<fixup name="_fixup_scenario_structure_bsps_block.max_count" type="Pointer" 
+			guerilla="0x9CD2E4" tool="0x6DB5AC" sapien="0xA346BC" definition="0x20" />
+
+
+		<fixup name="_fixup_model_shader_reference_block.max_count" type="Pointer" 
+			guerilla="0x9D7E8C" tool="0x6C6A14" sapien="0xA4F664" definition="0x40" />
+
+		<!-- <fixup name="_fixup_damage_regions_block.max_count" type="Pointer" 
+			guerilla="0x9CF218" tool="0x6DC340" sapien="0xA47198" definition="0x10" /> -->
+
+		<fixup name="_fixup_scenario_cutscene_title_block.text_style" type="Field" 
+			guerilla="0x9CD1FC" tool="0x6DB4C4" sapien="0xA345D4" >
+			<definition>
+				<field type="Enum" name="text style" definition="text_style_enum" />
+			</definition>
+		</fixup>
+	</fixups>
+
+</definitions>

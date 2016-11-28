@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PropertySet>
+	<Property Name="HALO1_CE_HEK_GUERILLAPATH_PROP" Type="path" Value="[HALO1_CE_HEK_INSTALLDIR_PROP];guerilla.exe"/>
+	<Property Name="HALO1_CE_HEK_GUERILLAPATH_EXISTS_PROP" Type="fileexists" Value="[HALO1_CE_HEK_GUERILLAPATH_PROP]"/>
+	<Property Name="HALO1_CE_HEK_TOOLPATH_PROP" Type="path" Value="[HALO1_CE_HEK_INSTALLDIR_PROP];tool.exe"/>
+	<Property Name="HALO1_CE_HEK_TOOLPATH_EXISTS_PROP" Type="fileexists" Value="[HALO1_CE_HEK_TOOLPATH_PROP]"/>
+	<Property Name="HALO1_CE_HEK_SAPIENPATH_PROP" Type="path" Value="[HALO1_CE_HEK_INSTALLDIR_PROP];sapien.exe"/>
+	<Property Name="HALO1_CE_HEK_SAPIENPATH_EXISTS_PROP" Type="fileexists" Value="[HALO1_CE_HEK_SAPIENPATH_PROP]"/>
+</PropertySet>

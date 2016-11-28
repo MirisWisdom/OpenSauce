@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<OpenSauce>
+	<Checksums>
+		<File>
+			<ID>SE_EffectCollection_PS2a</ID>
+			<MD5>f28c04ba35ddfd604003a4da1f086386</MD5>
+			<Path>$(WorkingDirectory)shaders\EffectCollection_ps_2_a.enc</Path>
+		</File>
+		<File>
+			<ID>SE_EffectCollection_PS2b</ID>
+			<MD5>33a976a2c63f34e074577b8aec7879ff</MD5>
+			<Path>$(WorkingDirectory)shaders\EffectCollection_ps_2_b.enc</Path>
+		</File>
+		<File>
+			<ID>SE_EffectCollection_VS</ID>
+			<MD5>b96e6d97e076db701de0a172608e481d</MD5>
+			<Path>$(WorkingDirectory)shaders\vsh_OS.enc</Path>
+		</File>
+		<File>
+			<ID>PP_PPShaders_SHD</ID>
+			<MD5>8a5f588f34f0d0ae96935a803fdeb8e4</MD5>
+			<Path>$(CommonAppData)shaders\pp_shaders.shd</Path>
+		</File>
+		<File>
+			<ID>GBUF_GBuffer_Shaders_SHD</ID>
+			<MD5>c391b5257dc577afa3e696c12a49f2ad</MD5>
+			<Path>$(CommonAppData)shaders\gbuffer_shaders.shd</Path>
+		</File>
+		<File>
+			<ID>UI_OpenSauceUI_PAK</ID>
+			<MD5>d4d3c4184ea330ce49b5c02f79ee39f6</MD5>
+			<Path>$(CommonAppData)OpenSauceUI.pak</Path>
+		</File>
+	</Checksums>
+</OpenSauce>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--<ItemGroup>
+    <Filter Include="Common\Shared\7zip">
+      <UniqueIdentifier>{6c76af01-8dcb-4a37-ab87-5606dcc65ba3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>-->
+
+  <ItemGroup
+    >
+	<ClInclude Include="..\..\shared\Include\7zip\7z.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\7zAlloc.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\7zBuf.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\7zCrc.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\7zFile.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\7zVersion.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\Bcj2.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\Bra.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\CpuArch.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\Lzma2Dec.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\LzmaDec.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\7zip\Types.h">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClInclude>
+
+	<ClCompile Include="..\..\shared\Include\7zip\7zAlloc.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zBuf.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zCrc.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zCrcOpt.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zDec.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zFile.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zIn.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zStream.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Bcj2.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Bra.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Bra86.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\CpuArch.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Lzma2Dec.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\LzmaDec.c">
+      <Filter>Common\Shared\7zip</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

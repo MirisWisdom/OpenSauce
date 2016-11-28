@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HaloWars_ECF360", "Xenon\HaloWars_ECF360\HaloWars_ECF360.vcproj", "{6825809B-576E-4AE0-8D6C-5DAC6ECD3691}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Xbox 360 = Debug|Xbox 360
+		Release|Xbox 360 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6825809B-576E-4AE0-8D6C-5DAC6ECD3691}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{6825809B-576E-4AE0-8D6C-5DAC6ECD3691}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{6825809B-576E-4AE0-8D6C-5DAC6ECD3691}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{6825809B-576E-4AE0-8D6C-5DAC6ECD3691}.Release|Xbox 360.Build.0 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<data>
+		<TagData name="utf8_string_data" maxSize="0x1200000" />
+	</data>
+
+	<blocks>
+		<TagBlock name="multilingual_unicode_string_reference_block" maxElements="9216">
+			<field type="StringId" name="string id" blockname="true" />
+			<field type="LongInteger" name="english offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+			<field type="LongInteger" name="[unused] offset" locked="true" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="multilingual_unicode_string_list" groupTag="unic" version="0">
+			<field type="Block" name="string references" definition="multilingual_unicode_string_reference_block" />
+			<field type="Pad" definition="12" />
+			<field type="Data" name="string data utf8" definition="utf8_string_data" locked="true" />
+			<!--language handles, sizeof(handle)*number-of-localizations-->
+			<field type="Pad" definition="36" />
+		</TagGroup>
+	</groups>
+
+</definitions>

@@ -1,0 +1,19 @@
+"Reference Actions"
+	* User will select various reference manager data files and select what kind of action they want done with those refs
+	* User can either have multiple refs with different actions set to either automatically be handled or have a user 
+		interaction dialog to select the type of action they want
+	* Core library will build a "ReferenceActionsManager" from these multiple ref managers and will link via the group_tag\name pair handles 
+		to the type of action they want done
+	* From there user can then 'create the tag index' and once that is built up can perform even more options ie, raring tags
+
+Reference Action Types
+	* Ignore - Ignore these references
+	* Convert - Convert references to a newer or older game engine if the tag group supports conversion
+	* Custom command - perform a custom command defined by the specific engine code for that library
+
+Reference Class Action Types
+	* Convert - see action type's details
+	* Custom command - see action type's details
+	* Validate - Perform validation code on tag definitions of this group
+	* Validate and re-reference to invalid - If validation fails, and there exists an 'invalid' version of a group tag, 
+		rename all the references of that tag to the 'invalid' tag

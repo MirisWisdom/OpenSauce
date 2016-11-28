@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--define PLATFORM_IS_EDITOR-->
+  <ItemDefinitionGroup Condition=" '$(OSPlatformIsEditor)' != '' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_IS_EDITOR=$(OSPlatformIsEditor.ToUpper());%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!--define CHEAPE_PLATFORM-->
+  <ItemDefinitionGroup Condition=" '$(ProjectName.Contains(Halo1))' and '$(OSPlatformIsEditor)' == 'true' ">
+    <ClCompile>
+      <PreprocessorDefinitions>CHEAPE_PLATFORM=CHEAPE_PLATFORM_HALO1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(ProjectName.Contains(Halo2))' and '$(OSPlatformIsEditor)' == 'true' ">
+    <ClCompile>
+      <PreprocessorDefinitions>CHEAPE_PLATFORM=CHEAPE_PLATFORM_HALO2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!--define PLATFORM_TARGET-->
+  <ItemDefinitionGroup Condition=" '$(OSPlatformTarget)' == 'PC' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TARGET=PLATFORM_TARGET_PC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformTarget)' == 'Xbox' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TARGET=PLATFORM_TARGET_XBOX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformTarget)' == 'Xenon' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TARGET=PLATFORM_TARGET_XENON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!--define PLATFORM_TYPE_*-->
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)' == 'Client' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TYPE_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)' == 'Dedi' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TYPE_DEDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)' == 'Guerilla' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TYPE_GUERILLA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)' == 'Tool' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TYPE_TOOL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)' == 'Sapien' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_TYPE_SAPIEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

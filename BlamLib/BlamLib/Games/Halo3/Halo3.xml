@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<BlamDefinition game="Halo3">
+	<localization>
+		<entry id="0" name="English"			langName="en" langId="0xFFFF" localName="en-US" localId="0xFFFF" />
+		<entry id="1" name="Japanese"			langName="jp" langId="0xFFFF" localName="jp-JP" localId="0xFFFF" />
+		<entry id="2" name="German"				langName="de" langId="0xFFFF" localName="de-DE" localId="0xFFFF" />
+		<entry id="3" name="French"				langName="fr" langId="0xFFFF" localName="fr-FR" localId="0xFFFF" />
+		<entry id="4" name="Spanish"			langName="es" langId="0xFFFF" localName="es-ES" localId="0xFFFF" />
+		<entry id="5" name="Mexican"			langName="es" langId="0xFFFF" localName="es-MX" localId="0xFFFF" />
+		<entry id="6" name="Italian"			langName="it" langId="0xFFFF" localName="it-IT" localId="0xFFFF" />
+		<entry id="7" name="Korean"				langName="ko" langId="0xFFFF" localName="ko-KO" localId="0xFFFF" />
+		<entry id="8" name="ChineseTraditional"	langName="zh" langId="0xFFFF" localName="zh-TW" localId="0xFFFF" />
+		<entry id="9" name="ChineseSimplified"	langName="zh" langId="0xFFFF" localName="zh-CN" localId="0xFFFF" />
+		<entry id="10" name="Portuguese"		langName="pt" langId="0xFFFF" localName="pt-PT" localId="0xFFFF" />
+		<entry id="11" name="Polish"			langName="pl" langId="0xFFFF" localName="pl-PL" localId="0xFFFF" />
+	</localization>
+
+	<game id="Halo3_Beta" platform="Xbox" xdkVersion="5632">
+		<cache ext=".map" baseAddress="0xA6000000" baseAddressBsp="0x00000000" >
+			<types>
+				<type id="0" version="9" name="campaign" maxSize="0x14000000" isResource="false" />
+				<type id="1" version="9" name="multiplayer" maxSize="0x14000000" isResource="false" />
+				<type id="2" version="9" name="mainmenu" maxSize="0x14000000" isResource="false" />
+				<type id="3" version="9" name="shared" maxSize="0x14000000" isResource="true" />
+				<type id="4" version="9" name="shared_campaign" maxSize="0x14000000" isResource="true" />
+			</types>
+		</cache>
+
+		<tags maxCount="0" maxBufferSize="0x14F00000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="Halo3_Beta_Scripting.xml" />
+			<resource key="StringId" value="Halo3_Beta_StringId.xml" />
+			<resource key="VertexBuffer" value="Halo3_Beta_VertexBuffer.xml" />
+		</resources>
+	</game>
+
+  <game id="Halo3_Epsilon" platform="Xbox" xdkVersion="6132">
+    <cache ext=".map" baseAddress="0xA0000000" baseAddressBsp="0x00000000" >
+      <types>
+        <type id="0" version="11" name="campaign" maxSize="0x1F400000" isResource="false" />
+        <type id="1" version="11" name="multiplayer" maxSize="0x09600000" isResource="false" />
+        <type id="2" version="11" name="mainmenu" maxSize="0x04100000" isResource="false" />
+        <type id="3" version="11" name="shared" maxSize="0x0BE00000" isResource="true" />
+        <type id="4" version="11" name="shared_campaign" maxSize="0x22600000" isResource="true" />
+      </types>
+    </cache>
+
+    <tags maxCount="0" maxBufferSize="0x1FC00000" >
+      <required>
+        <entry groupTag="globals" name="globals\globals" />
+      </required>
+    </tags>
+
+    <resources>
+      <resource key="Scripting" value="Halo3_Epsilon_Scripting.xml" />
+      <resource key="StringId" value="Halo3_Epsilon_StringId.xml" />
+      <resource key="VertexBuffer" value="Halo3_Xbox_VertexBuffer.xml" />
+    </resources>
+  </game>
+
+	<game id="Halo3_Xbox" platform="Xbox" xdkVersion="6132">
+		<cache ext=".map" baseAddress="0xA0000000" baseAddressBsp="0x00000000" >
+			<types>
+				<type id="0" version="11" name="campaign" maxSize="0x1F400000" isResource="false" />
+				<type id="1" version="11" name="multiplayer" maxSize="0x09600000" isResource="false" />
+				<type id="2" version="11" name="mainmenu" maxSize="0x04100000" isResource="false" />
+				<type id="3" version="11" name="shared" maxSize="0x0BE00000" isResource="true" />
+				<type id="4" version="11" name="shared_campaign" maxSize="0x22600000" isResource="true" />
+			</types>
+		</cache>
+
+		<tags maxCount="0" maxBufferSize="0x1FC00000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="Halo3_Xbox_Scripting.xml" />
+			<resource key="StringId" value="Halo3_Xbox_StringId.xml" />
+			<resource key="VertexBuffer" value="Halo3_Xbox_VertexBuffer.xml" />
+		</resources>
+	</game>
+</BlamDefinition>

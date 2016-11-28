@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<scriptFunctions>
+		<!-- PLAYER SCRIPTING INTERFACES -->
+		<function name="volume_test_player_team" returnType="boolean" help="returns true if any players of the specified team are within the specified volume." internal="true" >
+			<arg type="trigger_volume"	name="trigger_volume" />
+			<arg type="short"			name="team_index" />
+		</function>
+		<function name="volume_test_player_team_all" returnType="boolean" help="returns true if all players of the specified team are within the specified volume." internal="true" >
+			<arg type="trigger_volume"	name="trigger_volume" />
+			<arg type="short"			name="team_index" />
+		</function>
+		<function name="player_team_teleport" returnType="void" help="moves the specified team to the specified flag." internal="true" >
+			<arg type="short"			name="team_index" />
+			<arg type="cutscene_flag"	name="cutscene_flag" />
+		</function>
+		<function name="player_team_players" returnType="object_list" help="returns a list of players on the specified team" internal="true" >
+			<arg type="short" name="team_index" />
+		</function>
+
+		<function name="player_data_get_integer" returnType="long" help="returns an integer value property of the player. -1 if this fails" internal="true" >
+			<arg type="short"	name="player_list_index" />
+			<arg type="string"	name="data_name" />
+		</function>
+		<function name="player_team_data_get_integer" returnType="long" help="returns an integer value of all the players on the team. -1 if this fails" internal="true" >
+			<arg type="short"	name="team_index" />
+			<arg type="string"	name="data_name" />
+		</function>
+		<function name="player_data_get_object" returnType="object" help="returns an object value property of the player. none if this fails" internal="true" >
+			<arg type="short"	name="player_list_index" />
+			<arg type="string"	name="data_name" />
+		</function>
+		<function name="player_data_get_real" returnType="real" help="returns a real value property of the player. -1.0 if this fails" internal="true" >
+			<arg type="short"	name="player_list_index" />
+			<arg type="string"	name="data_name" />
+		</function>
+		<function name="player_data_set_real" returnType="void" help="sets a real value property of the player" internal="true" >
+			<arg type="short"	name="player_list_index" />
+			<arg type="string"	name="data_name" />
+			<arg type="real"	name="data_value" />
+		</function>
+		<function name="player_local_get" returnType="short" help="returns the local player's player-list-index" internal="true" />
+
+		<!-- OBJECT SCRIPTING INTERFACES -->
+		<function name="objects_distance_to_object" returnType="real" help="returns minimum distance from any of the specified objects to the specified destination object. (returns -1 if there are no objects to check)" internal="true" >
+			<arg type="object_list" name="objects" />
+			<arg type="object"		name="destination_object" />
+		</function>
+		
+		<function name="object_data_get_real" returnType="real" help="returns a real value property of the object. -1.0 if this fails" internal="true" >
+			<arg type="object" name="object" />
+			<arg type="string" name="data_name" />
+			<arg type="string" name="subdata_name" />
+		</function>
+		<function name="object_data_set_real" returnType="void" help="sets a real value property of the object" internal="true" >
+			<arg type="object"	name="object" />
+			<arg type="string"	name="data_name" />
+			<arg type="string"	name="subdata_name" />
+			<arg type="real"	name="data_value" />
+		</function>
+		<!-- WEAPONS -->
+			<function name="weapon_data_get_real" returnType="real" help="returns a real value property of the weapon. -1.0 if this fails" internal="true" >
+				<arg type="object" name="weapon" />
+				<arg type="string" name="data_name" />
+			</function>
+			<function name="weapon_data_set_real" returnType="void" help="sets a real value property of the weapon" internal="true" >
+				<arg type="object"	name="weapon" />
+				<arg type="string"	name="data_name" />
+				<arg type="real"	name="data_value" />
+			</function>
+			<function name="weapon_data_magazine_get_integer" returnType="long" help="returns an integer value property of a weapon's magazine. -1 if this fails" internal="true" >
+				<arg type="object"	name="weapon" />
+				<arg type="long"	name="magazine_index" />
+				<arg type="string"	name="data_name" />
+				<arg type="string"	name="subdata_name" />
+			</function>
+			<function name="weapon_data_magazine_set_integer" returnType="void" help="sets an integer value property of a weapon's magazine" internal="true" >
+				<arg type="object"	name="weapon" />
+				<arg type="long"	name="magazine_index" />
+				<arg type="string"	name="data_name" />
+				<arg type="string"	name="subdata_name" />
+				<arg type="long"	name="data_value" />
+			</function>
+			<function name="weapon_data_trigger_set_real" returnType="void" help="sets a real value property of a weapon's trigger" internal="true" >
+				<arg type="object"	name="weapon" />
+				<arg type="long"	name="trigger_index" />
+				<arg type="string"	name="data_name" />
+				<arg type="string"	name="subdata_name" />
+				<arg type="real"	name="data_value" />
+			</function>
+		<!-- UNITS -->
+			<function name="unit_data_get_object" returnType="object" help="returns an object value property of the unit. none if this fails" internal="true" >
+				<arg type="unit"	name="unit" />
+				<arg type="string"	name="data_name" />
+			</function>
+			<function name="unit_data_get_integer" returnType="long" help="returns an integer value property of the unit. -1 if this fails" internal="true" >
+				<arg type="unit"	name="unit" />
+				<arg type="string"	name="data_name" />
+			</function>
+			<function name="unit_data_set_integer" returnType="void" help="sets an integer value property of the unit" internal="true" >
+				<arg type="unit"	name="unit" />
+				<arg type="string"	name="data_name" />
+				<arg type="long"	name="data_value" />
+			</function>
+			<function name="unit_data_get_real" returnType="real" help="returns a real value property of the unit. -1.0 if this fails" internal="true" >
+				<arg type="unit"	name="unit" />
+				<arg type="string"	name="data_name" />
+			</function>
+			<function name="unit_data_set_real" returnType="void" help="sets a real value property of the unit" internal="true" >
+				<arg type="unit"	name="unit" />
+				<arg type="string"	name="data_name" />
+				<arg type="real"	name="data_value" />
+			</function>
+
+		<!-- PHYSICS -->
+		<function name="physics_get_gravity" returnType="real" help="get the current global gravity acceleration relative to halo standard gravity" internal="true" />
+		<function name="physics_set_gravity" returnType="void" help="set global gravity acceleration relative to halo standard gravity" internal="true" >
+			<arg type="real" name="gravity_fraction" />
+		</function>
+		<function name="physics_constants_reset" returnType="void" help="resets all physics constants to earthly values" internal="true" />
+
+		<!-- RUNTIME DATA SCRIPTING INTERFACE (INTEGERS) -->
+		<function name="runtime_integers_reset" returnType="void" help="reset ALL runtime integers back to zero" internal="true" />
+		<function name="runtime_integer_get" returnType="long" help="get the runtime integer's current value" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+		<function name="runtime_integer_set" returnType="long" help="set the runtime integer's current value, returning its previous value" internal="true" >
+			<arg type="short"	name="value_index" />
+			<arg type="long"	name="value" />
+		</function>
+		<function name="runtime_integer_inc" returnType="long" help="return the runtime integer's current value, then increments the value (aka post-increment)" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+		<function name="runtime_integer_dec" returnType="long" help="return the runtime integer's current value, then decrements the value (aka post-decrement)" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+
+		<!-- GAME ENGINE -->
+		<function name="game_change_version_id" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
+			<arg type="boolean" name="also-change-game-build-string" />
+			<arg type="string"	name="version-string" />
+		</function>
+		<function name="game_engine_data_get_integer" returnType="long" help="returns an integer value property of the current game engine. -1 if this fails" internal="true" >
+			<arg type="string" name="data_name" />
+		</function>
+
+		<!-- MACHINE/SERVER UTILS-->
+		<function name="machine_is_host" returnType="boolean" help="returns whether or not the local machine is the host" internal="true" />
+		<function name="machine_is_dedi" returnType="boolean" help="returns whether or not the local machine is a dedicated server" internal="true" />
+
+		<!-- MISC -->
+		<function name="abs_integer" returnType="long" help="return the absolute (non-negative) value of an integer" internal="true" >
+			<arg type="long" name="value" />
+		</function>
+		<function name="abs_real" returnType="real" help="return the absolute (non-negative) value of a real" internal="true" >
+			<arg type="real" name="value" />
+		</function>
+		
+		<!-- POSTPROCESSING -->
+		<function name="pp_load" returnType="void" help="loads post-processing" internal="true" />
+		<function name="pp_unload" returnType="void" help="unloads post-processing" internal="true" />
+		
+		<function name="pp_get_effect_instance_index_by_name" returnType="short" help="get the index of the effect named effect_name" internal="true" >
+			<arg type="string" name="instance name" />
+		</function>
+		<function name="pp_set_effect_instance_active" returnType="void" help="instantly set an effect instance to on or off" internal="true" >
+			<arg type="short"	name="instance_index" />
+			<arg type="boolean" name="instance_enabled" />
+		</function>
+		<function name="pp_set_effect_instance_fade" returnType="void" help="fade an effect instance in or out" internal="true" >
+			<arg type="short"	name="instance_index" />
+			<arg type="real"	name="fade_start" />
+			<arg type="real"	name="fade_end" />
+			<arg type="real"	name="fade_time" />
+		</function>
+		<function name="pp_get_effect_instance_current_fade" returnType="real" help="returns current fade amount of an effect instance" internal="true" >
+			<arg type="short" name="instance_index" />
+		</function>
+		<function name="pp_get_effect_instance_fade_direction" returnType="short" help="returns fade direction of an effect instance, -1 = no fade, 0 = fade out, 1 = fade in" internal="true" >
+			<arg type="short" name="instance_index" />
+		</function>
+		
+		<function name="pp_get_effect_index_by_name" returnType="short" help="returns the index of the effect named effect_name" internal="true" >
+			<arg type="string" name="effect_name" />
+		</function>
+		<function name="pp_get_effect_is_valid" returnType="boolean" help="get whether an effect is valid and ready to use" internal="true" >
+			<arg type="short" name="effect_index" />
+		</function>
+
+		<function name="pp_get_effect_shader_variable_index_by_name" returnType="short" help="returns the index of a shader variable for a specific effect" internal="true" >
+			<arg type="short"	name="effect_index" />
+			<arg type="string"	name="variable_name" />
+		</function>
+		<function name="pp_set_effect_shader_variable_boolean" returnType="void" help="sets the boolean value of an effect shader variable" internal="true" >
+			<arg type="short"	name="effect_index" />
+			<arg type="short"	name="variable_index" />
+			<arg type="boolean" name="bool" />
+			<arg type="real"	name="change_time" />
+		</function>
+		<function name="pp_set_effect_shader_variable_integer" returnType="void" help="sets the integer value of an effect shader variable" internal="true" >
+			<arg type="short"	name="effect_index" />
+			<arg type="short"	name="variable_index" />
+			<arg type="long"	name="value" />
+			<arg type="real"	name="change_time" />
+		</function>
+		<function name="pp_set_effect_shader_variable_real" returnType="void" help="sets the real values of an effect shader variable" internal="true" >
+			<arg type="short"	name="effect_index" />
+			<arg type="short"	name="variable_index" />
+			<arg type="real"	name="value0" />
+			<arg type="real"	name="value1" />
+			<arg type="real"	name="value2" />
+			<arg type="real"	name="value3" />
+			<arg type="real"	name="change_time" />
+		</function>
+		<function name="pp_set_effect_shader_instance_active" returnType="void" help="disables/enables a shader instance in an effect" internal="true" >
+			<arg type="short"	name="effect_index" />
+			<arg type="short"	name="shader_instance_index" />
+			<arg type="boolean" name="shader_instance_enabled" />
+		</function>
+		
+		<function name="pp_bloom_set_size" returnType="void" help="changes the bloom size over a period of time" internal="true" >
+			<arg type="real" name="size" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_exposure" returnType="void" help="changes the bloom exposure over a period of time" internal="true" >
+			<arg type="real" name="exposure" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_mix_amount" returnType="void" help="changes the bloom mix amount over a period of time" internal="true" >
+			<arg type="real" name="mix_amount" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_minimum_color" returnType="void" help="changes the bloom minimum color over a period of time" internal="true" >
+			<arg type="real" name="red" />
+			<arg type="real" name="green" />
+			<arg type="real" name="blue" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_maximum_color" returnType="void" help="changes the bloom maximum color over a period of time" internal="true" >
+			<arg type="real" name="red" />
+			<arg type="real" name="green" />
+			<arg type="real" name="blue" />
+			<arg type="real" name="change_time" />
+		</function>
+
+		<!-- BIT OPERATIONS -->
+		<function name="bitwise_and" returnType="long" help="AND 'value' with 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bitwise_or" returnType="long" help="OR 'value' with 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bitwise_xor" returnType="long" help="XOR 'value' with 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bitwise_lhs" returnType="long" help="Bit-shift (to the left) 'value' by 'bit_count'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="bit_count" help="Any value between 0 and 31, inclusive. Returns 0 if count is out of range" />
+		</function>
+		<function name="bitwise_rhs" returnType="long" help="Bit-shift (to the right) 'value' by 'bit_count'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="bit_count" help="Any value between 0 and 31, inclusive. Returns 0 if count is out of range" />
+		</function>
+		<function name="bit_test" returnType="boolean" help="Test whether 'value' has a certain bit set" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="short" name="bit_index" />
+		</function>
+		<function name="bit_toggle" returnType="long" help="Turns on or off the bit at 'bit_index' in 'value'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="short" name="bit_index" />
+			<arg type="boolean" name="on_or_off" help="on_or_off as in true_or_false" />
+		</function>
+		<function name="bit_flags_test" returnType="boolean" help="Test whether 'value' has the same bits set as 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bit_flags_toggle" returnType="long" help="Adds or removes 'flags' to or from 'value'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+			<arg type="boolean" name="add_or_remove" help="add_or_remove as in true_or_false" />
+		</function>
+		<function name="hex_string_to_long" returnType="long" help="converts a hex string (eg, 'DEADBEEF') to an integer" internal="true" >
+			<arg type="string" name="value" />
+		</function>
+
+		<function name="runtime_integer_operation" returnType="long" help="perform an operation on a runtime integer. returns result of operation" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="long" name="operation_value" help="only required for some operations" />
+		</function>
+		<!-- RUNTIME DATA SCRIPTING INTERFACE (VECTORS) -->
+		<function name="runtime_vectors_reset" returnType="void" help="reset ALL runtime vectors back to zero" internal="true" />
+		<function name="runtime_vector_get_element" returnType="real" help="get the runtime vector's element value" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="short" name="element_index" />
+		</function>
+		<function name="runtime_vector_set_element" returnType="boolean" help="set the runtime vector's element value. returns true if successful" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="short" name="element_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="real" name="operation_value" />
+		</function>
+		<function name="runtime_vector_set" returnType="boolean" help="set the runtime vector's elements. returns true if successful" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="real" name="value_x" />
+			<arg type="real" name="value_y" />
+			<arg type="real" name="value_z" />
+		</function>
+		<function name="runtime_vector_operation" returnType="boolean" help="perform an operation on a runtime vector. returns true if successful" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="short" name="operation_vector_index" help="only required for some operations" />
+		</function>
+		<function name="runtime_vector_to_string" returnType="string" help="returns the vector in a string as 'x y z', or an empty string if this fails" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+		<function name="object_data_set_vector" returnType="boolean" help="set an object's vector field using an existing runtime-vector. returns true if successful" internal="true" >
+			<arg type="object" name="object" />
+			<arg type="string" name="data_name" />
+			<arg type="short" name="vector_index" />
+		</function>
+		<function name="object_data_save_vector" returnType="boolean" help="save an object's vector field to an existing runtime-vector. returns true if successful" internal="true" >
+			<arg type="object" name="object" />
+			<arg type="string" name="data_name" />
+			<arg type="short" name="vector_index" />
+		</function>
+
+		<function name="display_scripted_ui_widget" returnType="boolean" help="returns true if successful" internal="true" >
+			<arg type="string" name="widget_name" help="name of the widget as it appears in the yelo tags. searches the scenario's yelo first, then globals" />
+		</function>
+		<function name="play_bink_movie" returnType="void" help="" internal="true" >
+			<arg type="string" name="filename" help="" />
+		</function>
+
+		<function name="scenario_faux_zones_reset" returnType="void" help="depreceated, do not use" internal="true" />
+		<function name="scenario_faux_zone_current_switch_variant" returnType="boolean" help="depreceated, do not use" internal="true" >
+			<arg type="string" name="variant-name" />
+		</function>
+		<function name="scenario_faux_zone_switch_variant" returnType="boolean" help="depreceated, do not use" internal="true" >
+			<arg type="string" name="zone-name" />
+			<arg type="string" name="variant-name" />
+		</function>
+		<function name="scenario_faux_zone_switch_sky" returnType="boolean" help="depreceated, do not use" internal="true" >
+			<arg type="string" name="zone-sky-name" />
+		</function>
+
+		<function name="structure_bsp_set_lightmap_set" returnType="boolean" help="Sets a bsp's lightmap set, returns true if successful" internal="true">
+			<arg type="short" name="bsp-index" />
+			<arg type="string" name="set-name" />
+		</function>
+		<function name="structure_bsp_set_sky_set" returnType="boolean" help="Sets a bsp's sky set, returns true if successful" internal="true" >
+			<arg type="short" name="bsp-index" />
+			<arg type="string" name="set-name" />
+		</function>
+		
+		<function name="ai_transform_actor" returnType="boolean" help="Transforms an actor into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+			<arg type="object" name="actor" />
+			<arg type="string" name="transform_name" />
+			<arg type="string" name="target_name" />
+		</function>
+		<function name="ai_transform_actors" returnType="boolean" help="Transforms a list of actors into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+			<arg type="object_list" name="actors" />
+			<arg type="string" name="transform_name" />
+			<arg type="string" name="target_name" />
+		</function>
+		<function name="ai_transform_actors_by_type" returnType="boolean" help="Transforms actors in a list of a specific type into the specified target. Returns false if it fails. Empty names causes random selection." internal="true" >
+			<arg type="object_list" name="actors" />
+			<arg type="actor_variant" name="actor_type" />
+			<arg type="string" name="transform_name" />
+			<arg type="string" name="target_name" />
+		</function>
+		<function name="ai_actor_is_transforming" returnType="boolean" help="Returns true if the specified actor is transforming." internal="true" >
+			<arg type="object" name="actor" />
+		</function>
+	</scriptFunctions>
+
+	<scriptGlobals>
+		<global name="rasterizer_rt_display" type="short" help="" internal="true" />
+		<global name="rasterizer_gbuffer_enabled" type="boolean" help="" internal="true" />
+
+		<global name="pp_external_post_processes_enabled" type="boolean" help="toggles external effects on or off" internal="true" />
+		<global name="pp_internal_post_processes_enabled" type="boolean" help="toggles internal effects on or off" internal="true" />
+		
+		<global name="pp_fxaa_enabled" type="boolean" help="" internal="true" />
+		<global name="pp_motion_blur_enabled" type="boolean" help="" internal="true" />
+		<global name="pp_motion_blur_amount" type="real" help="" internal="true" />
+		
+		<global name="ai_transforms_enabled" type="boolean" help="controls whether ai transforms are enabled (does not stop transforms triggered by scripts)" internal="true" />
+	</scriptGlobals>
+
+</definitions>

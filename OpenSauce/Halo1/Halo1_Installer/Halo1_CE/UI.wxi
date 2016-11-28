@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesDefHCE_CACT' Order='1'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesHCE_CACT' Order='2'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='3'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed) AND NOT
+			(
+				(SETPROPERTIESRESULT = "PASS") AND
+				(HALO1_CE_HCE_INSTALLDIR_EXISTS_PROP ~= "True")
+			)
+		]]>
+	</Publish>
+	
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesDefHEK_CACT' Order='4'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPropertiesHEK_CACT' Order='5'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='6'>
+		<![CDATA[
+			((&Halo1_CE_HEK_FEAT = 3) AND NOT Installed) AND NOT
+			(
+				(SETPROPERTIESRESULT = "PASS") AND
+				(HALO1_CE_HEK_GUERILLAPATH_EXISTS_PROP ~= "True") AND
+				(HALO1_CE_HEK_TOOLPATH_EXISTS_PROP ~= "True") AND
+				(HALO1_CE_HEK_SAPIENPATH_EXISTS_PROP ~= "True")
+			)
+		]]>
+	</Publish>
+	
+	
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_SetReadmeTarget_CACT'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed AND HALO1_CE_README_LAUNCH_PROP]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_OpenReadme_CACT'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed AND HALO1_CE_README_LAUNCH_PROP]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_HEK_SetReadmeTarget_CACT'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed AND HALO1_CE_HEK_README_LAUNCH_PROP]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_HEK_OpenReadme_CACT'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed AND HALO1_CE_HEK_README_LAUNCH_PROP]]>
+	</Publish>
+
+	<ProgressText Action='Halo1_CE_ValidateInstallHCE_CACT'>Validating Halo Custom Edition Installation</ProgressText>
+	<ProgressText Action='Halo1_CE_ValidateInstallHEK_CACT'>Validating Halo Editing Kit Installation</ProgressText>
+
+	<ProgressText Action='Halo1_CE_PatchFiles_CACT'>Applying OpenSauce EXE modifications</ProgressText>
+</Include>

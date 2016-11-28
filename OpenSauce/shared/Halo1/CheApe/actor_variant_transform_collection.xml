@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<references>
+		<Reference name="actor_variant_transform_out_reference">
+			<field>avto</field>
+		</Reference>
+		<Reference name="actor_variant_transform_in_reference">
+			<field>avti</field>
+		</Reference>
+	</references>
+
+	<flags>
+		<Flag name="actor_variant_transform_collection_transform_flags">
+			<field>scripted only</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="actor_variant_transform_collection_transform_block" maxElements="32">
+			<!--actor_variant_transform_collection_transform-->
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_collection_transform_flags" />
+			<field type="Pad" definition="2" />
+			
+			<field type="String" name="transform name" blockname="true" />
+			<field type="RealFraction" name="easy selection chance" />
+			<field type="RealFraction" name="normal selection chance" />
+			<field type="RealFraction" name="hard selection chance" />
+			<field type="RealFraction" name="imposs. selection chance" />
+			
+			<field type="Explanation" name="Transform Stages" definition="The transform out stage tag determines the cause of the transform (such as low health), the animation to play on the attacked unit and what attachments to add if any. The transform in stage tag determines the possible actors to transform into." />
+			<field type="TagReference" name="transform out" definition="actor_variant_transform_out_reference" />
+			<field type="Skip" definition="4" /> <!-- actor_variant_transform_out_definition*-->
+			<field type="TagReference" name="transform in" definition="actor_variant_transform_in_reference" />
+			<field type="Skip" definition="4" /> <!-- actor_variant_transform_in_definition*-->
+			<field type="Pad" definition="24" />
+		</TagBlock>
+
+		<TagBlock name="actor_variant_transform_collection_entry_block" maxElements="32">
+			<!--actor_variant_transform_collection_entry-->
+			<field type="TagReference" name="actor variant" definition="actor_variant_reference" blockname="true" />
+			<field type="Block" name="transforms" definition="actor_variant_transform_collection_transform_block" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="actor_variant_transform_collection" groupTag="avtc" version="1">
+			<!--actor_variant_transform_collection_definition-->
+			<field type="Block" name="actor variant transforms" definition="actor_variant_transform_collection_entry_block" />
+			<field type="Pad" definition="24" />
+		</TagGroup>	
+	</groups>
+
+</definitions>

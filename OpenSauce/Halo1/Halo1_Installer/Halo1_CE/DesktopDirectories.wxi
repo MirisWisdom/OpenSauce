@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<!-- Desktop shortcuts to the OS HEK -->
+	<Component Id='Halo1_CE_OSGuerillaDesktopShortcut_COMP' Guid='06CBD7FA-D288-4bbb-AB63-9D958530789B'>
+		<Condition>
+			<![CDATA[CREATEDESKTOPSHORTCUTS]]>
+		</Condition>
+		<Shortcut Id='Halo1_CE_OSGuerillaDesktop_SCUT'
+			Target='[HALO1_CE_HEK_INSTALLDIR_PROP]OS_Guerilla.exe'
+			Name='OS Guerilla'
+			Description='OpenSauce enabled Guerilla'
+			WorkingDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'/>
+		<RegistryValue Id='Halo1_CE_OSGuerillaDesktop_REG'
+			Root='HKCU'
+			Key='Software\KornnerStudios\OpenSauce'
+			Name='KeyPathsDesktop'
+			Type='multiString'
+			Action='append'
+			Value='OS_GuerillaDesktop'
+			KeyPath='yes'/>
+	</Component>
+	<Component Id='Halo1_CE_OSSapienDesktopShortcut_COMP' Guid='970082D9-9406-4514-84F5-A218C69224A9'>
+		<Condition>
+			<![CDATA[CREATEDESKTOPSHORTCUTS]]>
+		</Condition>
+		<Shortcut Id='Halo1_CE_OSSapienDesktop_SCUT'
+			Target='[HALO1_CE_HEK_INSTALLDIR_PROP]OS_Sapien.exe'
+			Name='OS Sapien'
+			Description='OpenSauce enabled Sapien'
+			WorkingDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'/>
+		<RegistryValue Id='Halo1_CE_OSSapienDesktop_REG'
+			Root='HKCU'
+			Key='Software\KornnerStudios\OpenSauce'
+			Name='KeyPathsDesktop'
+			Type='multiString'
+			Action='append'
+			Value='OS_SapienDesktop'
+			KeyPath='yes'/>
+	</Component>
+	<Component Id='Halo1_CE_OSToolDesktopShortcut_COMP' Guid='CE2DC8CD-752D-4025-8E67-A1967F2C15D2'>
+		<Condition>
+			<![CDATA[CREATEDESKTOPSHORTCUTS]]>
+		</Condition>
+		<Shortcut Id='Halo1_CE_OSToolDesktop_SCUT'
+			Target='[SystemFolder]cmd.exe'
+			Name='OS Tool'
+			Description='OpenSauce enabled Tool'
+			WorkingDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'/>
+		<RegistryValue Id='Halo1_CE_OSToolDesktop_REG'
+			Root='HKCU'
+			Key='Software\KornnerStudios\OpenSauce'
+			Name='KeyPathsDesktop'
+			Type='multiString'
+			Action='append'
+			Value='OS_ToolDesktop'
+			KeyPath='yes'/>
+	</Component>
+	
+</Include>

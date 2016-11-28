@@ -1,0 +1,243 @@
+{
+	"Screen": {
+		"Control": {
+			"Type": "Rectangle",
+			"Property": {
+				"Name": "Size",
+				"Value": "500 280"
+			},
+			"Property": {
+				"Name": "Color",
+				"Value": "71 72 77 255"
+			},
+			"Control": {
+				"Type": "Rectangle",
+				"Property": {
+					"Name": "Size",
+					"Value": "0 34"
+				},
+				"Property": {
+					"Name": "Color",
+					"Value": "66 68 99 255"
+				},
+				"Property": {
+					"Name": "Dock",
+					"Value": "Top"
+				},
+				"Control": {
+					"IDStr": "#LBL_map_download_title",
+					"ID": "4069627371",
+					"Type": "Label",
+					"Property": {
+						"Name": "Dock",
+						"Value": "Fill"
+					},
+					"Property": {
+						"Name": "TextColor",
+						"Value": "200 200 200 255"
+					},
+					"Property": {
+						"Name": "TextVAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextHAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextSize",
+						"Value": "28"
+					},
+					"Property": {
+						"Name": "TextBold",
+						"Value": "True"
+					}
+				}
+			},
+			"Control": {
+				"Type": "Rectangle",
+				"Property": {
+					"Name": "Size",
+					"Value": "0 90"
+				},
+				"Property": {
+					"Name": "Color",
+					"Value": "76 78 109 255"
+				},
+				"Property": {
+					"Name": "Dock",
+					"Value": "Top"
+				},
+				"Control": {
+					"IDStr": "#LBL_map_name",
+					"ID": "1003050133",
+					"Type": "Label",
+					"Property": {
+						"Name": "Dock",
+						"Value": "Top"
+					},
+					"Property": {
+						"Name": "Size",
+						"Value": "0 30"
+					},
+					"Property": {
+						"Name": "TextColor",
+						"Value": "200 200 200 255"
+					},
+					"Property": {
+						"Name": "TextVAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextHAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextSize",
+						"Value": "24"
+					},
+					"Property": {
+						"Name": "TextBold",
+						"Value": "True"
+					}
+				},
+				"Control": {
+					"IDStr": "#PRG_map_progress",
+					"ID": "1798879359",
+					"Type": "ProgressBar",
+					"Property": {
+						"Name": "Dock",
+						"Value": "Top"
+					},
+					"Property": {
+						"Name": "Size",
+						"Value": "0 30"
+					},
+					"Property": {
+						"Name": "TextColor",
+						"Value": "0 0 0 255"
+					},
+					"Property": {
+						"Name": "TextVAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextHAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextSize",
+						"Value": "18"
+					},
+					"Property": {
+						"Name": "Margin",
+						"Value": "2 10 2 10"
+					}
+				},
+				"Control": {
+					"IDStr": "#LBL_esc_to_cancel_text",
+					"ID": "2482515410",
+					"Type": "Label",
+					"Property": {
+						"Name": "Dock",
+						"Value": "Top"
+					},
+					"Property": {
+						"Name": "Size",
+						"Value": "0 20"
+					},
+					"Property": {
+						"Name": "TextColor",
+						"Value": "200 200 200 255"
+					},
+					"Property": {
+						"Name": "TextVAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextHAlignment",
+						"Value": "Center"
+					},
+					"Property": {
+						"Name": "TextSize",
+						"Value": "18"
+					},
+					"Property": {
+						"Name": "TextBold",
+						"Value": "False"
+					}
+				}
+			},
+			"Control": {
+				"IDStr": "#LBL_download_source_title",
+				"ID": "3450916249",
+				"Type": "Label",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Top"
+				},
+				"Property": {
+					"Name": "Size",
+					"Value": "0 30"
+				},
+				"Property": {
+					"Name": "TextColor",
+					"Value": "200 200 200 255"
+				},
+				"Property": {
+					"Name": "TextVAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "TextHAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "TextSize",
+					"Value": "20"
+				},
+				"Property": {
+					"Name": "TextBold",
+					"Value": "True"
+				}
+			},
+			"Control": {
+				"IDStr": "#LBL_download_source_description",
+				"ID": "2294561445",
+				"Type": "Label",
+				"Property": {
+					"Name": "Dock",
+					"Value": "Fill"
+				},
+				"Property": {
+					"Name": "Size",
+					"Value": "0 20"
+				},
+				"Property": {
+					"Name": "TextColor",
+					"Value": "200 200 200 255"
+				},
+				"Property": {
+					"Name": "TextVAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "TextHAlignment",
+					"Value": "Center"
+				},
+				"Property": {
+					"Name": "TextSize",
+					"Value": "14"
+				},
+				"Property": {
+					"Name": "TextWrap",
+					"Value": "True"
+				},
+				"Property": {
+					"Name": "Margin",
+					"Value": "5 10 5 10"
+				}
+			}
+		}
+	}
+}

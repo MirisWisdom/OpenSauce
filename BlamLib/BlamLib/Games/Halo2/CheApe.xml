@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CheApeDefinition game="Halo2">
+	<memory baseAddress="0x50000000" allocationSize="0x600000" />
+	<fieldTypes>
+		<type opcode="0x00" size="0x20" name="String">
+			<byteSwap> <code value="32" /> </byteSwap>
+		</type>
+		<type opcode="0x01" size="0x100" name="LongString">
+			<byteSwap> <code value="256" /> </byteSwap>
+		</type>
+		<type opcode="0x02" size="0x20" name="StringID">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		<type opcode="0x03" size="0x20" name="OldStringId">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x04" size="0x01" name="CharInteger">
+			<byteSwap> <code value="1" /> </byteSwap>
+		</type>
+		<type opcode="0x05" size="0x02" name="ShortInteger">
+			<byteSwap> <code value="-2" /> </byteSwap>
+		</type>
+		<type opcode="0x06" size="0x04" name="LongInteger">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x07" size="0x04" name="Angle">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x08" size="0x04" name="Tag">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x09" size="0x01" name="CharEnum" needsDefinition="true">
+			<byteSwap> <code value="1" /> </byteSwap>
+		</type>
+		<type opcode="0x0A" size="0x02" name="Enum" needsDefinition="true">
+			<byteSwap> <code value="-2" /> </byteSwap>
+		</type>
+		<type opcode="0x0B" size="0x04" name="LongEnum" needsDefinition="true">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x0C" size="0x04" name="LongFlags" needsDefinition="true">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		<type opcode="0x0D" size="0x02" name="WordFlags" needsDefinition="true">
+			<byteSwap> <code value="-2" /> </byteSwap>
+		</type>
+		<type opcode="0x0E" size="0x01" name="ByteFlags" needsDefinition="true">
+			<byteSwap> <code value="1" /> </byteSwap>
+		</type>
+
+		<type opcode="0x0F" size="0x04" name="Point2D">
+			<byteSwap>
+				<code value="-2" />
+				<code value="-2" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x10" size="0x08" name="Rectangle2D">
+			<byteSwap>
+				<code value="-2" />
+				<code value="-2" />
+				<code value="-2" />
+				<code value="-2" />
+			</byteSwap>
+		</type>
+		
+		<type opcode="0x11" size="0x04" name="RgbColor">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		<type opcode="0x12" size="0x04" name="ArgbColor">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x13" size="0x04" name="Real">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		<type opcode="0x14" size="0x04" name="RealFraction">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+
+		<type opcode="0x15" size="0x08" name="RealPoint2D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x16" size="0x0C" name="RealPoint3D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x17" size="0x08" name="RealVector2D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x18" size="0x0C" name="RealVector3D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x19" size="0x10" name="RealQuaternion">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+
+		<type opcode="0x1A" size="0x08" name="RealEulerAngles2D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x1B" size="0x0C" name="RealEulerAngles3D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x1C" size="0x0C" name="RealPlane2D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x1D" size="0x10" name="RealPlane3D">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x1E" size="0x0C" name="RealRgbColor">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x1F" size="0x10" name="RealArgbColor">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x20" size="0x0C" name="RealHsvColor">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x21" size="0x10" name="RealAhsvColor">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x22" size="0x04" name="ShortBounds">
+			<byteSwap>
+				<code value="-2" />
+				<code value="-2" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x23" size="0x08" name="AngleBounds">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x24" size="0x08" name="RealBounds">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+		<type opcode="0x25" size="0x08" name="RealFractionBounds">
+			<byteSwap>
+				<code value="-4" />
+				<code value="-4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x26" size="0x10" name="TagReference" needsDefinition="true">
+			<byteSwap>
+				<code value="-4" />
+				<code value="4" />
+				<code value="-4" />
+				<code value="4" />
+			</byteSwap>
+		</type>
+
+		<type opcode="0x27" size="0x0C" name="Block" needsDefinition="true">
+			<byteSwap>
+				<code value="-4" />
+				<code value="8" />
+			</byteSwap>
+		</type>
+		
+		<type opcode="0x28" size="0x04" name="LongBlockFlags" needsDefinition="true">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		<type opcode="0x29" size="0x02" name="WordBlockFlags" needsDefinition="true">
+			<byteSwap> <code value="-2" /> </byteSwap>
+		</type>
+		<type opcode="0x2A" size="0x01" name="ByteBlockFlags" needsDefinition="true">
+			<byteSwap> <code value="1" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x2B" size="0x01" name="CharBlockIndex1" needsDefinition="true">
+			<byteSwap> <code value="1" /> </byteSwap>
+		</type>
+		<type opcode="0x2C" size="0x01" name="CharBlockIndex2" needsDefinition="true">
+			<byteSwap> <code value="1" /> </byteSwap>
+		</type>
+		<type opcode="0x2D" size="0x02" name="ShortBlockIndex1" needsDefinition="true">
+			<byteSwap> <code value="-2" /> </byteSwap>
+		</type>
+		<type opcode="0x2E" size="0x02" name="ShortBlockIndex2" needsDefinition="true">
+			<byteSwap> <code value="-2" /> </byteSwap>
+		</type>
+		<type opcode="0x2F" size="0x04" name="LongBlockIndex1" needsDefinition="true">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+		<type opcode="0x30" size="0x04" name="LongBlockIndex2" needsDefinition="true">
+			<byteSwap> <code value="-4" /> </byteSwap>
+		</type>
+
+		<type opcode="0x31" size="0x14" name="Data" needsDefinition="true">
+			<byteSwap>
+				<code value="-4" />
+				<code value="8" />
+				<code value="8" />
+			</byteSwap>
+		</type>
+		
+		<type opcode="0x32" size="0x20" name="VertexBuffer">
+			<byteSwap> <code value="32" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x33" size="0x00" name="ArrayStart" needsDefinition="true">
+			<byteSwap> <code value="-100" /> </byteSwap>
+		</type>
+		<type opcode="0x34" size="0x00" name="ArrayEnd">
+			<byteSwap> <code value="-101" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x35" size="0x00" name="Pad" needsDefinition="true">
+			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
+		<type opcode="0x36" size="0x00" name="UselessPad" needsDefinition="true">
+			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
+		<type opcode="0x37" size="0x00" name="Skip" needsDefinition="true">
+			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x38" size="0x00" name="Explanation">
+			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
+		<type opcode="0x39" size="0x00" name="Custom">
+			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x3A" size="0x00" name="Struct" needsDefinition="true">
+			<byteSwap> <code value="-102" /> </byteSwap>
+		</type>
+		
+		<type opcode="0x3B" size="0x00" name="Terminator">
+			<byteSwap> <code value="-101" /> </byteSwap>
+		</type>
+	</fieldTypes>
+</CheApeDefinition>

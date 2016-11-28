@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  If you update this file you need to update
+  Halo1_CheApe.vcxproj.filters
+  as well. Look for the commented out Import (of this file) element
+  -->
+  <ItemGroup
+    > <!--cache EDITOR-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_gestalt_definitions.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--guerilla EDITOR-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.hpp">
+      <Filter>.YeloLib\guerilla</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.cpp">
+      <Filter>.YeloLib\guerilla</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tag_files EDITOR-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_from_tag_string_list.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_allocations.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_stats.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

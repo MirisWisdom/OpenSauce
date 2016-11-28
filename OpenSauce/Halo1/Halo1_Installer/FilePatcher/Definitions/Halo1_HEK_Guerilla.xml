@@ -1,0 +1,584 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FilePatch inputfile="Guerilla.exe" outputfile="OS_Guerilla.exe" peaddressmask="400000" md5_pre="fd86057ecdc707d9659bf683db2fc8df" md5_post="350900e1163fafdf70428850aa7478e5">
+	<Patch id="PTCH_guerilla_logheader">
+		<Data id="VAL_logheader" type="string" length="13" writenull="false"><![CDATA[01.00.09.0620]]></Data>
+
+		<Address ptr="89CBDC" value="VAL_logheader"/>
+	</Patch>
+
+	<Patch id="PTCH_guerilla_disablebetamap">
+		<Data id="VAL_betamapnullcode" type="bytes"><![CDATA[90909090909090909090909090909090]]></Data>
+
+		<Address ptr="42127F" value="VAL_betamapnullcode"/>
+	</Patch>
+
+	<Patch id="PTCH_guerilla_enablecheape">
+		<Data id="VAL_cheapedllstring" type="bytes"><![CDATA[00436865417065444C4C472E646C6C00]]></Data>
+		<Data id="VAL_cheapefunction1" type="bytes"><![CDATA[6898A09300FF152C58F500E9146A3300]]></Data>
+		<Data id="VAL_cheapefunction2" type="bytes"><![CDATA[E8A3F5CCFF]]></Data>
+
+		<Address ptr="93A097" value="VAL_cheapedllstring"/>
+		<Address ptr="421B10" value="VAL_cheapefunction1"/>
+		<Address ptr="752568" value="VAL_cheapefunction2"/>
+	</Patch>
+	
+	<Patch id="PTCH_guerilla_nullfields">
+		<Data id="VAL_fieldstring" type="uint32"><![CDATA[0089C528]]></Data>
+
+		<Address ptr="9D6D28" value="VAL_fieldstring"/>
+		<Address ptr="9D6D58" value="VAL_fieldstring"/>
+		<Address ptr="9D6D88" value="VAL_fieldstring"/>
+		<Address ptr="9CC2E8" value="VAL_fieldstring"/>
+	</Patch>
+	
+	<Patch id="PTCH_guerilla_readonlyfieldnames">
+		<Data id="VAL_flags" type="string"><![CDATA[flags]]></Data>
+		<Data id="VAL_node_list_checksum" type="string"><![CDATA[node list checksum]]></Data>
+		<Data id="VAL_super_high_detail_node_count" type="string"><![CDATA[super-high detail node count:nodes]]></Data>
+		<Data id="VAL_high_detail_node_count" type="string"><![CDATA[high detail node count:nodes]]></Data>
+		<Data id="VAL_medium_detail_node_count" type="string"><![CDATA[medium detail node count:nodes]]></Data>
+		<Data id="VAL_low_detail_node_count" type="string"><![CDATA[low detail node count:nodes]]></Data>
+		<Data id="VAL_super_low_detail_node_count" type="string"><![CDATA[super-low detail node count:nodes]]></Data>
+		<Data id="VAL_base_map_u_scale" type="string"><![CDATA[base map u-scale#0 defaults to 1]]></Data>
+		<Data id="VAL_base_map_v_scale" type="string"><![CDATA[base map v-scale#0 defaults to 1]]></Data>
+		<Data id="VAL_markers" type="string"><![CDATA[markers]]></Data>
+		<Data id="VAL_name" type="string"><![CDATA[name^]]></Data>
+		<Data id="VAL_magic_identifier" type="string"><![CDATA[magic identifier]]></Data>
+		<Data id="VAL_instances" type="string"><![CDATA[instances]]></Data>
+		<Data id="VAL_region_index" type="string"><![CDATA[region index]]></Data>
+		<Data id="VAL_permutation_index" type="string"><![CDATA[permutation index]]></Data>
+		<Data id="VAL_node_index" type="string"><![CDATA[node index]]></Data>
+		<Data id="VAL_translation" type="string"><![CDATA[translation]]></Data>
+		<Data id="VAL_rotation" type="string"><![CDATA[rotation]]></Data>
+		<Data id="VAL_nodes" type="string"><![CDATA[nodes]]></Data>
+		<Data id="VAL_next_sibling_node_index" type="string"><![CDATA[next sibling node index]]></Data>
+		<Data id="VAL_first_child_node_index" type="string"><![CDATA[first child node index]]></Data>
+		<Data id="VAL_parent_node_index" type="string"><![CDATA[parent node index]]></Data>
+		<Data id="VAL_default_translation" type="string"><![CDATA[default translation]]></Data>
+		<Data id="VAL_default_rotation" type="string"><![CDATA[default rotation]]></Data>
+		<Data id="VAL_node_distance_from_parent" type="string"><![CDATA[node distance from parent]]></Data>
+		<Data id="VAL_regions" type="string"><![CDATA[regions]]></Data>
+		<Data id="VAL_permutations" type="string"><![CDATA[permutations]]></Data>
+		<Data id="VAL_super_low" type="string"><![CDATA[super low]]></Data>
+		<Data id="VAL_low" type="string"><![CDATA[low]]></Data>
+		<Data id="VAL_medium" type="string"><![CDATA[medium]]></Data>
+		<Data id="VAL_high" type="string"><![CDATA[high]]></Data>
+		<Data id="VAL_super_high" type="string"><![CDATA[super high]]></Data>
+		<Data id="VAL_geometries" type="string"><![CDATA[geometries]]></Data>
+		<Data id="VAL_parts" type="string"><![CDATA[parts]]></Data>
+		<Data id="VAL_shader_index" type="string"><![CDATA[shader index]]></Data>
+		<Data id="VAL_centroid_primary_node" type="string"><![CDATA[centroid primary node]]></Data>
+		<Data id="VAL_centroid_secondary_node" type="string"><![CDATA[centroid secondary node]]></Data>
+		<Data id="VAL_centroid_primary_weight" type="string"><![CDATA[centroid primary weight]]></Data>
+		<Data id="VAL_centroid_secondary_weight" type="string"><![CDATA[centroid secondary weight]]></Data>
+		<Data id="VAL_centroid" type="string"><![CDATA[centroid]]></Data>
+		<Data id="VAL_uncompressed_vertices" type="string"><![CDATA[uncompressed vertices]]></Data>
+		<Data id="VAL_position" type="string"><![CDATA[position]]></Data>
+		<Data id="VAL_normal" type="string"><![CDATA[normal]]></Data>
+		<Data id="VAL_binormal" type="string"><![CDATA[binormal]]></Data>
+		<Data id="VAL_tangent" type="string"><![CDATA[tangent]]></Data>
+		<Data id="VAL_texture_coords" type="string"><![CDATA[texture coords]]></Data>
+		<Data id="VAL_node0_index" type="string"><![CDATA[node0 index]]></Data>
+		<Data id="VAL_node1_index" type="string"><![CDATA[node1 index]]></Data>
+		<Data id="VAL_node0_weight" type="string"><![CDATA[node0 weight]]></Data>
+		<Data id="VAL_node1_weight" type="string"><![CDATA[node1 weight]]></Data>
+		<Data id="VAL_compressed_vertices" type="string"><![CDATA[compressed vertices]]></Data>
+		<Data id="VAL_normal_11_11_10_bit" type="string"><![CDATA[normal[11.11.10-bit]]]></Data>
+		<Data id="VAL_binormal_11_11_10_bit" type="string"><![CDATA[binormal[11.11.10-bit]]]></Data>
+		<Data id="VAL_tangent_11_11_10_bit" type="string"><![CDATA[tangent[11.11.10-bit]]]></Data>
+		<Data id="VAL_texture_coordinate_u_16_bit" type="string"><![CDATA[texture coordinate u[16-bit]]]></Data>
+		<Data id="VAL_texture_coordinate_v_16_bit" type="string"><![CDATA[texture coordinate v[16-bit]]]></Data>
+		<Data id="VAL_node0_index_x3" type="string"><![CDATA[node0 index(x3)]]></Data>
+		<Data id="VAL_node1_index_x3" type="string"><![CDATA[node1 index(x3)]]></Data>
+		<Data id="VAL_node0_weight_16_bit" type="string"><![CDATA[node0 weight[16-bit]]]></Data>
+		<Data id="VAL_triangles" type="string"><![CDATA[triangles]]></Data>
+		<Data id="VAL_vertex0_index" type="string"><![CDATA[vertex0 index]]></Data>
+		<Data id="VAL_vertex1_index" type="string"><![CDATA[vertex1 index]]></Data>
+		<Data id="VAL_vertex2_index" type="string"><![CDATA[vertex2 index]]></Data>
+		<Data id="VAL_shaders" type="string"><![CDATA[shaders]]></Data>
+		<Data id="VAL_base_vector" type="string"><![CDATA[base vector]]></Data>
+		<Data id="VAL_vector_range" type="string"><![CDATA[vector range]]></Data>
+		<Data id="VAL_animations" type="string"><![CDATA[animations]]></Data>
+		<Data id="VAL_type" type="string"><![CDATA[type]]></Data>
+		<Data id="VAL_frame_count" type="string"><![CDATA[frame count]]></Data>
+		<Data id="VAL_frame_size" type="string"><![CDATA[frame size]]></Data>
+		<Data id="VAL_frame_info_type" type="string"><![CDATA[frame info type]]></Data>
+		<Data id="VAL_node_count" type="string"><![CDATA[node count]]></Data>
+		<Data id="VAL_next_animation" type="string"><![CDATA[next animation]]></Data>
+		<!--Value id="frame_info" type="string"><![CDATA[frame info*]]></Value-->
+		<!--Value id="node_trans_flag_data" type="string"><![CDATA[node trans. flag data*]]></Value-->
+		<!--Value id="node_rotation_flag_data" type="string"><![CDATA[node rotation flag data*]]></Value-->
+		<!--Value id="node_scale_flag_data" type="string"><![CDATA[node scale flag data*]]></Value-->
+		<!--Value id="offset_to_compressed_data" type="string"><![CDATA[offset to compressed data:bytes*]]></Value-->
+		<!--Value id="default_data" type="string"><![CDATA[default data*]]></Value-->
+		<!--Value id="frame_data" type="string"><![CDATA[frame data*]]></Value-->
+		<!--Value id="color_plate_width" type="string"><![CDATA[color plate width*:pixels]]></Value-->
+		<!--Value id="color_plate_height" type="string"><![CDATA[color plate height*:pixels]]></Value-->
+		<!--Value id="compressed_color_plate_data" type="string"><![CDATA[compressed color plate data*]]></Value-->
+		<!--Value id="processed_pixel_data" type="string"><![CDATA[processed pixel data*]]></Value-->
+		<Data id="VAL_sprite_spacing" type="string"><![CDATA[sprite spacing]]></Data>
+		<Data id="VAL_sequences" type="string"><![CDATA[sequences]]></Data>
+		<Data id="VAL_first_bitmap_index" type="string"><![CDATA[first bitmap index]]></Data>
+		<Data id="VAL_bitmap_count" type="string"><![CDATA[bitmap count]]></Data>
+		<Data id="VAL_sprites" type="string"><![CDATA[sprites]]></Data>
+		<Data id="VAL_bitmap_index" type="string"><![CDATA[bitmap index]]></Data>
+		<Data id="VAL_left" type="string"><![CDATA[left]]></Data>
+		<Data id="VAL_right" type="string"><![CDATA[right]]></Data>
+		<Data id="VAL_top" type="string"><![CDATA[top]]></Data>
+		<Data id="VAL_bottom" type="string"><![CDATA[bottom]]></Data>
+		<Data id="VAL_registration_point" type="string"><![CDATA[registration point]]></Data>
+		<Data id="VAL_bitmaps" type="string"><![CDATA[bitmaps]]></Data>
+		<!--Value id="signature" type="string"><![CDATA[signature*]]></Value-->
+		<Data id="VAL_width" type="string"><![CDATA[width:pixels]]></Data>
+		<Data id="VAL_height" type="string"><![CDATA[height:pixels]]></Data>
+		<Data id="VAL_depth" type="string"><![CDATA[depth:pixels#depth is 1 for 2D textures and cube maps]]></Data>
+		<Data id="VAL_type_1" type="string"><![CDATA[type#determines bitmap 'geometry']]></Data>
+		<Data id="VAL_format" type="string"><![CDATA[format#determines how pixels are represented internally]]></Data>
+		<Data id="VAL_mipmap_count" type="string"><![CDATA[mipmap count]]></Data>
+		<Data id="VAL_pixels_offset" type="string"><![CDATA[pixels offset]]></Data>
+		<Data id="VAL_character" type="string"><![CDATA[character]]></Data>
+		<Data id="VAL_bitmap_width" type="string"><![CDATA[bitmap width]]></Data>
+		<Data id="VAL_bitmap_height" type="string"><![CDATA[bitmap height]]></Data>
+		<Data id="VAL_hardware_character_index" type="string"><![CDATA[hardware character index]]></Data>
+		<Data id="VAL_center_of_mass" type="string"><![CDATA[center of mass]]></Data>
+		<Data id="VAL_inertial_matrix_and_inverse" type="string"><![CDATA[inertial matrix and inverse]]></Data>
+		<Data id="VAL_model_node" type="string"><![CDATA[model node]]></Data>
+		<Data id="VAL_mass" type="string"><![CDATA[mass]]></Data>
+		<Data id="VAL_density" type="string"><![CDATA[density]]></Data>
+		<Data id="VAL_predicted_resources" type="string"><![CDATA[predicted resources]]></Data>
+		<Data id="VAL_sample_rate" type="string"><![CDATA[sample rate]]></Data>
+		<Data id="VAL_encoding" type="string"><![CDATA[encoding]]></Data>
+		<Data id="VAL_compression" type="string"><![CDATA[compression]]></Data>
+		<Data id="VAL_name_1" type="string"><![CDATA[name^#the name of the imported pitch range directory]]></Data>
+		<Data id="VAL_actual_permutation_count" type="string"><![CDATA[actual permutation count]]></Data>
+		<Data id="VAL_name_2" type="string"><![CDATA[name^#name of the file from which this sample was imported]]></Data>
+		<Data id="VAL_next_permutation_index" type="string"><![CDATA[next permutation index]]></Data>
+		<Data id="VAL_materials" type="string"><![CDATA[materials]]></Data>
+		<Data id="VAL_region" type="string"><![CDATA[region]]></Data>
+		<Data id="VAL_parent_node" type="string"><![CDATA[parent node]]></Data>
+		<Data id="VAL_next_sibling_node" type="string"><![CDATA[next sibling node]]></Data>
+		<Data id="VAL_first_child_node" type="string"><![CDATA[first child node]]></Data>
+		<Data id="VAL_bsps" type="string"><![CDATA[bsps]]></Data>
+		<Data id="VAL_bsp3d_nodes" type="string"><![CDATA[bsp3d nodes]]></Data>
+		<Data id="VAL_plane" type="string"><![CDATA[plane]]></Data>
+		<Data id="VAL_back_child" type="string"><![CDATA[back child]]></Data>
+		<Data id="VAL_front_child" type="string"><![CDATA[front child]]></Data>
+		<Data id="VAL_planes" type="string"><![CDATA[planes]]></Data>
+		<Data id="VAL_leaves" type="string"><![CDATA[leaves]]></Data>
+		<Data id="VAL_bsp2d_reference_count" type="string"><![CDATA[bsp2d reference count]]></Data>
+		<Data id="VAL_first_bsp2d_reference" type="string"><![CDATA[first bsp2d reference]]></Data>
+		<Data id="VAL_bsp2d_references" type="string"><![CDATA[bsp2d references]]></Data>
+		<Data id="VAL_bsp2d_node" type="string"><![CDATA[bsp2d node]]></Data>
+		<Data id="VAL_bsp2d_nodes" type="string"><![CDATA[bsp2d nodes]]></Data>
+		<Data id="VAL_left_child" type="string"><![CDATA[left child]]></Data>
+		<Data id="VAL_right_child" type="string"><![CDATA[right child]]></Data>
+		<Data id="VAL_surfaces" type="string"><![CDATA[surfaces]]></Data>
+		<Data id="VAL_first_edge" type="string"><![CDATA[first edge]]></Data>
+		<Data id="VAL_breakable_surface" type="string"><![CDATA[breakable surface]]></Data>
+		<Data id="VAL_material" type="string"><![CDATA[material]]></Data>
+		<Data id="VAL_edges" type="string"><![CDATA[edges]]></Data>
+		<Data id="VAL_start_vertex" type="string"><![CDATA[start vertex]]></Data>
+		<Data id="VAL_end_vertex" type="string"><![CDATA[end vertex]]></Data>
+		<Data id="VAL_forward_edge" type="string"><![CDATA[forward edge]]></Data>
+		<Data id="VAL_reverse_edge" type="string"><![CDATA[reverse edge]]></Data>
+		<Data id="VAL_left_surface" type="string"><![CDATA[left surface]]></Data>
+		<Data id="VAL_right_surface" type="string"><![CDATA[right surface]]></Data>
+		<Data id="VAL_vertices" type="string"><![CDATA[vertices]]></Data>
+		<Data id="VAL_point" type="string"><![CDATA[point]]></Data>
+		<Data id="VAL_collision_materials" type="string"><![CDATA[collision materials]]></Data>
+		<Data id="VAL_shader" type="string"><![CDATA[shader]]></Data>
+		<Data id="VAL_collision_bsp" type="string"><![CDATA[collision bsp]]></Data>
+		<Data id="VAL_world_bounds_x" type="string"><![CDATA[world bounds x]]></Data>
+		<Data id="VAL_world_bounds_y" type="string"><![CDATA[world bounds y]]></Data>
+		<Data id="VAL_world_bounds_z" type="string"><![CDATA[world bounds z]]></Data>
+		<Data id="VAL_cluster" type="string"><![CDATA[cluster]]></Data>
+		<Data id="VAL_surface_reference_count" type="string"><![CDATA[surface reference count]]></Data>
+		<Data id="VAL_surface_references" type="string"><![CDATA[surface references]]></Data>
+		<Data id="VAL_leaf_surfaces" type="string"><![CDATA[leaf surfaces]]></Data>
+		<Data id="VAL_surface" type="string"><![CDATA[surface]]></Data>
+		<Data id="VAL_node" type="string"><![CDATA[node]]></Data>
+		<Data id="VAL_lightmaps" type="string"><![CDATA[lightmaps]]></Data>
+		<Data id="VAL_bitmap" type="string"><![CDATA[bitmap]]></Data>
+		<Data id="VAL_shader_permutation" type="string"><![CDATA[shader permutation]]></Data>
+		<Data id="VAL_surface_count" type="string"><![CDATA[surface count]]></Data>
+		<Data id="VAL_ambient_color" type="string"><![CDATA[ambient color]]></Data>
+		<Data id="VAL_distant_light_count" type="string"><![CDATA[distant light count]]></Data>
+		<Data id="VAL_distant_light_0_color" type="string"><![CDATA[distant light 0 color]]></Data>
+		<Data id="VAL_distant_light_0_direction" type="string"><![CDATA[distant light 0 direction]]></Data>
+		<Data id="VAL_distant_light_1_color" type="string"><![CDATA[distant light 1 color]]></Data>
+		<Data id="VAL_distant_light_1_direction" type="string"><![CDATA[distant light 1 direction]]></Data>
+		<Data id="VAL_reflection_tint" type="string"><![CDATA[reflection tint]]></Data>
+		<Data id="VAL_shadow_vector" type="string"><![CDATA[shadow vector]]></Data>
+		<Data id="VAL_shadow_color" type="string"><![CDATA[shadow color]]></Data>
+		<Data id="VAL_vertex_buffers" type="string"><![CDATA[vertex buffers]]></Data>
+		<Data id="VAL_count" type="string"><![CDATA[count]]></Data>
+		<Data id="VAL_offset" type="string"><![CDATA[offset]]></Data>
+		<Data id="VAL_lens_flares" type="string"><![CDATA[lens flares]]></Data>
+		<Data id="VAL_lens_flare_markers" type="string"><![CDATA[lens flare markers]]></Data>
+		<Data id="VAL_direction_i_component" type="string"><![CDATA[direction i-component]]></Data>
+		<Data id="VAL_direction_j_component" type="string"><![CDATA[direction j-component]]></Data>
+		<Data id="VAL_direction_k_component" type="string"><![CDATA[direction k-component]]></Data>
+		<Data id="VAL_lens_flare_index" type="string"><![CDATA[lens flare index]]></Data>
+		<Data id="VAL_clusters" type="string"><![CDATA[clusters]]></Data>
+		<Data id="VAL_sky" type="string"><![CDATA[sky]]></Data>
+		<Data id="VAL_fog" type="string"><![CDATA[fog]]></Data>
+		<Data id="VAL_background_sound" type="string"><![CDATA[background sound]]></Data>
+		<Data id="VAL_sound_environment" type="string"><![CDATA[sound environment]]></Data>
+		<Data id="VAL_weather" type="string"><![CDATA[weather]]></Data>
+		<Data id="VAL_subclusters" type="string"><![CDATA[subclusters]]></Data>
+		<Data id="VAL_surface_indices" type="string"><![CDATA[surface indices]]></Data>
+		<Data id="VAL_index" type="string"><![CDATA[index]]></Data>
+		<Data id="VAL_first_lens_flare_marker_index" type="string"><![CDATA[first lens flare marker index]]></Data>
+		<Data id="VAL_lens_flare_marker_count" type="string"><![CDATA[lens flare marker count]]></Data>
+		<Data id="VAL_mirrors" type="string"><![CDATA[mirrors]]></Data>
+		<Data id="VAL_portals" type="string"><![CDATA[portals]]></Data>
+		<Data id="VAL_portal" type="string"><![CDATA[portal]]></Data>
+		<!--Value id="cluster_data" type="string"><![CDATA[cluster data*]]></Value-->
+		<Data id="VAL_cluster_portals" type="string"><![CDATA[cluster portals]]></Data>
+		<Data id="VAL_front_cluster" type="string"><![CDATA[front cluster]]></Data>
+		<Data id="VAL_back_cluster" type="string"><![CDATA[back cluster]]></Data>
+		<Data id="VAL_plane_index" type="string"><![CDATA[plane index]]></Data>
+		<Data id="VAL_bounding_radius" type="string"><![CDATA[bounding radius]]></Data>
+		<Data id="VAL_breakable_surfaces" type="string"><![CDATA[breakable surfaces]]></Data>
+		<Data id="VAL_radius" type="string"><![CDATA[radius]]></Data>
+		<Data id="VAL_collision_surface_index" type="string"><![CDATA[collision surface index]]></Data>
+		<Data id="VAL_fog_planes" type="string"><![CDATA[fog planes]]></Data>
+		<Data id="VAL_front_region" type="string"><![CDATA[front region]]></Data>
+		<Data id="VAL_fog_regions" type="string"><![CDATA[fog regions]]></Data>
+		<Data id="VAL_fog_palette" type="string"><![CDATA[fog palette]]></Data>
+		<Data id="VAL_weather_palette" type="string"><![CDATA[weather palette]]></Data>
+		<Data id="VAL_weather_polyhedra" type="string"><![CDATA[weather polyhedra]]></Data>
+		<Data id="VAL_bounding_sphere_center" type="string"><![CDATA[bounding sphere center]]></Data>
+		<Data id="VAL_bounding_sphere_radius" type="string"><![CDATA[bounding sphere radius]]></Data>
+		<Data id="VAL_pathfinding_surfaces" type="string"><![CDATA[pathfinding surfaces]]></Data>
+		<Data id="VAL_data" type="string"><![CDATA[data]]></Data>
+		<Data id="VAL_pathfinding_edges" type="string"><![CDATA[pathfinding edges]]></Data>
+		<Data id="VAL_midpoint" type="string"><![CDATA[midpoint]]></Data>
+		<Data id="VAL_background_sound_palette" type="string"><![CDATA[background sound palette]]></Data>
+		<Data id="VAL_sound_environment_palette" type="string"><![CDATA[sound environment palette]]></Data>
+		<!--Value id="sound_PAS_data" type="string"><![CDATA[sound PAS data*]]></Value-->
+		<!--Value id="name" type="string"><![CDATA[name*]]></Value-->
+		<!--Value id="detail_objects" type="string"><![CDATA[detail objects*]]></Value-->
+		<!--Value id="_" type="string"><![CDATA[*]]></Value-->
+		<!--Value id="runtime_decals" type="string"><![CDATA[runtime decals*]]></Value-->
+		<Data id="VAL_faces" type="string"><![CDATA[faces]]></Data>
+		<Data id="VAL_vertex" type="string"><![CDATA[vertex]]></Data>
+		<Data id="VAL_portal_indices" type="string"><![CDATA[portal indices]]></Data>
+		<Data id="VAL_portal_index" type="string"><![CDATA[portal index]]></Data>
+		<Data id="VAL_back_leaf_index" type="string"><![CDATA[back leaf index]]></Data>
+		<Data id="VAL_front_leaf_index" type="string"><![CDATA[front leaf index]]></Data>
+		<Data id="VAL_object_names" type="string"><![CDATA[object names]]></Data>
+		<Data id="VAL_DON_T_TOUCH_THIS" type="string"><![CDATA[DON'T TOUCH THIS]]></Data>
+		<Data id="VAL_version" type="string"><![CDATA[version]]></Data>
+		<!--Value id="raw_animation_data" type="string"><![CDATA[raw animation data*]]></Value-->
+		<Data id="VAL_unit_control_data_version" type="string"><![CDATA[unit control data version]]></Data>
+		<Data id="VAL_length_of_animation" type="string"><![CDATA[length of animation:ticks]]></Data>
+		<!--Value id="recorded_animation_event_stream" type="string"><![CDATA[recorded animation event stream*]]></Value-->
+		<Data id="VAL_yaw" type="string"><![CDATA[yaw[-127,127]]]></Data>
+		<Data id="VAL_pitch" type="string"><![CDATA[pitch[-127,127]]]></Data>
+		<Data id="VAL_surface_index" type="string"><![CDATA[surface index]]></Data>
+		<Data id="VAL_scripts" type="string"><![CDATA[scripts]]></Data>
+		<Data id="VAL_script_type" type="string"><![CDATA[script type]]></Data>
+		<Data id="VAL_return_type" type="string"><![CDATA[return type]]></Data>
+		<!--Value id="root_expression_index" type="string"><![CDATA[root expression index*]]></Value-->
+		<Data id="VAL_globals" type="string"><![CDATA[globals]]></Data>
+		<!--Value id="initialization_expression_index" type="string"><![CDATA[initialization expression index*]]></Value-->
+		<Data id="VAL_references" type="string"><![CDATA[references]]></Data>
+		<Data id="VAL_reference" type="string"><![CDATA[reference^]]></Data>
+		<Data id="VAL_source_files" type="string"><![CDATA[source files]]></Data>
+		<Data id="VAL_maximum_sprite_extent" type="string"><![CDATA[maximum sprite extent:pixels]]></Data>
+		<Data id="VAL_motion_sensor_scale" type="string"><![CDATA[motion sensor scale [DON'T TOUCH EVER]]]></Data>
+		<!--Value id="text_data" type="string"><![CDATA[text data*]]></Value-->
+		<Data id="VAL_message_elements" type="string"><![CDATA[message elements]]></Data>
+		<Data id="VAL_messages" type="string"><![CDATA[messages]]></Data>
+		<Data id="VAL_start_index_into_text_blob" type="string"><![CDATA[start index into text blob]]></Data>
+		<Data id="VAL_start_index_of_message_block" type="string"><![CDATA[start index of message block]]></Data>
+		<Data id="VAL_panel_count" type="string"><![CDATA[panel count]]></Data>
+		<Data id="VAL_device_type" type="string"><![CDATA[device type]]></Data>
+		<Data id="VAL_device_id" type="string"><![CDATA[device id]]></Data>
+		<Data id="VAL_profile" type="string"><![CDATA[profile]]></Data>
+
+		<Address ptr="8A2B10" value="VAL_flags"/>
+		<Address ptr="8DBAA0" value="VAL_node_list_checksum"/>
+		<Address ptr="8DC014" value="VAL_super_high_detail_node_count"/>
+		<Address ptr="8DBFF4" value="VAL_high_detail_node_count"/>
+		<Address ptr="8DBFD4" value="VAL_medium_detail_node_count"/>
+		<Address ptr="8DBFB4" value="VAL_low_detail_node_count"/>
+		<Address ptr="8DBF90" value="VAL_super_low_detail_node_count"/>
+		<Address ptr="8DBF6C" value="VAL_base_map_u_scale"/>
+		<Address ptr="8DBF48" value="VAL_base_map_v_scale"/>
+		<Address ptr="8C8DC4" value="VAL_markers"/>
+		<Address ptr="8CB0A8" value="VAL_name"/>
+		<Address ptr="8DC110" value="VAL_magic_identifier"/>
+		<Address ptr="8DC104" value="VAL_instances"/>
+		<Address ptr="8DC14C" value="VAL_region_index"/>
+		<Address ptr="8DC138" value="VAL_permutation_index"/>
+		<Address ptr="8DC2BC" value="VAL_node_index"/>
+		<Address ptr="8DC244" value="VAL_translation"/>
+		<Address ptr="8DC254" value="VAL_rotation"/>
+		<Address ptr="8C8F00" value="VAL_nodes"/>
+		<Address ptr="8DB3FC" value="VAL_next_sibling_node_index"/>
+		<Address ptr="8DB3E4" value="VAL_first_child_node_index"/>
+		<Address ptr="8DB3D0" value="VAL_parent_node_index"/>
+		<Address ptr="8DC290" value="VAL_default_translation"/>
+		<Address ptr="8DC27C" value="VAL_default_rotation"/>
+		<Address ptr="8DC260" value="VAL_node_distance_from_parent"/>
+		<Address ptr="8CA97C" value="VAL_regions"/>
+		<Address ptr="8DC190" value="VAL_permutations"/>
+		<Address ptr="8DC1FC" value="VAL_super_low"/>
+		<Address ptr="8DC1F4" value="VAL_low"/>
+		<Address ptr="8DC1EC" value="VAL_medium"/>
+		<Address ptr="8DC1E4" value="VAL_high"/>
+		<Address ptr="8DC1D8" value="VAL_super_high"/>
+		<Address ptr="8DBF3C" value="VAL_geometries"/>
+		<Address ptr="8DC308" value="VAL_parts"/>
+		<Address ptr="8DC454" value="VAL_shader_index"/>
+		<Address ptr="8DC3D8" value="VAL_centroid_primary_node"/>
+		<Address ptr="8DC3BC" value="VAL_centroid_secondary_node"/>
+		<Address ptr="8DC3A0" value="VAL_centroid_primary_weight"/>
+		<Address ptr="8DC384" value="VAL_centroid_secondary_weight"/>
+		<Address ptr="8C99C0" value="VAL_centroid"/>
+		<Address ptr="8DC36C" value="VAL_uncompressed_vertices"/>
+		<Address ptr="8C77C8" value="VAL_position"/>
+		<Address ptr="8DC64C" value="VAL_normal"/>
+		<Address ptr="8DC640" value="VAL_binormal"/>
+		<Address ptr="8DC634" value="VAL_tangent"/>
+		<Address ptr="8DC624" value="VAL_texture_coords"/>
+		<Address ptr="8DC614" value="VAL_node0_index"/>
+		<Address ptr="8DC604" value="VAL_node1_index"/>
+		<Address ptr="8DC5F4" value="VAL_node0_weight"/>
+		<Address ptr="8DC5E4" value="VAL_node1_weight"/>
+		<Address ptr="8DC354" value="VAL_compressed_vertices"/>
+		<Address ptr="8DC5AC" value="VAL_normal_11_11_10_bit"/>
+		<Address ptr="8DC594" value="VAL_binormal_11_11_10_bit"/>
+		<Address ptr="8DC57C" value="VAL_tangent_11_11_10_bit"/>
+		<Address ptr="8DC55C" value="VAL_texture_coordinate_u_16_bit"/>
+		<Address ptr="8DC53C" value="VAL_texture_coordinate_v_16_bit"/>
+		<Address ptr="8DC528" value="VAL_node0_index_x3"/>
+		<Address ptr="8DC514" value="VAL_node1_index_x3"/>
+		<Address ptr="8DC4FC" value="VAL_node0_weight_16_bit"/>
+		<Address ptr="8DC348" value="VAL_triangles"/>
+		<Address ptr="8DC4D4" value="VAL_vertex0_index"/>
+		<Address ptr="8DC4C4" value="VAL_vertex1_index"/>
+		<Address ptr="8DC4B4" value="VAL_vertex2_index"/>
+		<Address ptr="8DBF30" value="VAL_shaders"/>
+		<Address ptr="8DB3AC" value="VAL_base_vector"/>
+		<Address ptr="8DB39C" value="VAL_vector_range"/>
+		<Address ptr="8DB2BC" value="VAL_animations"/>
+		<Address ptr="8CB434" value="VAL_name"/>
+		<Address ptr="8B4670" value="VAL_type"/>
+		<Address ptr="8DBAD4" value="VAL_frame_count"/>
+		<Address ptr="8DBAC8" value="VAL_frame_size"/>
+		<Address ptr="8DBAB4" value="VAL_frame_info_type"/>
+		<Address ptr="8DBA94" value="VAL_node_count"/>
+		<Address ptr="8DBA48" value="VAL_next_animation"/>
+		<!--Address ptr="8DB9F8" value="VAL_frame_info"/-->
+		<!--Address ptr="8DB9E0" value="VAL_node_trans_flag_data"/-->
+		<!--Address ptr="8DB9C4" value="VAL_node_rotation_flag_data"/-->
+		<!--Address ptr="8DB9AC" value="VAL_node_scale_flag_data"/-->
+		<!--Address ptr="8DB988" value="VAL_offset_to_compressed_data"/-->
+		<!--Address ptr="8DB978" value="VAL_default_data"-->
+		<!--Address ptr="8DB96C" value="VAL_frame_data"/-->
+		<!--Address ptr="8D96F0" value="VAL_color_plate_width"/-->
+		<!--Address ptr="8D96D4" value="VAL_color_plate_height"/-->
+		<!--Address ptr="8D96B4" value="VAL_compressed_color_plate_data"/-->
+		<!--Address ptr="8D9654" value="VAL_processed_pixel_data"/-->
+		<Address ptr="8D9524" value="VAL_sprite_spacing"/>
+		<Address ptr="8D9518" value="VAL_sequences"/>
+		<Address ptr="8DA5A4" value="VAL_first_bitmap_index"/>
+		<Address ptr="8DA594" value="VAL_bitmap_count"/>
+		<Address ptr="8DA588" value="VAL_sprites"/>
+		<Address ptr="8DA5F4" value="VAL_bitmap_index"/>
+		<Address ptr="8DA5EC" value="VAL_left"/>
+		<Address ptr="8DA5E4" value="VAL_right"/>
+		<Address ptr="8DA5DC" value="VAL_top"/>
+		<Address ptr="8DA5D4" value="VAL_bottom"/>
+		<Address ptr="8DA630" value="VAL_registration_point"/>
+		<Address ptr="8D950C" value="VAL_bitmaps"/>
+		<!--Address ptr="8DA6FC" value="VAL_signature"/-->
+		<Address ptr="8DA6EC" value="VAL_width"/>
+		<Address ptr="8DA6DC" value="VAL_height"/>
+		<Address ptr="8DA6A4" value="VAL_depth"/>
+		<Address ptr="8DA680" value="VAL_type_1"/>
+		<Address ptr="8DA644" value="VAL_format"/>
+		<Address ptr="8DA620" value="VAL_mipmap_count"/>
+		<Address ptr="8D9300" value="VAL_pixels_offset"/>
+		<Address ptr="8D937C" value="VAL_character"/>
+		<Address ptr="8D935C" value="VAL_bitmap_width"/>
+		<Address ptr="8D934C" value="VAL_bitmap_height"/>
+		<Address ptr="8D9310" value="VAL_hardware_character_index"/>
+		<Address ptr="8D6F3C" value="VAL_center_of_mass"/>
+		<Address ptr="8D6E7C" value="VAL_inertial_matrix_and_inverse"/>
+		<Address ptr="8D7038" value="VAL_model_node"/>
+		<Address ptr="8D7020" value="VAL_mass"/>
+		<Address ptr="8D7000" value="VAL_density"/>
+		<Address ptr="8C73AC" value="VAL_predicted_resources"/>
+		<Address ptr="8A1860" value="VAL_sample_rate"/>
+		<Address ptr="8A135C" value="VAL_encoding"/>
+		<Address ptr="8A1B1C" value="VAL_compression"/>
+		<Address ptr="8A1A7C" value="VAL_name_1"/>
+		<Address ptr="8A18F4" value="VAL_actual_permutation_count"/>
+		<Address ptr="8A1BD4" value="VAL_name_2"/>
+		<Address ptr="8A1B04" value="VAL_next_permutation_index"/>
+		<Address ptr="8C9860" value="VAL_materials"/>
+		<Address ptr="8CB0A0" value="VAL_region"/>
+		<Address ptr="8CB090" value="VAL_parent_node"/>
+		<Address ptr="8CB07C" value="VAL_next_sibling_node"/>
+		<Address ptr="8CB068" value="VAL_first_child_node"/>
+		<Address ptr="8CB060" value="VAL_bsps"/>
+		<Address ptr="926DC0" value="VAL_bsp3d_nodes"/>
+		<Address ptr="8C98F4" value="VAL_plane"/>
+		<Address ptr="926DA8" value="VAL_back_child"/>
+		<Address ptr="926D98" value="VAL_front_child"/>
+		<Address ptr="8C9400" value="VAL_planes"/>
+		<Address ptr="8C8EF8" value="VAL_leaves"/>
+		<Address ptr="926D58" value="VAL_bsp2d_reference_count"/>
+		<Address ptr="926D40" value="VAL_first_bsp2d_reference"/>
+		<Address ptr="926D2C" value="VAL_bsp2d_references"/>
+		<Address ptr="926D10" value="VAL_bsp2d_node"/>
+		<Address ptr="926CD8" value="VAL_bsp2d_nodes"/>
+		<Address ptr="926CF8" value="VAL_left_child"/>
+		<Address ptr="926CE8" value="VAL_right_child"/>
+		<Address ptr="8C99DC" value="VAL_surfaces"/>
+		<Address ptr="926CC4" value="VAL_first_edge"/>
+		<Address ptr="8C98E0" value="VAL_breakable_surface"/>
+		<Address ptr="926C94" value="VAL_material"/>
+		<Address ptr="926C8C" value="VAL_edges"/>
+		<Address ptr="926C74" value="VAL_start_vertex"/>
+		<Address ptr="926C68" value="VAL_end_vertex"/>
+		<Address ptr="926C58" value="VAL_forward_edge"/>
+		<Address ptr="926C48" value="VAL_reverse_edge"/>
+		<Address ptr="926C38" value="VAL_left_surface"/>
+		<Address ptr="926C28" value="VAL_right_surface"/>
+		<Address ptr="8C9AD0" value="VAL_vertices"/>
+		<Address ptr="8C9834" value="VAL_point"/>
+		<Address ptr="8C8F18" value="VAL_collision_materials"/>
+		<Address ptr="8C99FC" value="VAL_shader"/>
+		<Address ptr="8C8F08" value="VAL_collision_bsp"/>
+		<Address ptr="8C9630" value="VAL_world_bounds_x"/>
+		<Address ptr="8C9620" value="VAL_world_bounds_y"/>
+		<Address ptr="8C9610" value="VAL_world_bounds_z"/>
+		<Address ptr="8C9A6C" value="VAL_cluster"/>
+		<Address ptr="8C9A50" value="VAL_surface_reference_count"/>
+		<Address ptr="8C9A3C" value="VAL_surface_references"/>
+		<Address ptr="8C8EE8" value="VAL_leaf_surfaces"/>
+		<Address ptr="8C9A9C" value="VAL_surface"/>
+		<Address ptr="8C9A94" value="VAL_node"/>
+		<Address ptr="8C8EDC" value="VAL_lightmaps"/>
+		<Address ptr="8C986C" value="VAL_bitmap"/>
+		<Address ptr="8C99E8" value="VAL_shader_permutation"/>
+		<Address ptr="8C99CC" value="VAL_surface_count"/>
+		<Address ptr="8C99B0" value="VAL_ambient_color"/>
+		<Address ptr="8C9998" value="VAL_distant_light_count"/>
+		<Address ptr="8C9980" value="VAL_distant_light_0_color"/>
+		<Address ptr="8C9964" value="VAL_distant_light_0_direction"/>
+		<Address ptr="8C994C" value="VAL_distant_light_1_color"/>
+		<Address ptr="8C9930" value="VAL_distant_light_1_direction"/>
+		<Address ptr="8C991C" value="VAL_reflection_tint"/>
+		<Address ptr="8C990C" value="VAL_shadow_vector"/>
+		<Address ptr="8C98FC" value="VAL_shadow_color"/>
+		<Address ptr="8C98D0" value="VAL_vertex_buffers"/>
+		<Address ptr="8C98C8" value="VAL_count"/>
+		<Address ptr="8C98C0" value="VAL_offset"/>
+		<Address ptr="8C8ECC" value="VAL_lens_flares"/>
+		<Address ptr="8C8EB8" value="VAL_lens_flare_markers"/>
+		<Address ptr="8C9224" value="VAL_direction_i_component"/>
+		<Address ptr="8C920C" value="VAL_direction_j_component"/>
+		<Address ptr="8C91F4" value="VAL_direction_k_component"/>
+		<Address ptr="8C91E0" value="VAL_lens_flare_index"/>
+		<Address ptr="8C8EAC" value="VAL_clusters"/>
+		<Address ptr="8C97C0" value="VAL_sky"/>
+		<Address ptr="8C97B8" value="VAL_fog"/>
+		<Address ptr="8C97A4" value="VAL_background_sound"/>
+		<Address ptr="8C9750" value="VAL_sound_environment"/>
+		<Address ptr="8C9714" value="VAL_weather"/>
+		<Address ptr="8C9660" value="VAL_subclusters"/>
+		<Address ptr="8C95FC" value="VAL_surface_indices"/>
+		<Address ptr="8C95C4" value="VAL_index"/>
+		<Address ptr="8C95A4" value="VAL_first_lens_flare_marker_index"/>
+		<Address ptr="8C9588" value="VAL_lens_flare_marker_count"/>
+		<Address ptr="8C9550" value="VAL_mirrors"/>
+		<Address ptr="8C9544" value="VAL_portals"/>
+		<Address ptr="8C97E4" value="VAL_portal"/>
+		<!--Address ptr="8C8E9C" value="VAL_cluster_data"/-->
+		<Address ptr="8C8E88" value="VAL_cluster_portals"/>
+		<Address ptr="8C94C4" value="VAL_front_cluster"/>
+		<Address ptr="8C94B4" value="VAL_back_cluster"/>
+		<Address ptr="8C94A4" value="VAL_plane_index"/>
+		<Address ptr="8C9490" value="VAL_bounding_radius"/>
+		<Address ptr="8C8E74" value="VAL_breakable_surfaces"/>
+		<Address ptr="8C92A0" value="VAL_radius"/>
+		<Address ptr="8C9284" value="VAL_collision_surface_index"/>
+		<Address ptr="8C8E68" value="VAL_fog_planes"/>
+		<Address ptr="8C9330" value="VAL_front_region"/>
+		<Address ptr="8C8E58" value="VAL_fog_regions"/>
+		<Address ptr="8C9374" value="VAL_fog_palette"/>
+		<Address ptr="8C9360" value="VAL_weather_palette"/>
+		<Address ptr="8C8E44" value="VAL_weather_polyhedra"/>
+		<Address ptr="8C9420" value="VAL_bounding_sphere_center"/>
+		<Address ptr="8C9408" value="VAL_bounding_sphere_radius"/>
+		<Address ptr="8C8E2C" value="VAL_pathfinding_surfaces"/>
+		<Address ptr="8B4668" value="VAL_data"/>
+		<Address ptr="8C8E18" value="VAL_pathfinding_edges"/>
+		<Address ptr="8C92D0" value="VAL_midpoint"/>
+		<Address ptr="8C8DFC" value="VAL_background_sound_palette"/>
+		<Address ptr="8C8DE0" value="VAL_sound_environment_palette"/>
+		<!--Address ptr="8C8DD0" value="VAL_sound_PAS_data"/-->
+		<!--Address ptr="8B464C" value="VAL_name"/-->
+		<!--Address ptr="8C8DB4" value="VAL_detail_objects"/-->
+		<!--Address ptr="8AF124" value="VAL__"/-->
+		<!--Address ptr="8C8DA4" value="VAL_runtime_decals"/-->
+		<Address ptr="9268C4" value="VAL_faces"/>
+		<Address ptr="926924" value="VAL_vertex"/>
+		<Address ptr="9268B4" value="VAL_portal_indices"/>
+		<Address ptr="9268F8" value="VAL_portal_index"/>
+		<Address ptr="926868" value="VAL_back_leaf_index"/>
+		<Address ptr="926854" value="VAL_front_leaf_index"/>
+		<Address ptr="8C736C" value="VAL_object_names"/>
+		<Address ptr="8C7928" value="VAL_DON_T_TOUCH_THIS"/>
+		<Address ptr="926804" value="VAL_version"/>
+		<!--Address ptr="9267F0" value="VAL_raw_animation_data"/-->
+		<Address ptr="9267D4" value="VAL_unit_control_data_version"/>
+		<Address ptr="9267B8" value="VAL_length_of_animation"/>
+		<!--Address ptr="926794" value="VAL_recorded_animation_event_stream"/-->
+		<Address ptr="8C77E8" value="VAL_yaw"/>
+		<Address ptr="8C77D4" value="VAL_pitch"/>
+		<Address ptr="925B58" value="VAL_surface_index"/>
+		<Address ptr="8C70AC" value="VAL_scripts"/>
+		<Address ptr="924AA0" value="VAL_script_type"/>
+		<Address ptr="924A90" value="VAL_return_type"/>
+		<!--Address ptr="924A78" value="VAL_root_expression_index"/-->
+		<Address ptr="8C70A0" value="VAL_globals"/>
+		<!--Address ptr="924A40" value="VAL_initialization_expression_index"/-->
+		<Address ptr="8C7094" value="VAL_references"/>
+		<Address ptr="924A20" value="VAL_reference"/>
+		<Address ptr="8C7084" value="VAL_source_files"/>
+		<Address ptr="8BB4DC" value="VAL_maximum_sprite_extent"/>
+		<Address ptr="8B53E0" value="VAL_motion_sensor_scale"/>
+		<!--Address ptr="8B45E0" value="VAL_text_data"/-->
+		<Address ptr="8B45CC" value="VAL_message_elements"/>
+		<Address ptr="8B45C0" value="VAL_messages"/>
+		<Address ptr="8B4630" value="VAL_start_index_into_text_blob"/>
+		<Address ptr="8B4610" value="VAL_start_index_of_message_block"/>
+		<Address ptr="8B4600" value="VAL_panel_count"/>
+		<Address ptr="89A030" value="VAL_device_type"/>
+		<Address ptr="89A020" value="VAL_device_id"/>
+		<Address ptr="89A0F8" value="VAL_profile"/>
+	</Patch>
+
+	<Patch id="PTCH_guerilla_inertialmatrixblockfields">
+		<Data id="VAL_xy_zz_xx_yz" type="string"><![CDATA[-xy     zz+xx    -yz]]></Data>
+		<Data id="VAL_zx_yz_xx_yy" type="string"><![CDATA[-zx      -yz    xx+yy]]></Data>
+
+		<Address ptr="8D715C" value="VAL_xy_zz_xx_yz"/>
+		<Address ptr="8D7144" value="VAL_zx_yz_xx_yy"/>
+	</Patch>
+
+	<Patch id="PTCH_guerilla_readonlytags">
+		<Data id="VAL_nullstring" type="uint32"><![CDATA[00894B11]]></Data>
+
+		<Address ptr="41CDEF" value="VAL_nullstring"/>
+		<Address ptr="41CE01" value="VAL_nullstring"/>
+		<Address ptr="41CE13" value="VAL_nullstring"/>
+	</Patch>
+</FilePatch>

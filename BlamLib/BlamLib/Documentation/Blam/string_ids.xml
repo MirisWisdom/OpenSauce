@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<stringIds game="">
+	<!--method=enum-->
+	<definition method="">
+		<!--optional-->
+		<!--set=integer, [optional]initialIndex=integer-->
+		<adding />
+	</definition>
+	<sets>
+		<!--key=integer, [optiona]value=string-->
+		<Set key="" value="">
+			<!--key=hexidecimal, value=string-->
+			<entry key="" value="" />
+		</Set>
+	</sets>
+</stringIds>

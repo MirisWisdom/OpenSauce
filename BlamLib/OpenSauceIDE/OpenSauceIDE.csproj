@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0AE03410-5E9B-4B8B-81B2-E1C6E30C8E70}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenSauceIDE</RootNamespace>
+    <AssemblyName>OpenSauceIDE</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ApplicationIcon>Properties\OS IDE.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OSRootDir>$(MSBuildProjectDirectory)\..\..\</OSRootDir>
+  </PropertyGroup>
+  <Import Project="$(OSRootDir)shared\config\msbuild\BlamLib.props" />
+  <ItemGroup>
+    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\shared\bin\SevenZipSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\BlamLib\BlamLib.csproj">
+      <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
+      <Name>BlamLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BlamLib.Forms\BlamLib.Forms.csproj">
+      <Project>{61EE1295-F2B6-4351-B331-244319600FCE}</Project>
+      <Name>BlamLib.Forms</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\CachePacker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cache\CachePacker.Designer.cs">
+      <DependentUpon>CachePacker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cache\CacheView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cache\CacheView.Designer.cs">
+      <DependentUpon>CacheView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cache\CacheView.TagExtraction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cache\CacheView.TagExtractionUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheApe\CheApe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheApe\CheApe.Designer.cs">
+      <DependentUpon>CheApe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheApe\CheApeApplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheApe\CheApeApplier.Designer.cs">
+      <DependentUpon>CheApeApplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheApe\Halo2\UnlockH2.AddressOf.cs" />
+    <Compile Include="CheApe\Halo2\UnlockH2.Constants.cs" />
+    <Compile Include="CheApe\Halo2\UnlockH2.cs" />
+    <Compile Include="CheApe\Halo1\UnlockH1.Constants.cs" />
+    <Compile Include="CheApe\Halo1\UnlockH1.cs" />
+    <Compile Include="CheApe\Halo1\UnlockH1.AddressOf.cs" />
+    <Compile Include="CheApe\UnlockToolsBase.cs" />
+    <Compile Include="Controls\OSIDEComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\OSIDEComboBox.Designer.cs">
+      <DependentUpon>OSIDEComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EngineSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EngineSettingsForm.Designer.cs">
+      <DependentUpon>EngineSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LightmapImporter\ILightmapImporterController.cs" />
+    <Compile Include="LightmapImporter\Importer\LightmapImporter.cs" />
+    <Compile Include="LightmapImporter\LightmapImporterController.cs" />
+    <Compile Include="LightmapImporter\Settings\ILightmapImporterSettings.cs" />
+    <Compile Include="LightmapImporter\Settings\SettingsHandler.cs" />
+    <Compile Include="LightmapImporter\LightmapImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LightmapImporter\LightmapImporter.Designer.cs">
+      <DependentUpon>LightmapImporter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\ExtractionData.cs" />
+    <Compile Include="ModelExtractor\Extractors\ExtractionManager.cs" />
+    <Compile Include="ModelExtractor\Extractors\ExtractorFactory.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Halo1Extractor.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractionJobGbxmodel.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodel.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodelUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodelUI.Designer.cs">
+      <DependentUpon>ExtractorGbxmodelUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractionJobScenario.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenario.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenarioUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenarioUI.Designer.cs">
+      <DependentUpon>ExtractorScenarioUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractionJobStructureBSP.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSP.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSPUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSPUI.Designer.cs">
+      <DependentUpon>ExtractorStructureBSPUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\LightmapSizeExporter.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractionManager.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractorFactory.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractor.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractionJob.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractionData.cs" />
+    <Compile Include="ModelExtractor\IModelExtractorController.cs" />
+    <Compile Include="ModelExtractor\ModelExtractorController.cs" />
+    <Compile Include="ModelExtractor\ModelExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\ModelExtractor.Designer.cs">
+      <DependentUpon>ModelExtractor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Settings\IExtractorColladaSettings.cs" />
+    <Compile Include="ModelExtractor\Settings\IExtractorSettings.cs" />
+    <Compile Include="ModelExtractor\Settings\SettingsHandler.cs" />
+    <Compile Include="ModelExtractor\UI\ColladaSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\ColladaSettingsControl.Designer.cs">
+      <DependentUpon>ColladaSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\JobListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\JobListControl.Designer.cs">
+      <DependentUpon>JobListControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageListControl.Designer.cs">
+      <DependentUpon>MessageListControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PathControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PathControl.Designer.cs">
+      <DependentUpon>PathControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenSauce\Halo1\UnlockH1.AddressOf.cs" />
+    <Compile Include="OpenSauce\Halo1\UnlockH1.Constants.cs" />
+    <Compile Include="OpenSauce\Halo1\UnlockH1.cs" />
+    <Compile Include="OpenSauce\UnlockExeBase.cs" />
+    <Compile Include="OpenSauce\UnlockGameBase.cs" />
+    <Compile Include="OpenSauce\XnaPatcherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenSauce\XnaPatcherForm.Designer.cs">
+      <DependentUpon>XnaPatcherForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Cache\CachePacker.resx">
+      <DependentUpon>CachePacker.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cache\CacheView.resx">
+      <DependentUpon>CacheView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheApe\CheApe.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CheApe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheApe\CheApeApplier.resx">
+      <DependentUpon>CheApeApplier.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EngineSettingsForm.resx">
+      <DependentUpon>EngineSettingsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LightmapImporter\LightmapImporter.resx">
+      <DependentUpon>LightmapImporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodelUI.resx">
+      <DependentUpon>ExtractorGbxmodelUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenarioUI.resx">
+      <DependentUpon>ExtractorScenarioUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSPUI.resx">
+      <DependentUpon>ExtractorStructureBSPUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\ModelExtractor.resx">
+      <DependentUpon>ModelExtractor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\UI\ColladaSettingsControl.resx">
+      <DependentUpon>ColladaSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\UI\JobListControl.resx">
+      <DependentUpon>JobListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageListControl.resx">
+      <DependentUpon>MessageListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PathControl.resx">
+      <DependentUpon>PathControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenSauce\XnaPatcherForm.resx">
+      <DependentUpon>XnaPatcherForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectEngineDialog.resx">
+      <DependentUpon>SelectEngineDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerMapDownloadTool\MapCompressorUI.resx">
+      <DependentUpon>MapCompressorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerMapDownloadTool\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\ExtractorFactory.Halo1.cs" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SelectEngineDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectEngineDialog.Designer.cs">
+      <DependentUpon>SelectEngineDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\Code\Helpers.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\MapCompressor.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\MapCompressorUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\Code\FileSplitter.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\ProgressController.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\Util.cs" />
+    <Compile Include="ServerMapDownloadTool\MapCompressorUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\MapCompressorUI.Designer.cs">
+      <DependentUpon>MapCompressorUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\MapDownloadList\MapIncludeClass.cs" />
+    <Compile Include="ServerMapDownloadTool\MapDownloadList\MapDownloadClass.cs" />
+    <Compile Include="ServerMapDownloadTool\MapDownloadList\MapPartClass.cs" />
+    <Compile Include="ServerMapDownloadTool\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\SettingsHandler.cs" />
+    <Compile Include="Settings\BlamSettingsInterface.cs" />
+    <Compile Include="Settings\PropertyTree.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
+    <Compile Include="Tool.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="TagIndex\TagIndexViewForm.resx">
+      <DependentUpon>TagIndexViewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagIndex\TagIndexCreateForm.resx">
+      <DependentUpon>TagIndexCreateForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagIndex\TagManager.resx">
+      <DependentUpon>TagManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="TagIndex\TagIndexViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagIndex\TagIndexViewForm.Designer.cs">
+      <DependentUpon>TagIndexViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TagIndex\TagIndexCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagIndex\TagIndexCreateForm.Designer.cs">
+      <DependentUpon>TagIndexCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TagIndex\TagManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagIndex\TagManager.Designer.cs">
+      <DependentUpon>TagManager.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="7z.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Properties\OS IDE.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSauce>
+	<CacheFiles>
+		<CheckYeloFilesFirst>true</CheckYeloFilesFirst>
+		<MainMenuScenario/>
+	</CacheFiles>
+	<Networking>
+		<GameSpy>
+			<NoUpdateCheck>true</NoUpdateCheck>
+		</GameSpy>
+	</Networking>
+	<Objects>
+		<VehicleRemapperEnabled>true</VehicleRemapperEnabled>
+	</Objects>
+</OpenSauce>

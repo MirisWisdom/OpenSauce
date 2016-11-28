@@ -1,0 +1,40 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\blamlib\cache\cache_files_base.hpp" />
+  </ItemGroup>
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\blamlib\cseries\cseries_base.hpp" />
+  </ItemGroup>
+  <ItemGroup
+    > <!--math-->
+	<ClInclude Include="..\..\shared\Include\blamlib\math\color_math.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\math\integer_math.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\math\matrix_math.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\math\real_math.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\math\real_math.cpp" />
+  </ItemGroup>
+  <ItemGroup
+    > <!--memory-->
+	<ClInclude Include="..\..\shared\Include\blamlib\memory\data_base.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\memory\datum_index.hpp" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\memory\byte_swapping_base.hpp" />
+  </ItemGroup>
+  <ItemGroup
+    > <!--scenario-->
+	<ClInclude Include="..\..\shared\Include\blamlib\scenario\scenario_location.hpp" />
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--tag_files EDITOR-->
+  </ItemGroup>
+</Project>

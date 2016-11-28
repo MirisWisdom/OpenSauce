@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<enums>
+		<Enum name="shader_postprocess_pass_render_chain_enum">
+			<field>main chain</field>
+			<field>buffer chain</field>
+		</Enum>
+		<Enum name="shader_variable_base_type_enum">
+			<field>boolean</field>
+			<field>integer</field>
+			<field>float</field>
+
+			<field>argb color</field>
+			<field>matrix</field>
+			<field>texture</field>
+		</Enum>
+		<Enum name="shader_variable_runtime_value_bool_enum">
+			<field>none</field>
+			<!--field>target is enemy</field-->
+			<!--field>weapon zoomed</field-->
+		</Enum>
+		<Enum name="shader_variable_runtime_value_int_enum">
+			<field>none</field>
+		</Enum>
+		<Enum name="shader_variable_runtime_value_real_enum">
+			<field>none</field>
+			<!--field>weapon zoom amount</field-->
+		</Enum>
+		<Enum name="shader_variable_runtime_value_real2_enum">
+			<field>none</field>
+		</Enum>
+		<Enum name="shader_variable_runtime_value_real3_enum">
+			<field>none</field>
+		</Enum>
+		<Enum name="shader_variable_runtime_value_real4_enum">
+			<field>none</field>
+		</Enum>
+		<Enum name="shader_variable_runtime_value_color_enum">
+			<field>none</field>
+			<field>player team color</field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="shader_postprocess_pass_flag">
+			<field>clear target</field>
+			<field>copy scene to target</field>
+			<field>clear buffer texture</field>
+		</Flag>
+		<Flag name="shader_postprocess_technique_flag">
+			<field>sm 1.0</field>
+			<field>sm 2.0</field>
+			<field>sm 3.0</field>
+		</Flag>
+		<Flag name="shader_postprocess_bool_flag">
+			<field>enabled</field>
+		</Flag>
+		<Flag name="shader_postprocess_invert_flags">
+			<field>Invert</field>
+		</Flag>
+		<Flag name="shader_postprocess_animation_flags_multichannel">
+			<field>Invert</field>
+			<field>Multichannel Noise#When noise is used apply a different noise value to each channel</field>
+		</Flag>
+		<Flag name="shader_postprocess_animation_flags_color">
+			<field>Invert</field>
+			<field>Multichannel Noise#When noise is used apply a different noise value to each channel</field>
+			<field>Ignore Alpha#Alpha will always be set to the upper values alpha</field>
+		</Flag>
+	</flags>
+
+	<data>
+		<TagData name="shader_postprocess_shader_compiled_data" maxSize="0x8000" isTextData="false" />
+	</data>
+
+	<blocks>
+		<TagBlock name="shader_postprocess_pass_block" maxElements="32">
+			<field type="String" name="name" blockname="true" locked="true"/>
+			<field type="WordFlags" name="flags" definition="shader_postprocess_pass_flag"/>
+			<field type="Enum" name="render chain" definition="shader_postprocess_pass_render_chain_enum"/>
+			<field type="Pad" definition="12" />
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_technique_block" maxElements="3">
+			<field type="String" name="name" blockname="true" locked="true"/>
+			<field type="WordFlags" name="shader model" definition="shader_postprocess_technique_flag"/>
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="16" />
+			<field type="Block" name="passes" definition="shader_postprocess_pass_block" locked="true"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_bitmap_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_bitmap-->
+			<field type="Pad" definition="4" />
+			<field type="ShortInteger" name="bitmap index" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="28" />
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Pad" definition="4" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Pad" definition="12" />
+
+			<!--s_shader_postprocess_bitmap-->
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="TagReference" name="bitmap" definition="bitmap_reference" />
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_bool_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_bool-->
+			<field type="Pad" definition="4" />
+			<field type="ByteFlags" name="value" definition="shader_postprocess_bool_flag" />
+			<field type="Pad" definition="3" />
+			<field type="Pad" definition="28" />
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_bool_enum" />
+			<field type="WordFlags" name="flags" definition="shader_postprocess_invert_flags" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_invert_flags"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_int_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_integer32-->
+			<field type="Pad" definition="4" />
+			<field type="LongInteger" name="value lower bound" />
+			<field type="LongInteger" name="value upper bound" />
+			<field type="Pad" definition="24"/>
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_int_enum" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_invert_flags"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_float_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_real32-->
+			<field type="Pad" definition="4" />
+			<field type="Real" name="value lower bound" />
+			<field type="Pad" definition="12"/>
+			<field type="Real" name="value upper bound" />
+			<field type="Pad" definition="12"/>
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_real_enum" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_invert_flags"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_float2_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_real_vector2d-->
+			<field type="Pad" definition="4" />
+			<field type="RealVector2D" name="value lower bound" />
+			<field type="Pad" definition="8"/>
+			<field type="RealVector2D" name="value upper bound" />
+			<field type="Pad" definition="8"/>
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_real2_enum" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_animation_flags_multichannel"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_float3_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_real_vector3d-->
+			<field type="Pad" definition="4" />
+			<field type="RealVector3D" name="value lower bound" />
+			<field type="Pad" definition="4"/>
+			<field type="RealVector3D" name="value upper bound" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_real3_enum" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_animation_flags_multichannel"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_float4_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_real_vector4d-->
+			<field type="Pad" definition="4" />
+			<field type="RealQuaternion" name="value lower bound" />
+			<field type="RealQuaternion" name="value upper bound" />
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_real4_enum" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_animation_flags_multichannel"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_color_block" maxElements="16">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name="value name" blockname="true" />
+			<field type="Pad" definition="4"/>
+
+			<!--s_shader_postprocess_value_union::s_real_color4d-->
+			<field type="Pad" definition="4" />
+			<field type="RealArgbColor" name="value lower bound" />
+			<field type="RealArgbColor" name="value upper bound" />
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Explanation" name="runtime value override" definition="Sets the variable to an engine value at runtime" />
+			<field type="Enum" name="runtime value" definition="shader_variable_runtime_value_color_enum" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Explanation" name="animation" definition="Controls how the value changes over time" />
+			<field type="Enum" name="animation function" definition="periodic_function_type_enum"/>
+			<field type="ByteFlags" name="animation flags" definition="shader_postprocess_animation_flags_color"/>
+			<field type="Pad" definition="1" />
+			<field type="Real" name="animation duration"/>
+			<field type="Real" name="animation rate"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_parameter_block" maxElements="16384">
+			<!--s_shader_postprocess_value_base-->
+			<field type="String" name=""/>
+
+			<!--shader_variable_type-->
+			<field type="Skip" definition="4"/>
+
+			<!--s_shader_postprocess_value_union-->
+			<field type="Skip" definition="36"/>
+
+			<!--s_shader_postprocess_value_runtime_override-->
+			<field type="Skip" definition="4" />
+
+			<!--s_shader_postprocess_value_animation_function-->
+			<field type="Skip" definition="12"/>
+
+			<!--s_shader_postprocess_value_union::s_bitmap-->
+			<field type="TagReference" name="" definition="bitmap_reference"/>
+			<field type="Skip" definition="12"/>
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="shader_postprocess" groupTag="shpp" version="1">
+			<!--s_shader_postprocess_definition-->
+			<field type="Explanation" name="shader post-process" definition=""/>
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="20" />
+			<field type="Data" name="shader code binary" definition="shader_postprocess_shader_compiled_data" />
+			<field type="Pad" definition="44" />
+			<field type="Pad" definition="20" />
+			<field type="Block" name="techniques" definition="shader_postprocess_technique_block" locked="true"/>
+			<field type="Block" name="predicted resources" definition="predicted_resource_block" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="16" />
+		</TagGroup>
+
+		<TagGroup name="shader_postprocess_generic" parentTag="shpp" groupTag="shpg" version="1">
+			<!--s_shader_postprocess_generic-->
+			<field type="Explanation" name="shader post-process generic" definition=""/>
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" />
+
+			<field type="TagReference" name="base shader" definition="shader_postprocess_generic_reference" />
+			<field type="Block" name="" definition="shader_postprocess_parameter_block" />
+
+			<!--s_shader_postprocess_implementation-->
+			<field type="Block" name="bitmaps" definition="shader_postprocess_bitmap_block"/>
+			<field type="Block" name="bools" definition="shader_postprocess_bool_block"/>
+			<field type="Block" name="integers" definition="shader_postprocess_int_block"/>
+			<field type="Block" name="floats" definition="shader_postprocess_float_block"/>
+			<field type="Block" name="float2s" definition="shader_postprocess_float2_block"/>
+			<field type="Block" name="float3s" definition="shader_postprocess_float3_block"/>
+			<field type="Block" name="float4s" definition="shader_postprocess_float4_block"/>
+			<field type="Block" name="colors" definition="shader_postprocess_color_block"/>
+			<field type="Pad" definition="36"/>
+		</TagGroup>
+	</groups>
+
+</definitions>

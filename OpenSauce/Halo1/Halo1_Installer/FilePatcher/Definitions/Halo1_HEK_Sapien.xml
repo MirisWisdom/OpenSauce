@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FilePatch inputfile="Sapien.exe" outputfile="OS_Sapien.exe" peaddressmask="400000" md5_pre="2a8529486e223df039ae7464d94c39ac" md5_post="969f8f4d143fea89488044802f156ef1">
+	<Patch id="PTCH_sapien_logheader">
+		<Data id="VAL_logheader" type="string" length="13" writenull="false"><![CDATA[01.00.09.0620]]></Data>
+
+		<Address ptr="8FDA6A" value="VAL_logheader"/>
+	</Patch>
+
+	<Patch id="PTCH_sapien_disablebetamap">
+		<Data id="VAL_betamapnullcode" type="bytes"><![CDATA[90909090909090909090909090909090]]></Data>
+
+		<Address ptr="41810B" value="VAL_betamapnullcode"/>
+	</Patch>
+
+	<Patch id="PTCH_sapien_enablecheape">
+		<Data id="VAL_cheapedllstring" type="bytes"><![CDATA[00436865417065444C4C532E646C6C00]]></Data>
+		<Data id="VAL_cheapefunction1" type="bytes"><![CDATA[68BA0D9100FF15CC2F0801E995C8F0FF]]></Data>
+		<Data id="VAL_cheapefunction2" type="bytes"><![CDATA[E8E085DAFF]]></Data>
+
+		<Address ptr="910DB9" value="VAL_cheapedllstring"/>
+		<Address ptr="4F9F80" value="VAL_cheapefunction1"/>
+		<Address ptr="75199B" value="VAL_cheapefunction2"/>
+	</Patch>
+</FilePatch>

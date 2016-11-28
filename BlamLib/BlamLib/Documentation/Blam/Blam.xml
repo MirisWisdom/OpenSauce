@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BlamDefinition game="">
+	<game id="" platform="">
+		<cache ext=".map" baseAddress="" baseAddressBsp="" >
+			<types>
+				<type id="" version="" name="" maxSize="" isResource="false" />
+			</types>
+		</cache>
+
+		<tags maxCount="" maxBufferSize="" >
+			<required>
+				<entry groupTag="" name="" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="" value="" />
+		</resources>
+	</game>
+</BlamDefinition>

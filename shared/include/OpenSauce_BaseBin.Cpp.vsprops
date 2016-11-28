@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="OpenSauce_BaseBin"
+
+	InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_Base.Cpp.vsprops"
+
+	OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(PlatformName)\$(ProjectName)"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		GenerateDebugInformation="true"
+		SubSystem="2"
+		RandomizedBaseAddress="1"
+		DataExecutionPrevention="0"
+		TargetMachine="1"
+	/>
+</VisualStudioPropertySheet>

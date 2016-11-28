@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OSPlatformsDefined>true</OSPlatformsDefined>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition=" '$(ProjectName.Contains(Xbox))' ">
+	  <PropertyGroup>
+	    <OSPlatformTarget>Xbox</OSPlatformTarget>
+	  </PropertyGroup>
+    </When>
+    <When Condition=" '$(ProjectName.Contains(Xenon))' ">
+	  <PropertyGroup>
+	    <OSPlatformTarget>Xenon</OSPlatformTarget>
+	  </PropertyGroup>
+    </When>
+	<Otherwise>
+	  <PropertyGroup>
+	    <OSPlatformTarget Condition=" '$(OSPlatformTarget)' == '' ">PC</OSPlatformTarget>
+	  </PropertyGroup>
+	</Otherwise>
+  </Choose>
+
+  <Choose>
+    <When Condition=" '$(Configuration.Contains(Guerilla))' ">
+	  <PropertyGroup>
+	    <OSPlatformIsEditor>true</OSPlatformIsEditor>
+		<OSPlatformType>Guerilla</OSPlatformType>
+	  </PropertyGroup>
+    </When>
+	<When Condition=" '$(Configuration.Contains(Sapien))' ">
+	  <PropertyGroup>
+	    <OSPlatformIsEditor>true</OSPlatformIsEditor>
+		<OSPlatformType>Sapien</OSPlatformType>
+	  </PropertyGroup>
+    </When>
+	<When Condition=" '$(Configuration.Contains(Tool))' ">
+	  <PropertyGroup>
+	    <OSPlatformIsEditor>true</OSPlatformIsEditor>
+		<OSPlatformType>Tool</OSPlatformType>
+	  </PropertyGroup>
+    </When>
+	<When Condition=" '$(Configuration.Contains(Dedi))' ">
+	  <PropertyGroup>
+	    <OSPlatformIsEditor>false</OSPlatformIsEditor>
+		<OSPlatformType>Dedi</OSPlatformType>
+	  </PropertyGroup>
+    </When>
+	<Otherwise>
+	  <PropertyGroup>
+	    <OSPlatformIsEditor Condition=" '$(OSPlatformIsEditor)' == '' ">false</OSPlatformIsEditor>
+		<OSPlatformType     Condition=" '$(OSPlatformType)' == '' ">Client</OSPlatformType>
+	  </PropertyGroup>
+	</Otherwise>
+  </Choose>
+</Project>

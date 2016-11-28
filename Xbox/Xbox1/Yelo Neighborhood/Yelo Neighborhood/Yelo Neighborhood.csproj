@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5189FF59-28CC-4D6B-B564-453A0F1B6D2E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yelo_Neighborhood</RootNamespace>
+    <AssemblyName>Yelo Neighborhood</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ApplicationIcon>xbox_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)OpenSauce_Xbox1.Cs.props" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Executable Tools\ScriptTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Executable Tools\ScriptTool.Designer.cs">
+      <DependentUpon>ScriptTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Executable\Executable.cs" />
+    <Compile Include="Executable Tools\ExecutableTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Executable Tools\ExecutableTool.Designer.cs">
+      <DependentUpon>ExecutableTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Executable\Module.cs" />
+    <Compile Include="Executable\Script.cs" />
+    <Compile Include="System Tools\LEDStateChanger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="System Tools\LEDStateChanger.Designer.cs">
+      <DependentUpon>LEDStateChanger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System Tools\ModuleManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="System Tools\ModuleManager.Designer.cs">
+      <DependentUpon>ModuleManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Screenshot Tools\ImageFormatSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Screenshot Tools\ImageFormatSelector.Designer.cs">
+      <DependentUpon>ImageFormatSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Executable Tools\ExecutableTool.resx">
+      <DependentUpon>ExecutableTool.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Executable Tools\ScriptTool.resx">
+      <DependentUpon>ScriptTool.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System Tools\LEDStateChanger.resx">
+      <DependentUpon>LEDStateChanger.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System Tools\ModuleManager.resx">
+      <DependentUpon>ModuleManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Screenshot Tools\ImageFormatSelector.resx">
+      <DependentUpon>ImageFormatSelector.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Screenshot Tools\ScreenshotTool.resx">
+      <DependentUpon>ScreenshotTool.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System Tools\NewModule.resx">
+      <DependentUpon>NewModule.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System Tools\SystemProperties.resx">
+      <DependentUpon>SystemProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XBoxLocator.resx">
+      <DependentUpon>XBoxLocator.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Screenshot Tools\ScreenshotTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Screenshot Tools\ScreenshotTool.Designer.cs">
+      <DependentUpon>ScreenshotTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System Tools\NewModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="System Tools\NewModule.Designer.cs">
+      <DependentUpon>NewModule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System Tools\SystemProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="System Tools\SystemProperties.Designer.cs">
+      <DependentUpon>SystemProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XBoxLocator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XBoxLocator.Designer.cs">
+      <DependentUpon>XBoxLocator.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Executables.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xbox_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\YeloDebug\YeloDebug.csproj">
+      <Project>{F5DB1C08-E8A7-4618-9E0E-0CC225597C75}</Project>
+      <Name>YeloDebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Updater\Yelo Neighborhood Updater.csproj">
+      <Project>{94A21AF4-C543-47FD-99C5-B59541F77157}</Project>
+      <Name>Yelo Neighborhood Updater</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

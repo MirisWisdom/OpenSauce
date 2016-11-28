@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D286A00D-6A1D-4B4B-A7F2-9001EC9C7CEF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InstallerUnitTest</RootNamespace>
+    <AssemblyName>InstallerUnitTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\$(Configuration)</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CPUQueryUnitTests\CPUQuery.Tests.cs" />
+    <Compile Include="CPUQueryUnitTests\QueryFunctions\IsProcessorFeaturePresentQuery.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\Patcher\PatchApplier.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\PatchTests\Halo1_CE.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\Utilities\Parse.Tests.cs" />
+    <Compile Include="FilePatcherUnitTests\Utilities\StreamIO.Tests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FilePatcherUnitTests\FilePatcher.Tests.cs" />
+    <Compile Include="InstallValidatorUnitTests\InstallValidator.Tests.cs" />
+    <Compile Include="SetPropertiesUnitTests\SetProperties.Tests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPUQuery\CPUQuery.csproj">
+      <Project>{838d0fa5-36fa-4cfb-a4f5-4df748b6d0c1}</Project>
+      <Name>CPUQuery</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FilePatcher\FilePatcher.csproj">
+      <Project>{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}</Project>
+      <Name>FilePatcher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InstallValidator\InstallValidator.csproj">
+      <Project>{A7DEC09C-D521-48BB-A564-E039D3E9F850}</Project>
+      <Name>InstallValidator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SetPathProperties\SetProperties.csproj">
+      <Project>{c335f888-5d39-4635-b257-27f7295a4a71}</Project>
+      <Name>SetProperties</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FilePatcherUnitTests\PatchTests\Resources\OS_haloce.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\PatchTests\Resources\OS_haloceded.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileOne.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexByte.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidByte.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexBytes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidBytes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.OutOfBoundsString.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidString.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.InvalidHexUInt32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FilePatcherUnitTests\Resources\DummyFileTwo.ValidUInt32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\TestFileOne.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\TestFileTwo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMismatchedFileError.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMismatchedFileWarning.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMissingFileError.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMissingDirectoryError.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMissingFileWarning.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMatchingFileError.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidatePresentFileError.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidatePresentDirectoryError.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMissingDirectoryWarning.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateMatchingFileWarning.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidatePresentFileWarning.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidatePresentDirectoryWarning.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallValidatorUnitTests\Resources\ValidateValidDirectory.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetDirectoryExists.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetFileExists.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetValidPath.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SetPropertiesUnitTests\Resources\PropertySetValidString.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SetPropertiesUnitTests\PropertySetter\PropertySetter.Tests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InstallValidatorUnitTests\Validator\Validator.Tests.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

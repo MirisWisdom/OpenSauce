@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  If you update this file you need to update
+  Halo1_CE.vcxproj.filters
+  as well. Look for the commented out Import (of this file) element
+  -->
+  <ItemGroup
+    > <!--effects GAME-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
+      <Filter>.blamlib\effects</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--interface GAME-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp">
+      <Filter>.blamlib\interface</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--main GAME-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\main\main.cpp">
+      <Filter>.blamlib\main</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--objects GAME-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\object_structures.cpp">
+      <Filter>.blamlib\objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--rasterizer GAME-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp">
+      <Filter>.blamlib\rasterizer\dx9</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

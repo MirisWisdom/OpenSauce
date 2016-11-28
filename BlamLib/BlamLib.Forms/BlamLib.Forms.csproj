@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{61EE1295-F2B6-4351-B331-244319600FCE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BlamLib.Forms</RootNamespace>
+    <AssemblyName>BlamLib.Forms</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OSRootDir>$(MSBuildProjectDirectory)\..\..\</OSRootDir>
+  </PropertyGroup>
+  <Import Project="$(OSRootDir)shared\config\msbuild\BlamLib.props" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+	<ProjectReference Include="..\BlamLib\BlamLib.csproj">
+      <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
+      <Name>BlamLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Angle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Angle.Designer.cs">
+      <DependentUpon>Angle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AngleBounds.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AngleBounds.Designer.cs">
+      <DependentUpon>AngleBounds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Block.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Block.Designer.cs">
+      <DependentUpon>Block.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlockIndex.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlockIndex.Designer.cs">
+      <DependentUpon>BlockIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ByteInteger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ByteInteger.Designer.cs">
+      <DependentUpon>ByteInteger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Color.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Color.Designer.cs">
+      <DependentUpon>Color.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Data.Designer.cs">
+      <DependentUpon>Data.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Enum.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Enum.Designer.cs">
+      <DependentUpon>Enum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Explanation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Explanation.Designer.cs">
+      <DependentUpon>Explanation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Field.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Field.Designer.cs">
+      <DependentUpon>Field.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FieldBehavior.cs" />
+    <Compile Include="FieldContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FieldContainer.Designer.cs">
+      <DependentUpon>FieldContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FieldSelection.cs" />
+    <Compile Include="FieldTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Flags.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Flags.Designer.cs">
+      <DependentUpon>Flags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IBlockControl.cs" />
+    <Compile Include="LongInteger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LongInteger.Designer.cs">
+      <DependentUpon>LongInteger.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Angle.resx">
+      <DependentUpon>Angle.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleBounds.resx">
+      <DependentUpon>AngleBounds.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Block.resx">
+      <DependentUpon>Block.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlockIndex.resx">
+      <DependentUpon>BlockIndex.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ByteInteger.resx">
+      <DependentUpon>ByteInteger.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Color.resx">
+      <DependentUpon>Color.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data.resx">
+      <DependentUpon>Data.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Enum.resx">
+      <DependentUpon>Enum.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Explanation.resx">
+      <DependentUpon>Explanation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Field.resx">
+      <DependentUpon>Field.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FieldContainer.resx">
+      <DependentUpon>FieldContainer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Flags.resx">
+      <DependentUpon>Flags.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LongInteger.resx">
+      <DependentUpon>LongInteger.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Util.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Blam\Halo1\" />
+    <Folder Include="Blam\Halo2\" />
+    <Folder Include="Blam\Halo3\BLF\" />
+    <Folder Include="Blam\Stubbs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

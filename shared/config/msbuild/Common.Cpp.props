@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Configuration">
+    <IntDir>$(OSRootDir)obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental Condition=" '$(Configuration)'=='Release' ">false</LinkIncremental>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <!--<IncludePath>;$(IncludePath)</IncludePath>-->
+    <LibraryPath>$(OSPlatformCppLibDir);$(LibraryPath)</LibraryPath>
+    <RunCodeAnalysis Condition=" '$(Configuration)'=='DebugCodeAnalysis' ">true</RunCodeAnalysis>
+	<PlatformToolset>v120_xp</PlatformToolset>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OSRequiresVLD)' != '' " Label="Configuration">
+    <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProgramFiles)\Visual Leak Detector\lib\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OSRequiresDirectX)' != '' " Label="Configuration">
+    <IncludePath>$(LocalDirectXDir)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LocalDirectXDir)Lib\$(PlatformType);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OSRequiresCppBoost)' != '' " Label="Configuration">
+    <IncludePath>$(LocalUserBoostDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(LocalUserBoostDir)stage\lib\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration.Contains(Debug))' " Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration.Contains(Release))' " Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(ConfigurationType)' == 'DynamicLibrary' ">
+    <OutDir>$(OSRootDir)bin\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(ConfigurationType)' == 'Application' ">
+    <OutDir>$(OSRootDir)bin\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(ConfigurationType)' == 'StaticLibrary' ">
+    <OutDir>$(OSRootDir)lib\$(Configuration)\$(Platform)\</OutDir>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(OSRootDir)shared\include_cpp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <AdditionalOptions> /J /Zc:trigraphs</AdditionalOptions> <!--unsigned char, enable trigraphs-->
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <!--<PrecompiledHeaderFile>Precompile.hpp</PrecompiledHeaderFile>-->
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OSRootDir)lib\$(Configuration)\$(Platform)\</AdditionalLibraryDirectories>
+	  <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+
+	<Lib>
+      <AdditionalLibraryDirectories>$(OSRootDir)lib\$(Configuration)\$(Platform)\</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="Exists('$(ProjectDir)Precompile.hpp')">
+    <ClCompile>
+      <PrecompiledHeaderFile>Precompile.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="Exists('$(ProjectDir)Common\Precompile.hpp')">
+    <ClCompile>
+      <PrecompiledHeaderFile>Common\Precompile.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+	<Link>
+      <AdditionalOptions> /verbose:incr %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Release))' ">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+	  <!-- http://randomascii.wordpress.com/2013/09/11/debugging-optimized-codenew-in-visual-studio-2012/ -->
+	  <!-- http://visualstudiogallery.msdn.microsoft.com/2f679f81-5154-4bd7-9907-adafde05a428 -->
+	  <AdditionalOptions> /d2Zi+ /Qvec-report:2 %(AdditionalOptions)</AdditionalOptions>
+	  <MultiProcessorCompilation>true</MultiProcessorCompilation> <!--release only, not compat with minimal rebuild (enabled in debug)-->
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(Platform)' == 'Win32' ">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(Platform)' == 'x64' ">
+    <ClCompile>
+      <PreprocessorDefinitions>_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+	<Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(ConfigurationType)' == 'StaticLibrary' ">
+    <ClCompile>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(Configuration)' == 'DebugCodeAnalysis' ">
+    <ClCompile>
+      <EnablePREfast>true</EnablePREfast>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

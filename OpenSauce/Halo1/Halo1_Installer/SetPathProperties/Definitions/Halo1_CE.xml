@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PropertySet>
+	<Property Name="HALO1_CE_HCE_INSTALLDIR_EXISTS_PROP" Type="directoryexists" Value="[HALO1_CE_HCE_INSTALLDIR_PROP]"/>
+	<Property Name="HALO1_CE_HCECLIENT_VERSION_110_PROP" Type="path" Value="[HALO1_CE_HCE_INSTALLDIR_PROP];haloce.exe"/>
+	<Property Name="HALO1_CE_HCEDEDI_VERSION_110_PROP" Type="path" Value="[HALO1_CE_HCE_INSTALLDIR_PROP];haloceded.exe"/>
+</PropertySet>

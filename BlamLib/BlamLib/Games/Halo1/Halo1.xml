@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<BlamDefinition game="Halo1">
+	<game id="Halo1_Xbox" platform="Xbox">
+		<cache ext=".map" baseAddress="0x803A6000" baseAddressBsp="0x819A6000" >
+			<types>
+				<type id="0" version="5" name="campaign" maxSize="0x00000000" isResource="false" />
+				<type id="1" version="5" name="multiplayer" maxSize="0x00000000" isResource="false" />
+				<type id="2" version="5" name="mainmenu" maxSize="0x00000000" isResource="false" />
+			</types>
+		</cache>
+
+		<tags maxCount="4000" maxBufferSize="0x1600000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="" />
+		</resources>
+	</game>
+	<!-- Anniversary -->
+	<game id="Halo1_XboxX" platform="Xbox">
+		<!-- Physical alloc actually begins at 0x70000000 and runs for 0x1448000 -->
+		<cache ext=".map" baseAddress="0x4B8000" baseAddressBsp="0x900000" >
+			<types>
+				<type id="0" version="7" name="campaign" maxSize="0x00000000" isResource="false" />
+				<type id="1" version="7" name="multiplayer" maxSize="0x00000000" isResource="false" />
+				<type id="2" version="7" name="mainmenu" maxSize="0x00000000" isResource="false" />
+			</types>
+		</cache>
+
+		<tags maxCount="5120" maxBufferSize="0x448000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="" />
+		</resources>
+	</game>
+
+	<game id="Halo1_PC" platform="PC">
+		<cache ext=".map" baseAddress="0x40440000" baseAddressBsp="0x41B40000" >
+			<types>
+				<type id="0" version="7" name="campaign" maxSize="0x00000000" isResource="false" />
+				<type id="1" version="7" name="multiplayer" maxSize="0x00000000" isResource="false" />
+				<type id="2" version="7" name="mainmenu" maxSize="0x00000000" isResource="false" />
+
+				<type id="1" version="1" name="bitmaps" maxSize="0x00000000" isResource="true" />
+				<type id="2" version="1" name="sounds" maxSize="0x00000000" isResource="true" />
+			</types>
+		</cache>
+
+		<tags maxCount="5120" maxBufferSize="0x1700000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="" />
+		</resources>
+	</game>
+	<!-- Anniversary -->
+	<game id="Halo1_PCX" platform="PC">
+		<!-- TODO -->
+		<cache ext=".map" baseAddress="0x40440000" baseAddressBsp="0x41B40000" >
+			<types>
+				<type id="0" version="7" name="campaign" maxSize="0x00000000" isResource="false" />
+				<type id="1" version="7" name="multiplayer" maxSize="0x00000000" isResource="false" />
+				<type id="2" version="7" name="mainmenu" maxSize="0x00000000" isResource="false" />
+
+				<!-- TODO -->
+				<type id="1" version="1" name="bitmaps" maxSize="0x00000000" isResource="true" />
+				<type id="2" version="1" name="sounds" maxSize="0x00000000" isResource="true" />
+			</types>
+		</cache>
+
+		<!-- TODO -->
+		<tags maxCount="5120" maxBufferSize="0x1700000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="" />
+		</resources>
+	</game>
+
+	<game id="Halo1_Mac" platform="Mac">
+		<cache ext=".map" baseAddress="0x40440000" baseAddressBsp="0x41B40000" >
+			<types>
+				<type id="0" version="7" name="campaign" maxSize="0x00000000" isResource="false" />
+				<type id="1" version="7" name="multiplayer" maxSize="0x00000000" isResource="false" />
+				<type id="2" version="7" name="mainmenu" maxSize="0x00000000" isResource="false" />
+
+				<type id="1" version="1" name="bitmaps" maxSize="0x00000000" isResource="true" />
+				<type id="2" version="1" name="sounds" maxSize="0x00000000" isResource="true" />
+			</types>
+		</cache>
+
+		<tags maxCount="5120" maxBufferSize="0x1700000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="" />
+		</resources>
+	</game>
+
+	<game id="Halo1_CE" platform="PC">
+		<cache ext=".map" baseAddress="0x40440000" baseAddressBsp="0x41B40000" >
+			<types>
+				<type id="0" version="609" name="campaign" maxSize="0x00000000" isResource="false" />
+				<type id="1" version="609" name="multiplayer" maxSize="0x00000000" isResource="false" />
+				<type id="2" version="609" name="mainmenu" maxSize="0x00000000" isResource="false" />
+
+				<type id="1" version="1" name="bitmaps" maxSize="0x00000000" isResource="true" />
+				<type id="2" version="1" name="sounds" maxSize="0x00000000" isResource="true" />
+				<type id="3" version="1" name="loc" maxSize="0x00000000" isResource="true" />
+			</types>
+		</cache>
+
+		<tags maxCount="5120" maxBufferSize="0x1700000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="Halo1_CE_Scripting.xml" />
+		</resources>
+	</game>
+</BlamDefinition>

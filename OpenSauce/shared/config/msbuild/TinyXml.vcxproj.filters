@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--<ItemGroup>
+    <Filter Include="Common\Shared\TinyXml">
+      <UniqueIdentifier>{921ff388-d1b4-45bf-b3ac-55729d5a6df5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>-->
+
+  <ItemGroup
+    >
+	<Text Include="..\..\shared\Include\TinyXml\OpenSauce.Readme.txt">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </Text>
+
+	<ClInclude Include="..\..\shared\Include\TinyXml\tinystr.hpp">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\TinyXml\tinyxml.hpp">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </ClInclude>
+
+	<ClCompile Include="..\..\shared\Include\TinyXml\tinystr.cpp">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp">
+      <Filter>Common\Shared\TinyXml</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

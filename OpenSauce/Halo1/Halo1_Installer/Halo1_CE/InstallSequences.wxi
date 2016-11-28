@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<!-- Validate Halo CE Installation-->
+	<Custom Action='Halo1_CE_SetValidationDefHCE_CACT' Before='InstallValidate'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
+	</Custom>
+	<Custom Action='Halo1_CE_SetValidationPathHCE_CACT' After='Halo1_CE_SetValidationDefHCE_CACT'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
+	</Custom>
+	<Custom Action='Halo1_CE_ValidateInstallHCE_CACT' After='Halo1_CE_SetValidationPathHCE_CACT'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
+	</Custom>
+
+	<!-- Validate Halo Editing Kit Installation-->
+	<Custom Action='Halo1_CE_SetValidationDefHEK_CACT' Before='InstallValidate'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
+	</Custom>
+	<Custom Action='Halo1_CE_SetValidationPathHEK_CACT' After='Halo1_CE_SetValidationDefHEK_CACT'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
+	</Custom>
+	<Custom Action='Halo1_CE_ValidateInstallHEK_CACT' After='Halo1_CE_SetValidationPathHEK_CACT'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
+	</Custom>
+
+	<!-- Append patch arguments for OS_haloceded -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Before='InstallFinalize'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
+	</Custom>
+
+	<!-- Append patch arguments for OS_Guerilla -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataGuerilla_CACT' After='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
+	</Custom>
+
+	<!-- Append patch arguments for OS_Tool -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataTool_CACT' After='Halo1_CE_AppendFilePatcherDataGuerilla_CACT'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
+	</Custom>
+
+	<!-- Append patch arguments for OS_Sapien -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataSapien_CACT' After='Halo1_CE_AppendFilePatcherDataTool_CACT'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3))]]>
+	</Custom>
+
+	<!-- Patch OpenSauce exe's -->
+	<Custom Action='Halo1_CE_PatchFiles_CACT' After='Halo1_CE_AppendFilePatcherDataSapien_CACT'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
+	</Custom>
+</Include>

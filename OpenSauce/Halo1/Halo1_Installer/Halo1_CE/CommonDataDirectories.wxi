@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	
+	<Directory Id='Halo1_CE_HaloCE_DIR' Name='Halo CE' FileSource='$(var.ResourceFolder)Halo1_CE\HCE_CommonData'>
+		<!-- Shaders necessary for gbuffer extensions -->
+		<Directory Id='Halo1_CE_Shaders_DIR' Name='shaders'>
+			<Component Id='Halo1_CE_GBufferShaders_COMP' Guid='D894EAE3-9193-4AE4-B158-2117DBB73CFE'>
+				<File Id='Halo1_CE_GBufferShaders_FILE' Name='gbuffer_shaders.shd' KeyPath='yes' />
+			</Component>
+			<Component Id='Halo1_CE_PPShaders_COMP' Guid='547CFB95-B537-4B3F-A0B1-6EE6671D663C'>
+				<File Id='Halo1_CE_PPShaders_FILE' Name='pp_shaders.shd' KeyPath='yes' />
+			</Component>
+
+			<Component Id='Halo1_CE_ShadersRemove_COMP' Guid='BBA737F2-4BCE-4516-AF07-34CEC2AE47F4'>
+				<RemoveFolder Id='Halo1_CE_Shaders_REMDIR' On='uninstall' />
+			</Component>
+		</Directory>
+		<Component Id='Halo1_CE_OpenSauceUI_COMP' Guid='8C90C2CF-FBB3-43E4-8EDD-BDDCF0516327'>
+			<File Id='Halo1_CE_OpenSauceUI_FILE' Name='OpenSauceUI.pak' KeyPath='yes' />
+		</Component>
+
+		<Component Id='Halo1_CE_HaloCERemove_COMP' Guid='6FC6E77B-EBE7-48dd-9496-F7C7C81A0CE1'>
+			<RemoveFolder Id='Halo1_CE_HaloCE_REMDIR' On='uninstall' />
+		</Component>
+	</Directory>
+	
+</Include>

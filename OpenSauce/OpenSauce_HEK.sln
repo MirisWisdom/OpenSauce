@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo1", "Halo1", "{F0CB6288-8B6C-45B8-93D7-EC703558F574}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo2", "Halo2", "{84D64AD9-C6B7-4CFD-867B-9D4058A5CFF9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_CheApe", "Halo1\Halo1_CheApe\Halo1_CheApe.vcxproj", "{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07} = {56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E} = {ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_BlamLib", "Halo1\Halo1_BlamLib\Halo1_BlamLib.vcxproj", "{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E} = {ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_YeloLib", "Halo1\Halo1_YeloLib\Halo1_YeloLib.vcxproj", "{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FCD2AFBF-D301-4C5A-B1FC-5B3A74FBDA71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DebugGuerilla|Win32 = DebugGuerilla|Win32
+		DebugSapien|Win32 = DebugSapien|Win32
+		DebugTool|Win32 = DebugTool|Win32
+		Release|Win32 = Release|Win32
+		ReleaseGuerilla|Win32 = ReleaseGuerilla|Win32
+		ReleaseSapien|Win32 = ReleaseSapien|Win32
+		ReleaseTool|Win32 = ReleaseTool|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.Debug|Win32.ActiveCfg = Debug|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.Debug|Win32.Build.0 = Debug|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.DebugGuerilla|Win32.ActiveCfg = DebugGuerilla|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.DebugGuerilla|Win32.Build.0 = DebugGuerilla|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.DebugSapien|Win32.ActiveCfg = DebugSapien|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.DebugSapien|Win32.Build.0 = DebugSapien|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.DebugTool|Win32.ActiveCfg = DebugTool|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.DebugTool|Win32.Build.0 = DebugTool|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.Release|Win32.ActiveCfg = Release|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.Release|Win32.Build.0 = Release|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.ReleaseGuerilla|Win32.ActiveCfg = ReleaseGuerilla|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.ReleaseGuerilla|Win32.Build.0 = ReleaseGuerilla|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.ReleaseSapien|Win32.ActiveCfg = ReleaseSapien|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.ReleaseSapien|Win32.Build.0 = ReleaseSapien|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.ReleaseTool|Win32.ActiveCfg = ReleaseTool|Win32
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}.ReleaseTool|Win32.Build.0 = ReleaseTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Debug|Win32.ActiveCfg = Debug|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Debug|Win32.Build.0 = Debug|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugGuerilla|Win32.ActiveCfg = DebugGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugGuerilla|Win32.Build.0 = DebugGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugSapien|Win32.ActiveCfg = DebugSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugSapien|Win32.Build.0 = DebugSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugTool|Win32.ActiveCfg = DebugTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.DebugTool|Win32.Build.0 = DebugTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Release|Win32.ActiveCfg = Release|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.Release|Win32.Build.0 = Release|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseGuerilla|Win32.ActiveCfg = ReleaseGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseGuerilla|Win32.Build.0 = ReleaseGuerilla|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseSapien|Win32.ActiveCfg = ReleaseSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseSapien|Win32.Build.0 = ReleaseSapien|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseTool|Win32.ActiveCfg = ReleaseTool|Win32
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07}.ReleaseTool|Win32.Build.0 = ReleaseTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Debug|Win32.Build.0 = Debug|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugGuerilla|Win32.ActiveCfg = DebugGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugGuerilla|Win32.Build.0 = DebugGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugSapien|Win32.ActiveCfg = DebugSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugSapien|Win32.Build.0 = DebugSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugTool|Win32.ActiveCfg = DebugTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.DebugTool|Win32.Build.0 = DebugTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Release|Win32.ActiveCfg = Release|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.Release|Win32.Build.0 = Release|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseGuerilla|Win32.ActiveCfg = ReleaseGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseGuerilla|Win32.Build.0 = ReleaseGuerilla|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseSapien|Win32.ActiveCfg = ReleaseSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseSapien|Win32.Build.0 = ReleaseSapien|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseTool|Win32.ActiveCfg = ReleaseTool|Win32
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}.ReleaseTool|Win32.Build.0 = ReleaseTool|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
+		{56A27846-FDDC-48EC-B8C2-BDBB81AD5D07} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
+		{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
+	EndGlobalSection
+EndGlobal

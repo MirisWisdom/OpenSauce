@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<references>
+		<Reference name="effect_postprocess_generic_reference">
+			<field>efpg</field>
+		</Reference>
+	</references>
+
+	<flags>
+		<Flag name="effect_control_flags">
+			<field>invert</field>
+		</Flag>
+	</flags>
+
+	<enums>
+		<Enum name="effect_render_stage_enum">
+			<field>after bsp - before blur</field>
+			<field>after blur - before alpha'd faces</field>
+			<field>after alpha'd faces - before hud</field>
+			<field>after hud - before menu</field>
+			<field>after menu</field>
+		</Enum>
+		<Enum name="effect_activation_enum">
+			<field>initially active</field>
+			<field>is in cutscene</field>
+			<field>player is zoomed</field>
+			<field>player using a vehicle</field>
+		</Enum>
+		<Enum name="effect_activation_operation_enum">
+			<field>all</field>
+			<field>any</field>
+		</Enum>
+	</enums>
+
+	<blocks>
+		<TagBlock name="effect_postprocess_collection_shaders_block" maxElements="128">
+			<field type="TagReference" name="shader" definition="shader_postprocess_generic_reference" />
+		</TagBlock>
+		
+		<TagBlock name="effect_postprocess_collection_activation_control_block" maxElements="8">
+			<field type="Enum" name="state" definition="effect_activation_enum" />
+			<field type="WordFlags" name="flags" definition="effect_control_flags" />
+		</TagBlock>
+
+		<!--TagBlock name="effect_postprocess_collection_fade_control_block" maxElements="8">
+			<field type="Enum" name="value" definition="effect_fade_enum" />
+			<field type="WordFlags" name="flags" definition="effect_control_flags" />
+			<field type="RealBounds" name="value map" />
+			<field type="Pad" definition="4" />
+		</TagBlock-->
+
+		<TagBlock name="effect_postprocess_collection_script_variable_block" maxElements="32">
+			<field type="String" name="script variable name"/>
+			<field type="String" name="exposed parameter name"/>
+			<field type="Pad" definition="4"/>
+			<field type="Pad" definition="12"/>
+		</TagBlock>
+
+		<TagBlock name="effect_postprocess_collection_effect_block" maxElements="32">
+			<field type="TagReference" name="effect" definition="effect_postprocess_generic_reference" blockname="true"/>
+			<field type="String" name="name"/>
+			<field type="Block" name="script variables" definition="effect_postprocess_collection_script_variable_block"/>
+			<field type="Pad" definition="12"/>
+		</TagBlock>
+
+		<TagBlock name="effect_postprocess_collection_effect_instance_block" maxElements="32">
+			<field type="String" name="name"/>
+			<field type="ShortBlockIndex" name="effect" definition="effect_postprocess_collection_effect_block"/>
+			<field type="Enum" name="render stage" definition="effect_render_stage_enum" />
+			
+			<!--s_shader_postprocess_quad_definition-->
+			<field type="Point2D" name="quad tesselation" tooltip="0 defaults to 4"/>
+			<field type="RealFractionBounds" name="x screen bounds" units="[0,1]" tooltip="0,0 defaults to 0,1"/>
+			<field type="RealFractionBounds" name="y screen bounds" units="[0,1]" tooltip="0,0 defaults to 0,1"/>
+			<field type="Pad" definition="12"/><!--field type="Block" name="custom vertex data" definition="effect_postprocess_custom_vertex_data_block"/-->
+			<field type="Enum" name="activation operation" definition="effect_activation_operation_enum"/>
+			<field type="Pad" definition="6"/>
+			<field type="Block" name="activation controls" definition="effect_postprocess_collection_activation_control_block"/>
+			<field type="Pad" definition="12"/><!--field type="Block" name="fade controls" definition="effect_postprocess_collection_fade_control_block" /-->
+			<field type="Pad" definition="16"/>
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="effect_postprocess_collection" groupTag="efpc" version="1">
+			<field type="Pad" definition="12" />
+			<field type="Block" name="" definition="effect_postprocess_collection_shaders_block" />
+			<field type="Block" name="effects" definition="effect_postprocess_collection_effect_block" />
+			<field type="Block" name="effect instances" definition="effect_postprocess_collection_effect_instance_block" />
+		</TagGroup>
+	</groups>
+
+</definitions>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>	
+	<!-- Get the Halo CE root directory from the registry -->
+	<Property Id='HALO1_CE_HCE_INSTALLDIR_PROP' Secure='yes' Value='C:\Program Files (x86)\Microsoft Games\Halo Custom Edition'>
+    <RegistrySearch Id='Halo1_CE_HCE_InstallDir_REG' Type='raw' Root='HKLM' Key='Software\Microsoft\Microsoft Games\Halo CE' Name='EXE Path' />
+	</Property>
+	
+	<!-- Get the HEK installation directory from the registry -->
+	<Property Id='HALO1_CE_HEK_INSTALLDIR_PROP' Secure='yes' Value='C:\Program Files (x86)\Microsoft Games\Halo Custom Edition'>
+		<RegistrySearch Id='Halo1_CE_HEK_InstallDir_REG' Type='raw' Root='HKLM' Key='Software\Microsoft\Microsoft Games\Halo HEK' Name='EXE Path' />
+	</Property>
+
+  <!-- Get the Halo CE directory in the Documents folder, searches 2 directories deep -->
+  <Property Id='HALO1_CE_HCE_USERPATH_PROP' Secure='yes'>
+    <DirectorySearch Id='Halo1_CE_HCE_UserPath_DIRSRCH' Path='[PersonalFolder]\My Games'>
+      <DirectorySearch Id='Halo1_CE_HCE_HaloCEPath_DIRSRCH' Path='Halo CE' Depth='2' />
+    </DirectorySearch>
+  </Property>
+
+	<Property Id='HALO1_CE_README_LAUNCH_PROP' Secure='yes' Value='1' />
+	<Property Id='HALO1_CE_HEK_README_LAUNCH_PROP' Secure='yes' Value='1' />
+</Include>

@@ -1,0 +1,61 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)shared\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <StringPooling>true</StringPooling>
+	  <!--<ExceptionHandling />-->
+      <ExceptionHandling>Sync</ExceptionHandling>
+	  <StructMemberAlignment>1Byte</StructMemberAlignment>
+	  <RuntimeTypeInfo>false</RuntimeTypeInfo>
+	  <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <PrecompiledHeaderFile>Common\Precompile.hpp</PrecompiledHeaderFile>
+	  <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <ClCompile>
+	  <MinimalRebuild>true</MinimalRebuild>
+	  <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+	  <!--<IntrinsicFunctions>true</IntrinsicFunctions>-->
+	  <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Release))' ">
+    <ClCompile>
+	  <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+	  <IntrinsicFunctions>true</IntrinsicFunctions>
+	  <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+	  <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+	<Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(OSPlatformIsEditor)'=='true' and '$(ProjectName.Contains(Halo2))' ">
+    <ClCompile>
+      <PreprocessorDefinitions>HALO2_CHEAPE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Tool' or '$(OSPlatformType)'=='Sapien' or '$(OSPlatformType)'=='Client' ">
+	<Link>
+      <AdditionalDependencies>d3dxof.lib;dxguid.lib;d3dx9.lib;d3d9.lib;dinput8.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <!--define PLATFORM_IS_STUBBS-->
+<!--  <ItemDefinitionGroup Condition=" '$(ProjectName.Contains(Stubbs))' ">
+    <ClCompile>
+      <PreprocessorDefinitions>PLATFORM_IS_STUBBS=$(ProjectName.Contains(Stubbs).ToUpper());%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>-->
+
+  <ItemGroup>
+    <ClCompile Include="Common\Precompile.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+</Project>

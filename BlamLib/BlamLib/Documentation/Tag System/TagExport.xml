@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<definition group="" name="" version="">
+	<field type="String" name="" value="" />
+	<field type="StringId" name="" value="" />
+
+	<field type="ByteInteger" name="" value="" />
+	<field type="ShortInteger" name="" value="" />
+	<field type="LongInteger" name="" value="" />
+	<field type="Angle" name="" value="" />
+	<field type="Tag" name="" value="" />
+
+	<field type="ByteEnum" name="" value="" />
+	<field type="Enum" name="" value="" />
+	<field type="LongEnum" name="" value="" />
+
+	<field type="ByteFlags" name="" value="" />
+	<field type="WordFlags" name="" value="" />
+	<field type="LongFlags" name="" value="" />
+
+	<field type="Point2D" name="" x="" y="" />
+	<field type="Rectangle2D" name="" t="" l="" r="" b="" />
+	<field type="RgbColor" name="" r="" g="" b="" />
+	<field type="ArgbColor" name="" a="" r="" g="" b="" />
+
+	<field type="Real" name="" value="" />
+	<field type="RealFraction" name="" value="" />
+	<field type="RealPoint2D" name="" x="" y="" />
+	<field type="RealPoint3D" name="" x="" y="" z="" />
+	<field type="RealVector2D" name="" i="" j="" />
+	<field type="RealVector3D" name="" i="" j="" k="" />
+	<field type="RealQuaternion" name=""  i="" j="" k="" w="" />
+	<field type="RealEulerAngles2D" name="" y="" p="" />
+	<field type="RealEulerAngles3D" name="" y="" p="" r="" />
+	<field type="RealPlane2D" name="" x="" y="" d="" />
+	<field type="RealPlane3D" name="" x="" y="" z="" d="" />
+	<field type="RealRgbColor" name="" r="" g="" b="" />
+	<field type="RealArgbColor" name="" a="" r="" g="" b="" />
+
+	<field type="ShortBounds" name="" lower="" upper="" />
+	<field type="AngleBounds" name="" lower="" upper="" />
+	<field type="RealBounds" name="" lower="" upper="" />
+	<field type="RealFractionBounds" name="" lower="" upper="" />
+
+	<field type="TagReference" name="" group="" path="" />
+	<field type="Block" name="" version="" count="">
+		<definition index="">
+		</definition>
+	</field>
+
+	<field type="ByteBlockIndex" name="" value="" />
+	<field type="ShortBlockIndex" name="" value="" />
+	<field type="LongBlockIndex" name="" value="" />
+
+	<field type="Data" name="" size="" />
+
+	<field type="Struct" name="" version="">
+		<definition>
+		</definition>
+	</field>
+</definition>

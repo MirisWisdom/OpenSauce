@@ -1,0 +1,595 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common\Shared\CrashRpt">
+      <UniqueIdentifier>{830826da-002e-4bb2-a5d1-92b2c9dcacde}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <Import Project="..\..\shared\config\msbuild\CrashRpt.vcxproj.filters" />
+
+  <ItemGroup>
+    <Filter Include="Common\Shared\TinyXml">
+      <UniqueIdentifier>{924ff388-d1b4-45bf-b3ac-55729d5a6df5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <Import Project="..\..\shared\config\msbuild\TinyXml.vcxproj.filters" />
+
+  <ItemGroup>
+    <Filter Include="Common\Shared\zlib">
+      <UniqueIdentifier>{b36bc52e-53ef-4d4e-8eb2-4341bb936474}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Common\Shared\zlib\contrib">
+      <UniqueIdentifier>{39f7afa4-b150-456e-84d3-0e3ba05eb7bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\zlib\contrib\minizip">
+      <UniqueIdentifier>{5efa4a56-48ce-4b1c-8a88-45a77d1eae40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <Import Project="..\..\shared\config\msbuild\zlib.vcxproj.filters" />
+
+  <ItemGroup>
+    <Filter Include=".blamlib">
+      <UniqueIdentifier>{6a333574-be44-461d-9500-3f4bf5ffa848}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\ai">
+      <UniqueIdentifier>{fc433371-ed05-40b2-b70f-bced855f9f08}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\bitmaps">
+      <UniqueIdentifier>{4ea9738b-8522-413a-8883-ef6062a80be5}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\cache">
+      <UniqueIdentifier>{dcb222cd-2743-49f9-9fd8-41872bb3f6bd}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\camera">
+      <UniqueIdentifier>{6327fdb3-efd6-4f4a-9170-2f8d4f40b635}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\cseries">
+      <UniqueIdentifier>{67f15742-4f9f-433b-9102-a52056d84a1b}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\cutscene">
+      <UniqueIdentifier>{dadcd45b-458d-47bf-a2b1-f3705584eade}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\devices">
+      <UniqueIdentifier>{5e23b4a8-4a5d-4da7-b9e9-e63cd727a3a9}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\effects">
+      <UniqueIdentifier>{ea456bef-4397-4fec-9394-bbc37d4f4114}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\game">
+      <UniqueIdentifier>{23366632-4185-45f8-86ac-b85201487fec}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\hs">
+      <UniqueIdentifier>{3324ca3e-f53c-4843-862b-11c6075db6af}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\input">
+      <UniqueIdentifier>{b2226fcb-d73b-49e1-bdaf-d1f6ace09073}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\interface">
+      <UniqueIdentifier>{6e288b68-63ad-401e-9d79-473ffb46f7b3}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\items">
+      <UniqueIdentifier>{756ddddd-1c71-48ef-9d39-b623057f55f7}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\main">
+      <UniqueIdentifier>{4f169392-0614-4ac9-af13-b1fee929df74}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\math">
+      <UniqueIdentifier>{5c6d2f8d-b6ea-4f2c-945d-a3cf903ef3a8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\memory">
+      <UniqueIdentifier>{f8195896-2e54-4ae2-8ae9-f30e069cec5c}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\models">
+      <UniqueIdentifier>{9a5f61f2-7bd9-4936-a5ce-3c13c2d45d6d}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\networking">
+      <UniqueIdentifier>{b29157f7-d4f3-448c-866a-5eda86e8e8c2}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\objects">
+      <UniqueIdentifier>{c14a5aa9-98a5-4693-86ea-dc935e253a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\objects\widgets">
+      <UniqueIdentifier>{c7e5d9eb-3e1a-488e-bc89-d6d1fd3f6140}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\physics">
+      <UniqueIdentifier>{ad6e9ba1-6de9-4468-bfe2-67374dc0b3d8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\rasterizer">
+      <UniqueIdentifier>{3274f4e9-f87f-42ad-8be7-402d0656d1c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\rasterizer\dx9">
+      <UniqueIdentifier>{d431adf5-f351-47a4-9006-6b039c0a40e8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\render">
+      <UniqueIdentifier>{343c5406-b301-40d7-946a-833f43324bdb}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\saved_games">
+      <UniqueIdentifier>{6b1553b2-3546-428f-a12b-ce7457506b59}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\scenario">
+      <UniqueIdentifier>{a3a1ffea-e347-47b0-875c-4be494a6869c}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\shaders">
+      <UniqueIdentifier>{e23d117f-7ef4-4568-bcef-3adadcb68fb8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\sound">
+      <UniqueIdentifier>{f5468368-8efb-456e-a9ea-fae99dad49c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\structures">
+      <UniqueIdentifier>{8558c849-78af-4493-8371-10afcf719375}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\tag_files">
+      <UniqueIdentifier>{6a8854b9-9534-48dc-831a-b57beba22781}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\text">
+      <UniqueIdentifier>{44b43f11-cf9c-4c23-b3f7-c5d438420a04}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\units">
+      <UniqueIdentifier>{1d5a4715-7b1f-4859-83c8-cc814347b2c3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include=".blamlib\guerilla">
+      <UniqueIdentifier>{645f40ea-b4b1-4589-8969-3f378083d75f}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\tool">
+      <UniqueIdentifier>{8a1ad4bc-7c17-4986-bb9e-f724053504e2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\blamlib\cache\cache_files_base.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\blamlib\cseries\cseries_base.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--math-->
+	<ClInclude Include="..\..\shared\Include\blamlib\math\color_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\math\integer_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\math\matrix_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\math\real_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\math\real_math.cpp">
+      <Filter>.blamlib\math</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup
+    > <!--memory-->
+    <ClInclude Include="..\..\shared\Include\blamlib\memory\data_base.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\blamlib\memory\datum_index.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--scenario-->
+	<ClInclude Include="..\..\shared\Include\blamlib\scenario\scenario_location.hpp">
+      <Filter>.blamlib\scenario</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files EDITOR-->
+	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\cache\cache_files.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo2\cache\predicted_resources.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\cseries\cseries.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo2\cseries\errors.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--game-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--hs-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--interface-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--memory-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\memory\resource_database.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--networking-->
+  </ItemGroup>
+  <ItemGroup
+    > <!--shaders-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\shaders\shader_definitions.hpp">
+      <Filter>.blamlib\shaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--sound-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\sound\sound_definitions.hpp">
+      <Filter>.blamlib\sound</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\tag_files\files.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo2\tag_files\tag_groups.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Filter Include=".YeloLib">
+      <UniqueIdentifier>{f5274ea3-3518-4778-aa74-7466cce92d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\cache">
+      <UniqueIdentifier>{5d9338e4-59a6-4a2d-8912-af34f6d50421}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\cseries">
+      <UniqueIdentifier>{7ba89dc8-2c4e-4763-af1b-d759e319da93}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\files">
+      <UniqueIdentifier>{2ff78ed5-c926-4ad5-b8aa-6f9fbd738c6e}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\hs">
+      <UniqueIdentifier>{3d4910d3-ff55-4d40-af83-761d5d601cd9}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\main">
+      <UniqueIdentifier>{ea737c54-38cf-4763-8c9c-22da293c904d}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\memory">
+      <UniqueIdentifier>{b76856e8-4679-464f-86db-1e5d51c61592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\memory\compression">
+      <UniqueIdentifier>{619e88b5-3976-4b95-a3c6-979dbcaf3af6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\memory\security">
+      <UniqueIdentifier>{3f335515-a49b-4620-8026-c538bda65466}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\open_sauce">
+      <UniqueIdentifier>{a367fad3-71c6-4b18-8aec-96d3c83b1179}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\open_sauce\che_ape">
+      <UniqueIdentifier>{bf87aecf-8264-4f19-b717-973638fdf9e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\open_sauce\settings">
+      <UniqueIdentifier>{292f5bba-830b-47dd-b368-2e6e423e3d68}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\shell">
+      <UniqueIdentifier>{b834da29-49dd-45a1-bf8c-f4d63ade421e}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".YeloLib\tag_files">
+      <UniqueIdentifier>{93964aaa-5ea8-46ea-b51a-e343616e9b26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\cache\cache_files_yelo_base.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.hpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.cpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.hpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.cpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\errors_yelo.hpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\errors_yelo.cpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\pc_crashreport.hpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\pc_crashreport.cpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup
+    > <!--files-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\files\files.hpp">
+      <Filter>.YeloLib\files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\files\files.cpp">
+      <Filter>.YeloLib\files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup
+    > <!--main-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\main\main_yelo_base.hpp">
+      <Filter>.YeloLib\main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--memory-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\array_yelo.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\function_interface.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\memory\function_interface.cpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClCompile>
+	<None Include="..\..\shared\Include\YeloLib\memory\function_interface.inl">
+      <Filter>.YeloLib\memory</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\memory\function_interface_macros.inl">
+      <Filter>.YeloLib\memory</Filter>
+    </None>
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\linked_list.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\linked_list.cpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\memory_interface_base.cpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\naked_func_writer.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.cpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClCompile>
+
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.hpp">
+      <Filter>.YeloLib\memory\compression</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.cpp">
+      <Filter>.YeloLib\memory\compression</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\compression\zip_codec.hpp">
+      <Filter>.YeloLib\memory\compression</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\compression\zip_codec.cpp">
+      <Filter>.YeloLib\memory\compression</Filter>
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\YeloLib\memory\security\xxtea.hpp">
+      <Filter>.YeloLib\memory\security</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\security\xxtea.cpp">
+      <Filter>.YeloLib\memory\security</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup
+    > <!--open_sauce-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.hpp">
+      <Filter>.YeloLib\open_sauce\settings</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.cpp">
+      <Filter>.YeloLib\open_sauce\settings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup
+    > <!--open_sauce EDITOR-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.hpp">
+      <Filter>.YeloLib\open_sauce\che_ape</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.cpp">
+      <Filter>.YeloLib\open_sauce\che_ape</Filter>
+    </ClCompile>
+	<None Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.inl">
+      <Filter>.YeloLib\open_sauce\che_ape</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup
+    > <!--shell-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\shell\platform_yelo.hpp">
+      <Filter>.YeloLib\shell</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_base_yelo.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{4551762a-3952-4c38-8870-6c0d61826fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared">
+      <UniqueIdentifier>{c955fa9b-9c9f-4949-b9b5-8c6d16f700f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{0ef63826-dce4-41e3-9b5a-25cbc3d99840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Yelo">
+      <UniqueIdentifier>{f7b13f6b-e728-4345-b162-f791dd6c025f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool">
+      <UniqueIdentifier>{fa4fdc2e-2456-4294-8250-57662067cacc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Impl">
+      <UniqueIdentifier>{f4046323-310b-4815-867c-2c5bfe19a33f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\BuildCacheFile">
+      <UniqueIdentifier>{57351709-ebb5-4027-9398-5dfc9d881338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\LostToolCommands">
+      <UniqueIdentifier>{5e9215a6-788f-4198-bc39-c233b69611f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{1fc0b8e9-cc2a-4ba7-b5f7-5038e9a3e5b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups">
+      <UniqueIdentifier>{31dd3e28-bfb8-43b0-aeb2-a90bc5fb9554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources">
+      <UniqueIdentifier>{7a4690ad-5403-413d-ad4b-41f3b831092b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\Impl">
+      <UniqueIdentifier>{46e3b1fe-091a-4bae-a30f-61c09f7029a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer">
+      <UniqueIdentifier>{60c436c4-b8f2-41ed-8d8f-a00784c16242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\DX9">
+      <UniqueIdentifier>{0fd5e469-31e9-4781-a822-04ecd407b6db}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common\Platform.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Precompile.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp">
+      <Filter>Common\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\EngineFunctions.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryInterface.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagGroups.hpp">
+      <Filter>TagGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp">
+      <Filter>_Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="CheApeCore.hpp" />
+    <ClInclude Include="CheApeInterface.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Common\Precompile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\EngineFunctions.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\Yelo.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\YeloGuerilla.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\YeloSapien.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\YeloTool.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryInterface.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagGroups.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="CheApeCore.cpp" />
+    <ClCompile Include="Halo2_CheApe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tool\ToolCommandDefinitions.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\UpgradeTags.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\CampaignSharing.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\CompactableDataCodeFlow.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\SansSharing.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\LostToolCommands\Animations.inl">
+      <Filter>Tool\LostToolCommands</Filter>
+    </None>
+    <None Include="Tool\LostToolCommands.inl">
+      <Filter>Tool\LostToolCommands</Filter>
+    </None>
+    <None Include="Tool\LostToolCommands\Sounds.inl">
+      <Filter>Tool\LostToolCommands</Filter>
+    </None>
+    <None Include="TagGroups\TagGroups.PostprocessOverrides.inl">
+      <Filter>TagGroups</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.inl">
+      <Filter>_Resources</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.Game.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.OpenSauce.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.TagGroups.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+  </ItemGroup>
+</Project>

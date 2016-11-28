@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="MissingFileWarning">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<File id="FILE_TestFileThree" name="TestFileThree.txt" onmissing="MSG_TestFileThree_misswarning">
+			<Message id="MSG_TestFileThree_misswarning" type="warn">Missing file warning</Message>
+		</File>
+	</Directory>
+</Installation>

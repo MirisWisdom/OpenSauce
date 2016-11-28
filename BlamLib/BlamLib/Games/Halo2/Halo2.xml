@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<BlamDefinition game="Halo2">
+	<localization>
+		<entry id="0" name="English" langName="en" langId="0xFFFF" localName="en-US" localId="0xFFFF" />
+		<entry id="1" name="Japanese" langName="jp" langId="0xFFFF" localName="jp-JP" localId="0xFFFF" />
+		<entry id="2" name="German" langName="de" langId="0xFFFF" localName="de-DE" localId="0xFFFF" />
+		<entry id="3" name="French" langName="fr" langId="0xFFFF" localName="fr-FR" localId="0xFFFF" />
+		<entry id="4" name="Spanish" langName="es" langId="0xFFFF" localName="es-ES" localId="0xFFFF" />
+		<entry id="5" name="Italian" langName="it" langId="0xFFFF" localName="it-IT" localId="0xFFFF" />
+		<entry id="6" name="Korean" langName="ko" langId="0xFFFF" localName="ko-KO" localId="0xFFFF" />
+		<entry id="7" name="ChineseTraditional" langName="zh" langId="0xFFFF" localName="zh-TW" localId="0xFFFF" />
+		<entry id="8" name="Portuguese" langName="pt" langId="0xFFFF" localName="pt-PT" localId="0xFFFF" />
+	</localization>
+
+	<game id="Halo2_Alpha" platform="Xbox">
+		<cache ext=".map" baseAddress="0x80061000" baseAddressBsp="0x00000000" >
+			<types>
+				<type id="0" version="8" name="campaign" maxSize="0x14000000" isResource="false" />
+				<type id="1" version="8" name="multiplayer" maxSize="0x14000000" isResource="false" />
+				<type id="2" version="8" name="mainmenu" maxSize="0x14000000" isResource="false" />
+				<type id="3" version="8" name="shared" maxSize="0x14000000" isResource="false" />
+				<type id="4" version="8" name="shared_campaign" maxSize="0x14000000" isResource="false" />
+			</types>
+		</cache>
+
+		<tags maxCount="0" maxBufferSize="0x00000000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="Halo2_Alpha_Scripting.xml" />
+			<resource key="StringId" value="Halo2_Alpha_StringId.xml" />
+			<resource key="VertexBuffer" value="Halo2_Alpha_VertexBuffer.xml" />
+		</resources>
+	</game>
+
+	<game id="Halo2_Xbox" platform="Xbox">
+		<cache ext=".map" baseAddress="0x80061000" baseAddressBsp="0x00000000" >
+			<types>
+				<type id="0" version="8" name="campaign" maxSize="0x11800000" isResource="false" />
+				<type id="1" version="8" name="multiplayer" maxSize="0x5000000" isResource="false" />
+				<type id="2" version="8" name="mainmenu" maxSize="0x5000000" isResource="false" />
+				<type id="3" version="8" name="shared" maxSize="0xB400000" isResource="false" />
+				<type id="4" version="8" name="shared_campaign" maxSize="0x20800000" isResource="false" />
+			</types>
+		</cache>
+
+		<tags maxCount="0" maxBufferSize="0x00000000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="Halo2_Xbox_Scripting.xml" />
+			<resource key="StringId" value="Halo2_Xbox_StringId.xml" />
+			<resource key="VertexBuffer" value="Halo2_Xbox_VertexBuffer.xml" />
+		</resources>
+	</game>
+
+	<game id="Halo2_PC" platform="PC">
+		<cache ext=".map" baseAddress="0x1400000" baseAddressBsp="0x00000000" >
+			<types>
+				<type id="0" version="8" name="campaign" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="1" version="8" name="multiplayer" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="2" version="8" name="mainmenu" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="3" version="8" name="shared" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="4" version="8" name="shared_campaign" maxSize="0x7FFFFFFF" isResource="false" />
+			</types>
+		</cache>
+
+		<tags maxCount="0" maxBufferSize="0x00000000" >
+			<required>
+				<entry groupTag="globals" name="globals\globals" />
+			</required>
+		</tags>
+
+		<resources>
+			<resource key="Scripting" value="Halo2_PC_Scripting.xml" />
+			<resource key="StringId" value="Halo2_PC_StringId.xml" />
+			<resource key="VertexBuffer" value="Halo2_PC_VertexBuffer.xml" />
+		</resources>
+	</game>
+</BlamDefinition>

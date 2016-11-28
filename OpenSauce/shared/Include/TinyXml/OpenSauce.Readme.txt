@@ -1,0 +1,7 @@
+This folder contains the source code to the TinyXml++ library. Kornner Studios did not make nor contribute to this code base in any way.
+
+The ONLY modifications done to these source files were to #include statements so that they use the TinyXml folder path.
+
+Due to their direct use in OpenSauce they also had to have the Precompile.hpp header included in all .CPP files.
+
+The header files were also renamed to sport ".hpp" extensions instead of just ".h".

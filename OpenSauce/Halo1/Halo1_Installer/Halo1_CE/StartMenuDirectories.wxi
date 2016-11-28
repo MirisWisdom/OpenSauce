@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	
+	<!-- Start menu shortcuts to the OS HEK-->
+	<Directory Id='Halo1_CE_HaloCEMenu_DIR' Name='Halo CE'>
+		<Component Id='Halo1_CE_OSGuerillaMenuShortcut_COMP' Guid='38430F88-2CD1-49dc-BCBD-8E6089905E21'>
+			<Condition>
+			<![CDATA[CREATESTARTMENUSHORTCUTS AND 
+			(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+		</Condition>
+			<Shortcut Id='Halo1_CE_OSGuerillaMenu_SCUT'
+				Target='[HALO1_CE_HEK_INSTALLDIR_PROP]OS_Guerilla.exe'
+				Name='OS Guerilla'
+				Description='OpenSauce enabled Guerilla'
+				WorkingDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'/>
+			<RegistryValue Id='Halo1_CE_OSGuerillaMenu_REG'
+				Root='HKCU'
+				Key='Software\KornnerStudios\OpenSauce'
+				Name='KeyPathsStartMenu'
+				Type='multiString'
+				Action='append'
+				Value='OS_GuerillaMenu'
+				KeyPath='yes'/>
+		</Component>
+		<Component Id='Halo1_CE_OSSapienMenuShortcut_COMP' Guid='DA4F94AC-ABFC-4ee8-BF98-FFBF74B393FA'>
+			<Condition>
+			<![CDATA[CREATESTARTMENUSHORTCUTS AND 
+			(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+		</Condition>
+			<Shortcut Id='Halo1_CE_OSSapienMenu_SCUT'
+				Target='[HALO1_CE_HEK_INSTALLDIR_PROP]OS_Sapien.exe'
+				Name='OS Sapien'
+				Description='OpenSauce enabled Sapien'
+				WorkingDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'/>
+			<RegistryValue Id='Halo1_CE_OSSapienMenu_REG'
+				Root='HKCU'
+				Key='Software\KornnerStudios\OpenSauce'
+				Name='KeyPathsStartMenu'
+				Type='multiString'
+				Action='append'
+				Value='OS_SapienMenu'
+				KeyPath='yes'/>
+		</Component>
+		<Component Id='Halo1_CE_OSToolMenuShortcut_COMP' Guid='A5A21A58-EE3F-49bd-9EF1-35BFC07CB9D9'>
+			<Condition>
+			<![CDATA[CREATESTARTMENUSHORTCUTS AND 
+			(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+			</Condition>
+			<Shortcut Id='Halo1_CE_OSToolMenu_SCUT'
+				Target='[SystemFolder]cmd.exe'
+				Name='OS Tool'
+				Description='OpenSauce enabled Tool'
+				WorkingDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'/>
+			<RegistryValue Id='Halo1_CE_OSToolMenu_REG'
+				Root='HKCU'
+				Key='Software\KornnerStudios\OpenSauce'
+				Name='KeyPathsStartMenu'
+				Type='multiString'
+				Action='append'
+				Value='OS_ToolMenu'
+				KeyPath='yes'/>
+		</Component>
+		<!-- Removes the Halo CE folder from the start menu-->
+		<Component Id='Halo1_CE_HaloCEMenuRemove_COMP' Guid='9572950D-0D32-4d25-AA99-1841C0A82FFE'>
+			<RemoveFolder Id='Halo1_CE_HaloCEMenu_REMDIR' On='uninstall'/>
+			<RegistryValue Id='OpenSauce_HaloCE_REG'
+				Root='HKCU'
+				Key='Software\KornnerStudios\OpenSauce'
+				Name='KeyPathsStartMenu'
+				Type='multiString'
+				Action='append'
+				Value='Halo1_CE'
+				KeyPath='yes'/>
+		</Component>
+	</Directory>
+	
+</Include>

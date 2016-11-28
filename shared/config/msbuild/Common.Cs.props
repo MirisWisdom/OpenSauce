@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <IntDir>$(OSRootDir)obj\$(AssemblyName)\$(Configuration)\$(Platform)\</IntDir>
+    <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
+	<IntermediateOutputPath>$(IntDir)</IntermediateOutputPath>
+
+	<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OutputType)' == 'Library' ">
+    <OutDir>$(OSRootDir)lib\$(Configuration)\$(Platform)\$(AssemblyName)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+	<!--<DocumentationFile Condition=" '$(Configuration)' == 'Release' ">$(OSRootDir)lib\$(Configuration)\$(Platform)\$(AssemblyName)\$(AssemblyName).XML</DocumentationFile>-->
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OutputType.Contains(Exe))' ">
+    <OutDir>$(OSRootDir)bin\$(Configuration)\$(Platform)\$(AssemblyName)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+	<!--<DocumentationFile Condition=" '$(Configuration)' == 'Release' ">$(OSRootDir)bin\$(Configuration)\$(Platform)\$(AssemblyName)\$(AssemblyName).XML</DocumentationFile>-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>TRACE;$(DefineConstants)</DefineConstants>
+
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+
+    <CodeContractsReferenceAssembly>DoNotBuild</CodeContractsReferenceAssembly>
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+	<DefineConstants>DEBUG;$(DefineConstants)</DefineConstants>
+	<DebugSymbols>true</DebugSymbols>
+
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration.Contains(Release))' ">
+    <Optimize>true</Optimize>
+	<DebugType>pdbonly</DebugType>
+
+    <CodeContractsRuntimeCheckingLevel>ReleaseRequires</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+	<DefineConstants>_WIN32;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+	<DefineConstants>_WIN64;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <!-- *ahem* Fuck you msbuild team. Or fuck your VS buddies -->
+  <!-- Fuck whoever made it so that these empty PropertyGroups are needed before a build configuration is acknowledged -->
+  <!-- Fuck you. Fuck you. Wait no, fuck your mom. Going to assume the bad genes are on your father's side. Or maybe it's your mom after all and you're just a bastard? -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  </PropertyGroup>
+</Project>

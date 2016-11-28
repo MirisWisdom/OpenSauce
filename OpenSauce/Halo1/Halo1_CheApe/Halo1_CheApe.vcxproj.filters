@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="_Resources">
+      <UniqueIdentifier>{9eeca5d4-3206-4fc6-bd01-2477b3eda08f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{d92ff3dc-b126-4179-8569-6c088cd6cfe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Impl">
+      <UniqueIdentifier>{5188bc04-7a92-43f3-b6f0-2ab116540447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Yelo">
+      <UniqueIdentifier>{acd6c1dc-9c73-4180-a448-b5ac1436711a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{07568ad9-9273-4fb4-a255-b1b0b6edbb0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guerilla">
+      <UniqueIdentifier>{3fabe254-a2c0-44d9-a1de-5677c77c217d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool">
+      <UniqueIdentifier>{9231a13e-60e2-4366-994e-a47500bdc94f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Impl">
+      <UniqueIdentifier>{be496e54-86a1-4cb6-8dad-a7e4b8812b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\BuildCacheFile">
+      <UniqueIdentifier>{dc988ea2-ae7f-467a-a649-018acb6dc004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer">
+      <UniqueIdentifier>{0e9ce342-f4ae-455b-99f8-84446e847fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\DX9">
+      <UniqueIdentifier>{555e4983-762c-44bd-9955-f6b4aadcdc20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\DX9\Impl">
+      <UniqueIdentifier>{0807e74c-2d8c-4e32-a400-56473b4ab073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\Impl">
+      <UniqueIdentifier>{5ab94466-27b4-4dbe-a323-f7d0e58894d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{76969aab-4c97-46f4-860a-0b1ed7f2c231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Yelo\Impl">
+      <UniqueIdentifier>{1a6b5547-60bc-4875-8971-31d3a2bf4674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{59bfb756-8599-4a07-8bb6-0e5fc887a20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups">
+      <UniqueIdentifier>{08e81d89-ff61-4465-acbc-e23a306e1be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\PackedFile">
+      <UniqueIdentifier>{0bb6b3e1-9c7a-4cb6-8cf9-4f1b4403eec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\PackedFile\Definition">
+      <UniqueIdentifier>{77b09f15-295c-498c-915a-380c670a6356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\PackedFile\Processing">
+      <UniqueIdentifier>{f16a3abc-329d-4976-a6c8-31911aee4aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups\TagFieldReplacements">
+      <UniqueIdentifier>{c8e3064a-4333-4552-9af6-6bbe60baaa50}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine\AnimationUpgrade.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\EngineFunctions.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scripting.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\MemoryFixups.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\Yelo.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\YeloGuerilla.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\YeloSapien.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Yelo\YeloTool.cpp">
+      <Filter>Yelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DebugDump.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Precompile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringEditing.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Guerilla\tag_reference_dialog_extensions.cpp">
+      <Filter>Guerilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Guerilla\string_dialog_extensions.cpp">
+      <Filter>Guerilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Guerilla\guerilla_application_extensions.cpp">
+      <Filter>Guerilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Guerilla\field_dialog_extensions.cpp">
+      <Filter>Guerilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\BuildCacheFile.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\BuildCppDefinition.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Console.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\ImportLightmapUV.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\RuntimeCacheView.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\ShaderPostprocess.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\TagMaintenance.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Tool_AnimationFixups.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\ToolMisc.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Rasterizer.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\DX9\DX9.cpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldSetReplacements.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagGroups.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\yelo_definitions.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\yelo_scenario_definitions.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryInterface.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="CheApeCore.cpp" />
+    <ClCompile Include="Halo1_CheApe.cpp" />
+    <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.cpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsTool.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsSapien.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\BuildPackedFiles.cpp">
+      <Filter>Tool\PackedFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Definition\c_packed_file_definition.cpp">
+      <Filter>Tool\PackedFile\Definition</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_archive.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Units.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\AI.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameState.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\RemoveOSTagData.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\AnimationUpgrade.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\EngineFunctions.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scripting.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Yelo\MemoryFixups.hpp">
+      <Filter>Yelo</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DebugDump.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Platform.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Precompile.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringEditing.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Guerilla\field_dialog_extensions.hpp">
+      <Filter>Guerilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Guerilla\guerilla_application_extensions.hpp">
+      <Filter>Guerilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Guerilla\string_dialog_extensions.hpp">
+      <Filter>Guerilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Guerilla\tag_reference_dialog_extensions.hpp">
+      <Filter>Guerilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BuildCacheFile.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BuildCppDefinition.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Console.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\ImportLightmapUV.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\RuntimeCacheView.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\ShaderPostprocess.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\TagMaintenance.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Tool_AnimationFixups.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\ToolMisc.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Rasterizer.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\DX9\DX9.hpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp">
+      <Filter>_Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagGroups.hpp">
+      <Filter>TagGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\yelo_definitions.hpp">
+      <Filter>TagGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\yelo_scenario_definitions.hpp">
+      <Filter>TagGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryInterface.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="CheApeCore.hpp" />
+    <ClInclude Include="CheApeInterface.hpp" />
+    <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileGlobals.hpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.hpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsTool.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsSapien.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\BuildPackedFiles.hpp">
+      <Filter>Tool\PackedFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Definition\c_packed_file_definition.hpp">
+      <Filter>Tool\PackedFile\Definition</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\i_packed_file_processor.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_archive.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Bitmap.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Unit.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Shared.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Sound.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\GBXModel.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Shader.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\DamageEffect.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Scenario.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Object.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_texture.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Units.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\AI.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameState.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\RemoveOSTagData.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Tool\BuildCppDefinition.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\CompileShaderPostprocess.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\Help.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\ImportClassDefinitions.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\ImportLightmapUV_ObjFile.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\RuntimeCacheView.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\CullTags.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\PredictedResources.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\TagPreprocess.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\TagPreprocess_PostProcessing.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\TagPreprocess_ShaderExtension.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Rasterizer\DX9\DX9.Tool.inl">
+      <Filter>Rasterizer\DX9\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.inl">
+      <Filter>_Resources</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.Game.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.Objects.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.OpenSauce.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.Rasterizer.DX9.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.Rasterizer.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.TagGroups.inl">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Yelo\MemoryFixups.TagTextIO.inl">
+      <Filter>Yelo\Impl</Filter>
+    </None>
+    <None Include="Yelo\MemoryFixups.Paths.inl">
+      <Filter>Yelo\Impl</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Engine\AI.Transform.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.SeatBoarding.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.SeatDamage.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Engine\Units.Animations.inl">
+      <Filter>Engine\Impl</Filter>
+    </None>
+    <None Include="Tool\RemoveOSTagData.inl">
+      <Filter>Tool\Impl</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Halo1_CheApe_Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="EditorSettingsTemplate.xml" />
+  </ItemGroup>
+</Project>

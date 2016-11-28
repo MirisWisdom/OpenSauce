@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<osVersionUpdate>
+	<server_list version="1">
+		<server>http://os.halomods.com/Halo1/CE/Halo1_CE_Version.xml</server>
+	</server_list>
+	<version major="4" minor="0" build="0" />
+</osVersionUpdate>

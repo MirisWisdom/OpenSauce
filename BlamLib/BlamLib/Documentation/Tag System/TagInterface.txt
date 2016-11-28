@@ -1,0 +1,28 @@
+Currently, only tag groups check for Halo2_Xbox->Halo2_PC version upgrades
+
+
+
+String Ids: See Managers.StringIdManager's documentation for a system limitation
+
+
+To lower memory usage and to allow easier operations on changing values, TagReference and StringId fields
+now store a handle (DatumIndex) to a owner object which then in turn holds the actual values which those 
+fields store a handle (DatumIndex\StringID) to.
+Because of this, some cases had to be taken into consideration. Like, what happens when I read a tag from 
+a cache file, but then want to save it to a tag file? How much will this fuck things up since there is only 
+one handle stored? Well, this was solved by introducing 'extraction' into the TagIndex and TagManager pipeline.
+Doing this allows us to not have to modify any of the implementing Read(Header)\Write(Header) methods of the 
+affected fields as their handles to their owner objects will still be valid for retreiving the expected value 
+they associate with even when going from a CacheFile to a Tag File.
+
+
+Future Ideas:
+	* Cache Tag Block Pooling: We can make use of the internal DefinitionState classes for creating a cache block pooling
+		system which tracks addresses in a cache (if already been loaded (key, checked via the address), reference the existing
+		tag block which loaded it (value)). Later on this system could be used for CREATING block pools, ie when we need to
+		build a cache file
+	* Tag Index Differencing: Able to gather the tags which exist in one "left" tag index and another "right" tag index
+	* Create an interface which exists as a field in ITagStream that sports methods for performing streaming on more complex
+		fields with implementation specific storage. IE, tag reference's tag name is just stored via it's string in a tag file,
+		same with string id. Would allow us to implement storing this data elsewhere, ie in a lookup table so no duplicate data
+		is streamed (would make for easier changing of tag references for instance)

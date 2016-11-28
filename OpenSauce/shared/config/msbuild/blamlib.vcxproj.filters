@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--<ItemGroup>
+    <Filter Include=".blamlib">
+      <UniqueIdentifier>{6a033574-be44-461d-9500-3f4bf5ffa848}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\ai">
+      <UniqueIdentifier>{fc433071-ed05-40b2-b70f-bced855f9f08}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\bitmaps">
+      <UniqueIdentifier>{4ea9708b-8522-413a-8883-ef6062a80be5}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\bungie_net">
+      <UniqueIdentifier>{b3581c3b-6d35-46ec-ac07-a61316ab7c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\bungie_net\network">
+      <UniqueIdentifier>{d1467caf-1043-40ce-a7e7-922d5493e3ca}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\cache">
+      <UniqueIdentifier>{dcb222cd-2743-49f9-9fd8-41872bb0f6bd}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\camera">
+      <UniqueIdentifier>{6327fdb0-efd6-4f4a-9170-2f8d4f40b635}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\cseries">
+      <UniqueIdentifier>{67f15742-4f9f-403b-9102-a52056d84a1b}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\cutscene">
+      <UniqueIdentifier>{dadcd45b-458d-47bf-a2b1-f0705584eade}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\devices">
+      <UniqueIdentifier>{5e23b4a8-1a5d-4da7-b9e9-e63cd727a3a9}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\effects">
+      <UniqueIdentifier>{ea456bef-1397-4fec-9394-bbc37d4f4114}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\game">
+      <UniqueIdentifier>{23066632-4185-45f8-86ac-b85201487fec}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\hs">
+      <UniqueIdentifier>{3324ca0e-f53c-4843-862b-11c6075db6af}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\input">
+      <UniqueIdentifier>{b2226fcb-d70b-49e1-bdaf-d1f6ace09073}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\interface">
+      <UniqueIdentifier>{6e288b68-60ad-401e-9d79-473ffb46f7b3}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\items">
+      <UniqueIdentifier>{756ddddd-1c71-48ef-9d09-b623057f55f7}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\main">
+      <UniqueIdentifier>{4f169092-0614-4ac9-af13-b1fee929df74}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\math">
+      <UniqueIdentifier>{5c6d2f8d-b6ea-4f2c-945d-a0cf903ef3a8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\memory">
+      <UniqueIdentifier>{f8195896-2e54-4ae2-8ae9-f00e069cec5c}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\models">
+      <UniqueIdentifier>{9a5f61f2-7bd9-4936-a5ce-0c13c2d45d6d}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\networking">
+      <UniqueIdentifier>{b29157f7-d4f0-448c-866a-5eda86e8e8c2}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\objects">
+      <UniqueIdentifier>{c14a5aa9-98a5-4690-86ea-dc935e253a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\objects\widgets">
+      <UniqueIdentifier>{c7e5d9eb-0e1a-488e-bc89-d6d1fd3f6140}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\physics">
+      <UniqueIdentifier>{ad6e9ba1-6de9-4468-bfe2-67074dc0b3d8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\rasterizer">
+      <UniqueIdentifier>{0274f4e9-f87f-42ad-8be7-402d0656d1c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\rasterizer\dx9">
+      <UniqueIdentifier>{d431adf5-f051-47a4-9006-6b039c0a40e8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\render">
+      <UniqueIdentifier>{340c5406-b301-40d7-946a-833f43324bdb}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\saved_games">
+      <UniqueIdentifier>{6b1553b2-0546-428f-a12b-ce7457506b59}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\scenario">
+      <UniqueIdentifier>{a3a1ffea-e047-47b0-875c-4be494a6869c}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\shaders">
+      <UniqueIdentifier>{e23d117f-7ef4-4568-bcef-3adadcb68fb8}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\sound">
+      <UniqueIdentifier>{f5168368-8efb-456e-a9ea-fae99dad49c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".blamlib\structures">
+      <UniqueIdentifier>{8558c849-78af-4493-8071-10afcf719375}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\tag_files">
+      <UniqueIdentifier>{6a8851b9-9534-48dc-831a-b57beba22781}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\text">
+      <UniqueIdentifier>{44b13f11-cf9c-4c23-b3f7-c5d438420a04}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\units">
+      <UniqueIdentifier>{1d5a4715-7b1f-4859-80c8-cc814347b2c3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>-->
+
+  <!--<ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' ">
+    <Filter Include=".blamlib\guerilla">
+      <UniqueIdentifier>{645f00ea-b4b1-4589-8969-3f378083d75f}</UniqueIdentifier>
+    </Filter>
+	<Filter Include=".blamlib\tool">
+      <UniqueIdentifier>{8a1ad0bc-7c17-4986-bb9e-f724053504e2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>-->
+
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\blamlib\cache\cache_files_base.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\blamlib\cseries\cseries_base.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--math-->
+	<ClInclude Include="..\..\shared\Include\blamlib\math\color_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\math\integer_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\math\matrix_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\math\real_math.hpp">
+      <Filter>.blamlib\math</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\math\real_math.cpp">
+      <Filter>.blamlib\math</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--memory-->
+    <ClInclude Include="..\..\shared\Include\blamlib\memory\data_base.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\blamlib\memory\datum_index.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\memory\byte_swapping_base.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--scenario-->
+	<ClInclude Include="..\..\shared\Include\blamlib\scenario\scenario_location.hpp">
+      <Filter>.blamlib\scenario</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--tag_files EDITOR-->
+  </ItemGroup>
+</Project>

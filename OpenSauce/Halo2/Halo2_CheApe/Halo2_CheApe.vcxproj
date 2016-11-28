@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugGuerilla|Win32">
+      <Configuration>DebugGuerilla</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugSapien|Win32">
+      <Configuration>DebugSapien</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugTool|Win32">
+      <Configuration>DebugTool</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseGuerilla|Win32">
+      <Configuration>ReleaseGuerilla</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseSapien|Win32">
+      <Configuration>ReleaseSapien</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTool|Win32">
+      <Configuration>ReleaseTool</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FB55E3A7-8C9F-4EB4-86AD-E652C718208E}</ProjectGuid>
+    <RootNamespace>Halo2_CheApe</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration.Contains(Release))' " Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+
+  <PropertyGroup>
+    <OSRequiresDirectX>true</OSRequiresDirectX>
+    <OSRequiresCppBoost>true</OSRequiresCppBoost>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\TinyXml.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\zlib.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib_Halo2.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib_Halo2.props" />
+
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+	  <PreprocessorDefinitions>HALO2_CHEAPE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <ClCompile>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <PropertyGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
+    <TargetName>H2CheApeDLLG</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OSPlatformType)'=='Tool' ">
+    <TargetName>H2CheApeDLLT</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OSPlatformType)'=='Sapien' ">
+    <TargetName>H2CheApeDLLS</TargetName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ClInclude Include="Common\Platform.hpp" />
+    <ClInclude Include="Common\Precompile.hpp" />
+    <ClInclude Include="Engine\EngineFunctions.hpp" />
+    <ClInclude Include="Memory\MemoryInterface.hpp" />
+    <ClInclude Include="TagGroups\TagGroups.hpp" />
+    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp" />
+    <ClInclude Include="CheApeCore.hpp" />
+    <ClInclude Include="CheApeInterface.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine\EngineFunctions.cpp" />
+    <ClCompile Include="Yelo\Yelo.cpp" />
+    <ClCompile Include="Yelo\YeloGuerilla.cpp" />
+    <ClCompile Include="Yelo\YeloSapien.cpp" />
+    <ClCompile Include="Yelo\YeloTool.cpp" />
+    <ClCompile Include="Memory\MemoryInterface.cpp" />
+    <ClCompile Include="TagGroups\TagGroups.cpp" />
+    <ClCompile Include="CheApeCore.cpp" />
+    <ClCompile Include="Halo2_CheApe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tool\ToolCommandDefinitions.inl" />
+    <None Include="Tool\UpgradeTags.inl" />
+    <None Include="Tool\BuildCacheFile.inl" />
+    <None Include="Tool\BuildCacheFile\CampaignSharing.inl" />
+    <None Include="Tool\BuildCacheFile\CompactableDataCodeFlow.inl" />
+    <None Include="Tool\BuildCacheFile\SansSharing.inl" />
+    <None Include="Tool\LostToolCommands\Animations.inl" />
+    <None Include="Tool\LostToolCommands.inl" />
+    <None Include="Tool\LostToolCommands\Sounds.inl" />
+    <None Include="TagGroups\TagGroups.PostprocessOverrides.inl" />
+    <None Include="Memory\_EngineLayout.inl" />
+    <None Include="Memory\_EngineLayout.Game.inl" />
+    <None Include="Memory\_EngineLayout.OpenSauce.inl" />
+    <None Include="Memory\_EngineLayout.TagGroups.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceBuild.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

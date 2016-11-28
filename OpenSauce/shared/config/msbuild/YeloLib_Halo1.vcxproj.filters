@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  If you update this file you need to update
+  Halo1_CE.vcxproj.filters
+  Halo1_CheApe.vcxproj.filters
+  as well. Look for the commented out Import (of this file) element
+  -->
+  <!--<ItemGroup>
+    <Filter Include="_Resources">
+      <UniqueIdentifier>{9eeca5d4-3006-4fc6-bd01-2477b3eda08f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\OpenSauceIDE">
+      <UniqueIdentifier>{6b0082ed-8df3-4f74-b9c2-b2d5c663d8ed}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="_Resources\OpenSauceIDE\shaders">
+      <UniqueIdentifier>{d2d7f112-0799-4b79-a87d-3ad97a352355}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>-->
+
+  <ItemGroup
+    > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_layout_table_definitions.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--cseries-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.hpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.cpp">
+      <Filter>.YeloLib\cseries</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--effects-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\effects\effects_constants_yelo.hpp">
+      <Filter>.YeloLib\effects</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--files-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.hpp">
+      <Filter>.YeloLib\files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.cpp">
+      <Filter>.YeloLib\files</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--game-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp">
+      <Filter>.YeloLib\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp">
+      <Filter>.YeloLib\game</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--hs-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp">
+      <Filter>.YeloLib\hs</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.cpp">
+      <Filter>.YeloLib\hs</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--interface-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp">
+      <Filter>.YeloLib\interface</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--items-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_definitions_yelo.hpp">
+      <Filter>.YeloLib\items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_structures_yelo.hpp">
+      <Filter>.YeloLib\items</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--memory-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp">
+      <Filter>.YeloLib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--models-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp">
+      <Filter>.YeloLib\models</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.cpp">
+      <Filter>.YeloLib\models</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--objects-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl">
+      <Filter>.YeloLib\objects</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--open_sauce-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.cpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.cpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\yelo_version.hpp">
+      <Filter>.YeloLib\open_sauce</Filter>
+    </ClInclude>
+
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_settings_definitions.hpp">
+      <Filter>.YeloLib\open_sauce\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.hpp">
+      <Filter>.YeloLib\open_sauce\settings</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.cpp">
+      <Filter>.YeloLib\open_sauce\settings</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--rasterizer-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer.hpp">
+      <Filter>.YeloLib\rasterizer</Filter>
+    </ClInclude>
+	<None Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl">
+      <Filter>.YeloLib\rasterizer</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--render-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\render_constants_yelo.hpp">
+      <Filter>.YeloLib\render</Filter>
+    </ClInclude>
+	<None Include="..\..\shared\Include\YeloLib\Halo1\render\render_objects_upgrades.inl">
+      <Filter>.YeloLib\render</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl">
+      <Filter>.YeloLib\render</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--saved_games-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\saved_games\game_state_yelo.hpp">
+      <Filter>.YeloLib\saved_games</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--shaders-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_collection_definitions.hpp">
+      <Filter>.YeloLib\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_generic_definitions.hpp">
+      <Filter>.YeloLib\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.hpp">
+      <Filter>.YeloLib\shaders</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.cpp">
+      <Filter>.YeloLib\shaders</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_generic_definitions.hpp">
+      <Filter>.YeloLib\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_globals_definitions.hpp">
+      <Filter>.YeloLib\shaders</Filter>
+    </ClInclude>
+	<None Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_runtime.inl">
+      <Filter>.YeloLib\shaders</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--shell-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp">
+      <Filter>.YeloLib\shell</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.cpp">
+      <Filter>.YeloLib\shell</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tag_files-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.game_engine.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.global.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui_alert.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui_dialog.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.incident.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.os_setting.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.properties.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--units-->
+	<None Include="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl">
+      <Filter>.YeloLib\units</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--CheApe-->
+	<Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess_collection.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\equipment_hud_interface_definition.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\model_animations_yelo.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\multilingual_unicode_string_list.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_includes.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_scripting.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_shared.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\string_id_yelo.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+	<Xml Include="..\..\shared\Halo1\CheApe\tag_database.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\text_value_pair_definition.xml">
+      <Filter>_Resources\OpenSauceIDE</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_model_extension.xml">
+      <Filter>_Resources\OpenSauceIDE\shaders</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_postprocess.xml">
+      <Filter>_Resources\OpenSauceIDE\shaders</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml">
+      <Filter>_Resources\OpenSauceIDE\shaders</Filter>
+    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml">
+      <Filter>_Resources\OpenSauceIDE\shaders</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="MatchingFileError">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<File id="FILE_TestFileOne" name="TestFileOne.txt">
+			<Version md5="bfaf8ae957937af5b8652a2137f1d95a" onmatch="MSG_TestFileOne_matcherror">
+				<Message id="MSG_TestFileOne_matcherror" type="error">Matched file error</Message>
+			</Version>
+		</File>
+	</Directory>
+</Installation>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TagIndexDump game="" type="">
+	<dump directory="">
+		<shared>
+			<!--index1 tag to load-->
+			<!--index2 tag to load-->
+		</shared>
+
+		<nonTagFiles>
+			<entry name="" />
+
+			<directory name="" isEmpty="">
+				<!--entries-->
+			</directory>
+		</nonTagFiles>
+	</dump>
+
+	<memoryUsage>
+		<predictedFile sizeInBytes="" />
+		<predictedCache sizeInBytes="" />
+	</memoryUsage>
+	
+	<tag group="" name="">
+		<dependents>
+			<!--tags-->
+		</dependents>
+
+		<memoryUsage>
+			<predictedFile sizeInBytes="" />
+			<predictedCache sizeInBytes="" />
+		</memoryUsage>
+	</tag>
+</TagIndexDump>

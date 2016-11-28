@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<blocks>
+	</blocks>
+
+	<groups>
+		<TagGroup name="equipment_hud_interface" groupTag="eqhi" version="0">
+		</TagGroup>
+	</groups>
+
+</definitions>

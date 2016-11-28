@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import           Project="Common.props" />
+  <Import           Project="$(OSRootDir)shared\config\msbuild\OpenSaucePlatform.props" />
+
+  <Import Condition=" '$(OSSourceLanguage)' == 'VC++' "
+                    Project="$(OSRootDir)shared\config\msbuild\OpenSauce.Cpp.props" />
+  <Import Condition=" '$(OSSourceLanguage)' == '.NET' "
+                    Project="$(OSRootDir)shared\config\msbuild\OpenSauce.Cs.props" />
+</Project>

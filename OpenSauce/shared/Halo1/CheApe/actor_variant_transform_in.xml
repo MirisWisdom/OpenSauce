@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<enums>
+		<Enum name="actor_variant_transform_in_vitality_handling">
+			<field>neither</field>
+			<field>both</field>
+			<field>shield only</field>
+			<field>health only</field>
+		</Enum>
+
+		<Enum name="actor_variant_transform_in_actor_initial_state_handling">
+			<field>inherit</field>
+			<field>override</field>
+		</Enum>
+
+		<Enum name="actor_variant_transform_in_actor_return_state_handling">
+			<field>inherit</field>
+			<field>override</field>
+			<field>actor default</field>
+		</Enum>
+
+		<!--Enum name="actor_variant_transform_in_actor_action_handling">
+			<field>default</field>
+			<field>inherit</field>
+			<field>override</field>
+		</Enum-->
+
+		<Enum name="actor_variant_transform_in_encounter_squad_handling">
+			<field>inherit from old unit</field>
+			<field>inherit from attacker</field>
+			<field>free actor</field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="actor_variant_transform_in_target_flags">
+			<field>try to use existing unit</field>
+			<field>drop weapon</field>
+			<field>inherit seated units</field>
+			<field>delete attached actors</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="actor_variant_transform_in_target_block" maxElements="16">
+			<!--actor_variant_transform_in_target-->
+			<field type="String" name="target name" blockname="true" />
+			<field type="WordFlags" name="flags" definition="actor_variant_transform_in_target_flags" />
+			<field type="Pad" definition="2" />
+			<field type="RealFraction" name="easy selection chance" />
+			<field type="RealFraction" name="normal selection chance" />
+			<field type="RealFraction" name="hard selection chance" />
+			<field type="RealFraction" name="imposs. selection chance" />
+
+			<field type="Explanation" name="AI" definition="" />
+			<field type="TagReference" name="actor variant" definition="actor_variant_reference" />
+			<field type="Enum" name="encounter/squad handling" definition="actor_variant_transform_in_encounter_squad_handling" />
+			<field type="Pad" definition="2" />
+			<field type="Enum" name="team handling" definition="actor_variant_transform_team_handling" />
+			<field type="Enum" name="team override" definition="game_allegiance_team_enum" />
+			<field type="Enum" name="initial state handling" definition="actor_variant_transform_in_actor_initial_state_handling" />
+			<field type="Enum" name="initial state override" definition="actor_default_state_enum" />
+			<field type="Enum" name="return state handling" definition="actor_variant_transform_in_actor_return_state_handling" />
+			<field type="Enum" name="return state override" definition="actor_default_state_enum" />
+			<field type="Pad" definition="2" /><!--field type="Enum" name="actor action handling" definition="actor_variant_transform_in_actor_action_handling" /-->
+			<field type="Pad" definition="2" /><!--field type="Enum" name="actor action override" definition="actor_action_enum" /-->
+
+			<field type="Explanation" name="Animation" definition="Played immediately after the old unit's transform out animation. The new actor is made braindead during the animation, and will be invincible until it ends." />
+			<field type="String" name="transform in anim" />
+			<field type="Block" name="keyframe actions" definition="actor_variant_transform_keyframe_action_block" />
+
+			<field type="Explanation" name="Vitality" definition="" />
+			<field type="Pad" definition="4" />
+			<field type="Enum" name="vitality inheritance" definition="actor_variant_transform_in_vitality_handling" />
+			<field type="Enum" name="vitality override" definition="actor_variant_transform_in_vitality_handling" />
+			<field type="RealFraction" name="shield override" />
+			<field type="RealFraction" name="health override" />
+			<field type="Pad" definition="24" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="actor_variant_transform_in" groupTag="avti" version="1">
+			<!--actor_variant_transform_in_definition-->
+			<field type="Block" name="targets" definition="actor_variant_transform_in_target_block" />
+			<field type="Pad" definition="24" />
+		</TagGroup>
+	</groups>
+
+</definitions>

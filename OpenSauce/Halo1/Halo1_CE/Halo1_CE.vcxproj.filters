@@ -1,0 +1,2394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Rasterizer\Lightmaps.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Sky.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp">
+      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario\StructureBSP.hpp">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClCompile Include="Rasterizer\Lightmaps.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Sky.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario\StructureBSP.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <Filter Include="_Resources">
+      <UniqueIdentifier>{9eeca5d4-3106-4fc6-bd01-2477b3eda08f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{41e31ec0-0d56-498e-81e5-acaeac16b5fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared">
+      <UniqueIdentifier>{47988b97-ef3a-4a73-9598-36d9fdf4a9fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GameSpy">
+      <UniqueIdentifier>{0f8107e8-26c0-427c-9690-3e5da4c79f3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GameSpy\common">
+      <UniqueIdentifier>{14eb1aac-8e87-4540-8735-db964a3d6abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GameSpy\ghttp">
+      <UniqueIdentifier>{a24e0b7b-3b89-4e3a-8607-67a5a6c2fb7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\mongoose">
+      <UniqueIdentifier>{a0f474b6-98ae-4e95-8815-619e97d56646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\GameSystems">
+      <UniqueIdentifier>{2ce60aad-7d0a-4044-8266-e26deb2f67a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{51e81f19-16a2-4d0f-9b63-983dbf517be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl">
+      <UniqueIdentifier>{e6a1c209-f976-402d-8dfb-1cd1b88c0b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl\ScriptLibrary">
+      <UniqueIdentifier>{ba00f068-d435-4ad8-abab-99d2edbfa003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl\GameState">
+      <UniqueIdentifier>{1ff4b9b0-1231-4965-8933-786bc3574caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl\EngineFunctions">
+      <UniqueIdentifier>{796891fd-79b7-46cd-9f40-cb4d49dd4641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl\Players">
+      <UniqueIdentifier>{0cc43331-4a53-4fc0-a3a1-45dc674cb346}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{26087e13-8dec-42bd-8e6c-a56580bcd9bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Impl">
+      <UniqueIdentifier>{c97dfd88-72d2-410c-b2c4-011e0aa342b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{086b2a14-5832-4c3e-ba54-5e776ad03b45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking\HTTP">
+      <UniqueIdentifier>{220bb5c1-3185-4017-aea1-e1a110cadf81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking\MessageDeltas">
+      <UniqueIdentifier>{be20e7d6-c377-44bd-8e0b-8de03096c2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{7fb6750b-7d66-4f32-b09c-5c15265c911f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Impl">
+      <UniqueIdentifier>{45e6bd85-db11-47d2-8ef6-2bf1c00dc020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups">
+      <UniqueIdentifier>{d4d55ff3-3810-4e3d-88e3-59602bb635e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups\Impl">
+      <UniqueIdentifier>{36201a7b-a00c-4d8e-ba37-cc6137c11790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.08">
+      <UniqueIdentifier>{0144098b-caa6-4e1c-b5e4-ce1bbf753d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09">
+      <UniqueIdentifier>{8ecc773f-653b-4299-8acc-d5230c2954d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer">
+      <UniqueIdentifier>{942092e8-65b2-40df-b257-c248220d2a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\DX9">
+      <UniqueIdentifier>{5f30d81b-795c-4a56-b5d2-dd5174712a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing">
+      <UniqueIdentifier>{a3867acc-ba10-4c6c-9da5-8cf45f10de89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Interfaces">
+      <UniqueIdentifier>{4512b055-5b4b-4711-bfaa-0915683bb158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\MotionBlur">
+      <UniqueIdentifier>{80b26024-bf94-4139-af78-107b4c7017d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Bloom">
+      <UniqueIdentifier>{90866e3d-3764-4080-8f23-67f6bca99e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\ShaderSources">
+      <UniqueIdentifier>{c9d2a07b-b3c8-4283-9235-e206fec726c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Generic">
+      <UniqueIdentifier>{fedb5388-6167-4e03-87d3-2d3189f1f27f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Generic\Internal">
+      <UniqueIdentifier>{84bc0ed8-b799-403f-9daf-0158370ba7aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Generic\External">
+      <UniqueIdentifier>{f94e76e4-8be8-4fa6-8105-4126e6d6468a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Generic\Impl">
+      <UniqueIdentifier>{92af7d3e-3fce-4edb-9431-5df421b5c9aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Interpolation">
+      <UniqueIdentifier>{f11da961-318a-453c-8211-152245753d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Fade">
+      <UniqueIdentifier>{2ffa8f58-4027-4ced-beb9-c5cb9aba2c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\Impl">
+      <UniqueIdentifier>{3f7df4b6-0623-499e-8cba-9f839ac85e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\PostProcessing\FXAA">
+      <UniqueIdentifier>{14c8427c-2030-4ce1-9159-eaf25338271b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\ShaderExtension">
+      <UniqueIdentifier>{48984451-00b9-4910-897c-a99ba76b6fb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\ShaderExtension\Impl">
+      <UniqueIdentifier>{1f58d175-d718-4fe7-ae4e-1cf237ea0b20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenario">
+      <UniqueIdentifier>{bcb7d432-3ee3-4ffb-a8c6-275c83b15dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenario\Impl">
+      <UniqueIdentifier>{fbae11d1-b912-48f5-b05a-1fd9ec289f00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{28f035c3-f19c-4795-a2a8-ecd7e968e03b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10">
+      <UniqueIdentifier>{96b2b90b-f482-472d-9364-2c28e722c4f4}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\shared\Include\GWEN\BaseRender.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Config.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\ControlList.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\DragAndDrop.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Events.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Exports.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Font.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Gwen.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Hook.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\InputHandler.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Macros.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Platform.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Skin.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Structures.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\TextObject.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Texture.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\ToolTip.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\UserData.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Utility.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\WindowProvider.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Align.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Anim.h">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\LabelClickable.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ListBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Menu.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuItem.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuStrip.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Modal.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\NumericUpDown.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\PageControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ProgressBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Properties.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\PropertyTree.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RadioButton.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RadioButtonController.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Rectangle.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ResizableControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Resizer.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RichLabel.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBarBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBarButton.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Slider.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\SplitterBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Splitters.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\StatusBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabButton.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabStrip.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabTitleBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Text.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TextBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ToolBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TreeControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TreeNode.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\VerticalScrollBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\VerticalSlider.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\WindowButtons.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\WindowControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Base.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Button.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Canvas.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CheckBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CollapsibleCategory.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CollapsibleList.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ColorControls.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ColorPicker.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ComboBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CrossSplitter.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\DockBase.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\DockedTabControl.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Dragger.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\FieldLabel.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\GroupBox.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Highlight.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HorizontalScrollBar.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HorizontalSlider.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HSVColorPicker.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ImagePanel.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Label.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Table.h">
+      <Filter>Common\Shared\GWEN\Controls\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\BaseProperty.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Checkbox.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\ColorSelector.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\ComboBox.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Text.h">
+      <Filter>Common\Shared\GWEN\Controls\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Skins\TexturedBase.h">
+      <Filter>Common\Shared\GWEN\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Skins\Texturing.h">
+      <Filter>Common\Shared\GWEN\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_canvas_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_control_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\ControlFactory\c_control_factory.hpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\ControlFactory\c_control_builder_base.hpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\ControlFactory\i_control_builder.hpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_screen_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_input.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Pointer.h">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_mouse_pointer_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\c_control_input_halo.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\resource_id.hpp">
+      <Filter>Interface\OpenSauceUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen_controller.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_control_base.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_control.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\i_screen.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_canvas.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_mouse_pointer.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\i_visibility_toggle.hpp">
+      <Filter>Interface\OpenSauceUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_base.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkboxwithlabel.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkbox.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\s_interface_value.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Textures\c_packed_texture_loader.hpp">
+      <Filter>Rasterizer\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_property_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\control_event_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Definitions\c_page_definition.hpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_mouse_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Input\i_control_keyboard_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Screen\screen_ids.hpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_event_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\c_property_interface.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_property_interface.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\Control\i_event_handler.hpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.hpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Common\DebugDump.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\FileIO.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\GameSystems.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Precompile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\AI.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Camera.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Campaign.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Console.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Effects.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\EngineFunctions.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameBuildNumber.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameEngine.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameState.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameStateRuntimeData.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Lights.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Players.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scripting.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\ScriptLibrary.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\Controls.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\GameUI.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\Keystone.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\UIWidgets.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\FunctionInterface.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryInterface.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\GameSpyApi.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Networking.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Server.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\VersionCheck.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\VersionCheckClient.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\VersionCheckDedi.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\BanManager.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\c_file_downloader.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\c_xml_downloader.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\HTTP.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\HTTPClient.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\HTTPServer.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\MapDownloadClient.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\MapDownloadClientDisplay.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\HTTP\MapDownloadServer.cpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\MessageDefinitions.cpp">
+      <Filter>Networking\MessageDeltas</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\MessageDeltas.cpp">
+      <Filter>Networking\MessageDeltas</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Equipment.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\ObjectFieldDefinitions.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\ObjectsYelo.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Units.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\CacheFiles.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagGroups.cpp">
+      <Filter>TagGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Rasterizer.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\RenderTargetChain.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\ShaderDraw.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\DX9\DeviceHooks.cpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\DX9\DX9.cpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\DX9\DxWrapper.cpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\DX9\rasterizer_dx9_shaders_vshader9.cpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_effect_instance.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_effect_postprocess.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_effect_render_set.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_post_processing_main.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_quad_manager.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_shader_include_manager.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_shader_instance.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_shader_postprocess.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Postprocessing\PostProcessing.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\PostProcessingErrorReporting.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\PostProcessingScripting.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_shader_instance_motionblur.cpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_shader_motionblur.cpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_system_motionblur.cpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_shader_bloom.cpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_shader_instance_bloom.cpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_system_bloom.cpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_external.cpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_postprocess_definition.cpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_pp_shaders.cpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\c_effect_generic.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\c_effect_instance_generic.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\c_parameter_instance.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\c_shader_generic.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\c_shader_instance_generic.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_effect_internal.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_shader_internal.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_system_internal.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_effect_external.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_shader_external.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_system_external.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Fade\c_shader_fade.cpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Fade\c_shader_instance_fade.cpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Fade\c_system_fade.cpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_shader_fxaa.cpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_system_fxaa.cpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\ShaderExtension\ShaderExtension.cpp">
+      <Filter>Rasterizer\ShaderExtension</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario\Scenario.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="MainYelo.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\ControlList.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\DragAndDrop.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\events.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Gwen.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Hook.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\inputhandler.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Skin.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\ToolTip.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Utility.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Anim.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\BaseRender.cpp">
+      <Filter>Common\Shared\GWEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\LabelClickable.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ListBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Menu.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\MenuItem.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\MenuStrip.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\NumericUpDown.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\PageControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ProgressBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Properties.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\PropertyTree.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RadioButton.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RadioButtonController.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Rectangle.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ResizableControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Resizer.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RichLabel.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBarBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBarButton.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Slider.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\SplitterBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabButton.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabStrip.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Text.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TextBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TextBoxNumeric.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TreeControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TreeNode.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\VerticalScrollBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\VerticalSlider.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\WindowControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Base.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Button.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Canvas.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CheckBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CollapsibleCategory.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ColorControls.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ColorPicker.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ComboBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CrossSplitter.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\DockBase.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\DockedTabControl.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Dragger.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\GroupBox.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HorizontalScrollBar.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HorizontalSlider.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HSVColorPicker.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ImagePanel.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Label.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Platforms\HaloRuntime.cpp">
+      <Filter>Common\Shared\GWEN\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\ControlFactory\c_control_factory.cpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_canvas_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\ControlFactory\c_control_builder_base.cpp">
+      <Filter>Interface\OpenSauceUI\ControlFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_control_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_control_property_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_screen_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Pointer.cpp">
+      <Filter>Common\Shared\GWEN\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_mouse_pointer_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_gwen_renderer_halo.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Input\c_control_input_halo.cpp">
+      <Filter>Interface\OpenSauceUI\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\resource_id.cpp">
+      <Filter>Interface\OpenSauceUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenu.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_base.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_control_base.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_display_manager.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_base.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_label.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_rectangle.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkboxwithlabel.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\gwen_control_util_label.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_slider.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_horizontalslider.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_verticalslider.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_checkbox.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\s_interface_value.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Textures\c_packed_texture_loader.cpp">
+      <Filter>Rasterizer\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textbox.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_textboxnumeric.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_scrollcontrol.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mainmenubottombar.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_definition_reader.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_ingame.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pagecontrol.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Definitions\c_page_definition.cpp">
+      <Filter>Interface\OpenSauceUI\Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_button.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_pointer.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Screen\c_screen_controller_mapdownload.cpp">
+      <Filter>Interface\OpenSauceUI\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\ControlBuilders\c_control_builder_gwen_progressbar.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI\ControlBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_event_handler.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\Control\c_property_interface.cpp">
+      <Filter>Interface\OpenSauceUI\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp">
+      <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
+      <Filter>Common\Shared\mongoose</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\mongoose\mongoose.c">
+      <Filter>Common\Shared\mongoose</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\hashtable.h">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\md5.h">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\nonport.h">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCommon.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCore.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsXML.h">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttp.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpASCII.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.h">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\hashtable.c">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\md5c.c">
+      <Filter>Common\Shared\GameSpy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCore.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsXML.c">
+      <Filter>Common\Shared\GameSpy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.c">
+      <Filter>Common\Shared\GameSpy\ghttp</Filter>
+    </ClCompile>
+    <ClInclude Include="Common\DebugDump.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FileIO.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GameSystemDefinitions.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GameSystems.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Platform.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Precompile.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\AI.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Camera.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Campaign.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Console.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Effects.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\EngineFunctions.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameBuildNumber.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameEngine.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameState.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameStateRuntimeData.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Lights.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Players.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scripting.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\ScriptLibrary.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\Controls.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ControlTypes.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\GameUI.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\Keystone.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\UIWidgets.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\FunctionInterface.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryInterface.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\GameSpyApi.hpp">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Networking.hpp">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Server.hpp">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\VersionCheck.hpp">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\VersionCheckClient.hpp">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\VersionCheckDedi.hpp">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\BanManager.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\c_file_downloader.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\c_xml_downloader.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\HTTP.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\HTTPClient.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\HTTPServer.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\MapDownloadClient.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\MapDownloadClientDisplay.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\HTTP\MapDownloadServer.hpp">
+      <Filter>Networking\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\MDP.hpp">
+      <Filter>Networking\MessageDeltas</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\MessageDefinitions.hpp">
+      <Filter>Networking\MessageDeltas</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\MessageDeltaDefinitions.hpp">
+      <Filter>Networking\MessageDeltas</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\MessageDeltas.hpp">
+      <Filter>Networking\MessageDeltas</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Equipment.hpp">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\ObjectFieldDefinitions.hpp">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Objects.hpp">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Units.hpp">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\CacheFiles.hpp">
+      <Filter>TagGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagGroups.hpp">
+      <Filter>TagGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp">
+      <Filter>_Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>_Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Rasterizer.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\RenderTargetChain.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\ShaderDraw.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\DX9\DeviceHooks.hpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\DX9\DX9.hpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\DX9\DxWrapper.hpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\DX9\rasterizer_dx9_shaders_vshader9.hpp">
+      <Filter>Rasterizer\DX9</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_effect_instance.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_effect_postprocess.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_effect_render_set.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_post_processing_main.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_quad_manager.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_shader_include_manager.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_shader_instance.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_shader_postprocess.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Postprocessing\PostProcessing.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\PostProcessingErrorReporting.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\PostProcessingScripting.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingCacheComponent.hpp">
+      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingComponent.hpp">
+      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingRenderable.hpp">
+      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingUpdatable.hpp">
+      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_shader_instance_motionblur.hpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_shader_motionblur.hpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_system_motionblur.hpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\s_shader_motionblur_definition.hpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_shader_bloom.hpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_shader_instance_bloom.hpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_system_bloom.hpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\s_shader_bloom_definition.hpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_base.hpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_external.hpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_postprocess_definition.hpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\ShaderSources\c_shader_data_pp_shaders.hpp">
+      <Filter>Rasterizer\PostProcessing\ShaderSources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\c_effect_generic.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\c_effect_instance_generic.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\c_parameter_instance.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\c_shader_generic.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\c_shader_instance_generic.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_effect_internal.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_shader_internal.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_system_internal.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_effect_external.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_shader_external.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_system_external.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\s_effect_postprocess_external.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_fade.hpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_instance_fade.hpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Fade\c_system_fade.hpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Fade\s_shader_fade_definition.hpp">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_shader_fxaa.hpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_system_fxaa.hpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\ShaderExtension\ShaderExtension.hpp">
+      <Filter>Rasterizer\ShaderExtension</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario\Scenario.hpp">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Objects.WeaponSettings.hpp">
+      <Filter>Objects\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.hpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Halo1_CE_Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Common\GameSystemComponents.Startup.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.GameState.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Tags.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Scripting.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.GameStateYelo.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Render.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Game.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Interface.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Networking.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponents.Misc.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponent.IterationRoundBegin.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponent.IterationRoundEnd.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Common\GameSystemComponent.Definitions.inl">
+      <Filter>Common\GameSystems</Filter>
+    </None>
+    <None Include="Game\CameraFov.inl">
+      <Filter>Game\Impl</Filter>
+    </None>
+    <None Include="Game\Campaign.inl">
+      <Filter>Game\Impl</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.HTTPServer.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.HTTPServer.MapDownload.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.Numbers.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.Objects.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.Players.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.Postprocessing.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Definitions.RuntimeData.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Fixups.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.Macros.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.MemoryUpgrades.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\ScriptLibrary.MiscScriptingFunctions.inl">
+      <Filter>Game\Impl\ScriptLibrary</Filter>
+    </None>
+    <None Include="Game\GameState.EventLog.inl">
+      <Filter>Game\Impl\GameState</Filter>
+    </None>
+    <None Include="Game\GameState.MemoryUpgrades.inl">
+      <Filter>Game\Impl\GameState</Filter>
+    </None>
+    <None Include="Game\GameState.Procs.inl">
+      <Filter>Game\Impl\GameState</Filter>
+    </None>
+    <None Include="Game\GameState.Scripting.inl">
+      <Filter>Game\Impl\GameState</Filter>
+    </None>
+    <None Include="Game\GameState.ServerList.inl">
+      <Filter>Game\Impl\GameState</Filter>
+    </None>
+    <None Include="Game\GameStateRuntimeData.Scripting.inl">
+      <Filter>Game\Impl\GameState</Filter>
+    </None>
+    <None Include="Game\EngineFunctions._Misc.inl">
+      <Filter>Game\Impl\EngineFunctions</Filter>
+    </None>
+    <None Include="Game\EngineFunctions.Networking.inl">
+      <Filter>Game\Impl\EngineFunctions</Filter>
+    </None>
+    <None Include="Game\EngineFunctions.Objects.inl">
+      <Filter>Game\Impl\EngineFunctions</Filter>
+    </None>
+    <None Include="Game\EngineFunctions.Players.inl">
+      <Filter>Game\Impl\EngineFunctions</Filter>
+    </None>
+    <None Include="Game\Players.ActionResults.inl">
+      <Filter>Game\Impl\Players</Filter>
+    </None>
+    <None Include="Game\Players.NearbyObjects.inl">
+      <Filter>Game\Impl\Players</Filter>
+    </None>
+    <None Include="Game\Players.NetworkPlayerUnit.inl">
+      <Filter>Game\Impl\Players</Filter>
+    </None>
+    <None Include="Game\Players.Scripting.inl">
+      <Filter>Game\Impl\Players</Filter>
+    </None>
+    <None Include="Interface\GameUI_Hud.inl">
+      <Filter>Interface\Impl</Filter>
+    </None>
+    <None Include="Memory\FunctionInterface.Client.inl">
+      <Filter>Memory\Impl</Filter>
+    </None>
+    <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\ObjectFieldDefinitions.ImplUnits.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\ObjectFieldDefinitions.ImplWeapon.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\ObjectFieldDefinitions.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Objects.Damage.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Objects.Scripting.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Units.Animations.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Units.GrenadeCounts.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.CRC.inl">
+      <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.MapList.inl">
+      <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.YeloFiles.inl">
+      <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="Memory\_EngineLayout.inl">
+      <Filter>_Resources</Filter>
+    </None>
+    <None Include="Halo1_CE.def">
+      <Filter>_Resources</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Game.HS.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Game.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Interface.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Networking.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Objects.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.OpenSauce.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Rasterizer.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Rasterizer.ShaderDraw.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.Scenario.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.08\_EngineLayout.TagGroups.inl">
+      <Filter>_Resources\1.08</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Game.HS.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Game.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Interface.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Networking.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Objects.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.OpenSauce.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Rasterizer.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Rasterizer.ShaderDraw.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.Scenario.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Memory\1.09\_EngineLayout.TagGroups.inl">
+      <Filter>_Resources\1.09</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\Bloom\BloomDefinitions.inl">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl">
+      <Filter>Rasterizer\PostProcessing\Generic\Impl</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\Fade\FadeDefinitions.inl">
+      <Filter>Rasterizer\PostProcessing\Fade</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl">
+      <Filter>Rasterizer\PostProcessing\Impl</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\PostProcessing_RenderStates.inl">
+      <Filter>Rasterizer\PostProcessing\Impl</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\PostProcessing_Systems.inl">
+      <Filter>Rasterizer\PostProcessing\Impl</Filter>
+    </None>
+    <None Include="Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </None>
+    <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl">
+      <Filter>Rasterizer\ShaderExtension\Impl</Filter>
+    </None>
+    <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl">
+      <Filter>Rasterizer\ShaderExtension\Impl</Filter>
+    </None>
+    <None Include="Objects\Objects.VehicleSettings.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Objects.WeaponSettings.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.DataFiles.inl">
+      <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.Settings.inl">
+      <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Game.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Interface.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.OpenSauce.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderDraw.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
+      <Filter>Rasterizer\ShaderExtension\Impl</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\InGameDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuBottomBarDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
+      <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.TagGroups.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Game.HS.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Networking.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Objects.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Scenario.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Objects.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.OpenSauce.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Scenario.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Interface.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Objects.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.OpenSauce.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.ShaderDraw.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Scenario.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.HS.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Interface.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Networking.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Objects.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.OpenSauce.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.DX9.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.ShaderExtension.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.TagGroups.inl">
+      <Filter>_Resources\1.10\Pointers\Runtime</Filter>
+    </None>
+    <None Include="Game\AI.Transform.inl">
+      <Filter>Game\Impl\AI</Filter>
+    </None>
+    <None Include="Objects\Units.SeatDamage.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Units.SeatBoarding.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\TagGroups.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_EngineFunctions.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_HS.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Interface.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Networking.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Objects.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\OpenSauce.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_DX9.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderDraw.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderExtension.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Scenario.lua">
+      <Filter>_Resources\1.09\LUA\Client</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_EngineFunctions.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_HS.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Networking.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Objects.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\OpenSauce.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Scenario.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+    <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\TagGroups.lua">
+      <Filter>_Resources\1.09\LUA\Server</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Halo1_CE_Version.xml" />
+    <Xml Include="YeloFileChecksums.xml" />
+    <Xml Include="YeloSettingsTemplate.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Halo1_CE.rc">
+      <Filter>_Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common\Shared\GWEN">
+      <UniqueIdentifier>{51d1a74b-289d-4f74-8b44-3865468ad79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Controls">
+      <UniqueIdentifier>{4c30c255-df3b-4320-8a50-58177c777ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Platforms">
+      <UniqueIdentifier>{7a375f68-0ad7-45fe-8c25-fdc1fe45beef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Skins">
+      <UniqueIdentifier>{674dbfe4-ed6d-48e1-8676-70d575029a1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Controls\Layout">
+      <UniqueIdentifier>{65662da2-366e-4396-baf2-bde49a4b915d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\GWEN\Controls\Property">
+      <UniqueIdentifier>{8d02c120-57d0-4e30-864b-c5deedc49583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\Textures">
+      <UniqueIdentifier>{442f4359-0345-4f7a-863b-9121a7fa8869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10\Pointers">
+      <UniqueIdentifier>{257eb2e7-7c67-49f7-8ec7-df928ff9b1dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{77ede202-d5b6-4b79-a33a-8cc5b0510fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Impl">
+      <UniqueIdentifier>{ac39391e-f598-460c-861a-689d3670ff1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI">
+      <UniqueIdentifier>{6fbba12f-b959-4f91-b6d4-81c86cab5c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\GwenUI">
+      <UniqueIdentifier>{6ef219ea-30f2-4440-9c69-89c9fae742ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\GwenUI\ControlBuilders">
+      <UniqueIdentifier>{2f4fe07f-cd0f-4414-826e-812f6cce3a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\ControlFactory">
+      <UniqueIdentifier>{5abf24be-1bba-4951-adb3-a326adcd3a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Definitions">
+      <UniqueIdentifier>{786eead3-3991-472f-9c9b-5345690835b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Input">
+      <UniqueIdentifier>{7d3078dc-7a51-4771-935c-530d23bc41a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Screen">
+      <UniqueIdentifier>{fa4b0c66-a7a9-40ed-987d-e6557503fe20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\Control">
+      <UniqueIdentifier>{f0ab0751-c26d-4c18-95f0-96a67c6f95c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\OpenSauceUI\ScreenDefinitions">
+      <UniqueIdentifier>{dc17517c-5dcb-4061-9bb0-3a41ed40d7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10\Pointers\Server">
+      <UniqueIdentifier>{4c16552a-33bf-4a67-ad05-a94e1feda2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.10\Pointers\Runtime">
+      <UniqueIdentifier>{4a7890ee-7d49-4ab9-a526-5e244aebd305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Impl\AI">
+      <UniqueIdentifier>{62fd605b-7fa9-4b74-8e6a-6cb3209d309a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09\LUA">
+      <UniqueIdentifier>{292c5546-a8f1-4c61-8b6f-e96203133b5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09\LUA\Client">
+      <UniqueIdentifier>{f357d139-2aba-4c05-8b8e-219aef527ab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resources\1.09\LUA\Server">
+      <UniqueIdentifier>{08f4997f-c50a-4f53-8475-4b3e72b50913}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

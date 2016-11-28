@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	<flags>
+    <Flag name="shader_model_extension_specular_color_flags">
+      <field>alpha as exponent mask</field>
+    </Flag>
+    <Flag name="shader_model_extension_lighting_flags">
+      <field>do not use dlms (bsp)</field>
+    </Flag>
+	</flags>
+	
+	<blocks>
+		<TagBlock name="shader_model_extension_block_definition" maxElements="1">
+			<field type="Explanation" name="specular map" definition="The specular color map is multiplied by the stock specular result~Nto provide finer control over the specular color.~NRGB holds the specular color" />
+			<field type="TagReference" name="specular color map" definition="bitmap_reference" />
+			<field type="Real" name="specular color coefficient" tooltip="0 defaults to 1" />
+			<field type="Pad" definition="4" />
+			<field type="Real" name="specular color exponent" tooltip="0 defaults to 1" />
+			<field type="WordFlags" name="flags" definition="shader_model_extension_specular_color_flags" />
+			<field type="Pad" definition="2" />
+			<field type="Explanation" name="normal maps" definition="RGB holds the normal color data~NAlpha interpolates between no detail normals and detail normals 1 and 2~N~NThe alpha channel uses:~NA = no detail normals~NB = detail normals 1~NC = detail normals 2~N~N    A  =======>  B  =======>  C  =======>  A    ~N 0/0.000       85/0.333      170/0.666      255/1.000" />
+			<field type="TagReference" name="base normal map" definition="bitmap_reference" />
+			<field type="Real" name="base normal coefficient" tooltip="0 defaults to 1" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="TagReference" name="detail normal 1 map" definition="bitmap_reference" />
+			<field type="Real" name="detail normal 1 coefficient" tooltip="0 defaults to 1" />
+			<field type="Real" name="detail normal 1 scale" tooltip="0 defaults to 1" />
+			<field type="Real" name="detail normal 1 v-scale" tooltip="0 defaults to 1 (applied on top of detail normal scale above)" />
+			<field type="Pad" definition="4" />
+			<field type="TagReference" name="detail normal 2 map" definition="bitmap_reference" />
+			<field type="Real" name="detail normal 2 coefficient" tooltip="0 defaults to 1" />
+			<field type="Real" name="detail normal 2 scale" tooltip="0 defaults to 1" />
+			<field type="Real" name="detail normal 2 v-scale" tooltip="0 defaults to 1 (applied on top of detail normal scale above)" />
+			<field type="Pad" definition="4" />
+			<field type="Explanation" name="specular tint override" definition="These values override the specular tint colours in the stock tag"/>
+			<field type="Real" name="perpendicular brightness" units="[0,1]" tooltip="reflection brightness when viewed perpendicularly"/>
+			<field type="RealRgbColor" name="perpendicular tint color" tooltip="reflection tint color when viewed perpendicularly"/>
+			<field type="Real" name="parallel brightness" units="[0,1]" tooltip="reflection brightness when viewed at a glancing angle"/>
+			<field type="RealRgbColor" name="parallel tint color" tooltip="reflection tint color when viewed at a glancing angle"/>
+      <field type="Explanation" name="diffuse lighting" definition=""/>
+      <field type="WordFlags" name="flags" definition="shader_model_extension_lighting_flags" />
+			<field type="Pad" definition="6" />
+			<field type="Explanation" name="specular lighting" definition=""/>
+			<field type="Real" name="specular lighting exponent"/>
+			<field type="Real" name="specular lighting coefficient"/>
+			<field type="Pad" definition="16" />
+		</TagBlock>
+	</blocks>
+
+	<fixups>
+		<fixup name="_fixup_shader_model_shader_extension_block" type="Field"
+			guerilla="0x9CA32C" tool="0x6D85F4" sapien="0xA3C3F4" >
+			<definition>
+				<field type="Block" name="shader model extension" definition="shader_model_extension_block_definition" />
+			</definition>
+		</fixup>
+	</fixups>
+</definitions>

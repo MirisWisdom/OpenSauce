@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<definitions game="Halo2">
+	<structs>
+		<Struct name="" groupTag="">
+			<FieldSet>
+			</FieldSet>
+		</Struct>
+	</structs>
+
+	<blocks>
+		<TagBlock name="" maxElements="">
+			<FieldSet>
+			</FieldSet>
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="" groupTag="" parentTag="" version="">
+			<FieldSet>
+			</FieldSet>
+		</TagGroup>
+	</groups>
+</definitions>

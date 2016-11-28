@@ -1,0 +1,417 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
+
+	<!-- Global folder definitions -->
+	<?define ResourceFolder='..\..\..\shared\Resources\'?>
+	<?define BinariesFolder='..\..\..\bin\'?>
+	<?define SourceFolder='..\..\..\'?>
+	
+	<!-- Define the installer strings based on the game version -->
+	<?ifdef Halo1_CE?>
+	<?define ProductName='OpenSauce for Halo CE'?>
+	<?define GameTarget='Halo CE'?>
+	<?define ConfigVersion='4.0.0'?>
+	<?endif?>
+
+	<!-- Define whether to pack debug or release binaries -->
+	<?ifdef DEBUG?>
+	<?define CompiledConfiguration='Debug'?>
+	<?else?>
+	<?define CompiledConfiguration='Release'?>
+	<?endif?>
+	
+	<?define UpgradeCodeGUID='6E7F244E-C79F-4925-A073-66362D92A99F'?>
+	
+	<Product Name='$(var.ProductName)'
+		Id='*'
+		UpgradeCode='$(var.UpgradeCodeGUID)'
+		Language='1033'
+		Codepage='1252'
+		Version='$(var.ConfigVersion)'
+		Manufacturer='Kornner Studios'>
+
+		<Package Id='*'
+			Keywords='Installer'
+			Description='$(var.ProductName) Installer'
+			Comments='Extensions for $(var.GameTarget) that add new features and capabilities'
+			Manufacturer='Kornner Studios'
+			InstallerVersion='405'
+			Languages='1033'
+			Compressed='yes'
+			SummaryCodepage='1252' />
+
+		<MajorUpgrade MigrateFeatures='yes' Schedule='afterInstallFinalize' DowngradeErrorMessage='A later version of [ProductName] is already installed. Setup will now exit.'/>
+
+		<Property Id='ALLUSERS'>1</Property>
+		<Property Id='CREATESTARTMENUSHORTCUTS' Secure='yes' Value='1'/>
+		<Property Id='CREATEDESKTOPSHORTCUTS' Secure='yes' Value='1'/>
+
+		<PropertyRef Id="NETFRAMEWORK40CLIENT" />
+		<Condition Message="This setup requires the .NET Framework 4.0 to be installed.">
+			<![CDATA[Installed OR NETFRAMEWORK40CLIENT]]>
+		</Condition>
+
+		<Condition Message="This application is only supported on Windows XP SP3 or above.">
+			<![CDATA[Installed OR ((VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3)))]]>
+		</Condition>
+
+		<Upgrade Id="$(var.UpgradeCodeGUID)">
+			<UpgradeVersion Minimum="0.0.0" Maximum="3.9.9" OnlyDetect="yes" Property="OSPREVVERSIONFOUND" />
+		</Upgrade>
+		<Condition Message="Please uninstall the previous version of OpenSauce before installing this one.">
+			<![CDATA[Installed OR (OSPREVVERSIONFOUND = "")]]>
+		</Condition>
+
+		<!-- Set the icon in Add/Remove programs-->
+		<Icon Id='OpenSauce_Icon_PROP' SourceFile='$(var.ResourceFolder)Installer\icon.ico'/>
+		<Property Id='ARPPRODUCTICON' Value='OpenSauce_Icon_PROP'/>
+		
+		<!-- Game specific properties are included here-->
+		<?ifdef Halo1_CE?>
+		<?include Halo1_CE/Properties.wxi?>
+		<?endif?>
+		
+		<Media Id='1' Cabinet='OpenSauce.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
+		<Property Id='DiskPrompt' Value='$(var.ProductName) Installation [1]' />
+
+		<Property Id='INSTALLVALIDATORDEF' Secure='yes' Value='Unset'/>
+		<Property Id='INSTALLVALIDATORPATH' Secure='yes' Value='Unset'/>
+		<Property Id='WEBLAUNCHER_URL' Secure='yes' Value='https://bitbucket.org/KornnerStudios/opensauce-release'/>
+
+		<Directory Id='TARGETDIR' Name='SourceDir'>
+			<Merge Id="VCRedist100_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="VCRedist120_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
+			<!-- Files and folders that belong in the common application data folder-->
+			<Directory Id='CommonAppDataFolder'>
+				<Directory Id='OpenSauce_KornnerStudios_DIR' Name='Kornner Studios'>
+					<Directory Id='OpenSauce_OpenSauce_DIR' Name='OpenSauce'>
+						
+						<!--DirectX minimal redist-->
+						<Directory Id='DirectX_Redist' Name='dxredist'>
+							<Component Id='DirectX_Redist_COMP' Guid='63A81C20-956A-47e4-9463-63640E46A1FD'>
+								<File Id='DirectX_dxsetup_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dxsetup.exe' KeyPath='yes' Checksum='yes'/>
+								<File Id='DirectX_dxupdate_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dxupdate.cab'/>
+								<File Id='DirectX_dxdllreg_x86_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dxdllreg_x86.cab'/>
+								<File Id='DirectX_dsetup32_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dsetup32.dll'/>
+								<File Id='DirectX_dsetup_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dsetup.dll'/>
+								<File Id='DirectX_Jun2010_d3dx9_43_x86_FILE' Source='$(var.ResourceFolder)Installer\dxredist\Jun2010_d3dx9_43_x86.cab'/>
+							</Component>
+						</Directory>
+						
+						<Directory Id='OpenSauce_OpenSauceIDE_DIR' Name='OpenSauceIDE'>
+							<Directory Id='OpenSauce_License_DIR' Name='License'>
+								<Component Id='OpenSauce_License_COMP' Guid='CC4D32F5-CE90-4c7a-9B48-74601CADEDC0'>
+									<File Id='OpenSauce_License_FILE' Name='License.txt' DiskId='1' Source='$(var.SourceFolder)license\License.txt' KeyPath='yes' />
+								</Component>
+							</Directory>
+							<!-- OpenSauceIDE is installed here-->
+							<Component Id='OpenSauce_OpenSauceIDE_COMP' Guid='B9699EB8-F18C-4FAF-B97B-227B865AF0BB'>
+								<File Id='OpenSauce_OpenSauceIDE_FILE' Name='OpenSauceIDE.exe' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\OpenSauceIDE.exe' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_BlamLib_COMP' Guid='66445DEB-325D-463F-8850-19E2AFA2BE16'>
+								<File Id='OpenSauce_BlamLib_FILE' Name='BlamLib.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\BlamLib.dll' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_BlamLib_Forms_COMP' Guid='CF1070AA-7709-46AC-80FA-C1385E850CD6'>
+								<File Id='OpenSauce_BlamLib_Forms_FILE' Name='BlamLib.Forms.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\BlamLib.Forms.dll' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_LowLevel_COMP' Guid='F93E1D0E-103F-42C1-A5AF-42FD8021D302'>
+								<File Id='OpenSauce_LowLevel_FILE' Name='LowLevel.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\LowLevel.dll' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_SevenZipSharp_COMP' Guid='2F8EA575-2CCA-4e68-BF93-F7558D9755DD'>
+								<File Id='OpenSauce_SevenZipSharp_FILE' Name='SevenZipSharp.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\SevenZipSharp.dll' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_SevenZip_COMP' Guid='88422AF0-1AA1-401c-80A5-1DAD0D42BCFE'>
+								<File Id='OpenSauce_SevenZip_FILE' Name='7z.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\7z.dll' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_SlimDX_COMP' Guid='F9A0CD85-5193-45DF-80FC-B64023FE2A33'>
+								<File Id='OpenSauce_SlimDX_FILE' Name='SlimDX.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\SlimDX.dll' KeyPath='yes' />
+							</Component>
+							
+							<?ifdef DEBUG?>
+							<Component Id='OpenSauce_OpenSauceIDE_PDB_COMP' Guid='E19A12E4-7AF4-4cb7-A7A1-4E237D924B37'>
+								<File Id='OpenSauce_OpenSauceIDE_PDB_FILE' Name='OpenSauceIDE.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\OpenSauceIDE.pdb' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_BlamLib_PDB_COMP' Guid='A085BD9B-34BC-444d-BBF8-77DE33E53278'>
+								<File Id='OpenSauce_BlamLib_PDB_FILE' Name='BlamLib.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\BlamLib.pdb' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_BlamLib_Forms_PDB_COMP' Guid='CCABEA9C-1802-4f18-BE4C-C83ED2BDC87A'>
+								<File Id='OpenSauce_BlamLib_Forms_PDB_FILE' Name='BlamLib.Forms.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\BlamLib.Forms.pdb' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_LowLevel_PDB_COMP' Guid='4EBDB3ED-B4D9-4bb6-B85C-BE029A29FA28'>
+								<File Id='OpenSauce_LowLevel_PDB_FILE' Name='LowLevel.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\LowLevel.pdb' KeyPath='yes' />
+							</Component>
+							<?endif?>
+
+							<!-- Removes the OpenSauceIDE folder on uninstall-->
+							<Component Id='OpenSauce_OpenSauceIDERemove_COMP' Guid='ED6BD4C1-05B5-4925-9898-B80B552B781F'>
+								<RemoveFolder Id='OpenSauce_OpenSauceIDE_REMDIR' On='uninstall' />
+							</Component>
+							
+							<!-- Removes the settings.xml file on uninstall-->
+							<Component Id='OpenSauce_SettingsRemove_COMP' Guid='58402421-C106-429f-BB32-4801DDB432DA'>
+								<RemoveFile Name='settings.xml' Id='OpenSauce_Settings_REMFILE' On='uninstall' />
+							</Component>
+						</Directory>
+
+						<!-- Removes the OpenSauce folder on uninstall-->
+						<Component Id='OpenSauce_OpenSauceRemove_COMP' Guid='78C68B08-BEC5-4325-968B-EF2612E2510F'>
+							<RemoveFolder Id='OpenSauce_OpenSauce_REMDIR' On='uninstall' />
+						</Component>
+					</Directory>
+
+					<!-- Game specific common data resources are included here -->
+					<?ifdef Halo1_CE?>
+					<?include Halo1_CE/CommonDataDirectories.wxi?>
+					<?endif?>
+
+					<!-- Removes the Kornner Studios folder on uninstall-->
+					<Component Id='OpenSauce_KornnerStudiosRemove_COMP' Guid='1FDE1D60-8D9B-4e6c-A361-1FD5A51F24F7'>
+						<RemoveFolder Id='OpenSauce_KornnerStudios_REMDIR' On='uninstall' />
+					</Component>
+				</Directory>
+			</Directory>
+			
+			<!-- Remove files and folders from the users AppData\Roaming directory-->
+			<Directory Id='AppDataFolder' Name='AddDataFolder'>
+				<Directory Id='OpenSauce_RoamingKornnerStudios_DIR' Name='Kornner Studios'>
+					<Directory Id='OpenSauce_RoamingOpenSauceIDE_DIR' Name='OpenSauceIDE'>
+						<Component Id='OpenSauce_RoamingOpenSauceIDE_COMP' Guid='402DAFCB-5635-4c1d-BAE5-F9634920F0D3'>
+							<RegistryValue Id='OpenSauce_RoamingOpenSauceIDE_REG'
+								Root='HKCU'
+								Key='Software\KornnerStudios\OpenSauce'
+								Name='KeyPathsRoaming'
+								Type='multiString'
+								Action='append'
+								Value='RoamingOpenSauceIDE'
+								KeyPath='yes'/>
+							<RemoveFile Id='OpenSauce_RoamingOpenSauceIDE_REM' Name='*.*' On='uninstall' />
+							<RemoveFolder Id='OpenSauce_RoamingOpenSauceIDE_REMDIR' On='uninstall' />
+						</Component>
+					</Directory>
+					
+					<Component Id='OpenSauce_RoamingKornnerStudios_COMP' Guid='29508CA6-5F0F-49c3-BCFF-1416EEE7FCEA'>
+						<RegistryValue Id='OpenSauce_RoamingKornnerStudios_REG'
+							Root='HKCU'
+							Key='Software\KornnerStudios\OpenSauce'
+							Name='KeyPathsRoaming'
+							Type='multiString'
+							Action='append'
+							Value='RoamingKornnerStudios'
+							KeyPath='yes'/>
+						<RemoveFolder Id='OpenSauce_RoamingKornnerStudios_REMDIR' On='uninstall' />
+					</Component>
+				</Directory>
+			</Directory>
+			
+			<Directory Id='ProgramMenuFolder'>
+				<Directory Id='OpenSauce_KornnerStudiosMenu_DIR' Name='Kornner Studios'>
+					<Directory Id='OpenSauce_OpenSauceMenu_DIR' Name='OpenSauce'>
+						<!-- Creates a start menu shortcut to OpenSauceIDE -->
+						<Component Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' Guid='79C725BF-25F4-44f8-850A-FA0E1E6D5FF2'>
+							<Condition><![CDATA[CREATESTARTMENUSHORTCUTS]]></Condition>
+							<Shortcut Id='OpenSauce_OpenSauceIDEMenu_SCUT'
+								Target='[#OpenSauce_OpenSauceIDE_FILE]'
+								Name='OpenSauceIDE'
+								Description='Tools and extensions for Blam engine games'
+								WorkingDirectory='OpenSauce_OpenSauceIDE_DIR'/>
+							<RegistryValue Id='OpenSauce_OpenSauceIDEMenu_REG'
+								Root='HKCU'
+								Key='Software\KornnerStudios\OpenSauce'
+								Name='KeyPathsStartMenu'
+								Type='multiString'
+								Action='append'
+								Value='OpenSauceIDEMenu'
+								KeyPath='yes'/>
+							<RemoveFolder Id='OpenSauce_OpenSauceMenu_REMDIR' On='uninstall'/>
+						</Component>
+					</Directory>
+					
+					<!-- Game specific start menu shortcuts are included here-->
+					<?ifdef Halo1_CE?>
+					<?include Halo1_CE/StartMenuDirectories.wxi?>
+					<?endif?>
+
+					<!-- Removes the Kornner Studios folder on uninstall-->
+					<Component Id='OpenSauce_KornnerStudiosMenuRemove_COMP' Guid='C6ED78C3-F5DF-40df-87F9-246AA5F4131E'>
+						<RemoveFolder Id='OpenSauce_KornnerStudiosMenu_REMDIR' On='uninstall'/>
+						<RegistryValue Id='OpenSauce_KornnerStudios_REG' 
+													 Root='HKCU' 
+													 Key='Software\KornnerStudios\OpenSauce' 
+													 Name='KeyPathsStartMenu' 
+													 Type='multiString' 
+													 Value='OpenSauce' 
+													 KeyPath='yes'/>
+					</Component>
+				</Directory>
+			</Directory>
+
+			<Directory Id='DesktopFolder'>
+				<!-- Add a desktop shortcut to OpenSauceIDE -->
+				<Component Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' Guid='9EBB199E-0834-4522-88C3-6E5ADE0A8145'>
+					<Condition><![CDATA[CREATEDESKTOPSHORTCUTS]]></Condition>
+					<Shortcut Id='OpenSauce_OpenSauceIDEDesktop_SCUT'
+						Target='[#OpenSauce_OpenSauceIDE_FILE]'
+						Name='OpenSauceIDE'
+						Description='Tools and extensions for Blam engine games'
+						WorkingDirectory='OpenSauce_OpenSauceIDE_DIR'/>
+					<RegistryValue Id='OpenSauce_OpenSauceIDEDestktop_REG'
+						Root='HKCU'
+						Key='Software\KornnerStudios\OpenSauce'
+						Name='KeyPathsDesktop'
+						Type='multiString'
+						Action='append'
+						Value='OpenSauceIDEDesktop'
+						KeyPath='yes'/>
+				</Component>
+				
+				<!-- Game specific desktop shortcuts are added here -->
+				<?ifdef Halo1_CE?>
+				<?include Halo1_CE/DesktopDirectories.wxi?>
+				<?endif?>
+			</Directory>
+			
+			<!-- Game specific directories are included here-->
+			<?ifdef Halo1_CE?>
+			<?include Halo1_CE/Directories.wxi?>
+			<?endif?>
+			
+		</Directory>
+
+		<Binary Id='InstallValidator_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\InstallValidator\InstallValidator.CA.dll'/>
+		<Binary Id='FilePatcher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\FilePatcher\FilePatcher.CA.dll'/>
+		<Binary Id='WebLauncher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\WebLauncher\WebLauncher.CA.dll'/>
+		<Binary Id='SetProperties_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\SetProperties\SetProperties.CA.dll'/>
+		<Binary Id='CPUQuery_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\CPUQuery\CPUQuery.CA.dll'/>
+		
+		<CustomAction Id='Newer_Found_CACT' Error='A later version of [ProductName] is already installed.' />
+		<CustomAction Id='DirectX_Install_CACT' FileKey='DirectX_dxsetup_FILE' ExeCommand='/silent' Execute='deferred' Impersonate='no' Return='check'/>
+		<CustomAction Id='OSLaunchWebSite_CACT' BinaryKey='WebLauncher_BIN' DllEntry='LaunchWebsite' Execute='immediate' Return='ignore'/>
+
+		<!-- Set the CPU support properties -->
+		<CustomAction Id='SetSSE2CPUSupportPropertyData_CACT' Property='CPUQUERYDATA' Value='IsProcessorFeaturePresent=InstructionsXMMI64Available;OutputProp=SSE2Supported_PROP'/>
+		<CustomAction Id='SetCPUSupportProperty_CACT' BinaryKey='CPUQuery_BIN' DllEntry='CPUQueryCA' Execute='immediate' Return='check'/>
+		<CustomAction Id='ErrorCPUNotSupported_CACT' Error='Your CPU is unable to run OpenSauce, installation cannot continue.'/>
+
+		<!-- Game specific custom actions are included here-->
+		<?ifdef Halo1_CE?>
+		<?include Halo1_CE/CustomActions.wxi?>
+		<?endif?>
+
+		<InstallExecuteSequence>
+			<Custom Action='SetSSE2CPUSupportPropertyData_CACT' After='FindRelatedProducts'/>
+			<Custom Action='SetCPUSupportProperty_CACT' After='SetSSE2CPUSupportPropertyData_CACT'/>
+			<Custom Action='ErrorCPUNotSupported_CACT' After='SetCPUSupportProperty_CACT'>
+				<![CDATA[SSE2Supported_PROP ~= "false"]]>
+			</Custom>
+			<Custom Action='Newer_Found_CACT' After='FindRelatedProducts'>NEWERFOUND</Custom>
+
+			<Custom Action='DirectX_Install_CACT' Before='InstallFinalize'>
+				<![CDATA[NOT REMOVE]]>
+			</Custom>
+
+			<!-- Game specific install sequences are included here-->
+			<?ifdef Halo1_CE?>
+			<?include Halo1_CE/InstallSequences.wxi?>
+			<?endif?>
+		</InstallExecuteSequence>
+
+		<Feature Id='OpenSauce_Complete_FEAT'
+			Title='OS v$(var.ConfigVersion)'
+			Description='Installs OpenSauce v$(var.ConfigVersion)'
+			Display='expand'
+			Level='1'
+			AllowAdvertise='no'
+			Absent='disallow'>
+
+			<ComponentRef Id='OpenSauce_OpenSauceRemove_COMP' />
+			<ComponentRef Id='OpenSauce_KornnerStudiosRemove_COMP' />
+			<ComponentRef Id='OpenSauce_KornnerStudiosMenuRemove_COMP' />
+
+			<Feature Id='DirectX_Redist_FEAT'
+							 Title='DirectX Runtime Redist'
+							 AllowAdvertise='no'
+							 Display='hidden'
+							 Level='1'>
+
+				<ComponentRef Id='DirectX_Redist_COMP'/>
+			</Feature>
+
+			<Feature Id='VS_Runtime_100_FEAT'
+							 Title='Visual C++ 10.0 Redist'
+							 AllowAdvertise='no'
+							 Display='hidden'
+							 Level='1'>
+				<MergeRef Id='VCRedist100_MERGE'/>
+			</Feature>
+
+			<Feature Id='VS_Runtime_120_FEAT'
+							 Title='Visual C++ 12.0 Redist'
+							 AllowAdvertise='no'
+							 Display='hidden'
+							 Level='1'>
+				<MergeRef Id='VCRedist120_MERGE'/>
+			</Feature>
+
+			<!-- Game specific features are included here-->
+			<?ifdef Halo1_CE?>
+			<?include Halo1_CE/Features.wxi?>
+			<?endif?>
+
+			<Feature Id='OpenSauce_OpenSauceIDE_FEAT'
+				Title='OpenSauce IDE'
+				Description='Tools that compliment the OpenSauce runtimes.'
+				Display='expand'
+				Level='100'
+				AllowAdvertise='no'>
+				
+				<ComponentRef Id='OpenSauce_OpenSauceIDE_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
+				<ComponentRef Id='OpenSauce_LowLevel_COMP' />
+				<ComponentRef Id='OpenSauce_License_COMP' />
+				<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
+				<ComponentRef Id='OpenSauce_SevenZip_COMP' />
+				<ComponentRef Id='OpenSauce_SlimDX_COMP' />
+
+				<?ifdef DEBUG?>
+				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_Forms_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_LowLevel_PDB_COMP' />
+				<?endif?>
+
+				<ComponentRef Id='OpenSauce_SettingsRemove_COMP' />
+				<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
+
+				<ComponentRef Id='OpenSauce_RoamingOpenSauceIDE_COMP' />
+				<ComponentRef Id='OpenSauce_RoamingKornnerStudios_COMP' />
+
+				<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
+				<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />
+			</Feature>
+
+		</Feature>
+		
+		<UI Id='OpenSauce_WixUI_FeatureTree_Ext'>
+			<ProgressText Action='SxSInstallCA'>Installing Visual C++ 9.0 Runtime</ProgressText>
+			<ProgressText Action='DirectX_Install_CACT'>Installing DirectX</ProgressText>
+
+			<UIRef Id='OpenSauce_FeatureTree' />
+			<!-- Game specific UI changes are included here-->
+			<!-- Need to find a way of hooking new dialogs onto the correct previous dialogs
+			when the various games are added and removed. If another games UI is added
+			after Halo1_CE's for example it would not know to add its dialog to HEKPathsDlg
+			rather than OpenSauce_CustomizeDlg-->
+			<?ifdef Halo1_CE?>
+			<?include Halo1_CE/UI.wxi?>
+			<?endif?>
+		</UI>
+
+		<UIRef Id='WixUI_ErrorProgressText' />
+
+		<WixVariable Id='WixUIBannerBmp' Value='$(var.ResourceFolder)Installer\banner.bmp' />
+		<WixVariable Id='WixUIDialogBmp' Value='$(var.ResourceFolder)Installer\dialog.bmp' />
+		<WixVariable Id='WixUILicenseRtf' Value='$(var.ResourceFolder)Installer\license.rtf' />
+		
+	</Product>
+</Wix>

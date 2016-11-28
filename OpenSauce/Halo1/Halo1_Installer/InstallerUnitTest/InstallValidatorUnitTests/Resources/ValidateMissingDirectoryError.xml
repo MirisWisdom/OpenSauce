@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation definition="MissingDirectoryError">
+	<Directory id="DIR_TestDirectoryOne" name="TestDirectoryOne">
+		<Directory id="DIR_TestDirectoryThree" name="TestDirectoryThree" onmissing="MSG_TestDirectoryThree_misserror">
+			<Message id="MSG_TestDirectoryThree_misserror" type="error">Missing directory error</Message>
+		</Directory>
+	</Directory>
+</Installation>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	
+	<enums>
+		<Enum name="actor_variant_transform_keyframe">
+			<field>primary</field>
+			<field>secondary</field>
+			<field>final</field>
+		</Enum>
+		
+		<Enum name="actor_variant_transform_keyframe_rider_handling">
+			<field>none</field>
+			<field>kill</field>
+			<field>eject</field>
+		</Enum>
+		
+		<Enum name="actor_variant_transform_keyframe_effect_target">
+			<field>self</field>
+			<field>riders</field>
+		</Enum>
+		
+		<Enum name="actor_variant_transform_team_handling">		
+			<field>inherit from old unit</field>
+			<field>inherit from attacker</field>
+			<field>override</field>
+		</Enum>
+	</enums>
+
+	<blocks>
+		<TagBlock name="actor_variant_transform_keyframe_action_block" maxElements="9">
+			<!--actor_variant_transform_keyframe_action-->
+			<field type="Enum" name="keyframe" definition="actor_variant_transform_keyframe" />
+			<field type="Enum" name="rider handling" definition="actor_variant_transform_keyframe_rider_handling" />
+			<field type="Enum" name="target" definition="actor_variant_transform_keyframe_effect_target" />
+			<field type="Pad" definition="2" />
+			<field type="TagReference" name="damage effect" definition="damage_effect_reference" />
+			<field type="TagReference" name="effect" definition="effect_reference" />
+			<field type="String" name="effect marker" />
+		</TagBlock>
+	</blocks>
+
+</definitions>

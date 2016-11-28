@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BlamLib</RootNamespace>
+    <AssemblyName>BlamLib</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OSRootDir>$(MSBuildProjectDirectory)\..\..\</OSRootDir>
+  </PropertyGroup>
+  <Import Project="$(OSRootDir)shared\config\msbuild\BlamLib.props" />
+  <ItemGroup>
+    <Reference Include="SlimDX">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
+      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
+      <Name>LowLevel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blam\Cache\Tags\CacheTagsGen2nd.cs" />
+    <Compile Include="Blam\Cache\Tags\CacheTagsGen3rd.cs" />
+    <Compile Include="Blam\Cache\Tags\Code\CacheTagsGen3rd.cs" />
+    <Compile Include="Blam\Cache\Tags\Trace\CacheTagsGen3rd.cs" />
+    <Compile Include="Blam\DataHandles\StringId.Description.cs" />
+    <Compile Include="Blam\DataHandles\DatumIndex.cs" />
+    <Compile Include="Blam\DataHandles\MapId.cs" />
+    <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
+    <Compile Include="Blam\DataHandles\StringId.cs" />
+    <Compile Include="Blam\Halo1\CheApe\Compiler_Scripts.cs" />
+    <Compile Include="Blam\Halo1\CheApe\Compiler_Tags.cs" />
+    <Compile Include="Blam\Halo1\CheApe\Import_Tags.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Yelo.cs" />
+    <Compile Include="Blam\Halo1\TypeEnums.cs" />
+    <Compile Include="CheApe\Compiler_CacheFile.cs" />
+    <Compile Include="CheApe\Compiler_Fixups.cs" />
+    <Compile Include="CheApe\Compiler_Tags.cs" />
+    <Compile Include="CheApe\Import_Fixups.cs" />
+    <Compile Include="CheApe\Import_Scripts.cs" />
+    <Compile Include="CheApe\Import_Tags.cs" />
+    <Compile Include="CheApe\ProjectState.cs" />
+    <Compile Include="Compression\LZMA.cs" />
+    <Compile Include="Cryptography\MD5.cs" />
+    <Compile Include="Cryptography\XXTEA.cs" />
+    <Compile Include="IO\EndianStreams.cs" />
+    <Compile Include="IO\EndianStreams.Reader.cs" />
+    <Compile Include="IO\EndianStreams.Writer.cs" />
+    <Compile Include="IO\Streams.TagStream.cs" />
+    <Compile Include="IO\WaveMaterialLibWriter.cs" />
+    <Compile Include="IO\WaveObjWriter.cs" />
+    <Compile Include="IO\XCompress.cs" />
+    <Compile Include="Managers\BlamDefinition\GameGen3.cs" />
+    <Compile Include="Managers\StringIdCollections.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.Base.cs" />
+    <Compile Include="Managers\TagIndex\TagIndexHandler.cs" />
+    <Compile Include="Messaging\IMessageHandler.cs" />
+    <Compile Include="Messaging\MessageHandler.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Bitmaps\Bitmaps.cs" />
+    <Compile Include="Bitmaps\DXT.cs" />
+    <Compile Include="Bitmaps\Palettized.cs" />
+    <Compile Include="Bitmaps\Swizzler.cs" />
+    <Compile Include="Blam\GameState.cs" />
+    <Compile Include="Blam\MiscGroups.cs" />
+    <Compile Include="Blam\Cache\Builder.cs" />
+    <Compile Include="Blam\Cache\CacheFile.cs" />
+    <Compile Include="Blam\Cache\CacheFileGen2nd.cs" />
+    <Compile Include="Blam\Cache\CacheFileGen3rd.cs" />
+    <Compile Include="Blam\Cache\CacheFileExtraction.cs" />
+    <Compile Include="Blam\Cache\Tags\CacheableResource.cs" />
+    <Compile Include="Blam\Cache\Tags\PredictedResources.cs" />
+    <Compile Include="Blam\Halo1\Builder.cs" />
+    <Compile Include="Blam\Halo1\CacheFile.cs" />
+    <Compile Include="Blam\Halo1\VertexBufferInterface.cs" />
+    <Compile Include="Blam\Halo1\CheApe\Compiler.cs" />
+    <Compile Include="Blam\Halo1\CheApe\Import.cs" />
+    <Compile Include="Blam\Halo1\CheApe\Project.cs" />
+    <Compile Include="Blam\Halo1\DelimitorFile.cs" />
+    <Compile Include="Blam\Halo1\Game.cs" />
+    <Compile Include="Blam\Halo1\Program.Halo1.cs" />
+    <Compile Include="Blam\Halo1\Tags\Code\Resources.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\AI.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Bsp.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Effects.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Globals.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Hud.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Misc.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Models.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Objects.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\ObjectWidgets.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Resources.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Sound.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\UI.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\AI.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Bsp.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Effects.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Globals.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Hud.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Misc.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Models.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Objects.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\ObjectWidgets.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Resources.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\Sound.cs" />
+    <Compile Include="Blam\Halo1\Tags\Layout\UI.cs" />
+    <Compile Include="Blam\Halo1\Tags\Scenario.cs" />
+    <Compile Include="Blam\Halo1\Tags\Shaders.cs" />
+    <Compile Include="Blam\Halo1\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\Halo1\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\Halo1\Tags\Groups\TagGroupsInit.cs" />
+    <Compile Include="Blam\Stubbs\Builder.cs" />
+    <Compile Include="Blam\Stubbs\CacheFile.cs" />
+    <Compile Include="Blam\Stubbs\Game.cs" />
+    <Compile Include="Blam\Stubbs\Program.Stubbs.cs" />
+    <Compile Include="Blam\Stubbs\TagGroups.cs" />
+    <Compile Include="CheApe\Compiler.cs" />
+    <Compile Include="CheApe\Definition.cs" />
+    <Compile Include="CheApe\Import.cs" />
+    <Compile Include="CheApe\Project.cs" />
+    <Compile Include="Debug\Assert.cs" />
+    <Compile Include="Debug\Exception.cs" />
+    <Compile Include="Debug\LogFile.cs" />
+    <Compile Include="Debug\Trace.cs" />
+    <Compile Include="IO\Assembly.cs" />
+    <Compile Include="IO\ByteSwap.cs" />
+    <Compile Include="IO\Files.cs" />
+    <Compile Include="IO\Groups.cs" />
+    <Compile Include="IO\Streams.cs" />
+    <Compile Include="Managers\Controllers.cs" />
+    <Compile Include="Managers\FileManager.cs" />
+    <Compile Include="Managers\BlamDefinition\Game.cs" />
+    <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Managers\DataArray.cs" />
+    <Compile Include="Managers\ReferenceManager.cs" />
+    <Compile Include="Managers\StringIdManager.cs" />
+    <Compile Include="Managers\TagDatabase.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.Cache.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.CacheExtraction.cs" />
+    <Compile Include="Managers\TagManager.cs" />
+    <Compile Include="Reflection\Util.Enum.cs" />
+    <Compile Include="Render\COLLADA\ColladaElement.cs" />
+    <Compile Include="Render\COLLADA\ColladaFile.cs" />
+    <Compile Include="Render\COLLADA\ColladaInterface.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaAnimation.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaAnimationClip.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaChannel.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaInstanceAnimation.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaLibraryAnimationClips.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaLibraryAnimations.cs" />
+    <Compile Include="Render\COLLADA\Core\Animation\ColladaSampler.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaCamera.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaImager.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaInstanceCamera.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaLibraryCameras.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaOptics.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaOrthographic.cs" />
+    <Compile Include="Render\COLLADA\Core\Camera\ColladaPerspective.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaController.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaInstanceController.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaJoints.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaLibraryControllers.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaMorph.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaSkeleton.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaSkin.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaTargets.cs" />
+    <Compile Include="Render\COLLADA\Core\Controller\ColladaVertexWeights.cs" />
+    <Compile Include="Render\COLLADA\Core\CustomTypes\ColladaPolyPH.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaAccessor.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaBoolArray.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaFloatArray.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaIDREFArray.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaInputShared.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaInputUnshared.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaIntArray.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaNameArray.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaParam.cs" />
+    <Compile Include="Render\COLLADA\Core\DataFlow\ColladaSource.cs" />
+    <Compile Include="Render\COLLADA\Core\Extensibility\ColladaExtra.cs" />
+    <Compile Include="Render\COLLADA\Core\Extensibility\ColladaTechnique.cs" />
+    <Compile Include="Render\COLLADA\Core\Extensibility\ColladaTechniqueCommon.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaControlVertices.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaGeometry.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaGeometryCommonAttributes.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaInstanceGeometry.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaLibraryGeometries.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaLines.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaLinestrips.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaMesh.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaPolygons.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaPolylist.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaSpline.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaTriangles.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaTrifans.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaTristrips.cs" />
+    <Compile Include="Render\COLLADA\Core\Geometry\ColladaVertices.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaAmbient.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaColor.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaDirectional.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaInstanceLight.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaLibraryLights.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaLight.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaPoint.cs" />
+    <Compile Include="Render\COLLADA\Core\Lighting\ColladaSpot.cs" />
+    <Compile Include="Render\COLLADA\Core\Metadata\ColladaAsset.cs" />
+    <Compile Include="Render\COLLADA\Core\Metadata\ColladaAssetUnit.cs" />
+    <Compile Include="Render\COLLADA\Core\Metadata\ColladaContributor.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaInstanceNode.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaInstanceVisualScene.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaLibraryNodes.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaLibraryVisualScenes.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaNode.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaScene.cs" />
+    <Compile Include="Render\COLLADA\Core\Scene\ColladaVisualScene.cs" />
+    <Compile Include="Render\COLLADA\Core\Transform\ColladaLookat.cs" />
+    <Compile Include="Render\COLLADA\Core\Transform\ColladaMatrix.cs" />
+    <Compile Include="Render\COLLADA\Core\Transform\ColladaRotate.cs" />
+    <Compile Include="Render\COLLADA\Core\Transform\ColladaScale.cs" />
+    <Compile Include="Render\COLLADA\Core\Transform\ColladaSkew.cs" />
+    <Compile Include="Render\COLLADA\Core\Transform\ColladaTranslate.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaFXOpaqueEnum.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaFXSurfaceFaceEnum.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaFXSurfaceTypeEnum.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaInputSharedSemantic.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaModifierValue.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaMorphMethodType.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaNodeType.cs" />
+    <Compile Include="Render\COLLADA\Enums\ColladaUpAxisEnum.cs" />
+    <Compile Include="Render\COLLADA\ErrorReporting\ColladaException.cs" />
+    <Compile Include="Render\COLLADA\ErrorReporting\ColladaExceptionStrings.cs" />
+    <Compile Include="Render\COLLADA\ErrorReporting\ColladaValidationException.cs" />
+    <Compile Include="Render\COLLADA\Export\ColladaExporter.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\Base.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ColladaHalo1.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterBSP.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterModel.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterScenario.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\Base.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\ColladaHalo2.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\ExporterBSP.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\ExporterLightmap.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\ExporterRenderModel.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\Interfaces.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaBindVertexInput.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaEffect.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaInstanceEffect.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaLibraryEffects.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaSemantic.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaTechnique.cs" />
+    <Compile Include="Render\COLLADA\FX\Effects\ColladaTechniqueHint.cs" />
+    <Compile Include="Render\COLLADA\FX\Materials\ColladaBind.cs" />
+    <Compile Include="Render\COLLADA\FX\Materials\ColladaBindMaterial.cs" />
+    <Compile Include="Render\COLLADA\FX\Materials\ColladaInstanceMaterial.cs" />
+    <Compile Include="Render\COLLADA\FX\Materials\ColladaLibraryMaterials.cs" />
+    <Compile Include="Render\COLLADA\FX\Materials\ColladaMaterial.cs" />
+    <Compile Include="Render\COLLADA\FX\Parameters\ColladaAnnotate.cs" />
+    <Compile Include="Render\COLLADA\FX\Parameters\ColladaModifier.cs" />
+    <Compile Include="Render\COLLADA\FX\Parameters\ColladaNewparam.cs" />
+    <Compile Include="Render\COLLADA\FX\Parameters\ColladaParam.cs" />
+    <Compile Include="Render\COLLADA\FX\Parameters\ColladaSetparam.cs" />
+    <Compile Include="Render\COLLADA\FX\Profiles\ColladaProfileCOMMON.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaBlinn.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaCommonColorOrTextureType.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaCommonFloatOrParamType.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaConstant.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaLambert.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaPhong.cs" />
+    <Compile Include="Render\COLLADA\FX\Rendering\ColladaTexture.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaImage.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaInitFrom.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaLibraryImages.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaSampler1D.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaSampler2D.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaSampler3D.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaSamplerCUBE.cs" />
+    <Compile Include="Render\COLLADA\FX\Texturing\ColladaSurface.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaBoneMatrix.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaIDAttribute.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaName.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaObject.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaObjectAttribute.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaObjectElement.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaObjectElementList.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaObjectValue.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaSIDValue.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaSIDValueArray.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaURIAttribute.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaUtilities.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaValue.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaValueArray.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaEmptyString.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaFileValidator.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaHasValidValue.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaInvalidForParent.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaIsNull.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaListHasValue.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaListMinCount.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaMutuallyExclusive.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaMutuallyInclusive.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaOneRequired.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaValidationTest.cs" />
+    <Compile Include="Render\DeclarationTypes.cs" />
+    <Compile Include="Render\VertexBufferInterface.cs" />
+    <Compile Include="S3D\PAK.cs" />
+    <Compile Include="Scripting\Blocks.cs" />
+    <Compile Include="Scripting\Data.cs" />
+    <Compile Include="Scripting\XmlInterface.cs" />
+    <Compile Include="Scripting\Compiler\Compiler.cs" />
+    <Compile Include="Scripting\Compiler\Data.cs" />
+    <Compile Include="Scripting\Compiler\Stream.cs" />
+    <Compile Include="Scripting\Decompiler\Decompiler.cs" />
+    <Compile Include="TagInterface\Attributes.cs" />
+    <Compile Include="TagInterface\BlamPath.cs" />
+    <Compile Include="TagInterface\Definition.cs" />
+    <Compile Include="TagInterface\Editor.cs" />
+    <Compile Include="TagInterface\Exceptions.cs" />
+    <Compile Include="TagInterface\FieldUtil.cs" />
+    <Compile Include="TagInterface\TagGroup.cs" />
+    <Compile Include="TagInterface\Util.cs" />
+    <Compile Include="TagInterface\Version.cs" />
+    <Compile Include="TagInterface\Fields\Block.cs" />
+    <Compile Include="TagInterface\Fields\Custom.cs" />
+    <Compile Include="TagInterface\Fields\Field.cs" />
+    <Compile Include="TagInterface\Fields\Integers.cs" />
+    <Compile Include="TagInterface\Fields\Padding.cs" />
+    <Compile Include="TagInterface\Fields\Reals.cs" />
+    <Compile Include="TagInterface\Fields\String.cs" />
+    <Compile Include="TagInterface\Fields\Struct.cs" />
+    <Compile Include="TagInterface\Fields\Structures.cs" />
+    <Compile Include="Util\EnumBitEncoder.cs" />
+    <Compile Include="Util\HandleBitEncoder.cs" />
+    <Compile Include="Util\TypeExtensions.cs" />
+    <Compile Include="Util\Util.Bits.cs" />
+    <Compile Include="Util\Util.cs" />
+    <Compile Include="Util\Util.Math.cs" />
+    <Compile Include="Util\Util.Security.cs" />
+    <Compile Include="Util\Util.Strings.cs" />
+    <Compile Include="Util\Util.Unmanaged.cs" />
+    <Compile Include="Util\Windows.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Blam\Halo2\Builder.cs" />
+    <Compile Include="Blam\Halo2\CacheFile.cs" />
+    <Compile Include="Blam\Halo2\VertexBufferInterface.cs" />
+    <Compile Include="Blam\Halo2\CheApe\Compiler.cs" />
+    <Compile Include="Blam\Halo2\CheApe\Import.cs" />
+    <Compile Include="Blam\Halo2\CheApe\Project.cs" />
+    <Compile Include="Blam\Halo2\Convert.cs" />
+    <Compile Include="Blam\Halo2\Game.cs" />
+    <Compile Include="Blam\Halo2\Program.Halo2.cs" />
+    <Compile Include="Blam\Halo2\Tags\Bsp.cs" />
+    <Compile Include="Blam\Halo2\Tags\Effects.cs" />
+    <Compile Include="Blam\Halo2\Tags\Functions.cs" />
+    <Compile Include="Blam\Halo2\Tags\Globals.cs" />
+    <Compile Include="Blam\Halo2\Tags\Interface.cs" />
+    <Compile Include="Blam\Halo2\Tags\Misc.cs" />
+    <Compile Include="Blam\Halo2\Tags\Models.cs" />
+    <Compile Include="Blam\Halo2\Tags\Objects.cs" />
+    <Compile Include="Blam\Halo2\Tags\ObjectWidgets.cs" />
+    <Compile Include="Blam\Halo2\Tags\Resources.cs" />
+    <Compile Include="Blam\Halo2\Tags\Scenario.cs" />
+    <Compile Include="Blam\Halo2\Tags\Sound.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Bsp.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Effects.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Globals.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Misc.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Models.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Resources.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Scenario.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Shaders.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
+    <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
+    <Compile Include="Blam\Halo2\Tags\Definitions\AI.cs" />
+    <Compile Include="Blam\Halo2\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\Halo2\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\Halo2\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\Halo2\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\Halo2\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\Halo2\Tags\Groups\TagGroupsInit.cs" />
+    <Compile Include="Blam\Halo2\Tags\Layout\AI.cs" />
+    <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Blam\Halo3\Builder.cs" />
+    <Compile Include="Blam\Halo3\CacheFile.cs" />
+    <Compile Include="Blam\Halo3\Game.cs" />
+    <Compile Include="Blam\Halo3\Program.Halo3.cs" />
+    <Compile Include="Blam\Halo3\VertexBufferInterface.cs" />
+    <Compile Include="Blam\Halo3\Tags\AI.cs" />
+    <Compile Include="Blam\Halo3\Tags\Bsp.cs" />
+    <Compile Include="Blam\Halo3\Tags\Functions.cs" />
+    <Compile Include="Blam\Halo3\Tags\Globals.cs" />
+    <Compile Include="Blam\Halo3\Tags\Gui.cs" />
+    <Compile Include="Blam\Halo3\Tags\Models.cs" />
+    <Compile Include="Blam\Halo3\Tags\Objects.cs" />
+    <Compile Include="Blam\Halo3\Tags\Resources.cs" />
+    <Compile Include="Blam\Halo3\Tags\Scenario.cs" />
+    <Compile Include="Blam\Halo3\Tags\Shaders.cs" />
+    <Compile Include="Blam\Halo3\Tags\Sound.cs" />
+    <Compile Include="Blam\Halo3\Tags\UI.cs" />
+    <Compile Include="Blam\Halo3\Tags\Code\Models.cs" />
+    <Compile Include="Blam\Halo3\Tags\Code\Resources.cs" />
+    <Compile Include="Blam\Halo3\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\Halo3\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\Halo3\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\Halo3\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\Halo3\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\Halo3\Tags\Groups\TagGroupsInit.cs" />
+    <Compile Include="Blam\Halo3\Tags\Trace\ResourcesOutput.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Blam\HaloOdst\CacheFile.cs" />
+    <Compile Include="Blam\HaloOdst\Game.cs" />
+    <Compile Include="Blam\HaloOdst\Program.HaloOdst.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\AI.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Bsp.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Effects.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Functions.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Globals.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Gui.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Misc.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Models.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Objects.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\ObjectWidgets.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Resources.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Scenario.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Shaders.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\Sound.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Definitions\UI.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Groups\TagGroupsInit.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\AI.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Bsp.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Effects.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Functions.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Globals.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Gui.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Misc.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Models.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Objects.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\ObjectWidgets.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Resources.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Scenario.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Shaders.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\Sound.cs" />
+    <Compile Include="Blam\HaloOdst\Tags\Layout\UI.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Blam\HaloReach\Builder.cs" />
+    <Compile Include="Blam\HaloReach\CacheFile.cs" />
+    <Compile Include="Blam\HaloReach\Game.cs" />
+    <Compile Include="Blam\HaloReach\Program.HaloReach.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Globals.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Resources.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Groups\TagGroupsInit.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Blam\Halo4\CacheFile.cs" />
+    <Compile Include="Blam\Halo4\Game.cs" />
+    <Compile Include="Blam\Halo4\Program.Halo4.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsInit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Documentation\ConditionalCompilationSymbols.txt" />
+    <None Include="Documentation\Blam\localization.xml" />
+    <None Include="Documentation\Blam\cinematic_format.txt" />
+    <None Include="Documentation\Blam\CheApeBlam.xml" />
+    <None Include="Documentation\Blam\CheApeDefinition.xml" />
+    <None Include="Documentation\Blam\bsld.xml" />
+    <None Include="Documentation\Blam\string_ids.xml" />
+    <None Include="Documentation\Blam\Blam.xml" />
+    <None Include="Documentation\Blam\TagIndexDump.xml" />
+    <None Include="Documentation\Blam\Halo1\TagUtil.txt" />
+    <None Include="Documentation\Blam\Halo1\CheApeHalo1.xml" />
+    <None Include="Documentation\Blam\Halo2\CheApeHalo2.xml" />
+    <None Include="Documentation\Blam\Halo2\RenderingPipeline.txt" />
+    <None Include="Documentation\Blam\Halo2\VertexBuffers.xml" />
+    <None Include="Documentation\Tag System\TagInterface.txt" />
+    <None Include="Documentation\Tag System\TagExport.xml" />
+    <None Include="Documentation\Tag System\TagManagerUI.txt" />
+    <None Include="Documentation\Blam\TagIndexNamesOverrides.xml" />
+    <None Include="Documentation\Blam\TagIndexNamesOverridesDatabase.xml" />
+    <None Include="Settings.xml" />
+    <EmbeddedResource Include="Games\Halo1\Halo1.xml" />
+    <EmbeddedResource Include="Games\Halo1\CheApe.xml" />
+    <EmbeddedResource Include="Games\Halo1\PC\Definitions\Halo1_CE_Scripting.xml" />
+    <EmbeddedResource Include="Games\Stubbs\Stubbs.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\Halo1\PC\Definitions\Halo1_PC_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\Halo1\Xbox\Definitions\Halo1_Xbox_VertexBuffer.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\Halo2\Halo2.xml" />
+    <EmbeddedResource Include="Games\Halo2\CheApe.xml" />
+    <EmbeddedResource Include="Games\Halo2\PC\Definitions\Halo2_PC_StringId.xml" />
+    <EmbeddedResource Include="Games\Halo2\PC\Definitions\Halo2_PC_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\Halo2\Xbox\Definitions\Halo2_Alpha_StringId.xml" />
+    <EmbeddedResource Include="Games\Halo2\Xbox\Definitions\Halo2_Alpha_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\Halo2\Xbox\Definitions\Halo2_Xbox_StringId.xml" />
+    <EmbeddedResource Include="Games\Halo2\Xbox\Definitions\Halo2_Xbox_VertexBuffer.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\Halo3\Halo3.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Beta_Scripting.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Beta_StringId.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Beta_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Epsilon_Scripting.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Epsilon_StringId.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Xbox_Scripting.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Xbox_StringId.xml" />
+    <EmbeddedResource Include="Games\Halo3\Xbox\Definitions\Halo3_Xbox_VertexBuffer.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\HaloOdst\HaloOdst.xml" />
+    <EmbeddedResource Include="Games\HaloOdst\Xbox\Definitions\HaloOdst_Xbox_Scripting.xml" />
+    <EmbeddedResource Include="Games\HaloOdst\Xbox\Definitions\HaloOdst_Xbox_StringId.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\HaloReach\HaloReach.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Beta_StringId.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Beta_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_Scripting.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_StringId.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
+    <EmbeddedResource Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringId.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Blam\Halo4\Tags\Code\" />
+    <Folder Include="Blam\Halo4\Tags\Definitions\" />
+    <Folder Include="Blam\Halo4\Tags\Layout\" />
+    <Folder Include="Blam\HaloOdst\Tags\Code\" />
+    <Folder Include="Blam\HaloOdst\Tags\Trace\" />
+    <Folder Include="Blam\HaloReach\Tags\Code\" />
+    <Folder Include="Blam\HaloReach\Tags\Definitions\" />
+    <Folder Include="Blam\HaloReach\Tags\Layout\" />
+    <Folder Include="Blam\HaloReach\Tags\Trace\" />
+    <Folder Include="Blam\Stubbs\Tags\Code\" />
+    <Folder Include="Blam\Stubbs\Tags\Definitions\" />
+    <Folder Include="Blam\Stubbs\Tags\Layout\" />
+    <Folder Include="Documentation\Blam\Halo3\" />
+    <Folder Include="Games\Halo1\Mac\Definitions\" />
+    <Folder Include="Games\Stubbs\Mac\Definitions\" />
+    <Folder Include="Games\Stubbs\PC\Definitions\" />
+    <Folder Include="Games\Stubbs\Xbox\Definitions\" />
+    <Folder Include="Render\COLLADA\Export\Halo3\" />
+    <Folder Include="Render\COLLADA\Export\HaloOdst\" />
+    <Folder Include="Render\COLLADA\Export\HaloReach\" />
+    <Folder Include="Render\COLLADA\Export\Stubbs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

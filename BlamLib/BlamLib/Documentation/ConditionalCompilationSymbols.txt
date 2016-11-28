@@ -1,0 +1,16 @@
+﻿* NO_UNSAFE: When defined, any "unsafe" code in BlamLib will instead be replaced with "safe" variants of the code.
+	- Currently the the only "unsafe" code is in ByteSwap.cs, for byte swapping System.Single data without allocating a System.Byte[]
+	-NOTE: ADDED METHODS TO THE LowLevel.dll library TO HANDLE "UNSAFE" Single SWAPS! BlamLib IS "SAFE" ONCE AGAIN!
+* _WIN32: Defined when targetting the "x32" platform
+	-NOTE: "Any CPU" is currently setup to target x32 by default, but no _WIN macros are defined.
+* _WIN64: Defined when targetting the "x64" platform
+
+* NO_HALO2: When defined, excludes any Halo 2 implementation code/definitions
+* NO_HALO3: When defined, excludes any Halo 3 implementation code/definitions
+* NO_HALO_ODST: When defined, excludes any Halo 3: ODST implementation code/definitions
+* NO_HALO_REACH: When defined, excludes any Halo: Reach implementation code/definitions
+* NO_SCRIPTING: When defined, excludes any BlamLib.Scripting related code/definitions
+
+* XDK_NO_XBOX: When defined, excludes all BlamLib.XDK.Xbox related code
+* XDK_NO_360: When defined, excludes all BlamLib.XDK.Xenon related code
+* XDK_NO_LIB: When defined, excludes all BlamLib.XDK interface related code

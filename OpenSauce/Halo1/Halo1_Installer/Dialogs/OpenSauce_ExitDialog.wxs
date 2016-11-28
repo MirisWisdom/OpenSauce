@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) Microsoft Corporation.  All rights reserved.
+    
+    The use and distribution terms for this software are covered by the
+    Common Public License 1.0 (http://opensource.org/licenses/cpl1.0.php)
+    which can be found in the file CPL.TXT at the root of this distribution.
+    By using this software in any fashion, you are agreeing to be bound by
+    the terms of this license.
+    
+    You must not remove this notice, or any other, from this software.
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<UI>
+			<Dialog Id="OpenSauce_ExitDialog" Width="370" Height="270" Title="!(loc.ExitDialog_Title)">
+				<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUICancel)" />
+				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="!(loc.ExitDialogBitmap)" />
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUIBack)" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Description" Type="Text" X="135" Y="70" Width="220" Height="40" Transparent="yes" NoPrefix="yes" Text="!(loc.ExitDialogDescription)" />
+				<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.ExitDialogTitle)" />
+
+				<?ifdef Halo1_CE?>
+				<Control Id="Halo1_CE_ReadmeCheckbox" Type="CheckBox" X="135" Y="170" Width="220" Height="12" Hidden="yes" Property="HALO1_CE_README_LAUNCH_PROP" CheckBoxValue="1" Text="View readme for the OS runtime">
+					<Condition Action="show"><![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]></Condition>
+				</Control>
+				<Control Id="Halo1_CheApe_ReadmeCheckbox" Type="CheckBox" X="135" Y="182" Width="220" Height="12" Hidden="yes" Property="HALO1_CE_HEK_README_LAUNCH_PROP" CheckBoxValue="1" Text="View readme for the OS HEK">
+					<Condition Action="show"><![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]></Condition>
+				</Control>
+				<?endif?>
+			</Dialog>
+
+			<InstallUISequence>
+				<Show Dialog="OpenSauce_ExitDialog" OnExit="success" Overridable="yes" />
+			</InstallUISequence>
+
+			<AdminUISequence>
+				<Show Dialog="OpenSauce_ExitDialog" OnExit="success" Overridable="yes" />
+			</AdminUISequence>
+		</UI>
+	</Fragment>
+</Wix>

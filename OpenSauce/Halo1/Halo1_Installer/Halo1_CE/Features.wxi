@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	
+	<Feature Id='Halo1_CE_ClientServer_FEAT'
+		Title='Halo CE'
+		Description='Extensions for Halo CE, both Client and Server.'
+		Display='expand'
+		Level='1'
+		ConfigurableDirectory='HALO1_CE_HCE_INSTALLDIR_PROP'
+		AllowAdvertise='no'>
+		
+		<ComponentRef Id='Halo1_CE_dinput8110_COMP' />
+		<ComponentRef Id='Halo1_CE_vsh_OS_COMP' />
+		<ComponentRef Id='Halo1_CE_EffectCollection_ps_2_a_COMP' />
+		<ComponentRef Id='Halo1_CE_EffectCollection_ps_2_b_COMP' />
+
+		<ComponentRef Id='Halo1_CE_OpenSauceDedi_COMP'/>
+		<ComponentRef Id='Halo1_CE_ExeRemove_COMP'/>
+
+		<ComponentRef Id='Halo1_CE_Readme_COMP' />
+
+		<?ifdef SYMBOLS?>
+		<ComponentRef Id='Halo1_CE_dinput8110_PDB_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceDedi_PDB_COMP'/>
+		<?endif?>
+
+		<ComponentRef Id='Halo1_CE_CrashRpt_COMP' />
+		<ComponentRef Id='Halo1_CE_Reports_COMP' />
+		<ComponentRef Id='Halo1_CE_OSUserSettings_COMP' />
+		<ComponentRef Id='Halo1_CE_OSServerSettings_COMP' />
+		<ComponentRef Id='Halo1_CE_OSPPSettings_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceSettingsRemove_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceRemove_COMP' />
+
+		<ComponentRef Id='Halo1_CE_GBufferShaders_COMP' />
+		<ComponentRef Id='Halo1_CE_PPShaders_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceUI_COMP' />
+		<ComponentRef Id='Halo1_CE_ShadersRemove_COMP' />
+		<ComponentRef Id='Halo1_CE_HaloCERemove_COMP' />
+
+		<ComponentRef Id='Halo1_CE_dbghelp_COMP' />
+		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
+		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
+		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
+
+	</Feature>
+	<Feature Id='Halo1_CE_HEK_FEAT'
+		Title='Halo Editing Kit'
+		Description='Extensions that add new functionality to the HEK.'
+		Level='100'
+		Display='expand'
+		AllowAdvertise='no'
+		ConfigurableDirectory='HALO1_CE_HEK_INSTALLDIR_PROP'>
+
+		<ComponentRef Id='Halo1_CE_CheApeDLLG_COMP' />
+		<ComponentRef Id='Halo1_CE_CheApeDLLS_COMP' />
+		<ComponentRef Id='Halo1_CE_CheApeDLLT_COMP' />
+
+		<ComponentRef Id='Halo1_CE_dbghelp_COMP' />
+		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
+		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
+		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
+
+		<ComponentRef Id='Halo1_CE_RenderLightmaps_MS_COMP' />
+		<ComponentRef Id='Halo1_CE_MaterialFixer_MS_COMP' />
+		
+		<ComponentRef Id='Halo1_CE_CheApe_Readme_COMP' />
+
+		<?ifdef SYMBOLS?>
+		<ComponentRef Id='Halo1_CE_CheApeDLLG_PDB_COMP' />
+		<ComponentRef Id='Halo1_CE_CheApeDLLS_PDB_COMP' />
+		<ComponentRef Id='Halo1_CE_CheApeDLLT_PDB_COMP' />
+		<?endif?>
+		
+		<ComponentRef Id='Halo1_CE_OS_Settings_Editor_COMP' />
+
+		<ComponentRef Id='Halo1_CE_gbuffer_functions_FX_COMP' />
+		<ComponentRef Id='Halo1_CE_vertex_shaders_FX_COMP' />
+		<ComponentRef Id='Halo1_CE_CheApe_COMP' />
+
+		<ComponentRef Id='Halo1_CE_OSGuerillaMenuShortcut_COMP' />
+		<ComponentRef Id='Halo1_CE_OSSapienMenuShortcut_COMP' />
+		<ComponentRef Id='Halo1_CE_OSToolMenuShortcut_COMP' />
+
+		<ComponentRef Id='Halo1_CE_OSGuerillaDesktopShortcut_COMP' />
+		<ComponentRef Id='Halo1_CE_OSSapienDesktopShortcut_COMP' />
+		<ComponentRef Id='Halo1_CE_OSToolDesktopShortcut_COMP' />
+
+		<ComponentRef Id='Halo1_CE_HaloCEMenuRemove_COMP' />
+		<ComponentRef Id='Halo1_CE_HEKExeRemove_COMP' />
+		
+		<Feature Id='Halo1_CE_HEKExampleFiles_FEAT'
+			Title='Example Files'
+			Description='Data and tag files that serve as examples of using the extended HEK'
+			Level='1'
+			AllowAdvertise='no'>
+
+			<ComponentRef Id='Halo1_CE_sepia_example_FX_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_example_FX_COMP' />
+
+			<ComponentRef Id='Halo1_CE_sepia_example_SHPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_blue_example_SHPG_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_example_SHPG_COMP' />
+			
+			<ComponentRef Id='Halo1_CE_sepia_example_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_blue_example_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_example_EFPG_COMP' />
+			
+			<ComponentRef Id='Halo1_CE_example_collection_EFPC_COMP' />
+		</Feature>
+	</Feature>
+	
+</Include>

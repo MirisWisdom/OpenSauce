@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import me directly after your project's 'Microsoft.(LanguageName].targets' import (typically the last element) -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      OSVerifyDirectX;
+      OSVerifyXenonSDK;
+	  OSVerifyCppBoost;
+	  OSVerifyGameSpyOpen;
+	  OSVerifyRakNet;
+	  OSVerifyVLD;
+	  OSVerifyHaloCustomEd;
+	  OSVerifyStubbsPc;
+	  OSVerifyHalo2Pc;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PrepareForRunDependsOn>
+	  OSCopyExeToHaloCustomEd;
+	  OSCopyExeToStubbsPc;
+	  OSCopyExeToHalo2Pc;
+      $(PrepareForRunDependsOn)
+    </PrepareForRunDependsOn>
+  </PropertyGroup>
+</Project>

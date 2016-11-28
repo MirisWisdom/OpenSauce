@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	<blocks>
+		<!--TagBlock name="effect_postprocess_custom_vertex_data_block" maxElements="4">
+			<field type="RealBounds" name="X data"></field>
+			<field type="RealBounds" name="Y data"></field>
+			<field type="RealBounds" name="Z data"></field>
+			<field type="RealBounds" name="W data"></field>
+		</TagBlock-->
+
+		<TagBlock name="effect_postprocess_shader_block" maxElements="12">
+			<field type="TagReference" name="shader" definition="shader_postprocess_generic_reference" blockname="true"/>
+		</TagBlock>
+
+		<TagBlock name="effect_postprocess_shader_index_block" maxElements="12">
+			<field type="LongBlockIndex" name="shader" definition="effect_postprocess_shader_block" blockname="true"/>
+		</TagBlock>
+
+		<TagBlock name="effect_postprocess_exposed_parameter_block" maxElements="32">
+			<field type="String" name="exposed name" blockname="true"/>
+			<field type="String" name="parameter name"/>
+			<field type="LongBlockIndex" name="shader index" definition="effect_postprocess_shader_index_block"/>
+			<field type="Pad" definition="12" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="effect_postprocess" groupTag="efpp" version="1">
+			<!--s_effect_postprocess_definition-->
+			<field type="Explanation" name="effect post-process" definition=""/>
+			<field type="Pad" definition="12" />
+			
+			<!--s_shader_postprocess_quad_definition-->
+			<field type="Point2D" name="quad tesselation" tooltip="0 defaults to 4"/>
+			<field type="RealFractionBounds" name="x screen bounds" units="[0,1]" tooltip="0 defaults to 1"/>
+			<field type="RealFractionBounds" name="y screen bounds" units="[0,1]" tooltip="0 defaults to 1"/>
+			<field type="Pad" definition="12"/><!--field type="Block" name="custom vertex data" definition="effect_postprocess_custom_vertex_data_block"/-->
+			
+			<field type="Pad" definition="4"/>
+			<field type="Pad" definition="12"/>
+		</TagGroup>
+		
+		<TagGroup name="effect_postprocess_generic" parentTag="efpp" groupTag="efpg" version="1">
+			<!--s_shader_postprocess_effect_generic-->
+			<field type="Block" name="shaders" definition="effect_postprocess_shader_block" />
+			<field type="Block" name="shader indices" definition="effect_postprocess_shader_index_block" />
+			<field type="Block" name="exposed parameters" definition="effect_postprocess_exposed_parameter_block" />
+		</TagGroup>
+	</groups>
+
+</definitions>

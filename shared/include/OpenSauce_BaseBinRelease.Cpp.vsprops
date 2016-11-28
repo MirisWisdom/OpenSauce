@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="OpenSauce_BaseBinRelease"
+
+	InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin.Cpp.vsprops"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		Optimization="3"
+		StringPooling="true"
+		RuntimeLibrary="2"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		LinkIncremental="1"
+		OptimizeReferences="2"
+		EnableCOMDATFolding="2"
+	/>
+</VisualStudioPropertySheet>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
+	
+	<!-- Files and folders that belong in the Halo CE root directory -->
+	<Directory Id='HALO1_CE_HCE_INSTALLDIR_PROP' Name='Halo Custom Edition' FileSource='$(var.ResourceFolder)Halo1_CE\HCE_InstallDir'>
+		<Directory Id='Halo1_CE_shaders_DIR' Name='shaders'>
+			<!-- Custom shaders for shader extensions-->
+			<Component Id='Halo1_CE_vsh_OS_COMP' Guid='A0714B15-01C1-4ED1-B74D-D52E9B61E23E'>
+				<File Id='Halo1_CE_vsh_OS_FILE' Name='vsh_OS.enc' DiskId='1' KeyPath='yes' />
+			</Component>
+			<Component Id='Halo1_CE_EffectCollection_ps_2_a_COMP' Guid='727C3471-F50C-49CC-A0E3-8426ADE14654'>
+				<File Id='Halo1_CE_EffectCollection_ps_2_a_FILE' Name='EffectCollection_ps_2_a.enc' DiskId='1' KeyPath='yes' />
+			</Component>
+			<Component Id='Halo1_CE_EffectCollection_ps_2_b_COMP' Guid='0D6D2D77-6F64-4136-BF93-526235A53FD0'>
+				<File Id='Halo1_CE_EffectCollection_ps_2_b_FILE' Name='EffectCollection_ps_2_b.enc' DiskId='1' KeyPath='yes' />
+			</Component>
+		</Directory>
+
+		<!-- Extension DLLs for the client and server-->
+		<Component Id='Halo1_CE_dinput8110_COMP' Guid='A7628736-700B-45F3-A710-75EEDB2FE7F2'>
+			<File Id='Halo1_CE_dinput8110_FILE' Name='dinput8.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\dinput8.dll' KeyPath='yes' />
+		</Component>
+
+		<Component Id='Halo1_CE_OpenSauceDedi_COMP' Guid='37269616-A4B7-4d85-999E-2168F05D0CE8'>
+			<File Id='Halo1_CE_OpenSauceDedi_FILE' Name='OpenSauceDedi.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Win32\Halo1_CE\OpenSauceDedi.dll' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_dbghelp_COMP' Guid='4E8356ED-1936-4795-8287-84E6EC370915'>
+			<File Id='Halo1_CE_dbghelp_FILE' Name='dbghelp.dll' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\dbghelp.dll' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_CrashRpt1401_COMP' Guid='1EAFBB24-0E61-40a4-A5EA-B35F04F616E5'>
+			<File Id='Halo1_CE_CrashRpt1401_FILE' Name='CrashRpt1401.dll' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\CrashRpt1401.dll' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_CrashSender1401_COMP' Guid='AAE43D30-5983-415d-AAC5-E9E870EF45B3'>
+			<File Id='Halo1_CE_CrashSender1401_FILE' Name='CrashSender1401.exe' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\CrashSender1401.exe' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_crashrpt_lang_COMP' Guid='BB77F3E0-6719-4589-8B1E-11A96314594E'>
+			<File Id='Halo1_CE_crashrpt_lang_FILE' Name='crashrpt_lang.ini' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\crashrpt_lang.ini' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_Readme_COMP' Guid='17B81049-EC68-41c0-803C-612BBB4869FE'>
+			<File Id='Halo1_CE_Readme_FILE' Name='Halo1_CE_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CE\Halo1_CE_Readme.txt' KeyPath='yes' />
+		</Component>
+
+		<?ifdef SYMBOLS?>
+		<Component Id='Halo1_CE_dinput8110_PDB_COMP' Guid='EDF05435-1E6E-4C91-B89A-ECBDBCC40885'>
+			<File Id='Halo1_CE_dinput8110_PDB_FILE' Name='dinput8.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\dinput8.pdb' KeyPath='yes' />
+		</Component>
+		
+		<Component Id='Halo1_CE_OpenSauceDedi_PDB_COMP' Guid='C57240B8-4FE5-4e1c-83E1-22D02A1BD982'>
+			<File Id='Halo1_CE_OpenSauceDedi_PDB_FILE' Name='OpenSauceDedi.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Win32\Halo1_CE\OpenSauceDedi.pdb' KeyPath='yes'/>
+		</Component>
+		<?endif?>
+
+		<!-- Component for removing the modified exes -->
+		<Component Id='Halo1_CE_ExeRemove_COMP' Guid='0094261B-9163-49e2-8276-1F7BC26D0DD2'>
+			<RemoveFile Id='Halo1_CE_OS_haloceded_REM' Name='OS_haloceded.exe' On='uninstall' />
+		</Component>
+	</Directory>
+
+	<!-- Files and folders that belong in the users Documents\My Games\Halo CE directory -->
+	<Directory Id='HALO1_CE_HCE_USERPATH_PROP' Name='Halo CE' FileSource='$(var.ResourceFolder)Halo1_CE\HCE_UserPath'>
+		<Directory Id='Halo1_CE_OpenSauce_DIR' Name='OpenSauce'>
+			<!-- Remove *.txt reports and remove the Reports folder -->
+			<Directory Id='Halo1_CE_Reports_DIR' Name='Reports'>
+				<Directory Id='Halo1_CE_CrashRpt_DIR' Name='CrashRpt'>
+					<Component Id='Halo1_CE_CrashRpt_COMP' Guid='3DAFB4FF-B023-4D6E-8D21-DAA3E521A8CE'>
+						<RemoveFile Id='Halo1_CE_CrashRpt_REM' Name='*.*' On='uninstall' />
+						<RemoveFolder Id='Halo1_CE_CrashRpt_REMDIR' On='uninstall' />
+					</Component>
+				</Directory>
+
+				<Component Id='Halo1_CE_Reports_COMP' Guid='6DC987E1-230F-4DA6-A365-113311C50146'>
+					<RemoveFile Id='Halo1_CE_Reports_REM' Name='*.*' On='uninstall' />
+					<RemoveFolder Id='Halo1_CE_Reports_REMDIR' On='uninstall' />
+				</Component>
+			</Directory>
+
+			<!-- Settings files -->
+			<Component Id='Halo1_CE_OSUserSettings_COMP' Guid='88FD2602-AFD9-40F1-89DD-EDDFB3768ADB'>
+				<File Id='Halo1_CE_OSUserSettings_FILE' Name='OS_Settings.User.xml' KeyPath='yes' />
+			</Component>
+			<Component Id='Halo1_CE_OSServerSettings_COMP' Guid='88EC2CC6-D9A9-472A-897B-28150A7D94E1'>
+				<File Id='Halo1_CE_OSServerSettings_FILE' Name='OS_Settings.Server.xml' KeyPath='yes' />
+			</Component>
+			<Component Id='Halo1_CE_OSPPSettings_COMP' Guid='373BB357-0BEC-4EDD-AD0B-8003A4BBCDD0'>
+				<File Id='Halo1_CE_OSPPSettings_FILE' Name='OS_Settings.PostProcessing.xml' KeyPath='yes' />
+			</Component>
+
+			<Component Id='Halo1_CE_OpenSauceSettingsRemove_COMP' Guid='7F60DC01-7553-4a30-8D52-50A1D009FC80'>
+				<RemoveFile Id='Halo1_CE_OpenSauceSettings_REM' Name='*.*' On='both'/>
+			</Component>
+
+			<!-- Remove the OpenSauce directory if empty -->
+			<Component Id='Halo1_CE_OpenSauceRemove_COMP' Guid='4ED59B1D-1E70-4853-98CE-CD4EE118CB3B'>
+				<RemoveFolder Id='Halo1_CE_OpenSauce_REMDIR' On='uninstall' />
+			</Component>
+		</Directory>
+	</Directory>
+
+	<!-- Files and folders that belong in the HEK root directory -->
+	<Directory Id='HALO1_CE_HEK_INSTALLDIR_PROP' Name='Halo Custom Edition' FileSource='$(var.ResourceFolder)Halo1_CheApe\HEK_InstallDir'>
+		<Directory Id='Halo1_CE_data_DIR' Name='data'>
+			<Directory Id='Halo1_CE_data_postprocess_DIR' Name='postprocess'>
+				<Directory Id='Halo1_CE_data_postprocess_shaders_DIR' Name='shaders'>
+					<Directory Id='Halo1_CE_data_shaders_includes_DIR' Name='includes'>
+						<!-- HLSL includes for using the postprocessing extension and gbuffer-->
+						<Component Id='Halo1_CE_gbuffer_functions_FX_COMP' Guid='887C91EE-2EC8-4251-8518-02892F230B50'>
+							<File Id='Halo1_CE_gbuffer_functions_FX_FILE' Name='gbuffer_functions.fx' DiskId='1' KeyPath='yes' />
+						</Component>
+						<Component Id='Halo1_CE_vertex_shaders_FX_COMP' Guid='E9C6528F-460C-4693-8E11-2818F48305A8'>
+							<File Id='Halo1_CE_vertex_shaders_FX_FILE' Name='vertex_shaders.fx' DiskId='1' KeyPath='yes' />
+						</Component>
+					</Directory>
+
+					<!-- Example post processes-->
+					<Component Id='Halo1_CE_sepia_example_FX_COMP' Guid='F991E8D7-4DD3-4A14-B62C-79AEF83B6DF6'>
+						<File Id='Halo1_CE_sepia_example_FX_FILE' Name='sepia example.fx' DiskId='1' KeyPath='yes' />
+					</Component>
+					<Component Id='Halo1_CE_visr_example_FX_COMP' Guid='ED3FA66A-119F-4193-94A3-E875A33E2C86'>
+						<File Id='Halo1_CE_visr_example_FX_FILE' Name='visr example.fx' DiskId='1' KeyPath='yes' />
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<Directory Id='Halo1_CE_tags_DIR' Name='tags'>
+			<Directory Id='Halo1_CE_tags_postprocess_DIR' Name='postprocess'>
+				<Directory Id='Halo1_CE_tags_postprocess_shaders_DIR' Name='shaders'>
+					<!-- Compiled postprocess shaders-->
+					<Component Id='Halo1_CE_sepia_example_SHPG_COMP' Guid='7498F601-2905-49E2-A8C4-EE63BD6DE633'>
+						<File Id='Halo1_CE_sepia_example_SHPG_FILE' Name='sepia example.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
+					</Component>
+					<Component Id='Halo1_CE_sepia_blue_example_SHPG_COMP' Guid='343978B8-8FDE-4935-901A-3AAC7945D1E1'>
+						<File Id='Halo1_CE_sepia_blue_example_SHPG_FILE' Name='sepia blue example.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
+					</Component>
+					<Component Id='Halo1_CE_visr_example_SHPG_COMP' Guid='A2B2EAE2-022D-416B-AE80-3CD8683D5B8C'>
+						<File Id='Halo1_CE_visr_example_SHPG_FILE' Name='visr example.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
+					</Component>
+				</Directory>
+				<Directory Id='Halo1_CE_tags_postprocess_effects_DIR' Name='effects'>
+					<Component Id='Halo1_CE_sepia_example_EFPG_COMP' Guid='F853B526-2A12-4012-BC74-F7B7AFFB936C'>
+						<File Id='Halo1_CE_sepia_EFPG_FILE' Name='sepia example.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
+					</Component>
+					<Component Id='Halo1_CE_sepia_blue_example_EFPG_COMP' Guid='FD5F4A1E-B05F-4416-A5F5-33ECC2591EE0'>
+						<File Id='Halo1_CE_sepia_blue_example_EFPG_FILE' Name='sepia blue example.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
+					</Component>
+					<Component Id='Halo1_CE_visr_example_EFPG_COMP' Guid='0D63ADC4-106F-4242-8195-29314DBB2F49'>
+						<File Id='Halo1_CE_visr_example_EFPG_FILE' Name='visr example.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
+					</Component>
+				</Directory>
+				<Component Id='Halo1_CE_example_collection_EFPC_COMP' Guid='215662C5-F7DB-42a2-AF11-62B2360CBDA1'>
+					<File Id='Halo1_CE_example_collection_EFPC_FILE' Name='example collection.effect_postprocess_collection' DiskId='1' KeyPath='yes' />
+				</Component>
+			</Directory>
+		</Directory>
+
+		<Directory Id='Halo1_CE_MaxScripts_DIR' Name='MaxScripts'>
+			<Component Id='Halo1_CE_RenderLightmaps_MS_COMP' Guid='449AA291-BD92-4BE2-BA8D-7F89C9E72890'>
+				<File Id='Halo1_CE_RenderLightmaps_MS_FILE' Name='RenderLightmaps.ms' DiskId='1' Source='$(var.ResourceFolder)Halo1_CheApe\HEK_InstallDir\MaxScripts\RenderLightmaps.ms' KeyPath='yes' />
+			</Component>
+
+			<Component Id='Halo1_CE_MaterialFixer_MS_COMP' Guid='C3617C5A-3FCF-4CBE-AFA0-BEC6DA639C63'>
+				<File Id='Halo1_CE_MaterialFixer_MS_FILE' Name='MaterialFixer.ms' DiskId='1' Source='$(var.ResourceFolder)Halo1_CheApe\HEK_InstallDir\MaxScripts\MaterialFixer.ms' KeyPath='yes' />
+			</Component>
+		</Directory>
+
+		<!-- DLLs for extending the HEK-->
+		<Component Id='Halo1_CE_CheApeDLLG_COMP' Guid='B8C6DFF9-6CF7-4571-8A7E-3082D16548BE'>
+			<File Id='Halo1_CE_CheApeDLLG_FILE' Name='CheApeDLLG.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Win32\Halo1_CheApe\CheApeDLLG.dll' KeyPath='yes' />
+		</Component>
+		<Component Id='Halo1_CE_CheApeDLLS_COMP' Guid='79045663-35F5-41EC-BBFE-F4CA58C1410C'>
+			<File Id='Halo1_CE_CheApeDLLS_FILE' Name='CheApeDLLS.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Sapien\Win32\Halo1_CheApe\CheApeDLLS.dll' KeyPath='yes' />
+		</Component>
+		<Component Id='Halo1_CE_CheApeDLLT_COMP' Guid='457412A1-749A-4B82-AAFF-91C848D81E70'>
+			<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Win32\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
+		</Component>
+
+		<Component Id='Halo1_CE_CheApe_Readme_COMP' Guid='8A7C9ADD-1298-4329-9BE6-EC5306748823'>
+			<File Id='Halo1_CE_CheApe_Readme_FILE' Name='Halo1_CheApe_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CheApe\Halo1_CheApe_Readme.txt' KeyPath='yes' />
+		</Component>
+
+		<?ifdef SYMBOLS?>
+		<Component Id='Halo1_CE_CheApeDLLG_PDB_COMP' Guid='0074F5F4-C0CB-407f-9D93-716759472D4D'>
+			<File Id='Halo1_CE_CheApeDLLG_PDB_FILE' Name='CheApeDLLG.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Win32\Halo1_CheApe\CheApeDLLG.pdb' KeyPath='yes' />
+		</Component>
+		<Component Id='Halo1_CE_CheApeDLLS_PDB_COMP' Guid='64088ECA-8008-4e8b-8695-3988E16FFC32'>
+			<File Id='Halo1_CE_CheApeDLLS_PDB_FILE' Name='CheApeDLLS.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Sapien\Win32\Halo1_CheApe\CheApeDLLS.pdb' KeyPath='yes' />
+		</Component>
+		<Component Id='Halo1_CE_CheApeDLLT_PDB_COMP' Guid='A2BB445A-890A-453f-9598-DCC10DEBB12F'>
+			<File Id='Halo1_CE_CheApeDLLT_PDB_FILE' Name='CheApeDLLT.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Win32\Halo1_CheApe\CheApeDLLT.pdb' KeyPath='yes' />
+		</Component>
+		<?endif?>
+
+		<!-- Custom tag definitions file-->
+		<Component Id='Halo1_CE_CheApe_COMP' Guid='744A1187-E0BC-47d9-B4DE-7EDD9A39F0DA'>
+			<File Id='Halo1_CE_CheApe_FILE' Name='CheApe.map' DiskId='1' KeyPath='yes' />
+		</Component>
+
+		<!-- OS HEK editor settings-->
+		<Component Id='Halo1_CE_OS_Settings_Editor_COMP' Guid='E48FA000-32FA-446D-9A06-8CFD8C7F428B'>
+			<File Id='Halo1_CE_OS_Settings_Editor_FILE' Name='OS_Settings.Editor.xml' DiskId='1' KeyPath='yes' />
+		</Component>
+
+		<!-- Removes the OS HEK exes on uninstall -->
+		<Component Id='Halo1_CE_HEKExeRemove_COMP' Guid='55F95267-1323-4F28-A4A9-7D5A52DE0337'>
+			<RemoveFile Id='Halo1_CE_OS_Guerilla_REM' Name='OS_Guerilla.exe' On='uninstall' />
+			<RemoveFile Id='Halo1_CE_OS_Sapien_REM' Name='OS_Sapien.exe' On='uninstall' />
+			<RemoveFile Id='Halo1_CE_OS_Tool_REM' Name='OS_Tool.exe' On='uninstall' />
+		</Component>
+	</Directory>
+	
+</Include>

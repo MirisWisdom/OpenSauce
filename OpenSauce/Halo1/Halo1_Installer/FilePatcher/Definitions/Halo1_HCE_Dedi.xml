@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FilePatch inputfile="haloceded.exe" outputfile="OS_haloceded.exe" peaddressmask="400000" md5_pre="850eaf2b614abe59fb8ef76b641c68a6" md5_post="522593131f4c0a2e4e9ed21ddeb2bb8a">
+	<Patch id="PTCH_haloceded_opensauce">
+		<Data id="VAL_opensaucedllstring" type="bytes"><![CDATA[4F70656E5361756365446564692E646C6C00]]></Data>
+		<Data id="VAL_opensaucefunction1" type="bytes"><![CDATA[C36868A05500FF1578D05400E95F560F00]]></Data>
+		<Data id="VAL_opensaucefunction2" type="bytes"><![CDATA[E814BFF0FF]]></Data>
+
+		<Address ptr="55A068" value="VAL_opensaucedllstring"/>
+		<Address ptr="4499F0" value="VAL_opensaucefunction1"/>
+		<Address ptr="53DAD8" value="VAL_opensaucefunction2"/>
+	</Patch>
+</FilePatch>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <!--<CodeAnalysisRules>-Microsoft.Design#CA1020;-Microsoft.Design#CA1060;-Microsoft.Design#CA1034;-Microsoft.Interoperability#CA1401;-Microsoft.Naming#CA1714;-Microsoft.Naming#CA1709;-Microsoft.Naming#CA1704;-Microsoft.Naming#CA1710;-Microsoft.Naming#CA1707</CodeAnalysisRules>-->
+	<CodeAnalysisRuleSet>$(OSRootDir)shared\config\msbuild\BlamLib.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+
+	<DefineConstants>XDK_NO_360;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\shared\config\msbuild\BlamLib.ruleset" />
+  </ItemGroup>
+
+  <!--<PropertyGroup Condition=" '$(Configuration)' == 'DebugPublic' ">
+    <DefineConstants>DEBUG_PUBLIC;NO_HALO2;NO_HALO3;NO_HALO_ODST;NO_HALO_REACH;NO_HALO4;NO_SCRIPTING;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>-->
+</Project>
