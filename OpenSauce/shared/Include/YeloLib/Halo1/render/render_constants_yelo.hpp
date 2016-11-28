@@ -11,7 +11,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_maximum_rendered_objects_upgrade_amount = 256,
+			k_maximum_rendered_objects_upgrade_amount = 2048,
 		};
 	};
 };
