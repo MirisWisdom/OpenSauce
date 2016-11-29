@@ -477,6 +477,7 @@ $RECYCLE.BIN/
 *.app
 
 *.sdf
+*.opensdf
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd

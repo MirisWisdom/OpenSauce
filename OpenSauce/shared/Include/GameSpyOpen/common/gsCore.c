@@ -39,7 +39,7 @@ static GSCoreMgr* gsiGetStaticCore()
 //     - don't do anything that might fail
 //     - don't do anything that won't complete instantly
 //     - don't do anything that requires other objects/resources to exist
-static void gsiCoreAtExitShutdown(void)
+static __cdecl gsiCoreAtExitShutdown(void)
 {
 	// delete queue critical section
 	GSCoreMgr * aCore = gsiGetStaticCore();
