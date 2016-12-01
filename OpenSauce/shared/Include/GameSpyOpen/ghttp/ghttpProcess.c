@@ -1694,14 +1694,14 @@ void ghiDoReceivingHeaders
 
             // Find the new location.
             /////////////////////////
-            location = strstr(headers, "Location:");
+            location = strstr(headers, "\r\nLocation:");
             if(location)
             {
                 char * end;
 
                 // Find the start of the URL.
                 /////////////////////////////
-                location += 9;
+                location += 11;
                 while(isspace(*location))
                     location++;
 
