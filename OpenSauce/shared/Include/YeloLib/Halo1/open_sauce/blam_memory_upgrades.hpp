@@ -21,10 +21,6 @@
 // 50%
 #define K_MEMORY_UPGRADE_INCREASE_AMOUNT (1.5f)
 
-// How many times the original bsp render triangle cap we want.
-// Because we don't work with such earthly concerns.
-#define k_maximum_rendered_triangles_upgrade_modifier (4.0f)
-
 namespace Yelo
 {
 
@@ -136,7 +132,7 @@ namespace Yelo
 				k_maximum_rendered_objects + k_maximum_rendered_objects_upgrade_amount,
 
 			k_maximum_rendered_triangles_upgrade =
-			CAST(uint32, k_maximum_rendered_triangles * k_maximum_rendered_triangles_upgrade_modifier),
+				CAST(uint32, k_maximum_rendered_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 	};
 
