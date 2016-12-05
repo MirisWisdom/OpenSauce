@@ -465,32 +465,8 @@ static void* scripting_unit_weapon_set_position_evaluate(void** arguments)
 			real_vector3d weapon_position{ args->weapon_pos_x, args->weapon_pos_y, args->weapon_pos_z };
 			Weapon::Initialize();
 			Weapon::GetWeaponPosition();
-			Weapon::SetWeaponPosition(weapon_position);
+			Weapon::SetWeaponPosition(weapon_position / 100);
 			Weapon::Dispose();
-			result.boolean = true;
-		}
-	}
-	return result.pointer;
-}
-
-static void* scripting_unit_switch_weapon_evaluate(void** arguments)
-{
-	struct s_arguments {
-		datum_index unit_index;
-		cstring tag_path;
-	}*args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = nullptr;
-	result.boolean = false;
-
-	if (!args->unit_index.IsNull())
-	{
-		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
-		if (!unit)
-		{
-			return result.pointer;
-		}
-		if (StrCmp(args->tag_path, ""))
-		{
 			result.boolean = true;
 		}
 	}

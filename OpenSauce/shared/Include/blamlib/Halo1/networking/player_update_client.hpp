@@ -57,8 +57,7 @@ namespace Yelo
 
 		struct s_action_update : TStructImpl(40)
 		{
-			s_remote_player_action_update_network_data yelo_data, update_data, current_action;	// 0xF0	
-			Game::s_vehicle_update_queue vehicle_update_queue;	// 0x1D0
+			Players::s_player_action action;
 		};
 		typedef Memory::DataArray<s_action_update, Enums::k_multiplayer_maximum_players>
 			update_client_queues_data_t;
