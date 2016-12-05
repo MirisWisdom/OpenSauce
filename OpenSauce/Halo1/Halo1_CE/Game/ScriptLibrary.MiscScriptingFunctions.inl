@@ -138,6 +138,7 @@ static void* scripting_bitwise_lhs_evaluate(void** arguments)
 
 	return result.pointer;
 }
+
 static void* scripting_bitwise_rhs_evaluate(void** arguments)
 {
 	struct s_arguments {
