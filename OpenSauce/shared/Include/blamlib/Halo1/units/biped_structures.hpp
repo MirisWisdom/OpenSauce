@@ -6,6 +6,7 @@
 #pragma once
 
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/Halo1/units/bipeds.hpp>
 
 namespace Yelo
 {

@@ -43,6 +43,7 @@
 		_hs_function_player_data_get_real,
 		_hs_function_player_data_set_real,
 		_hs_function_player_local_get,
+		_hs_function_player_sprint,
 
 		_hs_function_objects_distance_to_object,
 		_hs_function_object_data_get_real,
@@ -137,7 +138,6 @@
 		_hs_function_unit_is_key_down,
 		_hs_function_unit_camera_fov_set,
 		_hs_function_unit_weapon_set_position,
-		_hs_function_unit_switch_weapon,
 		_hs_function_camera_fov_get,
 
 		//////////////////////////////////////////////////////////////////////////
@@ -337,11 +337,6 @@
 		HS_TYPE(real),
 		HS_TYPE(real)
 		);
-	HS_FUNCTION_WITH_PARAMS(unit_switch_weapon, bool, "",
-		"<unit> <weapon-name>", 2,
-		HS_TYPE(unit),
-		HS_TYPE(string)
-		);
 	HS_FUNCTION(camera_fov_get, real, "returns the camera's field-of-view value as a real value.");
 
 	// debug functions
@@ -401,6 +396,7 @@
 		&GET_HS_FUNCTION(player_data_get_real),
 		&GET_HS_FUNCTION(player_data_set_real),
 		&GET_HS_FUNCTION(player_local_get),
+		&GET_HS_FUNCTION(player_sprint),
 
 		&GET_HS_FUNCTION(objects_distance_to_object),
 		&GET_HS_FUNCTION(object_data_get_real),
@@ -495,7 +491,6 @@
 		&GET_HS_FUNCTION(unit_is_key_down),
 		&GET_HS_FUNCTION(unit_camera_fov_set),
 		&GET_HS_FUNCTION(unit_weapon_set_position),
-		&GET_HS_FUNCTION(unit_switch_weapon),
 		&GET_HS_FUNCTION(camera_fov_get),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
