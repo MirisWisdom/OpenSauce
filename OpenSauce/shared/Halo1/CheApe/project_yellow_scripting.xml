@@ -391,7 +391,16 @@
 			<arg type="real" name="position-y" />
 			<arg type="real" name="position-z" />
 		</function>
-		<function name="camera_fov_get" returnType="real" help="Returns the camera's ield-of-view value as a real value." internal="true" >
+		<function name="camera_fov_get" returnType="real" help="Returns the camera's FoV value as a real value." internal="true" >
+		</function>
+		<function name="unit_weapon_set_position" returnType="boolean" help="Sets the weapon's FP position via three real values." internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="real" name="position-x" />
+			<arg type="real" name="position-y" />
+			<arg type="real" name="position-z" />
+		</function>
+		<function name="player_sprint" returnType="boolean" help="Makes a given player sprint." internal="true" >
+			<arg type="short" name="player-list-index" />
 		</function>
 	</scriptFunctions>
 

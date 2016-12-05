@@ -48,3 +48,7 @@
 		HS_TYPE(real)
 	);
 	HS_FUNCTION(player_local_get, short, "");
+	HS_FUNCTION_WITH_PARAMS(player_sprint, bool, "makes a player sprint.",
+		"<player-list-index>", 1,
+		HS_TYPE(short)
+		);

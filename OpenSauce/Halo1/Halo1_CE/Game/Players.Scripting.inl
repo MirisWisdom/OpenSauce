@@ -1,3 +1,4 @@
+
 /*
 	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
@@ -268,6 +269,7 @@ static void* scripting_player_data_get_real_evaluate(void** arguments)
 
 	return result.pointer;
 }
+
 static void* scripting_player_data_set_real_evaluate(void** arguments)
 {
 	struct s_arguments {
@@ -304,8 +306,56 @@ static void* scripting_player_local_get_evaluate()
 	result.int32 = NONE;
 
 	auto* local_player = Players::LocalPlayer();
-	if(local_player != nullptr)
+	if (local_player != nullptr)
 		result.int32 = local_player->network_player.player_list_index;
 
+	return result.pointer;
+}
+
+static void* scripting_player_sprint_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int16 player_list_index;
+		PAD16;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (args->player_list_index >= 0)
+	{
+		for (auto player : Players::Players())
+		{
+			if (player->network_player.player_list_index == args->player_list_index)
+			{
+				cstring data_name = "speed";
+				auto* local_player = Players::LocalPlayer();
+				if (local_player != nullptr)
+				{
+					if (local_player->network_player.player_list_index == args->player_list_index)
+					{
+						cstring data_name = "speed";
+						if (GetAsyncKeyState(16) & 0x8000)
+						{
+							real data_value = 1.75;
+							Enums::hs_type result_type;
+							result.ptr.real = scripting_player_data_get_real_by_name(player.datum, data_name, result_type);
+							Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &data_value);
+							result.boolean = true;
+							break;
+						}
+						else
+						{
+							real data_value = 1.0f;
+							Enums::hs_type result_type;
+							result.ptr.real = scripting_player_data_get_real_by_name(player.datum, data_name, result_type);
+							Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &data_value);
+							result.boolean = false;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
 	return result.pointer;
 }

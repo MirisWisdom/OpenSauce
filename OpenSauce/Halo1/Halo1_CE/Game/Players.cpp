@@ -124,6 +124,9 @@ namespace Yelo
 				scripting_player_data_set_real_evaluate);
  			Scripting::InitializeScriptFunction(Enums::_hs_function_player_local_get, 
  				scripting_player_local_get_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_player_sprint,
+				scripting_player_sprint_evaluate);
+
 
 			Memory::WriteRelativeJmp(PlayerSpawnCreateUnitMultiplayerHook, GET_FUNC_VPTR(PLAYER_SPAWN__CREATE_UNIT_MP_HOOK));
 			Memory::WriteRelativeJmp(UpdateForServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
