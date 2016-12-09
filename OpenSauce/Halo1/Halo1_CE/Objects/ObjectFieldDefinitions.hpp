@@ -68,7 +68,6 @@ namespace Yelo
 			_unit_field_integer_current_weapon_index,
 			_unit_field_integer_feign_death_timer,
 			_unit_field_integer_killing_spree_count,
-			_unit_field_integer_key,
 
 			_unit_field_real_driver_power,
 			_unit_field_real_gunner_power,
