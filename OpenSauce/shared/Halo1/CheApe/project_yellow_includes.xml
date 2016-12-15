@@ -188,7 +188,7 @@
 
 	<fixups>
 		<fixup name="_fixup_scenario_structure_bsps_block.max_count" type="Pointer" 
-			guerilla="0x9CD2E4" tool="0x6DB5AC" sapien="0xA346BC" definition="0x100" />
+			guerilla="0x9CD2E4" tool="0x6DB5AC" sapien="0xA346BC" definition="0x20" />
 
 
 		<fixup name="_fixup_model_shader_reference_block.max_count" type="Pointer" 

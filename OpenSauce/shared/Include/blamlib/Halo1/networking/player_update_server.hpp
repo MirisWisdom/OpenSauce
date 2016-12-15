@@ -21,8 +21,6 @@ namespace Yelo
 			UNKNOWN_TYPE(int32);  // 0xF0
 			int32 last_completed_update_id;
 			real_point3d position;
-			real_point3d yelo_data;
-			real_point3d update_data;
 
 			// 0x104 datum_index or int32
 			// 0x108 boolean, PAD24
@@ -31,10 +29,10 @@ namespace Yelo
 			// 0x114 uint32
 			// 0x118 uint32
 			// 0x11C uint32
-			//game_ticks_t;
-			//game_ticks_t;
+			// 0x120 game_ticks_t
+			// 0x124 game_ticks_t
 			// 0x128 int32
-			int32 action_baseline_id, NUMBER_OF_REMOTE_PLAYER_ACTION_UPDATE_BASELINE_IDS;
+			// 0x12C int32 action_baseline_id, NUMBER_OF_REMOTE_PLAYER_ACTION_UPDATE_BASELINE_IDS = 2
 			// 0x130, s_remote_player_action_update_network_data
 			// 0x160 uint32
 
@@ -45,16 +43,13 @@ namespace Yelo
 
 			// 0x17C datum_index or int32
 			// 0x180 datum_index or int32
-			// 0x18datum_index or int32
-			byte structure;
-			Players::s_player_action action;
-
+			// 0x184 datum_index or int32
+			// 0x188, 0x40 byte structure
 		}; //BOOST_STATIC_ASSERT( sizeof(s_player_server_update) == 0xE0 );
 
 		struct update_server_queues_datum : TStructImpl(100)
 		{
-			s_action_update current_action, yelo_data, update_data;
-			Players::s_player_action action;
+			//s_action_update current_action
 
 			TStructGetPtrImpl(Memory::s_simple_circular_queue, ActionQueue, 0x28);
 		};
