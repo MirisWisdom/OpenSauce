@@ -12,12 +12,10 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <WixCATargetsPath Condition=" '$(WixCATargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets</WixCATargetsPath>
     <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
     <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\$(Configuration)</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
