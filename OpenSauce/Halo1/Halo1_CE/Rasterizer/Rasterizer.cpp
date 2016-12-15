@@ -182,6 +182,8 @@ namespace Yelo
 			if(settings_instance.m_upgrades.m_maximum_rendered_triangles)
 			{
 				g_render_upgrades.InitializeRenderedTrianglesUpgrade();
+				byte renderDistancePatchBytes[4] = { 0x00, 0x00, 0x80, 0x45 }; //Float value in bytes 4096
+				memcpy(CAST_PTR(void*, 0x637D18), renderDistancePatchBytes, sizeof(renderDistancePatchBytes)); //Sets the drawdistance
 			}
 		}
 #pragma endregion

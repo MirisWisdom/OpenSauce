@@ -138,7 +138,6 @@ static void* scripting_bitwise_lhs_evaluate(void** arguments)
 
 	return result.pointer;
 }
-
 static void* scripting_bitwise_rhs_evaluate(void** arguments)
 {
 	struct s_arguments {
@@ -257,14 +256,6 @@ static void* scripting_play_bink_movie_evaluate(void** arguments)
 	return nullptr;
 }
 
-static void* scripting_camera_fov_get_evaluate()
-{
-	TypeHolder result; result.pointer = nullptr;
-
-	result.real = Fov::GetFieldOfView();
-
-	return result.pointer;
-}
 
 static void InitializeMiscFunctions()
 {
@@ -353,8 +344,6 @@ static void InitializeMiscFunctions()
 		scripting_bit_flags_toggle_evaluate);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_hex_string_to_long, 
 		scripting_hex_string_to_long_evaluate);
-	InitializeScriptFunction(Enums::_hs_function_camera_fov_get,
-		scripting_camera_fov_get_evaluate);
 	//////////////////////////////////////////////////////////////////////////
 
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_display_scripted_ui_widget, 
