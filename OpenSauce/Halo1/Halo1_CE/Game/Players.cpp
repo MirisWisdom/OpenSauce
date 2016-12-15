@@ -122,6 +122,8 @@ namespace Yelo
 				scripting_player_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_player_data_set_real, 
 				scripting_player_data_set_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_player_sprint,
+				scripting_player_sprint_evaluate);
  			Scripting::InitializeScriptFunction(Enums::_hs_function_player_local_get, 
  				scripting_player_local_get_evaluate);
 

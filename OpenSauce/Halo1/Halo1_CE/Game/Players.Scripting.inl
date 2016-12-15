@@ -295,8 +295,51 @@ static void* scripting_player_data_set_real_evaluate(void** arguments)
 	return nullptr;
 }
 
+static void* scripting_player_sprint_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int16 player_list_index;
+		PAD16;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
 
+	if (args->player_list_index >= 0)
+	{
+		for (auto player : Players::Players())
+		{
+			if (player->network_player.player_list_index == args->player_list_index)
+			{
+				if (GetAsyncKeyState(16) & 0x8000)
+				{
+					cstring sprint;
+					sprint = "speed";
+					real value = 1.5;
+					TypeHolder result;
+					Enums::hs_type result_type;
+					result.ptr.real = scripting_player_data_get_real_by_name(player.datum, sprint, result_type);
+					Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &value);
+					result.boolean = true;
+					break;
+				}
+				if (GetAsyncKeyState(!16) & 0x8000)
+				{
+					cstring sprint;
+					sprint = "speed";
+					real value = 1.0;
+					TypeHolder result;
+					Enums::hs_type result_type;
+					result.ptr.real = scripting_player_data_get_real_by_name(player.datum, sprint, result_type);
+					Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &value);
+					result.boolean = false;
+					break;
+				}
+			}
+		}
+	}
 
+	return result.pointer;
+}
 
 static void* scripting_player_local_get_evaluate()
 {
