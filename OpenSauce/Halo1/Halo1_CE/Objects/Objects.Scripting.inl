@@ -472,7 +472,5 @@ static void* scripting_unit_weapon_set_position_evaluate(void** arguments)
 	}
 	return result.pointer;
 }
-
-//fuck errors
 	};
 };
