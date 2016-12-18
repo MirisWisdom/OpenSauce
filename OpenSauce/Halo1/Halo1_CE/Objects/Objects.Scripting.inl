@@ -9,7 +9,6 @@
 #include "Game/GameStateRuntimeData.hpp"
 #include "Objects/Objects.hpp"
 #include "Objects/Objects.WeaponSettings.hpp"
-
 #include <YeloLib/cseries/value_conversion.hpp>
 #include <YeloLib/Halo1/objects/objects_yelo.hpp>
 
@@ -434,7 +433,7 @@ static void* scripting_unit_camera_fov_set_evaluate(void** arguments)
 		}
 		if (args->fov)
 		{
-			Fov::GetFieldOfView;
+			Fov::GetFieldOfView();
 			Fov::SetFieldOfView(args->fov);
 			result.boolean = true;
 		}
@@ -470,6 +469,13 @@ static void* scripting_unit_weapon_set_position_evaluate(void** arguments)
 			result.boolean = true;
 		}
 	}
+	return result.pointer;
+}
+
+static void* scripting_camera_fov_get_evaluate()
+{
+	TypeHolder result; result.pointer = nullptr;
+	result.real = -Fov::GetFieldOfView();
 	return result.pointer;
 }
 	};
