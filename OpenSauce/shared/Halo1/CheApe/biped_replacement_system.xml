@@ -9,15 +9,11 @@
 	</flags>
 
 	<blocks>
-		<TagBlock name="biped_replacement_block" maxElements="128" >
+		<TagBlock name="bipeds_block" maxElements="64" >
 			<field type="LongFlags" name="flags" definition="biped_replacement_flags" />
-			<field type="Pad" definition="2" />
-			<field type="ShortBlockIndex" name="biped to replace" definition="bipeds_block"	tooltip="the biped we will use to replace the biped mentioned above at runtime" />
-			<field type="TagReference" name="new biped" definition="unit_reference" blockname="true" />
-		</TagBlock>
-
-		<TagBlock name="bipeds_block" maxElements="32" >
+			<field type=Reference" name="name" definition="" />
 			<field type="TagReference" name="biped" definition="unit_reference" blockname="true" />
+			<field type="Pad" definition="32" />
 		</TagBlock>
 	</blocks>
 
@@ -26,7 +22,6 @@
 			<field type="ShortInteger" name="version" definition="2" locked="true" />
 			<field type="Explanation" name="Biped Replacement System" definition="Here, bipeds can be set up to be replaced on-the-fly via a script command, found in the console of Halo Custom Edition, as well as via this tag.  Simply select a biped to replace, then select it down below and specify a new biped tag, and presto!  Once the command is activated, the biped will switch automatically with a new one in its place where you were.  There will be no need for respawns.  Note that if you select the flag to inherit biped traits, your ammunition and other settings, such as weapons on-hand and weapon count, will be migrated to the new biped." />
 			<field type="Block" name="Bipeds" definition="bipeds_block" />
-			<field type="Block" name="Replacement Bipeds" definition="biped_replacement_block" />
 			<field type="Pad" definition="80" />
 		</TagGroup>
 	</groups>
