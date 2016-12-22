@@ -139,6 +139,7 @@
 		_hs_function_unit_camera_fov_set,
 		_hs_function_unit_weapon_set_position,
 		_hs_function_camera_fov_get,
+		_hs_function_switch_unit,
 
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
@@ -338,6 +339,11 @@
 		HS_TYPE(real)
 		);
 	HS_FUNCTION(camera_fov_get, real, "returns the camera's field-of-view value as a real value.");
+	HS_FUNCTION_WITH_PARAMS(switch_unit, bool, "Switches unit (or object).",
+		"<unit> <unit>", 2,
+		HS_TYPE(unit),
+		HS_TYPE(unit)
+		);
 
 	// debug functions
 	#ifdef API_DEBUG
@@ -492,6 +498,7 @@
 		&GET_HS_FUNCTION(unit_camera_fov_set),
 		&GET_HS_FUNCTION(unit_weapon_set_position),
 		&GET_HS_FUNCTION(camera_fov_get),
+		&GET_HS_FUNCTION(switch_unit),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

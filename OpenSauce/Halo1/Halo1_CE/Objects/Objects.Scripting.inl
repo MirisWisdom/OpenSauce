@@ -478,5 +478,52 @@ static void* scripting_camera_fov_get_evaluate()
 	result.real = -Fov::GetFieldOfView();
 	return result.pointer;
 }
+
+static void* scripting_switch_unit_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		datum_index unit_tag_index;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		result.boolean = true;
+	}
+	return result.pointer;;
+}
+
+static void* scripting_switch_weapon_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		int32 weapon_index;
+		datum_index name_index;
+		datum_index item_index;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		result.boolean = true;
+	}
+	return result.pointer;
+}
+
+
+
 	};
 };
