@@ -163,6 +163,8 @@ namespace Yelo
 				scripting_unit_is_key_down_evaluate);
 			Scripting::InitializeScriptFunction(Enums::_hs_function_camera_fov_get,
 				scripting_camera_fov_get_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_switch_unit,
+				scripting_switch_unit_evaluate);
 		}
 		
 		bool PLATFORM_API ShouldKillChildObject(const s_object_datum* object_datum)
