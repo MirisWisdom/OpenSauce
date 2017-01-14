@@ -132,7 +132,7 @@ namespace Yelo
 				k_maximum_rendered_objects + k_maximum_rendered_objects_upgrade_amount,
 
 			k_maximum_rendered_triangles_upgrade =
-				CAST(uint32, k_maximum_rendered_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+				CAST(uint32, k_maximum_rendered_triangles + 16378),
 		};
 	};
 
