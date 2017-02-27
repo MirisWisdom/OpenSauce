@@ -340,9 +340,10 @@
 		);
 	HS_FUNCTION(camera_fov_get, real, "returns the camera's field-of-view value as a real value.");
 	HS_FUNCTION_WITH_PARAMS(switch_unit, bool, "Switches unit (or object).",
-		"<unit> <unit>", 2,
+		"<unit> <tag-path>", 2,
 		HS_TYPE(unit),
-		HS_TYPE(unit)
+		HS_TYPE(string)
+
 		);
 
 	// debug functions

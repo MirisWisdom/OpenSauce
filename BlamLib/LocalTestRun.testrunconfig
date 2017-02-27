@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestRunConfiguration name="Local Test Run" id="86c78e00-f9d9-4214-a7c1-3a7943602ee8" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRunConfiguration name="Local Test Run" id="86c78e00-f9d9-4214-a7c1-3a7943602ee8" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
 	<Description>This is a default test run configuration for a local test run.</Description>
 	<TestTypeSpecific />
 	<!-- For some fucking goddamn reason the base userDeploymentRoot isn't being fucking set 
