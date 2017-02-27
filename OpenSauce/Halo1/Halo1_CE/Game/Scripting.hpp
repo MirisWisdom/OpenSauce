@@ -10,7 +10,7 @@
 #include <blamlib/Halo1/hs/hs.hpp>
 #include <blamlib/Halo1/hs/hs_runtime.hpp>
 #include <blamlib/Halo1/hs/object_lists.hpp>
-
+#include "GameState.DTS.Scripting.inl"""
 namespace Yelo
 {
 	namespace Scripting
