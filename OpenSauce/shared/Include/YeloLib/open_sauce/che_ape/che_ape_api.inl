@@ -52,18 +52,18 @@ extern "C" {
 	bool __declspec( dllexport ) CheApeApi_GetTargetToolNameW(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
 	{
-		if(lpBuffer != nullptr)
+		if (lpBuffer != nullptr)
 			return wcscpy_s(lpBuffer, nBufferLength,
-				#if defined(PLATFORM_TYPE_GUERILLA)
-					L"Guerilla"
-				#elif defined(PLATFORM_TYPE_TOOL)
-					L"Tool"
-				#elif defined(PLATFORM_TYPE_SAPIEN)
-					L"Sapien"
-				#else
-					#error You fucked up the CheApe build scripts. I hope you die.
-				#endif
-			) == k_errnone;
+#if defined(PLATFORM_TYPE_GUERILLA)
+			L"Guerilla"
+#elif defined(PLATFORM_TYPE_TOOL)
+			L"Tool"
+#elif defined(PLATFORM_TYPE_SAPIEN)
+			L"Sapien"
+#else
+#error You need to select a CheApe build type from the dropdown menu above near the debugger attach options and platform dropdown.  This is not BlamLib, silly, so we need to be speciffic in what we wish to build.  That is in a whole different directory, not this one.  Please correct this issue and try again.
+#endif
+			);
 
 		return false;
 	}

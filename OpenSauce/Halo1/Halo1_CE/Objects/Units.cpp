@@ -256,5 +256,8 @@ namespace Yelo
 		void InitializeForYeloGameState(bool enabled)
 		{
 		}
+		void SwitchBiped(const datum_index unit_index, const datum_index replacement_unit)
+		{
+		}
 	}; };
 };

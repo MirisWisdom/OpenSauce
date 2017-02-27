@@ -5,6 +5,8 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#pragma once
+
 static void* scripting_volume_test_player_team_evaluate(void** arguments)
 {
 	struct s_arguments {

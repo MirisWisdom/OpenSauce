@@ -4,6 +4,9 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+#pragma once
+
+#include "GameState.DTS.Scripting.inl"
 
 static void* scripting_data_array_info_evaluate(void** arguments)
 {
