@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Scenario/StructureBSP.hpp"
+#include "Game/GameState.DTS.Scripting.inl"
 
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>

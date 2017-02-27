@@ -475,7 +475,7 @@ static void* scripting_unit_weapon_set_position_evaluate(void** arguments)
 static void* scripting_camera_fov_get_evaluate()
 {
 	TypeHolder result; result.pointer = nullptr;
-	result.real = -Fov::GetFieldOfView();
+	result.real = Fov::GetFieldOfView();
 	return result.pointer;
 }
 
@@ -483,7 +483,7 @@ static void* scripting_switch_unit_evaluate(void** arguments)
 {
 	struct s_arguments {
 		datum_index unit_index;
-		datum_index unit_tag_index;
+		cstring tag_path;
 	}*args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = nullptr;
 	result.boolean = false;
@@ -495,7 +495,10 @@ static void* scripting_switch_unit_evaluate(void** arguments)
 		{
 			return result.pointer;
 		}
-		result.boolean = true;
+		if (StrCmp(args->tag_path, "") == TagGroups::string_to_group_tag(args->tag_path))
+		{
+			result.boolean = TagGroups::string_to_group_tag(args->tag_path);
+		}
 	}
 	return result.pointer;;
 }
