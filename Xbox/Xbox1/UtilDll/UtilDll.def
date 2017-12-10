@@ -1,4 +1,0 @@
-LIBRARY	"UtilDll"
-EXPORTS
-	Util_CalculateModuleCodeSize	@1
-	Util_RebaseModule				@2
