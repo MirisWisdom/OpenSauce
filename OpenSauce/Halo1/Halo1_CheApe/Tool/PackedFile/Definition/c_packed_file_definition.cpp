@@ -22,9 +22,9 @@ namespace Yelo
 			, m_path("Path", "")
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_file_definition_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_file_definition_container::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const>
+			return std::vector<Configuration::i_configuration_value*>
 			{
 				&m_id,
 				&m_type,
@@ -40,9 +40,9 @@ namespace Yelo
 			, m_files("File", [](){ return c_file_definition_container(); })
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_packed_file_definition_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_packed_file_definition_container::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const>
+			return std::vector<Configuration::i_configuration_value*>
 			{
 				&m_name,
 				&m_files

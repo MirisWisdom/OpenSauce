@@ -102,7 +102,7 @@ namespace Yelo
 
 		bool c_property_tree_leaf::HasChild(const std::string& child_name) const
 		{
-			return m_property_tree.get_child_optional(child_name) != nullptr;
+			return m_property_tree.get_child_optional(child_name) != boost::none;
 		}
 
 		std::unique_ptr<i_configuration_leaf_iterator> c_property_tree_leaf::GetChildIterator(const std::string& child_name)

@@ -20,9 +20,9 @@ namespace Yelo
 			, m_blur_amount("BlurAmount", 1.0f)
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_settings_container::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const>
+			return std::vector<Configuration::i_configuration_value*>
 			{
 				&m_enabled,
 				&m_blur_amount

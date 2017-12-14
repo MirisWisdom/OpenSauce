@@ -15,7 +15,6 @@ namespace Yelo
 
 		/// <summary>	A configuration leaf iterator interface. </summary>
 		class i_configuration_leaf_iterator
-			abstract
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -29,9 +29,9 @@ namespace Yelo
 			, m_pages("Page", [](){ return c_page_definition(); })
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_control_definition::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_control_definition::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_type, &m_properties, &m_controls, &m_pages };
+			return std::vector<Configuration::i_configuration_value*> { &m_id, &m_type, &m_properties, &m_controls, &m_pages };
 		}
 
 		const uint32 c_control_definition::GetID()

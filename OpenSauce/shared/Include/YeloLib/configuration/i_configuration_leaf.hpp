@@ -15,7 +15,6 @@ namespace Yelo
 
 		/// <summary>	The configuration leaf interface. Derived types must provide get and set values for all base variable types. </summary>
 		class i_configuration_leaf
-			abstract
 		{
 		public:
 

@@ -19,9 +19,9 @@ namespace Yelo
 			, m_controls("Control", [](){ return c_control_definition(); })
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_page_definition::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_page_definition::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const> { &m_controls };
+			return std::vector<Configuration::i_configuration_value*> { &m_controls };
 		}
 #pragma endregion
 	};};};

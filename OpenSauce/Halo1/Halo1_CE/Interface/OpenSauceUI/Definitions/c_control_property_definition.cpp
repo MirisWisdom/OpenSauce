@@ -20,9 +20,9 @@ namespace Yelo
 			, m_value("Value", "")
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_control_property_definition::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_control_property_definition::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const> { &m_name, &m_value };
+			return std::vector<Configuration::i_configuration_value*> { &m_name, &m_value };
 		}
 #pragma endregion
 	};};};

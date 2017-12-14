@@ -21,9 +21,9 @@ namespace Yelo
 			, m_affinity_mask("AffinityMask", 1)
 		{ }
 
-		const std::vector<i_configuration_value* const> c_sapien_container::GetMembers()
+		std::vector<i_configuration_value*> c_sapien_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const> { &m_affinity_mask };
+			return std::vector<i_configuration_value*> { &m_affinity_mask };
 		}
 	};
 };

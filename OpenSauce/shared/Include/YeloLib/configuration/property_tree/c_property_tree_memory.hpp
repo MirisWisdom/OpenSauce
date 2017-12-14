@@ -13,7 +13,6 @@ namespace Yelo
 	namespace Configuration { namespace PropertyTree
 	{		
 		class c_property_tree_memory
-			abstract
 			: public c_property_tree_leaf
 			, public i_configuration_file
 		{

@@ -26,7 +26,7 @@ namespace Yelo
 			c_file_definition_container();
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() override;
+			std::vector<Configuration::i_configuration_value*> GetMembers() override;
 		};
 
 		class c_packed_file_definition_container final
@@ -39,7 +39,7 @@ namespace Yelo
 			c_packed_file_definition_container();
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() override;
+			std::vector<Configuration::i_configuration_value*> GetMembers() override;
 		};
 
 		class c_packed_file_definition final

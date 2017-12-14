@@ -13,7 +13,6 @@ namespace Yelo
 	{
 		/// <summary>	A container for a configuration node with multiple child values in it. </summary>
 		class c_configuration_container
-			abstract
 			: public i_configuration_container
 		{
 		private:
@@ -59,7 +58,7 @@ namespace Yelo
 			/// <summary>	Gets a vector containing pointers to the containers members. </summary>
 			///
 			/// <returns>	A vector containing pointers to the containers members. </returns>
-			virtual const std::vector<i_configuration_value* const> GetMembers() = 0;
+			virtual std::vector<i_configuration_value*> GetMembers() = 0;
 
 			/// <summary>	Used in derived containers for logic that is run before getting a containers values. </summary>
 			virtual void PreGet() {}

@@ -55,7 +55,7 @@ namespace Yelo
 			// logic copied and pasted from xstddef's _Bitwise_hash
 			size_t operator()(const datum_index& _Keyval) const
 			{	// hash _Keyval to size_t value by pseudorandomizing transform
-				return std::_Hash_seq((const unsigned char *)&_Keyval, sizeof(datum_index));
+				return std::hash<uint32>{}(_Keyval.handle);
 			}
 		};
 #endif

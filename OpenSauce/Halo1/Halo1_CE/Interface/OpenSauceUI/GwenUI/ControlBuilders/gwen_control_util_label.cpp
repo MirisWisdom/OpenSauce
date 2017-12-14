@@ -177,7 +177,13 @@ namespace Yelo
 		rectangle2d Label_GetTextPadding(Gwen::Controls::Label& label)
 		{
 			auto value = label.GetTextPadding();
-			return rectangle2d { value.top, value.left, value.bottom, value.right };
+			return rectangle2d
+			{
+				static_cast<int16>(value.top),
+				static_cast<int16>(value.left),
+				static_cast<int16>(value.bottom),
+				static_cast<int16>(value.right)
+			};
 		}
 
 		void Label_SetTextPadding(Gwen::Controls::Label& label, const rectangle2d& value)

@@ -13,7 +13,6 @@ namespace Yelo
 	{
 		/// <summary>	Base interface for a configuration file. </summary>
 		class i_configuration_file
-			abstract
 		{
 		public:
 			/// <summary>	Loads the configuration from a file. </summary>

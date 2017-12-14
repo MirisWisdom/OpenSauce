@@ -13,7 +13,6 @@ namespace Yelo
 	{
 		/// <summary>	Differentiation interface for configuration containers. </summary>
 		class i_configuration_container
-			abstract
 			: public i_configuration_value
 		{ };
 	};

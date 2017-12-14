@@ -129,9 +129,9 @@ _return:
 				, m_no_update_check("NoUpdateCheck", true)
 			{ }
 
-			const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
+			std::vector<Configuration::i_configuration_value*> c_settings_container::GetMembers()
 			{
-				return std::vector<i_configuration_value* const> { &m_no_update_check };
+				return std::vector<i_configuration_value*> { &m_no_update_check };
 			}
 
 			void c_settings_gamespy::PostLoad()

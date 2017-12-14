@@ -50,9 +50,9 @@ namespace Yelo
 			{ }
 			
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<i_configuration_value* const> { &m_enabled };
+				return std::vector<i_configuration_value*> { &m_enabled };
 			}
 		};
 

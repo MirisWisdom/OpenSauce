@@ -30,7 +30,7 @@
 	/// Cast [this] to a 'const this&' so that its const member functions can be invoked
 	#define CAST_THIS_NONCONST()			\
 		static_cast<						\
-			std::add_reference<				\
+			std::add_rvalue_reference<		\
 				std::add_const<				\
 					std::remove_reference<	\
 						decltype(*this)		\

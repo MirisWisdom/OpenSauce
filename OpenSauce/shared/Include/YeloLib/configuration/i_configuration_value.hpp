@@ -13,7 +13,6 @@ namespace Yelo
 	{
 		/// <summary>	Base configuration value interface. </summary>
 		class i_configuration_value
-			abstract
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

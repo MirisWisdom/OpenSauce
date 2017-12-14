@@ -7,6 +7,7 @@
 #include <blamlib/Halo1/tag_files/files.hpp>
 
 #include <blamlib/Halo1/cseries/errors.hpp>
+#include <intrin.h>
 
 namespace Yelo
 {

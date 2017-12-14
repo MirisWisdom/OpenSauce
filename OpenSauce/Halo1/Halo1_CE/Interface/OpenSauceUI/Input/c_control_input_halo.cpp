@@ -147,8 +147,8 @@ namespace Yelo
 			// Update the mouse position
 			int x = m_mouse_position.x + Yelo::Input::GetMouseAxisState(Enums::_MouseAxisX);
 			int y = m_mouse_position.y + -Yelo::Input::GetMouseAxisState(Enums::_MouseAxisY);
-			int dx = x - m_mouse_position.x;
-			int dy = y - m_mouse_position.y;
+			int16 dx = x - m_mouse_position.x;
+			int16 dy = y - m_mouse_position.y;
 
 			m_mouse_position.x = __min(x,					m_mouse_bounds.right);
 			m_mouse_position.x = __max(m_mouse_position.x,	m_mouse_bounds.left);

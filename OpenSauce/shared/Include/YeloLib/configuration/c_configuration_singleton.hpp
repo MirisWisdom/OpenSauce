@@ -16,9 +16,8 @@ namespace Yelo
 		/// <typeparam name="SingletonType">	Type of the singleton. </typeparam>
 		template<typename ContainerType, typename SingletonType>
 		class c_configuration_singleton
-			abstract
 		{
-			static_assert(std::is_convertible<ContainerType, i_configuration_container>::value, "c_configuration_singleton can only be used with types that derive from i_configuration_container");
+			//static_assert(std::is_convertible<ContainerType, i_configuration_container>::value, "c_configuration_singleton can only be used with types that derive from i_configuration_container");
 
 #pragma region Static
 		private:

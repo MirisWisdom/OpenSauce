@@ -30,9 +30,9 @@ namespace Yelo
 			, m_tags_directory("TagsDirectory", "")
 		{ }
 
-		const std::vector<i_configuration_value* const> c_paths_container::GetMembers()
+		std::vector<i_configuration_value*> c_paths_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return std::vector<i_configuration_value*>
 			{
 				&m_root,
 				&m_data_directory,
@@ -47,9 +47,9 @@ namespace Yelo
 			, m_paths()
 		{ }
 
-		const std::vector<i_configuration_value* const> c_profile_container::GetMembers()
+		std::vector<i_configuration_value*> c_profile_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const> { &m_name, &m_paths };
+			return std::vector<i_configuration_value*> { &m_name, &m_paths };
 		}
 
 		c_cheape_container::c_cheape_container()
@@ -57,9 +57,9 @@ namespace Yelo
 			, m_profiles("Profile", []() { return c_profile_container(); })
 		{ }
 
-		const std::vector<i_configuration_value* const> c_cheape_container::GetMembers()
+		std::vector<i_configuration_value*> c_cheape_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const> { &m_profiles };
+			return std::vector<i_configuration_value*> { &m_profiles };
 		}
 #pragma endregion
 
