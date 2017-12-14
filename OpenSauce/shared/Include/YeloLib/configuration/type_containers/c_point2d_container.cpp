@@ -23,9 +23,9 @@ namespace Yelo
 			: c_point2d_container(name, 0, 0)
 		{ }
 
-		const std::vector<i_configuration_value* const> c_point2d_container::GetMembers()
+		std::vector<i_configuration_value*> c_point2d_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return std::vector<i_configuration_value*>
 			{
 				&m_x,
 				&m_y

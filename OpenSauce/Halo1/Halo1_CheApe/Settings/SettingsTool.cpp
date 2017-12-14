@@ -22,9 +22,9 @@ namespace Yelo
 			, m_do_full_crashdump("DoFullCrashdump", false)
 		{ }
 
-		const std::vector<i_configuration_value* const> c_tool_container::GetMembers()
+		std::vector<i_configuration_value*> c_tool_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return std::vector<i_configuration_value*>
 			{
 				&m_disable_exception_handling,
 				&m_do_full_crashdump

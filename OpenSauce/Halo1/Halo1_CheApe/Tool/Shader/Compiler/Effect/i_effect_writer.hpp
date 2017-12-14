@@ -12,7 +12,6 @@ namespace Yelo
 	namespace Tool { namespace Shader { namespace Compiler
 	{
 		class i_effect_writer
-			abstract
 		{
 		public:
 			virtual void WriteEffect(const boost::filesystem::path& output_file, const std::string& effect_name, const std::string& shader_target, const LPD3DXEFFECT& effect) = 0;

@@ -19,7 +19,6 @@ namespace Yelo
 		/// <typeparam name="Type">	Type of the value being wrapped. </typeparam>
 		template<typename Type>
 		class c_type_container
-			abstract
 			: public Configuration::c_configuration_container
 		{
 		protected:

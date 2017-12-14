@@ -34,7 +34,7 @@ namespace Yelo
 			/// <summary>	Gets a vector containing pointers to the containers members. </summary>
 			///
 			/// <returns>	A vector containing pointers to the containers members. </returns>
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override;
+			std::vector<i_configuration_value*> GetMembers() final override;
 		};
 	};};};
 };

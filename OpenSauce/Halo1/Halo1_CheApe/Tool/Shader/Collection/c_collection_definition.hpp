@@ -30,7 +30,7 @@ namespace Yelo
 			c_collection_definition_container();
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() override;
+			std::vector<Configuration::i_configuration_value*> GetMembers() override;
 		};
 
 		class c_collection_definition final

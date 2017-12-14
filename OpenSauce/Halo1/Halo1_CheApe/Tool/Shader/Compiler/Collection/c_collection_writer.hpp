@@ -16,7 +16,6 @@ namespace Yelo
 	namespace Tool { namespace Shader { namespace Compiler
 	{
 		class c_collection_writer
-			abstract
 			: public i_collection_writer
 		{
 			virtual void WriteEffects(FileIO::s_file_info& collection_file

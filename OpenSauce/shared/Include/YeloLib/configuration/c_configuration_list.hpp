@@ -19,7 +19,6 @@ namespace Yelo
 		/// <typeparam name="T">	The configuration value type. </typeparam>
 		template<typename T>
 		class c_configuration_list
-			abstract
 			: public i_configuration_value
 		{
 			//static_assert(std::is_convertible<T, i_configuration_value>::value, "c_configuration_list can only be used with types that derive from i_configuration_value");

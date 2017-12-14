@@ -13,9 +13,9 @@ c_settings_container::c_settings_container()
 #endif
 { }
 
-const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
+std::vector<Configuration::i_configuration_value*> c_settings_container::GetMembers()
 {
-	return std::vector<i_configuration_value* const>
+	return std::vector<i_configuration_value*>
 	{
 		&m_check_yelo_files_first,
 #if !PLATFORM_IS_DEDI

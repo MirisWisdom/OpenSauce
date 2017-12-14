@@ -25,9 +25,9 @@ namespace Yelo
 			: c_real_vector3d_container(name, 0.0f, 0.0f, 0.0f)
 		{ }
 
-		const std::vector<i_configuration_value* const> c_real_vector3d_container::GetMembers()
+		std::vector<i_configuration_value*> c_real_vector3d_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return std::vector<i_configuration_value*>
 			{
 				&m_i,
 				&m_j,

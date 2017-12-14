@@ -11,7 +11,6 @@ namespace Yelo
 	namespace Time { namespace Interpolation
 	{
 		class i_interpolator
-			abstract
 		{
 		public:
 			virtual void Ctor() {}

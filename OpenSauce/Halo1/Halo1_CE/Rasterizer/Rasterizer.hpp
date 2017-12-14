@@ -33,7 +33,7 @@ namespace Yelo
 				c_upgrades_container();
 
 			protected:
-				const std::vector<Configuration::i_configuration_value* const> GetMembers() final override;
+				std::vector<i_configuration_value*> GetMembers() final override;
 			};
 
 		public:
@@ -45,7 +45,7 @@ namespace Yelo
 			c_settings_container();
 			
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override;
+			std::vector<i_configuration_value*> GetMembers() final override;
 		};
 
 		class c_settings_rasterizer

@@ -36,7 +36,7 @@ namespace Yelo
 			c_paths_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() override;
+			std::vector<i_configuration_value*> GetMembers() override;
 		};
 
 		class c_profile_container final
@@ -49,7 +49,7 @@ namespace Yelo
 			c_profile_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() override;
+			std::vector<i_configuration_value*> GetMembers() override;
 		};
 
 		class c_cheape_container final
@@ -61,13 +61,12 @@ namespace Yelo
 			c_cheape_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() override;
+			std::vector<i_configuration_value*> GetMembers() override;
 		};
 #pragma endregion
 
 #pragma region Profile
 		class i_settings_profile
-			abstract
 		{
 		public:
 			virtual cstring GetRootPath() = 0;

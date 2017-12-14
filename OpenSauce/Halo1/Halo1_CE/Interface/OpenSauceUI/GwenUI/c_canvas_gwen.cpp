@@ -82,7 +82,13 @@ namespace Yelo
 			{
 				auto& bounds = m_canvas->GetBounds();
 
-				return rectangle2d { bounds.x, bounds.y, bounds.h, bounds.w };
+				return rectangle2d
+				{
+					static_cast<int16>(bounds.x),
+					static_cast<int16>(bounds.y),
+					static_cast<int16>(bounds.h),
+					static_cast<int16>(bounds.w)
+				};
 			}
 
 			void* c_canvas_gwen::GetControlPtr() const

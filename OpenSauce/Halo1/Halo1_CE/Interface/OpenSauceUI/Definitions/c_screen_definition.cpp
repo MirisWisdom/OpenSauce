@@ -20,9 +20,9 @@ namespace Yelo
 			, m_control_definition()
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_screen_definition::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_screen_definition::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const> { &m_screen_name, &m_control_definition };
+			return std::vector<Configuration::i_configuration_value*> { &m_screen_name, &m_control_definition };
 		}
 #pragma endregion
 	};};};

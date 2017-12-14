@@ -14,7 +14,6 @@ namespace Yelo
 	namespace Tool { namespace PackedFile
 	{
 		class i_packed_file_processor
-			abstract
 		{
 		public:
 			virtual bool ProcessElement(c_packed_file::s_element_editor& element, const boost::filesystem::path& file_path) = 0;

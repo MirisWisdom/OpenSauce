@@ -134,9 +134,9 @@ namespace Yelo
 #endif
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_settings_container::c_upgrades_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_settings_container::c_upgrades_container::GetMembers()
 		{
-			return std::vector<Configuration::i_configuration_value* const>
+			return std::vector<Configuration::i_configuration_value*>
 			{
 				&m_maximum_rendered_triangles,
 #if PLATFORM_VERSION <= 0x1090
@@ -153,9 +153,9 @@ namespace Yelo
 			, m_upgrades()
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_settings_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return std::vector<i_configuration_value*>
 			{
 #if PLATFORM_VERSION <= 0x1090
 				&m_use_nvidia_camo,

@@ -46,9 +46,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_file };
+				return std::vector<Configuration::i_configuration_value*> { &m_id, &m_file };
 			}
 		};
 
@@ -66,9 +66,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_shader_ids };
+				return std::vector<Configuration::i_configuration_value*> { &m_id, &m_shader_ids };
 			}
 		};
 
@@ -88,9 +88,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const> { &m_tessellation, &m_bounds_x, &m_bounds_y };
+				return std::vector<Configuration::i_configuration_value*> { &m_tessellation, &m_bounds_x, &m_bounds_y };
 			}
 		};
 
@@ -108,9 +108,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const> { &m_activation_state, &m_invert };
+				return std::vector<Configuration::i_configuration_value*> { &m_activation_state, &m_invert };
 			}
 		};
 
@@ -136,9 +136,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const>
+				return std::vector<Configuration::i_configuration_value*>
 				{
 					&m_name,
 					&m_effect,
@@ -170,9 +170,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const>
+				return std::vector<Configuration::i_configuration_value*>
 				{
 					&m_shader_directory,
 					&m_texture_directory,

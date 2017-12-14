@@ -23,7 +23,7 @@ namespace Yelo
 			c_sapien_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() override;
+			std::vector<i_configuration_value*> GetMembers() override;
 		};
 
 		class c_settings_sapien final

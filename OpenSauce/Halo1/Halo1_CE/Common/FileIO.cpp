@@ -70,9 +70,9 @@ namespace Yelo
 			}
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const> { &m_id, &m_md5, &m_path };
+				return std::vector<Configuration::i_configuration_value*> { &m_id, &m_md5, &m_path };
 			}
 		};
 
@@ -88,9 +88,9 @@ namespace Yelo
 			{ }
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+			std::vector<i_configuration_value*> GetMembers() final override
 			{
-				return std::vector<Configuration::i_configuration_value* const> { &m_files };
+				return std::vector<Configuration::i_configuration_value*> { &m_files };
 			}
 		};
 #pragma endregion

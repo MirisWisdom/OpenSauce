@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <DevEnvPath>"$(VS120COMNTOOLS)..\IDE\devenv.exe"</DevEnvPath>
+    <DevEnvPath>"$(DevEnvDir)devenv.exe"</DevEnvPath>
     <ExecConfig Condition="$(Configuration) == 'Debug'">Debug</ExecConfig>
     <ExecConfig Condition="$(Configuration) == 'Release'">Release</ExecConfig>
     <ExecConfig Condition="$(Configuration) == 'ReleaseSymbols'">Release</ExecConfig>

@@ -22,7 +22,7 @@ namespace Yelo
 		typedef bool (API_FUNC* proc_hs_type_parse)(Enums::hs_type type, datum_index expression_index);
 		typedef void (API_FUNC* proc_hs_type_inspect)(Enums::hs_type type, s_hs_value_union value, char* buffer, size_t buffer_size);
 
-		class c_hs_type_abi abstract
+		class c_hs_type_abi
 		{
 		public:
 			static const c_hs_type_abi* Get(Enums::hs_type type);
@@ -40,15 +40,15 @@ namespace Yelo
 			Enums::hs_type GetType() const								{ return m_type; }
 			cstring GetTypeName() const;
 
-			virtual s_hs_value_union GetDefaultValue() const abstract;
-			virtual s_hs_value_union ReadValue(Enums::hs_type type, const s_hs_value_union* source) const abstract;
-			virtual void WriteValue(Enums::hs_type type, s_hs_value_union source, s_hs_value_union& destination) const abstract;
-			virtual size_t GetSize() const abstract;
+			virtual s_hs_value_union GetDefaultValue() const = 0;
+			virtual s_hs_value_union ReadValue(Enums::hs_type type, const s_hs_value_union* source) const = 0;
+			virtual void WriteValue(Enums::hs_type type, s_hs_value_union source, s_hs_value_union& destination) const = 0;
+			virtual size_t GetSize() const = 0;
 
-			virtual bool Parse(Enums::hs_type type, datum_index expression_index) const abstract;
+			virtual bool Parse(Enums::hs_type type, datum_index expression_index) const = 0;
 
-			virtual bool Inspectable() const abstract;
-			virtual void Inspect(Enums::hs_type type, s_hs_value_union value, char* buffer, size_t buffer_size) const abstract;
+			virtual bool Inspectable() const = 0;
+			virtual void Inspect(Enums::hs_type type, s_hs_value_union value, char* buffer, size_t buffer_size) const = 0;
 
 			virtual bool CastableToValueUnion() const							{ return CastableTo_hs_type_long(); }
 			virtual s_hs_value_union GetValue(s_hs_value_union value)			{ return GetValue(value.int32); }
@@ -107,7 +107,7 @@ namespace Yelo
 			void Inspect(Enums::hs_type type, s_hs_value_union value, char* buffer, size_t buffer_size) const override	{ }
 		};
 
-		struct c_hs_type_value_abi abstract 
+		struct c_hs_type_value_abi 
 			:  c_hs_type_abi
 		{
 		protected:

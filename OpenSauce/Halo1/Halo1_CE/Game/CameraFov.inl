@@ -26,9 +26,9 @@ namespace Yelo
 			, m_ignore_fov_change_in_main_menu("IgnoreFOVChangeInMainMenu", true)
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_settings_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_settings_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const> { &m_field_of_view, &m_ignore_fov_change_in_cinematics, &m_ignore_fov_change_in_main_menu };
+			return std::vector<i_configuration_value*> { &m_field_of_view, &m_ignore_fov_change_in_cinematics, &m_ignore_fov_change_in_main_menu };
 		}
 
 		void c_settings_fov::PostLoad()

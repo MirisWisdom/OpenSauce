@@ -50,9 +50,9 @@ namespace Yelo
 					}
 
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers() final override
+					std::vector<i_configuration_value*> GetMembers() final override
 					{
-						return std::vector<i_configuration_value* const>
+						return std::vector<i_configuration_value*>
 						{
 							&m_name,
 							&m_position
@@ -68,9 +68,9 @@ namespace Yelo
 				{ }
 
 			protected:
-				const std::vector<i_configuration_value* const> GetMembers() final override
+				std::vector<i_configuration_value*> GetMembers() final override
 				{
-					return std::vector<i_configuration_value* const> { &m_weapon_positions };
+					return std::vector<i_configuration_value*> { &m_weapon_positions };
 				}
 			};
 

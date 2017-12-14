@@ -156,9 +156,9 @@ namespace Yelo
 					{ }
 		
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers() override
+					std::vector<i_configuration_value*> GetMembers() override
 					{
-						return std::vector<i_configuration_value* const>
+						return std::vector<i_configuration_value*>
 						{
 							&m_normal_maps,
 							&m_detail_normal_maps,
@@ -182,9 +182,9 @@ namespace Yelo
 					{ }
 		
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers() override
+					std::vector<i_configuration_value*> GetMembers() override
 					{
-						return std::vector<i_configuration_value* const>
+						return std::vector<i_configuration_value*>
 						{
 							&m_diffuse_directional_lightmaps,
 							&m_specular_directional_lightmaps
@@ -204,9 +204,9 @@ namespace Yelo
 					{ }
 		
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers() override
+					std::vector<i_configuration_value*> GetMembers() override
 					{
-						return std::vector<i_configuration_value* const>
+						return std::vector<i_configuration_value*>
 						{
 							&m_depth_fade
 						};
@@ -228,9 +228,9 @@ namespace Yelo
 				{ }
 				
 			protected:
-				const std::vector<i_configuration_value* const> GetMembers() override
+				std::vector<i_configuration_value*> GetMembers() override
 				{
-					return std::vector<i_configuration_value* const>
+					return std::vector<i_configuration_value*>
 					{
 						&m_enabled,
 						&m_shader_model,

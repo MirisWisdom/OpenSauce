@@ -25,9 +25,9 @@ namespace Yelo
 			, m_effects("Effect", "")
 		{ }
 
-		const std::vector<Configuration::i_configuration_value* const> c_collection_definition_container::GetMembers()
+		std::vector<Configuration::i_configuration_value*> c_collection_definition_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return std::vector<i_configuration_value*>
 			{
 				&m_name,
 				&m_source_directory,

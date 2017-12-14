@@ -8,7 +8,7 @@
     <!--<IncludePath>;$(IncludePath)</IncludePath>-->
     <LibraryPath>$(OSPlatformCppLibDir);$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis Condition=" '$(Configuration)'=='DebugCodeAnalysis' ">true</RunCodeAnalysis>
-	<PlatformToolset>v120_xp</PlatformToolset>
+	<PlatformToolset>v141_xp</PlatformToolset>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(OSRequiresVLD)' != '' " Label="Configuration">

@@ -12,7 +12,6 @@ namespace Yelo
 	namespace Tool { namespace Shader { namespace Compiler
 	{
 		class i_collection_definition
-			abstract
 		{
 		public:
 			virtual const std::string GetName() = 0;

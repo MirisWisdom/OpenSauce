@@ -14,7 +14,6 @@ namespace Yelo
 	namespace Tool { namespace Shader { namespace Compiler
 	{
 		class i_collection_writer
-			abstract
 		{
 		public:
 			virtual void WriteCollection(const boost::filesystem::path& source_directory

@@ -15,7 +15,6 @@ namespace Yelo
 	namespace Tool { namespace Shader { namespace Compiler
 	{
 		class c_effect_writer
-			abstract
 			: public i_effect_writer
 		{
 		protected:
