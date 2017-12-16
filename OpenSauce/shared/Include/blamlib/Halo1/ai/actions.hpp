@@ -6,59 +6,73 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/math/color_math.hpp>
+
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum actor_action : _enum
-		{
-			_actor_action_none,
-			_actor_action_sleep,
-			_actor_action_alert,
-			_actor_action_fight,
-			_actor_action_flee,
-			_actor_action_uncover,
-			_actor_action_guard,
-			_actor_action_search,
-			_actor_action_wait,
-			_actor_action_vehicle,
-			_actor_action_charge,
-			_actor_action_obey,
-			_actor_action_converse,
-			_actor_action_avoid,
-
-			k_number_of_actor_actions
-		};
-
-		enum action_class : _enum
-		{
-			_action_class_passive = 1,
-		};
-	};
-
 	namespace AI
 	{
-		typedef void (PLATFORM_API* proc_action_function)(datum_index actor_index);
-		typedef void (PLATFORM_API* proc_action_function_2C)(datum_index actor_index, datum_index, datum_index);
+		namespace e_actor_action
+		{
+			typedef enum : _enum
+			{
+				none,
+				sleep,
+				alert,
+				fight,
+				flee,
+				uncover,
+				guard,
+				search,
+				wait,
+				vehicle,
+				charge,
+				obey,
+				converse,
+				avoid,
+
+				k_count
+			} type_t;
+		}
+
+		namespace e_action_class
+		{
+			typedef enum : _enum
+			{
+				passive = 1,
+
+				k_count
+			} type_t;
+		}
+
+		typedef void (PLATFORM_API* proc_action_function_t)(
+			datum_index actor_index);
+		typedef void (PLATFORM_API* proc_action_function_2C_t)(
+			datum_index actor_index,
+			datum_index,
+			datum_index);
+
 		struct s_action_function_definition
 		{
-			Enums::actor_action action;
+			e_actor_action::type_t action;
 			PAD16;
 			cstring name;
 			const real_argb_color debug_color;
 			size_t action_data_size;
-			Enums::action_class action_class;
+			e_action_class::type_t action_class;
 			PAD16;
-			proc_action_function begin;
-			proc_action_function perform;
-			proc_action_function update;
-			proc_action_function control;
-			proc_action_function end;
-			proc_action_function func28;
-			proc_action_function_2C func2C;
-			proc_action_function func30;
-			proc_action_function func34;
-			proc_action_function func38;
-		};				
-	};
-};
+			proc_action_function_t begin;
+			proc_action_function_t perform;
+			proc_action_function_t update;
+			proc_action_function_t control;
+			proc_action_function_t end;
+			proc_action_function_t func28;
+			proc_action_function_2C_t func2C;
+			proc_action_function_t func30;
+			proc_action_function_t func34;
+			proc_action_function_t func38;
+		};
+	}
+}

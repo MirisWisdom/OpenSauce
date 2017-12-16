@@ -140,7 +140,7 @@ namespace Yelo
 			datum_index player_index;
 			datum_index owner_object_index;
 			UNKNOWN_TYPE(int32);
-			Enums::game_team owner_team;
+			e_game_team::type_t owner_team;
 			int16 region_permutation; // variant id
 			real_point3d position;
 			UNKNOWN_TYPE(real); // angle?
@@ -236,7 +236,7 @@ namespace Yelo
 			real scale;																		// 0xB0
 			_enum type;																		// 0xB4
 			PAD16;
-			Enums::game_team owner_team;													// 0xB8
+			e_game_team::type_t owner_team;													// 0xB8
 			int16 name_list_index;															// 0xBA
 			// ticks spent not at_rest. only biped updates this
 			int16 moving_time;																// 0xBC

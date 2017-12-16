@@ -14,6 +14,7 @@
 #include <blamlib/Halo1/effects/particle_systems.hpp>
 #include <blamlib/Halo1/effects/particles.hpp>
 #include <blamlib/Halo1/effects/weather_particle_systems.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

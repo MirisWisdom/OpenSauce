@@ -131,17 +131,17 @@ namespace Yelo
 		template<>
 		struct hs_type_traits<Enums::_hs_type_enum_team>
 		{
-			typedef Enums::game_team ctype;
+			typedef e_game_team::type_t ctype;
 		};
 		template<>
 		struct hs_type_traits<Enums::_hs_type_enum_ai_default_state>
 		{
-			typedef Enums::actor_default_state ctype;
+			typedef AI::e_actor_default_state::type_t ctype;
 		};
 		template<>
 		struct hs_type_traits<Enums::_hs_type_enum_actor_type>
 		{
-			typedef Enums::actor_type ctype;
+			typedef AI::e_actor_type::type_t ctype;
 		};
 		template<>
 		struct hs_type_traits<Enums::_hs_type_enum_hud_corner>

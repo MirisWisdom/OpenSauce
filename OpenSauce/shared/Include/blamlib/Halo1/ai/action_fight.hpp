@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+
 namespace Yelo
 {
 	namespace AI
@@ -14,6 +16,8 @@ namespace Yelo
 		{
 			UNKNOWN_TYPE(int16); // timer
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_action_fight_state) == 0x4 );
-	};
-};
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_action_fight_state) == 0x4 );
+	}
+}

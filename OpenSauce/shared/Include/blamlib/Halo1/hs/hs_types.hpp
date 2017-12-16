@@ -76,13 +76,13 @@ namespace Yelo
 			virtual s_hs_value_union GetValue(Enums::game_difficulty_level value) const	{ return k_none_value_union; }
 
 			virtual bool CastableTo_hs_type_enum_team() const							{ return false; }
-			virtual s_hs_value_union GetValue(Enums::game_team value) const				{ return k_none_value_union; }
+			virtual s_hs_value_union GetValue(e_game_team::type_t value) const			{ return k_none_value_union; }
 
 			virtual bool CastableTo_hs_type_enum_ai_default_state() const				{ return false; }
-			virtual s_hs_value_union GetValue(Enums::actor_default_state value) const	{ return k_none_value_union; }
+			virtual s_hs_value_union GetValue(AI::e_actor_default_state::type_t value) const	{ return k_none_value_union; }
 
 			virtual bool CastableTo_hs_type_enum_actor_type() const						{ return false; }
-			virtual s_hs_value_union GetValue(Enums::actor_type value) const			{ return k_none_value_union; }
+			virtual s_hs_value_union GetValue(AI::e_actor_type::type_t value) const			{ return k_none_value_union; }
 
 			virtual bool CastableTo_hs_type_enum_hud_corner() const						{ return false; }
 			virtual s_hs_value_union GetValue(Enums::hud_anchor value) const			{ return k_none_value_union; }

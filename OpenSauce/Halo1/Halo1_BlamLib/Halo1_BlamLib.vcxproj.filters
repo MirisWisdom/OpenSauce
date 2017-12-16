@@ -73,12 +73,6 @@
     <Filter Include="physics">
       <UniqueIdentifier>{44ff4e39-e4c9-4d30-b7ab-87780924b271}</UniqueIdentifier>
     </Filter>
-    <Filter Include="rasterizer">
-      <UniqueIdentifier>{bf154608-cb57-4a76-be6b-0a8b72c17633}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="rasterizer\dx9">
-      <UniqueIdentifier>{1076d218-bede-4e77-a87f-6a9a1e9ecdd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="render">
       <UniqueIdentifier>{04e0a37f-d64c-492b-96d5-650bb2cb6d06}</UniqueIdentifier>
     </Filter>
@@ -129,6 +123,12 @@
     </Filter>
     <Filter Include="effects">
       <UniqueIdentifier>{05e6eac3-3f4e-4d5b-98af-81ec15ba4db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rasterizer">
+      <UniqueIdentifier>{bf154608-cb57-4a76-be6b-0a8b72c17633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rasterizer\dx9">
+      <UniqueIdentifier>{1076d218-bede-4e77-a87f-6a9a1e9ecdd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

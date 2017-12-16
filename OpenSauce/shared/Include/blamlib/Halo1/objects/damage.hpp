@@ -44,7 +44,7 @@ namespace Yelo
 			long_flags flags;								// 0x4
 			datum_index responsible_player_index;			// 0x8
 			datum_index responsible_unit_index;				// 0xC
-			Enums::game_team responsible_units_team;		// 0x10
+			e_game_team::type_t responsible_units_team;		// 0x10
 			PAD16;											// 0x12
 			s_scenario_location location;					// 0x14
 			real_point3d damage_position;					// 0x1C
@@ -74,7 +74,7 @@ namespace Yelo
 			data.material = Enums::_material_type_none;
 			data.responsible_player_index = datum_index::null;
 			data.responsible_unit_index = datum_index::null;
-			data.responsible_units_team = Enums::_game_team_none;
+			data.responsible_units_team = e_game_team::none;
 			data.location.cluster_index = NONE;
 			data.scale = 1.0f;
 			data.damage_multiplier = 1.0f;

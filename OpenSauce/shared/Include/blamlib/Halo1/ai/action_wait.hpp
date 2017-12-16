@@ -6,6 +6,4 @@
 */
 #pragma once
 
-namespace Yelo
-{
-};
+namespace Yelo {}

@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/networking/network_game_manager_structures.hpp>
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

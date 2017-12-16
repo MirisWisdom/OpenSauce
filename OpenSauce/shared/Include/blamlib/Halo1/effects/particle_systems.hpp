@@ -10,6 +10,8 @@
 
 #include <blamlib/Halo1/effects/effects_constants.hpp>
 #include <YeloLib/Halo1/effects/effects_constants_yelo.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

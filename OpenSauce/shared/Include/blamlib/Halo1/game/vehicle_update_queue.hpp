@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/simple_circular_queue.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

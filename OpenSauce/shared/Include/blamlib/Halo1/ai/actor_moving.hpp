@@ -6,17 +6,24 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+
 namespace Yelo
 {
-	namespace Enums
+	namespace AI
 	{
-		enum actor_movement_state : _enum
+		namespace e_actor_movement_state
 		{
-			_actor_movement_state_noncombat,
-			_actor_movement_state_asleep,
-			_actor_movement_state_combat,
-			_actor_movement_state_flee,
-			_actor_movement_state_flaming,
-		};
-	};
-};
+			typedef enum : _enum
+			{
+				noncombat,
+				asleep,
+				combat,
+				flee,
+				flaming,
+
+				k_count
+			} type_t;
+		}
+	}
+}
