@@ -8,33 +8,37 @@
 
 namespace Yelo
 {
-	namespace Enums
+	namespace AI
 	{
-		enum {
+		enum
+		{
 			k_maximum_number_of_mounted_weapon_units = 8,
 		};
 
-		enum ai_sound_volume {
+		enum ai_sound_volume
+		{
 			k_number_of_ai_sound_volumes = 5,
 		};
 
-		enum ai_unit_effect {
+		enum ai_unit_effect
+		{
 			k_number_of_ai_unit_effects = 4,
 		};
 
-		enum ai_spatial_effect {
-			_ai_spatial_effect_environmental_noise,
-			_ai_spatial_effect_weapon_impact,
-			_ai_spatial_effect_weapon_detonation,
+		namespace e_ai_spatial_effect
+		{
+			typedef enum : _enum
+			{
+				environmental_noise,
+				weapon_impact,
+				weapon_detonation,
 
-			k_number_of_ai_spatial_effects
-		};
-	};
+				k_count
+			} type_t;
+		}
 
-	namespace AI
-	{
 		struct s_ai_globals_data;
 
-		s_ai_globals_data*				AIGlobals();
-	};
-};
+		s_ai_globals_data* AIGlobals();
+	}
+}

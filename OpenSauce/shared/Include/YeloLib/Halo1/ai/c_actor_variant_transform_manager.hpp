@@ -7,12 +7,12 @@
 #pragma once
 
 #include <YeloLib/Halo1/units/unit_transform_definition.hpp>
+#include <blamlib/Halo1/game/game_allegiance.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
-		enum game_team : _enum;
 		enum unit_animation_keyframe : _enum;
 	};
 
@@ -41,7 +41,7 @@ namespace Yelo
 			struct s_actor_variant_transform_state
 			{
 				datum_index::index_t m_unit_index;
-				Enums::game_team m_instigator_team;
+				e_game_team::type_t m_instigator_team;
 				datum_index m_instigator_encounter;
 				int16 m_instigator_squad;
 				sbyte m_transform_entry_index;
@@ -157,10 +157,10 @@ namespace Yelo
 			/// <param name="override_team">	The override team. </param>
 			///
 			/// <returns>	The chosen team. </returns>
-			Enums::game_team HandleTeam(const Enums::actor_variant_transform_team_handling option
-				, const Enums::game_team attacked_team
-				, const Enums::game_team attacker_team
-				, const Enums::game_team override_team) const;
+			e_game_team::type_t HandleTeam(const Enums::actor_variant_transform_team_handling option
+			                               , const e_game_team::type_t attacked_team
+			                               , const e_game_team::type_t attacker_team
+			                               , const e_game_team::type_t override_team) const;
 #pragma endregion
 
 #pragma region Unit Creation
@@ -189,10 +189,10 @@ namespace Yelo
 			///
 			/// <returns>	The new unit index. </returns>
 			datum_index CreateUnitReuse(const datum_index unit_index
-				, Objects::s_unit_datum* unit_datum
-				, const Enums::actor_variant_transform_team_handling team_option
-				, const Enums::game_team instigator_team
-				, const Enums::game_team override_team) const;
+			                            , Objects::s_unit_datum* unit_datum
+			                            , const Enums::actor_variant_transform_team_handling team_option
+			                            , const e_game_team::type_t instigator_team
+			                            , const e_game_team::type_t override_team) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Creates a new unit. </summary>
@@ -206,11 +206,11 @@ namespace Yelo
 			///
 			/// <returns>	The new unit index. </returns>
 			datum_index CreateUnitNew(const datum_index unit_index
-				, Objects::s_unit_datum* unit_datum
-				, const datum_index new_unit_type
-				, const Enums::actor_variant_transform_team_handling team_option
-				, const Enums::game_team instigator_team
-				, const Enums::game_team override_team) const;
+			                          , Objects::s_unit_datum* unit_datum
+			                          , const datum_index new_unit_type
+			                          , const Enums::actor_variant_transform_team_handling team_option
+			                          , const e_game_team::type_t instigator_team
+			                          , const e_game_team::type_t override_team) const;
 #pragma endregion
 
 #pragma region Transform State
@@ -270,13 +270,13 @@ namespace Yelo
 			/// <param name="attachment_team">		   	The attachment's team. </param>
 			/// <param name="attachment_scale">		   	The attachment's scale. </param>
 			void AttachObject(const datum_index unit_index
-				, const Objects::s_unit_datum* unit_datum
-				, const datum_index object_type
-				, const tag_string& object_marker_name
-				, const tag_string& destination_marker_name
-				, const int32 destination_marker_index
-				, const Enums::game_team attachment_team
-				, const real attachment_scale) const;
+			                  , const Objects::s_unit_datum* unit_datum
+			                  , const datum_index object_type
+			                  , const tag_string& object_marker_name
+			                  , const tag_string& destination_marker_name
+			                  , const int32 destination_marker_index
+			                  , const e_game_team::type_t attachment_team
+			                  , const real attachment_scale) const;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Attach the transform definition's attachment objects to the target unit. </summary>
@@ -286,9 +286,9 @@ namespace Yelo
 			/// <param name="instigator_team">	   	The instigator team. </param>
 			/// <param name="transform_definition">	[in] The transform out definition. </param>
 			void AttachObjects(const datum_index unit_index
-				, const Objects::s_unit_datum* unit_datum
-				, const Enums::game_team instigator_team
-				, const TagGroups::actor_variant_transform_out_definition& transform_definition) const;
+			                   , const Objects::s_unit_datum* unit_datum
+			                   , const e_game_team::type_t instigator_team
+			                   , const TagGroups::actor_variant_transform_out_definition& transform_definition) const;
 #pragma endregion
 
 #pragma region Transform Stages
@@ -302,7 +302,7 @@ namespace Yelo
 			/// <param name="transform_in_definition"> 	[in] The transform in definition. </param>
 			void TransformOut(const datum_index unit_index
 				, Objects::s_unit_datum* unit_datum
-				, const Enums::game_team instigator_team
+				, const e_game_team::type_t instigator_team
 				, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
 				, const TagGroups::actor_variant_transform_in_definition& transform_in_definition
 				, s_actor_variant_transform_state& transform_state) const;

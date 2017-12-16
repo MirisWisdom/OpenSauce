@@ -8,6 +8,7 @@
 
 #include <blamlib/Halo1/game/game_configuration.hpp>
 #include <blamlib/Halo1/models/model_animations.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

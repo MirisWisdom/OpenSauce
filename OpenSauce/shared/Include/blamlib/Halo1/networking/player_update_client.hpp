@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/game/position_queue.hpp>
 #include <blamlib/Halo1/game/vehicle_update_queue.hpp>
 #include <blamlib/Halo1/networking/player_update.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

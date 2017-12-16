@@ -6,35 +6,44 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+
 namespace Yelo
 {
-	namespace Enums
+	namespace AI
 	{
-		enum actor_type : _enum
+		namespace e_actor_type
 		{
-			_actor_type_elite,
-			_actor_type_jackal,
-			_actor_type_grunt,
-			_actor_type_hunter,
-			_actor_type_engineer,
-			_actor_type_assassin,		// uses elite actor type definition
-			_actor_type_player,			// uses marine actor type definition
-			_actor_type_marine,
-			_actor_type_crew,
-			_actor_type_combat_form,
-			_actor_type_infection_form,
-			_actor_type_carrier_form,
-			_actor_type_monitor,		// uses sentinel actor type definition
-			_actor_type_sentinel,
-			_actor_type_none,			// uses grunt actor type definition
-			_actor_type_mounted_weapon,
+			typedef enum : _enum
+			{
+				elite,
+				jackal,
+				grunt,
+				hunter,
+				engineer,
+				// uses elite actor type definition
+				assassin,
+				// uses marine actor type definition
+				player,
+				marine,
+				crew,
+				combat_form,
+				infection_form,
+				carrier_form,
+				// uses sentinel actor type definition
+				monitor,
+				sentinel,
+				// uses grunt actor type definition
+				none,
+				mounted_weapon,
 
-			k_number_of_actor_types,
-		};
-	};
+				k_count
+			} type_t;
+		}
+	}
 
 	namespace blam
 	{
-		extern cstring g_actor_type_names[Enums::k_number_of_actor_types];
-	};
-};
+		extern cstring g_actor_type_names[AI::e_actor_type::k_count];
+	}
+}

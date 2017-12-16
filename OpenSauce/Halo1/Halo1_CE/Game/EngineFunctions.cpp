@@ -244,7 +244,9 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// actors.c
-		API_FUNC_NAKED void PLATFORM_API actor_delete(datum_index actor_index, bool is_dead)
+		API_FUNC_NAKED void PLATFORM_API actor_delete(
+			const datum_index actor_index,
+			const bool is_dead)
 		{
 				static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_DELETE);
 
@@ -372,8 +374,8 @@ namespace Yelo
 
 			if(braindead)
 			{
-				actor_data->current_state = Enums::_actor_default_state_none;
-				actor_data->state.action = Enums::_actor_action_none;
+				actor_data->current_state = AI::e_actor_default_state::none;
+				actor_data->state.action = AI::e_actor_action::none;
 
 				actor_delete_props(actor_index);
 				actor_freeze(actor_index);
@@ -381,9 +383,9 @@ namespace Yelo
 			}
 			else
 			{
-				if(actor_data->current_state == Enums::_actor_default_state_none)
+				if(actor_data->current_state == AI::e_actor_default_state::none)
 				{
-					actor_data->current_state = Enums::_actor_default_state_alert;
+					actor_data->current_state = AI::e_actor_default_state::alert;
 				}
 			}
 		}
@@ -396,8 +398,8 @@ namespace Yelo
 			, const int32 arg7
 			, const int32 arg6
 			, const bool magic_sight_after_timer
-			, const Enums::actor_default_state initial_state
-			, const Enums::actor_default_state return_state
+			, const AI::e_actor_default_state::type_t initial_state
+			, const AI::e_actor_default_state::type_t return_state
 			, const int32 command_list_index
 			, const int32 sequence_id)
 		{
@@ -406,9 +408,10 @@ namespace Yelo
 			_asm jmp	FUNCTION;
 		}
 
-		API_FUNC_NAKED void PLATFORM_API actor_action_change(const datum_index actor_index
-			, const Enums::actor_action new_action_type
-			, const byte* new_action_data)
+		API_FUNC_NAKED void PLATFORM_API actor_action_change(
+			const datum_index actor_index,
+			const AI::e_actor_action::type_t new_action_type,
+			const byte* const new_action_data)
 		{
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(ACTOR_ACTION_CHANGE);
 
@@ -417,7 +420,9 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// ai_script.c
-		API_FUNC_NAKED void PLATFORM_API ai_scripting_attach_free(datum_index unit_index, datum_index actor_variant_definition_index)
+		API_FUNC_NAKED void PLATFORM_API ai_scripting_attach_free(
+			const datum_index unit_index,
+			const datum_index actor_variant_definition_index)
 		{
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(AI_SCRIPTING_ATTACH_FREE);
 

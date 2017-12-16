@@ -7,6 +7,7 @@
 
 #include <blamlib/Halo1/units/unit_structures.hpp>
 #include <blamlib/Halo1/units/vehicle_definitions.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

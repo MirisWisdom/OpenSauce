@@ -6,31 +6,44 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+
 namespace Yelo
 {
-	namespace Enums
+	namespace AI
 	{
-		enum actor_perception_type : _enum
+		namespace e_actor_perception_type
 		{
-			_actor_perception_type_none,
-			_actor_perception_type_partial,
-			_actor_perception_type_full,
-			_actor_perception_type_unmistakable,
+			typedef enum : _enum
+			{
+				none,
+				partial,
+				full,
+				unmistakable,
 
-			k_number_of_actor_perception_types,
-		};
+				k_count
+			} type_t;
+		}
 
-		enum actor_target_type : _enum
+		namespace e_actor_target_type
 		{
-			k_number_of_actor_target_types = 12
-		};
+			typedef enum : _enum
+			{
+				k_count = 12
+			} type_t;
+		}
 
-		enum actor_danger_zone : _enum
+		namespace e_actor_danger_zone
 		{
-			_actor_danger_zone_none,
-			_actor_danger_zone_suicide,
-			_actor_danger_zone_projectile,
-			_actor_danger_zone_vehicle,
-		};
-	};
-};
+			typedef enum : _enum
+			{
+				none,
+				suicide,
+				projectile,
+				vehicle,
+
+				k_count
+			} type_t;
+		}
+	}
+}

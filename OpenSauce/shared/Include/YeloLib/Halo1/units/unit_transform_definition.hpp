@@ -6,16 +6,15 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <blamlib/Halo1/game/game.hpp>
+#include <blamlib/Halo1/game/game_allegiance.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/Halo1/ai/actors.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
-		enum game_team : _enum;
-		enum actor_default_state : _enum;
-		enum actor_action : _enum;
 		enum unit_animation_keyframe : _enum;
 
 		enum actor_variant_transform_keyframe_rider_handling : _enum
@@ -171,11 +170,11 @@ namespace Yelo
 			TAG_FIELD(Enums::actor_variant_transform_in_encounter_squad_handling, encounter_squad_handling);
 			PAD16;
 			TAG_FIELD(Enums::actor_variant_transform_team_handling, team_handling);
-			TAG_FIELD(Enums::game_team, team_override);
+			TAG_FIELD(e_game_team::type_t, team_override);
 			TAG_FIELD(Enums::actor_variant_transform_in_actor_state_handling, initial_state_handling);
-			TAG_FIELD(Enums::actor_default_state, initial_state_override);
+			TAG_FIELD(AI::e_actor_default_state::type_t, initial_state_override);
 			TAG_FIELD(Enums::actor_variant_transform_in_actor_state_handling, return_state_handling);
-			TAG_FIELD(Enums::actor_default_state, return_state_override);
+			TAG_FIELD(AI::e_actor_default_state::type_t, return_state_override);
 			PAD16; // TAG_FIELD(Enums::actor_variant_transform_in_actor_action_handling, actor_action_handling);
 			PAD16; // TAG_FIELD(Enums::actor_action, actor_action_override);
 
@@ -216,7 +215,7 @@ namespace Yelo
 			TAG_FIELD(int16, destination_marker_count);
 			PAD16;
 			TAG_FIELD(Enums::actor_variant_transform_team_handling, team_handling);
-			TAG_FIELD(Enums::game_team, team_override);
+			TAG_FIELD(e_game_team::type_t, team_override);
 			TAG_FIELD(real_bounds, attachment_scale);
 			TAG_PAD(tag_block, 2);
 		}; BOOST_STATIC_ASSERT(sizeof(actor_variant_transform_out_attachment) == 0x78);

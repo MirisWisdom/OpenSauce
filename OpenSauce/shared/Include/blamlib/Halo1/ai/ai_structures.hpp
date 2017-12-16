@@ -6,6 +6,10 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/memory/datum_index.hpp>
+
 namespace Yelo
 {
 	namespace AI
@@ -16,7 +20,9 @@ namespace Yelo
 			PAD16; // unknown field
 			real_vector3d location;
 			uint32 tick;
-		}; BOOST_STATIC_ASSERT(sizeof(s_ai_spatial_effect) == 0x14);
+		};
+
+		BOOST_STATIC_ASSERT(sizeof(s_ai_spatial_effect) == 0x14);
 
 		struct s_ai_vehicle_enterable_datum
 		{
@@ -27,7 +33,9 @@ namespace Yelo
 			int16 actors_count;
 			PAD16;
 			datum_index actor_indices[6];
-		}; BOOST_STATIC_ASSERT(sizeof(s_ai_vehicle_enterable_datum) == 0x28);
+		};
+
+		BOOST_STATIC_ASSERT(sizeof(s_ai_vehicle_enterable_datum) == 0x28);
 
 		struct s_ai_globals_data
 		{
@@ -57,6 +65,8 @@ namespace Yelo
 			int16 pending_mounted_weapons_count;
 			PAD16;
 			datum_index pending_mounted_weapon_indices[8];
-		}; BOOST_STATIC_ASSERT(sizeof(s_ai_globals_data) == 0x8DC);
-	};
-};
+		};
+
+		BOOST_STATIC_ASSERT(sizeof(s_ai_globals_data) == 0x8DC);
+	}
+}

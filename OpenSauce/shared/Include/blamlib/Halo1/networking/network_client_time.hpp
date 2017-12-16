@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
+
 namespace Yelo
 {
 	namespace Networking

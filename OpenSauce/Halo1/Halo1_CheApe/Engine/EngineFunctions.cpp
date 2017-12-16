@@ -100,8 +100,8 @@ namespace Yelo
 			, const int32 arg7
 			, const int32 arg6
 			, const bool magic_sight_after_timer
-			, const Enums::actor_default_state initial_state
-			, const Enums::actor_default_state return_state
+			, const AI::e_actor_default_state::type_t initial_state
+			, const AI::e_actor_default_state::type_t return_state
 			, const int32 command_list_index
 			, const int32 sequence_id)
 		{

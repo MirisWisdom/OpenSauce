@@ -5,61 +5,63 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <YeloLib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {
-	namespace Enums
+	namespace AI
 	{
-		enum {
+		enum
+		{
 			k_maximum_actor_starting_locations = 32,
 		};
 
-		enum {
-			_ai_atom_pause,
-			_ai_atom_go_to,
-			_ai_atom_go_to_and_face,
-			_ai_atom_move_in_direction,
-			_ai_atom_look,
-			_ai_atom_animation_mode,
-			_ai_atom_crouch,
-			_ai_atom_shoot,
-			_ai_atom_grenade,
-			_ai_atom_vehicle,
-			_ai_atom_running_jump,
-			_ai_atom_targeted_jump,
-			_ai_atom_script,
-			_ai_atom_animate,
-			_ai_atom_recording,
-			_ai_atom_action,
-			_ai_atom_vocalize,
-			_ai_atom_targeting,
-			_ai_atom_initiative,
-			_ai_atom_wait,
-			_ai_atom_loop,
-			_ai_atom_die,
-			_ai_atom_move_immediate,
-			_ai_atom_look_random,
-			_ai_atom_look_player,
-			_ai_atom_look_object,
-			_ai_atom_set_radius,
-			_ai_atom_teleport,
+		namespace e_ai_atom
+		{
+			typedef enum : _enum
+			{
+				pause,
+				go_to,
+				go_to_and_face,
+				move_in_direction,
+				look,
+				animation_mode,
+				crouch,
+				shoot,
+				grenade,
+				vehicle,
+				running_jump,
+				targeted_jump,
+				script,
+				animate,
+				recording,
+				action,
+				vocalize,
+				targeting,
+				initiative,
+				wait,
+				loop,
+				die,
+				move_immediate,
+				look_random,
+				look_player,
+				look_object,
+				set_radius,
+				teleport,
 
-			k_number_of_ai_atoms,
-		};
-	};
+				k_count
+			} type_t;
+		}
+	}
 
 	namespace TagGroups
 	{
-		struct s_squad_definition
-		{
+		struct s_squad_definition { }; //BOOST_STATIC_ASSERT( sizeof(s_squad_definition)==0x18 );
 
-		}; //BOOST_STATIC_ASSERT( sizeof(s_squad_definition)==0x18 );
-
-		struct s_platoon_definition
-		{
-
-		}; //BOOST_STATIC_ASSERT( sizeof(s_platoon_definition)==0x18 );
+		struct s_platoon_definition { }; //BOOST_STATIC_ASSERT( sizeof(s_platoon_definition)==0x18 );
 
 		struct s_firing_position
 		{
@@ -68,7 +70,9 @@ namespace Yelo
 			int16 runtime_cluster_index;
 			PAD32;
 			int32 runtime_surface_index; // not valid if the encounter uses 3d firing positions
-		}; BOOST_STATIC_ASSERT( sizeof(s_firing_position)==0x18 );
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_firing_position)==0x18 );
 
 		struct s_encounter_definition
 		{
@@ -85,7 +89,9 @@ namespace Yelo
 			TAG_BLOCK(platoons, s_platoon_definition);
 			TAG_BLOCK(firing_positions, s_squad_definition);
 			TAG_BLOCK(starting_locations, scenario_player);
-		}; BOOST_STATIC_ASSERT( sizeof(s_encounter_definition)==0xB0 );
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_encounter_definition)==0xB0 );
 
 		struct s_ai_command
 		{
@@ -102,13 +108,19 @@ namespace Yelo
 			int16 object_name_index;
 			PAD16;
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_ai_command)==0x20 );
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_ai_command)==0x20 );
+
 		struct s_ai_command_point
 		{
 			real_point3d position;
 			int32 runtime_surface_index;
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_ai_command_point)==0x14 );
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_ai_command_point)==0x14 );
+
 		struct s_ai_command_list
 		{
 			tag_string name;
@@ -120,6 +132,8 @@ namespace Yelo
 			TAG_BLOCK(commands, s_ai_command);
 			TAG_BLOCK(points, s_ai_command_point);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT( sizeof(s_ai_command_list)==0x60 );
-	};
-};
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_ai_command_list)==0x60 );
+	}
+}

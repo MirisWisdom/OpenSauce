@@ -5,17 +5,16 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
+#include <blamlib/Halo1/game/game_allegiance.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
+#include <blamlib/Halo1/ai/actors.hpp>
+#include <blamlib/Halo1/ai/actor_types.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
 		enum game_difficulty_level : _enum;
-		enum game_team : _enum;
-		enum actor_default_state : _enum;
-		enum actor_type : _enum;
 		enum hud_anchor : _enum;
 
 		enum {
@@ -187,9 +186,9 @@ namespace Yelo
 //			hs_global_index_t global;
 
 			Enums::game_difficulty_level difficulty_level;
-			Enums::game_team team;
-			Enums::actor_default_state ai_default_state;
-			Enums::actor_type actor_type;
+			e_game_team::type_t team;
+			AI::e_actor_default_state::type_t ai_default_state;
+			AI::e_actor_type::type_t actor_type;
 			Enums::hud_anchor hud_corner;
 
 			datum_index tag_index;

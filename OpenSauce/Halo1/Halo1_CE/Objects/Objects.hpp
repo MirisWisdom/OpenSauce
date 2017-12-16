@@ -15,6 +15,7 @@
 #include <blamlib/Halo1/objects/widgets/widgets.hpp>
 #include <blamlib/Halo1/render/render_objects.hpp>
 #include <blamlib/Halo1/units/units.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

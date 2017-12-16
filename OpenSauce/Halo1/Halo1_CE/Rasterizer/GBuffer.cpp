@@ -965,7 +965,7 @@ skip_disable_velocity:
 				MeshIndex = g_object->type + 3;
 
 				if(GameEngine::Current() != nullptr)	// becomes non-null during multiplayer
-					TeamIndex += Enums::k_number_of_game_teams;	// Offset TeamIndex by game_teams for MP teams
+					TeamIndex += e_game_team::k_count;	// Offset TeamIndex by game_teams for MP teams
 
 				if(g_object->VerifyType(Enums::_object_type_mask_unit))
 				{

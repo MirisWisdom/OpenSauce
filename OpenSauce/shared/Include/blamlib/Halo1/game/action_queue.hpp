@@ -8,6 +8,7 @@
 
 #include <blamlib/Halo1/game/simple_circular_queue.hpp>
 #include <blamlib/Halo1/game/player_action.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

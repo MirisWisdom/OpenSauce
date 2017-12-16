@@ -16,8 +16,8 @@ namespace Yelo
 		{
 			struct s_allegiance
 			{
-				Enums::game_team this_team;
-				Enums::game_team other_team;
+				e_game_team::type_t this_team;
+				e_game_team::type_t other_team;
 				int16 threshold;
 				UNKNOWN_TYPE(int16);	// 0x6
 				UNKNOWN_TYPE(bool);		// 0x8
@@ -33,8 +33,8 @@ namespace Yelo
 			int16 allegiances_count;
 			s_allegiance allegiances[8];
 			PAD16;
-			long_flags ally_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_game_teams * Enums::k_number_of_game_teams) ]; // 0x94
-			long_flags enemy_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_game_teams * Enums::k_number_of_game_teams) ]; // 0xA4
+			long_flags ally_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(e_game_team::k_count * e_game_team::k_count) ]; // 0x94
+			long_flags enemy_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(e_game_team::k_count * e_game_team::k_count) ]; // 0xA4
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_allegiance_globals) == 0xB4 );
 	};
 };

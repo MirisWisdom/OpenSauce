@@ -248,7 +248,7 @@ namespace Yelo
 			"impossible",
 		};
 		// should be in game/game_allegiance.cpp
-		cstring g_game_team_names[Enums::k_number_of_game_teams] = {
+		cstring g_game_team_names[e_game_team::k_count] = {
 			"default",
 			"player",
 			"human",
@@ -261,7 +261,7 @@ namespace Yelo
 			"unused9",
 		};
 		// should be in ai/ai_scenario_definitions.cpp
-		cstring g_ai_default_state_names[Enums::k_number_of_actor_default_states] = {
+		cstring g_ai_default_state_names[AI::e_actor_default_state::k_count] = {
 			"none",
 			"sleep",
 			"alert",
@@ -276,7 +276,7 @@ namespace Yelo
 			"flee",
 		};
 		// should be in ai/actor_types.cpp
-		cstring g_actor_type_names[Enums::k_number_of_actor_types] = {
+		cstring g_actor_type_names[AI::e_actor_type::k_count] = {
 			"elite",
 			"jackal",
 			"grunt",

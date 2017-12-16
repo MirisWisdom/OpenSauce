@@ -59,7 +59,7 @@ namespace Yelo
 			}; BOOST_STATIC_ASSERT( sizeof(s_team_data) == 0x84 );
 			struct s_local_player
 			{
-				s_team_data nearby_team_objects[Enums::k_number_of_game_teams];
+				s_team_data nearby_team_objects[e_game_team::k_count];
 				datum_index nearby_object_indexes[Enums::k_max_custom_blips];
 			}; BOOST_STATIC_ASSERT( sizeof(s_local_player) == 0x568 );
 

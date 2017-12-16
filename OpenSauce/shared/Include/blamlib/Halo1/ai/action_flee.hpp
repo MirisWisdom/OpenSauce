@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
+
 namespace Yelo
 {
 	namespace AI
@@ -31,5 +33,5 @@ namespace Yelo
 
 			//TStructGetPtrImpl(datum_index,				, 0x1C); // prop
 		};
-	};
-};
+	}
+}

@@ -6,28 +6,30 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+
 namespace Yelo
 {
-	namespace Enums
+	namespace e_game_team
 	{
-		enum game_team : _enum
+		typedef enum : _enum
 		{
-			_game_team_none = NONE,
+			none = NONE,
 
-			_game_team_default = 0,
-			_game_team_player,
-			_game_team_human,
-			_game_team_covenant,
-			_game_team_flood,
-			_game_team_sentinel,
-			_game_team_unused6,
-			_game_team_unused7,
-			_game_team_unused8,
-			_game_team_unused9,
+			default_team = 0,
+			player,
+			human,
+			covenant,
+			flood,
+			sentinel,
+			unused6,
+			unused7,
+			unused8,
+			unused9,
 
-			k_number_of_game_teams
-		};
-	};
+			k_count
+		} type_t;
+	}
 
 	namespace GameState
 	{
@@ -38,7 +40,7 @@ namespace Yelo
 
 	namespace blam
 	{
-		extern cstring g_game_team_names[Enums::k_number_of_game_teams];
+		extern cstring g_game_team_names[e_game_team::k_count];
 
 		// Checks to see if [team_to_test] is an enemy of [team]
 		bool PLATFORM_API game_team_is_enemy(long_enum team, long_enum team_to_test);

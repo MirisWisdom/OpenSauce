@@ -345,10 +345,10 @@ namespace Yelo
 			}
 		}
 
-		Enums::game_team c_actor_variant_transform_manager::HandleTeam(const Enums::actor_variant_transform_team_handling option
-			, const Enums::game_team attacked_team
-			, const Enums::game_team attacker_team
-			, const Enums::game_team override_team) const
+		e_game_team::type_t c_actor_variant_transform_manager::HandleTeam(const Enums::actor_variant_transform_team_handling option
+			, const e_game_team::type_t attacked_team
+			, const e_game_team::type_t attacker_team
+			, const e_game_team::type_t override_team) const
 		{
 			switch(option)
 			{
@@ -360,7 +360,7 @@ namespace Yelo
 				return override_team;
 			}
 
-			return Enums::_game_team_none;
+			return e_game_team::none;
 		}
 #pragma endregion
 
@@ -457,7 +457,7 @@ namespace Yelo
 			, const tag_string& object_marker_name
 			, const tag_string& destination_marker_name
 			, const int32 destination_marker_index
-			, const Enums::game_team attachment_team
+			, const e_game_team::type_t attachment_team
 			, const real attachment_scale) const
 		{
 			// If there is only 1 marker do not append a marker index to the name
@@ -504,16 +504,16 @@ namespace Yelo
 
 		void c_actor_variant_transform_manager::AttachObjects(const datum_index unit_index
 			, const Objects::s_unit_datum* unit_datum
-			, const Enums::game_team instigator_team
+			, const e_game_team::type_t instigator_team
 			, const TagGroups::actor_variant_transform_out_definition& transform_definition) const
 		{
 			for(auto& attachment : transform_definition.attachments)
 			{
 				// Get the attachments team and random scale
-				Enums::game_team attachment_team = HandleTeam(attachment.team_handling
-					, unit_datum->object.owner_team
-					, instigator_team
-					, attachment.team_override);
+				e_game_team::type_t attachment_team = HandleTeam(attachment.team_handling
+				                                              , unit_datum->object.owner_team
+				                                              , instigator_team
+				                                              , attachment.team_override);
 
 				real attachment_scale = Random::GetReal(attachment.attachment_scale);
 
@@ -521,26 +521,26 @@ namespace Yelo
 				if(attachment.destination_marker_count == 1)
 				{
 					AttachObject(unit_index
-						, unit_datum
-						, attachment.object_type.tag_index
-						, attachment.object_marker
-						, attachment.destination_marker
-						, NONE
-						, attachment_team
-						, attachment_scale);
+					             , unit_datum
+					             , attachment.object_type.tag_index
+					             , attachment.object_marker
+					             , attachment.destination_marker
+					             , NONE
+					             , attachment_team
+					             , attachment_scale);
 				}
 				else
 				{
 					for(int32 marker_index = 0; marker_index < attachment.destination_marker_count; marker_index++)
 					{
 						AttachObject(unit_index
-							, unit_datum
-							, attachment.object_type.tag_index
-							, attachment.object_marker
-							, attachment.destination_marker
-							, marker_index
-							, attachment_team
-							, attachment_scale);
+						             , unit_datum
+						             , attachment.object_type.tag_index
+						             , attachment.object_marker
+						             , attachment.destination_marker
+						             , marker_index
+						             , attachment_team
+						             , attachment_scale);
 					}
 				}
 			}
@@ -576,7 +576,7 @@ namespace Yelo
 			}
 
 			// Get the intended actor states
-			Enums::actor_default_state initial_state = Enums::_actor_default_state_none;
+			AI::e_actor_default_state::type_t initial_state = AI::e_actor_default_state::none;
 			switch(target.initial_state_handling)
 			{
 			case Enums::_actor_variant_transform_in_actor_state_handling_inherit:
@@ -588,7 +588,7 @@ namespace Yelo
 			}
 			
 			// 0xFFFF triggers getting the actor default in actor_create_for_unit
-			Enums::actor_default_state return_state = (Enums::actor_default_state)0xFFFF;
+			AI::e_actor_default_state::type_t return_state = (AI::e_actor_default_state::type_t)0xFFFF;
 			switch(target.return_state_handling)
 			{
 			case Enums::_actor_variant_transform_in_actor_state_handling_inherit:
@@ -617,16 +617,16 @@ namespace Yelo
 		datum_index c_actor_variant_transform_manager::CreateUnitReuse(const datum_index unit_index
 			, Objects::s_unit_datum* unit_datum
 			, const Enums::actor_variant_transform_team_handling team_option
-			, const Enums::game_team instigator_team
-			, const Enums::game_team override_team) const
+			, const e_game_team::type_t instigator_team
+			, const e_game_team::type_t override_team) const
 		{
 			SET_FLAG(unit_datum->object.flags, Flags::_object_yelo_is_transforming_out_bit, false);
 			
 			// Set the existing unit's team
 			unit_datum->object.owner_team = HandleTeam(team_option
-				, unit_datum->object.owner_team
-				, instigator_team
-				, override_team);
+			                                           , unit_datum->object.owner_team
+			                                           , instigator_team
+			                                           , override_team);
 
 			return unit_index;
 		}
@@ -635,8 +635,8 @@ namespace Yelo
 			, Objects::s_unit_datum* unit_datum
 			, const datum_index new_unit_type
 			, const Enums::actor_variant_transform_team_handling team_option
-			, const Enums::game_team instigator_team
-			, const Enums::game_team override_team) const
+			, const e_game_team::type_t instigator_team
+			, const e_game_team::type_t override_team) const
 		{
 			// Create the new unit based on the target_unit's data
 			Objects::s_object_placement_data unit_placement_data;
@@ -644,9 +644,9 @@ namespace Yelo
 
 			// Set the to-be-created unit's team
 			unit_placement_data.owner_team = HandleTeam(team_option
-				, unit_datum->object.owner_team
-				, instigator_team
-				, override_team);
+			                                            , unit_datum->object.owner_team
+			                                            , instigator_team
+			                                            , override_team);
 
 			return blam::object_new(unit_placement_data);
 		}
@@ -655,7 +655,7 @@ namespace Yelo
 #pragma region Transform Sequence
 		void c_actor_variant_transform_manager::TransformOut(const datum_index unit_index
 			, Objects::s_unit_datum* unit_datum
-			, const Enums::game_team instigator_team
+			, const e_game_team::type_t instigator_team
 			, const TagGroups::actor_variant_transform_out_definition& transform_out_definition
 			, const TagGroups::actor_variant_transform_in_definition& transform_in_definition
 			, s_actor_variant_transform_state& transform_state) const
@@ -741,20 +741,20 @@ namespace Yelo
 				&& (unit_datum->object.definition_index == actor_variant_definition->unit.tag_index))
 			{
 				new_unit_index = CreateUnitReuse(unit_index
-					, unit_datum
-					, transform_target.team_handling
-					, transform_state.m_instigator_team
-					, transform_target.team_override);
+				                                 , unit_datum
+				                                 , transform_target.team_handling
+				                                 , transform_state.m_instigator_team
+				                                 , transform_target.team_override);
 				Objects::DetachChildActors(unit_index);
 			}
 			else
 			{
 				new_unit_index = CreateUnitNew(unit_index
-					, unit_datum
-					, actor_variant_definition->unit.tag_index
-					, transform_target.team_handling
-					, transform_state.m_instigator_team
-					, transform_target.team_override);
+				                               , unit_datum
+				                               , actor_variant_definition->unit.tag_index
+				                               , transform_target.team_handling
+				                               , transform_state.m_instigator_team
+				                               , transform_target.team_override);
 
 				if(TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_inherit_seated_units))
 				{
@@ -929,7 +929,7 @@ namespace Yelo
 
 			// Get the instigators team
 			auto* instigator_unit_datum = blam::object_try_and_get_and_verify_type<Objects::s_unit_datum>(damage_data->responsible_unit_index);
-			auto instigator_team = (instigator_unit_datum ? instigator_unit_datum->object.owner_team : Enums::_game_team_none);
+			auto instigator_team = (instigator_unit_datum ? instigator_unit_datum->object.owner_team : e_game_team::none);
 
 			// Get a free transform state entry, if an entry is unavailable skip the transform
 			auto* transform_state = AllocateTransformState(unit_index);
@@ -937,11 +937,11 @@ namespace Yelo
 			{
 				// Start transforming the unit, using the found transform
 				TransformOut(unit_index
-					, &unit_datum
-					, instigator_team
-					, *transform.transform_out_ptr
-					, *transform.transform_in_ptr
-					, *transform_state);
+				             , &unit_datum
+				             , instigator_team
+				             , *transform.transform_out_ptr
+				             , *transform.transform_in_ptr
+				             , *transform_state);
 
 				// Store the instigators encounter and squad for later use
 				s_actor_datum* actor_datum = nullptr;
@@ -1070,15 +1070,15 @@ namespace Yelo
 				{
 					// Start transforming the unit, using the found transform
 					TransformOut(actor_datum.meta.unit_index
-						, &unit_datum
-						, Enums::_game_team_none
-						, *transform.transform_out_ptr
-						, *transform.transform_in_ptr
-						, *transform_state);
+					             , &unit_datum
+					             , e_game_team::none
+					             , *transform.transform_out_ptr
+					             , *transform.transform_in_ptr
+					             , *transform_state);
 			
 					transform_state->m_instigator_encounter = NONE;
 					transform_state->m_instigator_squad = NONE;
-					transform_state->m_instigator_team = Enums::_game_team_none;
+					transform_state->m_instigator_team = e_game_team::none;
 					transform_state->m_transform_entry_index = transforms_entry_index;
 					transform_state->m_transform_index = transform_index;
 					transform_state->m_target_index = NONE;
@@ -1365,15 +1365,15 @@ namespace Yelo
 
 			// Start transforming the unit, using the found transform
 			TransformOut(unit_index
-				, unit_datum
-				, Enums::_game_team_none
-				, *transform.transform_out_ptr
-				, *transform.transform_in_ptr
-				, *transform_state);
+			             , unit_datum
+			             , e_game_team::none
+			             , *transform.transform_out_ptr
+			             , *transform.transform_in_ptr
+			             , *transform_state);
 
 			transform_state->m_instigator_encounter = NONE;
 			transform_state->m_instigator_squad = NONE;
-			transform_state->m_instigator_team = Enums::_game_team_none;
+			transform_state->m_instigator_team = e_game_team::none;
 			transform_state->m_transform_entry_index = transform_entry_index;
 			transform_state->m_transform_index = transform_index;
 			transform_state->m_target_index = target_index;
