@@ -8,51 +8,61 @@
 
 namespace Yelo
 {
-	namespace Enums
+	namespace Networking
 	{
-		enum {
+		enum
+		{
 			k_ipv4_address_length = 4,
 			k_ipv6_address_length = 16,
 		};
 
-		enum transport_type : byte_enum
+		namespace e_transport_type
 		{
-			_transport_type_udp = 17,
-			_transport_type_tcp,
+			typedef enum : byte_enum
+			{
+				udp = 17,
+				tcp,
 
-			_transport_type_gamespy = 20, // I just pulled this name out of my ass
-		};
+				// Name is guesswork
+				gamespy = 20,
 
-		enum transport_rejection_code : long_enum
+				k_count
+			} type_t;
+		}
+
+		namespace e_transport_rejection_code
 		{
-			_transport_rejection_code_none,
-			_transport_rejection_code_unknown,
-			_transport_rejection_code_too_many_connection_attempts,
-			_transport_rejection_code_invalid_protocol,
+			typedef enum : long_enum
+			{
+				none,
+				unknown,
+				too_many_connection_attempts,
+				invalid_protocol,
 
-			_transport_rejection_code_version_too_old,
-			_transport_rejection_code_version_too_new,
-			_transport_rejection_code_game_is_full,
-			_transport_rejection_code_game_is_closed,
-			_transport_rejection_code_blacklisted_machine,
-			_transport_rejection_code,
-		};
-	};
+				version_too_old,
+				version_too_new,
+				game_is_full,
+				game_is_closed,
+				blacklisted_machine,
 
-	namespace Networking
-	{
+				k_count
+			} type_t;
+		}
+
 		struct s_transport_address
 		{
 			union
 			{
-				struct _ipv4 {
+				struct _ipv4
+				{
 					byte class_a;
 					byte class_b;
 					byte class_c;
 					byte class_d;
-				}ipv4;
+				} ipv4;
 
-				struct _ipv6 {
+				struct _ipv6
+				{
 					int16 class_a;
 					int16 class_b;
 					int16 class_c;
@@ -62,14 +72,17 @@ namespace Yelo
 					int16 class_f;
 					int16 class_g;
 					int16 class_h;
-				}ipv6;
+				} ipv6;
 
-				byte ip[Enums::k_ipv6_address_length];
+				byte ip[k_ipv6_address_length];
 			};
+
 			int16 address_length;
 			int16 port;
 
 			int32 unknown;
-		}; BOOST_STATIC_ASSERT( sizeof(s_transport_address) == 0x18 );
-	};
-};
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_transport_address) == 0x18 );
+	}
+}

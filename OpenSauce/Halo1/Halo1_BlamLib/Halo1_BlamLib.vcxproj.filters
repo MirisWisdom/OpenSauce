@@ -13,9 +13,6 @@
     <Filter Include="bungie_net\common">
       <UniqueIdentifier>{0fc006db-78e1-4a20-8abf-09027e2253ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bungie_net\network">
-      <UniqueIdentifier>{792829a9-c0d3-4396-91bf-1b882d4858a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cache">
       <UniqueIdentifier>{3a138f1a-8394-4cf4-aa94-a3028cab4325}</UniqueIdentifier>
     </Filter>
@@ -130,6 +127,9 @@
     <Filter Include="rasterizer\dx9">
       <UniqueIdentifier>{1076d218-bede-4e77-a87f-6a9a1e9ecdd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="bungie_net\network">
+      <UniqueIdentifier>{792829a9-c0d3-4396-91bf-1b882d4858a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -161,9 +161,6 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\props.hpp">
       <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
-      <Filter>bungie_net\common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp">
       <Filter>bungie_net\network</Filter>
@@ -997,7 +994,10 @@
       <Filter>cseries</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bitmaps\bitmap_definition.hpp">
-      <Filter>bungie_net</Filter>
+      <Filter>bitmaps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
+      <Filter>bungie_net\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

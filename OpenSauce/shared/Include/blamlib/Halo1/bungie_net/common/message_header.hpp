@@ -6,48 +6,67 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
+
 namespace Yelo
 {
-	namespace Enums
+	namespace Networking
 	{
-		enum {
+		enum
+		{
 			k_maximum_message_size = 4095,
 		};
 
-		enum {
-			_message_type_none,
-			_message_type_lowlevel_error,
-			_message_type_data, // unused
-			_message_type_packet,
-
+		enum
+		{
 			k_number_of_message_types,
 		};
-	};
 
-	namespace Flags
-	{
+		namespace e_message_type
+		{
+			typedef enum : _enum
+			{
+				none,
+				lowlevel_error,
+				data,
+				// unused
+				packet,
+
+				k_count
+			} type_t;
+		}
+
 		// no code actually uses these flags
-		enum {
-			_message_encrypted_bit,
-			_message_unknown1_bit, // compressed?
+		namespace e_message_flags
+		{
+			typedef enum : _enum
+			{
+				encrypted_bit,
+				unknown1_bit,
 
-			k_number_of_message_flags,
-		};
-	};
+				k_count
+			} type_t;
 
-	namespace Networking
-	{
+			typedef flags_type<type_t> flags_t;
+		}
+
 		struct s_message_header
 		{
-			uint16 flags : bitfield_size<Flags::k_number_of_message_flags>::value;
-			uint16 type : bitfield_enum_size<Enums::k_number_of_message_types>::value;
-			uint16 size : bitfield_size<Enums::k_maximum_message_size>::value;
-		}; BOOST_STATIC_ASSERT( sizeof(s_message_header) == 0x2 );
+			uint16 flags : bitfield_size<e_message_flags::k_count>::value;
+			uint16 type : bitfield_enum_size<e_message_type::k_count>::value;
+			uint16 size : bitfield_size<k_maximum_message_size>::value;
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_message_header) == 0x2 );
 
 		struct s_message_lowlevel_error
 		{
 			char error_string[128];
 			byte error;
-		}; BOOST_STATIC_ASSERT( sizeof(s_message_lowlevel_error) == 0x81 );
-	};
-};
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_message_lowlevel_error) == 0x81 );
+	}
+}
