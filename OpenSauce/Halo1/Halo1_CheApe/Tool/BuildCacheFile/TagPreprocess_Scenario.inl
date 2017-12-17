@@ -40,7 +40,7 @@ namespace Scenario
 				auto check_bitmap_count_func =
 					[bsp_lightmap_count](datum_index bitmap_index)
 					{
-						const auto& bitmap = *blam::tag_get<TagGroups::s_bitmap_group>(bitmap_index);
+						const auto& bitmap = *blam::tag_get<TagGroups::s_bitmap_definition>(bitmap_index);
 
 						YELO_ASSERT_DISPLAY(bitmap.bitmaps.Count == bsp_lightmap_count,
 							"error: a lightmap bitmap referenced in a bsp modifier does not have the same bitmap count as the bsp has lightmap meshes");

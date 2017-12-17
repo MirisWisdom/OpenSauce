@@ -488,9 +488,6 @@
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
       <Filter>Engine\Impl</Filter>
     </None>
-    <None Include="Tool\BuildCppDefinition.inl">
-      <Filter>Tool\Impl</Filter>
-    </None>
     <None Include="Tool\CompileShaderPostprocess.inl">
       <Filter>Tool\Impl</Filter>
     </None>

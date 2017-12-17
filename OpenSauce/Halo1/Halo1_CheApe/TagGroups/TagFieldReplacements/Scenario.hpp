@@ -10,7 +10,7 @@
 #include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/scenario/sky_definitions.hpp>
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"

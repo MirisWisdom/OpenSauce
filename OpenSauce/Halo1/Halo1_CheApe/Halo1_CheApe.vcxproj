@@ -240,7 +240,6 @@
     <None Include="Tool\RemoveOSTagData.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
-    <None Include="Tool\BuildCppDefinition.inl" />
     <None Include="Tool\CompileShaderPostprocess.inl" />
     <None Include="Tool\Help.inl" />
     <None Include="Tool\ImportClassDefinitions.inl" />

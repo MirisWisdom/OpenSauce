@@ -6,7 +6,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/texture_cache.hpp>
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/cache/pc_texture_cache.hpp>
 #include <blamlib/Halo1/cache/physical_memory_map.hpp>
 
@@ -38,7 +38,7 @@ namespace Yelo
 			// block
 			bool block_thread, bool load)
 		{
-			YELO_ASSERT(bitmap && bitmap->signature==s_bitmap_group::k_group_tag);
+			YELO_ASSERT(bitmap && bitmap->signature== s_bitmap_definition::k_group_tag);
 
 #if PLATFORM_USES_CACHE_FILES && !PLATFORM_IS_DEDI
 			YELO_ASSERT_DISPLAY(false, "this isn't implemented yet");

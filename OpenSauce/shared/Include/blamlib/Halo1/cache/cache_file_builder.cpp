@@ -7,7 +7,7 @@
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
@@ -469,7 +469,7 @@ namespace Yelo
 				goto default_case;
 				break;
 
-			case TagGroups::s_bitmap_group::k_group_tag:
+			case TagGroups::s_bitmap_definition::k_group_tag:
 				goto default_case;
 				break;
 

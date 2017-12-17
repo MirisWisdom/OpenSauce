@@ -8,7 +8,7 @@
 
 #include <d3dx9.h>
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/cache/predicted_resources.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 

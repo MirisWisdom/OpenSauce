@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 namespace Yelo

@@ -86,7 +86,7 @@ namespace Yelo
 				if(bitmap_index.IsNull())
 					return;
 
-				TagGroups::s_bitmap_group* group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_index);
+				TagGroups::s_bitmap_definition* group = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_index);
 
 				// invalid bitmap index
 				YELO_ASSERT_DISPLAY(group->bitmaps.Count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");

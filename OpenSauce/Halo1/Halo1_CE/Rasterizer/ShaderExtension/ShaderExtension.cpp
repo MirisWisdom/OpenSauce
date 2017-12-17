@@ -11,7 +11,7 @@
 
 #include <sys/stat.h>
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <blamlib/Halo1/render/render.hpp>
@@ -98,7 +98,7 @@ namespace Yelo
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index)
 			{
 				// get the bitmap datum pointer
-				auto group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_tag_index);
+				auto group = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_tag_index);
 				auto bitmap = CAST_PTR(TagGroups::s_bitmap_data*, &group->bitmaps[0]);
 
 				// set the texture to the device
