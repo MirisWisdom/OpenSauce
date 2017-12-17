@@ -319,7 +319,7 @@ namespace Yelo
 
 				// set up the server url string
 				// generate the ip string for either ipv4 or ipv6
-				if(server_transport.address_length == Enums::k_ipv4_address_length)
+				if(server_transport.address_length == k_ipv4_address_length)
 				{
 					if(-1 == sprintf_s(server_ip_string,
 						"%i.%i.%i.%i",

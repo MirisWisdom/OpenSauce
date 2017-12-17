@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_winsock.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 
 namespace Yelo
 {
@@ -20,6 +21,8 @@ namespace Yelo
 			int32 max_endpoints;
 			int32 count;
 			int32 array_cursor;
-		}; BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint_set) == 0x114 );
-	};
-};
+		};
+
+		BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint_set) == 0x114 );
+	}
+}
