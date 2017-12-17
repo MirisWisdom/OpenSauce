@@ -12,7 +12,7 @@
 #include <blamlib/Halo1/camera/camera_definitions.hpp>
 #include <blamlib/Halo1/effects/effect_definitions.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/scenario/sky_definitions.hpp>
 
 namespace Yelo
@@ -145,7 +145,7 @@ namespace Yelo
 		);
 
 		TAG_GROUP_REFERENCE_DEFINE(bitmap, 0,
-			s_bitmap_group::k_group_tag
+			s_bitmap_definition::k_group_tag
 		);
 
 		TAG_GROUP_REFERENCE_DEFINE(sky, 0,

@@ -6,7 +6,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/cache_files.hpp>
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <blamlib/Halo1/cache/cache_files_globals.hpp>
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/cache/data_file_structures.hpp>
@@ -296,7 +296,7 @@ namespace Yelo
 			byte* data_base_address = state.ReadExternalData(tag_instance, Enums::_data_file_reference_bitmaps);
 
 			YELO_ASSERT_DISPLAY(false, "this isn't implemented yet");
-			auto* bitmap_group = tag_instance->Definition<TagGroups::s_bitmap_group>();
+			auto* bitmap_group = tag_instance->Definition<TagGroups::s_bitmap_definition>();
 		}
 
 		static void cache_file_data_load_multilingual_strings_resources(s_cache_tag_instance* tag_instance, byte* data_base_address)
@@ -345,7 +345,7 @@ namespace Yelo
 					cache_file_data_load_sound_resources(tag_instance, state);
 					break;
 
-				case TagGroups::s_bitmap_group::k_group_tag:
+				case TagGroups::s_bitmap_definition::k_group_tag:
 					cache_file_data_load_bitmap_resources(tag_instance, state);
 					break;
 

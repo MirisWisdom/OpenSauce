@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
 #include <YeloLib/Halo1/render/lightmaps/c_lightmap_manager.hpp>
 
 #include "Memory/MemoryInterface.hpp"
@@ -137,7 +137,7 @@ namespace Yelo
 				use_directional,
 				[](const datum_index tag_index, const int32 index) -> TagGroups::s_bitmap_data*
 				{
-					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(tag_index);
+					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(tag_index);
 					auto bitmap_data = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[index]);
 
 					return bitmap_data;

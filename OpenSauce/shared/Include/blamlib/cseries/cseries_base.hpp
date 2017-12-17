@@ -148,6 +148,10 @@ namespace Yelo
 	// bit flags in a 4 byte range
 	typedef unsigned long long_flags;
 #define pad_long_flags PAD32
+
+	// bit flags in a 8 byte range
+	typedef unsigned long longlong_flags;
+#define pad_longlong_flags PAD64
 };
 
 #include <blamlib/math/integer_math.hpp>

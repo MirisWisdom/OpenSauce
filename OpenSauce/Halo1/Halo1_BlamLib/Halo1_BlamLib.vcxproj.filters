@@ -162,9 +162,6 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\props.hpp">
       <Filter>ai</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bitmaps\bitmap_group.hpp">
-      <Filter>bitmaps</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
       <Filter>bungie_net\common</Filter>
     </ClInclude>
@@ -995,6 +992,12 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_collection_definitions.hpp">
       <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\cseries\enum_templates.h">
+      <Filter>cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bitmaps\bitmap_definition.hpp">
+      <Filter>bungie_net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
