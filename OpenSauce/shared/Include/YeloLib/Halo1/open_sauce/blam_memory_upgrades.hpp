@@ -31,10 +31,10 @@ namespace Yelo
 		enum {
 			// Our upgraded memory allocation size.
 			k_physical_memory_map_allocation_size_upgrade = 
-				CAST(uint32, k_physical_memory_map_allocation_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+				CAST(uint32, Cache::k_physical_memory_map_allocation_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
-		BOOST_STATIC_ASSERT( k_physical_memory_map_allocation_size_upgrade >= k_physical_memory_map_allocation_size );
+		BOOST_STATIC_ASSERT( k_physical_memory_map_allocation_size_upgrade >= Cache::k_physical_memory_map_allocation_size );
 	};
 
 
@@ -48,7 +48,7 @@ namespace Yelo
 				CAST(uint32, Yelo::Enums::k_maximum_simultaneous_tag_instances * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 
 			k_tag_base_address =				// 0x40440000
-				k_physical_memory_base_address + 
+				Cache::k_physical_memory_base_address +
 				k_game_state_allocation_size,
 
 			k_tag_allocation_size =				0x01700000,
@@ -144,14 +144,14 @@ namespace Yelo
 		enum {
 			// Our upgraded max cache size.
 			k_max_cache_size_upgrade = 
-				CAST(uint32, k_max_cache_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+				CAST(uint32, Cache::k_max_cache_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 
 			k_max_cache_vertex_y_index_buffer_size_upgrade = 
-				CAST(uint32, k_max_cache_vertex_y_index_buffer_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+				CAST(uint32, Cache::k_max_cache_vertex_y_index_buffer_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
-		BOOST_STATIC_ASSERT( k_max_cache_size_upgrade >= k_max_cache_size );
-		BOOST_STATIC_ASSERT( k_max_cache_vertex_y_index_buffer_size_upgrade >= k_max_cache_vertex_y_index_buffer_size );
+		BOOST_STATIC_ASSERT( k_max_cache_size_upgrade >= Cache::k_max_cache_size );
+		BOOST_STATIC_ASSERT( k_max_cache_vertex_y_index_buffer_size_upgrade >= Cache::k_max_cache_vertex_y_index_buffer_size );
 	};
 };
 

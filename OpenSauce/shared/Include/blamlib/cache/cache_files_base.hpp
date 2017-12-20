@@ -16,7 +16,7 @@ namespace Yelo
 				k_footer_signature = 'foot',
 			};
 		};
-	};
-};
+	}
+}
 
 #include <YeloLib/cache/cache_files_yelo_base.hpp>

@@ -12,7 +12,7 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct s_sound_permutation;
-	};
+	}
 
 	namespace Cache
 	{
@@ -28,5 +28,5 @@ namespace Yelo
 			PAD16;
 			TagGroups::s_sound_permutation* sound;
 		}; BOOST_STATIC_ASSERT( sizeof(s_sound_cache_datum) == 0x10 );
-	};
-};
+	}
+}

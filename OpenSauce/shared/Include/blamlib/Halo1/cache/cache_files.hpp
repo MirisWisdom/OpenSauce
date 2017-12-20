@@ -98,5 +98,5 @@ namespace Yelo
 		void cache_file_structure_bsp_unload(TagGroups::scenario_structure_bsp_reference* reference);
 
 		bool cache_file_structure_bsp_load(TagGroups::scenario_structure_bsp_reference* reference);
-	};
-};
+	}
+}

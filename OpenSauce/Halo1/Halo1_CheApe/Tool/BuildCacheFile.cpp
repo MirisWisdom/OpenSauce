@@ -185,14 +185,14 @@ namespace Yelo { namespace Tool {
 		if (copy_data_files_first == true && store_resources == false)
 			printf_s("CheApe: creating mod-set files, but not storing anything in them (is this intentional?)\n");
 
-		long_flags begin_flags = 0;
+		Cache::e_build_cache_file_begin::flags_t begin_flags;
 		// TODO: we're just gonna assume that use-memory-upgrades is our .yelo switch, right?
-		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_building_yelo_bit, use_memory_upgrades);
-		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_mod_sets_create_anew_bit, copy_data_files_first);
-		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_mod_sets_store_scenario_resources_bit, store_resources);
-		SET_FLAG(begin_flags, Flags::_build_cache_file_begin_use_memory_upgrades_bit, use_memory_upgrades);
+		begin_flags.set(Cache::e_build_cache_file_begin::building_yelo_bit, use_memory_upgrades);
+		begin_flags.set(Cache::e_build_cache_file_begin::mod_sets_create_anew_bit, copy_data_files_first);
+		begin_flags.set(Cache::e_build_cache_file_begin::mod_sets_store_scenario_resources_bit, store_resources);
+		begin_flags.set(Cache::e_build_cache_file_begin::use_memory_upgrades_bit, use_memory_upgrades);
 
-		blam::build_cache_file_for_scenario(args->scenario_name, CAST(byte_flags, begin_flags));
+		blam::build_cache_file_for_scenario(args->scenario_name, begin_flags);
 	}
 }; };
 

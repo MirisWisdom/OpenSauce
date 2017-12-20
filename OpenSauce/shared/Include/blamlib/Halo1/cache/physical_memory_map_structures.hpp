@@ -14,11 +14,11 @@ namespace Yelo
 	{
 		struct s_sound_cache_datum;
 		struct s_texture_cache_datum;
-	};
+	}
 	namespace Memory
 	{
 		struct s_lruv_cache;
-	};
+	}
 
 	namespace GameState
 	{
@@ -36,12 +36,13 @@ namespace Yelo
 		struct s_physical_memory_map_globals
 		{
 #if !defined(PLATFORM_IS_DEDI) || !PLATFORM_IS_DEDI
-			s_resource_cache<	Cache::s_sound_cache_datum, 
-								Enums::k_maximum_number_of_cached_sounds> 
+			s_resource_cache<
+				Cache::s_sound_cache_datum,
+				Cache::k_maximum_number_of_cached_sounds> 
 				pc_sound_cache;
 			s_resource_cache<
-								Cache::s_texture_cache_datum, 
-								Enums::k_maximum_number_of_cached_textures> 
+				Cache::s_texture_cache_datum,
+				Cache::k_maximum_number_of_cached_textures> 
 				pc_texture_cache;
 #endif
 
@@ -50,5 +51,5 @@ namespace Yelo
 			void* texture_cache_base_address;
 			void* sound_cache_base_address;
 		};
-	};
-};
+	}
+}

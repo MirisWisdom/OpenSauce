@@ -45,12 +45,12 @@ namespace Yelo
 
 		bool DataFilesOpen(cstring bitmaps_path, cstring sounds_path, cstring locale_path,
 			bool store_resources = false);
-	};
+	}
 
 	namespace blam
 	{
 		bool data_files_close();
 
 		bool data_file_close(Enums::data_file_reference_type data_file);
-	};
-};
+	}
+}

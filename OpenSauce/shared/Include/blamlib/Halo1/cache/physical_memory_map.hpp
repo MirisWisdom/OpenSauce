@@ -12,7 +12,7 @@ namespace Yelo
 		struct s_physical_memory_map_globals;
 
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals();
-	};
+	}
 
 	namespace blam
 	{
@@ -23,5 +23,5 @@ namespace Yelo
 		void* physical_memory_map_get_tag_cache_address();
 		void* physical_memory_map_get_sound_cache_address();
 		void* physical_memory_map_get_texture_cache_address();
-	};
-};
+	}
+}

@@ -101,5 +101,5 @@ namespace Yelo
 			s_cache_tag_instance tags[];
 #pragma warning(pop)
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_tag_header) == 0x28 );
-	};
-};
+	}
+}

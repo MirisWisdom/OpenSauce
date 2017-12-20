@@ -36,27 +36,16 @@ namespace Yelo
 			return DataFileTypeToString(CAST(Enums::data_file_type, type - Enums::_data_file_reference_bitmaps));
 		}
 
-		s_data_file& s_data_file_globals::Get(Enums::data_file_reference_type data_file)
-		{
-			switch (data_file)
-			{
-			case Enums::_data_file_reference_bitmaps:return this->bitmaps;
-			case Enums::_data_file_reference_sounds: return this->sounds;
-			case Enums::_data_file_reference_locale: return this->locale;
-
-			YELO_ASSERT_CASE_UNREACHABLE();
-			}
-		}
 		s_data_file& DataFileGet(Enums::data_file_reference_type data_file)
 		{
 #if PLATFORM_TYPE == PLATFORM_TOOL
-			auto& globals = BuildCacheFileGlobals()->data_files;
+			auto& globals = build_cache_file_globals()->data_files;
 
-			return globals.Get(data_file);
+			return globals.get(data_file);
 #elif !PLATFORM_IS_EDITOR
 			auto& globals = CacheFileGlobals()->data_files;
 
-			return globals.Get(data_file);
+			return globals.get(data_file);
 #else
 			YELO_ASSERT(!"unsupported platform");
 			__assume(false);
@@ -451,5 +440,5 @@ namespace Yelo
 			return file.Close();
 		}
 #endif
-	};
-};
+	}
+}

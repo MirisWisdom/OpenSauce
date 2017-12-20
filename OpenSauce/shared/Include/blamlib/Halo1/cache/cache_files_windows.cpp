@@ -22,12 +22,14 @@ namespace Yelo
 		cstring s_build_cache_file_globals::k_temp_cache_file_name = "temporary uncompressed cache file.bin";
 		cstring s_build_cache_file_globals::k_cache_file_extension = K_MAP_FILE_EXTENSION;
 
-		DWORD s_build_cache_file_globals::GetFileSize() const
+		DWORD s_build_cache_file_globals::get_file_size() const
 		{
 			return ::GetFileSize(file_handle, nullptr);
 		}
 
-		bool s_build_cache_file_globals::WriteToFile(const void* buffer, int32 buffer_size)
+		bool s_build_cache_file_globals::write_to_file(
+			const void* buffer,
+			const int32 buffer_size)
 		{
 			DWORD bytes_written;
 			BOOL result = WriteFile(file_handle, buffer, CAST(DWORD, buffer_size), &bytes_written, nullptr);
@@ -35,13 +37,13 @@ namespace Yelo
 			return result != FALSE && bytes_written == CAST(DWORD, buffer_size);
 		}
 
-		bool s_build_cache_file_globals::TemporaryFileOpen(cstring filename)
+		bool s_build_cache_file_globals::temporary_file_open(cstring filename)
 		{
 			file_handle = CreateFileA(filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 			return file_handle != INVALID_HANDLE_VALUE;
 		}
-		void s_build_cache_file_globals::TemporaryFileClose(cstring filename)
+		void s_build_cache_file_globals::temporary_file_close(cstring filename)
 		{
 			if (file_handle != INVALID_HANDLE_VALUE)
 			{
@@ -51,17 +53,17 @@ namespace Yelo
 				DeleteFileA(filename);
 			}
 		}
-		bool s_build_cache_file_globals::TemporaryFileCopy(cstring new_filename, cstring filename)
+		bool s_build_cache_file_globals::temporary_file_copy(cstring new_filename, cstring filename)
 		{
 			return CopyFileA(filename, new_filename, FALSE) != FALSE;
 		}
 
-		bool BuildCacheFileForYelo()
+		bool build_cache_file_for_yelo()
 		{
-			return TEST_FLAG(BuildCacheFileGlobals()->begin_flags, Flags::_build_cache_file_begin_building_yelo_bit);
+			return build_cache_file_globals()->begin_flags.test(e_build_cache_file_begin::building_yelo_bit);
 		}
 
-		void s_build_cache_file_globals::ScenarioNameToCacheFilePath(_Out_ std::string& cache_file_path)
+		void s_build_cache_file_globals::scenario_name_to_cache_file_path(_Out_ std::string& cache_file_path)
 		{
 			cache_file_path.reserve(MAX_PATH);
 
@@ -79,12 +81,12 @@ namespace Yelo
 
 		int32 build_cache_file_size()
 		{
-			return Cache::BuildCacheFileGlobals()->GetFileSize();
+			return Cache::build_cache_file_globals()->get_file_size();
 		}
 
 		uint32 build_cache_file_checksum()
 		{
-			return Cache::BuildCacheFileGlobals()->crc;
+			return Cache::build_cache_file_globals()->crc;
 		}
 
 		static bool compress_cache_file_data(cstring filename, cstring cache_file_path)
@@ -101,16 +103,16 @@ namespace Yelo
 		static bool build_cache_file_write(const void* buffer, int32 buffer_size, int32* return_file_offset = nullptr)
 		{
 			int32 pad_size = buffer_size;
-			YELO_ASSERT(pad_size >= 0 && pad_size < Enums::k_cache_file_page_size);
-			YELO_ASSERT(((buffer_size + pad_size) & Enums::k_cache_file_page_size_mask) == 0);
+			YELO_ASSERT(pad_size >= 0 && pad_size < k_cache_file_page_size);
+			YELO_ASSERT(((buffer_size + pad_size) & k_cache_file_page_size_mask) == 0);
 
-			byte pad_buffer[Enums::k_cache_file_page_size];
+			byte pad_buffer[k_cache_file_page_size];
 			memset(pad_buffer, 0, pad_size);
 
-			auto& build_cache_file_globals = *Cache::BuildCacheFileGlobals();
+			auto& build_cache_file_globals = *Cache::build_cache_file_globals();
 
-			if (!build_cache_file_globals.WriteToFile(buffer, buffer_size) ||
-				!build_cache_file_globals.WriteToFile(pad_buffer, pad_size))
+			if (!build_cache_file_globals.write_to_file(buffer, buffer_size) ||
+				!build_cache_file_globals.write_to_file(pad_buffer, pad_size))
 			{
 				build_cache_file_error("couldn't write to cache file");
 				return false;
@@ -124,16 +126,17 @@ namespace Yelo
 			return true;
 		}
 
-		bool build_cache_file_begin(cstring scenario_name,
-			byte_flags flags)
+		bool build_cache_file_begin(
+			cstring scenario_name,
+			const e_build_cache_file_begin::flags_t flags)
 		{
-			auto& build_cache_file_globals = *Cache::BuildCacheFileGlobals();
+			auto& build_cache_file_globals = *Cache::build_cache_file_globals();
 			YELO_ASSERT(!build_cache_file_globals.building);
 
 			bool invalid_parameters = false;
 			cstring invalid_parameters_message = "specified parameters are invalid";
 
-			bool building_yelo = TEST_FLAG(flags, Flags::_build_cache_file_begin_building_yelo_bit);
+			bool building_yelo = flags.test(e_build_cache_file_begin::building_yelo_bit);
 
 			// TODO: validate flags
 			
@@ -147,7 +150,7 @@ namespace Yelo
 				? K_MAP_FILE_EXTENSION_YELO
 				: K_MAP_FILE_EXTENSION;
 
-			if (!build_cache_file_globals.TemporaryFileOpen())
+			if (!build_cache_file_globals.temporary_file_open())
 			{
 				build_cache_file_error("couldn't create new cache file");
 				return false;
@@ -169,7 +172,7 @@ namespace Yelo
 		bool build_cache_file_add_resource(const void* buffer, int32 buffer_size,
 			int32* return_file_offset, bool include_in_crc)
 		{
-			auto& build_cache_file_globals = *Cache::BuildCacheFileGlobals();
+			auto& build_cache_file_globals = *Cache::build_cache_file_globals();
 			YELO_ASSERT(build_cache_file_globals.building);
 
 			if (include_in_crc)
@@ -180,17 +183,17 @@ namespace Yelo
 
 		void build_cache_file_cancel()
 		{
-			auto& build_cache_file_globals = *Cache::BuildCacheFileGlobals();
+			auto& build_cache_file_globals = *Cache::build_cache_file_globals();
 			if (!build_cache_file_globals.building)
 				return;
 
-			build_cache_file_globals.TemporaryFileClose();
+			build_cache_file_globals.temporary_file_close();
 			build_cache_file_globals.canceled = true;
 		}
 
 		bool build_cache_file_end(Cache::s_cache_header& header)
 		{
-			auto& build_cache_file_globals = *Cache::BuildCacheFileGlobals();
+			auto& build_cache_file_globals = *Cache::build_cache_file_globals();
 			YELO_ASSERT(build_cache_file_globals.building);
 
 			if (SetFilePointer(build_cache_file_globals.file_handle, 0, 0, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
@@ -206,19 +209,19 @@ namespace Yelo
 			}
 
 			std::string cache_file_path;
-			build_cache_file_globals.ScenarioNameToCacheFilePath(cache_file_path);
+			build_cache_file_globals.scenario_name_to_cache_file_path(cache_file_path);
 			if (!compress_cache_file_data(s_build_cache_file_globals::k_temp_cache_file_name, cache_file_path.c_str()) ||
-				!build_cache_file_globals.TemporaryFileCopy(cache_file_path.c_str()))
+				!build_cache_file_globals.temporary_file_copy(cache_file_path.c_str()))
 			{
 				build_cache_file_error("couldn't output new cache file");
 				return false;
 			}
 
-			build_cache_file_globals.TemporaryFileClose();
+			build_cache_file_globals.temporary_file_close();
 			build_cache_file_globals.building = false;
 
 			return true;
 		}
 #endif
-	};
-};
+	}
+}

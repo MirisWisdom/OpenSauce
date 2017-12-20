@@ -999,6 +999,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
       <Filter>bungie_net\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\s_data_file_globals.h">
+      <Filter>cache</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1122,6 +1125,9 @@
       <Filter>cache</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.cpp">
+      <Filter>cache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\s_data_file_globals.cpp">
       <Filter>cache</Filter>
     </ClCompile>
   </ItemGroup>
