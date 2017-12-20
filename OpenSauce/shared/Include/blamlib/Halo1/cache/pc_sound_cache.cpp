@@ -65,5 +65,5 @@ namespace Yelo
 			// do nothing
 #endif
 		}
-	};
-};
+	}
+}

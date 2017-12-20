@@ -28,5 +28,5 @@ namespace Yelo
 		{
 			return GameState::PhysicalMemoryMapGlobals()->texture_cache_base_address;
 		}
-	};
-};
+	}
+}

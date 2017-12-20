@@ -137,6 +137,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\predicted_resources.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\sound_cache.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\s_data_file_globals.h" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\texture_cache.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\camera_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\dead_camera.hpp" />
@@ -382,6 +383,7 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\pc_texture_cache.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\s_data_file_globals.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries_windows.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.cpp" />

@@ -12,7 +12,7 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct s_bitmap_data;
-	};
+	}
 
 	namespace blam
 	{
@@ -23,5 +23,5 @@ namespace Yelo
 		IDirect3DBaseTexture9** PLATFORM_API texture_cache_bitmap_get_hardware_format(TagGroups::s_bitmap_data* bitmap, 
 			// block
 			bool block_thread = false, bool load = true);
-	};
-};
+	}
+}

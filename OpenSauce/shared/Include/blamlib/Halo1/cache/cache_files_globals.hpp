@@ -7,7 +7,7 @@
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
-#include <blamlib/Halo1/cache/data_file_structures.hpp>
+#include <blamlib/Halo1/cache/s_data_file_globals.h>
 
 #include <zlib/zlib.h>
 BOOST_STATIC_ASSERT( sizeof(z_stream) == 0x38 );
@@ -17,7 +17,7 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct structure_bsp_header;
-	};
+	}
 
 	namespace Cache
 	{
@@ -67,15 +67,15 @@ namespace Yelo
 						progress_update_event;
 				HANDLE copy_thread;
 				void* buffer;
-				void* read_buffers[Enums::k_number_of_cache_read_buffers];
-				void* write_buffers[Enums::k_number_of_cache_write_buffers];
+				void* read_buffers[k_number_of_cache_read_buffers];
+				void* write_buffers[k_number_of_cache_write_buffers];
 				UNKNOWN_TYPE(bool); PAD24;
 				HANDLE write_file_handle, read_file_handle;
-				long_flags overlapped_in_use_flags[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_cache_overlapped_structures)];
-				long_flags overlapped_completed_flags[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_cache_overlapped_structures)];
-				OVERLAPPED overlapped[Enums::k_number_of_cache_overlapped_structures];
-				s_read_request read_requests[Enums::k_number_of_cache_read_buffers];
-				s_write_request write_requests[Enums::k_number_of_cache_write_buffers];
+				long_flags overlapped_in_use_flags[BIT_VECTOR_SIZE_IN_DWORDS(k_number_of_cache_overlapped_structures)];
+				long_flags overlapped_completed_flags[BIT_VECTOR_SIZE_IN_DWORDS(k_number_of_cache_overlapped_structures)];
+				OVERLAPPED overlapped[k_number_of_cache_overlapped_structures];
+				s_read_request read_requests[k_number_of_cache_read_buffers];
+				s_write_request write_requests[k_number_of_cache_write_buffers];
 				PAD16;
 				uint32 read_file_size;
 				uint32 async_read_bytes_left, read_bytes_left;
@@ -102,7 +102,7 @@ namespace Yelo
 			PAD32;
 			s_decompression_state decompression_state;
 
-			s_cached_map_file map_files[Enums::k_number_of_cached_map_files];
+			s_cached_map_file map_files[k_number_of_cached_map_files];
 
 			bool copy_in_progress;
 			PAD8;
@@ -139,5 +139,5 @@ namespace Yelo
 			// blocks the thread until all read requests have finished
 			void RequestsWaitAll();
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_globals) == 0x4418 );
-	};
-};
+	}
+}

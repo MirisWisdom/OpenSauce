@@ -10,7 +10,7 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct s_sound_permutation;
-	};
+	}
 
 	namespace blam
 	{
@@ -22,5 +22,5 @@ namespace Yelo
 			bool block_thread = false, bool load = true, bool reference = false);
 
 		void PLATFORM_API sound_cache_sound_finished(TagGroups::s_sound_permutation* sound);
-	};
-};
+	}
+}

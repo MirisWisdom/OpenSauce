@@ -345,9 +345,9 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 
 		*AddressOf::CacheSizeJmpAddress = Enums::_x86_opcode_jz_short;
 
-		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size;
+		*AddressOf::CacheSizeMax = Cache::k_max_cache_size;
 
-		*AddressOf::VertexAndIndexBufferSizeMax = Yelo::Enums::k_max_cache_vertex_y_index_buffer_size;
+		*AddressOf::VertexAndIndexBufferSizeMax = Cache::k_max_cache_vertex_y_index_buffer_size;
 
 		*AddressOf::BuildCacheFileScratchBufferSize = k_scratch_buffer_size;
 	}

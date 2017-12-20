@@ -77,7 +77,7 @@ namespace Yelo
 			if (!ValidSignatures())
 				return false;
 
-			if (!ValidFileSize(Enums::k_max_cache_size))
+			if (!ValidFileSize(k_max_cache_size))
 				return false;
 
 			if (!ValidName())
@@ -126,7 +126,7 @@ namespace Yelo
 			int16 map_file_index = FindMapFileIndexByName(scenario_name);
 			YELO_ASSERT(map_file_index != NONE);
 
-			memset(Requests(), 0, sizeof(*Requests()) * Enums::k_maximum_simultaneous_cache_requests);
+			memset(Requests(), 0, sizeof(*Requests()) * k_maximum_simultaneous_cache_requests);
 			open_map_file_index = map_file_index;
 			memcpy(header, &map_files[map_file_index].header, sizeof(*header));
 
@@ -147,7 +147,7 @@ namespace Yelo
 		void s_cache_file_globals::RequestsWaitAll()
 		{
 			s_cache_file_request* request = Requests();
-			for (rsize_t x = Enums::k_maximum_simultaneous_cache_requests; x > 0; x--, request++)
+			for (rsize_t x = k_maximum_simultaneous_cache_requests; x > 0; x--, request++)
 			{
 				const bool& request_is_reading = request->reading;
 
@@ -459,6 +459,6 @@ namespace Yelo
 
 			return false;
 		}
-	};
+	}
 #endif
-};
+}

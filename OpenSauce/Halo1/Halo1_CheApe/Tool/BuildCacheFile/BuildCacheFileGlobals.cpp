@@ -87,7 +87,7 @@ namespace Yelo { namespace Tool {
 		data_file_open(_data_file_reference_locale, data_files.m_names[_data_file_type_locale], store_resources);
 
 		if (store_resources)
-			globals->data_files.PreprocessForSave();
+			globals->data_files.preprocess_for_save();
 	}
 
 	void s_build_cache_file_for_scenario::DataFilesClose(bool store_resources)
@@ -95,7 +95,7 @@ namespace Yelo { namespace Tool {
 		using namespace Enums;
 
 		if (store_resources)
-			globals->data_files.Save();
+			globals->data_files.save();
 
 		data_file_close(_data_file_reference_bitmaps);
 		data_file_close(_data_file_reference_sounds);
@@ -143,7 +143,7 @@ namespace Yelo
 {
 	namespace Cache
 	{
-		s_build_cache_file_globals* BuildCacheFileGlobals()
+		s_build_cache_file_globals* build_cache_file_globals()
 		{
 			return Tool::build_cache_file_for_scenario_internals.globals;
 		}

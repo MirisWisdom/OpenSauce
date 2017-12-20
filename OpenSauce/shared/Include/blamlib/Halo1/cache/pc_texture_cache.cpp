@@ -48,5 +48,5 @@ namespace Yelo
 
 			return CAST_PTR(IDirect3DBaseTexture9**, bitmap->hardware_format);
 		}
-	};
-};
+	}
+}

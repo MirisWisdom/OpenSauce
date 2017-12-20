@@ -27,7 +27,7 @@ namespace Yelo
 			int16 resource_index;
 			datum_index tag_index;
 		}; BOOST_STATIC_ASSERT( sizeof(predicted_resource) == 0x8 ); // max count: 1024
-	};
+	}
 
 	namespace blam
 	{
@@ -39,5 +39,5 @@ namespace Yelo
 		// NOTE: function is actually defined in the engine's physical_memory_map.c
 		// May be 'physical_memory_map_precache_resources' or something
 		void predicted_resources_precache(TagBlock<TagGroups::predicted_resource>& resources);
-	};
-};
+	}
+}
