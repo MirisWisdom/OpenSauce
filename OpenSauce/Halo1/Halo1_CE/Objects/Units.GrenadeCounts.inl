@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MDP.hpp"
@@ -14,7 +14,7 @@
 namespace Yelo { namespace Objects { namespace Units {
 
 // DEBUG: Before each memory write when we're enabling, we assert we're overwriting the expected value or bytes
-#include <YeloLib/Halo1/units/units_grenade_count_upgrade.inl>
+#include <YeloLib/units/units_grenade_count_upgrade.inl>
 
 static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 {

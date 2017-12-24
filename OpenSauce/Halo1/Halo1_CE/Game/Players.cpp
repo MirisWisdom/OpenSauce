@@ -7,13 +7,13 @@
 #include "Common/Precompile.hpp"
 #include "Game/Players.hpp"
 
-#include <blamlib/Halo1/game/player_structures.hpp>
-#include <blamlib/Halo1/scenario/scenario.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/game/player_structures.hpp>
+#include <blamlib/scenario/scenario.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blamlib/units/unit_structures.hpp>
+#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameEngine.hpp"

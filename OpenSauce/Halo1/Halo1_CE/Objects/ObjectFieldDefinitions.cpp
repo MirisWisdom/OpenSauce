@@ -7,9 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Objects/ObjectFieldDefinitions.hpp"
 
-#include <blamlib/Halo1/main/main.hpp>
-#include <blamlib/Halo1/items/weapon_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/main/main.hpp>
+#include <blamlib/items/weapon_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/Scripting.hpp"

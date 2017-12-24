@@ -7,9 +7,9 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-#include <blamlib/Halo1/hs/hs_structures.hpp>
-#include <blamlib/Halo1/interface/first_person_weapons.hpp>
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <blamlib/hs/hs_structures.hpp>
+#include <blamlib/interface/first_person_weapons.hpp>
+#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
 
 #include "CheApeInterface.hpp" // for Memory functions
 #include "Settings/Settings.hpp"
@@ -33,7 +33,7 @@ namespace Yelo
 		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK_RETURN_INVALID = 0x64A07E;
 	};
 };
-#include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+#include <YeloLib/objects/object_damage_upgrades.inl>
 
 namespace Yelo
 {

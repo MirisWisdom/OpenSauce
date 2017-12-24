@@ -9,25 +9,25 @@
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/cseries/errors.hpp>
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/units/unit_definitions.hpp>
-#include <blamlib/Halo1/units/vehicle_definitions.hpp>
-#include <blamlib/Halo1/units/biped_definitions.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
-#include <blamlib/Halo1/effects/contrail_definitions.hpp>
-#include <blamlib/Halo1/effects/particle_definitions.hpp>
-#include <blamlib/Halo1/effects/particle_system_definitions.hpp>
-#include <blamlib/Halo1/effects/weather_particle_system_definitions.hpp>
-#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/cseries/errors.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blamlib/units/unit_definitions.hpp>
+#include <blamlib/units/vehicle_definitions.hpp>
+#include <blamlib/units/biped_definitions.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/effects/contrail_definitions.hpp>
+#include <blamlib/effects/particle_definitions.hpp>
+#include <blamlib/effects/particle_system_definitions.hpp>
+#include <blamlib/effects/weather_particle_system_definitions.hpp>
+#include <blamlib/models/model_animation_definitions.hpp>
 
 #include <YeloLib/cseries/value_conversion.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/Halo1/hs/hs_yelo.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/hs/hs_yelo.hpp>
 
 #include "Tool/Console.hpp"
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

@@ -8,7 +8,7 @@
 #include "Rasterizer/Rasterizer.hpp"
 #ifndef PLATFORM_NO_DX9
 
-#include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/models/model_definitions.hpp>
 
 #include "Settings/Settings.hpp"
 
@@ -21,7 +21,7 @@ namespace Yelo
 	namespace Render
 	{
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-		#include <YeloLib/Halo1/render/render_particles_upgrades.inl>
+		#include <YeloLib/render/render_particles_upgrades.inl>
 
 		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
 #endif
@@ -30,7 +30,7 @@ namespace Yelo
 	namespace Rasterizer
 	{
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-	#include <YeloLib/Halo1/rasterizer/rasterizer_upgrades.inl>
+	#include <YeloLib/rasterizer/rasterizer_upgrades.inl>
 
 		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config);
 		s_rasterizer_globals* RasterizerGlobals()	PTR_IMP_GET2(rasterizer_globals);

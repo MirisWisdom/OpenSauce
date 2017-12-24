@@ -7,15 +7,15 @@
 #include "Common/Precompile.hpp"
 #include "Settings/Settings.hpp"
 
-#include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/tag_files/tag_files.hpp>
+#include <blamlib/cache/cache_files.hpp>
+#include <blamlib/tag_files/tag_files.hpp>
 
 #include <Shellapi.h>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 
-#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
 #include "Settings/SettingsSapien.hpp"
 #include "Settings/SettingsTool.hpp"
 

@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <blamlib/cache/cache_files.hpp>
+#include <blamlib/structures/structure_bsp_definitions.hpp>
 
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>

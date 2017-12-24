@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/main/main_structures.hpp>
+#include <blamlib/main/main_structures.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Interface/GameUI.hpp"

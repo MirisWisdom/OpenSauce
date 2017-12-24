@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"

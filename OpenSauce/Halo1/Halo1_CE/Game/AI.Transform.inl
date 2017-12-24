@@ -5,9 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
-#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/ai/c_actor_variant_transform_manager.hpp>
+#include <YeloLib/saved_games/game_state_yelo.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 
 namespace Yelo
 {

@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/Effects.hpp"
 
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
@@ -36,7 +36,7 @@ namespace Yelo
 		s_decal_vertex_cache_data* DecalVertexCache()					DPTR_IMP_GET(decal_vertex_cache);
 
 
-#include <YeloLib/Halo1/render/render_particles_upgrades.inl>
+#include <YeloLib/render/render_particles_upgrades.inl>
 		static void InitializePerMapUpgrades()
 		{
 #if PLATFORM_IS_USER

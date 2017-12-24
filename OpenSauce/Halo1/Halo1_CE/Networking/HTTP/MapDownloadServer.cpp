@@ -9,10 +9,10 @@
 
 #if PLATFORM_IS_DEDI
 #include <map>
-#include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/cache/cache_files.hpp>
+#include <blamlib/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
+#include <YeloLib/cache/cache_files_yelo.hpp>
 #include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/FileIO.hpp"

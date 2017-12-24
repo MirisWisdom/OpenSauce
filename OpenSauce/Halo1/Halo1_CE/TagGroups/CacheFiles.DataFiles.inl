@@ -5,7 +5,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 
-#include <YeloLib/Halo1/cache/data_file_yelo.hpp>
+#include <YeloLib/cache/data_file_yelo.hpp>
 
 namespace Yelo { namespace DataFiles {
 

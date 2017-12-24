@@ -5,11 +5,11 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <YeloLib/Halo1/units/c_unit_seat_boarding_manager.hpp>
+#include <YeloLib/units/c_unit_seat_boarding_manager.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 
 namespace Yelo
 {

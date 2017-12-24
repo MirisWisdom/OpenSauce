@@ -8,8 +8,8 @@
 #include "Tool/Tool_AnimationFixups.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <blamlib/Halo1/tool/tool.hpp>
-#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/tool/tool.hpp>
+#include <blamlib/models/model_animation_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 

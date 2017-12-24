@@ -7,11 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Networking/MessageDeltas.hpp"
 
-#include <blamlib/Halo1/networking/network_client_manager.hpp>
-#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
-#include <blamlib/Halo1/networking/network_game_globals.hpp>
-#include <blamlib/Halo1/networking/network_game_manager_structures.hpp>
-#include <blamlib/Halo1/networking/network_server_manager.hpp>
+#include <blamlib/networking/network_client_manager.hpp>
+#include <blamlib/networking/network_client_manager_structures.hpp>
+#include <blamlib/networking/network_game_globals.hpp>
+#include <blamlib/networking/network_game_manager_structures.hpp>
+#include <blamlib/networking/network_server_manager.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"

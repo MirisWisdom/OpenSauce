@@ -9,9 +9,9 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

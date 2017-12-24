@@ -11,11 +11,11 @@
 
 #include <sys/stat.h>
 
-#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
-#include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
-#include <blamlib/Halo1/render/render.hpp>
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <blamlib/bitmaps/bitmap_definition.hpp>
+#include <blamlib/rasterizer/dx9/rasterizer_dx9.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/render/render.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>

@@ -7,26 +7,26 @@
 #include "Common/Precompile.hpp"
 #include "Engine/EngineFunctions.hpp"
 
-#include <blamlib/Halo1/cache/physical_memory_map.hpp>
-#include <blamlib/Halo1/cseries/profile.hpp>
-#include <blamlib/Halo1/math/periodic_functions.hpp>
-#include <blamlib/Halo1/memory/byte_swapping.hpp>
-#include <blamlib/Halo1/memory/memory_pool.hpp>
-#include <blamlib/Halo1/saved_games/game_state.hpp>
-#include <blamlib/Halo1/tag_files/files.hpp>
-#include <blamlib/Halo1/tag_files/tag_files.hpp>
-#include <blamlib/Halo1/cryptography/md5.hpp>
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
-#include <blamlib/Halo1/objects/object_structures.hpp>
-#include <blamlib/Halo1/ai/actors.hpp>
-#include <blamlib/Halo1/ai/actor_structures.hpp>
-#include <blamlib/Halo1/ai/ai_structures.hpp>
-#include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/game/game_globals_structures.hpp>
+#include <blamlib/cache/physical_memory_map.hpp>
+#include <blamlib/cseries/profile.hpp>
+#include <blamlib/math/periodic_functions.hpp>
+#include <blamlib/memory/byte_swapping.hpp>
+#include <blamlib/memory/memory_pool.hpp>
+#include <blamlib/saved_games/game_state.hpp>
+#include <blamlib/tag_files/files.hpp>
+#include <blamlib/tag_files/tag_files.hpp>
+#include <blamlib/cryptography/md5.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/objects/damage.hpp>
+#include <blamlib/objects/object_structures.hpp>
+#include <blamlib/ai/actors.hpp>
+#include <blamlib/ai/actor_structures.hpp>
+#include <blamlib/ai/ai_structures.hpp>
+#include <blamlib/game/game_globals.hpp>
+#include <blamlib/game/game_globals_structures.hpp>
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
-#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
+#include <YeloLib/saved_games/game_state_yelo.hpp>
 
 #include "Engine/Objects.hpp"
 

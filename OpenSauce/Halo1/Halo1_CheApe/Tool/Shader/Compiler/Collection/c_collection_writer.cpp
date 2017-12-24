@@ -10,7 +10,7 @@
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include <YeloLib/files/files.hpp>
 #include <YeloLib/cryptography/TEA.hpp>
-#include <blamlib/Halo1/cryptography/md5.hpp>
+#include <blamlib/cryptography/md5.hpp>
 
 using namespace boost::filesystem;
 using namespace Yelo::FileIO;

@@ -7,28 +7,28 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Objects.hpp"
 
-#include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
-#include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/game/game_globals_definitions.hpp>
+#include <blamlib/effects/damage_effect_definitions.hpp>
+#include <blamlib/game/game_globals.hpp>
+#include <blamlib/game/game_globals_definitions.hpp>
 
-#include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/main/console.hpp>
+#include <blamlib/models/model_animation_definitions.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
 
-#include <blamlib/Halo1/items/projectiles.hpp>
-#include <blamlib/Halo1/devices/device_structures.hpp>
-#include <blamlib/Halo1/items/item_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <blamlib/Halo1/items/weapon_structures.hpp>
+#include <blamlib/items/projectiles.hpp>
+#include <blamlib/devices/device_structures.hpp>
+#include <blamlib/items/item_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
+#include <blamlib/items/weapon_structures.hpp>
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 
 #include "Objects/ObjectFieldDefinitions.hpp"
 #include "Objects/Equipment.hpp"
@@ -80,7 +80,7 @@ namespace Yelo
 	};
 };
 
-#include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+#include <YeloLib/objects/object_damage_upgrades.inl>
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
 
@@ -117,7 +117,7 @@ namespace Yelo
 		cluster_noncollideable_object_reference_data_t& ClusterNoncollideableObjectReference()	DPTR_IMP_GET_BYREF(cluster_noncollideable_object_reference);
 		noncollideable_object_cluster_reference_data_t& NoncollideableObjectClusterReference()	DPTR_IMP_GET_BYREF(noncollideable_object_cluster_reference);
 		
-#include <YeloLib/Halo1/render/render_objects_upgrades.inl>
+#include <YeloLib/render/render_objects_upgrades.inl>
 
 		static void InitializeScripting()
 		{

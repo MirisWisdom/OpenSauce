@@ -7,9 +7,9 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <blamlib/Halo1/tool/tool.hpp>
+#include <blamlib/tool/tool.hpp>
 
-#include <YeloLib/Halo1/cache/data_file_yelo.hpp>
+#include <YeloLib/cache/data_file_yelo.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Engine/EngineFunctions.hpp"

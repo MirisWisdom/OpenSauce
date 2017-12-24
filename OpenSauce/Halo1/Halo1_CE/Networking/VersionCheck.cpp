@@ -12,7 +12,7 @@
 #include <time.h>
 #include <ctime>
 
-#include <YeloLib/Halo1/open_sauce/yelo_version.hpp>
+#include <YeloLib/open_sauce/yelo_version.hpp>
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_value_list.hpp>

@@ -10,8 +10,8 @@
 
 #include "Tool/BuildCacheFile.hpp"
 
-#include <YeloLib/Halo1/cache/cache_files_structures_yelo.hpp>
-#include <YeloLib/Halo1/cache/data_file_yelo.hpp>
+#include <YeloLib/cache/cache_files_structures_yelo.hpp>
+#include <YeloLib/cache/data_file_yelo.hpp>
 #include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Tool/BuildCacheFile/BuildCacheFileGlobals.hpp"

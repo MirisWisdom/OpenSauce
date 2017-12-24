@@ -7,12 +7,12 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
-#include <blamlib/Halo1/items/weapon_definitions.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
-#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
-#include <blamlib/Halo1/tag_files/tag_files.hpp>
-#include <blamlib/Halo1/tag_files/tag_files_structures.hpp> // need structs in order to do pointer math on TagFileGlobals
-#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
+#include <blamlib/items/weapon_definitions.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/tag_files/tag_field_scanner.hpp>
+#include <blamlib/tag_files/tag_files.hpp>
+#include <blamlib/tag_files/tag_files_structures.hpp> // need structs in order to do pointer math on TagFileGlobals
+#include <blamlib/tag_files/tag_group_loading.hpp>
 
 namespace Yelo
 {

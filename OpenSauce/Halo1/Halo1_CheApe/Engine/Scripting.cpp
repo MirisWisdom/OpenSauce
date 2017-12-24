@@ -7,9 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Engine/Scripting.hpp"
 
-#include <blamlib/Halo1/hs/hs_structures.hpp>
-#include <blamlib/Halo1/hs/object_lists.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <blamlib/hs/hs_structures.hpp>
+#include <blamlib/hs/object_lists.hpp>
+#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
 
 #include "CheApeCore.hpp"
 #include "Engine/EngineFunctions.hpp"

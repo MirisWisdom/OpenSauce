@@ -8,8 +8,8 @@
 #include "Tool/ImportLightmapUV.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+#include <blamlib/structures/structure_bsp_definitions.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"

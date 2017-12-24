@@ -7,8 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/c_effect_instance.hpp"
 
-#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
-#include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
+#include <YeloLib/time/interpolation/interpolation.hpp>
+#include <YeloLib/time/interpolation/i_interpolator.hpp>
 
 #if !PLATFORM_IS_DEDI
 

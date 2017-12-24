@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameBuildNumber.hpp"
 
-#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
+#include <blamlib/saved_games/game_state_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

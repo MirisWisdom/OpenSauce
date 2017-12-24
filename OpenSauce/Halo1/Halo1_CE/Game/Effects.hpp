@@ -6,14 +6,14 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/memory/data.hpp>
-#include <blamlib/Halo1/memory/lruv_cache.hpp>
+#include <blamlib/memory/data.hpp>
+#include <blamlib/memory/lruv_cache.hpp>
 
-#include <blamlib/Halo1/effects/contrails.hpp>
-#include <blamlib/Halo1/effects/effects.hpp>
-#include <blamlib/Halo1/effects/particle_systems.hpp>
-#include <blamlib/Halo1/effects/particles.hpp>
-#include <blamlib/Halo1/effects/weather_particle_systems.hpp>
+#include <blamlib/effects/contrails.hpp>
+#include <blamlib/effects/effects.hpp>
+#include <blamlib/effects/particle_systems.hpp>
+#include <blamlib/effects/particles.hpp>
+#include <blamlib/effects/weather_particle_systems.hpp>
 #include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo

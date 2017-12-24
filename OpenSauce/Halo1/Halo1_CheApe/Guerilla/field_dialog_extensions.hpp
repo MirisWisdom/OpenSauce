@@ -6,7 +6,7 @@
 */
 #pragma once
 #if PLATFORM_TYPE == PLATFORM_GUERILLA
-#include <YeloLib/Halo1/guerilla/mfc_interfaces.hpp>
+#include <YeloLib/guerilla/mfc_interfaces.hpp>
 
 namespace Yelo
 {

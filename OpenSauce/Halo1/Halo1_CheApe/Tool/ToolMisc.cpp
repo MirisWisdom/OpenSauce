@@ -8,7 +8,7 @@
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include "Tool/ToolMisc.hpp"
 
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"

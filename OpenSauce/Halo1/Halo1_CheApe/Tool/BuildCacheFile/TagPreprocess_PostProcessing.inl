@@ -5,8 +5,8 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
 
 namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
 

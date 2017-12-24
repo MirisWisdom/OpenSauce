@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/memory/array.hpp>
-#include <blamlib/Halo1/networking/network_game_globals.hpp>
-#include <blamlib/Halo1/saved_games/game_variant.hpp>
+#include <blamlib/memory/array.hpp>
+#include <blamlib/networking/network_game_globals.hpp>
+#include <blamlib/saved_games/game_variant.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

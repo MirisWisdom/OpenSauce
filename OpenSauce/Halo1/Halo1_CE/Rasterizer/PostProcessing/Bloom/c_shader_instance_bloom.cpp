@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/Bloom/c_shader_instance_bloom.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
+#include <YeloLib/time/interpolation/interpolation.hpp>
 
 namespace Yelo
 {

@@ -7,12 +7,12 @@
 #include "Common/Precompile.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
 
-#include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/game/game_globals_definitions.hpp>
-#include <blamlib/Halo1/scenario/scenario.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/units/biped_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/game/game_globals.hpp>
+#include <blamlib/game/game_globals_definitions.hpp>
+#include <blamlib/scenario/scenario.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blamlib/units/biped_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -25,7 +25,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_GRENADE_TYPES_UPGRADE
 #include "Memory/_EngineLayout.inl"
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-	#include <YeloLib/Halo1/units/units_grenade_count_upgrade.inl>
+	#include <YeloLib/units/units_grenade_count_upgrade.inl>
 #endif
 	};
 

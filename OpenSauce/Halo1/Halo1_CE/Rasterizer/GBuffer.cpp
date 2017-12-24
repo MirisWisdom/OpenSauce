@@ -8,15 +8,15 @@
 #include "Rasterizer/GBuffer.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/game/game_time_structures.hpp>
-#include <blamlib/Halo1/game/player_structures.hpp>
-#include <blamlib/Halo1/main/main_structures.hpp>
+#include <blamlib/game/game_time_structures.hpp>
+#include <blamlib/game/player_structures.hpp>
+#include <blamlib/main/main_structures.hpp>
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Memory/MemoryInterface.hpp"

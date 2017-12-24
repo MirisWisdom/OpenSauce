@@ -81,283 +81,283 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\darray.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\darray.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\hashtable.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\hashtable.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\hashtable.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\hashtable.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\md5.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\md5c.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\md5.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\md5c.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\nonport.h" />
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\nonport.h" />
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsAssert.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsAssert.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsAvailable.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsAvailable.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCommon.h" />
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCore.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCore.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsCommon.h" />
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsCore.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsCore.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsCrypt.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsCrypt.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsDebug.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsDebug.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsLargeInt.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsLargeInt.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsMemory.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsMemory.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatform.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatform.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformSocket.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformSocket.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformThread.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformThread.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformUtil.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformUtil.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsRC4.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsRC4.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsResultCodes.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsResultCodes.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsSHA1.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsSHA1.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsSoap.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsSoap.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsSSL.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsSSL.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsStringUtil.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsStringUtil.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsXML.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsXML.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsXML.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsXML.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttp.h" />
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpASCII.h" />
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttp.h" />
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpASCII.h" />
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpBuffer.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpBuffer.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCallbacks.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCallbacks.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCommon.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCommon.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpConnection.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpConnection.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpEncryption.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpEncryption.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpMain.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpMain.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpPost.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpPost.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.h" />
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.c">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpProcess.h" />
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpProcess.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClInclude Include="..\..\shared\Include\GWEN\Align.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Anim.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\BaseRender.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Config.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\ControlList.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Base.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Button.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Canvas.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CheckBox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CollapsibleCategory.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CollapsibleList.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ColorControls.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ColorPicker.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ComboBox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\CrossSplitter.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\DockBase.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\DockedTabControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Dragger.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\FieldLabel.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\GroupBox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Highlight.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HorizontalScrollBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HorizontalSlider.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\HSVColorPicker.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ImagePanel.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Label.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\LabelClickable.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Layout\Table.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ListBox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Menu.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuItem.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\MenuStrip.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Modal.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\NumericUpDown.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\PageControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Pointer.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ProgressBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Properties.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\PropertyTree.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\BaseProperty.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Checkbox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\ColorSelector.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\ComboBox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Property\Text.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RadioButton.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RadioButtonController.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Rectangle.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ResizableControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Resizer.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\RichLabel.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBarBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollBarButton.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ScrollControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Slider.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\SplitterBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Splitters.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\StatusBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabButton.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabStrip.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TabTitleBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\Text.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TextBox.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\ToolBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TreeControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\TreeNode.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\VerticalScrollBar.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\VerticalSlider.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\WindowButtons.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Controls\WindowControl.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\DragAndDrop.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Events.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Exports.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Font.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Gwen.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Hook.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\InputHandler.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Macros.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Platform.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Skin.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Skins\TexturedBase.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Skins\Texturing.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Structures.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\TextObject.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Texture.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\ToolTip.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\UserData.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\Utility.h" />
-    <ClInclude Include="..\..\shared\Include\GWEN\WindowProvider.h" />
-    <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Anim.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\BaseRender.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\ControlList.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Base.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Button.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Canvas.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CheckBox.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CollapsibleCategory.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ColorControls.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ColorPicker.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ComboBox.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\CrossSplitter.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\DockBase.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\DockedTabControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Dragger.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\GroupBox.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HorizontalScrollBar.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HorizontalSlider.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\HSVColorPicker.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ImagePanel.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Label.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\LabelClickable.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ListBox.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Menu.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\MenuItem.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\MenuStrip.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\NumericUpDown.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\PageControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Pointer.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ProgressBar.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Properties.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\PropertyTree.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RadioButton.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RadioButtonController.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Rectangle.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ResizableControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Resizer.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\RichLabel.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBar.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBarBar.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollBarButton.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\ScrollControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Slider.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\SplitterBar.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabButton.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TabStrip.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\Text.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TextBox.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TextBoxNumeric.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TreeControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\TreeNode.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\VerticalScrollBar.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\VerticalSlider.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Controls\WindowControl.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\DragAndDrop.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\events.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Gwen.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Hook.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\inputhandler.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Platforms\HaloRuntime.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Skin.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\ToolTip.cpp" />
-    <ClCompile Include="..\..\shared\Include\GWEN\Utility.cpp" />
-    <ClCompile Include="..\..\shared\Include\mongoose\mongoose.c">
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Align.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Anim.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\BaseRender.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Config.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\ControlList.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Base.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Button.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Canvas.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\CheckBox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\CollapsibleCategory.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\CollapsibleList.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ColorControls.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ColorPicker.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ComboBox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\CrossSplitter.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\DockBase.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\DockedTabControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Dragger.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\FieldLabel.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\GroupBox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Highlight.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\HorizontalScrollBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\HorizontalSlider.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\HSVColorPicker.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ImagePanel.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Label.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\LabelClickable.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Layout\Table.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ListBox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Menu.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\MenuItem.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\MenuStrip.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Modal.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\NumericUpDown.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\PageControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Pointer.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ProgressBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Properties.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\PropertyTree.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Property\BaseProperty.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Property\Checkbox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Property\ColorSelector.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Property\ComboBox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Property\Text.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\RadioButton.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\RadioButtonController.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Rectangle.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ResizableControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Resizer.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\RichLabel.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ScrollBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ScrollBarBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ScrollBarButton.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ScrollControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Slider.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\SplitterBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Splitters.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\StatusBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TabButton.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TabControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TabStrip.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TabTitleBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\Text.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TextBox.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\ToolBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TreeControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\TreeNode.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\VerticalScrollBar.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\VerticalSlider.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\WindowButtons.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Controls\WindowControl.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\DragAndDrop.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Events.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Exports.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Font.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Gwen.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Hook.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\InputHandler.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Macros.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Platform.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Skin.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Skins\TexturedBase.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Skins\Texturing.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Structures.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\TextObject.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Texture.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\ToolTip.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\UserData.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\Utility.h" />
+    <ClInclude Include="..\..\..\external_libraries\GWEN\WindowProvider.h" />
+    <ClInclude Include="..\..\..\external_libraries\mongoose\mongoose.h" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Anim.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\BaseRender.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\ControlList.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Base.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Button.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Canvas.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\CheckBox.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\CollapsibleCategory.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ColorControls.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ColorPicker.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ComboBox.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\CrossSplitter.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\DockBase.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\DockedTabControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Dragger.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\GroupBox.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\HorizontalScrollBar.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\HorizontalSlider.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\HSVColorPicker.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ImagePanel.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Label.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\LabelClickable.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ListBox.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Menu.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\MenuItem.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\MenuStrip.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\NumericUpDown.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\PageControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Pointer.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ProgressBar.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Properties.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\PropertyTree.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\RadioButton.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\RadioButtonController.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Rectangle.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ResizableControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Resizer.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\RichLabel.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ScrollBar.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ScrollBarBar.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ScrollBarButton.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\ScrollControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Slider.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\SplitterBar.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TabButton.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TabControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TabStrip.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\Text.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TextBox.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TextBoxNumeric.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TreeControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\TreeNode.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\VerticalScrollBar.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\VerticalSlider.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Controls\WindowControl.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\DragAndDrop.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\events.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Gwen.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Hook.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\inputhandler.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Platforms\HaloRuntime.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Skin.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\ToolTip.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\GWEN\Utility.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\mongoose\mongoose.c">
       <PrecompiledHeader />
       <DisableSpecificWarnings>4090;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>

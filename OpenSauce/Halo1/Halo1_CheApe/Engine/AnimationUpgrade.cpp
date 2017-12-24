@@ -9,8 +9,8 @@
 
 #include "TagGroups/TagGroups.hpp"
 
-#include <blamlib/Halo1/models/model_animations.hpp>
-#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/models/model_animations.hpp>
+#include <blamlib/models/model_animation_definitions.hpp>
 
 namespace Yelo
 {

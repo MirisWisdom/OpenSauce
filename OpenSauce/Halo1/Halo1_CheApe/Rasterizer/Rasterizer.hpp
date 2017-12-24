@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <YeloLib/Halo1/rasterizer/rasterizer.hpp>
+#include <YeloLib/rasterizer/rasterizer.hpp>
 
 namespace Yelo
 {

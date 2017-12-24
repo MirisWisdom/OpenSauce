@@ -7,19 +7,19 @@
 #include "Common/Precompile.hpp"
 #include "Networking/Networking.hpp"
 
-#include <blamlib/Halo1/bungie_net/network/transport_address.hpp> // for Enums::transport_rejection_code
-#include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/main/main.hpp>
-#include <blamlib/Halo1/networking/network_client_manager.hpp>
-#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
-#include <blamlib/Halo1/networking/network_game_globals.hpp>
-#include <blamlib/Halo1/networking/network_game_manager.hpp>
-#include <blamlib/Halo1/networking/network_game_manager_structures.hpp>
-#include <blamlib/Halo1/networking/network_messages_structures.hpp>
-#include <blamlib/Halo1/networking/network_server_manager.hpp>
-#include <blamlib/Halo1/networking/network_server_manager_structures.hpp>
-#include <blamlib/Halo1/networking/player_update_client.hpp>
-#include <blamlib/Halo1/networking/player_update_server.hpp>
+#include <blamlib/bungie_net/network/transport_address.hpp> // for Enums::transport_rejection_code
+#include <blamlib/main/console.hpp>
+#include <blamlib/main/main.hpp>
+#include <blamlib/networking/network_client_manager.hpp>
+#include <blamlib/networking/network_client_manager_structures.hpp>
+#include <blamlib/networking/network_game_globals.hpp>
+#include <blamlib/networking/network_game_manager.hpp>
+#include <blamlib/networking/network_game_manager_structures.hpp>
+#include <blamlib/networking/network_messages_structures.hpp>
+#include <blamlib/networking/network_server_manager.hpp>
+#include <blamlib/networking/network_server_manager_structures.hpp>
+#include <blamlib/networking/player_update_client.hpp>
+#include <blamlib/networking/player_update_server.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/GameSpyApi.hpp"

@@ -8,7 +8,7 @@
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 
-#include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/objects/objects.hpp>
 
 namespace Yelo
 {

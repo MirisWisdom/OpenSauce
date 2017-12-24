@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/Halo1/files/packed_file.hpp>
+#include <YeloLib/files/packed_file.hpp>
 
 #include "Interface/OpenSauceUI/Input/i_control_input.hpp"
 #include "Interface/OpenSauceUI/Control/i_control.hpp"

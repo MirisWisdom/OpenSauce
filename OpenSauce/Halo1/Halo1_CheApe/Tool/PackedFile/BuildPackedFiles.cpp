@@ -8,7 +8,7 @@
 #include "Tool/PackedFile/BuildPackedFiles.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <YeloLib/Halo1/files/packed_file.hpp>
+#include <YeloLib/files/packed_file.hpp>
 
 #include "Tool/PackedFile/Definition/c_packed_file_definition.hpp"
 #include "Tool/PackedFile/Processing/i_packed_file_processor.hpp"

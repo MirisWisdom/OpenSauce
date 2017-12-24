@@ -8,8 +8,8 @@
 #include "Guerilla/tag_reference_dialog_extensions.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_GUERILLA
-#include <BlamLib/Halo1/tag_files/tag_files.hpp>
-#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
+#include <BlamLib/tag_files/tag_files.hpp>
+#include <YeloLib/tag_files/string_id_yelo.hpp>
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo

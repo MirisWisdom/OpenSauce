@@ -7,7 +7,7 @@
 #pragma once
 
 #if PLATFORM_IS_USER
-#include <blamlib/Halo1/camera/director.hpp>
+#include <blamlib/camera/director.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>

@@ -7,8 +7,8 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+#include <YeloLib/time/interpolation/i_interpolator.hpp>
+#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {

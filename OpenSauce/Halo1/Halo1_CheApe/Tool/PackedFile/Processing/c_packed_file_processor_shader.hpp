@@ -7,7 +7,7 @@
 #pragma once
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <YeloLib/Halo1/files/packed_file.hpp>
+#include <YeloLib/files/packed_file.hpp>
 
 #include "Tool/PackedFile/Processing/i_packed_file_processor.hpp"
 

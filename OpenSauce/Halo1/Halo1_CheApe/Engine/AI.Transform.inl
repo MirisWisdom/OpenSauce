@@ -5,22 +5,22 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/tag_files/tag_files_structures.hpp>
-#include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/tag_files/tag_collection_definitions.hpp>
-#include <blamlib/Halo1/ai/actor_definitions.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/tag_files/tag_files_structures.hpp>
+#include <blamlib/main/console.hpp>
+#include <blamlib/tag_files/tag_collection_definitions.hpp>
+#include <blamlib/ai/actor_definitions.hpp>
 
-#include <YeloLib/Halo1/units/unit_transform_definition.hpp>
-#include <YeloLib/Halo1/units/unit_transform_definition.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/units/unit_transform_definition.hpp>
+#include <YeloLib/units/unit_transform_definition.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
-#include <YeloLib/Halo1/ai/c_actor_variant_transform_manager.hpp>
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/ai/c_actor_variant_transform_manager.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 #endif
 
 namespace Yelo

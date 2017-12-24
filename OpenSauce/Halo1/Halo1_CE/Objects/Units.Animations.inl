@@ -5,9 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Units.hpp"

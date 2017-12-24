@@ -5,9 +5,9 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
-#include <blamlib/Halo1/effects/weather_particle_system_definitions.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/effects/weather_particle_system_definitions.hpp>
 
 namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
 

@@ -4,8 +4,8 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include <blamlib/Halo1/interface/first_person_weapons.hpp>
-#include <blamlib/Halo1/interface/hud.hpp>
+#include <blamlib/interface/first_person_weapons.hpp>
+#include <blamlib/interface/hud.hpp>
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>

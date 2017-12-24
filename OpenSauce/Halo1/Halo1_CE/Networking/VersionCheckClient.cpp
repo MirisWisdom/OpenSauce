@@ -8,7 +8,7 @@
 #include "Networking/VersionCheckClient.hpp"
 
 #if PLATFORM_IS_USER && defined(YELO_VERSION_CHECK_ENABLE)
-#include <blamlib/Halo1/main/main_structures.hpp>
+#include <blamlib/main/main_structures.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
 #include "Game/GameState.hpp"
