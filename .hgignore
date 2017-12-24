@@ -17,6 +17,7 @@ lib\
 obj\
 external_libraries\
 *_ReSharper.Caches*
+*.vs*
 
 *.user
 *.ncb
