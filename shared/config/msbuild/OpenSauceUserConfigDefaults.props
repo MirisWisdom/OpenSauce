@@ -8,7 +8,7 @@
     <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(OSRootDir)external_libraries\$(LocalUserBoostVer)\</LocalUserBoostDir>
     <LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
     <LocalGameSpyOpenDir  Condition="!Exists('$(LocalGameSpyOpenDir)')">$(OSRootDir)external_libraries\GameSpyOpen</LocalGameSpyOpenDir>
-    <LocalRakNetDir			  Condition=" '$(LocalRakNetDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\RakNet</LocalRakNetDir>
+    <LocalRakNetDir			Condition=" '$(LocalRakNetDir)' == '' ">$(OSRootDir)external_libraries\RakNet</LocalRakNetDir>
 
   <!-- Determine build platform's bitness to know where to look for executables-->
   <!--On 64-Bit Windows, the ProgramW6432 environment variable returns "C:\Program Files\"-->

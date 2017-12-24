@@ -7,21 +7,21 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameState.hpp"
 
-#include <blamlib/Halo1/cache/physical_memory_map_structures.hpp>
-#include <blamlib/Halo1/game/game_allegiance_structures.hpp>
-#include <blamlib/Halo1/game/game_globals_definitions.hpp>
-#include <blamlib/Halo1/game/game_globals_structures.hpp>
-#include <blamlib/Halo1/game/game_time_structures.hpp>
-#include <blamlib/Halo1/main/console.hpp> // for data_array_info only
-#include <blamlib/Halo1/main/main_structures.hpp>
-#include <blamlib/Halo1/scenario/scenario.hpp>
-#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
+#include <blamlib/cache/physical_memory_map_structures.hpp>
+#include <blamlib/game/game_allegiance_structures.hpp>
+#include <blamlib/game/game_globals_definitions.hpp>
+#include <blamlib/game/game_globals_structures.hpp>
+#include <blamlib/game/game_time_structures.hpp>
+#include <blamlib/main/console.hpp> // for data_array_info only
+#include <blamlib/main/main_structures.hpp>
+#include <blamlib/scenario/scenario.hpp>
+#include <blamlib/saved_games/game_state_structures.hpp>
 
 #include <YeloLib/cseries/random.hpp>
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/GameSystems.hpp"

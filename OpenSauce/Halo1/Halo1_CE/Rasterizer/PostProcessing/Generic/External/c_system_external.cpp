@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/Generic/External/c_system_external.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/math/periodic_functions.hpp>
+#include <blamlib/math/periodic_functions.hpp>
 
 #include "Rasterizer/PostProcessing/Generic/External/c_settings_external.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"

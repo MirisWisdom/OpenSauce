@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "CheApeInterface.hpp"
 
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Common/DebugDump.hpp"
 #include "Engine/EngineFunctions.hpp"

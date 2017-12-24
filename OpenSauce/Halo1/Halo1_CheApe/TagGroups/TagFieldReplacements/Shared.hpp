@@ -6,14 +6,14 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups_structures_macros.hpp>
-#include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
+#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
+#include <YeloLib/tag_files/tag_fieldset_replacement_builder.hpp>
 
-#include <blamlib/Halo1/camera/camera_definitions.hpp>
-#include <blamlib/Halo1/effects/effect_definitions.hpp>
-#include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
-#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
-#include <blamlib/Halo1/scenario/sky_definitions.hpp>
+#include <blamlib/camera/camera_definitions.hpp>
+#include <blamlib/effects/effect_definitions.hpp>
+#include <blamlib/effects/damage_effect_definitions.hpp>
+#include <blamlib/bitmaps/bitmap_definition.hpp>
+#include <blamlib/scenario/sky_definitions.hpp>
 
 namespace Yelo
 {

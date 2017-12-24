@@ -8,7 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/Halo1/rasterizer/rasterizer.hpp>
+#include <YeloLib/rasterizer/rasterizer.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>

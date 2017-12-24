@@ -8,9 +8,9 @@
 #include "Tool/BuildCacheFile/BuildCacheFileMemoryUpgrades.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/cache/cache_files_structures.hpp>
-#include <YeloLib/Halo1/cache/cache_files_structures_yelo.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/cache/cache_files_structures.hpp>
+#include <YeloLib/cache/cache_files_structures_yelo.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/Scripting.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"

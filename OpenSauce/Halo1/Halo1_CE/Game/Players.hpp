@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/effects/player_effects.hpp>
-#include <blamlib/Halo1/game/player_control.hpp>
-#include <blamlib/Halo1/game/players.hpp>
-#include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/effects/player_effects.hpp>
+#include <blamlib/game/player_control.hpp>
+#include <blamlib/game/players.hpp>
+#include <blamlib/memory/data.hpp>
 
 namespace Yelo
 {

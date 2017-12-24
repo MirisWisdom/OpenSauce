@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameStateRuntimeData.hpp"
 
-#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
+#include <YeloLib/saved_games/game_state_yelo.hpp>
 
 #include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"

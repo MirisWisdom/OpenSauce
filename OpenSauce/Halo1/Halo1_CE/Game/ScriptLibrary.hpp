@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/hs/hs.hpp>
+#include <blamlib/hs/hs.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

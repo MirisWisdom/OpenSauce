@@ -7,11 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Engine/AI.hpp"
 
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/objects/damage.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
-#include <YeloLib/Halo1/ai/ai_yelo.hpp>
+#include <YeloLib/ai/ai_yelo.hpp>
 #endif
 
 #include "Engine/AI.Transform.inl"

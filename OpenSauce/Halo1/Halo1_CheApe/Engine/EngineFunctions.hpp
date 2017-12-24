@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/cseries/debug_memory.hpp>
-#include <blamlib/Halo1/cseries/errors.hpp>
-#include <YeloLib/Halo1/cseries/memory_yelo.hpp>
+#include <blamlib/cseries/debug_memory.hpp>
+#include <blamlib/cseries/errors.hpp>
+#include <YeloLib/cseries/memory_yelo.hpp>
 
 namespace Yelo
 {

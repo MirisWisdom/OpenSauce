@@ -6,13 +6,13 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/ai/actions.hpp>
-#include <blamlib/Halo1/ai/actor_types.hpp>
-#include <blamlib/Halo1/ai/ai.hpp>
-#include <blamlib/Halo1/ai/ai_communication.hpp>
-#include <blamlib/Halo1/ai/encounters.hpp>
-#include <blamlib/Halo1/ai/props.hpp>
-#include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/ai/actions.hpp>
+#include <blamlib/ai/actor_types.hpp>
+#include <blamlib/ai/ai.hpp>
+#include <blamlib/ai/ai_communication.hpp>
+#include <blamlib/ai/encounters.hpp>
+#include <blamlib/ai/props.hpp>
+#include <blamlib/memory/data.hpp>
 
 namespace Yelo
 {

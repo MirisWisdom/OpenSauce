@@ -8,7 +8,7 @@
 #include "Networking/VersionCheckDedi.hpp"
 
 #if PLATFORM_IS_DEDI && defined(YELO_VERSION_CHECK_ENABLE)
-#include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/main/console.hpp>
 
 namespace Yelo
 {

@@ -7,11 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Engine/GameState.hpp"
 
-#include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/game/game_globals_structures.hpp>
+#include <blamlib/game/game_globals.hpp>
+#include <blamlib/game/game_globals_structures.hpp>
 
 #include <YeloLib/cseries/random.hpp>
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Engine/Objects.hpp"
 #include "Engine/Units.hpp"

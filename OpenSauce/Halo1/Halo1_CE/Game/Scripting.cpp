@@ -7,11 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Game/Scripting.hpp"
 
-#include <blamlib/Halo1/cutscene/recorded_animations_structures.hpp>
-#include <blamlib/Halo1/hs/hs_runtime_structures.hpp>
-#include <blamlib/Halo1/hs/hs_structures.hpp>
-#include <blamlib/Halo1/hs/object_lists_structures.hpp>
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <blamlib/cutscene/recorded_animations_structures.hpp>
+#include <blamlib/hs/hs_runtime_structures.hpp>
+#include <blamlib/hs/hs_structures.hpp>
+#include <blamlib/hs/object_lists_structures.hpp>
+#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"

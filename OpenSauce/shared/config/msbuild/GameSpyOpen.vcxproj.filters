@@ -14,191 +14,191 @@
 
   <ItemGroup
     >
-	<ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h">
+	<ClInclude Include="..\..\..\external_libraries\GameSpyOpen\darray.h">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\hashtable.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\hashtable.h">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\md5.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\md5.h">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\nonport.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\nonport.h">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsAssert.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsAvailable.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCommon.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsCommon.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCore.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsCore.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsCrypt.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsDebug.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsLargeInt.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsMemory.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatform.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformSocket.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformThread.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformUtil.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsRC4.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsResultCodes.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsSHA1.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsSoap.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsSSL.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsStringUtil.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsXML.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\common\gsXML.h">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttp.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttp.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpASCII.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpASCII.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpBuffer.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCallbacks.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCommon.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpConnection.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpEncryption.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpMain.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpPost.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.h">
+    <ClInclude Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpProcess.h">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClInclude>
 
-	<ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
+	<ClCompile Include="..\..\..\external_libraries\GameSpyOpen\darray.c">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\hashtable.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\hashtable.c">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\md5c.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\md5c.c">
       <Filter>Common\Shared\GameSpy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsAssert.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsAvailable.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCore.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsCore.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsCrypt.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsDebug.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsLargeInt.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsMemory.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatform.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformSocket.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformThread.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsPlatformUtil.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsRC4.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsResultCodes.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsSHA1.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsSoap.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsSSL.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsStringUtil.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsXML.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\common\gsXML.c">
       <Filter>Common\Shared\GameSpy\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpBuffer.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCallbacks.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpCommon.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpConnection.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpEncryption.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpMain.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpPost.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.c">
+    <ClCompile Include="..\..\..\external_libraries\GameSpyOpen\ghttp\ghttpProcess.c">
       <Filter>Common\Shared\GameSpy\ghttp</Filter>
     </ClCompile>
   </ItemGroup>

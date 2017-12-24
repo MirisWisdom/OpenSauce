@@ -8,11 +8,11 @@
 #include "Scenario/StructureBSP.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/objects/object_structures.hpp>
-#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blamlib/structures/structure_bsp_definitions.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/objects/object_structures.hpp>
+#include <YeloLib/saved_games/game_state_yelo.hpp>
 
 #include "Common/GameSystemDefinitions.hpp"
 #include "Game/ScriptLibrary.hpp"

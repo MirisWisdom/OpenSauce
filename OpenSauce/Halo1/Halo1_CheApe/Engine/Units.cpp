@@ -9,10 +9,10 @@
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
-#include <blamlib/Halo1/units/units.hpp>
-#include <blamlib/Halo1/items/weapons.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/objects/damage.hpp>
+#include <blamlib/units/units.hpp>
+#include <blamlib/items/weapons.hpp>
 
 #include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/AI.hpp"

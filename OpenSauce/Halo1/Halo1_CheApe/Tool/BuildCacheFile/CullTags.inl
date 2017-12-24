@@ -5,8 +5,8 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <YeloLib/Halo1/cache/cache_file_builder_yelo.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <YeloLib/cache/cache_file_builder_yelo.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

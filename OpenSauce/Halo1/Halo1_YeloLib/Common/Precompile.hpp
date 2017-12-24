@@ -94,10 +94,10 @@
 	#define API_NO_ZIP_CODEC
 #endif
 
-#include <blamlib/Halo1/cseries/cseries.hpp>
+#include <blamlib/cseries/cseries.hpp>
 #include <blamlib/scenario/scenario_location.hpp>
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
 
 #include <YeloLib/cseries/errors_yelo.hpp>
-#include <blamlib/Halo1/cseries/errors.hpp>
-#include <YeloLib/Halo1/cseries/memory_yelo.hpp>
+#include <blamlib/cseries/errors.hpp>
+#include <YeloLib/cseries/memory_yelo.hpp>

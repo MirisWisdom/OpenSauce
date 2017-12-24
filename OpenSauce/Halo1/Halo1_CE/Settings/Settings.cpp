@@ -7,8 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Settings/Settings.hpp"
 
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
+#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {

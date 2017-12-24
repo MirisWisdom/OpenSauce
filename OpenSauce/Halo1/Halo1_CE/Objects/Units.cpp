@@ -7,20 +7,20 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Units.hpp"
 
-#include <blamlib/Halo1/objects/damage.hpp>
-#include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/game/game_globals_definitions.hpp>
-#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
-#include <blamlib/Halo1/units/unit_definitions.hpp>
-#include <blamlib/Halo1/items/weapons.hpp>
+#include <blamlib/objects/damage.hpp>
+#include <blamlib/game/game_globals.hpp>
+#include <blamlib/game/game_globals_definitions.hpp>
+#include <blamlib/saved_games/game_state_structures.hpp>
+#include <blamlib/units/unit_definitions.hpp>
+#include <blamlib/items/weapons.hpp>
 
-#include <blamlib/Halo1/units/biped_structures.hpp>
-#include <blamlib/Halo1/units/vehicle_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/units/biped_structures.hpp>
+#include <blamlib/units/vehicle_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
-#include <YeloLib/Halo1/units/units_yelo.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/units/units_yelo.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"

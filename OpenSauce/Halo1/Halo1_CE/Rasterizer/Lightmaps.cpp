@@ -9,8 +9,8 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <blamlib/Halo1/bitmaps/bitmap_definition.hpp>
-#include <YeloLib/Halo1/render/lightmaps/c_lightmap_manager.hpp>
+#include <blamlib/bitmaps/bitmap_definition.hpp>
+#include <YeloLib/render/lightmaps/c_lightmap_manager.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "TagGroups/TagGroups.hpp"

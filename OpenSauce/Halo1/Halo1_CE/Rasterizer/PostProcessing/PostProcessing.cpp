@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Settings/Settings.hpp"
 

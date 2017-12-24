@@ -9,15 +9,15 @@
 
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 
 #if PLATFORM_IS_USER
-#include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
-#include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/game/game_globals_structures.hpp>
+#include <blamlib/main/console.hpp>
+#include <blamlib/saved_games/game_state_structures.hpp>
+#include <blamlib/game/game_globals.hpp>
+#include <blamlib/game/game_globals_structures.hpp>
 
 #include <YeloLib/cseries/pc_crashreport.hpp>
 

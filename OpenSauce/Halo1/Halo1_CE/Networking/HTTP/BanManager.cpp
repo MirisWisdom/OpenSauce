@@ -8,9 +8,9 @@
 #include "Networking/HTTP/BanManager.hpp"
 
 #if PLATFORM_IS_DEDI
-#include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
+#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Networking/HTTP/HTTP.hpp"

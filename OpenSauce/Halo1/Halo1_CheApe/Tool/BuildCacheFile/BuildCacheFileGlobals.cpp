@@ -8,9 +8,9 @@
 #include "Tool/BuildCacheFile/BuildCacheFileGlobals.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/cache/cache_file_builder.hpp>
-#include <YeloLib/Halo1/cache/data_file_yelo.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+#include <blamlib/cache/cache_file_builder.hpp>
+#include <YeloLib/cache/data_file_yelo.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

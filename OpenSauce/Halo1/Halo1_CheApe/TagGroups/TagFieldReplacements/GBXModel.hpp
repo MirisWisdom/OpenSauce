@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups_structures_macros.hpp>
-#include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
-#include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
+#include <YeloLib/tag_files/tag_fieldset_replacement_builder.hpp>
+#include <blamlib/models/model_definitions.hpp>
 
 namespace Yelo
 {

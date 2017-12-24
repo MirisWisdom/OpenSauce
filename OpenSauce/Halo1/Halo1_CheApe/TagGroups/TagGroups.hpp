@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
 #if PLATFORM_TYPE != PLATFORM_TOOL
-#include <blamlib/Halo1/guerilla/tags_interface.hpp>
+#include <blamlib/guerilla/tags_interface.hpp>
 #endif
 
 namespace Yelo

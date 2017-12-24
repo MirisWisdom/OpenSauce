@@ -8,13 +8,13 @@
 #include "Tool/TagMaintenance.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
-#include <blamlib/Halo1/tag_files/tag_files.hpp>
-#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
-#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
-#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
+#include <blamlib/tag_files/tag_field_scanner.hpp>
+#include <blamlib/tag_files/tag_files.hpp>
+#include <blamlib/tag_files/tag_group_loading.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <YeloLib/tag_files/tag_group_memory.hpp>
 #include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/StringEditing.hpp"

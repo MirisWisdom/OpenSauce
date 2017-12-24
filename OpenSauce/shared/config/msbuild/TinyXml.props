@@ -1,13 +1,13 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup
     >
-	<Text Include="..\..\shared\Include\TinyXml\OpenSauce.Readme.txt" />
+	<Text Include="..\..\..\external_libraries\TinyXml\OpenSauce.Readme.txt" />
 
-	<ClInclude Include="..\..\shared\Include\TinyXml\tinystr.hpp" />
-	<ClCompile Include="..\..\shared\Include\TinyXml\tinystr.cpp" />
-	<ClInclude Include="..\..\shared\Include\TinyXml\tinyxml.hpp" />
-    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp" />
-    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp" />
-    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
+	<ClInclude Include="..\..\..\external_libraries\TinyXml\tinystr.hpp" />
+	<ClCompile Include="..\..\..\external_libraries\TinyXml\tinystr.cpp" />
+	<ClInclude Include="..\..\..\external_libraries\TinyXml\tinyxml.hpp" />
+    <ClCompile Include="..\..\..\external_libraries\TinyXml\tinyxml.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\TinyXml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\..\external_libraries\TinyXml\tinyxmlparser.cpp" />
   </ItemGroup>
 </Project>

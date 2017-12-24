@@ -7,11 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"
 
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
 
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/AI.hpp"
 #include "Engine/EngineFunctions.hpp"

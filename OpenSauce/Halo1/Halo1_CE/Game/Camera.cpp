@@ -9,11 +9,11 @@
 
 #if PLATFORM_IS_USER
 
-#include <blamlib/Halo1/camera/director_structures.hpp>
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/camera/director_structures.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Memory/MemoryInterface.hpp"

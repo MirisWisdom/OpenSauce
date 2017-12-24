@@ -9,7 +9,7 @@
 #include "Objects/Objects.hpp"
 
 #include <YeloLib/cseries/value_conversion.hpp>
-#include <YeloLib/Halo1/objects/objects_yelo.hpp>
+#include <YeloLib/objects/objects_yelo.hpp>
 
 namespace Yelo
 {

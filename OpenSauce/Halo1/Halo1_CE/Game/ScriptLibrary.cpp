@@ -7,10 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Game/ScriptLibrary.hpp"
 
-#include <blamlib/Halo1/hs/hs_structures.hpp>
-#include <blamlib/Halo1/networking/network_server_manager_structures.hpp>
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <blamlib/hs/hs_structures.hpp>
+#include <blamlib/networking/network_server_manager_structures.hpp>
+#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Game/Camera.hpp"

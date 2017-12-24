@@ -9,9 +9,9 @@
 #include "Rasterizer/PostProcessing/Generic/c_parameter_instance.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
-#include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <YeloLib/time/interpolation/interpolation.hpp>
+#include <YeloLib/time/interpolation/c_interp_linear.hpp>
+#include <blamlib/units/unit_structures.hpp>
 
 #include "Rasterizer/PostProcessing/Interpolation/c_interp_function_pp_anim.hpp"
 

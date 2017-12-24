@@ -8,8 +8,8 @@
 #include "Tool/ShaderPostprocess.hpp"
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Common/StringEditing.hpp"

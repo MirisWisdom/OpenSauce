@@ -7,11 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
-#include <blamlib/Halo1/cache/cache_files_globals.hpp>
-#include <blamlib/Halo1/cache/cache_files_structures.hpp>
-#include <blamlib/Halo1/main/console.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/cache/cache_files_globals.hpp>
+#include <blamlib/cache/cache_files_structures.hpp>
+#include <blamlib/main/console.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
+#include <YeloLib/time/interpolation/c_interp_linear.hpp>
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_motionblur.hpp"
 

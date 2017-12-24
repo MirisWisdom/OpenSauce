@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/objects/object_definitions.hpp>
 
 namespace Yelo
 {

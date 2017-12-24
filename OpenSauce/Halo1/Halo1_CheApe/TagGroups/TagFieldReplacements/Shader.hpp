@@ -6,13 +6,13 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups_structures_macros.hpp>
-#include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
-#include <blamlib/Halo1/effects/contrail_definitions.hpp>
-#include <blamlib/Halo1/effects/particle_definitions.hpp>
-#include <blamlib/Halo1/effects/particle_system_definitions.hpp>
-#include <blamlib/Halo1/effects/weather_particle_system_definitions.hpp>
+#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
+#include <YeloLib/tag_files/tag_fieldset_replacement_builder.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/effects/contrail_definitions.hpp>
+#include <blamlib/effects/particle_definitions.hpp>
+#include <blamlib/effects/particle_system_definitions.hpp>
+#include <blamlib/effects/weather_particle_system_definitions.hpp>
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"
 

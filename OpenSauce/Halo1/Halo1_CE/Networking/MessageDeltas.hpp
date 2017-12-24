@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/networking/message_delta_parameters_protocol.hpp>
+#include <blamlib/networking/message_delta_parameters_protocol.hpp>
 
 #include "Networking/Networking.hpp"
 #include "Networking/MessageDeltaDefinitions.hpp"

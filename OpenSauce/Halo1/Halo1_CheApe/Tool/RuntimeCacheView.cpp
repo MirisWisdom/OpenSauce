@@ -10,7 +10,7 @@
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include <psapi.h>
 
-#include <blamlib/Halo1/cache/cache_files_structures.hpp>
+#include <blamlib/cache/cache_files_structures.hpp>
 
 #include "Common/StringEditing.hpp"
 #include "Engine/EngineFunctions.hpp"

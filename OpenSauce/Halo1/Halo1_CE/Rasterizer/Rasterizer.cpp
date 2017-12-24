@@ -8,9 +8,9 @@
 #include "Rasterizer/Rasterizer.hpp"
 #if !PLATFORM_IS_DEDI
 
-#include <blamlib/Halo1/hs/hs_structures.hpp>
-#include <blamlib/Halo1/interface/ui_video_screen.hpp>
-#include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/hs/hs_structures.hpp>
+#include <blamlib/interface/ui_video_screen.hpp>
+#include <blamlib/models/model_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -29,7 +29,7 @@ namespace Yelo
 
 	namespace Rasterizer
 	{
-#include <YeloLib/Halo1/rasterizer/rasterizer_upgrades.inl>
+#include <YeloLib/rasterizer/rasterizer_upgrades.inl>
 
 		s_rasterizer_config* RasterizerConfig()			PTR_IMP_GET2(rasterizer_config);
 		s_rasterizer_globals* RasterizerGlobals()		PTR_IMP_GET2(rasterizer_globals);

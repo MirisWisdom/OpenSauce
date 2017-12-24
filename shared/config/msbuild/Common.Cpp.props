@@ -43,7 +43,7 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(OSRootDir)shared\include_cpp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OSRootDir)source;$(ProjectDir);$(OSRootDir)shared\include_cpp\;$(OSRootDir)external_libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <AdditionalOptions> /J /Zc:trigraphs</AdditionalOptions> <!--unsigned char, enable trigraphs-->
       <RuntimeTypeInfo>true</RuntimeTypeInfo>

@@ -7,20 +7,20 @@
 #include "Common/Precompile.hpp"
 #include "Game/EngineFunctions.hpp"
 
-#include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/camera/director.hpp>
-#include <blamlib/Halo1/interface/hud_draw.hpp>
-#include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/main/main_structures.hpp>
-#include <blamlib/Halo1/math/periodic_functions.hpp>
-#include <blamlib/Halo1/memory/data.hpp>
-#include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/ai/actor_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <blamlib/Halo1/units/unit_script.hpp>
+#include <blamlib/cache/cache_files.hpp>
+#include <blamlib/camera/director.hpp>
+#include <blamlib/interface/hud_draw.hpp>
+#include <blamlib/main/console.hpp>
+#include <blamlib/main/main_structures.hpp>
+#include <blamlib/math/periodic_functions.hpp>
+#include <blamlib/memory/data.hpp>
+#include <blamlib/models/model_animation_definitions.hpp>
+#include <blamlib/objects/damage.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/ai/actor_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
+#include <blamlib/units/unit_script.hpp>
 
 #include "Game/Console.hpp"
 #include "Game/GameState.hpp"

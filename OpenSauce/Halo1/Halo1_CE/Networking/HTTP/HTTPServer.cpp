@@ -10,8 +10,8 @@
 #if PLATFORM_IS_DEDI
 #include <mongoose/mongoose.h>
 
-#include <blamlib/Halo1/main/console.hpp>
-#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <blamlib/main/console.hpp>
+#include <YeloLib/shell/shell_windows_command_line.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Common/FileIO.hpp"

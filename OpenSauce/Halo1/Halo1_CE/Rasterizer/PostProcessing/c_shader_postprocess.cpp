@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/cache/predicted_resources.hpp>
+#include <blamlib/cache/predicted_resources.hpp>
 
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"

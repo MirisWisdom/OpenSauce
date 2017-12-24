@@ -8,8 +8,8 @@
 #include "Game/EngineFunctions.hpp"
 #include "Memory/FunctionInterface.hpp"
 
-#include <blamlib/Halo1/interface/ui_widget_group.hpp>
-#include <blamlib/Halo1/interface/hud_definitions.hpp>
+#include <blamlib/interface/ui_widget_group.hpp>
+#include <blamlib/interface/hud_definitions.hpp>
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>

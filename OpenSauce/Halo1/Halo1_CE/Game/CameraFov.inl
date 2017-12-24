@@ -8,9 +8,9 @@
 #include "Game/Players.hpp"
 #include "TagGroups/CacheFiles.hpp"
 
-#include <YeloLib/Halo1/cache/shared_cache_files.hpp>
-#include <BlamLib/Halo1/cache/cache_files.hpp>
-#include <BlamLib/Halo1/cache/cache_files_globals.hpp>
+#include <YeloLib/cache/shared_cache_files.hpp>
+#include <BlamLib/cache/cache_files.hpp>
+#include <BlamLib/cache/cache_files_globals.hpp>
 
 namespace Yelo
 {

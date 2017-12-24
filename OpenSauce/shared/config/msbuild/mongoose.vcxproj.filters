@@ -8,10 +8,10 @@
 
   <ItemGroup
     >
-	<ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
+	<ClInclude Include="..\..\..\external_libraries\mongoose\mongoose.h">
       <Filter>Common\Shared\mongoose</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\mongoose\mongoose.c">
+	<ClCompile Include="..\..\..\external_libraries\mongoose\mongoose.c">
       <Filter>Common\Shared\mongoose</Filter>
     </ClCompile>
   </ItemGroup>

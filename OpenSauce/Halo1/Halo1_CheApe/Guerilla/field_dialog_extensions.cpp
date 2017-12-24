@@ -8,7 +8,7 @@
 #include "Guerilla/field_dialog_extensions.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_GUERILLA
-#include <blamlib/Halo1/guerilla/field_dialog_structures.hpp>
+#include <blamlib/guerilla/field_dialog_structures.hpp>
 #include "Guerilla/string_dialog_extensions.hpp"
 #include "Guerilla/tag_reference_dialog_extensions.hpp"
 #include "TagGroups/TagGroups.hpp"

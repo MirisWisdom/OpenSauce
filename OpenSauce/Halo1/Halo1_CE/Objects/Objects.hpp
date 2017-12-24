@@ -6,15 +6,15 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/memory/data.hpp>
-#include <blamlib/Halo1/devices/devices.hpp>
-#include <blamlib/Halo1/objects/object_definitions.hpp>
-#include <blamlib/Halo1/objects/object_lights.hpp>
-#include <blamlib/Halo1/objects/object_structures.hpp>
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/objects/widgets/widgets.hpp>
-#include <blamlib/Halo1/render/render_objects.hpp>
-#include <blamlib/Halo1/units/units.hpp>
+#include <blamlib/memory/data.hpp>
+#include <blamlib/devices/devices.hpp>
+#include <blamlib/objects/object_definitions.hpp>
+#include <blamlib/objects/object_lights.hpp>
+#include <blamlib/objects/object_structures.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/objects/widgets/widgets.hpp>
+#include <blamlib/render/render_objects.hpp>
+#include <blamlib/units/units.hpp>
 #include <YeloLib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo

@@ -5,13 +5,13 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
-#include <blamlib/Halo1/effects/contrail_definitions.hpp>
-#include <blamlib/Halo1/effects/particle_definitions.hpp>
-#include <blamlib/Halo1/effects/weather_particle_system_definitions.hpp>
-#include <blamlib/Halo1/effects/particle_system_definitions.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <blamlib/effects/contrail_definitions.hpp>
+#include <blamlib/effects/particle_definitions.hpp>
+#include <blamlib/effects/weather_particle_system_definitions.hpp>
+#include <blamlib/effects/particle_system_definitions.hpp>
 
 #include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
 #include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"

@@ -6,8 +6,8 @@
 */
 #pragma once
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <blamlib/Halo1/cache/data_file.hpp>
-#include <blamlib/Halo1/tool/tool.hpp>
+#include <blamlib/cache/data_file.hpp>
+#include <blamlib/tool/tool.hpp>
 
 namespace Yelo
 {

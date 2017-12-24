@@ -7,10 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
-#include <blamlib/Halo1/tag_files/files.hpp>
-#include <blamlib/Halo1/tool/tool.hpp>
+#include <blamlib/tag_files/files.hpp>
+#include <blamlib/tool/tool.hpp>
 
-#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Engine/EngineFunctions.hpp"

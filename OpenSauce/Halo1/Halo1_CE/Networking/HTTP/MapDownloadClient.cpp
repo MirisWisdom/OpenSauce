@@ -8,15 +8,15 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/main/main.hpp>
-#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
-#include <blamlib/Halo1/interface/map_list.hpp>
+#include <blamlib/main/main.hpp>
+#include <blamlib/networking/network_client_manager_structures.hpp>
+#include <blamlib/interface/map_list.hpp>
 
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/memory/compression/7zip_codec.hpp>
 #include <YeloLib/memory/compression/zip_codec.hpp>
 #include <YeloLib/memory/security/xxtea.hpp>
-#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
+#include <YeloLib/cache/cache_files_yelo.hpp>
 #include <YeloLib/cseries/value_conversion.hpp>
 
 #include "Common/FileIO.hpp"

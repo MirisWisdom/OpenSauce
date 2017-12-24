@@ -7,12 +7,12 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameEngine.hpp"
 
-#include <blamlib/Halo1/game/game_engine_ctf.hpp>
-#include <blamlib/Halo1/game/game_engine_king.hpp>
-#include <blamlib/Halo1/game/game_engine_oddball.hpp>
-#include <blamlib/Halo1/game/game_engine_race.hpp>
-#include <blamlib/Halo1/game/game_engine_slayer.hpp>
-#include <blamlib/Halo1/game/game_globals_structures.hpp>
+#include <blamlib/game/game_engine_ctf.hpp>
+#include <blamlib/game/game_engine_king.hpp>
+#include <blamlib/game/game_engine_oddball.hpp>
+#include <blamlib/game/game_engine_race.hpp>
+#include <blamlib/game/game_engine_slayer.hpp>
+#include <blamlib/game/game_globals_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"

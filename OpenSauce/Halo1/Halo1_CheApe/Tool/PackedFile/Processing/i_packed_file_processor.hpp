@@ -7,7 +7,7 @@
 #pragma once
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <YeloLib/Halo1/files/packed_file.hpp>
+#include <YeloLib/files/packed_file.hpp>
 
 namespace Yelo
 {

@@ -5,8 +5,8 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/scenario/scenario_definitions.hpp>
 
 namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
 	

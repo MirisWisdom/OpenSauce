@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/main/console.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Game/GameState.hpp"

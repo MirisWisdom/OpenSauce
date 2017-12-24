@@ -7,10 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Game/AI.hpp"
 
-#include <blamlib/Halo1/ai/actor_structures.hpp>
-#include <blamlib/Halo1/ai/prop_structures.hpp>
+#include <blamlib/ai/actor_structures.hpp>
+#include <blamlib/ai/prop_structures.hpp>
 
-#include <YeloLib/Halo1/ai/ai_yelo.hpp>
+#include <YeloLib/ai/ai_yelo.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Objects.hpp"

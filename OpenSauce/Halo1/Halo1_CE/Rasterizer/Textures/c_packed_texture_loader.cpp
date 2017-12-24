@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/Halo1/files/packed_file.hpp>
+#include <YeloLib/files/packed_file.hpp>
 
 #include "Rasterizer/DX9/DX9.hpp"
 

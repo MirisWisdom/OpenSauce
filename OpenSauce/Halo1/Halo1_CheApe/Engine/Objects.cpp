@@ -9,11 +9,11 @@
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 
-#include <blamlib/Halo1/objects/objects.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <blamlib/Halo1/units/units.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/units/unit_structures.hpp>
+#include <blamlib/units/units.hpp>
 
-#include <YeloLib/Halo1/units/units_yelo.hpp>
+#include <YeloLib/units/units_yelo.hpp>
 
 #include "Engine/Units.hpp"
 #include "Engine/AI.hpp"

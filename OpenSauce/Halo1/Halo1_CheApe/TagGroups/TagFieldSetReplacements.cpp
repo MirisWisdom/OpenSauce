@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
-#include <blamlib/Halo1/interface/hud_messaging_definitions.hpp>
+#include <blamlib/interface/hud_messaging_definitions.hpp>
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"
 #include "TagGroups/TagFieldReplacements/Object.hpp"
