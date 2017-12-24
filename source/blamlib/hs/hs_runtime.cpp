@@ -19,8 +19,6 @@
 #include <blamlib/scenario/scenario_definitions.hpp>
 #include <YeloLib/hs/hs_library_definitions_yelo.hpp>
 
-#include <blamlib/hs/hs_library_internal_runtime.inl>
-
 namespace Yelo
 {
 	namespace blam

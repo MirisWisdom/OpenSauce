@@ -6,8 +6,6 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/hs/hs_compile.hpp>
 
-#include <blamlib/hs/hs_library_internal_compile.inl>
-
 namespace Yelo
 {
 	namespace Scripting

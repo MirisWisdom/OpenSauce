@@ -204,6 +204,10 @@
     <ClInclude Include="..\..\..\source\blamlib\game\vehicle_update_queue.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\guerilla\field_dialog_structures.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\guerilla\tags_interface.hpp" />
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_abi.h" />
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_bool_abi.h" />
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_value_abi.h" />
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_void_abi.h" />
     <ClInclude Include="..\..\..\source\blamlib\hs\hs.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\hs\hs_compile.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\hs\hs_constants.hpp" />
@@ -389,6 +393,10 @@
     <ClCompile Include="..\..\..\source\blamlib\cseries\profile.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\effects\damage_effect_definitions.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\game\game_time.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_abi.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_bool_abi.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_value_abi.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_void_abi.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\hs\hs.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\hs\hs_compile.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\hs\hs_runtime.cpp" />
@@ -420,13 +428,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1_CE.message_delta_definitions.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\source\blamlib\hs\hs_library_internal_compile.inl" />
-    <None Include="..\..\..\source\blamlib\hs\hs_library_internal_runtime.inl" />
-    <None Include="..\..\..\source\blamlib\hs\hs_types_compile.inl" />
-    <None Include="..\..\..\source\blamlib\hs\hs_types_definitions.inl" />
-    <None Include="..\..\..\source\blamlib\hs\hs_types_runtime.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceBuild.targets" />

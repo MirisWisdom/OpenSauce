@@ -1002,6 +1002,18 @@
     <ClInclude Include="..\..\..\source\blamlib\cache\s_data_file_globals.h">
       <Filter>cache</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_abi.h">
+      <Filter>hs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_void_abi.h">
+      <Filter>hs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_value_abi.h">
+      <Filter>hs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_bool_abi.h">
+      <Filter>hs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1130,27 +1142,22 @@
     <ClCompile Include="..\..\..\source\blamlib\cache\s_data_file_globals.cpp">
       <Filter>cache</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_abi.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_void_abi.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_value_abi.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_bool_abi.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1_CE.message_delta_definitions.xml">
       <Filter>networking</Filter>
     </Xml>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\source\blamlib\hs\hs_library_internal_runtime.inl">
-      <Filter>hs</Filter>
-    </None>
-    <None Include="..\..\..\source\blamlib\hs\hs_library_internal_compile.inl">
-      <Filter>hs</Filter>
-    </None>
-    <None Include="..\..\..\source\blamlib\hs\hs_types_compile.inl">
-      <Filter>hs</Filter>
-    </None>
-    <None Include="..\..\..\source\blamlib\hs\hs_types_runtime.inl">
-      <Filter>hs</Filter>
-    </None>
-    <None Include="..\..\..\source\blamlib\hs\hs_types_definitions.inl">
-      <Filter>hs</Filter>
-    </None>
   </ItemGroup>
 </Project>
