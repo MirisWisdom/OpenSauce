@@ -98,7 +98,7 @@ namespace Yelo
 			m_padding.untapped_offset = GetSourceFieldOffset();
 			m_padding.untapped_useless_size = 0;
 
-			while (NotEndOfSourceFields() && m_source_scanner.GetTagFieldType() == Enums::_field_pad)
+			while (NotEndOfSourceFields() && m_source_scanner.GetTagFieldType() == e_field_type::pad)
 			{
 				found_pad_field = true;
 				m_padding.detected_pad_field_count++;
@@ -237,7 +237,7 @@ namespace Yelo
 			}
 			else
 			{
-				tag_field new_field = { Enums::_field_explanation, name,
+				tag_field new_field = { e_field_type::explanation, name,
 					CAST_QUAL(char*, description) }; // definition is void*, cast to char* to play nice with initializer
 
 				CopyFieldToTargetFields(&new_field);
@@ -247,7 +247,7 @@ namespace Yelo
 		}
 
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertField(size_t expected_offset, 
-			Enums::field_type type, cstring name, void* definition)
+			e_field_type::type_t type, cstring name, void* definition)
 		{
 			// do-while-false, for easier cleanup and simple flow
 			do {
@@ -258,10 +258,10 @@ namespace Yelo
 				m_flags.insertion_failed = true;
 
 				// we currently don't support field arrays. don't silently fail the insert, this is a big problem.
-				YELO_ASSERT_DISPLAY(type != Enums::_field_array_start && type != Enums::_field_array_end,
+				YELO_ASSERT_DISPLAY(type != e_field_type::array_start && type != e_field_type::array_end,
 					"tried to insert a field array while building a new fieldset for %s", m_source_definition->name);
 
-				if (!IN_RANGE_ENUM(type, Enums::k_number_of_tag_field_types))
+				if (!IN_RANGE_ENUM(type, e_field_type::k_count))
 				{
 					YELO_WARN("tried to insert an invalid field of type %d named '%s' in %s",
 						CAST(int, type), name, m_source_definition->name);
@@ -312,10 +312,10 @@ namespace Yelo
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertEnum(size_t expected_offset,
 			size_t enum_size, cstring name, string_list* enum_definition)
 		{
-			Enums::field_type type;
+			e_field_type::type_t type;
 			switch (enum_size)
 			{
-			case sizeof(_enum): type = Enums::_field_enum; break;
+			case sizeof(_enum): type = e_field_type::word_enum; break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();
 			}
@@ -325,12 +325,12 @@ namespace Yelo
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertFlags(size_t expected_offset,
 			size_t flags_size, cstring name, string_list* flags_definition)
 		{
-			Enums::field_type type;
+			e_field_type::type_t type;
 			switch (flags_size)
 			{
-			case sizeof(byte_flags): type = Enums::_field_byte_flags; break;
-			case sizeof(word_flags): type = Enums::_field_word_flags; break;
-			case sizeof(long_flags): type = Enums::_field_long_flags; break;
+			case sizeof(byte_flags): type = e_field_type::byte_flags; break;
+			case sizeof(word_flags): type = e_field_type::word_flags; break;
+			case sizeof(long_flags): type = e_field_type::long_flags; break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();
 			}
@@ -340,11 +340,11 @@ namespace Yelo
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertBlockIndex(size_t expected_offset,
 			size_t index_size, cstring name, tag_block_definition* block_definition)
 		{
-			Enums::field_type type;
+			e_field_type::type_t type;
 			switch (index_size)
 			{
-			case sizeof(int16): type = Enums::_field_short_block_index; break;
-			case sizeof(int32): type = Enums::_field_long_block_index; break;
+			case sizeof(int16): type = e_field_type::short_block_index; break;
+			case sizeof(int32): type = e_field_type::long_block_index; break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();
 			}
@@ -370,7 +370,7 @@ namespace Yelo
 			YELO_ASSERT(block_definition);
 
 			return InsertField(expected_offset,
-				Enums::_field_block, name, block_definition);
+				e_field_type::block, name, block_definition);
 		}
 
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertData(size_t expected_offset,
@@ -379,7 +379,7 @@ namespace Yelo
 			YELO_ASSERT(data_definition);
 
 			return InsertField(expected_offset,
-				Enums::_field_data, name, data_definition);
+				e_field_type::data, name, data_definition);
 		}
 
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertTagReference(size_t expected_offset,
@@ -388,7 +388,7 @@ namespace Yelo
 			YELO_ASSERT(reference_definition);
 
 			return InsertField(expected_offset,
-				Enums::_field_tag_reference, name, reference_definition);
+				e_field_type::tag_reference, name, reference_definition);
 		}
 
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertPadData(size_t expected_offset,
@@ -397,7 +397,7 @@ namespace Yelo
 			assert(padding_size > 0);
 
 			return InsertField(expected_offset,
-				Enums::_field_pad, name, CAST_PTR(void*, padding_size));
+				e_field_type::pad, name, CAST_PTR(void*, padding_size));
 		}
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertPostprocessedData(size_t expected_offset,
 			int32 postprocessed_data_size, cstring name)
@@ -413,7 +413,7 @@ namespace Yelo
 			assert(skip_size > 0);
 
 			return InsertField(expected_offset,
-				Enums::_field_skip, name, CAST_PTR(void*, skip_size));
+				e_field_type::skip, name, CAST_PTR(void*, skip_size));
 		}
 	};
 };

@@ -241,28 +241,28 @@ namespace Yelo
 			{
 				void* block_element = CAST_PTR(byte*,address) + (definition->element_size * x);
 				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, block_element)
-					.AddFieldType(Enums::_field_block)
-					.AddFieldType(Enums::_field_data)
-					.AddFieldType(Enums::_field_tag_reference) )
+					.AddFieldType(e_field_type::block)
+					.AddFieldType(e_field_type::data)
+					.AddFieldType(e_field_type::tag_reference) )
 				{
 					bool read_result;
 
 					switch(field.GetType())
 					{
-					case Enums::_field_data: read_result = 
+					case e_field_type::data: read_result = 
 						tag_data_read_recursive(field.DefinitionAs<tag_data_definition>(), block_element,
 							field.As<tag_data>(), 
 							position_reference, read_flags);
 						break;
 
-					case Enums::_field_block: read_result = 
+					case e_field_type::block: read_result = 
 						tag_block_read_recursive(field.DefinitionAs<tag_block_definition>(),
 							field.As<tag_block>(), 
 							position_reference, read_flags,
 							tag_index);
 						break;
 
-					case Enums::_field_tag_reference: read_result = 
+					case e_field_type::tag_reference: read_result = 
 						tag_reference_read_recursive(field.DefinitionAs<tag_reference_definition>(),
 							field.As<tag_reference>(), 
 							position_reference, read_flags);
@@ -396,20 +396,20 @@ namespace Yelo
 			for(auto element : *block)
 			{
 				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, element.address)
-					.AddFieldType(Enums::_field_block)
-					.AddFieldType(Enums::_field_tag_reference) )
+					.AddFieldType(e_field_type::block)
+					.AddFieldType(e_field_type::tag_reference) )
 				{
 					bool read_result;
 
 					switch(field.GetType())
 					{
-					case Enums::_field_block: read_result = 
+					case e_field_type::block: read_result = 
 						tag_references_resolve_recursive(field.DefinitionAs<tag_block_definition>(),
 							  field.As<tag_block>(), 
 							  read_flags);
 						break;
 
-					case Enums::_field_tag_reference: read_result = 
+					case e_field_type::tag_reference: read_result = 
 						tag_reference_resolve_recursive(field.DefinitionAs<tag_reference_definition>(),
 							field.As<tag_reference>(), 
 							read_flags);
@@ -522,35 +522,35 @@ namespace Yelo
 				{
 					switch(field.GetType())
 					{
-					case Enums::_field_string: if(!verify_tag_string_field(field, definition, x)) valid = false;
+					case e_field_type::string: if(!verify_tag_string_field(field, definition, x)) valid = false;
 						break;
 
 					// NOTE: technically the engine treats enum fields as signed
-					case Enums::_field_enum: if(!verify_enum_field<int16>(field, definition, x)) valid = false;
+					case e_field_type::word_enum: if(!verify_enum_field<int16>(field, definition, x)) valid = false;
 						break;
 
 					// NOTE: engine only verified long_flags, we added support for the others
-					case Enums::_field_long_flags: if(!verify_flags_field<long_flags>(field, definition, x)) valid = false;
+					case e_field_type::long_flags: if(!verify_flags_field<long_flags>(field, definition, x)) valid = false;
 						break;
-					case Enums::_field_word_flags: if(!verify_flags_field<word_flags>(field, definition, x)) valid = false;
+					case e_field_type::word_flags: if(!verify_flags_field<word_flags>(field, definition, x)) valid = false;
 						break;
-					case Enums::_field_byte_flags: if(!verify_flags_field<byte_flags>(field, definition, x)) valid = false;
+					case e_field_type::byte_flags: if(!verify_flags_field<byte_flags>(field, definition, x)) valid = false;
 						break;
 
-					case Enums::_field_pad:
+					case e_field_type::pad:
 						std::memset(field.GetAddress(), 0, field.GetSize());
 						break;
 
-					case Enums::_field_block:
+					case e_field_type::block:
 						if( !tag_block_verify_recursive(field.DefinitionAs<tag_block_definition>(), field.As<tag_block>()) )
 							valid = false;
 						break;
 
 					// NOTE: engine doesn't verify block indices, we added support for them
 					// TODO: should we enable this as an option via XML setting instead?
-					case Enums::_field_short_block_index:	if(!verify_block_index_field<int16>(field, definition, x)) valid = false;
+					case e_field_type::short_block_index:	if(!verify_block_index_field<int16>(field, definition, x)) valid = false;
 						break;
-					case Enums::_field_long_block_index:	if(!verify_block_index_field<int32>(field, definition, x)) valid = false;
+					case e_field_type::long_block_index:	if(!verify_block_index_field<int32>(field, definition, x)) valid = false;
 						break;
 					}
 				}

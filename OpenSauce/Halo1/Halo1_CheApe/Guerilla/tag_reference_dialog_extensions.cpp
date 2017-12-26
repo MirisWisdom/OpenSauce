@@ -20,7 +20,7 @@ namespace Yelo
 			HBRUSH brush)
 		{
 			auto* reference = CAST_PTR(tag_reference*, field_info->address);
-			auto* definition = field_info->field->Definition<tag_reference_definition>();
+			auto* definition = field_info->field->get_definition<tag_reference_definition>();
 
 			if (definition->group_tag == TagGroups::s_string_id_yelo_definition::k_group_tag)
 				OnCtlColor__string_id_field_name(CDC_);
@@ -31,7 +31,7 @@ namespace Yelo
 		HBRUSH tag_reference_dialog_extensions::OnCtlColor__tag_name(void* CDC_, void* CWnd_, field_information* field_info,
 			HBRUSH brush)
 		{
-			auto* definition = field_info->field->Definition<tag_reference_definition>();
+			auto* definition = field_info->field->get_definition<tag_reference_definition>();
 			COLORREF color = 0;
 
 			if (definition->group_tag == TagGroups::s_string_id_yelo_definition::k_group_tag)

@@ -21,14 +21,14 @@ namespace Yelo
 	{
 		TAG_GROUP_BLOCK_FIELDS_DEFINE(scenario_bsp_lightmap_set) =
 		{
-			TAG_FIELD_ENTRY(_field_string, "name" TAG_FIELD_MARKUP_IS_BLOCK_NAME),
+			TAG_FIELD_ENTRY(string, "name" TAG_FIELD_MARKUP_IS_BLOCK_NAME),
 			TAG_FIELD_ENTRY_PAD(sizeof(int32)),
-			TAG_FIELD_ENTRY(_field_explanation, "standard lightmap", "The standard lightmap is the same type of lightmaps as used by stock Halo.\r\nIt is used if directional lightmaps are disabled." ),
-			TAG_FIELD_ENTRY(_field_tag_reference, "std. lightmap", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
-			TAG_FIELD_ENTRY(_field_explanation, "directional lightmap", "Directional lightmaps stores light accumulated in 3 directions in 3 lightmaps.\r\nThey are used to create normal mapped static lighting." ),
-			TAG_FIELD_ENTRY(_field_tag_reference, "dir. lightmap 1", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
-			TAG_FIELD_ENTRY(_field_tag_reference, "dir. lightmap 2", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
-			TAG_FIELD_ENTRY(_field_tag_reference, "dir. lightmap 3", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
+			TAG_FIELD_ENTRY(explanation, "standard lightmap", "The standard lightmap is the same type of lightmaps as used by stock Halo.\r\nIt is used if directional lightmaps are disabled." ),
+			TAG_FIELD_ENTRY(tag_reference, "std. lightmap", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
+			TAG_FIELD_ENTRY(explanation, "directional lightmap", "Directional lightmaps stores light accumulated in 3 directions in 3 lightmaps.\r\nThey are used to create normal mapped static lighting." ),
+			TAG_FIELD_ENTRY(tag_reference, "dir. lightmap 1", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
+			TAG_FIELD_ENTRY(tag_reference, "dir. lightmap 2", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
+			TAG_FIELD_ENTRY(tag_reference, "dir. lightmap 3", &Shared::TAG_GROUP_REFERENCE_GET(bitmap) ),
 			TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 2),
 			TAG_FIELD_ENTRY_END()
 		};
@@ -40,8 +40,8 @@ namespace Yelo
 		TAG_GROUP_BLOCK_FIELDS_DEFINE(scenario_bsp_sky_set_sky) =
 		{
 			TAG_FIELD_ENTRY_PAD(sizeof(int16)),
-			TAG_FIELD_ENTRY(_field_short_block_index, "sky index", nullptr), // NOTE: initialized later
-			TAG_FIELD_ENTRY(_field_tag_reference, "sky", &Shared::TAG_GROUP_REFERENCE_GET(sky) ),
+			TAG_FIELD_ENTRY(short_block_index, "sky index", nullptr), // NOTE: initialized later
+			TAG_FIELD_ENTRY(tag_reference, "sky", &Shared::TAG_GROUP_REFERENCE_GET(sky) ),
 			TAG_FIELD_ENTRY_END()
 		};
 		TAG_GROUP_BLOCK_DEFINE(scenario_bsp_sky_set_sky, 0, 8,
@@ -51,8 +51,8 @@ namespace Yelo
 
 		TAG_GROUP_BLOCK_FIELDS_DEFINE(scenario_bsp_sky_set) =
 		{
-			TAG_FIELD_ENTRY(_field_string, "name" TAG_FIELD_MARKUP_IS_BLOCK_NAME),
-			TAG_FIELD_ENTRY(_field_block, "skies", &TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set_sky)),
+			TAG_FIELD_ENTRY(string, "name" TAG_FIELD_MARKUP_IS_BLOCK_NAME),
+			TAG_FIELD_ENTRY(block, "skies", &TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set_sky)),
 			TAG_FIELD_ENTRY_END()
 		};
 		TAG_GROUP_BLOCK_DEFINE(scenario_bsp_sky_set, 0, 64,
@@ -63,9 +63,9 @@ namespace Yelo
 		TAG_GROUP_BLOCK_FIELDS_DEFINE(scenario_bsp_modifier) =
 		{
 			TAG_FIELD_ENTRY_PAD(sizeof(int16)),
-			TAG_FIELD_ENTRY(_field_short_block_index, "bsp index", nullptr), // NOTE: initialized later
-			TAG_FIELD_ENTRY(_field_block, "lightmap sets", &TAG_GROUP_BLOCK_GET(scenario_bsp_lightmap_set)),
-			TAG_FIELD_ENTRY(_field_block, "sky sets", &TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set)),
+			TAG_FIELD_ENTRY(short_block_index, "bsp index", nullptr), // NOTE: initialized later
+			TAG_FIELD_ENTRY(block, "lightmap sets", &TAG_GROUP_BLOCK_GET(scenario_bsp_lightmap_set)),
+			TAG_FIELD_ENTRY(block, "sky sets", &TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set)),
 			TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 3),
 			TAG_FIELD_ENTRY_END()
 		};
@@ -79,8 +79,8 @@ namespace Yelo
 			tag_group* scnr = blam::tag_group_get<scenario>();
 			auto* header_block = scnr->header_block_definition;
 
-			Shared::LinkBlockIndex<Enums::_field_short_block_index>(*scnr->header_block_definition, "skies", TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set_sky), "sky index");
-			Shared::LinkBlockIndex<Enums::_field_short_block_index>(*scnr->header_block_definition, "structure bsps", TAG_GROUP_BLOCK_GET(scenario_bsp_modifier), "bsp index");
+			Shared::LinkBlockIndex<e_field_type::short_block_index>(*scnr->header_block_definition, "skies", TAG_GROUP_BLOCK_GET(scenario_bsp_sky_set_sky), "sky index");
+			Shared::LinkBlockIndex<e_field_type::short_block_index>(*scnr->header_block_definition, "structure bsps", TAG_GROUP_BLOCK_GET(scenario_bsp_modifier), "bsp index");
 
 			FIELDSET_REPLACEMENT_BEGIN(scenario, 71 + 1, header_block)
 				FIELDSET_SEEK_AFTER_WITH_COPY("cutscene titles")

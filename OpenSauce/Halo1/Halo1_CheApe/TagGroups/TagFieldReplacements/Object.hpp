@@ -14,7 +14,7 @@ namespace Yelo
 	{
 		static void ObjectGroupUpdateFlags(tag_block_definition* object_block)
 		{
-			auto* flags_list = Shared::FindFlagsField<Enums::_field_word_flags>(object_block);
+			auto* flags_list = Shared::FindFlagsField<e_field_type::word_flags>(object_block);
 			assert(flags_list->count==Flags::k_number_of_object_definition_flags);
 
 			static cstring object_definition_flags_yelo_strings[Flags::k_number_of_object_definition_flags_yelo];

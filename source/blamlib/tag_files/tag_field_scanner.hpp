@@ -27,7 +27,7 @@ namespace Yelo
 
 			const tag_field* fields;
 			void* block_element;
-			long_flags field_types[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_tag_field_types)];
+			long_flags field_types[BIT_VECTOR_SIZE_IN_DWORDS(e_field_type::k_count)];
 			int16 field_count;
 			int16 field_size;			// NOTE: tag_field_scan_state_new doesn't initialize this or the next field
 			// offset in the block_element where this field ends at
@@ -85,10 +85,10 @@ namespace Yelo
 			size_t GetFieldRuntimeOffset() const	{ return GetFieldOffset() - m_state.fields_debug_bytes; }
 #endif
 
-			Enums::field_type GetTagFieldType() const	{ return m_state.field->type; }
+			e_field_type::type_t GetTagFieldType() const	{ return m_state.field->type; }
 			cstring GetTagFieldName() const				{ return m_state.field->name; }
 			template<typename T>
-			T* GetTagFieldDefinition() const			{ return m_state.field->Definition<T>(); }
+			T* GetTagFieldDefinition() const			{ return m_state.field->get_definition<T>(); }
 
 			void* GetFieldAddress() const				{ return m_state.field_address; }
 			template<typename T>
@@ -97,7 +97,7 @@ namespace Yelo
 		public:
 			c_tag_field_scanner(const tag_field* fields, void* block_element = nullptr);
 
-			c_tag_field_scanner& AddFieldType(Enums::field_type field_type);
+			c_tag_field_scanner& AddFieldType(e_field_type::type_t field_type);
 
 			c_tag_field_scanner& AddAllFieldTypes();
 
@@ -130,7 +130,7 @@ namespace Yelo
 #endif
 
 				// Field's type
-				Enums::field_type GetType() const	{ return m_scanner.GetTagFieldType(); }
+				e_field_type::type_t GetType() const	{ return m_scanner.GetTagFieldType(); }
 				// Field's name
 				cstring GetName() const				{ return m_scanner.GetTagFieldName(); }
 				// Treat the field's definition as a T*
@@ -193,7 +193,7 @@ namespace Yelo
 		TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
 			const tag_field* fields, void* block_element);
 		void PLATFORM_API tag_field_scan_state_add_field_type(TagGroups::s_tag_field_scan_state& state, 
-			Enums::field_type field_type);
+			e_field_type::type_t field_type);
 		bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state);
 	};
 };

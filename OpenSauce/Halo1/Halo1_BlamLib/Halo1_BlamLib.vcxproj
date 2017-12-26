@@ -343,6 +343,7 @@
     <ClInclude Include="..\..\..\source\blamlib\tag_files\s_tag_iterator.h" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_block.h" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_collection_definitions.hpp" />
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_field.h" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_field_scanner.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_files.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_files_structures.hpp" />
@@ -419,6 +420,7 @@
     <ClCompile Include="..\..\..\source\blamlib\tag_files\c_tag_iterator.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\files_windows.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_block.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_field.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_files.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_groups.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_groups_field_scan.cpp" />

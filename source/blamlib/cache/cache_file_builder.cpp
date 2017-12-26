@@ -294,17 +294,17 @@ namespace blam
 				CAST_PTR(byte*, stream) + (block->get_element_size() * element.index)
 			);
 
-			scanner.AddFieldType(Enums::_field_data)
-			       .AddFieldType(Enums::_field_block)
-			       .AddFieldType(Enums::_field_tag_reference)
-			       .AddFieldType(Enums::_field_string)
+			scanner.AddFieldType(e_field_type::data)
+			       .AddFieldType(e_field_type::block)
+			       .AddFieldType(e_field_type::tag_reference)
+			       .AddFieldType(e_field_type::string)
 				// non-stock code; we scan for tag-strings so we can generate string_ids from them
 				;
 			while (scanner.Scan())
 			{
 				switch (scanner.GetTagFieldType())
 				{
-					case Enums::_field_data:
+					case e_field_type::data:
 						stream_tag_block_to_buffer_postprocess_tag_data(
 							return_stream,
 							stream_base_address,
@@ -313,7 +313,7 @@ namespace blam
 							scanner);
 						break;
 
-					case Enums::_field_block:
+					case e_field_type::block:
 						stream_tag_block_to_buffer_postprocess_tag_block(
 							return_stream,
 							stream_base_address,
@@ -322,7 +322,7 @@ namespace blam
 							scanner);
 						break;
 
-					case Enums::_field_tag_reference:
+					case e_field_type::tag_reference:
 						stream_tag_block_to_buffer_postprocess_tag_reference(
 							return_stream,
 							stream_base_address,
@@ -331,7 +331,7 @@ namespace blam
 							scanner);
 						break;
 
-					case Enums::_field_string: // non-stock code
+					case e_field_type::string: // non-stock code
 						{ }
 						break;
 				}

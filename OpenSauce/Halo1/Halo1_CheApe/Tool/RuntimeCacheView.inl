@@ -499,67 +499,67 @@ int32 WriteField(const int desc_index, const void* address, const char* value_st
 	// parse the users arguments
 	switch(field_descriptor.m_field_type)
 	{
-	case Enums::_field_byte_flags:
-	case Enums::_field_char_integer:
+	case e_field_type::byte_flags:
+	case e_field_type::char_integer:
 		count = sscanf_s(value_string, scan_format,
 			&value._byte);
 		break;
 
-	case Enums::_field_short_integer:
+	case e_field_type::short_integer:
 		count = sscanf_s(value_string, scan_format,
 			&value._short);
 		break;
 
-	case Enums::_field_enum:
-	case Enums::_field_word_flags:
+	case e_field_type::word_enum:
+	case e_field_type::word_flags:
 		count = sscanf_s(value_string, scan_format,
 			&value._ushort);
 		break;
 
-	case Enums::_field_long_integer:
+	case e_field_type::long_integer:
 		count = sscanf_s(value_string, scan_format,
 			&value._int);
 		break;
 
-	case Enums::_field_long_flags:
+	case e_field_type::long_flags:
 		count = sscanf_s(value_string, scan_format,
 			&value._uint);
 		break;
 
-	case Enums::_field_angle:
-	case Enums::_field_real_fraction:
-	case Enums::_field_real:
+	case e_field_type::angle:
+	case e_field_type::real_fraction:
+	case e_field_type::real:
 		count = sscanf_s(value_string, scan_format,
 			&value._real);
 		break;
 
-	case Enums::_field_real_fraction_bounds:
-	case Enums::_field_real_bounds:
-	case Enums::_field_angle_bounds:
-	case Enums::_field_real_euler_angles_2d:
-	case Enums::_field_real_point_2d:
-	case Enums::_field_real_vector_2d:
+	case e_field_type::real_fraction_bounds:
+	case e_field_type::real_bounds:
+	case e_field_type::angle_bounds:
+	case e_field_type::real_euler_angles_2d:
+	case e_field_type::real_point_2d:
+	case e_field_type::real_vector_2d:
 		count = sscanf_s(value_string, scan_format,
 			&value._real2.i,
 			&value._real2.j);
 		break;
 
-	case Enums::_field_real_hsv_color:
-	case Enums::_field_real_rgb_color:
-	case Enums::_field_real_plane_2d:
-	case Enums::_field_real_euler_angles_3d:
-	case Enums::_field_real_point_3d:
-	case Enums::_field_real_vector_3d:
+	case e_field_type::real_hsv_color:
+	case e_field_type::real_rgb_color:
+	case e_field_type::real_plane_2d:
+	case e_field_type::real_euler_angles_3d:
+	case e_field_type::real_point_3d:
+	case e_field_type::real_vector_3d:
 		count = sscanf_s(value_string, scan_format,
 			&value._real3.i,
 			&value._real3.j,
 			&value._real3.k);
 		break;
 
-	case Enums::_field_real_ahsv_color:
-	case Enums::_field_real_argb_color:
-	case Enums::_field_real_plane_3d:
-	case Enums::_field_real_quaternion:
+	case e_field_type::real_ahsv_color:
+	case e_field_type::real_argb_color:
+	case e_field_type::real_plane_3d:
+	case e_field_type::real_quaternion:
 		count = sscanf_s(value_string, scan_format,
 			&value._real4.i,
 			&value._real4.j,
@@ -567,21 +567,21 @@ int32 WriteField(const int desc_index, const void* address, const char* value_st
 			&value._real4.w);
 		break;
 
-	case Enums::_field_short_bounds:
-	case Enums::_field_point_2d:
+	case e_field_type::short_bounds:
+	case e_field_type::point_2d:
 		count = sscanf_s(value_string, scan_format,
 			&value._point_2d.x, 
 			&value._point_2d.y);
 		break;
 
-	case Enums::_field_rgb_color:
+	case e_field_type::rgb_color:
 		count = sscanf_s(value_string, scan_format,
 			&value._rgb_color.red,
 			&value._rgb_color.green,
 			&value._rgb_color.blue);
 		break;
 
-	case Enums::_field_argb_color:
+	case e_field_type::argb_color:
 		count = sscanf_s(value_string, scan_format,
 			&value._argb_color.alpha,
 			&value._argb_color.red,
@@ -589,7 +589,7 @@ int32 WriteField(const int desc_index, const void* address, const char* value_st
 			&value._argb_color.blue);
 		break;
 
-	case Enums::_field_rectangle_2d:
+	case e_field_type::rectangle_2d:
 		count = sscanf_s(value_string, scan_format,
 			&value._rectangle_2d.top,
 			&value._rectangle_2d.bottom,
@@ -597,12 +597,12 @@ int32 WriteField(const int desc_index, const void* address, const char* value_st
 			&value._rectangle_2d.right);
 		break;
 
-	case Enums::_field_string:
+	case e_field_type::string:
 		count = sscanf_s(value_string, scan_format,
 			&value._tag_string);
 		break;
 
-	case Enums::_field_tag:
+	case e_field_type::tag:
 		{
 			TagGroups::group_tag_to_string tag_group;
 
@@ -689,8 +689,8 @@ int32 GetFieldSize(const Yelo::tag_field* field)
 {
 	switch(field->type)
 	{
-	case Enums::_field_pad:
-	case Enums::_field_skip:
+	case e_field_type::pad:
+	case e_field_type::skip:
 		return field->DefinitionCast<int32>();
 	default:
 		return g_field_descriptions[field->type].Definition().size;
@@ -736,69 +736,69 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 	const char* format = g_field_descriptions[field_definition->type].m_format_string;
 	switch(field_definition->type)
 	{
-	case Enums::_field_byte_flags:
-	case Enums::_field_char_integer:
+	case e_field_type::byte_flags:
+	case e_field_type::char_integer:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._byte);
 		break;
 
-	case Enums::_field_short_block_index:
-	case Enums::_field_short_integer:
+	case e_field_type::short_block_index:
+	case e_field_type::short_integer:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._short);
 		break;
 
-	case Enums::_field_enum:
-	case Enums::_field_word_flags:
+	case e_field_type::word_enum:
+	case e_field_type::word_flags:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._ushort);
 		break;
 
-	case Enums::_field_long_block_index:
-	case Enums::_field_long_integer:
+	case e_field_type::long_block_index:
+	case e_field_type::long_integer:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._int);
 		break;
 
-	case Enums::_field_long_flags:
+	case e_field_type::long_flags:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._uint);
 		break;
 
-	case Enums::_field_angle:
-	case Enums::_field_real_fraction:
-	case Enums::_field_real:
+	case e_field_type::angle:
+	case e_field_type::real_fraction:
+	case e_field_type::real:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._real);
 		break;
 
-	case Enums::_field_real_fraction_bounds:
-	case Enums::_field_real_bounds:
-	case Enums::_field_angle_bounds:
-	case Enums::_field_real_euler_angles_2d:
-	case Enums::_field_real_point_2d:
-	case Enums::_field_real_vector_2d:
+	case e_field_type::real_fraction_bounds:
+	case e_field_type::real_bounds:
+	case e_field_type::angle_bounds:
+	case e_field_type::real_euler_angles_2d:
+	case e_field_type::real_point_2d:
+	case e_field_type::real_vector_2d:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._real2->i,
 			value._real2->j);
 		break;
 
-	case Enums::_field_real_hsv_color:
-	case Enums::_field_real_rgb_color:
-	case Enums::_field_real_plane_2d:
-	case Enums::_field_real_euler_angles_3d:
-	case Enums::_field_real_point_3d:
-	case Enums::_field_real_vector_3d:
+	case e_field_type::real_hsv_color:
+	case e_field_type::real_rgb_color:
+	case e_field_type::real_plane_2d:
+	case e_field_type::real_euler_angles_3d:
+	case e_field_type::real_point_3d:
+	case e_field_type::real_vector_3d:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._real3->i,
 			value._real3->j,
 			value._real3->k);
 		break;
 
-	case Enums::_field_real_ahsv_color:
-	case Enums::_field_real_argb_color:
-	case Enums::_field_real_plane_3d:
-	case Enums::_field_real_quaternion:
+	case e_field_type::real_ahsv_color:
+	case e_field_type::real_argb_color:
+	case e_field_type::real_plane_3d:
+	case e_field_type::real_quaternion:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._real4->i,
 			value._real4->j,
@@ -806,21 +806,21 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 			value._real4->w);
 		break;
 
-	case Enums::_field_short_bounds:
-	case Enums::_field_point_2d:
+	case e_field_type::short_bounds:
+	case e_field_type::point_2d:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._point_2d->x, 
 			value._point_2d->y);
 		break;
 
-	case Enums::_field_rgb_color:
+	case e_field_type::rgb_color:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._rgb_color->red,
 			value._rgb_color->green,
 			value._rgb_color->blue);
 		break;
 
-	case Enums::_field_argb_color:
+	case e_field_type::argb_color:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._argb_color->alpha,
 			value._argb_color->red,
@@ -828,7 +828,7 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 			value._argb_color->blue);
 		break;
 
-	case Enums::_field_rectangle_2d:
+	case e_field_type::rectangle_2d:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._rectangle_2d->top,
 			value._rectangle_2d->bottom,
@@ -836,12 +836,12 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 			value._rectangle_2d->right);
 		break;
 
-	case Enums::_field_string:
+	case e_field_type::string:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			*value._tag_string);
 		break;
 
-	case Enums::_field_tag:
+	case e_field_type::tag:
 		{
 			TagGroups::group_tag_to_string tag_group;
 			tag_group.group = *value._tag;
@@ -852,7 +852,7 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 		}
 		break;
 
-	case Enums::_field_tag_reference:
+	case e_field_type::tag_reference:
 		{
 			// TODO: add support for string_id_yelo
 
@@ -862,19 +862,19 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 		}
 		break;
 
-	case Enums::_field_block:
+	case e_field_type::block:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._tag_block->count,
 			value._tag_block->address);
 		break;
 
-	case Enums::_field_data:
+	case e_field_type::data:
 		Console::ColorPrintF(k_color_fieldvalue, format,
 			value._tag_data->size);
 		break;
 
-	case Enums::_field_pad:
-	case Enums::_field_skip:
+	case e_field_type::pad:
+	case e_field_type::skip:
 		{
 			// print each byte of a pad/skip separately, breaking at each 4 bytes
 			// and adding a new line after 4 quads
@@ -941,7 +941,7 @@ void PrintFieldInfo(const std::string& field_name, const void* tag_data, const u
 /// <param name="field">	 	The field description. </param>
 void PrintBlockInfo(const std::string& field_name, const void* tag_data, const Yelo::tag_field* field)
 {	
-	auto definition = field->Definition<tag_block_definition>();
+	auto definition = field->get_definition<tag_block_definition>();
 
 	// Print the block fields name and type
 	Console::ColorPrint(k_color_block, "block field:\t\t");
@@ -968,11 +968,11 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, cons
 	const Yelo::tag_field* current = start_field;
 
 	// enumerate through all of the blocks fields
-	while(current->type != Enums::_field_terminator)
+	while(current->type != e_field_type::terminator)
 	{
 		switch(current->type)
 		{
-		case Enums::_field_array_start:
+		case e_field_type::array_start:
 			{
 				int array_count = current->DefinitionCast<int32>();
 
@@ -988,16 +988,16 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, cons
 				}
 
 				// move the current field pointer past the array definition
-				while(current->type != Enums::_field_array_end)
+				while(current->type != e_field_type::array_end)
 					current++;
 				current++;
 				continue;
 			}
-		case Enums::_field_array_end:
+		case e_field_type::array_end:
 			// should only be reached when called from the array_start code so return
 			return k_status_ok;
-		case Enums::_field_explanation:
-		case Enums::_field_custom:
+		case e_field_type::explanation:
+		case e_field_type::custom:
 			current++;
 			continue;
 		};
@@ -1015,10 +1015,10 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, cons
 		PrintFieldInfo(field_name, tag_data, address, block_offset, current);
 
 		// if the field is a tag block, print all of its elements
-		if(current->type == Enums::_field_block)
+		if(current->type == e_field_type::block)
 		{
 			auto block = CAST_PTR(tag_block*, tag_data);
-			auto definition = current->Definition<tag_block_definition>();
+			auto definition = current->get_definition<tag_block_definition>();
 			block->definition = definition; // set the block view's definition so we can use our tag APIs on it
 
 			if(block->count > 0)
@@ -1269,7 +1269,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset
 	const Yelo::tag_field* current = start_field;
 
 	// Enumerate through all of the blocks fields
-	while(current->type != Enums::_field_terminator)
+	while(current->type != e_field_type::terminator)
 	{
 		// Get the size of the field
 		size_t field_size = GetFieldSize(current);
@@ -1277,7 +1277,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset
 		// Loop through array types and skip non-value types
 		switch(current->type)
 		{
-		case Enums::_field_array_start:
+		case e_field_type::array_start:
 			{
 				int array_count = current->DefinitionCast<int32>();
 				const tag_field* first_array_field = current + 1;
@@ -1290,17 +1290,17 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset
 					}
 				}
 				// Move the current field pointer past the array definition
-				while(current->type != Enums::_field_array_end)
+				while(current->type != e_field_type::array_end)
 				{
 					current++;
 				}
 				current++;
 				continue;
 			}
-		case Enums::_field_array_end:
+		case e_field_type::array_end:
 			return k_status_failed;
-		case Enums::_field_explanation:
-		case Enums::_field_custom:
+		case e_field_type::explanation:
+		case e_field_type::custom:
 			current++;
 			continue;
 		};
@@ -1315,7 +1315,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset
 		}
 
 		// If the field is a data field, test whether the address is within the fields data array
-		if(current->type == Enums::_field_data)
+		if(current->type == e_field_type::data)
 		{
 			auto data = CAST_PTR(Yelo::tag_data*, tag_data);
 			if((test_address >= CAST_PTR(uintptr_t, data->address)) && (test_address < CAST_PTR(uintptr_t, data->address) + data->size))
@@ -1328,10 +1328,10 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset
 		}
 
 		// If the field is a tag block, test if the address is within the blocks data
-		if(current->type == Enums::_field_block)
+		if(current->type == e_field_type::block)
 		{
 			auto block = CAST_PTR(Yelo::tag_block*, tag_data);
-			auto definition = current->Definition<tag_block_definition>();
+			auto definition = current->get_definition<tag_block_definition>();
 			block->definition = definition;
 			
 			for(auto element : *block)

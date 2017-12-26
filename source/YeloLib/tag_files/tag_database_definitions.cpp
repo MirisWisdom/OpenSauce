@@ -39,15 +39,15 @@ namespace Yelo
 			{
 				//////////////////////////////////////////////////////////////////////////
 				{// s_tag_database_entry block
-					auto* tag_database_entry_block_def = definition->header_block_definition->fields[0].Definition<tag_block_definition>();
+					auto* tag_database_entry_block_def = definition->header_block_definition->fields[0].get_definition<tag_block_definition>();
 					tag_database_entry_block_def->format_proc = &TagGroups::tag_database_entry_block_format;
 
 					// child ids
-					auto* entry_reference_block_def = tag_database_entry_block_def->fields[4].Definition<tag_block_definition>();
+					auto* entry_reference_block_def = tag_database_entry_block_def->fields[4].get_definition<tag_block_definition>();
 					entry_reference_block_def->format_proc = &TagGroups::tag_database_entry_reference_block_format;
 
 					// reference ids
-					entry_reference_block_def = tag_database_entry_block_def->fields[5].Definition<tag_block_definition>();
+					entry_reference_block_def = tag_database_entry_block_def->fields[5].get_definition<tag_block_definition>();
 					entry_reference_block_def->format_proc = &TagGroups::tag_database_entry_reference_block_format;
 				}
 			}

@@ -12,7 +12,7 @@ namespace Yelo { namespace TagGroups
 		datum_index m_tag_index;
 
 		explicit c_tag_iterator(
-			const void* endHackDummy);
+			const void* end_hack_dummy);
 
 	public:
 		explicit c_tag_iterator(

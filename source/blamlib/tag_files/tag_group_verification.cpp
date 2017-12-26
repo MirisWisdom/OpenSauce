@@ -79,14 +79,14 @@ namespace Yelo
 		static void VerifyEnumFieldDefinition(const tag_field& field,
 			const tag_block_definition* block_definition)
 		{
-			auto* definition = field.Definition<string_list>();
+			auto* definition = field.get_definition<string_list>();
 			VerifyStringListDefinition(definition, block_definition, "enum");
 		}
 		template<typename TFlags>
 		static void VerifyFlagsFieldDefinition(const tag_field& field,
 			const tag_block_definition* block_definition)
 		{
-			auto* definition = field.Definition<string_list>();
+			auto* definition = field.get_definition<string_list>();
 			VerifyStringListDefinition(definition, block_definition, "flags");
 
 			YELO_ASSERT_DISPLAY(definition->count<=BIT_COUNT(TFlags), "invalid string list specified for '%s' in block %s.",
@@ -96,7 +96,7 @@ namespace Yelo
 		static void VerifyTagReferenceFieldDefinition(const tag_field& field,
 			const tag_block_definition* block_definition)
 		{
-			auto* definition = field.Definition<tag_reference_definition>();
+			auto* definition = field.get_definition<tag_reference_definition>();
 			YELO_ASSERT_DISPLAY(definition, "no definition specified for tag reference field in block %s.",
 				block_definition->name); // NOTE: added owner block name to info
 			YELO_ASSERT( VALID_FLAGS(definition->flags, Flags::k_number_of_tag_group_tag_reference_flags) );
@@ -130,7 +130,7 @@ namespace Yelo
 		static void VerifyDataFieldDefinition(const tag_field& field,
 			const tag_block_definition* block_definition)
 		{
-			auto* definition = field.Definition<tag_data_definition>();
+			auto* definition = field.get_definition<tag_data_definition>();
 			YELO_ASSERT_DISPLAY(definition, "no definition specified for tag_data field in block %s.",
 				block_definition->name); // NOTE: added owner block name to info
 			YELO_ASSERT( definition->name );
@@ -142,7 +142,7 @@ namespace Yelo
 		{
 			switch(field.type)
 			{
-			case Enums::_field_string:
+			case e_field_type::string:
 				{
 					uintptr_t definition = CAST_PTR(uintptr_t, field.definition);
 
@@ -151,21 +151,21 @@ namespace Yelo
 				}
 				break;
 
-			case Enums::_field_enum:
+			case e_field_type::word_enum:
 				VerifyEnumFieldDefinition<int16>(field, block_definition);
 				break;
 
-			case Enums::_field_long_flags:	VerifyFlagsFieldDefinition<long_flags>(field, block_definition); break;
-			case Enums::_field_word_flags:	VerifyFlagsFieldDefinition<word_flags>(field, block_definition); break;
-			case Enums::_field_byte_flags:	VerifyFlagsFieldDefinition<byte_flags>(field, block_definition); break;
+			case e_field_type::long_flags:	VerifyFlagsFieldDefinition<long_flags>(field, block_definition); break;
+			case e_field_type::word_flags:	VerifyFlagsFieldDefinition<word_flags>(field, block_definition); break;
+			case e_field_type::byte_flags:	VerifyFlagsFieldDefinition<byte_flags>(field, block_definition); break;
 
-			case Enums::_field_tag_reference:
+			case e_field_type::tag_reference:
 				VerifyTagReferenceFieldDefinition(field, block_definition);
 				break;
 
-			case Enums::_field_block:
+			case e_field_type::block:
 				{
-					auto* definition = field.Definition<tag_block_definition>();
+					auto* definition = field.get_definition<tag_block_definition>();
 					YELO_ASSERT_DISPLAY(definition, "no definition specified for block field in block %s.",
 						block_definition->name); // NOTE: added owner block name to info
 
@@ -173,28 +173,28 @@ namespace Yelo
 				}
 				break;
 
-			case Enums::_field_data:
+			case e_field_type::data:
 				VerifyDataFieldDefinition(field, block_definition);
 				break;
 
-			case Enums::_field_short_block_index:
-			case Enums::_field_long_block_index:
+			case e_field_type::short_block_index:
+			case e_field_type::long_block_index:
 				{
-					auto* definition = field.Definition<tag_block_definition>();
+					auto* definition = field.get_definition<tag_block_definition>();
 					YELO_ASSERT_DISPLAY(definition, "no definition specified for block index field in block %s.",
 						block_definition->name); // NOTE: added owner block name to info
 				}
 				break;
 
-			case Enums::_field_array_start:
-			case Enums::_field_pad:
-			case Enums::_field_skip:
+			case e_field_type::array_start:
+			case e_field_type::pad:
+			case e_field_type::skip:
 				YELO_ASSERT( CAST_PTR(int32,field.definition)>0 );
 				break;
 
-			case Enums::_field_explanation:
+			case e_field_type::explanation:
 				{
-					cstring definition = field.Definition<const char>();
+					cstring definition = field.get_definition<const char>();
 					YELO_ASSERT_DISPLAY(definition, "no definition specified for explanation field in block %s.",
 						block_definition->name); // NOTE: added owner block name to info
 				}

@@ -38,7 +38,7 @@ namespace Yelo
 
 		static void SoundUpdateFlags(tag_block_definition* sound_block)
 		{
-			auto* flags_list = Shared::FindFlagsField<Enums::_field_long_flags>(sound_block);
+			auto* flags_list = Shared::FindFlagsField<e_field_type::long_flags>(sound_block);
 			assert(flags_list->count==Flags::k_number_of_sound_definition_flags);
 
 			static cstring sound_definition_flags_yelo_strings[Flags::k_number_of_sound_definition_flags_yelo];
@@ -64,15 +64,15 @@ namespace Yelo
 
 			auto* block = sound->header_block_definition;
 			// find sound->pitch_ranges
-			int field_index = block->find_field_index(Enums::_field_block, "pitch ranges");
+			int field_index = block->find_field_index(e_field_type::block, "pitch ranges");
 			assert(field_index != NONE);
 
-			block = block->fields[field_index].Definition<tag_block_definition>();
+			block = block->fields[field_index].get_definition<tag_block_definition>();
 			// find sound_pitch_range->permutations
-			field_index = block->find_field_index(Enums::_field_block, "permutations");
+			field_index = block->find_field_index(e_field_type::block, "permutations");
 			assert(field_index != NONE);
 
-			block = block->fields[field_index].Definition<tag_block_definition>();
+			block = block->fields[field_index].get_definition<tag_block_definition>();
 
 			SoundPermutationsBlockFixActualFields(block);
 		}

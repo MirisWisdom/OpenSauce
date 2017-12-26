@@ -117,23 +117,23 @@ namespace Yelo
 			tag_group* weapon_group = blam::tag_group_get<s_weapon_definition>();
 
 			// field the weapon's magazines field
-			int32 field_index = weapon_group->header_block_definition->find_field_index(Enums::_field_block, "magazines");
+			int32 field_index = weapon_group->header_block_definition->find_field_index(e_field_type::block, "magazines");
 			if(field_index != NONE)
 			{
-				auto* magazines_block = weapon_group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
+				auto* magazines_block = weapon_group->header_block_definition->fields[field_index].get_definition<tag_block_definition>();
 
 				// find the magazine's magazine-objects field
-				field_index = magazines_block->find_field_index(Enums::_field_block, "magazines");
+				field_index = magazines_block->find_field_index(e_field_type::block, "magazines");
 				if(field_index != NONE)
 				{
 					tag_field& magazine_objects_field = magazines_block->fields[field_index];
 					magazine_objects_field.name = "magazine objects"; // give the field a more descriptive name
 
-					auto* magazine_objects_block = magazine_objects_field.Definition<tag_block_definition>();
+					auto* magazine_objects_block = magazine_objects_field.get_definition<tag_block_definition>();
 					magazine_objects_block->format_proc = nullptr; // Bungie seems to have made a copy&paste error and gave the objects block the format-magazines function
 
 					// find the magazine-object's equipment reference field
-					field_index = magazine_objects_block->find_field_index(Enums::_field_tag_reference, "equipment");
+					field_index = magazine_objects_block->find_field_index(e_field_type::tag_reference, "equipment");
 					if(field_index != NONE)
 					{
 						tag_field& equipment_reference_field = magazine_objects_block->fields[field_index];
@@ -151,16 +151,16 @@ namespace Yelo
 		{
 			tag_group* group = blam::tag_group_get('ustr');
 
-			int32 field_index = group->header_block_definition->find_field_index(Enums::_field_block, "string reference");
+			int32 field_index = group->header_block_definition->find_field_index(e_field_type::block, "string reference");
 			if(field_index != NONE)
 			{
-				auto* reference_block = group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
+				auto* reference_block = group->header_block_definition->fields[field_index].get_definition<tag_block_definition>();
 
-				field_index = reference_block->find_field_index(Enums::_field_data, "string");
+				field_index = reference_block->find_field_index(e_field_type::data, "string");
 				if(field_index != NONE)
 				{
 					tag_field& string_field = reference_block->fields[field_index];
-					auto* definition = string_field.Definition<tag_data_definition>();
+					auto* definition = string_field.get_definition<tag_data_definition>();
 
 					definition->byte_swap_proc = CAST_PTR(proc_tag_data_byte_swap, reference_block->unused1);
 				}
@@ -289,7 +289,7 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void PLATFORM_API tag_field_scan_state_add_field_type(TagGroups::s_tag_field_scan_state& state, 
-			Enums::field_type field_type)
+			e_field_type::type_t field_type)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN_STATE_ADD_FIELD_TYPE);
 

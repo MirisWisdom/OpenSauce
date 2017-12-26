@@ -85,16 +85,16 @@ namespace Yelo
 		// c_string_list_instance extension providing the type of flags
 		class c_flags_instance : public c_string_list_instance
 		{
-			Enums::field_type m_flags_type;
+			e_field_type::type_t m_flags_type;
 		public:
-			void SetFlagsType(Enums::field_type type) { m_flags_type = type; }
-			const Enums::field_type GetFlagsType() { return m_flags_type; }
+			void SetFlagsType(e_field_type::type_t type) { m_flags_type = type; }
+			const e_field_type::type_t GetFlagsType() { return m_flags_type; }
 
 			void Ctor() override
 			{
 				c_string_list_instance::Ctor();
 
-				m_flags_type = Enums::_field_long_flags;
+				m_flags_type = e_field_type::long_flags;
 			}
 		};
 
@@ -429,7 +429,7 @@ namespace Yelo
 			// look for a duplicate entry in the enums vector, if found add a reference
 			for (auto& e : g_enum_list)
 			{
-				if (e.GetList() == field->Definition<string_list>())
+				if (e.GetList() == field->get_definition<string_list>())
 				{
 					e.AddReference(field);
 					return;
@@ -440,7 +440,7 @@ namespace Yelo
 			c_string_list_instance enum_instance;
 
 			enum_instance.Ctor();
-			enum_instance.SetList(field->Definition<string_list>());
+			enum_instance.SetList(field->get_definition<string_list>());
 			enum_instance.AddReference(field);
 
 			g_enum_list.push_back(enum_instance);
@@ -455,7 +455,7 @@ namespace Yelo
 			std::vector<c_flags_instance>& flags_vector(parent_struct.GetFlagsVector());
 			for (iter = flags_vector.begin(); iter != flags_vector.end(); ++iter)
 			{
-				if ((*iter).GetList() == field->Definition<string_list>())
+				if ((*iter).GetList() == field->get_definition<string_list>())
 				{
 					(*iter).AddReference(field);
 					return;
@@ -466,8 +466,8 @@ namespace Yelo
 			c_flags_instance flags_instance;
 
 			flags_instance.Ctor();
-			flags_instance.SetList(field->Definition<string_list>());
-			flags_instance.SetFlagsType(CAST(Enums::field_type, field->type));
+			flags_instance.SetList(field->get_definition<string_list>());
+			flags_instance.SetFlagsType(CAST(e_field_type::type_t, field->type));
 			flags_instance.AddReference(field);
 
 			flags_vector.push_back(flags_instance);
@@ -502,10 +502,10 @@ namespace Yelo
 			const tag_field* field_pointer;
 			// add blocks
 			field_pointer = block_definition->fields;
-			while (field_pointer && field_pointer->type != Enums::_field_terminator)
+			while (field_pointer && field_pointer->type != e_field_type::terminator)
 			{
-				if (field_pointer->type == Enums::_field_block)
-					AddBlock(field_pointer->Definition<tag_block_definition>());
+				if (field_pointer->type == e_field_type::block)
+					AddBlock(field_pointer->get_definition<tag_block_definition>());
 				field_pointer++;
 			}
 
@@ -522,28 +522,28 @@ namespace Yelo
 
 			// add enums first to keep them in order
 			field_pointer = block_definition->fields;
-			while (field_pointer && field_pointer->type != Enums::_field_terminator)
+			while (field_pointer && field_pointer->type != e_field_type::terminator)
 			{
-				if (field_pointer->type == Enums::_field_enum)
+				if (field_pointer->type == e_field_type::word_enum)
 					AddEnum(field_pointer);
 				field_pointer++;
 			}
 
 			// then blocks
 			field_pointer = block_definition->fields;
-			while (field_pointer && field_pointer->type != Enums::_field_terminator)
+			while (field_pointer && field_pointer->type != e_field_type::terminator)
 			{
 				switch (field_pointer->type)
 				{
-					case Enums::_field_block:
-						AddBlock(field_pointer->Definition<tag_block_definition>());
+					case e_field_type::block:
+						AddBlock(field_pointer->get_definition<tag_block_definition>());
 						break;
-					case Enums::_field_byte_flags:
-					case Enums::_field_word_flags:
-					case Enums::_field_long_flags:
+					case e_field_type::byte_flags:
+					case e_field_type::word_flags:
+					case e_field_type::long_flags:
 						AddFlags(field_pointer, block_instance);
 						break;
-					case Enums::_field_array_start:
+					case e_field_type::array_start:
 						AddArray(field_pointer, block_instance);
 						break;
 				}
@@ -563,7 +563,7 @@ namespace Yelo
 			fputs("\t\t\t////////////////////////////////////////////////////////////////\n", file);
 			fprintf_s(file, "\t\t\t// %s\n", field->name);
 
-			std::string definition_string(field->Definition<char>());
+			std::string definition_string(field->get_definition<char>());
 			std::string definition_line;
 
 			while (StringEditing::GetStringSegment(definition_string, definition_line, nullptr, "\n"))
@@ -577,7 +577,7 @@ namespace Yelo
 		static void WritePad(FILE* file,
 			const tag_field* field)
 		{
-			int pad_count = CAST_PTR(int, field->Definition<int>());
+			int pad_count = CAST_PTR(int, field->get_definition<int>());
 
 			// print the pad in its simplest form
 			if (pad_count == 2)
@@ -607,7 +607,7 @@ namespace Yelo
 			const tag_field* field,
 			cstring name)
 		{
-			tag_reference_definition* def = field->Definition<tag_reference_definition>();
+			tag_reference_definition* def = field->get_definition<tag_reference_definition>();
 
 			// write the start of the tag reference entry
 			fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s",
@@ -662,7 +662,7 @@ namespace Yelo
 			std::vector<c_flags_instance>& flags_vector(parent_struct.GetFlagsVector());
 			for (iter = flags_vector.begin(); iter != flags_vector.end(); ++iter)
 			{
-				if ((*iter).GetList() == field->Definition<string_list>())
+				if ((*iter).GetList() == field->get_definition<string_list>())
 				{
 					flags_instance = &(*iter);
 					break;
@@ -685,7 +685,7 @@ namespace Yelo
 			std::vector<c_string_list_instance>::iterator iter;
 			for (iter = g_enum_list.begin(); iter != g_enum_list.end(); ++iter)
 			{
-				if ((*iter).GetList() == field->Definition<string_list>())
+				if ((*iter).GetList() == field->get_definition<string_list>())
 				{
 					enum_instance = &(*iter);
 					break;
@@ -720,7 +720,7 @@ namespace Yelo
 			}
 			//once found, print it to file
 			fprintf_s(file, "\t\t\tTAG_ARRAY(%s, %s, %i);\n",
-				array_instance->GetName().c_str(), name, CAST_PTR(int, field->Definition<int>()));
+				array_instance->GetName().c_str(), name, CAST_PTR(int, field->get_definition<int>()));
 		}
 
 		static void WriteBlock(FILE* file,
@@ -732,7 +732,7 @@ namespace Yelo
 			std::vector<c_block_instance>::iterator iter;
 			for (iter = g_block_list.begin(); iter != g_block_list.end(); ++iter)
 			{
-				if ((*iter).GetDefinition() == field->Definition<tag_block_definition>())
+				if ((*iter).GetDefinition() == field->get_definition<tag_block_definition>())
 				{
 					block_instance = &(*iter);
 					break;
@@ -772,10 +772,10 @@ namespace Yelo
 			cstring description = nullptr;
 
 			bool use_default = (
-				(field->type != Enums::_field_skip) &&
-				(field->type != Enums::_field_pad) &&
-				(field->type != Enums::_field_custom));
-			bool add_to_vector = (field->type != Enums::_field_explanation);
+				(field->type != e_field_type::skip) &&
+				(field->type != e_field_type::pad) &&
+				(field->type != e_field_type::custom));
+			bool add_to_vector = (field->type != e_field_type::explanation);
 
 			if (GetName(field_name, field->name, parent_block.GetUsedNamesVector(), true, true, use_default, add_to_vector))
 				name = field_name.c_str();
@@ -783,45 +783,45 @@ namespace Yelo
 			if (GetUnits(field_units, field->name))
 				units = field_units.c_str();
 
-			if ((field->type != Enums::_field_explanation) && GetDescription(field_description, field->name))
+			if ((field->type != e_field_type::explanation) && GetDescription(field_description, field->name))
 				description = field_description.c_str();
 
 			switch (field->type)
 			{
-				case Enums::_field_explanation:
+				case e_field_type::explanation:
 					WriteExplanation(file, field);
 					break;
-				case Enums::_field_tag_reference:
+				case e_field_type::tag_reference:
 					WriteTagReference(file, field, name);
 					break;
-				case Enums::_field_pad:
-				case Enums::_field_skip:
+				case e_field_type::pad:
+				case e_field_type::skip:
 					WritePad(file, field);
 					break;
-				case Enums::_field_enum:
+				case e_field_type::word_enum:
 					WriteEnum(file, field, name, description);
 					break;
-				case Enums::_field_block:
+				case e_field_type::block:
 					WriteBlock(file, field, name);
 					break;
-				case Enums::_field_array_start:
+				case e_field_type::array_start:
 					WriteArray(file, field, name, parent_block);
 					break;
-				case Enums::_field_long_flags:
-				case Enums::_field_word_flags:
-				case Enums::_field_byte_flags:
+				case e_field_type::long_flags:
+				case e_field_type::word_flags:
+				case e_field_type::byte_flags:
 					WriteFlags(file, field, name, description, parent_block);
 					break;
 				default:
 					WriteField(file, field, name, units, description);
 					break;
-				case Enums::_field_array_end:
-				case Enums::_field_custom:
+				case e_field_type::array_end:
+				case e_field_type::custom:
 					break;
 			}
 
 			// extra newline prior to an explanation field
-			if (field[1].type == Enums::_field_explanation)
+			if (field[1].type == e_field_type::explanation)
 				fputs("\n", file);
 		}
 
@@ -967,15 +967,15 @@ namespace Yelo
 			char* type = nullptr;
 			switch (references[0]->type)
 			{
-				case Enums::_field_byte_flags:
+				case e_field_type::byte_flags:
 					flag_type = "TAG_FLAG8";
 					type = "byte_flags";
 					break;
-				case Enums::_field_word_flags:
+				case e_field_type::word_flags:
 					flag_type = "TAG_FLAG16";
 					type = "word_flags";
 					break;
-				case Enums::_field_long_flags:
+				case e_field_type::long_flags:
 					flag_type = "TAG_FLAG";
 					type = "long_flags";
 					break;
@@ -1035,7 +1035,7 @@ namespace Yelo
 			fprintf_s(file, "\t\tstruct %s\n\t\t{\n", field_name.c_str());
 
 			const tag_field* field = instance.GetArrayStart();
-			while (field++ && (field->type != Enums::_field_array_end))
+			while (field++ && (field->type != e_field_type::array_end))
 				WriteTagField(file, field, instance);
 
 			fputs("\t\t};\n", file);
@@ -1078,14 +1078,14 @@ namespace Yelo
 
 			// write all of the structs fields
 			current_field = block_definition->fields;
-			while (current_field && (current_field->type != Enums::_field_terminator))
+			while (current_field && (current_field->type != e_field_type::terminator))
 			{
 				WriteTagField(file, current_field, instance);
 
 				// skip over fields that are inside an array
 				// there are in the array structs written previously
-				if (current_field->type == Enums::_field_array_start)
-					while (current_field->type != Enums::_field_array_end)
+				if (current_field->type == e_field_type::array_start)
+					while (current_field->type != e_field_type::array_end)
 						current_field++;
 
 				current_field++;

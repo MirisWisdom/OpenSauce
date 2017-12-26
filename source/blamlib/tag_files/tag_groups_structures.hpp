@@ -8,6 +8,7 @@
 #include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>
 #include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_field.h>
 
 namespace Yelo
 {
@@ -28,56 +29,6 @@ namespace Yelo
 			k_tag_field_markup_character_read_only =	'*',
 			k_tag_field_markup_character_units_prefix =	':',
 			k_tag_field_markup_character_block_name =	'^',
-		};
-		enum field_type : _enum
-		{
-			_field_string,
-			_field_char_integer,
-			_field_short_integer,
-			_field_long_integer,
-			_field_angle,
-			_field_tag,
-			_field_enum,
-			_field_long_flags,
-			_field_word_flags,
-			_field_byte_flags,
-			_field_point_2d,
-			_field_rectangle_2d,
-			_field_rgb_color,
-			_field_argb_color,
-			_field_real,
-			_field_real_fraction,
-			_field_real_point_2d,
-			_field_real_point_3d,
-			_field_real_vector_2d,
-			_field_real_vector_3d,
-			_field_real_quaternion,
-			_field_real_euler_angles_2d,
-			_field_real_euler_angles_3d,
-			_field_real_plane_2d,
-			_field_real_plane_3d,
-			_field_real_rgb_color,
-			_field_real_argb_color,
-			_field_real_hsv_color,
-			_field_real_ahsv_color,
-			_field_short_bounds,
-			_field_angle_bounds,
-			_field_real_bounds,
-			_field_real_fraction_bounds,
-			_field_tag_reference,
-			_field_block,
-			_field_short_block_index,
-			_field_long_block_index,
-			_field_data,
-			_field_array_start,
-			_field_array_end,
-			_field_pad,
-			_field_skip,
-			_field_explanation,
-			_field_custom,
-			_field_terminator,
-
-			k_number_of_tag_field_types,
 		};
 
 		// Note: AFAICT, the engine code doesn't actually do the postprocess setup this way.
@@ -147,29 +98,6 @@ namespace Yelo
 		};
 	};
 
-
-	struct tag_field
-	{
-		Enums::field_type type; PAD16;
-		cstring name;
-		void* definition;
-
-#if PLATFORM_IS_EDITOR
-		// cast the [definition] pointer to a T*
-		template<typename T>
-		T* Definition() const { return CAST_PTR(T*, definition); }
-		// cast the data of [definition] to T
-		template<typename T>
-		T DefinitionCast() const { return CAST_PTR(T, definition); }
-
-		size_t get_size(_Out_opt_ size_t* runtime_size) const;
-		bool is_read_only() const;
-		bool is_advanced() const;
-		bool is_block_name() const;
-		bool is_invisible() const;
-#endif
-	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
-
 	// Called as each element is read from the tag stream
 	// NOTE: tag_index is non-standard, and will only be valid when invoked by OS code.
 	// We can add additional parameters so long as PLATFORM_API is __cdecl (where the caller cleans up the stack).
@@ -214,7 +142,7 @@ namespace Yelo
 			{
 				if(k_assert_field_type)
 				{
-					YELO_ASSERT( field.type>=0 && field.type<Enums::k_number_of_tag_field_types );
+					YELO_ASSERT( field.type>=0 && field.type<e_field_type::k_count);
 				}
 
 				action(this, field);
@@ -234,16 +162,16 @@ namespace Yelo
 
 			do {
 				const tag_field& field = fields[field_index];
-				assert( field.type>=0 && field.type<Enums::k_number_of_tag_field_types );
+				assert( field.type>=0 && field.type<e_field_type::k_count);
 
-				if(field.type == Enums::_field_block)
+				if(field.type == e_field_type::block)
 				{
 					assert(field.definition != this);
 
-					action(field.Definition<tag_block_definition>());
+					action(field.get_definition<tag_block_definition>());
 				}
 
-			} while(fields[field_index++].type != Enums::_field_terminator);
+			} while(fields[field_index++].type != e_field_type::terminator);
 		}
 
 		struct s_field_iterator

@@ -15,13 +15,13 @@
 #define TAG_FIELD_MARKUP_PREFIX_HELP	"#"
 
 #define TAG_FIELD_ENTRY(type, name, ...)						\
-	{Yelo::Enums::type, name, __VA_ARGS__}
+	{Yelo::e_field_type::type, name, __VA_ARGS__}
 #define TAG_FIELD_ENTRY_PAD(size)								\
-	TAG_FIELD_ENTRY(_field_pad, nullptr, CAST_PTR(void*, size))
+	TAG_FIELD_ENTRY(pad, nullptr, CAST_PTR(void*, size))
 #define TAG_FIELD_ENTRY_SKIP(size)								\
-	TAG_FIELD_ENTRY(_field_pad, nullptr, CAST_PTR(void*, size))
+	TAG_FIELD_ENTRY(pad, nullptr, CAST_PTR(void*, size))
 #define TAG_FIELD_ENTRY_END()									\
-	TAG_FIELD_ENTRY(_field_terminator, nullptr)
+	TAG_FIELD_ENTRY(terminator, nullptr)
 
 #define TAG_GROUP_STRING_TABLE_DEFINE(name, count, ...)			\
 	static Yelo::cstring name##_strings[] = { __VA_ARGS__ };	\

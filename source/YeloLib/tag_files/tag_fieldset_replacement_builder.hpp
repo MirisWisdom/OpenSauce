@@ -140,7 +140,7 @@ namespace Yelo
 			c_tag_field_set_replacement_builder& AddExplanation(cstring name, cstring description = "");
 
 			c_tag_field_set_replacement_builder& InsertField(size_t expected_offset, 
-				Enums::field_type type, cstring name, void* definition = nullptr);
+				e_field_type::type_t type, cstring name, void* definition = nullptr);
 
 		private:
 			c_tag_field_set_replacement_builder& InsertEnum(size_t expected_offset,

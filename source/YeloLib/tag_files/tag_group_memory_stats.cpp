@@ -236,17 +236,17 @@ namespace Yelo
 			for (auto element : *instance)
 			{
 				for (auto field : TagGroups::c_tag_field_scanner(instance->definition->fields, element.address)
-					.AddFieldType(Enums::_field_block)
-					.AddFieldType(Enums::_field_data))
+					.AddFieldType(e_field_type::block)
+					.AddFieldType(e_field_type::data))
 				{
 					switch(field.GetType())
 					{
-					case Enums::_field_block: 
+					case e_field_type::block: 
 						block_size +=
 							BuildStatsForTagChildBlockRecursive(group_stats, field.As<tag_block>());
 						break;
 
-					case Enums::_field_data:
+					case e_field_type::data:
 					{
 						auto* data_instance = field.As<const tag_data>();
 						if (data_instance->size > 0)

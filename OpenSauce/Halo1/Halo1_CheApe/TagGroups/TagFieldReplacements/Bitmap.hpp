@@ -18,7 +18,7 @@ namespace Yelo
 	{
 		static void BitmapGroupUpdateFlags(tag_block_definition* bitmap_block)
 		{
-			auto* flags_list = Shared::FindFlagsField<Enums::_field_word_flags>(bitmap_block);
+			auto* flags_list = Shared::FindFlagsField<e_field_type::word_flags>(bitmap_block);
 			assert(flags_list->count==e_bitmap_group_flags::k_count);
 
 			static cstring bitmap_group_flags_yelo_strings[e_bitmap_group_flags::k_count_yelo];
