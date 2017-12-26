@@ -91,7 +91,7 @@ namespace Yelo
 				{
 					auto* group = blam::tag_group_get(blam::tag_get_group_tag(tag_index));
 
-					if (group->GetHeaderRuntimeInfo()->flags.group_has_tag_reference)
+					if (group->get_header_runtime_info()->flags.group_has_tag_reference)
 					{
 						auto pair = to_resolve_tag_indexes->insert(tag_index);
 						if (!pair.second)
@@ -335,7 +335,7 @@ namespace Yelo
 					StringEditing::GetStringSegment(field_name, field_name, nullptr, "^:#*");
 					maintenance_globals.Output<false>(" %s", field_name.c_str());
 				}
-				if (!entry.m_owner->GetRuntimeInfo()->flags.is_group_header)
+				if (!entry.m_owner->get_runtime_info()->flags.is_group_header)
 				{
 					maintenance_globals.Output<false>(" in %s,#%d", entry.m_owner->name, entry.m_element_index);
 				}
