@@ -65,26 +65,24 @@ struct tag_field
 	void* definition;
 
 	#if PLATFORM_IS_EDITOR
-		// cast the [definition] pointer to a type_t*
-		template <typename type_t>
-		type_t* get_definition() const
-		{
-			return reinterpret_cast<type_t*>(definition);
-		}
+	template <typename t_type>
+	t_type* get_definition() const
+	{
+		return reinterpret_cast<t_type*>(definition);
+	}
 
-		// cast the data of [definition] to type_t
-		template <typename type_t>
-		type_t DefinitionCast() const
-		{
-			return reinterpret_cast<type_t>(definition);
-		}
+	template <typename t_type>
+	t_type get_definition_as() const
+	{
+		return reinterpret_cast<t_type>(definition);
+	}
 
-		size_t get_size(
-			size_t* const runtime_size) const;
-		bool is_read_only() const;
-		bool is_advanced() const;
-		bool is_block_name() const;
-		bool is_invisible() const;
+	size_t get_size(
+		size_t* const runtime_size) const;
+	bool is_read_only() const;
+	bool is_advanced() const;
+	bool is_block_name() const;
+	bool is_invisible() const;
 	#endif
 };
 
