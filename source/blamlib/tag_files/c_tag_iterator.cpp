@@ -6,7 +6,7 @@
 namespace Yelo { namespace TagGroups
 {
 	c_tag_iterator::c_tag_iterator(
-		const void* endHackDummy)
+		const void* end_hack_dummy)
 	{
 		m_state.instances_iterator.SetEndHack();
 	}

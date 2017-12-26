@@ -290,17 +290,17 @@ namespace Yelo
 				group_header_info = group_header_definition->GetRuntimeInfo();
 
 			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
-				.AddFieldType(Enums::_field_string)
-				.AddFieldType(Enums::_field_tag_reference)
-				.AddFieldType(Enums::_field_block)
-				.AddFieldType(Enums::_field_short_block_index)
-				.AddFieldType(Enums::_field_long_block_index)
-				.AddFieldType(Enums::_field_data)
-				.AddFieldType(Enums::_field_pad) )
+				.AddFieldType(e_field_type::string)
+				.AddFieldType(e_field_type::tag_reference)
+				.AddFieldType(e_field_type::block)
+				.AddFieldType(e_field_type::short_block_index)
+				.AddFieldType(e_field_type::long_block_index)
+				.AddFieldType(e_field_type::data)
+				.AddFieldType(e_field_type::pad) )
 			{
 				switch(field.GetType())
 				{
-				case Enums::_field_string:
+				case e_field_type::string:
 					if (field.IsOldStringId())
 					{
 						flags.has_old_string_id = true;
@@ -312,7 +312,7 @@ namespace Yelo
 					IncrementStringFieldCount();
 					break;
 
-				case Enums::_field_tag_reference:
+				case e_field_type::tag_reference:
 					if(field.IsStringId())
 					{
 						IncrementStringIdFieldCount();
@@ -336,7 +336,7 @@ namespace Yelo
 					}
 					break;
 
-				case Enums::_field_block:
+				case e_field_type::block:
 					IncrementBlockFieldCount();
 					if (group_header_info)
 						group_header_info->flags.group_has_tag_block = true;
@@ -347,8 +347,8 @@ namespace Yelo
 						->IncrementReferenceCountFromBlockField();
 					break;
 
-				case Enums::_field_short_block_index:
-				case Enums::_field_long_block_index:
+				case e_field_type::short_block_index:
+				case e_field_type::long_block_index:
 					IncrementBlockIndexFieldCount();
 					if (group_header_info)
 						group_header_info->flags.group_has_block_index = true;
@@ -357,14 +357,14 @@ namespace Yelo
 						->IncrementReferenceCountFromBlockIndexField();
 					break;
 
-				case Enums::_field_data:
+				case e_field_type::data:
 					if (group_header_info)
 						group_header_info->flags.group_has_tag_data = true;
 
 					BuildInfoHandleDataField(field.DefinitionAs<tag_data_definition>());
 					break;
 
-				case Enums::_field_pad:
+				case e_field_type::pad:
 					IncrementTotalPaddingSize(field.GetSize());
 					break;
 
@@ -398,7 +398,7 @@ namespace Yelo
 
 				switch(field.GetType())
 				{
-				case Enums::_field_tag_reference:
+				case e_field_type::tag_reference:
 					if(g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed && field.IsStringId())
 					{
 						runtime_size -= string_id_yelo::k_debug_data_size;
@@ -409,24 +409,24 @@ namespace Yelo
 						codes_builder.NewTagReferenceCode(field.GetIndex());
 					break;
 
-				case Enums::_field_block:
+				case e_field_type::block:
 					codes_builder.NewBlockCode(field.GetIndex());
 					break;
 
-				case Enums::_field_short_block_index:
+				case e_field_type::short_block_index:
 					codes_builder.NewBlockIndexCode(field.GetIndex(), 
-						k_tag_field_definitions[Enums::_field_short_block_index].size);
+						k_tag_field_definitions[e_field_type::short_block_index].size);
 					break;
-				case Enums::_field_long_block_index:
+				case e_field_type::long_block_index:
 					codes_builder.NewBlockIndexCode(field.GetIndex(),
-						k_tag_field_definitions[Enums::_field_long_block_index].size);
+						k_tag_field_definitions[e_field_type::long_block_index].size);
 					break;
 
-				case Enums::_field_data:
+				case e_field_type::data:
 					codes_builder.NewTagDataCode(field.GetIndex());
 					break;
 
-				case Enums::_field_pad:
+				case e_field_type::pad:
 					// the padding that comes after a string_id tag reference is named "string_id"
 					// other pad fields which are actually postprocessed fields should be named as well
 					if (field.GetName() == nullptr)

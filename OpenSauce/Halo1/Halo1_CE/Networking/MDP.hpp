@@ -60,7 +60,7 @@
 #define MDP_FIELD_PROPERTIES_DEFINITION_START(type, name1, name2, enc, dec)												\
 	extern Yelo::MessageDeltas::field_type_definition_parameters pmessage_delta_field_##name1##_properties_parameters;	\
 	static Yelo::MessageDeltas::field_properties_definition pmessage_delta_field_##name1##_properties = {				\
-		Yelo::Enums::_field_type_##type ,																	\
+		Yelo::e_field_type::type_##type ,																	\
 		name2 ,																								\
 		CAST(mdp_field_encode, enc),																		\
 		CAST(mdp_field_decode, dec),																		\

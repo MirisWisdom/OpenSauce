@@ -115,10 +115,10 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 {
 	using namespace MessageDeltas;
 
-	field_type_definition& grenade_counts_type = GlobalFieldTypeList()[Enums::_field_type_grenade_counts];
+	field_type_definition& grenade_counts_type = GlobalFieldTypeList()[Enums::field_type::_field_type_grenade_counts];
 	field_properties_definition* grenade_counts_props = MDP_GET_FIELD_TYPE_DEFINITION(grenade_counts);
 
-	field_type_definition& fixed_width_grenade_index_type = GlobalFieldTypeList()[Enums::_field_type_fixed_width_grenade_index];
+	field_type_definition& fixed_width_grenade_index_type = GlobalFieldTypeList()[Enums::field_type::_field_type_fixed_width_grenade_index];
 	field_properties_definition* fixed_width_grenade_index_props = MDP_GET_FIELD_TYPE_DEFINITION(fixed_width_grenade_index);
 
 	// local copies of the original game definitions
@@ -147,7 +147,7 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 
 	if(g_stock_grenade_counts.maximum_size_calculator == nullptr)
 	{
-		field_type_definition& fixed_width_weapon_index_type = GlobalFieldTypeList()[Enums::_field_type_fixed_width_weapon_index];
+		field_type_definition& fixed_width_weapon_index_type = GlobalFieldTypeList()[Enums::field_type::_field_type_fixed_width_weapon_index];
 		field_properties_definition* fixed_width_weapon_index_props = MDP_GET_FIELD_TYPE_DEFINITION(fixed_width_weapon_index);
 
 		g_stock_grenade_counts

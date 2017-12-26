@@ -6,7 +6,7 @@
   * ADD			Added actor variant transforms
   * ADD			Added seat boarding, damage and unit mounting
   * ADD			tag system was rewritten in OS code, providing better diagnostic messages and tag utilities. However, the engine's tag saving code is still used
-  * ADD			tag system now supports tag fields of the _field_string kind with a custom string length (stock is fixed to 31-character strings)
+  * ADD			tag system now supports tag fields of the string kind with a custom string length (stock is fixed to 31-character strings)
   * ADD			Custom event handlers for Guerilla's Source Control and Xsync menu items, for use in a future system (they still don't do anything currently)
   * ADD			Introduced "tag-load-test" command to Tool.
   * ADD			model_animations tag features new unit_seat_animation types for boarding, ejection and unit mounting

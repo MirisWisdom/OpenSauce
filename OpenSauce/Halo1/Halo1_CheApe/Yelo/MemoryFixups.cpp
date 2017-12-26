@@ -53,7 +53,7 @@ namespace Yelo
 			break;
 
 		case _fixup_type_replace_tag_field:
-			if( IN_RANGE_ENUM(fixup->type_data, Enums::_field_terminator) )
+			if( IN_RANGE_ENUM(fixup->type_data, e_field_type::terminator) )
 			{
 				Memory::WriteMemory(address, definition, sizeof(tag_field));
 			}

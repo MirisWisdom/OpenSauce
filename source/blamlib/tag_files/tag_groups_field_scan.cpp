@@ -39,7 +39,7 @@ namespace Yelo
 			m_state.SetYeloScanState();
 		}
 
-		c_tag_field_scanner& c_tag_field_scanner::AddFieldType(Enums::field_type field_type)
+		c_tag_field_scanner& c_tag_field_scanner::AddFieldType(e_field_type::type_t field_type)
 		{
 			blam::tag_field_scan_state_add_field_type(m_state, field_type);
 			return *this;
@@ -73,7 +73,7 @@ namespace Yelo
 		}
 		int32 c_tag_field_scanner::StringFieldGetLength() const
 		{
-			YELO_ASSERT(m_state.field->type == Enums::_field_string);
+			YELO_ASSERT(m_state.field->type == e_field_type::string);
 
 			return TagGroups::string_field_get_length(m_state.field);
 		}
@@ -123,7 +123,7 @@ namespace Yelo
 
 				switch(field->type)
 				{
-				case Enums::_field_array_start:
+				case e_field_type::array_start:
 					YELO_ASSERT( state.stack_index<Enums::k_tag_field_scan_stack_size );
 					state.stack[state.stack_index].field_index = state.field_count;
 					state.stack[state.stack_index].count = field->DefinitionCast<int16>(); // TODO: asm has this as int16, but all other array_start code treats the def as int32. is this cast really safe?
@@ -131,7 +131,7 @@ namespace Yelo
 					state.stack_index++;
 					break;
 
-				case Enums::_field_array_end:
+				case e_field_type::array_end:
 					{
 						YELO_ASSERT( state.stack_index>0 );
 						auto& stack = state.stack[state.stack_index-1];
@@ -159,7 +159,7 @@ namespace Yelo
 				tag_field_scan_set_field_address_for_yelo(state, field_size, field_size - field_runtime_size);
 #endif
 
-				if(field->type == Enums::_field_terminator)
+				if(field->type == e_field_type::terminator)
 				{
 					state.done = true;
 					return false;

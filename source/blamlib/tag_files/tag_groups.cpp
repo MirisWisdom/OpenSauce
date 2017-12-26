@@ -22,7 +22,7 @@ namespace Yelo { namespace TagGroups
 	int32 string_field_get_length(
 		const tag_field* field)
 	{
-		assert(field->type == Enums::_field_string);
+		assert(field->type == e_field_type::string);
 
 		const auto definition = field->DefinitionCast<uintptr_t>();
 
@@ -83,59 +83,6 @@ namespace Yelo { namespace TagGroups
 };
 
 #if PLATFORM_IS_EDITOR
-size_t tag_field::get_size(
-	_Out_opt_	size_t* runtime_size) const
-{
-	size_t field_size;
-
-	switch (type)
-	{
-		case Enums::_field_string:
-			field_size = TagGroups::string_field_get_size(this);
-			break;
-
-		case Enums::_field_tag_reference:
-			field_size = CAST(int, TagGroups::k_tag_field_definitions[Enums::_field_tag_reference].size);
-
-			if (runtime_size && TagGroups::TagFieldIsStringId(this))
-			{
-				*runtime_size = field_size - string_id_yelo::k_debug_data_size;
-			}
-			break;
-
-		case Enums::_field_pad:
-		case Enums::_field_skip:
-			field_size = DefinitionCast<int32>();
-			break;
-
-		default:
-			field_size = TagGroups::k_tag_field_definitions[type].size;
-			break;
-	}
-
-	return field_size;
-}
-
-bool tag_field::is_read_only() const
-{
-	return name && strchr(name, Enums::k_tag_field_markup_character_read_only); // NOTE: engine uses strrchr
-}
-
-bool tag_field::is_advanced() const
-{
-	return name && strchr(name, Enums::k_tag_field_markup_character_advanced); // NOTE: engine uses strrchr
-}
-
-bool tag_field::is_block_name() const
-{
-	return name && strchr(name, Enums::k_tag_field_markup_character_block_name); // NOTE: engine uses strrchr
-}
-
-bool tag_field::is_invisible() const
-{
-	return name && *name == '\0'; // yes, a field with no name wouldn't be considered 'invisible', according to engine code
-}
-
 int32 tag_block_definition::find_field_index(
 	_enum field_type,
 	cstring name,
@@ -143,7 +90,7 @@ int32 tag_block_definition::find_field_index(
 {
 	YELO_ASSERT( this );
 	YELO_ASSERT( this->fields );
-	YELO_ASSERT( IN_RANGE_ENUM(field_type, Enums::k_number_of_tag_field_types) );
+	YELO_ASSERT( IN_RANGE_ENUM(field_type, e_field_type::k_count) );
 	YELO_ASSERT( name );
 
 	if (start_index == NONE)
@@ -153,7 +100,7 @@ int32 tag_block_definition::find_field_index(
 
 	const auto name_length = strlen(name);
 
-	for (const tag_field* cur = this->fields + start_index; cur->type != Enums::_field_terminator; cur++)
+	for (const tag_field* cur = this->fields + start_index; cur->type != e_field_type::terminator; cur++)
 	{
 		if (cur->type == field_type && !strncmp(cur->name, name, name_length))
 		{
@@ -181,9 +128,9 @@ tag_block_definition* tag_block_definition::find_block_field(
 	const cstring name,
 	const int32 start_index) const
 {
-	const auto block_field = find_field(Enums::_field_block, name, start_index);
+	const auto block_field = find_field(e_field_type::block, name, start_index);
 
-	return block_field->Definition<tag_block_definition>();
+	return block_field->get_definition<tag_block_definition>();
 }
 
 bool tag_reference_definition::s_group_tag_iterator::operator!=(
@@ -206,11 +153,11 @@ bool tag_block_definition::s_field_iterator::operator!=(
 {
 	if (other.IsEndHack())
 	{
-		return m_fields->type != Enums::_field_terminator;
+		return m_fields->type != e_field_type::terminator;
 	}
 	if (this->IsEndHack())
 	{
-		return other.m_fields->type != Enums::_field_terminator;
+		return other.m_fields->type != e_field_type::terminator;
 	}
 
 	return m_fields != other.m_fields;
@@ -308,16 +255,16 @@ namespace blam
 		memset(address, 0, definition->element_size);
 
 		for (auto field : TagGroups::c_tag_field_scanner(definition->fields, address)
-		     .AddFieldType(Enums::_field_short_block_index)
-		     .AddFieldType(Enums::_field_long_block_index))
+		     .AddFieldType(e_field_type::short_block_index)
+		     .AddFieldType(e_field_type::long_block_index))
 		{
 			switch (field.GetType())
 			{
-				case Enums::_field_short_block_index:
+				case e_field_type::short_block_index:
 					*field.As<int16>() = NONE;
 					break;
 
-				case Enums::_field_long_block_index:
+				case e_field_type::long_block_index:
 					*field.As<int32>() = NONE;
 					break;
 
@@ -497,22 +444,22 @@ namespace blam
 		// NOTE: YELO_FREE/DELETE take the pointers by reference, so that it can NULL them in the process
 
 		for (auto field : TagGroups::c_tag_field_scanner(definition->fields, tag_block_get_element(block, element_index))
-		     .AddFieldType(Enums::_field_block)
-		     .AddFieldType(Enums::_field_data)
-		     .AddFieldType(Enums::_field_tag_reference))
+		     .AddFieldType(e_field_type::block)
+		     .AddFieldType(e_field_type::data)
+		     .AddFieldType(e_field_type::tag_reference))
 		{
 			switch (field.GetType())
 			{
-				case Enums::_field_data:
+				case e_field_type::data:
 					TAG_DATA_DELETE( *field.As<tag_data>() );
 					break;
 
-				case Enums::_field_block:
+				case e_field_type::block:
 					// engine actually does a while loop here, calling delete_element
 					tag_block_resize(field.As<tag_block>(), 0);
 					break;
 
-				case Enums::_field_tag_reference:
+				case e_field_type::tag_reference:
 					YELO_DELETE( field.As<tag_reference>()->name );
 					break;
 
@@ -707,7 +654,7 @@ static bool tag_block_duplicate_element_recursive(
 				memcpy(destination.GetFieldAddress(), source.GetFieldAddress(), source.GetFieldSize());
 				break;
 
-			case Enums::_field_data:
+			case e_field_type::data:
 				{
 					auto* dest_data = destination.GetFieldAs<tag_data>();
 					auto* src_data = source.GetFieldAs<tag_data>();
@@ -719,7 +666,7 @@ static bool tag_block_duplicate_element_recursive(
 				}
 				break;
 
-			case Enums::_field_block:
+			case e_field_type::block:
 				{
 					auto* dest_block = destination.GetFieldAs<tag_block>();
 					YELO_ASSERT( dest_block->count==0 );
@@ -735,7 +682,7 @@ static bool tag_block_duplicate_element_recursive(
 				}
 				break;
 
-			case Enums::_field_tag_reference:
+			case e_field_type::tag_reference:
 				{
 					auto* dest_ref = destination.GetFieldAs<tag_reference>();
 					auto* src_ref = source.GetFieldAs<tag_reference>();
@@ -1110,6 +1057,6 @@ namespace Yelo { namespace TagGroups
 		{0, "terminator X", k_terminator_byte_swap_codes},
 
 	};
-	BOOST_STATIC_ASSERT(NUMBEROF(k_tag_field_definitions) == Enums::k_number_of_tag_field_types);
+	BOOST_STATIC_ASSERT(NUMBEROF(k_tag_field_definitions) == e_field_type::k_count);
 }}
 #endif

@@ -42,13 +42,13 @@ namespace Yelo
 		{
 			// NOTE: feign string_id fields should have the _tag_reference_non_resolving_bit set
 			// in their tag_reference_definition
-			return	field->type == Enums::_field_tag_reference && 
-					field->Definition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
+			return	field->type == e_field_type::tag_reference && 
+					field->get_definition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
 		}
 
 		bool TagFieldIsOldStringId(const tag_field* field)
 		{
-			return	field->type == Enums::_field_string &&
+			return	field->type == e_field_type::string &&
 					field->DefinitionCast<tag>() == s_string_id_yelo_definition::k_group_tag;
 		}
 #endif

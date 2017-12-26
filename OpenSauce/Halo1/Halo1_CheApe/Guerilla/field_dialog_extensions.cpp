@@ -26,11 +26,11 @@ namespace Yelo
 			{
 				switch(field_info->field->type)
 				{
-				case Enums::_field_string:
+				case e_field_type::string:
 					brush = string_dialog_extensions::OnCtlColor__field_name(CDC_, CWnd_, field_info, brush);
 					break;
 
-				case Enums::_field_tag_reference:
+				case e_field_type::tag_reference:
 					brush = tag_reference_dialog_extensions::OnCtlColor__field_name(CDC_, CWnd_, field_info, brush);
 					break;
 

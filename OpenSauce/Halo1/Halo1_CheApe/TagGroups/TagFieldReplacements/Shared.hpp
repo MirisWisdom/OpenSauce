@@ -34,7 +34,7 @@ namespace Yelo
 		/// <param name="field_path">			Full path of the field. </param>
 		///
 		/// <returns>	The found tag field. </returns>
-		static tag_field& GetTagField(tag_block_definition& source_definition, Enums::field_type field_type, const std::string& field_path)
+		static tag_field& GetTagField(tag_block_definition& source_definition, e_field_type::type_t field_type, const std::string& field_path)
 		{
 			// Split the field path into block names
 			// The last name is the field name so is not added to the list
@@ -58,10 +58,10 @@ namespace Yelo
 			auto* current_block = &source_definition;
 			for(auto& block_field_name : block_names)
 			{
-				int found_block_field = current_block->find_field_index(Enums::_field_block, block_field_name.c_str());
+				int found_block_field = current_block->find_field_index(e_field_type::block, block_field_name.c_str());
 				assert(found_block_field != NONE);
 
-				current_block = current_block->fields[found_block_field].Definition<tag_block_definition>();
+				current_block = current_block->fields[found_block_field].get_definition<tag_block_definition>();
 			}
 
 			// Get the targeted field
@@ -79,14 +79,14 @@ namespace Yelo
 		/// <param name="flags_field_name">	(Optional) The path to the flags field. </param>
 		///
 		/// <returns>	The flag fields string list. </returns>
-		template<Enums::field_type kFieldType>
+		template<e_field_type::type_t kFieldType>
 		static string_list* FindFlagsField(tag_block_definition* definition, cstring flags_field_name = "flags")
 		{
-			static_assert(kFieldType == Enums::_field_byte_flags || kFieldType == Enums::_field_word_flags || kFieldType == Enums::_field_long_flags,
+			static_assert(kFieldType == e_field_type::byte_flags || kFieldType == e_field_type::word_flags || kFieldType == e_field_type::long_flags,
 				"Expected a flags-based field type");
 
 			auto& flags_field = GetTagField(*definition, kFieldType, flags_field_name);
-			return flags_field.Definition<string_list>();
+			return flags_field.get_definition<string_list>();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,21 +114,21 @@ namespace Yelo
 		/// <param name="block_field_path">		  	Field path to the block field. </param>
 		/// <param name="target_block_definition">	[in] Block definition in which to find the block index field. </param>
 		/// <param name="block_index_field_name"> 	Field path to the block index field. </param>
-		template<Enums::field_type kFieldType>
+		template<e_field_type::type_t kFieldType>
 		static void LinkBlockIndex(tag_block_definition& source_block_definition
 			, cstring block_field_path
 			, tag_block_definition& target_block_definition
 			, cstring block_index_field_name)
 		{
-			static_assert((kFieldType == Enums::_field_long_block_index) || (kFieldType == Enums::_field_short_block_index)
+			static_assert((kFieldType == e_field_type::long_block_index) || (kFieldType == e_field_type::short_block_index)
 				, "LinkBlockIndex can only be used with short and long block indices fields");
 
 			// Get the source block field and the target block index
-			auto& source_field = GetTagField(source_block_definition, Enums::_field_block, block_field_path);
+			auto& source_field = GetTagField(source_block_definition, e_field_type::block, block_field_path);
 			auto& target_field = GetTagField(target_block_definition, kFieldType, block_index_field_name);
 			
 			// Set the index fields definition
-			target_field.definition = source_field.Definition<tag_block_definition>();
+			target_field.definition = source_field.get_definition<tag_block_definition>();
 		}
 
 #pragma region Tag Group Reference Definitions

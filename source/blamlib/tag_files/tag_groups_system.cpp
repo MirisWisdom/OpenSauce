@@ -96,7 +96,7 @@ namespace Yelo
 				YELO_ASSERT( (next_combined_field-combined_fields)==total_field_count );
 
 				memset(next_combined_field, 0, sizeof(*next_combined_field));
-				next_combined_field->type = Enums::_field_terminator;
+				next_combined_field->type = e_field_type::terminator;
 
 				group->header_block_definition->fields = combined_fields;
 				group->header_block_definition->element_size = total_header_size;
@@ -140,7 +140,7 @@ namespace Yelo
 
 			do {
 				const tag_field& field = fields[field_index];
-				YELO_ASSERT( field.type>=0 && field.type<Enums::k_number_of_tag_field_types );
+				YELO_ASSERT( field.type>=0 && field.type<e_field_type::k_count);
 
 				for(byte_swap_code_t* field_codes = TagGroups::k_tag_field_definitions[field.type].byte_swap_codes;
 					*field_codes != 0;
@@ -151,34 +151,34 @@ namespace Yelo
 
 				switch (field.type)
 				{
-				case Enums::_field_string: // NOTE: non-standard; added to support variable length string fields
+				case e_field_type::string: // NOTE: non-standard; added to support variable length string fields
 					codes[code_index-1] = CAST(byte_swap_code_t, TagGroups::string_field_get_size(&field));
 					break;
 
-				case Enums::_field_array_start:
-				case Enums::_field_pad:
-				case Enums::_field_skip:
+				case e_field_type::array_start:
+				case e_field_type::pad:
+				case e_field_type::skip:
 					codes[code_index++] = field.DefinitionCast<int32>();
 					break;
 
-				case Enums::_field_block:
+				case e_field_type::block:
 					// NOTE: this is already checked in verify_group_field_definitions
 					//YELO_ASSERT_DISPLAY(field.definition, "element '%s' of block '%s' is NULL",
 					//	field.name, block_definition->name);
 
 					YELO_ASSERT(field.definition != block_definition); // a block shouldn't be able to have a child of itself, that would be infinite recursion
 
-					build_byte_swap_codes_for_block_definition(field.Definition<tag_block_definition>());
+					build_byte_swap_codes_for_block_definition(field.get_definition<tag_block_definition>());
 					has_children = true;
 					break;
 
-				case Enums::_field_tag_reference:
-				case Enums::_field_data:
+				case e_field_type::tag_reference:
+				case e_field_type::data:
 					has_children = true;
 					break;
 				}
 
-			} while(fields[field_index++].type != Enums::_field_terminator);
+			} while(fields[field_index++].type != e_field_type::terminator);
 
 			if(has_children)
 				SET_FLAG(block_definition->flags, Flags::_tag_block_has_children_bit, true);

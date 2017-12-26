@@ -1023,6 +1023,9 @@
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_block.h">
       <Filter>tag_files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_field.h">
+      <Filter>tag_files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1167,6 +1170,9 @@
       <Filter>tag_files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_block.cpp">
+      <Filter>tag_files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_field.cpp">
       <Filter>tag_files</Filter>
     </ClCompile>
   </ItemGroup>
