@@ -6,6 +6,8 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/tag_files/tag_groups_base.hpp>
 
+#include <blamlib/tag_files/tag_block.h>
+
 namespace Yelo
 {
 #if PLATFORM_IS_EDITOR
@@ -17,32 +19,7 @@ namespace Yelo
 	void tag_reference::set(tag group_tag, cstring name)
 	{
 		blam::tag_reference_set(*this, group_tag, name);
-	}
-
-	void* tag_block::get_element(int32 element)
-	{
-		return blam::tag_block_get_element(this, element);
-	}
-
-	void tag_block::delete_element(int32 element)
-	{
-		blam::tag_block_delete_element(this, element);
-	}
-
-	int32 tag_block::add_element()
-	{
-		return blam::tag_block_add_element(this);
-	}
-
-	bool tag_block::resize(int32 element_count)
-	{
-		return blam::tag_block_resize(this, element_count);
-	}
-
-	void* tag_block::add_and_get_element()
-	{
-		return blam::tag_block_add_and_get_element(this);
-	}
+	}	
 
 	bool tag_data::resize(int32 new_size)
 	{

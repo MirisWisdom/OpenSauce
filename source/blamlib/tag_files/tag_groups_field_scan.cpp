@@ -75,7 +75,7 @@ namespace Yelo
 		{
 			YELO_ASSERT(m_state.field->type == Enums::_field_string);
 
-			return TagGroups::StringFieldGetLength(m_state.field);
+			return TagGroups::string_field_get_length(m_state.field);
 		}
 
 		bool c_tag_field_scanner::s_iterator::operator!=(const c_tag_field_scanner::s_iterator& other) const
@@ -151,7 +151,7 @@ namespace Yelo
 
 				size_t field_size;
 				size_t field_runtime_size = 0;
-				field_size = field->GetSize(&field_runtime_size);
+				field_size = field->get_size(&field_runtime_size);
 #ifdef __TAG_FIELD_SCAN_USE_BLAM_DATA
 				state.field_size = CAST(int16, field_size);
 				state.field_end_offset += CAST(int32, field_size);

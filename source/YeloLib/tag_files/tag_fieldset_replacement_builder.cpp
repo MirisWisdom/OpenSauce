@@ -70,7 +70,7 @@ namespace Yelo
 			tag_field* dst = &m_target_fields[m_target_fields_cursor++];
 			std::memcpy(dst, field, sizeof(*field));
 
-			m_total_fields_size += field->GetSize(nullptr);
+			m_total_fields_size += field->get_size(nullptr);
 		}
 
 		void c_tag_field_set_replacement_builder::CopySourceField(int32 index)
@@ -281,7 +281,7 @@ namespace Yelo
 					break;
 				}
 
-				size_t field_size = new_field.GetSize(nullptr);
+				size_t field_size = new_field.get_size(nullptr);
 				if (field_size > m_padding.untapped_useless_size)
 				{
 					YELO_WARN("requested an %s insert for '%s' (size %d) at offset %d but ran out of space (%d free)",

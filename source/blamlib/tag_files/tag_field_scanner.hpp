@@ -143,10 +143,10 @@ namespace Yelo
 				template<typename T>
 				T* As() const						{ return m_scanner.GetFieldAs<T>(); }
 
-				bool IsReadOnly() const				{ return m_scanner.m_state.field->IsReadOnly(); }
-				bool IsAdvanced() const				{ return m_scanner.m_state.field->IsAdvanced(); }
-				bool IsBlockName() const			{ return m_scanner.m_state.field->IsBlockName(); }
-				bool IsInvisible() const			{ return m_scanner.m_state.field->IsInvisible(); }
+				bool IsReadOnly() const				{ return m_scanner.m_state.field->is_read_only(); }
+				bool IsAdvanced() const				{ return m_scanner.m_state.field->is_advanced(); }
+				bool IsBlockName() const			{ return m_scanner.m_state.field->is_block_name(); }
+				bool IsInvisible() const			{ return m_scanner.m_state.field->is_invisible(); }
 				bool IsStringId() const				{ return m_scanner.TagFieldIsStringId(); }
 				bool IsOldStringId() const			{ return m_scanner.TagFieldIsOldStringId(); }
 				int32 GetStringFieldLength() const	{ return m_scanner.StringFieldGetLength(); }

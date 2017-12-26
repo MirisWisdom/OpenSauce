@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
+#include <blamlib/tag_files/s_tag_iterator.h>
 
 #if !PLATFORM_IS_DEDI
 #include <blamlib/main/main_structures.hpp>

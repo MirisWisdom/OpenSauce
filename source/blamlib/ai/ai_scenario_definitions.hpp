@@ -9,6 +9,7 @@
 #include <blamlib/math/real_math.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>
 #include <YeloLib/tag_files/tag_groups_markup.hpp>
+#include <blamlib/tag_files/tag_block.h>
 
 namespace Yelo
 {

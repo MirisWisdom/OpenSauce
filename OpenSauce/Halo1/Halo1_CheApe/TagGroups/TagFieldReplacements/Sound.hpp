@@ -64,12 +64,12 @@ namespace Yelo
 
 			auto* block = sound->header_block_definition;
 			// find sound->pitch_ranges
-			int field_index = block->FindFieldIndex(Enums::_field_block, "pitch ranges");
+			int field_index = block->find_field_index(Enums::_field_block, "pitch ranges");
 			assert(field_index != NONE);
 
 			block = block->fields[field_index].Definition<tag_block_definition>();
 			// find sound_pitch_range->permutations
-			field_index = block->FindFieldIndex(Enums::_field_block, "permutations");
+			field_index = block->find_field_index(Enums::_field_block, "permutations");
 			assert(field_index != NONE);
 
 			block = block->fields[field_index].Definition<tag_block_definition>();

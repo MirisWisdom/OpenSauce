@@ -338,7 +338,10 @@
     <ClInclude Include="..\..\..\source\blamlib\sound\sound_environment_definitions.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\structures\cluster_partitions.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\structures\structure_bsp_definitions.hpp" />
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\c_tag_iterator.h" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\files.hpp" />
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\s_tag_iterator.h" />
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_block.h" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_collection_definitions.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_field_scanner.hpp" />
     <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_files.hpp" />
@@ -413,7 +416,9 @@
     <ClCompile Include="..\..\..\source\blamlib\objects\object_structures.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\rasterizer\dx9\rasterizer_dx9_render_targets.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\scenario\scenario.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\tag_files\c_tag_iterator.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\files_windows.cpp" />
+    <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_block.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_files.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_groups.cpp" />
     <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_groups_field_scan.cpp" />

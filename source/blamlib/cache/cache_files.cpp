@@ -19,6 +19,7 @@
 #include <blamlib/tag_files/tag_files.hpp>
 #include <blamlib/tag_files/tag_groups.hpp>
 #include <YeloLib/cache/cache_files_yelo.hpp>
+#include <blamlib/tag_files/c_tag_iterator.h>
 
 #if PLATFORM_IS_EDITOR
 #include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>

@@ -114,20 +114,20 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 				{// scripting_block
 					// NOTE: this will also affect project_yellow's script block as it's the same definition
-					field_index = py_globals_definition->header_block_definition->FindFieldIndex(Enums::_field_block, "yelo scripting");
+					field_index = py_globals_definition->header_block_definition->find_field_index(Enums::_field_block, "yelo scripting");
 					YELO_ASSERT_DISPLAY(field_index != NONE,
 						"CheApe: scripting_block not found!");
 
 					auto* scripting_block_def = py_globals_definition->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
-					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new functions");
+					field_index = scripting_block_def->find_field_index(Enums::_field_block, "new functions");
 					YELO_ASSERT_DISPLAY(field_index != NONE,
 						"CheApe: script_function_block not found!");
 
 					auto* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
 					script_function_block_def->format_proc = &TagGroups::s_script_construct_definition::FormatBlockName;
 
-					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new globals");
+					field_index = scripting_block_def->find_field_index(Enums::_field_block, "new globals");
 					YELO_ASSERT_DISPLAY(field_index != NONE,
 						"CheApe: script_global_block not found!");
 

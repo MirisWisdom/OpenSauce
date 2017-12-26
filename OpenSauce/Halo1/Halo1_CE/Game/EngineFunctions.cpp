@@ -27,6 +27,7 @@
 #include "Game/ScriptLibrary.hpp"
 #include "Networking/MDP.hpp"
 #include "Objects/Objects.hpp"
+#include <blamlib/tag_files/s_tag_iterator.h>
 
 // comment the following to just use the parameters as-is 
 // instead of copying to the stack. I believe there was some 

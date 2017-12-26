@@ -152,7 +152,7 @@ namespace Yelo
 				switch (field.type)
 				{
 				case Enums::_field_string: // NOTE: non-standard; added to support variable length string fields
-					codes[code_index-1] = CAST(byte_swap_code_t, TagGroups::StringFieldGetSize(&field));
+					codes[code_index-1] = CAST(byte_swap_code_t, TagGroups::string_field_get_size(&field));
 					break;
 
 				case Enums::_field_array_start:

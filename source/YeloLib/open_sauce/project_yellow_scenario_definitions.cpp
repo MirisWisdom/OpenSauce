@@ -94,7 +94,7 @@ namespace Yelo
 
 			// re-set the reference just for good measure
 			blam::tag_reference_set(game_globals,
-				game_globals.group_tag, Scenario::K_GAME_GLOBALS_TAG_NAME);
+			                        game_globals.group_tag, Scenario::K_GAME_GLOBALS_TAG_NAME);
 
 			return true;
 		}

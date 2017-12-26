@@ -4,6 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
+#include <blamlib/tag_files/tag_block.h>
 #if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_group_loading.hpp>
 
