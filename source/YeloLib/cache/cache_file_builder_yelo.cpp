@@ -266,7 +266,7 @@ namespace Yelo
 		bool c_cache_file_builder_base::TagInstanceNotSuitableForCache(const s_tag_instance& instance)
 		{
 			return instance.is_orphan || instance.is_reload ||
-				blam::tag_group_get(instance.group_tag)->IsDebugOnly();
+				blam::tag_group_get(instance.group_tag)->is_debug_only();
 		}
 		void c_cache_file_builder_base::IdentifyCacheBoundTags()
 		{
@@ -302,7 +302,7 @@ namespace Yelo
 
 		void c_cache_file_builder::StreamTagBlockToBuffer(const tag_block* block)
 		{
-			auto* info = block->definition->GetRuntimeInfo();
+			auto* info = block->definition->get_runtime_info();
 		}
 
 		void c_cache_file_builder::StreamTagToBuffer(datum_index tag_index)
@@ -310,7 +310,7 @@ namespace Yelo
 			YELO_ASSERT( !tag_index.IsNull() );
 
 			const tag_group* group = blam::tag_group_get( blam::tag_get_group_tag(tag_index) );
-			YELO_ASSERT_DISPLAY(!group->IsDebugOnly(), "tried to stream a debug-only tag to the cache: %s.%s",
+			YELO_ASSERT_DISPLAY(!group->is_debug_only(), "tried to stream a debug-only tag to the cache: %s.%s",
 				blam::tag_get_name(tag_index), group->name);
 
 			const tag_block* block = blam::tag_get_root_block(tag_index);
