@@ -31,7 +31,7 @@ namespace Yelo
 			int nChars,
 			const field_information* field_info)
 		{
-			nChars = TagGroups::StringFieldGetLength(field_info->field);
+			nChars = TagGroups::string_field_get_length(field_info->field);
 
 			DDV_MaxChars(pDX, value, nChars);
 		}

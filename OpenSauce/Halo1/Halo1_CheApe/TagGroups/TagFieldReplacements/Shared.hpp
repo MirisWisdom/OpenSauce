@@ -58,14 +58,14 @@ namespace Yelo
 			auto* current_block = &source_definition;
 			for(auto& block_field_name : block_names)
 			{
-				int found_block_field = current_block->FindFieldIndex(Enums::_field_block, block_field_name.c_str());
+				int found_block_field = current_block->find_field_index(Enums::_field_block, block_field_name.c_str());
 				assert(found_block_field != NONE);
 
 				current_block = current_block->fields[found_block_field].Definition<tag_block_definition>();
 			}
 
 			// Get the targeted field
-			int found_field_index = current_block->FindFieldIndex(field_type, field_name.c_str());
+			int found_field_index = current_block->find_field_index(field_type, field_name.c_str());
 			assert(found_field_index != NONE);
 
 			return current_block->fields[found_field_index];

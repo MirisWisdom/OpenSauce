@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/RemoveOSTagData.hpp"
+#include <blamlib/tag_files/c_tag_iterator.h>
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
 

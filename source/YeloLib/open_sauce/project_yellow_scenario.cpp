@@ -15,6 +15,7 @@
 #include <YeloLib/hs/hs_yelo.hpp>
 #include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/tag_files/s_tag_iterator.h>
 
 namespace Yelo
 {

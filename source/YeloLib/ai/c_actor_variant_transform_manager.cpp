@@ -33,6 +33,7 @@
 #include <YeloLib/objects/objects_yelo.hpp>
 #include <YeloLib/saved_games/game_state_yelo.hpp>
 #include <YeloLib/units/units_yelo.hpp>
+#include <blamlib/tag_files/c_tag_iterator.h>
 
 namespace Yelo
 {
@@ -853,7 +854,7 @@ namespace Yelo
 			TagGroups::c_tag_iterator iterator(TagGroups::actor_variant_transform_collection_definition::k_group_tag);
 
 			// Get the first collection tag as there should be only one
-			auto tag_index = iterator.Next();
+			auto tag_index = iterator.next();
 			if(tag_index.IsNull())
 			{
 				m_transform_collection = nullptr;

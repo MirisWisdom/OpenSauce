@@ -7,6 +7,7 @@
 #pragma once
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/tag_files/tag_block.h>
 
 namespace Yelo
 {

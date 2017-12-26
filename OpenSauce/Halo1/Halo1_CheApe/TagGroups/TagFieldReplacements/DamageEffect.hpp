@@ -19,7 +19,7 @@ namespace Yelo
 		static void InstantaneousAccelerationTo3d(tag_block_definition* damage_header_block)
 		{
 			tag_field* fields = damage_header_block->fields;
-			int field_index = damage_header_block->FindFieldIndex(Enums::_field_real, "instantaneous acceleration");
+			int field_index = damage_header_block->find_field_index(Enums::_field_real, "instantaneous acceleration");
 			assert(field_index != NONE);
 
 			fields[field_index++].type = Enums::_field_real_vector_3d;
@@ -43,9 +43,9 @@ namespace Yelo
 			InstantaneousAccelerationTo3d(cdmg->header_block_definition);
 
 			// find the damage effect flags, then the actual damage flags (both have the same name)
-			int flags_field_index = jpt_->header_block_definition->FindFieldIndex(Enums::_field_long_flags, "flags");
+			int flags_field_index = jpt_->header_block_definition->find_field_index(Enums::_field_long_flags, "flags");
 			assert(flags_field_index != NONE);
-			flags_field_index = jpt_->header_block_definition->FindFieldIndex(Enums::_field_long_flags, "flags", flags_field_index+1);
+			flags_field_index = jpt_->header_block_definition->find_field_index(Enums::_field_long_flags, "flags", flags_field_index+1);
 			assert(flags_field_index != NONE);
 
 			static cstring damage_flags_yelo_strings[Flags::k_number_of_damage_flags_yelo];

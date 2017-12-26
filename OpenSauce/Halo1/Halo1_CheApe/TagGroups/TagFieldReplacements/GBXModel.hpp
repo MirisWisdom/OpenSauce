@@ -19,7 +19,7 @@ namespace Yelo
 			assert(0==strcmp("gbxmodel_geometry_part_block", model_geometry_part_block->name));
 
 			// find the last declared field
-			int field_index = model_geometry_part_block->FindFieldIndex(Enums::_field_block, "triangles");
+			int field_index = model_geometry_part_block->find_field_index(Enums::_field_block, "triangles");
 			assert(field_index != NONE);
 
 			// move to triangle_buffer
@@ -66,12 +66,12 @@ namespace Yelo
 
 			auto* block = gbxmodel->header_block_definition;
 			// find gbxmodel->geometries
-			int field_index = block->FindFieldIndex(Enums::_field_block, "geometries");
+			int field_index = block->find_field_index(Enums::_field_block, "geometries");
 			assert(field_index != NONE);
 
 			block = block->fields[field_index].Definition<tag_block_definition>();
 			// find gbxmodel_geometry->parts
-			field_index = block->FindFieldIndex(Enums::_field_block, "parts");
+			field_index = block->find_field_index(Enums::_field_block, "parts");
 			assert(field_index != NONE);
 
 			block = block->fields[field_index].Definition<tag_block_definition>();

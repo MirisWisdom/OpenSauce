@@ -8,6 +8,7 @@
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <blamlib/tag_files/tag_block.h>
 
 namespace Yelo
 {

@@ -16,6 +16,7 @@
 #include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
 #include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"
 #include "Tool/BuildCacheFile/TagPreprocess_Scenario.inl"
+#include <blamlib/tag_files/c_tag_iterator.h>
 
 namespace Yelo { namespace Tool {
 

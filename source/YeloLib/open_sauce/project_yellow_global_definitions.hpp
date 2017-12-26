@@ -8,6 +8,7 @@
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/tag_files/tag_block.h>
 
 #if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_groups_structures.hpp>

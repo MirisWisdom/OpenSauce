@@ -7,6 +7,8 @@
 
 namespace Yelo
 {
+	struct tag_block;
+
 	namespace Enums
 	{
 		enum {
@@ -67,16 +69,21 @@ namespace Yelo
 		// Clear the values of a tag reference so that it references no tag
 		void PLATFORM_API tag_reference_clear(tag_reference& reference);
 
-		void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name);
+		void PLATFORM_API tag_reference_set(
+			tag_reference& reference,
+			const tag group_tag,
+			cstring name);
 		template<typename T>
 		void tag_reference_set(tag_reference& reference, cstring name)
 		{
 			return tag_reference_set(reference, T::k_group_tag, name);
 		}
 
-		datum_index PLATFORM_API tag_reference_try_and_get(const tag_reference* reference);
+		datum_index PLATFORM_API tag_reference_try_and_get(
+			const tag_reference*const reference);
 
-		bool PLATFORM_API tag_reference_resolve(_Inout_ tag_reference* reference);
+		bool PLATFORM_API tag_reference_resolve(
+			_Inout_ tag_reference*const reference);
 
 		// non-standard overload of the above resolve()
 		bool tag_reference_resolve(_Inout_ tag_reference& reference, tag expected_group_tag);
@@ -87,83 +94,6 @@ namespace Yelo
 		}
 	};
 
-
-	struct tag_block
-	{
-		enum {
-			k_debug_data_size = sizeof(struct tag_block_definition*),
-		};
-
-		// element count for this block
-		int32 count;
-		// elements pointer
-		void* address;
-#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-		// definition pointer for this block instance
-		const struct tag_block_definition* definition;
-#endif
-
-		// Returns a [T] pointer that is the same as [address].
-		// Just makes coding a little more cleaner
-		template<typename T>
-		T* Elements() { return CAST_PTR(T*, address); }
-
-		void* get_element(int32 element_index);
-		void delete_element(int32 element_index);
-		int32 add_element();
-		bool resize(int32 element_count);
-
-		void* add_and_get_element();
-
-#if PLATFORM_IS_EDITOR
-		size_t get_element_size() const;
-
-		struct s_iterator_result
-		{
-			void* address;
-			int32 index;
-
-			s_iterator_result(void* ptr, int32 i) : address(ptr), index(i) {}
-		};
-		// NOTE: Design assumes there's no concurrent element changing (adding or removing)
-		struct s_iterator
-		{
-			byte* m_address;
-			int32 m_element_index;
-			size_t m_element_size;
-		public:
-			s_iterator(tag_block& block, size_t element_size, size_t element_index = 0)
-				: m_address(CAST_PTR(byte*, block.address) + (element_size * element_index))
-				, m_element_index(element_index)
-				, m_element_size(element_size)
-			{
-			}
-			bool operator!=(const s_iterator& other) const
-			{
-				return m_address != other.m_address;
-			}
-			s_iterator& operator++()
-			{
-				m_address += m_element_size;
-				++m_element_index;
-				return *this;
-			}
-			s_iterator_result operator*() const
-			{
-				return s_iterator_result(m_address, m_element_index);
-			}
-		};
-		s_iterator	begin()	{ return s_iterator(*this, this->get_element_size()); }
-		s_iterator	end()	{ return s_iterator(*this, this->get_element_size(), CAST(size_t, this->count)); }
-#endif
-	};
-#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-	BOOST_STATIC_ASSERT( sizeof(tag_block) == 0xC );
-	#define pad_tag_block PAD32 PAD32 PAD32
-#else
-	BOOST_STATIC_ASSERT( sizeof(tag_block) == 0x8 );
-	#define pad_tag_block PAD32 PAD32
-#endif
 	namespace blam
 	{
 		// Get the address of a block element which exists at [element_index]
@@ -171,12 +101,17 @@ namespace Yelo
 		const void* PLATFORM_API tag_block_get_element(const tag_block* block, int32 element_index);
 		// Add a new block element and return the index which 
 		// represents the newly added element
-		int32 PLATFORM_API tag_block_add_element(tag_block* block);
+		int32 PLATFORM_API tag_block_add_element(
+			tag_block*const block);
 		// Resize the block to a new count of elements, returning the 
 		// success result of the operation
-		bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count);
+		bool PLATFORM_API tag_block_resize(
+			tag_block*const block,
+			const int32 element_count);
 		// Delete the block element at [element_index]
-		void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index);
+		void PLATFORM_API tag_block_delete_element(
+			tag_block*const block,
+			int32 element_index);
 
 		void* tag_block_add_and_get_element(tag_block* block);
 	};
@@ -224,15 +159,20 @@ namespace Yelo
 #endif
 	namespace blam
 	{
-		bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size);
+		bool PLATFORM_API tag_data_resize(
+			tag_data*const data,
+			const int32 new_size);
 
-		void* PLATFORM_API tag_data_get_pointer(tag_data& data, int32 offset, int32 size);
+		void* PLATFORM_API tag_data_get_pointer(
+			tag_data& data,
+			const int32 offset,
+			const int32 size);
 		template<typename T> inline
 		T* tag_data_get_pointer(tag_data& data, int32 offset, int32 index = 0)
 		{
-			return CAST_PTR(T*, tag_data_get_pointer(data, 
-				offset + (sizeof(T) * index), 
-				sizeof(T)) );
+			return CAST_PTR(T*, tag_data_get_pointer(data,
+				-offset + (sizeof(T) * index),
+				-sizeof(T)));
 		}
 	};
 
@@ -269,7 +209,9 @@ namespace Yelo
 #endif
 		// Get the tag definition's address by it's expected group tag and 
 		// it's tag handle [tag_index]
-		TAG_GET_RETURN_MODIFIER void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index);
+		TAG_GET_RETURN_MODIFIER void* PLATFORM_API tag_get(
+			tag group_tag,
+			const datum_index tag_index);
 		template<typename T> inline
 		TAG_GET_RETURN_MODIFIER T* tag_get(datum_index tag_index)
 		{
@@ -360,10 +302,5 @@ namespace Yelo
 				return Terminate().TagSwap().str;
 			}
 		};
-
-		struct s_tag_iterator {
-			Memory::s_data_iterator instances_iterator;
-			tag group_tag_filter;
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_iterator) == 0x14 );
 	};
 };

@@ -7,6 +7,7 @@
 
 #include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_block.h>
 
 namespace Yelo
 {
@@ -161,11 +162,11 @@ namespace Yelo
 		template<typename T>
 		T DefinitionCast() const { return CAST_PTR(T, definition); }
 
-		size_t GetSize(_Out_opt_ size_t* runtime_size) const;
-		bool IsReadOnly() const;
-		bool IsAdvanced() const;
-		bool IsBlockName() const;
-		bool IsInvisible() const;
+		size_t get_size(_Out_opt_ size_t* runtime_size) const;
+		bool is_read_only() const;
+		bool is_advanced() const;
+		bool is_block_name() const;
+		bool is_invisible() const;
 #endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
@@ -197,9 +198,9 @@ namespace Yelo
 		// Searches the definition for a field of type [field_type] with a name which starts 
 		// with [name] characters. Optionally starts at a specific field index.
 		// Returns NONE if this fails.
-		int32 FindFieldIndex(_enum field_type, cstring name, int32 start_index = NONE) const;
-		tag_field* FindField(_enum field_type, cstring name, int32 start_index = NONE);
-		tag_block_definition* FindBlockField(cstring name, int32 start_index = NONE);
+		int32 find_field_index(_enum field_type, cstring name, int32 start_index = NONE) const;
+		tag_field* find_field(_enum field_type, cstring name, int32 start_index = NONE) const;
+		tag_block_definition* find_block_field(cstring name, int32 start_index = NONE) const;
 
 		size_t GetAlignmentBit() const;
 		TagGroups::s_tag_field_set_runtime_data* GetRuntimeInfo() const;
@@ -362,10 +363,10 @@ namespace Yelo
 		bool IsDebugOnly() const { return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit); }
 
 		// tag_group* [] (ie, tag_group**) qsort procs
-		static int __cdecl CompareByNameProc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
-		static int __cdecl CompareByGroupTagProc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
+		static int __cdecl compare_by_name_proc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
+		static int __cdecl compare_by_group_tag_proc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
 
-		static int __cdecl SearchByNameProc(void*, cstring key, const tag_group*const* group);
+		static int __cdecl search_by_name_proc(void*, cstring key, const tag_group*const* group);
 #endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x60 );
 

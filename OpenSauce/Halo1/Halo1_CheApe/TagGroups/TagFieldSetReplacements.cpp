@@ -30,12 +30,12 @@ namespace Yelo
 
 			auto* block = hmt_->header_block_definition;
 			// find hud_state_messages->messages
-			int field_index = block->FindFieldIndex(Enums::_field_block, "messages");
+			int field_index = block->find_field_index(Enums::_field_block, "messages");
 			assert(field_index != NONE);
 
 			block = block->fields[field_index].Definition<tag_block_definition>();
 			// find hud_state_message_definition->name
-			field_index = block->FindFieldIndex(Enums::_field_string, "name");
+			field_index = block->find_field_index(Enums::_field_string, "name");
 			assert(field_index != NONE);
 
 			// update the name field to also act as the block name

@@ -8,6 +8,7 @@
 
 #include <blamlib/game/game_globals.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/tag_files/tag_block.h>
 
 namespace Yelo
 {

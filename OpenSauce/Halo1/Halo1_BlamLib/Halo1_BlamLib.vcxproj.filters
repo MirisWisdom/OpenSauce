@@ -1014,6 +1014,15 @@
     <ClInclude Include="..\..\..\source\blamlib\hs\c_hs_type_bool_abi.h">
       <Filter>hs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\c_tag_iterator.h">
+      <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\s_tag_iterator.h">
+      <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\blamlib\tag_files\tag_block.h">
+      <Filter>tag_files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1153,6 +1162,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\blamlib\hs\c_hs_type_bool_abi.cpp">
       <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\tag_files\c_tag_iterator.cpp">
+      <Filter>tag_files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\blamlib\tag_files\tag_block.cpp">
+      <Filter>tag_files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

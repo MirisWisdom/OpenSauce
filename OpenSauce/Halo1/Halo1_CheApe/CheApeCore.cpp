@@ -260,7 +260,7 @@ namespace Yelo
 			_globals.new_tag_groups.SetupTagGroupPointers();
 
 			// ABC the tag groups list
-			Qsort(_globals.new_tag_groups.address, _globals.new_tag_groups.count, tag_group::CompareByNameProc);
+			Qsort(_globals.new_tag_groups.address, _globals.new_tag_groups.count, tag_group::compare_by_name_proc);
 		}
 
 		void SetupTagGroupCounts()
@@ -312,7 +312,7 @@ namespace Yelo
 			if (CheApe::_InitError > CheApe::k_error_none) return nullptr;
 
 			auto result = Bsearch(name, CheApe::_globals.new_tag_groups.address, CheApe::_globals.new_tag_groups.count,
-				tag_group::SearchByNameProc);
+				tag_group::search_by_name_proc);
 
 			return result != nullptr 
 				? *result 

@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
+#include <blamlib/tag_files/s_tag_iterator.h>
 
 #if !PLATFORM_IS_DEDI
 #include "Rasterizer/PostProcessing/Generic/Internal/c_settings_internal.hpp"

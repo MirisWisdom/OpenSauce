@@ -13,6 +13,7 @@
 #include <blamlib/tag_files/tag_files.hpp>
 #include <blamlib/tag_files/tag_files_structures.hpp> // need structs in order to do pointer math on TagFileGlobals
 #include <blamlib/tag_files/tag_group_loading.hpp>
+#include <blamlib/tag_files/s_tag_iterator.h>
 
 namespace Yelo
 {
@@ -116,13 +117,13 @@ namespace Yelo
 			tag_group* weapon_group = blam::tag_group_get<s_weapon_definition>();
 
 			// field the weapon's magazines field
-			int32 field_index = weapon_group->header_block_definition->FindFieldIndex(Enums::_field_block, "magazines");
+			int32 field_index = weapon_group->header_block_definition->find_field_index(Enums::_field_block, "magazines");
 			if(field_index != NONE)
 			{
 				auto* magazines_block = weapon_group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
 				// find the magazine's magazine-objects field
-				field_index = magazines_block->FindFieldIndex(Enums::_field_block, "magazines");
+				field_index = magazines_block->find_field_index(Enums::_field_block, "magazines");
 				if(field_index != NONE)
 				{
 					tag_field& magazine_objects_field = magazines_block->fields[field_index];
@@ -132,7 +133,7 @@ namespace Yelo
 					magazine_objects_block->format_proc = nullptr; // Bungie seems to have made a copy&paste error and gave the objects block the format-magazines function
 
 					// find the magazine-object's equipment reference field
-					field_index = magazine_objects_block->FindFieldIndex(Enums::_field_tag_reference, "equipment");
+					field_index = magazine_objects_block->find_field_index(Enums::_field_tag_reference, "equipment");
 					if(field_index != NONE)
 					{
 						tag_field& equipment_reference_field = magazine_objects_block->fields[field_index];
@@ -150,12 +151,12 @@ namespace Yelo
 		{
 			tag_group* group = blam::tag_group_get('ustr');
 
-			int32 field_index = group->header_block_definition->FindFieldIndex(Enums::_field_block, "string reference");
+			int32 field_index = group->header_block_definition->find_field_index(Enums::_field_block, "string reference");
 			if(field_index != NONE)
 			{
 				auto* reference_block = group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
-				field_index = reference_block->FindFieldIndex(Enums::_field_data, "string");
+				field_index = reference_block->find_field_index(Enums::_field_data, "string");
 				if(field_index != NONE)
 				{
 					tag_field& string_field = reference_block->fields[field_index];
