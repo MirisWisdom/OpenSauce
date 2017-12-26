@@ -5,8 +5,9 @@
 */
 #pragma once
 
-#include <blamlib/tag_files/tag_groups_base.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/tag_files/s_tag_instance.h>
+#include <blamlib/tag_files/s_tag_field_definition.h>
 
 #if PLATFORM_IS_EDITOR
 	#include <blamlib/tag_files/tag_groups_structures.hpp>
@@ -15,6 +16,7 @@
 namespace Yelo
 {
 	struct tag_block;
+	struct tag_group;
 
 	namespace Enums
 	{

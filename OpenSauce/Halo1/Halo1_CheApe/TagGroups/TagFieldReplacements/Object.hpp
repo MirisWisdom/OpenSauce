@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/objects/object_definitions.hpp>
+#include <blamlib/tag_files/tag_group.h>
 
 namespace Yelo
 {

@@ -19,6 +19,17 @@ namespace Yelo
 			k_maximum_tags_per_tag_chain = 4,
 			k_maximum_children_per_tag = 16,
 		};
+
+		// Note: AFAICT, the engine code doesn't actually do the postprocess setup this way.
+		// They have what is essentially a boolean parameter that could be considered as 'bool for_editor'
+		enum tag_postprocess_mode : byte_enum
+		{
+			// In this mode, the tag is being postprocessed for runtime values (automatically fill fields, etc)
+			_tag_postprocess_mode_for_runtime = FALSE,
+			// In this mode we're opening for tag editing (eg, tool process or guerilla) and should skip the postprocessing
+			// code which prepares the tag for use in-game (Sapien and when building a cache)
+			_tag_postprocess_mode_for_editor = TRUE,
+		};
 	};
 
 // Halo1's editor allocates 256 characters for all tag_reference names, even if they're empty

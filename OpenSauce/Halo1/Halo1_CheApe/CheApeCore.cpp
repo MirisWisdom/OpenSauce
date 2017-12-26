@@ -13,6 +13,7 @@
 #include "Engine/EngineFunctions.hpp"
 #include "CheApeInterface.hpp"
 #include "TagGroups/TagGroups.hpp"
+#include <blamlib/tag_files/tag_group.h>
 
 namespace Yelo
 {

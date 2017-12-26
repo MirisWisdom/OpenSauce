@@ -18,6 +18,7 @@
 #include "TagGroups/TagFieldReplacements/Shader.hpp"
 #include "TagGroups/TagFieldReplacements/DamageEffect.hpp"
 #include "TagGroups/TagFieldReplacements/Scenario.hpp"
+#include <blamlib/tag_files/tag_group.h>
 
 namespace Yelo
 {

@@ -126,7 +126,7 @@ namespace Yelo
 				case e_field_type::array_start:
 					YELO_ASSERT( state.stack_index<Enums::k_tag_field_scan_stack_size );
 					state.stack[state.stack_index].field_index = state.field_count;
-					state.stack[state.stack_index].count = field->DefinitionCast<int16>(); // TODO: asm has this as int16, but all other array_start code treats the def as int32. is this cast really safe?
+					state.stack[state.stack_index].count = field->get_definition_as<int16>(); // TODO: asm has this as int16, but all other array_start code treats the def as int32. is this cast really safe?
 					YELO_ASSERT( state.stack[state.stack_index].count>0 );
 					state.stack_index++;
 					break;

@@ -15,6 +15,7 @@
 #include <blamlib/effects/weather_particle_system_definitions.hpp>
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"
+#include <blamlib/tag_files/tag_group.h>
 
 namespace Yelo
 {

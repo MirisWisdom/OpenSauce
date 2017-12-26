@@ -9,6 +9,7 @@
 #include <blamlib/tag_files/tag_groups_base.hpp>
 #include <blamlib/tag_files/tag_block.h>
 #include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_block_definition.h>
 
 namespace Yelo
 {
@@ -29,16 +30,6 @@ namespace Yelo
 			k_tag_field_markup_character_read_only =	'*',
 			k_tag_field_markup_character_units_prefix =	':',
 			k_tag_field_markup_character_block_name =	'^',
-		};
-
-		// Note: AFAICT, the engine code doesn't actually do the postprocess setup this way.
-		// They have what is essentially a boolean parameter that could be considered as 'bool for_editor'
-		enum tag_postprocess_mode : byte_enum {
-			// In this mode, the tag is being postprocessed for runtime values (automatically fill fields, etc)
-			_tag_postprocess_mode_for_runtime = FALSE,
-			// In this mode we're opening for tag editing (eg, tool process or guerilla) and should skip the postprocessing
-			// code which prepares the tag for use in-game (Sapien and when building a cache)
-			_tag_postprocess_mode_for_editor = TRUE,
 		};
 	};
 
@@ -97,118 +88,6 @@ namespace Yelo
 			_tag_load_non_resolving_references_bit,
 		};
 	};
-
-	// Called as each element is read from the tag stream
-	// NOTE: tag_index is non-standard, and will only be valid when invoked by OS code.
-	// We can add additional parameters so long as PLATFORM_API is __cdecl (where the caller cleans up the stack).
-	// NOTE: tag_index is not guaranteed to be not NONE! Eg: tag_block_add_element
-	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, Enums::tag_postprocess_mode mode,
-		datum_index tag_index);
-	// if [formatted_buffer] returns empty, the default block formatting is done
-	typedef cstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
-	// Procedure called during tag_block_delete_element, but before all the child data is freed
-	typedef void (PLATFORM_API* proc_tag_block_delete_element)(tag_block* block, int32 element_index);
-	struct tag_block_definition
-	{
-		cstring name;
-		long_flags flags;
-		int32 maximum_element_count;
-		size_t element_size;
-		void* unused0;
-		tag_field* fields;
-		void* unused1;
-		proc_tag_block_postprocess_element postprocess_proc;
-		proc_tag_block_format format_proc;
-		proc_tag_block_delete_element delete_proc;
-		byte_swap_code_t* byte_swap_codes;
-
-#if PLATFORM_IS_EDITOR
-		// Searches the definition for a field of type [field_type] with a name which starts 
-		// with [name] characters. Optionally starts at a specific field index.
-		// Returns NONE if this fails.
-		int32 find_field_index(_enum field_type, cstring name, int32 start_index = NONE) const;
-		tag_field* find_field(_enum field_type, cstring name, int32 start_index = NONE) const;
-		tag_block_definition* find_block_field(cstring name, int32 start_index = NONE) const;
-
-		size_t GetAlignmentBit() const;
-		TagGroups::s_tag_field_set_runtime_data* GetRuntimeInfo() const;
-		void SetRuntimeInfo(TagGroups::s_tag_field_set_runtime_data* info);
-
-		// TAction: void operator()([const] tag_block_definition* block, [const] tag_field& field)
-		template<class TAction, bool k_assert_field_type>
-		void FieldsDoAction(TAction& action = TAction())
-		{
-			for(auto& field : *this)
-			{
-				if(k_assert_field_type)
-				{
-					YELO_ASSERT( field.type>=0 && field.type<e_field_type::k_count);
-				}
-
-				action(this, field);
-			}
-		}
-
-		// Mainly a visitor for startup/shutdown processes, performs an action (via a functor) on a root block definition
-		// then repeats the action for all child blocks (etc)
-		// Uses CRT assert()'s since it is assumed this is used after the group definitions have been verified
-		// TAction: void operator()([const] tag_block_definition* block_definition)
-		template<class TAction>
-		void DoRecursiveAction(TAction& action = TAction())
-		{
-			action(this); // perform the action on the root first
-
-			size_t field_index = 0;
-
-			do {
-				const tag_field& field = fields[field_index];
-				assert( field.type>=0 && field.type<e_field_type::k_count);
-
-				if(field.type == e_field_type::block)
-				{
-					assert(field.definition != this);
-
-					action(field.get_definition<tag_block_definition>());
-				}
-
-			} while(fields[field_index++].type != e_field_type::terminator);
-		}
-
-		struct s_field_iterator
-		{
-		private:
-			tag_field* m_fields;
-
-			bool IsEndHack() const			{ return m_fields == nullptr; }
-
-		public:
-			s_field_iterator() : m_fields(nullptr) {} // for EndHack
-			s_field_iterator(const tag_block_definition* definition) : m_fields(definition->fields) {}
-
-			bool operator!=(const s_field_iterator& other) const;
-
-			s_field_iterator& operator++()
-			{
-				++m_fields;
-				return *this;
-			}
-			tag_field& operator*() const
-			{
-				return *m_fields;
-			}
-		};
-
-		s_field_iterator begin() /*const*/
-		{
-			auto iter = s_field_iterator(this);
-			return iter;
-		}
-		static const s_field_iterator end() /*const*/
-		{
-			return s_field_iterator();
-		}
-#endif
-	}; BOOST_STATIC_ASSERT( sizeof(tag_block_definition) == 0x2C );
 
 	typedef void (PLATFORM_API* proc_tag_data_byte_swap)(void* block_element, void* address, int32 size);
 	struct tag_data_definition
@@ -269,61 +148,4 @@ namespace Yelo
 		}
 #endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_reference_definition) == 0xC );
-
-	// Postprocess a tag definition (eg, automate the creation of fields, etc)
-	// Called once the tag has been fully loaded (header_block_definition's postprocess is called before this)
-	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, Enums::tag_postprocess_mode mode);
-	struct tag_group
-	{
-		cstring name;
-		long_flags flags;
-		tag group_tag;
-		tag parent_group_tag;
-		int16 version; PAD16;
-		proc_tag_group_postprocess postprocess_proc;
-		tag_block_definition* header_block_definition;
-		tag child_group_tags[Enums::k_maximum_children_per_tag];
-		int16 child_count; PAD16;
-
-#if PLATFORM_IS_EDITOR
-		TagGroups::s_tag_field_set_runtime_data* GetHeaderRuntimeInfo() const { return header_block_definition->GetRuntimeInfo(); }
-
-		bool IsDebugOnly() const { return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit); }
-
-		// tag_group* [] (ie, tag_group**) qsort procs
-		static int __cdecl compare_by_name_proc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
-		static int __cdecl compare_by_group_tag_proc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
-
-		static int __cdecl search_by_name_proc(void*, cstring key, const tag_group*const* group);
-#endif
-	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x60 );
-
-
-	struct s_tag_instance : Memory::s_datum_base_aligned
-	{
-		char filename[Enums::k_max_tag_name_length+1];			// 0x4
-		tag group_tag;				// 0x104
-		tag parent_group_tags[2];	// 0x108
-		bool is_verified;			// 0x110 was loaded with Flags::_tag_load_for_editor_bit
-		bool is_read_only;			// 0x111
-		bool is_orphan;				// 0x112
-		bool is_reload;				// 0x113 true if this instance is the one used for another tag during tag_reload
-		datum_index reload_index;	// 0x114 index of the instance used to reload -this- tag's definition
-		uint32 file_checksum;		// 0x118
-		tag_block root_block;		// 0x11C
-	}; BOOST_STATIC_ASSERT( sizeof(s_tag_instance) == 0x128 );
-
-
-	namespace TagGroups
-	{
-		struct s_tag_field_definition
-		{
-			size_t size;						/// <summary>	The size of a single instance of this field. </summary>
-			cstring name;						/// <summary>	The user-friendly name of this field. </summary>
-			byte_swap_code_t* byte_swap_codes;	/// <summary>	The needed for byte swapping an instance of this field. </summary>
-
-			/// <summary>	The C name of this field. Null if it can't be defined in code (eg, _field_custom) </summary>
-			cstring code_name;
-		};
-	};
 };

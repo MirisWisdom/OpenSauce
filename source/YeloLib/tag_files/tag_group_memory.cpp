@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_group.h>
 #if PLATFORM_IS_EDITOR
 #include <YeloLib/tag_files/tag_group_memory.hpp>
 
@@ -287,7 +288,7 @@ namespace Yelo
 
 			s_tag_field_set_runtime_data* group_header_info = nullptr;
 			if (group_header_definition && group_header_definition != definition)
-				group_header_info = group_header_definition->GetRuntimeInfo();
+				group_header_info = group_header_definition->get_runtime_info();
 
 			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddFieldType(e_field_type::string)
@@ -494,7 +495,7 @@ namespace Yelo
 
 			for (auto definition : GetBlockDefinitionsSet())
 			{
-				definition->GetRuntimeInfo()->DumpThisToFile(file.get(), definition);
+				definition->get_runtime_info()->DumpThisToFile(file.get(), definition);
 			}
 		}
 
@@ -509,14 +510,14 @@ namespace Yelo
 		static s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(const tag_block_definition* group_header_definition, 
 			tag_block_definition* block_definition)
 		{
-			s_tag_field_set_runtime_data* info = block_definition->GetRuntimeInfo();
+			s_tag_field_set_runtime_data* info = block_definition->get_runtime_info();
 			if(info != nullptr)
 				return info;
 
 			g_tag_group_memory_globals.block_definitions->insert(block_definition);
 
 			info = new s_tag_field_set_runtime_data;
-			block_definition->SetRuntimeInfo(info);
+			block_definition->set_runtime_info(info);
 
 			info->Initialize(group_header_definition, block_definition);
 
@@ -541,8 +542,8 @@ namespace Yelo
 				{
 					m_group_header_definition = group->header_block_definition;
 
-					group->header_block_definition->DoRecursiveAction(*this);
-					group->header_block_definition->GetRuntimeInfo()->SetIsGroupHeader();
+					group->header_block_definition->do_recursive_action(*this);
+					group->header_block_definition->get_runtime_info()->SetIsGroupHeader();
 				}
 			};
 
@@ -557,17 +558,17 @@ namespace Yelo
 			struct destroy_runtime_data_info_action
 			{ void operator()(tag_block_definition* block_definition) const
 			{
-				auto* info = block_definition->GetRuntimeInfo();
+				auto* info = block_definition->get_runtime_info();
 				if(info == nullptr)
 					return;
 
-				block_definition->SetRuntimeInfo(nullptr);
+				block_definition->set_runtime_info(nullptr);
 
 				info->Dispose();
 				delete info;
 			} void operator()(tag_group* group) const
 			{
-				group->header_block_definition->DoRecursiveAction(*this);
+				group->header_block_definition->do_recursive_action(*this);
 			} };
 
 			tag_groups_do_action<destroy_runtime_data_info_action>();
@@ -621,7 +622,7 @@ namespace Yelo
 				assert( group!=nullptr );
 
 				auto result = group_stats_map.insert( std::make_pair(group_tag, c_tag_group_allocation_statistics(group_tag, 
-					*group->GetHeaderRuntimeInfo()) ));
+					*group->get_header_runtime_info()) ));
 
 				group_entry = result.first;
 			}
@@ -635,7 +636,7 @@ namespace Yelo
 		}
 	};
 
-	size_t tag_block_definition::GetAlignmentBit() const
+	size_t tag_block_definition::get_alignment_bit() const
 	{
 		assert( this );
 		return TagGroups::g_tag_group_memory_globals.field_set_runtime_info_enabled
@@ -643,14 +644,15 @@ namespace Yelo
 			: Flags::_alignment_32_bit; // TODO: or should we just stick with 8bit?
 	}
 
-	TagGroups::s_tag_field_set_runtime_data* tag_block_definition::GetRuntimeInfo() const
+	TagGroups::s_tag_field_set_runtime_data* tag_block_definition::get_runtime_info() const
 	{
 		assert( this );
 		return TagGroups::g_tag_group_memory_globals.field_set_runtime_info_enabled
 			? CAST_PTR(TagGroups::s_tag_field_set_runtime_data*, this->unused1)
 			: nullptr;
 	}
-	void tag_block_definition::SetRuntimeInfo(TagGroups::s_tag_field_set_runtime_data* info)
+	void tag_block_definition::set_runtime_info(
+		TagGroups::s_tag_field_set_runtime_data*const info)
 	{
 		this->unused1 = info;
 	}

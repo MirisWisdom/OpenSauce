@@ -544,7 +544,7 @@ namespace Yelo
 			Shared::LinkBlockIndex<e_field_type::short_block_index>(*unit_block, "seats", TAG_GROUP_BLOCK_GET(unit_seat_extensions), "target seat");
 
 			auto& unit_seats_field = Shared::GetTagField(*unit_block, e_field_type::block, "seats");
-			auto* unit_seats_definition = unit_seats_field.DefinitionCast<tag_block_definition*>();
+			auto* unit_seats_definition = unit_seats_field.get_definition_as<tag_block_definition*>();
 
 			FIELDSET_REPLACEMENT_BEGIN(unit_seat, 22+1, unit_seats_definition)
 				FIELDSET_SEEK_AFTER_WITH_COPY("built-in gunner")

@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/BuildCppDefinition.hpp"
+#include <blamlib/tag_files/tag_group.h>
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include <YeloLib/cseries/value_conversion.hpp>
