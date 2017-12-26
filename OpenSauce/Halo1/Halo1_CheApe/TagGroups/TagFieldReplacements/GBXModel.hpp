@@ -36,7 +36,7 @@ namespace Yelo
 			assert(model_geometry_part_block->fields[field_index].type == e_field_type::pad);
 			{
 				tag_field& num_nodes_field = model_geometry_part_block->fields[field_index];
-				assert(num_nodes_field.DefinitionCast<int32>()==sizeof(sbyte));
+				assert(num_nodes_field.get_definition_as<int32>()==sizeof(sbyte));
 
 				num_nodes_field.type = e_field_type::char_integer;
 				num_nodes_field.name = "num_nodes"
@@ -53,7 +53,7 @@ namespace Yelo
 					sizeof(int16);
 
 				tag_field& node_table_field = model_geometry_part_block->fields[field_index];
-				assert(node_table_field.DefinitionCast<int32>() == k_node_table_field_pad_size);
+				assert(node_table_field.get_definition_as<int32>() == k_node_table_field_pad_size);
 
 				node_table_field.type = e_field_type::skip;
 			}

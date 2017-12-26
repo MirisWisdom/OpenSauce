@@ -24,7 +24,7 @@ namespace Yelo { namespace TagGroups
 	{
 		assert(field->type == e_field_type::string);
 
-		const auto definition = field->DefinitionCast<uintptr_t>();
+		const auto definition = field->get_definition_as<uintptr_t>();
 
 		if (definition == 0 || TagFieldIsOldStringId(field))
 		{

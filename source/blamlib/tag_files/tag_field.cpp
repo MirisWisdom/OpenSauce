@@ -1,8 +1,8 @@
 #include <Common/Precompile.hpp>
 #include <blamlib/tag_files/tag_field.h>
 
-#include <blamlib/tag_files/tag_groups.hpp>
 #include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {
@@ -19,7 +19,7 @@ namespace Yelo
 				break;
 
 			case e_field_type::tag_reference:
-				field_size = CAST(int, TagGroups::k_tag_field_definitions[e_field_type::tag_reference].size);
+				field_size = static_cast<int32>(TagGroups::k_tag_field_definitions[e_field_type::tag_reference].size);
 
 				if (runtime_size && TagGroups::TagFieldIsStringId(this))
 				{
@@ -29,7 +29,7 @@ namespace Yelo
 
 			case e_field_type::pad:
 			case e_field_type::skip:
-				field_size = DefinitionCast<int32>();
+				field_size = get_definition_as<int32>();
 				break;
 
 			default:

@@ -49,7 +49,7 @@ namespace Yelo
 		bool TagFieldIsOldStringId(const tag_field* field)
 		{
 			return	field->type == e_field_type::string &&
-					field->DefinitionCast<tag>() == s_string_id_yelo_definition::k_group_tag;
+					field->get_definition_as<tag>() == s_string_id_yelo_definition::k_group_tag;
 		}
 #endif
 	};
