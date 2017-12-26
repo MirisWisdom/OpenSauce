@@ -11,6 +11,7 @@
 #include <blamlib/effects/damage_effect_definitions.hpp>
 
 #include "TagGroups/TagFieldReplacements/Shared.hpp"
+#include <blamlib/tag_files/tag_group.h>
 
 namespace Yelo
 {

@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include <YeloLib/tag_files/tag_database_definitions.hpp>
+#include <blamlib/tag_files/tag_group.h>
 
 #if PLATFORM_IS_EDITOR
 	#include <blamlib/tag_files/tag_groups.hpp>

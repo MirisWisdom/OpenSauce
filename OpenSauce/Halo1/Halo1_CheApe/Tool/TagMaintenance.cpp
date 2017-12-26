@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/TagMaintenance.hpp"
+#include <blamlib/tag_files/tag_group.h>
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <blamlib/tag_files/tag_field_scanner.hpp>

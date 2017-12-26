@@ -11,6 +11,7 @@
 #include <psapi.h>
 
 #include <blamlib/cache/cache_files_structures.hpp>
+#include <blamlib/tag_files/tag_group.h>
 
 #include "Common/StringEditing.hpp"
 #include "Engine/EngineFunctions.hpp"

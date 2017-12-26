@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_group.h>
 #if PLATFORM_IS_EDITOR
 #include <YeloLib/tag_files/tag_group_memory.hpp>
 
@@ -47,7 +48,7 @@ namespace Yelo
 
 			if (s_tag_field_set_runtime_data::Enabled())
 			{
-				const auto* info = block_definition->GetRuntimeInfo();
+				const auto* info = block_definition->get_runtime_info();
 
 				block.size +=				num_of_elements * info->runtime_size;
 				block.padding +=			num_of_elements * info->counts.padding_amount;
@@ -227,7 +228,7 @@ namespace Yelo
 
 			size_t element_size = instance->get_element_size();
 			if (s_tag_field_set_runtime_data::Enabled())
-				element_size = instance->definition->GetRuntimeInfo()->runtime_size;
+				element_size = instance->definition->get_runtime_info()->runtime_size;
 
 			// our rough estimation of the size at runtime
 			size_t block_size = CAST(size_t, instance->count) * element_size;

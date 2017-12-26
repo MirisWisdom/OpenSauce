@@ -5,6 +5,7 @@
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #include "Common/Precompile.hpp"
+#include <blamlib/tag_files/tag_group.h>
 #if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_groups.hpp>
 
@@ -158,7 +159,7 @@ namespace Yelo
 				case e_field_type::array_start:
 				case e_field_type::pad:
 				case e_field_type::skip:
-					codes[code_index++] = field.DefinitionCast<int32>();
+					codes[code_index++] = field.get_definition_as<int32>();
 					break;
 
 				case e_field_type::block:
@@ -216,7 +217,7 @@ namespace Yelo
 				block_definition->byte_swap_codes = nullptr;
 			} void operator()(tag_group* group) const
 			{
-				group->header_block_definition->DoRecursiveAction(*this);
+				group->header_block_definition->do_recursive_action(*this);
 			} };
 
 			TagGroups::tag_groups_do_action<destroy_byte_swap_codes_action>();

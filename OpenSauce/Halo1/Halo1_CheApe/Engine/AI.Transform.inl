@@ -16,6 +16,7 @@
 #include <YeloLib/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <blamlib/tag_files/c_tag_iterator.h>
+#include <blamlib/tag_files/tag_group.h>
 
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 #include <blamlib/units/unit_structures.hpp>

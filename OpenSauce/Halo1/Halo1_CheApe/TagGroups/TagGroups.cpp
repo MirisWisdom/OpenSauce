@@ -14,6 +14,7 @@
 #include <blamlib/tag_files/tag_files_structures.hpp> // need structs in order to do pointer math on TagFileGlobals
 #include <blamlib/tag_files/tag_group_loading.hpp>
 #include <blamlib/tag_files/s_tag_iterator.h>
+#include <blamlib/tag_files/tag_group.h>
 
 namespace Yelo
 {

@@ -691,7 +691,7 @@ int32 GetFieldSize(const Yelo::tag_field* field)
 	{
 	case e_field_type::pad:
 	case e_field_type::skip:
-		return field->DefinitionCast<int32>();
+		return field->get_definition_as<int32>();
 	default:
 		return g_field_descriptions[field->type].Definition().size;
 	};
@@ -878,7 +878,7 @@ void PrintFieldValue(const void* field_data, const Yelo::tag_field* field_defini
 		{
 			// print each byte of a pad/skip separately, breaking at each 4 bytes
 			// and adding a new line after 4 quads
-			int pad_length = field_definition->DefinitionCast<int32>();
+			int pad_length = field_definition->get_definition_as<int32>();
 			int byte_count = 0;
 			int quad_count = 0;
 
@@ -974,7 +974,7 @@ int32 PrintFields(byte*& tag_data, uintptr_t& address, int32& block_offset, cons
 		{
 		case e_field_type::array_start:
 			{
-				int array_count = current->DefinitionCast<int32>();
+				int array_count = current->get_definition_as<int32>();
 
 				// store the first field in the array list
 				const tag_field* first_array_field = current + 1;
@@ -1279,7 +1279,7 @@ int32 FindField(std::vector<s_field_tree_entry>& field_tree, int32& block_offset
 		{
 		case e_field_type::array_start:
 			{
-				int array_count = current->DefinitionCast<int32>();
+				int array_count = current->get_definition_as<int32>();
 				const tag_field* first_array_field = current + 1;
 				for(int i = 0; i < array_count; i++)
 				{

@@ -5,6 +5,7 @@
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #include "Common/Precompile.hpp"
+#include <blamlib/tag_files/tag_group.h>
 #if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_group_verification.hpp>
 
@@ -217,7 +218,7 @@ namespace Yelo
 				VerifyTagField(block, field);
 			} };
 
-			block->FieldsDoAction<verify_tag_field_action, true>();
+			block->fields_do_action<verify_tag_field_action, true>();
 		}
 
 

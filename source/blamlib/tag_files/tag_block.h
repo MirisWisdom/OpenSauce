@@ -68,4 +68,12 @@ namespace Yelo
 		s_iterator end();
 		#endif
 	};
+
+	#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
+	BOOST_STATIC_ASSERT(sizeof(tag_block) == 0xC);
+	#define pad_tag_block PAD32 PAD32 PAD32
+	#else
+	BOOST_STATIC_ASSERT(sizeof(tag_block) == 0x8);
+	#define pad_tag_block PAD32 PAD32
+	#endif
 }

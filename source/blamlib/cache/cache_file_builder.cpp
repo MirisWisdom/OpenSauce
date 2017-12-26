@@ -6,6 +6,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/cache/cache_file_builder.hpp>
 #include <blamlib/tag_files/c_tag_iterator.h>
+#include <blamlib/tag_files/tag_group.h>
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
