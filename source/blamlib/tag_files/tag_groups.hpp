@@ -5,25 +5,27 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
-#include <blamlib/tag_files/s_tag_instance.h>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/tag_files/s_tag_field_definition.h>
-
-#if PLATFORM_IS_EDITOR
-	#include <blamlib/tag_files/tag_groups_structures.hpp>
-#endif
+#include <blamlib/tag_files/s_tag_instance.h>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/memory/data_yelo.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
 	struct tag_block;
 	struct tag_group;
+	struct tag_field;
 
 	namespace Enums
 	{
 		enum {
 			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
+			k_maximum_field_byte_swap_codes = 1024
 		};
-	};
+	}
 
 	namespace TagGroups
 	{

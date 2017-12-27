@@ -4,12 +4,18 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#if PLATFORM_IS_EDITOR
-#include <YeloLib/tag_files/tag_group_memory.hpp>
+#include <blamlib/tag_files/tag_data.h>
 
+#if PLATFORM_IS_EDITOR
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/cseries/debug_memory.hpp>
 #include <blamlib/cseries/errors.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
 #include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/tag_files/tag_group_memory.hpp>
 
 namespace Yelo
 {

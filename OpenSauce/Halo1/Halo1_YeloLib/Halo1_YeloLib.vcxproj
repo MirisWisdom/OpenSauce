@@ -126,6 +126,9 @@
     <ClInclude Include="..\..\..\source\YeloLib\open_sauce\settings\c_settings_cheape.hpp" />
     <ClInclude Include="..\..\..\source\YeloLib\render\lightmaps\c_lightmap_manager.hpp" />
     <ClInclude Include="..\..\..\source\YeloLib\render\sky\c_sky_manager.hpp" />
+    <ClInclude Include="..\..\..\source\yelolib\tag_files\TagBlock.h" />
+    <ClInclude Include="..\..\..\source\yelolib\tag_files\TagData.h" />
+    <ClInclude Include="..\..\..\source\yelolib\tag_files\TagReference.h" />
     <ClInclude Include="..\..\..\source\YeloLib\time\interpolation\c_interp_base.hpp" />
     <ClInclude Include="..\..\..\source\YeloLib\time\interpolation\c_interp_function.hpp" />
     <ClInclude Include="..\..\..\source\YeloLib\time\interpolation\c_interp_linear.hpp" />
@@ -306,6 +309,8 @@
     <ClCompile Include="..\..\..\source\YeloLib\render\lightmaps\c_lightmap_manager.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\open_sauce\project_yellow_scenario.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\open_sauce\settings\c_settings_cheape.cpp" />
+    <ClCompile Include="..\..\..\source\yelolib\tag_files\TagBlock.cpp" />
+    <ClCompile Include="..\..\..\source\yelolib\tag_files\TagData.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\units\c_unit_seat_damage_manager.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\units\c_unit_seat_boarding_manager.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\units\units_yelo.cpp" />

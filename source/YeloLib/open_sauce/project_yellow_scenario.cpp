@@ -187,7 +187,7 @@ namespace Yelo
 			bool yelo_isnt_new = false;
 			if (yelo_reference.name_length > 0 && yelo_reference.group_tag == project_yellow::k_group_tag)
 			{
-				yelo_index = blam::tag_load<project_yellow>(yelo_reference.name, 0);
+				yelo_index = blam::tag_load<project_yellow>(yelo_reference.name, FLAGS_T_ZERO(e_tag_load_flags));
 				yelo_isnt_new = true;
 			}
 			else if (for_build_cache) // Only use the internal tag for cache-building only, not for editing
@@ -213,8 +213,8 @@ namespace Yelo
 		{
 			// If we're not building a cache file, just load the scenario into memory without any of its references
 			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, for_build_cache
-				? FLAG(Flags::_tag_load_from_file_system_bit)
-				: FLAG(Flags::_tag_load_non_resolving_references_bit));
+				? FLAG_T(e_tag_load_flags, from_file_system_bit)
+				: FLAG_T(e_tag_load_flags, non_resolving_references_bit));
 
 			if(!scenario_index.IsNull())
 			{

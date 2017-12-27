@@ -5,9 +5,12 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <yelolib/tag_files/string_id_yelo.hpp>
 
-#include <blamlib/tag_files/tag_groups_structures.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_reference_definition.h>
 
 namespace Yelo
 {

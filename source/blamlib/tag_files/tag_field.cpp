@@ -7,6 +7,19 @@
 namespace Yelo
 {
 	#if PLATFORM_IS_EDITOR
+	enum
+	{
+		k_maximum_field_byte_swap_codes = 1024,
+
+		// these chars should all match the TAG_FIELD_MARKUP_* defines in tag_groups_structures_macros.hpp
+
+		k_tag_field_markup_character_advanced = '!',
+		k_tag_field_markup_character_help_prefix = '#',
+		k_tag_field_markup_character_read_only = '*',
+		k_tag_field_markup_character_units_prefix = ':',
+		k_tag_field_markup_character_block_name = '^',
+	};
+
 	size_t tag_field::get_size(
 		size_t* const runtime_size) const
 	{
@@ -42,17 +55,17 @@ namespace Yelo
 
 	bool tag_field::is_read_only() const
 	{
-		return name && strchr(name, Enums::k_tag_field_markup_character_read_only); // NOTE: engine uses strrchr
+		return name && strchr(name, k_tag_field_markup_character_read_only); // NOTE: engine uses strrchr
 	}
 
 	bool tag_field::is_advanced() const
 	{
-		return name && strchr(name, Enums::k_tag_field_markup_character_advanced); // NOTE: engine uses strrchr
+		return name && strchr(name, k_tag_field_markup_character_advanced); // NOTE: engine uses strrchr
 	}
 
 	bool tag_field::is_block_name() const
 	{
-		return name && strchr(name, Enums::k_tag_field_markup_character_block_name); // NOTE: engine uses strrchr
+		return name && strchr(name, k_tag_field_markup_character_block_name); // NOTE: engine uses strrchr
 	}
 
 	bool tag_field::is_invisible() const

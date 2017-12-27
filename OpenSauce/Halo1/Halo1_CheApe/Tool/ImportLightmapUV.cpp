@@ -86,7 +86,7 @@ namespace Yelo
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			// Load the BSP tag and check it is not readonly
-			datum_index bsp_index = blam::tag_load<TagGroups::structure_bsp>(args->bsp_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
+			datum_index bsp_index = blam::tag_load<TagGroups::structure_bsp>(args->bsp_name, FLAG_T(e_tag_load_flags, non_resolving_references_bit));
 
 			if(bsp_index.IsNull() || blam::tag_read_only(bsp_index))
 			{

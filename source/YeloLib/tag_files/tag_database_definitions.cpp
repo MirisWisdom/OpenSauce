@@ -4,18 +4,22 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <YeloLib/tag_files/tag_database_definitions.hpp>
-#include <blamlib/tag_files/tag_group.h>
 
 #if PLATFORM_IS_EDITOR
-	#include <blamlib/tag_files/tag_groups.hpp>
-#endif
+#include <yelolib/tag_files/tag_database_definitions.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-#if PLATFORM_IS_EDITOR
 		void s_tag_database_entry::NameToBlockNameBuffer(char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
 			if(this->name.Size > 0)
@@ -58,7 +62,6 @@ namespace Yelo
 		{
 		}
 
-
 		cstring PLATFORM_API tag_database_entry_reference_block_format(
 			datum_index tag_index, 
 			tag_block* block, 
@@ -95,6 +98,6 @@ namespace Yelo
 
 			return formatted_buffer;
 		}
-#endif
 	};
 };
+#endif

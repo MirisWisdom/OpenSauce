@@ -1,8 +1,10 @@
 #pragma once
 
-#include <blamlib/tag_files/tag_groups_base.hpp>
 #include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
 #include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -11,6 +13,35 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct s_tag_field_set_runtime_data;
+	}
+
+	namespace e_tag_group_flags
+	{
+		typedef enum : long_flags
+		{
+			// tag_instance of the tag group will have their file_checksum CRC'd into the resulting cache tag header's crc field 
+			include_in_tags_checksum_bit,
+			// only seen preferences_network_game use this
+			unknown1_bit,
+			// haven't seen this used at all
+			unknown2_bit,
+			// majority of tags have this set
+			reloadable_bit,
+
+			// YELO ONLY! tag_group is not meant for use in runtime builds
+			debug_only_yelo_bit,
+			// YELO ONLY! tag_group is non-standard (ie, official). This is applied to those defined in CheApe.map
+			// Set at startup.
+			non_standard_yelo_bit,
+			// YELO ONLY! tag_group is referenced in other groups via a tag_reference or as a parent group
+			// doesn't consider tag_references which can reference ANYTHING (eg, tag_collection's field).
+			// Set at startup.
+			referenced_yelo_bit,
+
+			k_count
+		} type_t;
+
+		typedef flags_type<type_t> flags_t;
 	}
 
 	// Postprocess a tag definition (eg, automate the creation of fields, etc)
@@ -22,7 +53,7 @@ namespace Yelo
 	struct tag_group
 	{
 		cstring name;
-		long_flags flags;
+		e_tag_group_flags::flags_t flags;
 		tag group_tag;
 		tag parent_group_tag;
 		int16 version;

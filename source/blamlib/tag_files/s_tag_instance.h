@@ -4,7 +4,7 @@
 #include <blamlib/memory/data_base.hpp>
 #include <blamlib/memory/datum_index.hpp>
 #include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
 {

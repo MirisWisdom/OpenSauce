@@ -4,16 +4,20 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_group.h>
-#if PLATFORM_IS_EDITOR
-#include <YeloLib/tag_files/tag_group_memory.hpp>
 
-#include <blamlib/memory/byte_swapping_base.hpp>
+#if PLATFORM_IS_EDITOR
+#include <yelolib/tag_files/tag_group_memory.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_groups.hpp>
-#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
-#include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <yelolib/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {
@@ -276,7 +280,7 @@ namespace Yelo
 			IncrementDataFieldCount();
 
 			IncrementDebugDataSize(tag_data::k_debug_data_size);
-			if (definition->IsConsideredDebugOnly())
+			if (definition->is_considered_debug_only())
 				flags.has_debug_child_data = true;
 
 			g_tag_group_memory_globals.data_definitions->insert(definition);

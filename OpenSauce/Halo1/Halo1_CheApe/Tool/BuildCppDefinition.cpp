@@ -6,14 +6,18 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/BuildCppDefinition.hpp"
-#include <blamlib/tag_files/tag_group.h>
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <YeloLib/cseries/value_conversion.hpp>
-
-#include "Common/StringEditing.hpp"
-#include "Engine/EngineFunctions.hpp"
-#include "TagGroups/TagGroups.hpp"
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_reference_definition.h>
+#include <Common/StringEditing.hpp>
+#include <Engine/EngineFunctions.hpp>
+#include <TagGroups/TagGroups.hpp>
+#include <yelolib/cseries/value_conversion.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
 {

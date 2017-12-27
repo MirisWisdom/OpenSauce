@@ -7,10 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Engine/AnimationUpgrade.hpp"
 
-#include "TagGroups/TagGroups.hpp"
-
-#include <blamlib/models/model_animations.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/models/model_animation_definitions.hpp>
+#include <blamlib/models/model_animations.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

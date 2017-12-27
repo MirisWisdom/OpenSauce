@@ -7,16 +7,18 @@
 #include "Common/Precompile.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
 
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/game/game_globals.hpp>
 #include <blamlib/game/game_globals_definitions.hpp>
 #include <blamlib/scenario/scenario.hpp>
 #include <blamlib/scenario/scenario_definitions.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/units/biped_structures.hpp>
 #include <blamlib/units/unit_structures.hpp>
-
-#include "Engine/EngineFunctions.hpp"
-#include "TagGroups/TagGroups.hpp"
-#include <blamlib/tag_files/tag_group.h>
+#include <Engine/EngineFunctions.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

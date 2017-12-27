@@ -7,14 +7,24 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
 #include <blamlib/items/weapon_definitions.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/tag_files/s_tag_iterator.h>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
 #include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_files_structures.hpp> // need structs in order to do pointer math on TagFileGlobals
-#include <blamlib/tag_files/tag_group_loading.hpp>
-#include <blamlib/tag_files/s_tag_iterator.h>
+#include <blamlib/tag_files/tag_files_structures.hpp>
 #include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_group_loading.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/memory/data_yelo.hpp>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {
@@ -77,7 +87,7 @@ namespace Yelo
 				datum_index, tag, cstring);
 			Memory::WriteRelativeJmp(blam::tag_unload, GET_FUNC_VPTR(TAG_UNLOAD), true);
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_load, TAG_LOAD,
-				datum_index, tag, cstring, long_flags);
+				datum_index, tag, cstring, e_tag_load_flags::flags_t);
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_reload, TAG_RELOAD,
 				datum_index, tag, cstring);
 

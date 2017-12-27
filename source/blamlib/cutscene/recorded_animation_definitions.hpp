@@ -9,6 +9,7 @@
 
 #include <blamlib/cutscene/recorded_animation_playback_v1.hpp>
 #include <blamlib/cutscene/recorded_animation_playback.hpp>
+#include <blamlib/tag_files/tag_data.h>
 
 namespace Yelo
 {

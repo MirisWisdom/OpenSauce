@@ -417,9 +417,6 @@
     <ClInclude Include="..\..\..\external_libraries\zlib\zutil.h">
       <Filter>.zlib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\external_libraries_cpp\cseries\MacrosCpp.hpp">
-      <Filter>.Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\YeloLib\cseries\memory_yelo.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
@@ -581,6 +578,16 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\YeloLib\cseries\random.hpp">
       <Filter>cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp" />
+    <ClInclude Include="..\..\..\source\yelolib\tag_files\TagBlock.h">
+      <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\yelolib\tag_files\TagData.h">
+      <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\yelolib\tag_files\TagReference.h">
+      <Filter>tag_files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -892,6 +899,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\YeloLib\cseries\random.cpp">
       <Filter>cseries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\yelolib\tag_files\TagBlock.cpp">
+      <Filter>tag_files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\yelolib\tag_files\TagData.cpp">
+      <Filter>tag_files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

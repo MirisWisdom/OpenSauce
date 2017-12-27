@@ -13,7 +13,7 @@ namespace Yelo
 
 	bool tag_group::is_debug_only() const
 	{
-		return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit);
+		return flags.test(e_tag_group_flags::debug_only_yelo_bit);
 	}
 	#endif
 }
