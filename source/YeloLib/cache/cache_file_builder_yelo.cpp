@@ -5,23 +5,21 @@
 */
 #include "Common/Precompile.hpp"
 #include <YeloLib/cache/cache_file_builder_yelo.hpp>
-#include <blamlib/tag_files/c_tag_iterator.h>
-#include <blamlib/tag_files/tag_group.h>
-#if PLATFORM_TYPE == PLATFORM_TOOL
 
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <blamlib/cache/cache_file_builder.hpp>
-#include <blamlib/cache/predicted_resources.hpp> // for predicated resources
-#include <blamlib/models/model_definitions.hpp> // for predicated resources
-#include <blamlib/objects/object_definitions.hpp> // for predicated resources
-#include <blamlib/shaders/shader_definitions.hpp> // for predicated resources
+#include <blamlib/cache/predicted_resources.hpp>
+#include <blamlib/models/model_definitions.hpp>
+#include <blamlib/objects/object_definitions.hpp>
+#include <blamlib/shaders/shader_definitions.hpp>
+#include <blamlib/tag_files/c_tag_iterator.h>
+#include <blamlib/tag_files/tag_block_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_groups.hpp>
-#include <YeloLib/memory/memory_interface_base.hpp>
-#include <YeloLib/open_sauce/che_ape/che_ape_api.hpp>
-#include <YeloLib/cache/cache_file_memory_gestalt_definitions.hpp>
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp> // for cull tags
-#include <YeloLib/shaders/shader_postprocess_definitions.hpp> // for predicated resources
-#include <YeloLib/tag_files/tag_group_memory.hpp>
+#include <yelolib/open_sauce/che_ape/che_ape_api.hpp>
+#include <yelolib/open_sauce/project_yellow_global_definitions.hpp>
+#include <yelolib/shaders/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {

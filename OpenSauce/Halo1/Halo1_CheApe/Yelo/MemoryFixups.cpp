@@ -7,14 +7,15 @@
 #include "Common/Precompile.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/tag_files/files.hpp>
+#include <blamlib/tag_files/tag_field.h>
 #include <blamlib/tool/tool.hpp>
-
-#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
-
-#include "Settings/Settings.hpp"
-#include "Engine/EngineFunctions.hpp"
-#include "TagGroups/TagGroups.hpp"
+#include <Engine/EngineFunctions.hpp>
+#include <Settings/Settings.hpp>
+#include <TagGroups/TagGroups.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/open_sauce/settings/c_settings_cheape.hpp>
 
 namespace Yelo
 {

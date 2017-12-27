@@ -9,9 +9,12 @@
 
 #if PLATFORM_TYPE == PLATFORM_GUERILLA
 #include <blamlib/guerilla/field_dialog_structures.hpp>
-#include "Guerilla/string_dialog_extensions.hpp"
-#include "Guerilla/tag_reference_dialog_extensions.hpp"
-#include "TagGroups/TagGroups.hpp"
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/tag_files/tag_field.h>
+#include <Guerilla/string_dialog_extensions.hpp>
+#include <Guerilla/tag_reference_dialog_extensions.hpp>
+#include <TagGroups/TagGroups.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

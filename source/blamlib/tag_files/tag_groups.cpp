@@ -6,15 +6,25 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/tag_files/tag_groups.hpp>
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
+#include <blamlib/math/color_math.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/models/model_definitions.hpp>
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_group_loading.hpp>
-#include <YeloLib/tag_files/string_id_yelo.hpp>
-#include <YeloLib/tag_files/tag_group_memory.hpp>
 #include <blamlib/tag_files/s_tag_iterator.h>
 #include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_data.h>
 #include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
+#include <blamlib/tag_files/tag_field_scanner.hpp>
 #include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_group_loading.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/memory/data_yelo.hpp>
+#include <yelolib/tag_files/string_id_yelo.hpp>
+#include <yelolib/tag_files/tag_group_memory.hpp>
 
 namespace Yelo { namespace TagGroups
 {
@@ -85,21 +95,6 @@ namespace Yelo { namespace TagGroups
 };
 
 #if PLATFORM_IS_EDITOR
-bool tag_reference_definition::s_group_tag_iterator::operator!=(
-	const s_group_tag_iterator& other) const
-{
-	if (other.IsEndHack())
-	{
-		return *m_group_tags != NONE;
-	}
-	if (this->IsEndHack())
-	{
-		return *other.m_group_tags != NONE;
-	}
-
-	return m_group_tags != other.m_group_tags;
-}
-
 int __cdecl tag_group::compare_by_name_proc(
 	void*,
 	const tag_group*const* lhs,
@@ -294,7 +289,7 @@ namespace blam
 		auto success = false;
 		if (reference->group_tag != NONE && !is_null_or_empty(reference->name))
 		{
-			reference->tag_index = tag_load(reference->group_tag, reference->name, 0);
+			reference->tag_index = tag_load(reference->group_tag, reference->name, FLAGS_T_ZERO(e_tag_load_flags));
 			success = !reference->tag_index.IsNull();
 		}
 		else
@@ -312,7 +307,7 @@ namespace blam
 		auto success = false;
 		if (reference.group_tag == expected_group_tag && !is_null_or_empty(reference.name))
 		{
-			reference.tag_index = tag_load(reference.group_tag, reference.name, 0);
+			reference.tag_index = tag_load(reference.group_tag, reference.name, FLAGS_T_ZERO(e_tag_load_flags));
 			success = !reference.tag_index.IsNull();
 		}
 		else
@@ -470,7 +465,7 @@ namespace blam
 			new_element,
 			1,
 			&dummy_position,
-			FLAG(Flags::_tag_load_for_editor_bit),
+			FLAG_T(e_tag_load_flags, for_editor_bit),
 			datum_index::null);
 
 		if (!success)

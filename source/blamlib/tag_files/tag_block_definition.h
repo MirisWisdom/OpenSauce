@@ -1,10 +1,11 @@
 #pragma once
 
-#include <blamlib/tag_files/c_tag_iterator.h>
-#include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
+#include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/c_tag_iterator.h>
+#include <blamlib/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
 {
@@ -13,6 +14,19 @@ namespace Yelo
 	namespace TagGroups
 	{
 		struct s_tag_field_set_runtime_data;
+	}
+
+	namespace e_tag_block_definition_flags
+	{
+		typedef enum : long_flags
+		{
+			// set when block/data/reference fields are found during initialization
+			has_children_bit,
+
+			k_count
+		}type_t;
+
+		typedef flags_type<type_t> flags_t;
 	}
 
 	// Called as each element is read from the tag stream
@@ -37,7 +51,7 @@ namespace Yelo
 	struct tag_block_definition
 	{
 		cstring name;
-		long_flags flags;
+		e_tag_block_definition_flags::flags_t flags;
 		int32 maximum_element_count;
 		size_t element_size;
 		void* unused0;

@@ -10,22 +10,6 @@
 
 namespace Yelo
 {
-#if PLATFORM_IS_EDITOR
-	void tag_reference::clear()
-	{
-		blam::tag_reference_clear(*this);
-	}
-
-	void tag_reference::set(tag group_tag, cstring name)
-	{
-		blam::tag_reference_set(*this, group_tag, name);
-	}	
-
-	bool tag_data::resize(int32 new_size)
-	{
-		return blam::tag_data_resize(this, new_size);
-	}
-#endif
 
 	namespace TagGroups
 	{

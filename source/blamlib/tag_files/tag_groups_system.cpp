@@ -5,15 +5,20 @@
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_group.h>
-#if PLATFORM_IS_EDITOR
-#include <blamlib/tag_files/tag_groups.hpp>
 
+#if PLATFORM_IS_EDITOR
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
 #include <blamlib/memory/byte_swapping.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_group_verification.hpp>
-#include <YeloLib/memory/memory_interface_base.hpp>
-#include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <blamlib/tag_files/tag_groups.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/memory/data_yelo.hpp>
+#include <yelolib/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {
@@ -182,7 +187,7 @@ namespace Yelo
 			} while(fields[field_index++].type != e_field_type::terminator);
 
 			if(has_children)
-				SET_FLAG(block_definition->flags, Flags::_tag_block_has_children_bit, true);
+				block_definition->flags.set(e_tag_block_definition_flags::has_children_bit, true);
 
 			block_definition->byte_swap_codes = new byte_swap_code_t[code_index];
 			if(!block_definition->byte_swap_codes)
@@ -290,7 +295,7 @@ namespace Yelo
 			for (auto kv : TagGroups::TagInstances())
 			{
 				if (kv->is_orphan ||
-					!TEST_FLAG(tag_group_get(kv->group_tag)->flags, Flags::_tag_group_include_in_tags_checksum_bit))
+					!tag_group_get(kv->group_tag)->flags.test(e_tag_group_flags::include_in_tags_checksum_bit))
 					continue;
 
 				crc_checksum_buffer(crc, &kv->file_checksum, sizeof(kv->file_checksum));

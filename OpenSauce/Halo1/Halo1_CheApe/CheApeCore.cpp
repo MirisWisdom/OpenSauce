@@ -138,7 +138,7 @@ namespace Yelo
 						*copy_to_address = data[index].definition;
 
 						// also mark the group as being an unofficial group
-						SET_FLAG(data[index].definition->flags, Flags::_tag_group_non_standard_yelo_bit, true);
+						data[index].definition->flags.set(e_tag_group_flags::non_standard_yelo_bit, true);
 					}
 				}
 			}new_tag_groups;

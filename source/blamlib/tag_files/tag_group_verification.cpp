@@ -5,11 +5,19 @@
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_group.h>
-#if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_group_verification.hpp>
 
-#include <YeloLib/tag_files/string_id_yelo.hpp>
+#if PLATFORM_IS_EDITOR
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
+#include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_reference_definition.h>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {
@@ -18,7 +26,7 @@ namespace Yelo
 		// called in the 'verify group fields' initialize step on tag_reference_definitions
 		static void TagGroupMarkAsReferenced(tag group_tag)
 		{
-			SET_FLAG(blam::tag_group_get(group_tag)->flags, Flags::_tag_group_referenced_yelo_bit, true);
+			blam::tag_group_get(group_tag)->flags.set(e_tag_group_flags::referenced_yelo_bit, true);
 		}
 
 		void CheckForUnreferencedGroups()
@@ -100,7 +108,7 @@ namespace Yelo
 			auto* definition = field.get_definition<tag_reference_definition>();
 			YELO_ASSERT_DISPLAY(definition, "no definition specified for tag reference field in block %s.",
 				block_definition->name); // NOTE: added owner block name to info
-			YELO_ASSERT( VALID_FLAGS(definition->flags, Flags::k_number_of_tag_group_tag_reference_flags) );
+			YELO_ASSERT(definition->flags.is_valid());
 
 			group_tag_to_string gt_string; gt_string.Terminate();
 
@@ -135,7 +143,7 @@ namespace Yelo
 			YELO_ASSERT_DISPLAY(definition, "no definition specified for tag_data field in block %s.",
 				block_definition->name); // NOTE: added owner block name to info
 			YELO_ASSERT( definition->name );
-			YELO_ASSERT( VALID_FLAGS(definition->flags, Flags::k_number_of_tag_data_definition_flags) );
+			YELO_ASSERT( definition->flags.is_valid());
 			YELO_ASSERT( definition->maximum_size>0 );
 		}
 
@@ -207,7 +215,7 @@ namespace Yelo
 		{
 			YELO_ASSERT( block );
 			YELO_ASSERT( block->name );
-			YELO_ASSERT( VALID_FLAGS(block->flags, Flags::k_number_of_tag_block_definition_flags) );
+			YELO_ASSERT( block->flags.is_valid() );
 			YELO_ASSERT( block->maximum_element_count>=0 );
 			YELO_ASSERT( CAST(int,block->element_size)>=0 );
 			YELO_ASSERT( block->fields );

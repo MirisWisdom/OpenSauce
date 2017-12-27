@@ -157,11 +157,11 @@ namespace Yelo
 #if PLATFORM_USES_CACHE_FILES
 			scenario_index = cache_file_tags_load(scenario_name);
 #else
-			scenario_index = tag_load<TagGroups::scenario>(scenario_name, 0);
+			scenario_index = tag_load<TagGroups::scenario>(scenario_name, FLAGS_T_ZERO(e_tag_load_flags));
 			if (scenario_index.IsNull())
 				return datum_index::null;
 
-			datum_index game_globals_index = tag_load<TagGroups::s_game_globals>(Scenario::K_GAME_GLOBALS_TAG_NAME, 0);
+			datum_index game_globals_index = tag_load<TagGroups::s_game_globals>(Scenario::K_GAME_GLOBALS_TAG_NAME, FLAGS_T_ZERO(e_tag_load_flags));
 			if (game_globals_index.IsNull())
 			{
 				YELO_WARN("couldn't load game globals (get new tags)");

@@ -4,14 +4,16 @@
 
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
-#pragma once
 #include "Common/Precompile.hpp"
 #include "Tool/RuntimeCacheView.hpp"
+
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include <psapi.h>
 
 #include <blamlib/cache/cache_files_structures.hpp>
 #include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_field.h>
+#include <blamlib/tag_files/tag_block_definition.h>
 
 #include "Common/StringEditing.hpp"
 #include "Engine/EngineFunctions.hpp"

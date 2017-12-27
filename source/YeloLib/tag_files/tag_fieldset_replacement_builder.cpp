@@ -4,11 +4,15 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#if PLATFORM_IS_EDITOR
-#include <YeloLib/tag_files/tag_fieldset_replacement_builder.hpp>
 
+#if PLATFORM_IS_EDITOR
+#include <yelolib/tag_files/tag_fieldset_replacement_builder.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
 #include <blamlib/tag_files/tag_group_verification.hpp>
-#include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {

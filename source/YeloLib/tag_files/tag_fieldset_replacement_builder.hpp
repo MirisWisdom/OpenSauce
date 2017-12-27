@@ -12,6 +12,8 @@
 
 namespace Yelo
 {
+	struct tag_reference_definition;
+
 	namespace TagGroups
 	{
 		// Fieldsets are replaced before anything major is done to tag groups. Eg, building group parents.

@@ -7,18 +7,19 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/game/game_globals_definitions.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/math/real_math.hpp>
 #include <blamlib/scenario/scenario_definitions.hpp>
-
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/tag_files/tag_database_definitions.hpp>
-
-#include "Engine/EngineFunctions.hpp"
-#include "Engine/GrenadeTypesUpgrade.hpp"
-#include "TagGroups/TagGroups.hpp"
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_field.h>
 #include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_reference_definition.h>
+#include <Engine/EngineFunctions.hpp>
+#include <Engine/GrenadeTypesUpgrade.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/open_sauce/project_yellow_global_definitions.hpp>
+#include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelolib/tag_files/tag_database_definitions.hpp>
 
 namespace Yelo
 {

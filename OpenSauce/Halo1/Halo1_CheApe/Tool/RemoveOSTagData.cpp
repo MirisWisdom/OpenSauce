@@ -63,22 +63,22 @@ namespace Yelo
 		struct s_tag_loading_type
 		{
 			cstring m_tag_type;
-			datum_index (*m_tag_load)(cstring, long_flags);
+			datum_index (*m_tag_load)(cstring, e_tag_load_flags::flags_t);
 		};
 
 		static s_tag_loading_type g_data_loading_types[] = 
 		{
-			{ "scenario",					[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::scenario>(location, flags); } },
-			{ "unit",						[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_unit_definition>(location, flags); } },
-			{ "biped",						[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_biped_definition>(location, flags); } },
-			{ "vehicle",					[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_vehicle_definition>(location, flags); } },
-			{ "shader_model",				[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_shader_model_definition>(location, flags); } },
-			{ "shader_environment",			[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_shader_environment_definition>(location, flags); } },
-			{ "contrail",					[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_contrail_definition>(location, flags); } },
-			{ "particle",					[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_particle_definition>(location, flags); } },
-			{ "particle_system",			[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_particle_system_definition>(location, flags); } },
-			{ "weather_particle_system",	[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::s_weather_particle_system_definition>(location, flags); } },
-			{ "model_animations",			[](cstring location, long_flags flags) { return blam::tag_load<TagGroups::model_animation_graph>(location, flags); } }
+			{ "scenario",					[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::scenario>(location, flags); } },
+			{ "unit",						[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_unit_definition>(location, flags); } },
+			{ "biped",						[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_biped_definition>(location, flags); } },
+			{ "vehicle",					[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_vehicle_definition>(location, flags); } },
+			{ "shader_model",				[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_shader_model_definition>(location, flags); } },
+			{ "shader_environment",			[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_shader_environment_definition>(location, flags); } },
+			{ "contrail",					[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_contrail_definition>(location, flags); } },
+			{ "particle",					[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_particle_definition>(location, flags); } },
+			{ "particle_system",			[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_particle_system_definition>(location, flags); } },
+			{ "weather_particle_system",	[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::s_weather_particle_system_definition>(location, flags); } },
+			{ "model_animations",			[](cstring location, e_tag_load_flags::flags_t flags) { return blam::tag_load<TagGroups::model_animation_graph>(location, flags); } }
 		};
 
 		static std::map<const tag, void (*)(const datum_index)> g_data_removal_functions =
@@ -145,7 +145,9 @@ namespace Yelo
 
 			// Load tag with resolved references or not
 			Console::ColorPrint(Enums::_console_color_white, "Loading tags...");
-			auto base_tag_index = removal_type.m_tag_load(args->tag_name, do_recursive ? 0 : FLAG(Flags::_tag_load_non_resolving_references_bit));
+			auto base_tag_index = removal_type.m_tag_load(args->tag_name, do_recursive 
+				? FLAGS_T_ZERO(e_tag_load_flags)
+				: FLAG_T(e_tag_load_flags, non_resolving_references_bit));
 			if(base_tag_index.IsNull())
 			{
 				Console::PrintNewLine();

@@ -6,12 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
-#include <YeloLib/tag_files/tag_fieldset_replacement_builder.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/effects/damage_effect_definitions.hpp>
-
-#include "TagGroups/TagFieldReplacements/Shared.hpp"
+#include <blamlib/tag_files/tag_block_definition.h>
 #include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
+#include <yelolib/tag_files/tag_fieldset_replacement_builder.hpp>
 
 namespace Yelo
 {

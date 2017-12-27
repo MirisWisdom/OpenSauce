@@ -6,12 +6,17 @@
 */
 #pragma once
 
-#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
-#include <YeloLib/tag_files/tag_fieldset_replacement_builder.hpp>
-#include <blamlib/units/unit_definitions.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/effects/damage_effect_definitions.hpp>
-
-#include "TagGroups/TagFieldReplacements/Shared.hpp"
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_groups_structures_macros.hpp>
+#include <blamlib/units/unit_definitions.hpp>
+#include <TagGroups/TagFieldReplacements/Shared.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/tag_files/tag_fieldset_replacement_builder.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
 #include "Tool/BuildCacheFile.hpp"

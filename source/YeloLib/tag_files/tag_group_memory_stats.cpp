@@ -4,14 +4,20 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_group.h>
-#if PLATFORM_IS_EDITOR
-#include <YeloLib/tag_files/tag_group_memory.hpp>
+#include <blamlib/tag_files/tag_data.h>
 
+#if PLATFORM_IS_EDITOR
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_groups.hpp>
-#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <yelolib/tag_files/tag_group_memory.hpp>
 
 namespace Yelo
 {
@@ -68,7 +74,7 @@ namespace Yelo
 			data.count++;
 			size_t total_size = CAST(size_t, instance->size);
 
-			if (data_definition->IsConsideredDebugOnly())
+			if (data_definition->is_considered_debug_only())
 			{
 				data.debug_bytes_size += total_size;
 				data.size = 0;
@@ -103,7 +109,7 @@ namespace Yelo
 
 			int32 size = NONE;
 			int32 debug_size = NONE;
-			if (data_definition->IsConsideredDebugOnly())
+			if (data_definition->is_considered_debug_only())
 			{
 				group_totals.debug_bytes_size += data.debug_bytes_size;
 				debug_size = CAST(int32, data.debug_bytes_size);
@@ -258,7 +264,7 @@ namespace Yelo
 							size_t instance_size = CAST(size_t, data_instance->size);
 
 							// don't update the result block_size if the data field is debug-only
-							if (!data_stats.data_definition->IsConsideredDebugOnly())
+							if (!data_stats.data_definition->is_considered_debug_only())
 								block_size += instance_size;
 						}
 					} break;

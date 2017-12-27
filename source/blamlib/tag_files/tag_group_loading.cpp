@@ -4,18 +4,27 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_group.h>
+#include <blamlib/tag_files/tag_data.h>
+
 #if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_group_loading.hpp>
-
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
 #include <blamlib/memory/byte_swapping.hpp>
-#include <blamlib/memory/data.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/models/model_definitions.hpp>
+#include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_block_definition.h>
+#include <blamlib/tag_files/tag_data_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
 #include <blamlib/tag_files/tag_files.hpp>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_groups.hpp>
-#include <YeloLib/tag_files/tag_group_memory.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_reference_definition.h>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/memory/data_yelo.hpp>
+#include <yelolib/tag_files/tag_group_memory.hpp>
 
 
 /* TODO:
@@ -87,8 +96,11 @@ namespace Yelo
 			}
 		}
 
-		bool tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
-			int32* position_reference, long_flags read_flags,
+		bool tag_block_read_recursive(
+			const tag_block_definition* definition,
+			tag_block* block,
+			int32* position_reference,
+			e_tag_load_flags::flags_t read_flags,
 			// NOTE: nonstandard parameters
 			datum_index tag_index);
 
@@ -137,8 +149,12 @@ namespace Yelo
 			TAG_DATA_DELETE(*data);
 		}
 
-		static bool tag_data_read_recursive(tag_data_definition* data_definition, void* block_element, tag_data* data, 
-			int32* position_reference, long_flags read_flags)
+		static bool tag_data_read_recursive(
+			tag_data_definition* data_definition,
+			void* block_element,
+			tag_data* data,
+			int32* position_reference,
+			e_tag_load_flags::flags_t read_flags)
 		{
 			YELO_ASSERT( data_definition );
 			void* data_address = nullptr;
@@ -146,8 +162,8 @@ namespace Yelo
 			data->stream_position = *position_reference;
 			data->definition = data_definition;
 
-			if( TEST_FLAG(data_definition->flags, Flags::_tag_data_never_streamed_bit)==false ||
-				TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit))
+			if( data_definition->flags.test(e_tag_data_flags::never_streamed_bit)==false ||
+				read_flags.test(e_tag_load_flags::for_editor_bit))
 			{
 				int size = data->size;
 				if(size < 0 || size > data_definition->maximum_size)
@@ -177,8 +193,11 @@ namespace Yelo
 			return success;
 		}
 
-		static bool tag_reference_read_recursive(tag_reference_definition* definition, tag_reference* reference,
-			int32* position_reference, long_flags read_flags)
+		static bool tag_reference_read_recursive(
+			tag_reference_definition* definition,
+			tag_reference* reference,
+			int32* position_reference,
+			e_tag_load_flags::flags_t read_flags)
 		{
 			// NOTE: engine doesn't ASSERT anything
 
@@ -229,8 +248,12 @@ namespace Yelo
 			return true;
 		}
 
-		bool tag_block_read_children_recursive(const tag_block_definition *definition, void *address, int32 count, 
-			int32* position_reference, long_flags read_flags,
+		bool tag_block_read_children_recursive(
+			const tag_block_definition *definition,
+			void *address,
+			int32 count,
+			int32* position_reference,
+			e_tag_load_flags::flags_t read_flags,
 			// NOTE: nonstandard parameters
 			datum_index tag_index)
 		{
@@ -248,28 +271,38 @@ namespace Yelo
 				{
 					bool read_result;
 
-					switch(field.GetType())
+					switch (field.GetType())
 					{
-					case e_field_type::data: read_result = 
-						tag_data_read_recursive(field.DefinitionAs<tag_data_definition>(), block_element,
-							field.As<tag_data>(), 
-							position_reference, read_flags);
-						break;
+						case e_field_type::data:
+							read_result =
+								tag_data_read_recursive(
+									field.DefinitionAs<tag_data_definition>(),
+									block_element,
+									field.As<tag_data>(),
+									position_reference,
+									read_flags);
+							break;
 
-					case e_field_type::block: read_result = 
-						tag_block_read_recursive(field.DefinitionAs<tag_block_definition>(),
-							field.As<tag_block>(), 
-							position_reference, read_flags,
-							tag_index);
-						break;
+						case e_field_type::block:
+							read_result =
+								tag_block_read_recursive(
+									field.DefinitionAs<tag_block_definition>(),
+									field.As<tag_block>(),
+									position_reference,
+									read_flags,
+									tag_index);
+							break;
 
-					case e_field_type::tag_reference: read_result = 
-						tag_reference_read_recursive(field.DefinitionAs<tag_reference_definition>(),
-							field.As<tag_reference>(), 
-							position_reference, read_flags);
-						break;
+						case e_field_type::tag_reference:
+							read_result =
+								tag_reference_read_recursive(
+									field.DefinitionAs<tag_reference_definition>(),
+									field.As<tag_reference>(),
+									position_reference,
+									read_flags);
+							break;
 
-					YELO_ASSERT_CASE_UNREACHABLE();
+						YELO_ASSERT_CASE_UNREACHABLE();
 					}
 
 					if(!read_result)
@@ -306,8 +339,11 @@ namespace Yelo
 
 			return success;
 		}
-		static bool tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
-			int32* position_reference, long_flags read_flags,
+		static bool tag_block_read_recursive(
+			const tag_block_definition* definition,
+			tag_block* block,
+			int32* position_reference,
+			e_tag_load_flags::flags_t read_flags,
 			// NOTE: nonstandard parameters
 			datum_index tag_index)
 		{
@@ -347,15 +383,15 @@ namespace Yelo
 
 			*position_reference += elements_size;
 
-			if( TEST_FLAG(definition->flags, Flags::_tag_block_has_children_bit) )
+			if( definition->flags.test(e_tag_block_definition_flags::has_children_bit) )
 			{
 				if(!tag_block_read_children_recursive(definition, block->address, block->count, 
-					position_reference, read_flags, tag_index))
+				                                      position_reference, read_flags, tag_index))
 					return false;
 			}
 
 			// engine doesn't do this logic, but they also don't use an enum for 'postprocess_mode'
-			auto postprocess_mode = TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit) 
+			auto postprocess_mode = read_flags.test(e_tag_load_flags::for_editor_bit)
 				? Enums::_tag_postprocess_mode_for_editor
 				: Enums::_tag_postprocess_mode_for_runtime;
 			if( !tag_block_postprocess(definition, block, postprocess_mode, tag_index) )
@@ -364,7 +400,10 @@ namespace Yelo
 			return true;
 		}
 
-		static bool tag_reference_resolve_recursive(tag_reference_definition* definition, tag_reference* reference, long_flags read_flags)
+		static bool tag_reference_resolve_recursive(
+			tag_reference_definition* definition,
+			tag_reference* reference,
+			e_tag_load_flags::flags_t read_flags)
 		{
 			datum_index tag_index = datum_index::null;
 			bool success = true;
@@ -373,16 +412,16 @@ namespace Yelo
 				reference->group_tag = TagGroups::gbxmodel_definition::k_group_tag;
 
 			if( reference->group_tag != NONE &&
-				TEST_FLAG(read_flags, Flags::_tag_load_non_resolving_references_bit)==false &&
-				TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit)==false
+				read_flags.test(e_tag_load_flags::non_resolving_references_bit)==false &&
+				definition->flags.test(e_tag_reference_flags::non_resolving_bit)==false
 				)
 			{
 				if( *reference->name != '\0' ||
-					(TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit)==false &&
-					 TEST_FLAG(definition->flags, Flags::_tag_reference_unknown0_bit))
+					(read_flags.test(e_tag_load_flags::for_editor_bit)==false &&
+					 definition->flags.test(e_tag_reference_flags::unknown0_bit))
 					)
 				{
-					tag_index = tag_load(reference->group_tag, reference->name, 0);
+					tag_index = tag_load(reference->group_tag, reference->name, FLAGS_T_ZERO(e_tag_load_flags));
 					success = !tag_index.IsNull();
 				}
 			}
@@ -390,7 +429,10 @@ namespace Yelo
 			reference->tag_index = tag_index;
 			return success;
 		}
-		static bool tag_references_resolve_recursive(tag_block_definition* definition, tag_block* block, long_flags read_flags)
+		static bool tag_references_resolve_recursive(
+			tag_block_definition* definition,
+			tag_block* block,
+			e_tag_load_flags::flags_t read_flags)
 		{
 			bool success = true;
 
@@ -406,14 +448,14 @@ namespace Yelo
 					{
 					case e_field_type::block: read_result = 
 						tag_references_resolve_recursive(field.DefinitionAs<tag_block_definition>(),
-							  field.As<tag_block>(), 
-							  read_flags);
+						                                 field.As<tag_block>(), 
+						                                 read_flags);
 						break;
 
 					case e_field_type::tag_reference: read_result = 
 						tag_reference_resolve_recursive(field.DefinitionAs<tag_reference_definition>(),
-							field.As<tag_reference>(), 
-							read_flags);
+						                                field.As<tag_reference>(), 
+						                                read_flags);
 						break;
 
 					YELO_ASSERT_CASE_UNREACHABLE();
@@ -650,7 +692,8 @@ namespace Yelo
 
 				int32 position = root_definition->element_size;
 				if( !tag_block_read_children_recursive(root_definition, root_element, 1, 
-						&position, FLAG(Flags::_tag_load_for_editor_bit), tag_index) )
+				                                       &position,
+				                                       FLAG_T(e_tag_load_flags, for_editor_bit), tag_index) )
 				{
 					YELO_WARN("couldn't create new %s tag '%s'.",
 						group->name, name); // NOTE: included group name
@@ -671,7 +714,10 @@ namespace Yelo
 			return datum_index::null;
 		}
 
-		datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags flags)
+		datum_index PLATFORM_API tag_load(
+			tag group_tag,
+			cstring name,
+			e_tag_load_flags::flags_t flags)
 		{
 			YELO_ASSERT(name);
 
@@ -693,7 +739,7 @@ namespace Yelo
 					break;
 
 				bool is_readonly; uint32 checksum;
-				if (!tag_file_open(group_tag, name, &is_readonly, &checksum, TEST_FLAG(flags, Flags::_tag_load_from_file_system_bit)))
+				if (!tag_file_open(group_tag, name, &is_readonly, &checksum, flags.test(e_tag_load_flags::from_file_system_bit)))
 				{
 					tag_group_loading_add_non_loaded_tag(group_tag, name);
 
@@ -712,9 +758,9 @@ namespace Yelo
 				auto* instance = TagGroups::TagInstances()[tag_index];
 				tag_instance_setup_groups_and_name(instance, group, name);
 
-				instance->is_verified = TEST_FLAG(flags, Flags::_tag_load_for_editor_bit);
+				instance->is_verified = flags.test(e_tag_load_flags::for_editor_bit);
 				// engine doesn't do this logic, but they also don't use an enum for 'postprocess_mode'
-				auto postprocess_mode = TEST_FLAG(flags, Flags::_tag_load_for_editor_bit) 
+				auto postprocess_mode = flags.test(e_tag_load_flags::for_editor_bit)
 					? Enums::_tag_postprocess_mode_for_editor
 					: Enums::_tag_postprocess_mode_for_runtime;
 				instance->reload_index = datum_index::null;
@@ -742,7 +788,7 @@ namespace Yelo
 					break;
 				}
 
-				if(	TEST_FLAG(flags, Flags::_tag_load_for_editor_bit) &&
+				if(flags.test(e_tag_load_flags::for_editor_bit) &&
 					!tag_block_verify_recursive(group->header_block_definition, &instance->root_block) )
 				{
 					YELO_WARN("the %s tag '%s' may be corrupt.",
@@ -762,12 +808,12 @@ namespace Yelo
 			tag_group* group = tag_group_get(group_tag);
 			datum_index tag_index = datum_index::null;
 
-			if( !TEST_FLAG(group->flags, Flags::_tag_group_reloadable_bit) )
+			if( !group->flags.test(e_tag_group_flags::reloadable_bit) )
 				return tag_index;
 
 			tag_index = find_tag_instance(group_tag, name);
 			if(tag_index.IsNull())
-				return tag_load(group_tag, name, 0);
+				return tag_load(group_tag, name, FLAGS_T_ZERO(e_tag_load_flags));
 
 			auto* instance = TagGroups::TagInstances()[tag_index];
 			instance->is_orphan = true;
@@ -778,7 +824,7 @@ namespace Yelo
 			instance->reload_index = datum_index::null;
 
 			datum_index reload_tag_index = tag_load(group_tag, name, 
-				instance->is_verified ? FLAG(Flags::_tag_load_for_editor_bit) : 0);
+			                                        instance->is_verified ? FLAG_T(e_tag_load_flags, for_editor_bit) : FLAGS_T_ZERO(e_tag_load_flags));
 			if(reload_tag_index.IsNull())
 			{
 				// TODO: shouldn't we log here?

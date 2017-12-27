@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include <blamlib/tag_files/tag_groups_structures.hpp>
-
 namespace Yelo
 {
 	class field_information;

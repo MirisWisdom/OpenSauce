@@ -5,6 +5,12 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
+
 namespace Yelo
 {
 	struct tag_data;
@@ -21,8 +27,12 @@ namespace Yelo
 		bool PLATFORM_API tag_data_load(void* block_element, tag_data* data, void* address);
 		void PLATFORM_API tag_data_unload(void* block_element, tag_data* data);
 
-		bool tag_block_read_children_recursive(const tag_block_definition *definition, void *address, int32 count, 
-			int32 *position_reference, long_flags read_flags,
+		bool tag_block_read_children_recursive(
+			const tag_block_definition *definition,
+			void *address,
+			int32 count,
+			int32 *position_reference,
+			e_tag_load_flags::flags_t read_flags,
 			// NOTE: nonstandard parameters
 			datum_index tag_index);
 

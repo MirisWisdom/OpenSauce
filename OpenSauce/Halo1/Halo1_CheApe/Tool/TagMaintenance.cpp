@@ -6,22 +6,27 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/TagMaintenance.hpp"
-#include <blamlib/tag_files/tag_group.h>
-#if PLATFORM_TYPE == PLATFORM_TOOL
 
+#if PLATFORM_TYPE == PLATFORM_TOOL
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/cseries/enum_templates.h>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_block_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
 #include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_group_loading.hpp>
+#include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_groups.hpp>
-#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
-#include <YeloLib/tag_files/string_id_yelo.hpp>
-#include <YeloLib/tag_files/tag_group_memory.hpp>
-#include <YeloLib/cseries/value_conversion.hpp>
-
-#include "Common/StringEditing.hpp"
-#include "Engine/EngineFunctions.hpp"
-#include "TagGroups/TagGroups.hpp"
-#include "Tool/Console.hpp"
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_reference_definition.h>
+#include <Common/StringEditing.hpp>
+#include <Engine/EngineFunctions.hpp>
+#include <Tool/Console.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/cseries/value_conversion.hpp>
+#include <yelolib/memory/data_yelo.hpp>
+#include <yelolib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <yelolib/tag_files/string_id_yelo.hpp>
+#include <yelolib/tag_files/tag_group_memory.hpp>
 
 namespace Yelo
 {
@@ -240,7 +245,7 @@ namespace Yelo
 				bool queue = reference->group_tag != NONE && !is_null_or_empty(reference->name);
 				queue &= !TagGroups::TagFieldIsStringId(field);
 
-				if (queue && TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit))
+				if (queue && definition->flags.test(e_tag_reference_flags::non_resolving_bit))
 					queue &= TEST_FLAG(m_options, _options_queue_non_resolving_bit);
 
 				return queue;
@@ -287,7 +292,7 @@ namespace Yelo
 				if (blam::tag_file_exists(entry_group_tag, entry.m_reference->name))
 				{
 					entry.m_reference->tag_index = blam::tag_load(entry_group_tag, entry.m_reference->name,
-						FLAG(Flags::_tag_load_for_editor_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
+						FLAGS_T(e_tag_load_flags, e_tag_load_flags::for_editor_bit, e_tag_load_flags::non_resolving_references_bit));
 					
 					if (entry.m_reference->tag_index.IsNull())
 						entry.m_problem_type = _child_problem_failed_to_load;
@@ -462,7 +467,7 @@ namespace Yelo
 				{
 					is_root_tag = false;
 					tag_index = blam::tag_load(group->group_tag, args->tag_name, 
-						FLAG(Flags::_tag_load_for_editor_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
+						FLAGS_T(e_tag_load_flags, e_tag_load_flags::for_editor_bit, e_tag_load_flags::non_resolving_references_bit));
 
 					if (tag_index.IsNull())
 					{

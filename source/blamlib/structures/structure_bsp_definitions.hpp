@@ -11,6 +11,7 @@
 #include <blamlib/physics/collision_bsp_definitions.hpp>
 #include <blamlib/rasterizer/rasterizer_geometry.hpp>
 #include <blamlib/tag_files/tag_block.h>
+#include <blamlib/tag_files/tag_data.h>
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 

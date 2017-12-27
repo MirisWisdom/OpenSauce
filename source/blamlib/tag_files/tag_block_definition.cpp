@@ -1,6 +1,10 @@
 #include <Common/Precompile.hpp>
 #include <blamlib/tag_files/tag_block_definition.h>
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/tag_files/tag_field.h>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+
 namespace Yelo
 {
 	#if PLATFORM_IS_EDITOR

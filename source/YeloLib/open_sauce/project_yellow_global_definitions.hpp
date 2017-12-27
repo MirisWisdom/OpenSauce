@@ -6,13 +6,13 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/tag_files/tag_block.h>
-
-#if PLATFORM_IS_EDITOR
-#include <blamlib/tag_files/tag_groups_structures.hpp>
-#endif
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {
