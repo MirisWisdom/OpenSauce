@@ -75,7 +75,7 @@ namespace Yelo
 		void c_shader_internal::SetupBitmapParameters()
 		{
 			// set the bitmap data pointers
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 			{
 				TagGroups::s_shader_postprocess_parameter& parameter = m_members_generic.definition->parameters[i];
 
@@ -89,7 +89,7 @@ namespace Yelo
 				TagGroups::s_bitmap_definition* group = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_index);
 
 				// invalid bitmap index
-				YELO_ASSERT_DISPLAY(group->bitmaps.Count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");
+				YELO_ASSERT_DISPLAY(group->bitmaps.count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");
 
 				parameter.bitmap_value.runtime._internal.bitmap = &group->bitmaps[parameter.value.bitmap.bitmap_index];
 			}

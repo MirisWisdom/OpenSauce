@@ -67,8 +67,8 @@ namespace Yelo
 			m_members.m_flags.is_unloaded = false;
 
 			g_shader_fxaa_definition.runtime.flags.valid_shader_bit = false;
-			g_shader_fxaa_definition.techniques.Count = NUMBEROF(g_shader_techniques);
-			g_shader_fxaa_definition.techniques.Address = &g_shader_techniques[0];
+			g_shader_fxaa_definition.techniques.count = NUMBEROF(g_shader_techniques);
+			g_shader_fxaa_definition.techniques.address = &g_shader_techniques[0];
 
 			// initialise the effect definition
 			g_effect_fxaa_definition.quad_definition.tessellation.x = 4;

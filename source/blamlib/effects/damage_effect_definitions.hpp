@@ -5,9 +5,12 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/effects/material_effect_definitions.hpp>
-
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/math/color_math.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/tag_files/tag_reference.h>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {

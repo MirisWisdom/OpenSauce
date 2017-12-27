@@ -69,8 +69,8 @@ namespace Yelo
 			m_members.m_flags.is_unloaded = false;
 
 			g_shader_bloom_definition.runtime.flags.valid_shader_bit = false;
-			g_shader_bloom_definition.techniques.Count = NUMBEROF(g_shader_techniques);
-			g_shader_bloom_definition.techniques.Address = &g_shader_techniques[0];
+			g_shader_bloom_definition.techniques.count = NUMBEROF(g_shader_techniques);
+			g_shader_bloom_definition.techniques.address = &g_shader_techniques[0];
 
 			// initialise the effect definition
 			g_effect_bloom_definition.quad_definition.tessellation.x = 4;
@@ -308,7 +308,7 @@ namespace Yelo
 
 			// get the globals block from the globals tag if present
 			// if not use the defaults
-			if(globals.m_flags.has_postprocess_globals && (globals.map_postprocess_globals->bloom_globals.Count == 1))
+			if(globals.m_flags.has_postprocess_globals && (globals.map_postprocess_globals->bloom_globals.count == 1))
 			{
 				TagGroups::s_shader_postprocess_globals* postprocess_globals = globals.map_postprocess_globals;
 

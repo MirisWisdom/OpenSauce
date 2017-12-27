@@ -6,7 +6,6 @@
 #pragma once
 
 #include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
 #include <yelolib/tag_files/TagBlock.h>
 #include <yelolib/tag_files/TagData.h>
 

@@ -20,7 +20,7 @@ namespace ShaderExtension
 		// Default to using DLM's
 		shader_tag->shader.extension_usage = Flags::_shader_extension_usage_directional_lightmaps_diff;
 
-		if(shader_tag->model.maps.shader_extension.Count != 1)
+		if(shader_tag->model.maps.shader_extension.count != 1)
 			return true;
 
 		TagGroups::s_shader_model_extension& extension = shader_tag->model.maps.shader_extension[0];
@@ -80,7 +80,7 @@ namespace ShaderExtension
 			shader_tag->shader.extension_usage |= Flags::_shader_extension_usage_normal_map;
 		}
 
-		if(shader_tag->environment.shader_extension.Count != 1)
+		if(shader_tag->environment.shader_extension.count != 1)
 			return true;
 
 		auto& extension = shader_tag->environment.shader_extension[0];
@@ -114,7 +114,7 @@ namespace ShaderExtension
 
 	static bool shader_effect_extension_process(TagGroups::s_shader_effect& shader)
 	{
-		if(shader.effect.shader_extension.Count != 1)
+		if(shader.effect.shader_extension.count != 1)
 		{
 			return true;
 		}

@@ -7,17 +7,20 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/units/c_unit_seat_damage_manager.hpp>
 
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/objects/damage.hpp>
-#include <blamlib/units/units.hpp>
-#include <blamlib/units/unit_definitions.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/items/projectiles.hpp>
-#include <blamlib/items/weapons.hpp>
 #include <blamlib/items/weapon_definitions.hpp>
 #include <blamlib/items/weapon_structures.hpp>
-
-#include <YeloLib/units/unit_definitions_yelo.hpp>
-#include <YeloLib/units/units_yelo.hpp>
+#include <blamlib/items/weapons.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/objects/damage.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/units/units.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/units/unit_definitions_yelo.hpp>
+#include <yelolib/units/units_yelo.hpp>
 
 namespace Yelo
 {
@@ -108,7 +111,7 @@ namespace Yelo
 			auto* parent_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_datum->object.parent_object_index);
 			auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum->object.parent_object_index, unit_datum->unit.vehicle_seat_index);
 
-			if(seat_extension_definition && (seat_extension_definition->seat_damage.Count != 0))
+			if(seat_extension_definition && (seat_extension_definition->seat_damage.count != 0))
 			{
 				auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
 
@@ -159,7 +162,7 @@ namespace Yelo
 			if(!seat_extension_definition
 				|| (unit_datum->unit.throwing_grenade_state != Enums::_unit_throwing_grenade_state_in_hand)
 				|| (unit_datum->unit.throwing_grenade_projectile_index.IsNull())
-				|| (seat_extension_definition->seat_damage.Count != 1))
+				|| (seat_extension_definition->seat_damage.count != 1))
 			{
 				blam::unit_throw_grenade_release(unit_index, 0);
 				return;
@@ -218,7 +221,7 @@ namespace Yelo
 			
 			auto* parent_unit_datum = blam::object_get_and_verify_type<s_unit_datum>(unit_datum->object.parent_object_index);
 			auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum->object.parent_object_index, unit_datum->unit.vehicle_seat_index);
-			if(seat_extension_definition && (seat_extension_definition->seat_damage.Count != 0))
+			if(seat_extension_definition && (seat_extension_definition->seat_damage.count != 0))
 			{
 				auto& seat_damage_definition = seat_extension_definition->seat_damage[0];
 

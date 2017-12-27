@@ -163,7 +163,7 @@ namespace Yelo
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 		void InitializeGrenadesForNewMap()
 		{
-			Items::GrenadeTypesUpgrade(GameState::GlobalGameGlobals()->grenades.Count > 2);
+			Items::GrenadeTypesUpgrade(GameState::GlobalGameGlobals()->grenades.count > 2);
 		}
 #endif
 	}; };

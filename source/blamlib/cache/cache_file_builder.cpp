@@ -88,7 +88,7 @@ namespace Yelo
 
 			// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
 			auto* yelo = blam::tag_get<TagGroups::project_yellow>(project_yellow_index);
-			if (yelo->build_info.Count > 0)
+			if (yelo->build_info.count > 0)
 			{
 				BuildCacheFileYeloCacheHeader().InitializeBuildInfo(yelo->build_info[0]);
 			}
@@ -715,7 +715,7 @@ namespace Yelo
 			out_largest_structure_bsp_size = 0;
 			auto* scenario = global_scenario_get();
 
-			if (scenario->structure_bsps.Count == 0)
+			if (scenario->structure_bsps.count == 0)
 				return true;
 
 			const uintptr_t k_tag_cache_max_address = build_cache_file_for_yelo()

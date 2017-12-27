@@ -7,15 +7,17 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/units/units_yelo.hpp>
 
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/objects/damage.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/items/weapons.hpp>
-#include <blamlib/units/units.hpp>
-#include <blamlib/units/unit_structures.hpp>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
 #include <blamlib/units/biped_structures.hpp>
+#include <blamlib/units/unit_structures.hpp>
+#include <blamlib/units/units.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/open_sauce/project_yellow_scenario.hpp>
+#include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
 
 namespace Yelo
 { 
@@ -35,7 +37,7 @@ namespace Yelo
 				return nullptr;
 			}
 
-			if(unit_definition->unit.extensions.Count != 1)
+			if(unit_definition->unit.extensions.count != 1)
 			{
 				return nullptr;
 			}
@@ -62,7 +64,7 @@ namespace Yelo
 				return nullptr;
 			}
 
-			if(unit_definition->unit.seats.Count <= seat_index)
+			if(unit_definition->unit.seats.count <= seat_index)
 			{
 				return nullptr;
 			}
@@ -73,7 +75,7 @@ namespace Yelo
 		const TagGroups::unit_seat_extensions* GetSeatExtensionDefinition(const datum_index unit_index, const int16 seat_index)
 		{
 			auto* seat = GetSeatDefinition(unit_index, seat_index);
-			if(seat && (seat->seat_extensions.Count != 0))
+			if(seat && (seat->seat_extensions.count != 0))
 			{
 				return &seat->seat_extensions[0];
 			}
@@ -113,7 +115,7 @@ namespace Yelo
 			auto& units_block = animation_graph.units[seat_index];
 			auto& weapons_block = units_block.weapons[weapon_index];
 
-			if(weapons_block.animations.Count <= animation_class)
+			if(weapons_block.animations.count <= animation_class)
 			{
 				return NONE;
 			}

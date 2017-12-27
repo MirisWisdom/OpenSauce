@@ -84,7 +84,7 @@ namespace Yelo
 			// Verify that the map's project_yellow's script definitions are included in this 
 			// build of Yelo.
 			const TAG_TBLOCK(& user_script_block, s_scripting_definitions) = g_project_yellow->user_scripting;
-			if( user_script_block.Count == 1 &&
+			if( user_script_block.count == 1 &&
 				!Scripting::DefinitionsMatch( user_script_block[0] ))
 			{
 				mismatch = true;
@@ -94,7 +94,7 @@ namespace Yelo
 			// Verify that the map's project_yellow_globals's script definitions are included in this 
 			// build of Yelo.
 			const TAG_TBLOCK(& global_script_block, s_scripting_definitions) = g_py_globals->yelo_scripting;
-			if( global_script_block.Count == 1 &&
+			if( global_script_block.count == 1 &&
 				!Scripting::DefinitionsMatch( global_script_block[0] ))
 			{
 				mismatch = true;

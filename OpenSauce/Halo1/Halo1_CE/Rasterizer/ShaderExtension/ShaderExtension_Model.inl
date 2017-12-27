@@ -507,7 +507,7 @@ no_extension:
 		{
 			auto* shader_model = CAST_PTR(TagGroups::s_shader_model_definition*, shader_base);
 
-			if(shader_model->model.maps.shader_extension.Count == 1)
+			if(shader_model->model.maps.shader_extension.count == 1)
 			{
 				const auto& extension = shader_model->model.maps.shader_extension[0];
 

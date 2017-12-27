@@ -425,7 +425,7 @@ namespace Yelo
 
 			TagGroups::s_technique_definition* technique = NULL;
 			// look for a shader model 3 technique
-			for(int i = 0; (i < m_members.definition->techniques.Count) && (technique == NULL); i++)
+			for(int i = 0; (i < m_members.definition->techniques.count) && (technique == NULL); i++)
 			{
 				TagGroups::s_technique_definition& element = m_members.definition->techniques[i];
 
@@ -433,7 +433,7 @@ namespace Yelo
 					technique = &m_members.definition->techniques[i];
 			}
 			// look for a shader model 2 technique
-			for(int i = 0; (i < m_members.definition->techniques.Count) && (technique == NULL); i++)
+			for(int i = 0; (i < m_members.definition->techniques.count) && (technique == NULL); i++)
 			{
 				TagGroups::s_technique_definition& element = m_members.definition->techniques[i];
 
@@ -441,7 +441,7 @@ namespace Yelo
 					technique = &m_members.definition->techniques[i];
 			}
 			// look for a shader model 1 technique
-			for(int i = 0; (i < m_members.definition->techniques.Count) && (technique == NULL); i++)
+			for(int i = 0; (i < m_members.definition->techniques.count) && (technique == NULL); i++)
 			{
 				TagGroups::s_technique_definition& element = m_members.definition->techniques[i];
 
@@ -551,14 +551,14 @@ namespace Yelo
 
 			// if there is no active technique, or the techniques pass count does not match that from the effect
 			YELO_ASSERT_DISPLAY(m_members.definition->runtime.active_technique, "a c_shader_postprocess is tring to be rendered when it has no active technique");
-			YELO_ASSERT_DISPLAY(m_members.definition->runtime.active_technique->passes.Count == pass_count, "a c_shader_postprocess' active technique pass count does not match the effect technique");
+			YELO_ASSERT_DISPLAY(m_members.definition->runtime.active_technique->passes.count == pass_count, "a c_shader_postprocess' active technique pass count does not match the effect technique");
 
 			DX9::s_render_target_chain_scene& main_chain = c_post_processing_main::Instance().Globals().scene_buffer_chain;
 			DX9::s_render_target_chain& secondary_chain = c_post_processing_main::Instance().Globals().secondary_buffer_chain;
 
 			// render each pass of the effect
 			HRESULT hr = E_FAIL;
-			for(int32 pass = 0; pass < m_members.definition->runtime.active_technique->passes.Count; ++pass )
+			for(int32 pass = 0; pass < m_members.definition->runtime.active_technique->passes.count; ++pass )
 			{
 				TagGroups::s_pass_definition& pass_element = m_members.definition->runtime.active_technique->passes[pass];
 

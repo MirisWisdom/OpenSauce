@@ -8,40 +8,37 @@ namespace Yelo
 	template <tag k_tag>
 	struct TagReference
 	{
-		// group tag identifier for this reference
-		tag GroupTag;
-
+		tag group_tag;
 		#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// path, without tag group extension, to the tag reference
-		tag_reference_name_reference Name;
-		// length of the reference name
-		int32 NameLength;
+		tag_reference_name_reference name;
+		int32 name_length;
 		#endif
+		datum_index tag_index;
 
-		// datum index of this reference in the tag index
-		datum_index TagIndex;
-
-		operator datum_index()
+		operator datum_index() const
 		{
-			return TagIndex;
+			return tag_index;
 		}
 
-		OVERRIDE_OPERATOR_MATH_BOOL_TYPE(uint32, TagIndex, == );
-
-		// Returns whether or not this reference has a valid group reference
-		bool IsValid() const
+		bool operator ==(
+			const uint32& rhs) const
 		{
-			return GroupTag == k_tag;
+			return this->tag_index == rhs;
+		};
+
+		bool is_valid() const
+		{
+			return group_tag == k_tag;
 		}
 
-		// Sets this reference to null
-		void Reset()
+		void reset()
 		{
-			GroupTag = k_tag;
-			TagIndex = datum_index::null;
+			group_tag = k_tag;
+			tag_index = datum_index::null;
 		}
 
-		tag Tag() const
+		static tag tag()
 		{
 			return k_tag;
 		}
@@ -54,7 +51,7 @@ namespace Yelo
 	#endif
 
 	template <>
-	inline bool TagReference<NONE>::IsValid() const
+	inline bool TagReference<NONE>::is_valid()
 	{
 		return true;
 	}

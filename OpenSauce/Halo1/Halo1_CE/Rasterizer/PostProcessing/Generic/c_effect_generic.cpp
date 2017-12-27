@@ -30,7 +30,7 @@ namespace Yelo
 		{
 			c_effect_postprocess::SetupEffect();
 
-			if(m_members_generic.definition->exposed_parameters.Count == 0)
+			if(m_members_generic.definition->exposed_parameters.count == 0)
 				return;
 
 			SetupExposedParameters();
@@ -38,7 +38,7 @@ namespace Yelo
 
 		void c_effect_generic::SetupExposedParameters()
 		{
-			for(int i = 0; i < m_members_generic.definition->exposed_parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->exposed_parameters.count; i++)
 			{
 				TagGroups::s_effect_postprocess_generic_exposed_parameter& parameter = m_members_generic.definition->exposed_parameters[i];
 				c_shader_instance_generic* instance = GetShaderInstance<c_shader_instance_generic>(parameter.shader_index);
@@ -54,7 +54,7 @@ namespace Yelo
 
 		c_parameter_instance* c_effect_generic::GetExposedParameter(const char* exposed_name)
 		{
-			for(int i = 0; i < m_members_generic.definition->exposed_parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->exposed_parameters.count; i++)
 			{
 				TagGroups::s_effect_postprocess_generic_exposed_parameter& variable = m_members_generic.definition->exposed_parameters[i];
 

@@ -29,10 +29,10 @@ namespace Scenario
 		{
 			const auto& bsp_tag_reference = scenario.structure_bsps[modifier.bsp_index].structure_bsp;
 			const auto& bsp_tag = *blam::tag_get<TagGroups::structure_bsp>(bsp_tag_reference.tag_index);
-			const int bsp_lightmap_count = bsp_tag.lightmaps.Count - 1; // -1 as there is a lightmap entry for transparents
+			const int bsp_lightmap_count = bsp_tag.lightmaps.count - 1; // -1 as there is a lightmap entry for transparents
 
 			// Cannot use lightmap sets if the bsp does not have a lightmap itself
-			YELO_ASSERT_DISPLAY(!(bsp_tag.lightmap_bitmaps.tag_index.IsNull() && (modifier.lightmap_sets.Count > 0)),
+			YELO_ASSERT_DISPLAY(!(bsp_tag.lightmap_bitmaps.tag_index.IsNull() && (modifier.lightmap_sets.count > 0)),
 				"error: attempting to use bsp lightmap sets when the bsp tag does not define a lightmap");
 
 			for(const auto& lightmap_set : modifier.lightmap_sets)
@@ -42,7 +42,7 @@ namespace Scenario
 					{
 						const auto& bitmap = *blam::tag_get<TagGroups::s_bitmap_definition>(bitmap_index);
 
-						YELO_ASSERT_DISPLAY(bitmap.bitmaps.Count == bsp_lightmap_count,
+						YELO_ASSERT_DISPLAY(bitmap.bitmaps.count == bsp_lightmap_count,
 							"error: a lightmap bitmap referenced in a bsp modifier does not have the same bitmap count as the bsp has lightmap meshes");
 					};
 
@@ -78,11 +78,11 @@ namespace Scenario
 
 	void scenario_preprocess_bsp_sky_sets(const TagGroups::scenario& scenario)
 	{
-		const int scenario_sky_count = scenario.skies.Count;
+		const int scenario_sky_count = scenario.skies.count;
 
 		for(const auto& modifier : scenario.bsp_modifiers)
 		{
-			YELO_ASSERT_DISPLAY(!((modifier.sky_sets.Count > 0) && (scenario_sky_count == 0)),
+			YELO_ASSERT_DISPLAY(!((modifier.sky_sets.count > 0) && (scenario_sky_count == 0)),
 				"error: a scenario bsp modifier has sky sets, when the scenario has no skies");
 
 			for(const auto& sky_set : modifier.sky_sets)
@@ -90,7 +90,7 @@ namespace Scenario
 				YELO_ASSERT_DISPLAY(!is_null_or_empty(sky_set.name),
 					"error: a bsp modifier sky set in the scenario tag has no name");
 
-				YELO_ASSERT_DISPLAY(sky_set.skies.Count != 0,
+				YELO_ASSERT_DISPLAY(sky_set.skies.count != 0,
 					"error: a bsp modifier sky set has no skies defined");
 
 				for(const auto& sky : sky_set.skies)

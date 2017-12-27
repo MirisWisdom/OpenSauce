@@ -138,7 +138,7 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 	fputs("checking obj file compatibility with structure bsp...", stdout);
 
 	// Lightmap count does not include the non-uv'd transparent meshes
-	int32 lightmaps_count = bsp->lightmaps.Count - 1;
+	int32 lightmaps_count = bsp->lightmaps.count - 1;
 
 	// Verify that the lightmap count matches the loaded group count
 	if(lightmaps_count != m_groups.size() )
@@ -191,7 +191,7 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 {
 	fputs("replacing lightmap texture coordinates...", stdout);
 
-	for (int32 i = 0; i < (bsp->lightmaps.Count - 1); ++i)
+	for (int32 i = 0; i < (bsp->lightmaps.count - 1); ++i)
 	{
 		auto& bsp_lightmap = bsp->lightmaps[i];		
 

@@ -364,13 +364,13 @@ namespace Yelo
 					const hs_function_definition& yelo_def = *hs_yelo_functions[f];
 
 					if( DefinitionsNameMatch(yelo_def.name, def.name) &&			// check if names match...
-						def.parameters.Count == yelo_def.paramc &&					// check if we have the same amount of parameters
+						def.parameters.count == yelo_def.paramc &&					// check if we have the same amount of parameters
 						(is_valid = (def.return_type == yelo_def.return_type))		// check if we have the same return type
 						)
 					{
-						const _enum* params = def.parameters.Definitions;			// check if the parameter types are the same
+						const _enum* params = def.parameters.definitions;			// check if the parameter types are the same
 						for(int32 p = 0; 
-							p < def.parameters.Count && is_valid;					// continue checking while things compare as a match
+							p < def.parameters.count && is_valid;					// continue checking while things compare as a match
 							p++)
 							is_valid = params[p] == yelo_def.params[p];
 					}

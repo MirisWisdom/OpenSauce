@@ -72,8 +72,8 @@ namespace Yelo
 			m_members.m_flags.is_unloaded = false;
 
 			g_shader_motionblur_definition.runtime.flags.valid_shader_bit = false;
-			g_shader_motionblur_definition.techniques.Count = NUMBEROF(g_shader_techniques);
-			g_shader_motionblur_definition.techniques.Address = &g_shader_techniques[0];
+			g_shader_motionblur_definition.techniques.count = NUMBEROF(g_shader_techniques);
+			g_shader_motionblur_definition.techniques.address = &g_shader_techniques[0];
 
 			g_effect_motionblur_definition.quad_definition.tessellation.x = 5;
 			g_effect_motionblur_definition.quad_definition.tessellation.y = 5;

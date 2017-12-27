@@ -103,7 +103,7 @@ namespace Yelo
 			auto* scenario = TagGetForModify<TagGroups::scenario>(scenario_index);
 			blam_global_scenario = scenario;
 
-			if (scenario->structure_bsps.Count == 0)
+			if (scenario->structure_bsps.count == 0)
 			{
 				YELO_WARN("scenario doesn't have a structure bsp");
 				return false;

@@ -44,7 +44,7 @@ namespace Yelo
 				if(unit_datum.unit.animation.state == Enums::_unit_animation_state_yelo_unit_mounted)
 				{
 					auto* unit_extension_definition = Objects::GetUnitExtensionDefinition(unit_index);
-					if(unit_extension_definition && (unit_extension_definition->mounted_state.Count == 1))
+					if(unit_extension_definition && (unit_extension_definition->mounted_state.count == 1))
 					{
 						auto& mounted_state_definition = unit_extension_definition->mounted_state[0];
 

@@ -7,10 +7,16 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/objects/objects_yelo.hpp>
 
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/units/unit_structures.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/math/real_math.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/models/model_animation_definitions.hpp>
+#include <blamlib/objects/object_structures.hpp>
+#include <blamlib/objects/objects.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/units/unit_structures.hpp>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/memory/data_yelo.hpp>
 
 namespace Yelo
 {

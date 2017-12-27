@@ -254,9 +254,9 @@ namespace Yelo
 			if(!m_members_internal.cache_shader_collection)
 				return;
 
-			if((m_members_internal.cache_shader_collection->shaders.Count == 0) ||
-				(m_members_internal.cache_shader_collection->effects.Count == 0) ||
-				(m_members_internal.cache_shader_collection->effect_instances.Count == 0))
+			if((m_members_internal.cache_shader_collection->shaders.count == 0) ||
+				(m_members_internal.cache_shader_collection->effects.count == 0) ||
+				(m_members_internal.cache_shader_collection->effect_instances.count == 0))
 				return;
 
 			// create all shader and effects but do not create the direct3d resources
@@ -375,7 +375,7 @@ namespace Yelo
 			// the shader list in the collection tag is populated at build time by copying shader references from the effect tag
 
 			// create the shader list
-			m_members_internal.m_shaders.count = (uint16)m_members_internal.cache_shader_collection->shaders.Count;
+			m_members_internal.m_shaders.count = (uint16)m_members_internal.cache_shader_collection->shaders.count;
 			m_members_internal.m_shaders.shader_list = new c_shader_internal[m_members_internal.m_shaders.count];
 
 			// set up each shader
@@ -414,11 +414,11 @@ namespace Yelo
 		void c_system_internal::GetInternalEffects()
 		{
 			// create the effect list
-			m_members_internal.m_effects.count = (uint16)m_members_internal.cache_shader_collection->effects.Count;
+			m_members_internal.m_effects.count = (uint16)m_members_internal.cache_shader_collection->effects.count;
 			m_members_internal.m_effects.effect_list = new s_effect_set[m_members_internal.m_effects.count];
 
 			// create the effect instance list
-			m_members_internal.m_effect_instances.count = (uint16)m_members_internal.cache_shader_collection->effect_instances.Count;
+			m_members_internal.m_effect_instances.count = (uint16)m_members_internal.cache_shader_collection->effect_instances.count;
 			m_members_internal.m_effect_instances.effect_instance_list = new c_effect_instance_generic[m_members_internal.m_effect_instances.count];
 
 			// set up each effect
@@ -510,12 +510,12 @@ namespace Yelo
 			effect_set.shader_instance_count = 0;
 			effect_set.shader_instances = nullptr;
 
-			if(effect_definition->shader_indices.Count == 0)
+			if(effect_definition->shader_indices.count == 0)
 				return;
 
 			// create the effects shader instance objects
-			effect_set.shader_instance_count = effect_definition->shader_indices.Count;
-			effect_set.shader_instances = new c_shader_instance_generic[effect_definition->shader_indices.Count];
+			effect_set.shader_instance_count = effect_definition->shader_indices.count;
+			effect_set.shader_instances = new c_shader_instance_generic[effect_definition->shader_indices.count];
 
 			// set up each instance and add it to the effect
 			for(uint32 i = 0; i < effect_set.shader_instance_count; i++)

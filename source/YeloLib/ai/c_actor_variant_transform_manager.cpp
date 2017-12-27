@@ -159,7 +159,7 @@ namespace Yelo
 		{
 			// Populate the transform index list
 			std::vector<sbyte> transform_indices;
-			for(sbyte index = 0; index < transformations.Count; index++)
+			for(sbyte index = 0; index < transformations.count; index++)
 			{
 				// Ignore transforms that are scripting only
 				if(TEST_FLAG(transformations[index].flags, Flags::_actor_variant_transform_collection_transform_flags_scripted_only))
@@ -264,7 +264,7 @@ namespace Yelo
 				// If the instigator is null select entries that have no instigators defined
 				select_func = [&](const TagGroups::actor_variant_transform_collection_transform& entry) -> bool
 					{
-						return (entry.transform_out_ptr->instigators.Count == 0) && test_transform(entry);
+						return (entry.transform_out_ptr->instigators.count == 0) && test_transform(entry);
 					};
 			}
 
@@ -283,7 +283,7 @@ namespace Yelo
 
 					// Ignore transforms that are on unit damage only
 					if(TEST_FLAG(transform_out_definition.criteria_flags, Flags::_actor_variant_transform_out_criteria_flags_transform_on_damage_only_bit)
-						|| transform.transform_out_ptr->instigators.Count)
+						|| transform.transform_out_ptr->instigators.count)
 					{
 						return false;
 					}
@@ -699,7 +699,7 @@ namespace Yelo
 				real test_value = Random::GetReal(0.0f, 1.0f);
 
 				real lower_value = 0.0f;
-				for(sbyte index = 0; index < transform_in_definition.targets.Count; index++)
+				for(sbyte index = 0; index < transform_in_definition.targets.count; index++)
 				{
 					auto game_difficulty = GameState::GameGlobals()->options.difficulty_level;
 
@@ -760,7 +760,7 @@ namespace Yelo
 				if(TEST_FLAG(transform_target.flags, Flags::_actor_variant_transform_in_target_flags_inherit_seated_units))
 				{
 					auto& unit_definition = *blam::tag_get<TagGroups::s_unit_definition>(unit_datum->object.definition_index);
-					for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+					for(int16 index = 0; index < unit_definition.unit.seats.count; index++)
 					{
 						auto seated_unit_index = Objects::GetUnitInSeat(unit_index, index);
 						if(!seated_unit_index.IsNull())
@@ -1098,7 +1098,7 @@ namespace Yelo
 			if((action.target == Enums::_actor_variant_transform_keyframe_effect_target_riders)
 				|| (action.rider_handling != Enums::_actor_variant_transform_keyframe_rider_handling_none))
 			{
-				for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+				for(int16 index = 0; index < unit_definition.unit.seats.count; index++)
 				{
 					auto seated_unit_index = Objects::GetUnitInSeat(unit_index, index);
 					if(seated_unit_index.IsNull())
@@ -1318,9 +1318,9 @@ namespace Yelo
 			{
 				// Find a random non-instigator transform
 				std::vector<sbyte> transform_indices;
-				for(sbyte index = 0; index < transform_entry.transforms.Count; index++)
+				for(sbyte index = 0; index < transform_entry.transforms.count; index++)
 				{
-					if(transform_entry.transforms[index].transform_out_ptr->instigators.Count == 0)
+					if(transform_entry.transforms[index].transform_out_ptr->instigators.count == 0)
 					{
 						transform_indices.push_back(index);
 					}

@@ -7,15 +7,15 @@
 #include "Common/Precompile.hpp"
 #include "Objects/ObjectFieldDefinitions.hpp"
 
-#include <blamlib/main/main.hpp>
 #include <blamlib/items/weapon_structures.hpp>
+#include <blamlib/main/main.hpp>
+#include <blamlib/tag_files/s_tag_instance.h>
 #include <blamlib/units/unit_structures.hpp>
-
-#include "Game/EngineFunctions.hpp"
-#include "Game/Scripting.hpp"
-#include "Game/ScriptLibrary.hpp"
-#include "Networking/Networking.hpp"
-#include "Objects/Objects.hpp"
+#include <Game/EngineFunctions.hpp>
+#include <Game/Scripting.hpp>
+#include <Game/ScriptLibrary.hpp>
+#include <Networking/Networking.hpp>
+#include <Objects/Objects.hpp>
 
 namespace Yelo
 {
@@ -217,7 +217,7 @@ namespace Yelo
 
 			const auto* definition = blam::tag_get<TagGroups::s_weapon_definition>(definition_index);
 
-			if (trigger_index >= 0 && trigger_index < definition->weapon.triggers.Count)
+			if (trigger_index >= 0 && trigger_index < definition->weapon.triggers.count)
 			{
 				// We're fucking with the tag definition...at runtime :|
 				auto& trigger = CAST_QUAL(TagGroups::weapon_trigger_definition&, 
