@@ -101,13 +101,13 @@ namespace Yelo
 
 			for(auto& unit_seat_animation : definition.units)
 			{
-				if(unit_seat_animation.animations.Count > Enums::k_number_of_unit_seat_animations)
+				if(unit_seat_animation.animations.count > Enums::k_number_of_unit_seat_animations)
 				{
 					blam::tag_block_resize(unit_seat_animation.animations, Enums::k_number_of_unit_seat_animations);
 				}
 			}
 
-			if(definition.animations.Count > Enums::k_max_animations_per_graph)
+			if(definition.animations.count > Enums::k_max_animations_per_graph)
 			{
 				AddWarning("This animation graph more than 256 animations, you will need to manually remove unwanted animations", tag_index);
 			}

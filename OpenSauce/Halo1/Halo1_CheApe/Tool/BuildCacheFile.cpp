@@ -97,7 +97,7 @@ namespace Yelo { namespace Tool {
 	static void BuildCacheFileInitializeForNewProjectYellow()
 	{
 		// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
-		if (Scenario::GetYelo()->build_info.Count > 0)
+		if (Scenario::GetYelo()->build_info.count > 0)
 		{
 			const TagGroups::s_project_yellow_scenario_build_info& build_info = Scenario::GetYelo()->build_info[0];
 

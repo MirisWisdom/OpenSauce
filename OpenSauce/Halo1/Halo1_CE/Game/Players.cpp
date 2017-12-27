@@ -60,8 +60,8 @@ namespace Yelo
 			if(player_unit_datum.unit.animation.state == Enums::_unit_animation_state_yelo_unit_mounted)
 			{
 				auto& unit_definition = *blam::tag_get<TagGroups::s_unit_definition>(player_unit_datum.object.definition_index);
-				if((unit_definition.unit.extensions.Count == 1)
-					&& (unit_definition.unit.extensions[0].mounted_state.Count == 1))
+				if((unit_definition.unit.extensions.count == 1)
+					&& (unit_definition.unit.extensions[0].mounted_state.count == 1))
 				{
 					auto& mounted_state_definition = unit_definition.unit.extensions[0].mounted_state[0];
 					if(TEST_FLAG(mounted_state_definition.flags, Flags::_unit_mounted_state_flags_third_person_camera))

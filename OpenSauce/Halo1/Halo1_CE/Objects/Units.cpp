@@ -240,14 +240,14 @@ namespace Yelo
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			// check this map's grenade count vs the previous map's
-			if (game_globals->grenades.Count != yelo_header.unit_grenade_types_count)
+			if (game_globals->grenades.count != yelo_header.unit_grenade_types_count)
 			{
 				// inform the unit grenade counts code to run an assembly update
 				yelo_header.flags.update_unit_grenade_types_count = true;
 				// figure out the new grenade count
 				// defaulting to the stock count if there is suspicious number
-				if (game_globals->grenades.Count <= Enums::k_unit_grenade_types_count_yelo)
-					yelo_header.unit_grenade_types_count = CAST(byte, game_globals->grenades.Count);
+				if (game_globals->grenades.count <= Enums::k_unit_grenade_types_count_yelo)
+					yelo_header.unit_grenade_types_count = CAST(byte, game_globals->grenades.count);
 				else
 					yelo_header.unit_grenade_types_count = Enums::k_unit_grenade_types_count;
 			}

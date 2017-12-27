@@ -22,13 +22,13 @@ namespace Yelo
 	{
 		void s_tag_database_entry::NameToBlockNameBuffer(char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
-			if(this->name.Size > 0)
+			if(this->name.total_size > 0)
 			{
 				tag_group* group_definition = blam::tag_group_get(this->group_tag);
 				if(group_definition != nullptr)
 				{
 					sprintf_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, 
-						"%s.%s", this->name.Definitions, group_definition->name);
+						"%s.%s", this->name.definitions, group_definition->name);
 				}
 			}
 		}

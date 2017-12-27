@@ -5,8 +5,9 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/tag_files/tag_block.h>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {

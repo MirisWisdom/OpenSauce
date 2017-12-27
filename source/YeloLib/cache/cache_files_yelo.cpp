@@ -264,12 +264,12 @@ namespace Yelo
 			auto* scnr = Memory::RebasePointer(
 				scenario_tag_instance.Definition<const TagGroups::scenario>(), base_address, virtual_address);
 
-			int bsp_count = scnr->structure_bsps.Count;
+			int bsp_count = scnr->structure_bsps.count;
 			if (bsp_count > 0)
 			{
 				// can't access the block normally as its pointer is not correct for the cache's starting point
 				auto* structure_bsps_block = Memory::RebasePointer(
-					scnr->structure_bsps.Definitions, base_address, virtual_address);
+					scnr->structure_bsps.definitions, base_address, virtual_address);
 
 				// this isn't correct for non-PC maps apparently, but we ARE on a pc...AREN'T we
 				const byte* bsp_data_start = cache_file + sizeof(s_cache_header);

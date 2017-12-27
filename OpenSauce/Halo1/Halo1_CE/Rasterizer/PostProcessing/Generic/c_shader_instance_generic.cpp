@@ -68,11 +68,11 @@ namespace Yelo
 			TagGroups::s_shader_postprocess_generic* definition = m_members_generic.shader->GetShader();
 
 			// if the shader has no parameters no further set up is needed
-			if(definition->parameters.Count == 0)
+			if(definition->parameters.count == 0)
 				return;
 
 			// create the parameter instances
-			m_members_generic.parameter_count = definition->parameters.Count;
+			m_members_generic.parameter_count = definition->parameters.count;
 			m_members_generic.parameters = new c_parameter_instance[m_members_generic.parameter_count];
 
 			for(uint32 i = 0; i < m_members_generic.parameter_count; i++)

@@ -36,7 +36,7 @@ namespace Yelo
 
 			// Don't try and exit the vehicle if there is a unit in a seat that target's the actor's
 			auto* seat_extension_definition = Objects::GetSeatExtensionDefinition(unit_datum->object.parent_object_index, unit_datum->unit.vehicle_seat_index);
-			if(seat_extension_definition && seat_extension_definition->seat_targeting_seats.Count)
+			if(seat_extension_definition && seat_extension_definition->seat_targeting_seats.count)
 			{
 				for(auto seat_index : seat_extension_definition->seat_targeting_seats)
 				{

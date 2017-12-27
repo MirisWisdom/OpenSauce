@@ -234,7 +234,7 @@ namespace Yelo
 			auto& unit_definition = *blam::tag_get<TagGroups::s_unit_definition>(unit_datum.object.definition_index);
 
 			// Apply actions to all mounted units
-			for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+			for(int16 index = 0; index < unit_definition.unit.seats.count; index++)
 			{
 				auto* seat_extension = GetSeatExtensionDefinition(unit_index, index);
 				if(!seat_extension)
@@ -280,7 +280,7 @@ namespace Yelo
 			auto& unit_datum = *blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			auto& seat_extension_definition = *GetSeatExtensionDefinition(unit_datum.object.parent_object_index, unit_datum.unit.vehicle_seat_index);
 
-			if(seat_extension_definition.seat_boarding.Count == 1)
+			if(seat_extension_definition.seat_boarding.count == 1)
 			{
 				for(auto& keyframe_action : seat_extension_definition.seat_boarding[0].keyframe_actions)
 				{
@@ -305,7 +305,7 @@ namespace Yelo
 			auto& unit_datum = *blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			auto* unit_extension = GetUnitExtensionDefinition(unit_index);
 
-			if(unit_extension && (unit_extension->mounted_state.Count == 1))
+			if(unit_extension && (unit_extension->mounted_state.count == 1))
 			{
 				for(auto& keyframe_action : unit_extension->mounted_state[0].keyframe_actions)
 				{
@@ -329,14 +329,14 @@ namespace Yelo
 			}
 
 			// Check that the animation graph has a matching seat entry
-			if(unit_datum->unit.animation.seat_index >= animation_graph->units.Count)
+			if(unit_datum->unit.animation.seat_index >= animation_graph->units.count)
 			{
 				return false;
 			}
 			auto& animation_seat = animation_graph->units[unit_datum->unit.animation.seat_index];
 
 			// Check if the target unit has a matching animation to play
-			if (animation >= animation_seat.animations.Count)
+			if (animation >= animation_seat.animations.count)
 			{
 				return false;
 			}
@@ -374,7 +374,7 @@ namespace Yelo
 			}
 
 			// If a seat that triggers the mounted state is occupied, start the mounted state
-			for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+			for(int16 index = 0; index < unit_definition.unit.seats.count; index++)
 			{
 				auto* seat_extension = GetSeatExtensionDefinition(unit_index, index);
 				if(!seat_extension || GetUnitInSeat(unit_index, index).IsNull())
@@ -433,7 +433,7 @@ namespace Yelo
 				}
 			}
 
-			if(seat_extension_definition->seat_boarding.Count != 1)
+			if(seat_extension_definition->seat_boarding.count != 1)
 			{
 				return;
 			}
@@ -520,7 +520,7 @@ namespace Yelo
 
 			// If no seats that trigger the mounting state are occupied, clear the state
 			bool is_mounted = false;
-			for(int16 index = 0; index < unit_definition.unit.seats.Count; index++)
+			for(int16 index = 0; index < unit_definition.unit.seats.count; index++)
 			{
 				auto* seat_extension = GetSeatExtensionDefinition(unit_index, index);
 				if(!seat_extension)
@@ -597,7 +597,7 @@ namespace Yelo
 			}
 
 			auto& seat_extension = *GetSeatExtensionDefinition(target_unit_index, seat_index);
-			if(seat_extension.seat_access.Count == 1)
+			if(seat_extension.seat_access.count == 1)
 			{
 				auto& seat_access_block = seat_extension.seat_access[0];
 
@@ -704,7 +704,7 @@ namespace Yelo
 
 			// Can't enter seats if an occupied seat disallows it
 			auto* unit_definition = blam::tag_get<TagGroups::s_unit_definition>(unit_datum->object.definition_index);
-			for(int16 index = 0; index < unit_definition->unit.seats.Count; index++)
+			for(int16 index = 0; index < unit_definition->unit.seats.count; index++)
 			{
 				auto* seat_extension = GetSeatExtensionDefinition(unit_index, index);
 				if(!seat_extension)
@@ -759,7 +759,7 @@ namespace Yelo
 					}
 				}
 				
-				if(seat_extension->seat_access.Count == 1)
+				if(seat_extension->seat_access.count == 1)
 				{
 					auto& seat_access_block = seat_extension->seat_access[0];
 					auto seated_unit = GetUnitInSeat(target_unit_index, seat_extension->target_seat_index);

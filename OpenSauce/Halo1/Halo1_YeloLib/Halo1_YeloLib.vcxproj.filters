@@ -903,9 +903,6 @@
     <ClCompile Include="..\..\..\source\yelolib\tag_files\TagBlock.cpp">
       <Filter>tag_files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\yelolib\tag_files\TagData.cpp">
-      <Filter>tag_files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\source\YeloLib\memory\function_interface.inl">

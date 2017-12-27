@@ -111,7 +111,7 @@ namespace Yelo
 
 				auto* shader_model_tag = blam::tag_get<s_shader_model_definition>(model_shader.shader.tag_index);
 
-				if (shader_model_tag->model.maps.shader_extension.Count != 1)
+				if (shader_model_tag->model.maps.shader_extension.count != 1)
 					continue;
 
 				s_shader_model_extension& extension = shader_model_tag->model.maps.shader_extension[0];

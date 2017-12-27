@@ -5,7 +5,13 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_reference.h>
+#include <yelolib/cseries/cseries_yelo_base.hpp>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
+#include <yelolib/tag_files/TagBlock.h>
 
 namespace Yelo
 {

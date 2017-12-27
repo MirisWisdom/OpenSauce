@@ -35,7 +35,7 @@ namespace Yelo
 		{
 			for(auto& seat : unit_definition.seats)
 			{
-				if(seat.seat_extensions.Count != 1)
+				if(seat.seat_extensions.count != 1)
 				{
 					continue;
 				}
@@ -45,7 +45,7 @@ namespace Yelo
 				{
 					// Check that the target seat is not itself targeting a seat
 					auto& target_seat = unit_definition.seats[seat_extension.target_seat_index];
-					if(target_seat.seat_extensions.Count == 1)
+					if(target_seat.seat_extensions.count == 1)
 					{
 						YELO_ASSERT_DISPLAY(target_seat.seat_extensions[0].target_seat_index == NONE
 							, "Unit set extensions can not target a seat that is itself targeting another seat.\r\nError in: %s"
@@ -59,7 +59,7 @@ namespace Yelo
 						, "\"exit on target seat empty\" flag is set on a seat extension that does not specify a target seat.\r\nError in: %s"
 						, blam::tag_get_name(tag_index));
 
-					if(seat_extension.seat_access.Count == 1)
+					if(seat_extension.seat_access.count == 1)
 					{
 						auto& seat_access_definition = seat_extension.seat_access[0];
 
@@ -68,7 +68,7 @@ namespace Yelo
 							, blam::tag_get_name(tag_index));
 					}
 
-					if(seat_extension.seat_boarding.Count == 1)
+					if(seat_extension.seat_boarding.count == 1)
 					{
 						auto& seat_boarding_definition = seat_extension.seat_boarding[0];
 
@@ -100,7 +100,7 @@ namespace Yelo
 						}
 					}
 
-					if(seat_extension.seat_damage.Count == 1)
+					if(seat_extension.seat_damage.count == 1)
 					{
 						auto& seat_damage_definition = seat_extension.seat_damage[0];
 						
@@ -121,24 +121,24 @@ namespace Yelo
 			// Clear any existing seat target blocks
 			for(auto& seat : unit_definition.seats)
 			{
-				if(seat.seat_extensions.Count != 1)
+				if(seat.seat_extensions.count != 1)
 				{
 					continue;
 				}
 
 				auto& seat_extension = seat.seat_extensions[0];
 
-				while(seat_extension.seat_targeting_seats.Count)
+				while(seat_extension.seat_targeting_seats.count)
 				{
 					blam::tag_block_delete_element(seat_extension.seat_targeting_seats, 0);
 				}
 			}
 
 			// Link all seat targets
-			for(int16 index = 0; index < unit_definition.seats.Count; index++)
+			for(int16 index = 0; index < unit_definition.seats.count; index++)
 			{
 				auto& seat = unit_definition.seats[index];
-				if(seat.seat_extensions.Count != 1)
+				if(seat.seat_extensions.count != 1)
 				{
 					continue;
 				}
@@ -151,7 +151,7 @@ namespace Yelo
 
 				// If the target seat has no extensions block, add one
 				auto& target_seat = unit_definition.seats[seat_extensions.target_seat_index];
-				if(target_seat.seat_extensions.Count == 0)
+				if(target_seat.seat_extensions.count == 0)
 				{
 					blam::tag_block_add_element(target_seat.seat_extensions);
 				}
@@ -210,14 +210,14 @@ namespace Yelo
 
 			for(auto& seat : unit_definition.seats)
 			{
-				if(seat.seat_extensions.Count != 1)
+				if(seat.seat_extensions.count != 1)
 				{
 					continue;
 				}
 
 				auto& seat_extension = seat.seat_extensions[0];
 
-				if(seat_extension.seat_boarding.Count == 1)
+				if(seat_extension.seat_boarding.count == 1)
 				{
 					auto& seat_boarding = seat_extension.seat_boarding[0];
 
@@ -240,7 +240,7 @@ namespace Yelo
 					}
 				}
 
-				if(seat_extension.seat_damage.Count == 1)
+				if(seat_extension.seat_damage.count == 1)
 				{
 					auto& seat_damage = seat_extension.seat_damage[0];
 					
@@ -275,7 +275,7 @@ namespace Yelo
 
 			for(auto& seat : unit_definition.seats)
 			{
-				if(seat.seat_extensions.Count)
+				if(seat.seat_extensions.count)
 				{
 					YELO_ASSERT_DISPLAY(Tool::IsBuildingYeloMap()
 						, "Seat extensions are not supported in non-yelo maps. Build your map with memory upgrades enabled to enable seat extensions");

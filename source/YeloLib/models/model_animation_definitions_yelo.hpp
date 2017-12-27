@@ -6,8 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/models/model_animations.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/models/model_animation_definitions.hpp>
+#include <blamlib/models/model_animations.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blamlib/tag_files/tag_reference.h>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {

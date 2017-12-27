@@ -70,7 +70,7 @@ namespace PostProcessing
 	{
 		auto* definition = blam::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
-		for(int i = 0; i < definition->exposed_parameters.Count; i++)
+		for(int i = 0; i < definition->exposed_parameters.count; i++)
 			if(strcmp(definition->exposed_parameters[i].exposed_name, test_string) == 0)
 				return true;
 		return false;
@@ -159,7 +159,7 @@ namespace PostProcessing
 		SetQuadToDefaults(tag_index, definition->quad_definition);
 
 		// check the shaders block has at least one element with a shader referenced
-		if(!definition->shaders.Count)
+		if(!definition->shaders.count)
 		{
 			YELO_ERROR_CRITICAL(
 				"error: an effect_postprocess_generic has no shaders referenced\ntag: %s", blam::tag_get_name(tag_index));
@@ -177,7 +177,7 @@ namespace PostProcessing
 
 		// check the shader indices are valid
 		for (auto index : definition->shader_indices)
-			if (index >= definition->shaders.Count || index == NONE)
+			if (index >= definition->shaders.count || index == NONE)
 			{
 				YELO_ERROR_CRITICAL(
 					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", 
@@ -263,7 +263,7 @@ namespace PostProcessing
 		// verify exposed parameters exist in effects
 		for (auto& instance : collection->effect_instances)
 		{
-			if (instance.effect_index >= collection->effects.Count || instance.effect_index == NONE)
+			if (instance.effect_index >= collection->effects.count || instance.effect_index == NONE)
 			{
 				YELO_ERROR_CRITICAL("error: effect instance \"%s\" has an invalid effect index",
 					instance.name);

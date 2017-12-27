@@ -310,7 +310,6 @@
     <ClCompile Include="..\..\..\source\YeloLib\open_sauce\project_yellow_scenario.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\open_sauce\settings\c_settings_cheape.cpp" />
     <ClCompile Include="..\..\..\source\yelolib\tag_files\TagBlock.cpp" />
-    <ClCompile Include="..\..\..\source\yelolib\tag_files\TagData.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\units\c_unit_seat_damage_manager.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\units\c_unit_seat_boarding_manager.cpp" />
     <ClCompile Include="..\..\..\source\YeloLib\units\units_yelo.cpp" />

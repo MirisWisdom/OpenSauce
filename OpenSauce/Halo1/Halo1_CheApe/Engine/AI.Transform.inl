@@ -162,7 +162,7 @@ namespace Yelo
 		{
 			auto& tag_definition = *blam::tag_get<TagGroups::actor_variant_transform_in_definition>(tag_index);
 
-			if(tag_definition.targets.Count == 0)
+			if(tag_definition.targets.count == 0)
 			{
 				if(print_errors)
 				{
@@ -198,7 +198,7 @@ namespace Yelo
 				{
 					real probability_total = 0.0f;
 
-					if(tag_definition.targets.Count == 0)
+					if(tag_definition.targets.count == 0)
 					{
 						return;
 					}
@@ -331,7 +331,7 @@ namespace Yelo
 			}
 
 			// Remove sparse collection references from the item collection
-			for(int32 index = tag_collection.tag_references.Count - 1; index >= 0; --index)
+			for(int32 index = tag_collection.tag_references.count - 1; index >= 0; --index)
 			{
 				if(tag_collection.tag_references[index].tag.group_tag == TagGroups::actor_variant_transform_collection_definition::k_group_tag)
 				{

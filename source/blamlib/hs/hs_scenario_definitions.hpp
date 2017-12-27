@@ -5,10 +5,11 @@
 */
 #pragma once
 
-#include <blamlib/hs/hs_constants.hpp>
-
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/memory/datum_index.hpp>
 #include <blamlib/tag_files/tag_data.h>
+#include <blamlib/tag_files/tag_reference.h>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {

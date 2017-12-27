@@ -143,7 +143,7 @@ namespace Yelo
 						def->name);
 				}
 
-				memcpy(element->parameters.Definitions,
+				memcpy(element->parameters.definitions,
 					def->params, sizeof(_enum) * def->paramc);
 			}
 		}

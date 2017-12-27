@@ -45,14 +45,14 @@ namespace Yelo
 		{
 			HRESULT success = S_OK;
 			// checks for whether the parameter is in fact a texture happen in LoadBitmap so just call LoadBitmap on every parameter
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 				success &= m_members_generic.definition->parameters[i].LoadBitmap(render_device);
 			return success;
 		}
 
 		void c_shader_generic::UnloadBitmaps()
 		{
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 				m_members_generic.definition->parameters[i].ReleaseBitmap();
 		}
 
@@ -77,7 +77,7 @@ namespace Yelo
 		{
 			c_shader_postprocess::GetHandles();
 
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 				GetParameterHandle(m_members.definition->runtime.dx_effect, m_members_generic.definition->parameters[i]);
 		}
 
@@ -94,7 +94,7 @@ namespace Yelo
 		{
 			c_shader_postprocess::ClearHandles();
 
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 				ClearParameterHandle(m_members_generic.definition->parameters[i]);
 		}
 
@@ -114,7 +114,7 @@ namespace Yelo
 				return false;
 
 			bool success = true;
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 				success &= m_members_generic.definition->parameters[i].value.base.handle.IsUsed();
 
 			return success;
@@ -182,7 +182,7 @@ namespace Yelo
 			c_shader_postprocess::SetVariables();
 
 			// TODO: should be able to use a ranged for loop here on ->parameters
-			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->parameters.count; i++)
 				SetParameterVariable(m_members.definition->runtime.dx_effect, m_members_generic.definition->parameters[i]);
 		}
 	};};};

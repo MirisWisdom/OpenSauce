@@ -113,7 +113,7 @@ namespace Effect
 
 		if(TEST_FLAG(feature_usage, Flags::_shader_extension_usage_bit_depth_fade))
 		{
-			if(shader.effect.shader_extension.Count == 1)
+			if(shader.effect.shader_extension.count == 1)
 			{
 				// If the shader has a shader extension block set the effect softness from the extension block
 				auto& extension = shader.effect.shader_extension[0];

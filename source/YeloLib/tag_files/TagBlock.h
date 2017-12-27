@@ -3,65 +3,53 @@
 namespace Yelo
 {
 	struct tag_block;
+	struct tag_block_definition;
 
 	// Template'd tag block for allowing more robust code.
 	template <typename t_type>
 	struct TagBlock
 	{
-		typedef t_type* iterator;
-		typedef const t_type* const_iterator;
-		typedef t_type value_type;
-		typedef t_type& reference;
-		typedef const t_type& const_reference;
-		typedef t_type* pointer;
+		typedef t_type* iterator_t;
+		typedef const t_type* const_iterator_t;
+		typedef t_type value_type_t;
+		typedef t_type& reference_t;
+		typedef const t_type& const_reference_t;
+		typedef t_type* pointer_t;
+		typedef const t_type* const_pointer_t;
 
-		typedef const t_type* const_pointer;
-
-		// Element count for this block
-		int32 Count;
-
-		// Anonymous union for allowing less code for converting, and less 
-		// "#pragma warning" code entries
+		int32 count;
 		union
 		{
-			// Pointer to the first tag block definition element
-			void* Address;
-
-			// Pointer to a specific block of object(s) of type t_type
-			t_type* Definitions;
+			void* address;
+			t_type* definitions;
 		};
-
 		#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-		// definition pointer for this block instance
-		const struct tag_block_definition* BlockDefinition;
+		const tag_block_definition* block_definition;
 		#endif
 
-		// Using the class's template 't_type' parameter, calculates the total
-		// size, in bytes, the elements assume in memory
-		size_t SizeOf() const
+		size_t total_size() const
 		{
-			return sizeof(t_type) * Count;
+			return sizeof(t_type) * count;
 		}
 
 		tag_block* to_tag_block()
 		{
-			return CAST_PTR(tag_block*, &this->Count);
+			return reinterpret_cast<tag_block*>(&this->count);
 		}
 
 		const tag_block* to_tag_block() const
 		{
-			return CAST_PTR(const tag_block*, &this->Count);
+			return reinterpret_cast<const tag_block*>(&this->count);
 		}
 
-		// Sets this object to equal that of a anonymous tag block object. 
-		TagBlock<t_type>& Copy(
+		TagBlock<t_type>& shallow_copy_from(
 			const tag_block& block)
 		{
-			this->Count = block.count;
-			this->Address = block.address;
+			this->count = block.count;
+			this->address = block.address;
 
 			#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-			this->BlockDefinition = block.definition;
+			this->block_definition = block.definition;
 			#endif
 
 			return this;
@@ -74,8 +62,8 @@ namespace Yelo
 			#if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
 			#else
-			YELO_ASSERT(index >= 0 && index < Count);
-			return this->Definitions[index];
+			YELO_ASSERT(index >= 0 && index < count);
+			return this->definitions[index];
 			#endif
 		}
 
@@ -86,8 +74,8 @@ namespace Yelo
 			#if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
 			#else
-			YELO_ASSERT(index >= 0 && index < Count);
-			return this->Definitions[index];
+			YELO_ASSERT(index >= 0 && index < count);
+			return this->definitions[index];
 			#endif
 		}
 
@@ -126,57 +114,56 @@ namespace Yelo
 		}
 		#endif
 
-
 		//////////////////////////////////////////////////////////////////////////
 		// STL-like APIs
-		const_iterator begin() const
+		const_iterator_t begin() const
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		iterator begin()
+		iterator_t begin()
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		const_iterator const_begin() const
+		const_iterator_t const_begin() const
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		const_iterator const_begin()
+		const_iterator_t const_begin()
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		const_iterator end() const
+		const_iterator_t end() const
 		{
-			return Definitions + Count;
+			return definitions + count;
 		}
 
-		iterator end()
+		iterator_t end()
 		{
-			return Definitions + Count;
+			return definitions + count;
 		}
 
-		const_iterator const_end() const
+		const_iterator_t const_end() const
 		{
-			return Definitions + Count;
+			return definitions + count;
 		}
 
-		const_iterator const_end()
+		const_iterator_t const_end()
 		{
-			return Definitions + Count;
+			return definitions + count;
 		}
 
 		bool empty() const
 		{
-			return Count == 0;
+			return count == 0;
 		}
 
 		size_t size() const
 		{
-			return CAST(size_t, Count);
+			return static_cast<size_t>(count);
 		}
 	};
 

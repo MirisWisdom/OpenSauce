@@ -71,7 +71,7 @@ namespace Yelo
 			c_effect_instance_generic::FindActivationControl(Enums::effect_activation_state state)
 		{
 			// return a pointer to the requested activation control
-			for(int i = 0; i < m_members_generic.definition->activation_controls.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->activation_controls.count; i++)
 			{
 				TagGroups::s_effect_postprocess_effect_activation_control& control = m_members_generic.definition->activation_controls[i];
 
@@ -84,12 +84,12 @@ namespace Yelo
 		bool c_effect_instance_generic::EvaluateActivationControls()
 		{
 			// if there are no activation controls, default to active
-			if(m_members_generic.definition->activation_controls.Count == 0)
+			if(m_members_generic.definition->activation_controls.count == 0)
 				return true;
 
 			// evaluate each control block
 			bool active = m_members.m_flags.is_active;
-			for(int i = 0; i < m_members_generic.definition->activation_controls.Count; i++)
+			for(int i = 0; i < m_members_generic.definition->activation_controls.count; i++)
 			{
 				TagGroups::s_effect_postprocess_effect_activation_control& control = m_members_generic.definition->activation_controls[i];
 

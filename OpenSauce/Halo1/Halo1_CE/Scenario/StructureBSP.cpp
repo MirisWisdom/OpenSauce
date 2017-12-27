@@ -45,7 +45,7 @@ namespace Yelo
 			void BuildBSPMap()
 			{
 				const auto& modifier_list = *m_bsp_modifier_list;
-				for(int i = 0; i < modifier_list.Count; i++)
+				for(int i = 0; i < modifier_list.count; i++)
 				{
 					const auto& modifier = modifier_list[i];
 
@@ -101,7 +101,7 @@ namespace Yelo
 			}
 
 			auto& lightmap_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].lightmap_sets;
-			if((set_index < 0) || (set_index >= lightmap_sets.Count))
+			if((set_index < 0) || (set_index >= lightmap_sets.count))
 			{
 				return false;
 			}
@@ -156,7 +156,7 @@ namespace Yelo
 		static bool SetSkySet(const sbyte modifier_index, const sbyte bsp_index, const sbyte set_index)
 		{
 			auto& sky_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].sky_sets;
-			if((set_index < 0) || (set_index >= sky_sets.Count))
+			if((set_index < 0) || (set_index >= sky_sets.count))
 			{
 				return false;
 			}
@@ -210,7 +210,7 @@ namespace Yelo
 			// Find the sky set by name
 			auto& lightmap_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].lightmap_sets;
 
-			for(int set_index = 0; set_index < lightmap_sets.Count; ++set_index)
+			for(int set_index = 0; set_index < lightmap_sets.count; ++set_index)
 			{
 				if(strcmp(lightmap_sets[set_index].name, set_name) == 0)
 				{
@@ -265,7 +265,7 @@ namespace Yelo
 			// Find the sky set by name
 			auto& sky_sets = (*g_bsp_modifier_globals.m_bsp_modifier_list)[modifier_index].sky_sets;
 
-			for(int set_index = 0; set_index < sky_sets.Count; ++set_index)
+			for(int set_index = 0; set_index < sky_sets.count; ++set_index)
 			{
 				if(strcmp(sky_sets[set_index].name, set_name) == 0)
 				{

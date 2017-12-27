@@ -6,9 +6,12 @@
 */
 #pragma once
 
+#include <blamlib/cseries/cseries_base.hpp>
+#include <blamlib/math/real_math.hpp>
 #include <blamlib/rasterizer/rasterizer_geometry.hpp>
-
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blamlib/tag_files/tag_reference.h>
+#include <yelolib/tag_files/tag_groups_markup.hpp>
+#include <yelolib/tag_files/TagBlock.h>
 
 namespace Yelo
 {

@@ -29,7 +29,7 @@ namespace Yelo
 		int16 c_effect_internal::GetScriptedVariableIndex(const char* name)
 		{
 			// compare the names of all script variables with the test string, return the index if found
-			for(int i = 0; i < m_members_internal.definition->script_variables.Count; i++)
+			for(int i = 0; i < m_members_internal.definition->script_variables.count; i++)
 				if(strcmp(name, m_members_internal.definition->script_variables[i].script_variable_name) == 0)
 					return i;
 			// if no matching variable was found, return -1
@@ -42,7 +42,7 @@ namespace Yelo
 		{
 			c_effect_generic::SetupEffect();
 
-			if(m_members_internal.definition->script_variables.Count == 0)
+			if(m_members_internal.definition->script_variables.count == 0)
 				return;
 
 			SetupScriptedVariables();
@@ -50,7 +50,7 @@ namespace Yelo
 
 		void c_effect_internal::SetupScriptedVariables()
 		{
-			for(int i = 0; i < m_members_internal.definition->script_variables.Count; i++)
+			for(int i = 0; i < m_members_internal.definition->script_variables.count; i++)
 			{
 				TagGroups::s_effect_postprocess_collection_script_variable& variable = m_members_internal.definition->script_variables[i];
 
@@ -63,7 +63,7 @@ namespace Yelo
 		// scripting
 		void c_effect_internal::SetScriptedVariable(int16 index, real change_time, bool value)
 		{
-			if(index >= m_members_internal.definition->script_variables.Count)
+			if(index >= m_members_internal.definition->script_variables.count)
 				return;
 
 			c_parameter_instance* parameter = CAST_PTR(c_parameter_instance*, m_members_internal.definition->script_variables[index].runtime.exposed_parameter);
@@ -74,7 +74,7 @@ namespace Yelo
 
 		void c_effect_internal::SetScriptedVariable(int16 index, real change_time, int32 value)
 		{
-			if(index >= m_members_internal.definition->script_variables.Count)
+			if(index >= m_members_internal.definition->script_variables.count)
 				return;
 
 			c_parameter_instance* parameter = CAST_PTR(c_parameter_instance*, m_members_internal.definition->script_variables[index].runtime.exposed_parameter);
@@ -85,7 +85,7 @@ namespace Yelo
 
 		void c_effect_internal::SetScriptedVariable(int16 index, real change_time, real value0, real value1, real value2, real value3)
 		{
-			if(index >= m_members_internal.definition->script_variables.Count)
+			if(index >= m_members_internal.definition->script_variables.count)
 				return;
 
 			union{

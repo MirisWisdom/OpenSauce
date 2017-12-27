@@ -20,7 +20,7 @@ namespace Yelo
 #if PLATFORM_IS_EDITOR
 		void project_yellow_globals::CullInvalidNetworkPlayerUnits()
 		{
-			for(int32 x = networking.player_units.Count-1; x >= 0; x--)
+			for(int32 x = networking.player_units.count-1; x >= 0; x--)
 			{
 				const TagGroups::s_network_game_player_unit& player_unit = networking.player_units[x];
 				bool remove_element = true;

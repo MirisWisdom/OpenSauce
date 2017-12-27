@@ -113,7 +113,7 @@ namespace Environment
 
 		if(TEST_FLAG(shader.shader.extension_usage, Flags::_shader_extension_usage_bit_normal_map))
 		{
-			if(shader.environment.shader_extension.Count == 1)
+			if(shader.environment.shader_extension.count == 1)
 			{
 				// If the shader has a shader extension block and a normal map, set the multiplier from the extension block
 				auto& extension = shader.environment.shader_extension[0];

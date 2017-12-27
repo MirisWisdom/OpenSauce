@@ -733,7 +733,7 @@ namespace Yelo
 				BuildEffectDefinition(set.definition, effect);
 
 				// If the effect does not reference any shaders it is useless
-				if(!set.definition->shader_ids.Count)
+				if(!set.definition->shader_ids.count)
 				{
 					blam::console_printf(false, "An external post processing effect has no shader ID's");
 					return false;
@@ -750,18 +750,18 @@ namespace Yelo
 
 				set.effect->SetEffectID(effect_id.c_str());
 
-				set.shader_instances = new c_shader_instance_generic[set.definition->shader_ids.Count];
-				set.shader_instance_count = set.definition->shader_ids.Count;
+				set.shader_instances = new c_shader_instance_generic[set.definition->shader_ids.count];
+				set.shader_instance_count = set.definition->shader_ids.count;
 
 				int32 i = 0;
 				//run constructor on shader instances
-				for(i = 0; i < set.definition->shader_ids.Count; i++)
+				for(i = 0; i < set.definition->shader_ids.count; i++)
 				{
 					set.shader_instances[i].Ctor();
 					set.effect->AddShaderInstance(&set.shader_instances[i]);
 				}
 
-				for(i = 0; i < set.definition->shader_ids.Count; i++)
+				for(i = 0; i < set.definition->shader_ids.count; i++)
 				{
 					c_shader_instance_generic& shader_instance = set.shader_instances[i];
 					tag_string& id = set.definition->shader_ids[i];
@@ -950,10 +950,10 @@ namespace Yelo
 
 				// set up techniques
 				uint32 technique_count = (effect_desc.Techniques > 3 ? 3 : effect_desc.Techniques);
-				definition->techniques.Address = new TagGroups::s_technique_definition[technique_count];
-				definition->techniques.Count = technique_count;
+				definition->techniques.address = new TagGroups::s_technique_definition[technique_count];
+				definition->techniques.count = technique_count;
 
-				for(int32 i = 0; i < definition->techniques.Count; i++)
+				for(int32 i = 0; i < definition->techniques.count; i++)
 				{
 					D3DXHANDLE handle = compiler->GetTechnique(i);
 					if(handle == nullptr)
@@ -998,10 +998,10 @@ namespace Yelo
 				return;
 
 			// add passes to the technique block
-			technique.passes.Address = new TagGroups::s_pass_definition[technique_desc.Passes];
-			technique.passes.Count = technique_desc.Passes;
+			technique.passes.address = new TagGroups::s_pass_definition[technique_desc.Passes];
+			technique.passes.count = technique_desc.Passes;
 
-			for(int32 i = 0; i < technique.passes.Count; i++)
+			for(int32 i = 0; i < technique.passes.count; i++)
 			{
 				D3DXHANDLE pass = compiler->GetPass(handle, i);
 				if(pass == nullptr)
@@ -1069,11 +1069,11 @@ namespace Yelo
 			if(parameter_count == 0)
 				return;
 
-			definition->parameters.Address = new TagGroups::s_shader_postprocess_parameter[parameter_count];
-			definition->parameters.Count = parameter_count;
+			definition->parameters.address = new TagGroups::s_shader_postprocess_parameter[parameter_count];
+			definition->parameters.count = parameter_count;
 
 			s_parameter_handle* current = parameter_list;
-			for(int i = 0; (i < definition->parameters.Count) && current; i++)
+			for(int i = 0; (i < definition->parameters.count) && current; i++)
 			{
 				SetupParameter(compiler, *current, definition->parameters[i]);
 				current = current->GetNext();
@@ -1085,27 +1085,27 @@ namespace Yelo
 
 		void c_system_external::DestroyShaderDefinition(TagGroups::s_shader_postprocess_generic* definition)
 		{
-			for(int32 i = 0; i < definition->parameters.Count; i++)
+			for(int32 i = 0; i < definition->parameters.count; i++)
 				DestroyParameter(definition->parameters[i]);
-			delete [] definition->parameters.Address;
-			definition->parameters.Address = nullptr;
-			definition->parameters.Count = 0;
+			delete [] definition->parameters.address;
+			definition->parameters.address = nullptr;
+			definition->parameters.count = 0;
 
 			// delete allocated block memory
-			for(int32 i = 0; i < definition->techniques.Count; i++)
+			for(int32 i = 0; i < definition->techniques.count; i++)
 				DestroyTechnique(definition->techniques[i]);
-			delete [] definition->techniques.Address;
-			definition->techniques.Address = nullptr;
-			definition->techniques.Count = 0;
+			delete [] definition->techniques.address;
+			definition->techniques.address = nullptr;
+			definition->techniques.count = 0;
 
 			ZeroMemory(definition, sizeof(TagGroups::s_shader_postprocess_generic));
 		}
 
 		void c_system_external::DestroyTechnique(TagGroups::s_technique_definition& technique)
 		{
-			delete [] technique.passes.Address;
-			technique.passes.Address = nullptr;
-			technique.passes.Count = 0;
+			delete [] technique.passes.address;
+			technique.passes.address = nullptr;
+			technique.passes.count = 0;
 
 			ZeroMemory(&technique, sizeof(TagGroups::s_technique_definition));
 		}
@@ -1132,8 +1132,8 @@ namespace Yelo
 				return;
 			}
 			
-			definition->shader_ids.Address = new tag_string[shader_ids.size()];
-			definition->shader_ids.Count = shader_ids.size();
+			definition->shader_ids.address = new tag_string[shader_ids.size()];
+			definition->shader_ids.count = shader_ids.size();
 
 			uint32 index = 0;
 			for(auto& id : shader_ids)
@@ -1154,9 +1154,9 @@ namespace Yelo
 
 		void c_system_external::DestroyEffectDefinition(s_effect_postprocess_external* definition)
 		{
-			delete [] definition->shader_ids.Address;
-			definition->shader_ids.Address = nullptr;
-			definition->shader_ids.Count = 0;
+			delete [] definition->shader_ids.address;
+			definition->shader_ids.address = nullptr;
+			definition->shader_ids.count = 0;
 		}
 
 		/////////////////////////////////////////////////
@@ -1197,8 +1197,8 @@ namespace Yelo
 			int activation_control_count = effect_instance.m_activation_controls.size();
 			if(activation_control_count != 0)
 			{
-				definition->activation_controls.Address = new TagGroups::s_effect_postprocess_effect_activation_control[activation_control_count];
-				definition->activation_controls.Count = activation_control_count;
+				definition->activation_controls.address = new TagGroups::s_effect_postprocess_effect_activation_control[activation_control_count];
+				definition->activation_controls.count = activation_control_count;
 
 				int32 index = 0;
 				for(auto& activation_control : effect_instance.m_activation_controls.GetConst())
@@ -1221,9 +1221,9 @@ namespace Yelo
 
 		void c_system_external::DestroyEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition)
 		{
-			delete [] definition->activation_controls.Address;
-			definition->activation_controls.Address = nullptr;
-			definition->activation_controls.Count = 0;
+			delete [] definition->activation_controls.address;
+			definition->activation_controls.address = nullptr;
+			definition->activation_controls.count = 0;
 		}
 
 		/////////////////////////////////////////////////

@@ -3,123 +3,116 @@
 namespace Yelo
 {
 	struct tag_data;
+	struct tag_data_definition;
 
 	// Template'd tag_data for more robust code dealing with known
 	// sub-structures.
 	template <typename t_type>
 	struct TagData
 	{
-		typedef t_type* iterator;
-		typedef const t_type* const_iterator;
-		typedef t_type value_type;
-		typedef t_type& reference;
-		typedef const t_type& const_reference;
-		typedef t_type* pointer;
-		typedef const t_type* const_pointer;
+		typedef t_type* iterator_t;
+		typedef const t_type* const_iterator_t;
+		typedef t_type value_type_t;
+		typedef t_type& reference_t;
+		typedef const t_type& const_reference_t;
+		typedef t_type* pointer_t;
+		typedef const t_type* const_pointer_t;
 
-		// Size, in bytes, of the data blob
-		int32 Size;
-
+		int32 total_size;
 		#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-		long_flags Flags;
-		int32 StreamPosition;
+		long_flags flags;
+		int32 stream_position;
 		#endif
-
 		union
 		{
-			// Address of the data blob
-			void* Address;
-
-			t_type* Definitions;
+			void* address;
+			t_type* definitions;
 		};
-
 		#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-		const struct tag_data_definition* DataDefinition;
+		const tag_data_definition* data_definition;
 		#endif
 
-		// How many [t_type] objects are actually in the definition.
-		size_t Count() const
+		size_t count() const
 		{
-			return Size / sizeof(t_type);
+			return total_size / sizeof(t_type);
 		}
 
-		// Sizeof(t_type)
-		size_t SizeOf() const
+		static size_t size_of_type()
 		{
 			return sizeof(t_type);
 		}
 
 		tag_data* to_tag_data()
 		{
-			return CAST_PTR(tag_data*, &this->Size);
+			return reinterpret_cast<tag_data*>(&this->total_size);
 		}
 
 		const tag_data* to_tag_data() const
 		{
-			return CAST_PTR(const tag_data*, &this->Size);
+			return reinterpret_cast<const tag_data*>(&this->total_size);
 		}
 
 		t_type* operator[](
-			int32 index)
+			const int32 index)
 		{
-			return &this->Definitions[index];
+			return &this->definitions[index];
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		// STL-like APIs
-		const_iterator begin() const
+		const_iterator_t begin() const
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		iterator begin()
+		iterator_t begin()
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		const_iterator const_begin() const
+		const_iterator_t const_begin() const
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		const_iterator const_begin()
+		const_iterator_t const_begin()
 		{
-			return Definitions;
+			return definitions;
 		}
 
-		const_iterator end() const
+		const_iterator_t end() const
 		{
-			return Definitions + Count();
+			return definitions + count();
 		}
 
-		iterator end()
+		iterator_t end()
 		{
-			return Definitions + Count();
+			return definitions + count();
 		}
 
-		const_iterator const_end() const
+		const_iterator_t const_end() const
 		{
-			return Definitions + Count();
+			return definitions + count();
 		}
 
-		const_iterator const_end()
+		const_iterator_t const_end()
 		{
-			return Definitions + Count();
+			return definitions + count();
 		}
 
 		bool empty() const
 		{
-			return Size == 0;
+			return total_size == 0;
 		}
 
 		size_t size() const
 		{
-			return CAST(size_t, Count());
+			return static_cast<size_t>(count());
 		}
 
 		#if PLATFORM_IS_EDITOR
 		void resize(
-			size_t new_size = 0)
+			const size_t new_size = 0)
 		{
 			blam::tag_data_resize(this, new_size);
 		}
