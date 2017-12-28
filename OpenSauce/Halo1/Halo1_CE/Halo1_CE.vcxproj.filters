@@ -43,9 +43,6 @@
     <Filter Include="Common\Shared\mongoose">
       <UniqueIdentifier>{a0f474b6-98ae-4e95-8815-619e97d56646}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\GameSystems">
-      <UniqueIdentifier>{2ce60aad-7d0a-4044-8266-e26deb2f67a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{51e81f19-16a2-4d0f-9b63-983dbf517be2}</UniqueIdentifier>
     </Filter>
@@ -1781,45 +1778,6 @@
     <Text Include="Halo1_CE_Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Common\GameSystemComponents.Startup.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.GameState.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Tags.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Scripting.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.GameStateYelo.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Render.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Game.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Interface.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Networking.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponents.Misc.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponent.IterationRoundBegin.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponent.IterationRoundEnd.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
-    <None Include="Common\GameSystemComponent.Definitions.inl">
-      <Filter>Common\GameSystems</Filter>
-    </None>
     <None Include="Game\CameraFov.inl">
       <Filter>Game\Impl</Filter>
     </None>
