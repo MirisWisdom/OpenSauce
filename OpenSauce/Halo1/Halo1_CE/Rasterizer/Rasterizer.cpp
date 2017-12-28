@@ -238,7 +238,7 @@ namespace Yelo
 			Yelo::Main::s_dx_component* components;
 			const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
 
-			for(Yelo::int32 x = 0; x <= component_count; x++)
+			for(Yelo::int32 x = 0; x < component_count; x++)
 				components[x].Release();
 
 			// Return the code flow back to the game
