@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "GameState.DTS.Scripting.inl"
 
 static void* scripting_data_array_info_evaluate(void** arguments)
 {

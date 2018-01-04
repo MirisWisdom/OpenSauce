@@ -53,6 +53,7 @@ static void* UnitDataFieldGetIntegerImpl(const s_object_field_definition& field,
 	case _unit_field_integer_current_weapon_index:			return &unit.current_weapon_index;
 	case _unit_field_integer_feign_death_timer:				return &unit.feign_death_timer;
 	case _unit_field_integer_killing_spree_count:			return &unit.killing_spree_count;
+	case _unit_field_integer_keypress:						return &unit.keypress;
 
 	default: return nullptr;
 	}

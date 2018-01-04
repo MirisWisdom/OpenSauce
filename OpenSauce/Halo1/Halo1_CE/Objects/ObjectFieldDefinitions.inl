@@ -80,6 +80,7 @@ static s_object_field_definition g_unit_integer_fields[] = {
 	FIELD_ENTRY(unit, short, integer, current_weapon_index,	true,  true),
 	FIELD_ENTRY(unit, short, integer, feign_death_timer,	false, true),
 	FIELD_ENTRY(unit, short, integer, killing_spree_count,	false, true),
+	FIELD_ENTRY(unit, short, integer, keypress,				true),
 };
 
 
