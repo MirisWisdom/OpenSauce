@@ -11,11 +11,38 @@
 #include "Objects/Objects.WeaponSettings.hpp"
 #include <YeloLib/cseries/value_conversion.hpp>
 #include <YeloLib/Halo1/objects/objects_yelo.hpp>
+#include <TagGroups\TagGroups.hpp>
+#include <Interface/UIWidgets.hpp>
 
 namespace Yelo
 {
 	namespace Objects
 	{
+		static const TagGroups::s_network_game_player_unit* FindUnit(cstring unit_name, const TAG_TBLOCK(&units, TagGroups::s_network_game_player_unit))
+		{
+			for (const auto& unit_to_swap : units)
+			{
+				if (StrCmp(unit_to_swap.name, unit_name) == 0 && unit_to_swap.definition.tag_index.IsNull())
+					return &unit_to_swap;
+			}
+
+			return nullptr;
+		}
+		bool SwitchUnit(s_unit_datum* unit, cstring name)
+		{
+			const TagGroups::s_network_game_player_unit* unit_to_swap = nullptr;
+	
+			if (unit_to_swap == nullptr)
+				unit_to_swap = FindUnit(name, Scenario::GetYeloGlobals()->networking.player_units);
+
+			if (unit_to_swap != nullptr)
+			{
+				return true;
+			}
+
+			return false;
+		};
+
 
 static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 {
@@ -407,8 +434,14 @@ static void* scripting_unit_is_key_down_evaluate(void** arguments)
 		{
 			return result.pointer;
 		}
-		if (GetAsyncKeyState (args->keypress) & 0x8000)
+		cstring keypress;
+		keypress = "keypress";
+		int16 keystroke;
+		keystroke = args->keypress;
+		if (GetAsyncKeyState(args->keypress) & 0x8000)
 		{
+			UnitDataSetIntegerByName(unit, keypress, keystroke);
+			UnitDataGetIntegerByName(unit, keypress, result);
 			result.boolean = true;
 		}
 	}
@@ -483,7 +516,7 @@ static void* scripting_switch_unit_evaluate(void** arguments)
 {
 	struct s_arguments {
 		datum_index unit_index;
-		cstring tag_path;
+		cstring tag_name;
 	}*args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = nullptr;
 	result.boolean = false;
@@ -495,10 +528,7 @@ static void* scripting_switch_unit_evaluate(void** arguments)
 		{
 			return result.pointer;
 		}
-		if (StrCmp(args->tag_path, "") == TagGroups::string_to_group_tag(args->tag_path))
-		{
-			result.boolean = TagGroups::string_to_group_tag(args->tag_path);
-		}
+		result.boolean = SwitchUnit(unit, args->tag_name);
 	}
 	return result.pointer;;
 }
@@ -525,8 +555,5 @@ static void* scripting_switch_weapon_evaluate(void** arguments)
 	}
 	return result.pointer;
 }
-
-
-
 	};
 };

@@ -130,6 +130,7 @@
 		
 		_hs_function_structure_bsp_set_lightmap_set,
 		_hs_function_structure_bsp_set_sky_set,
+		_hs_function_structure_bsp_set_time_of_day,
 		
 		_hs_function_ai_transform_actor,
 		_hs_function_ai_transform_actors,
@@ -283,6 +284,13 @@
 		HS_TYPE(short),
 		HS_TYPE(string)
 	);
+
+	HS_FUNCTION_WITH_PARAMS(structure_bsp_set_time_of_day, bool, "Sets a bsp's lightmap set and sky set",
+		"<bsp-index> <lightmap-set-name> <sky-set-name>", 3,
+		HS_TYPE(short),
+		HS_TYPE(string),
+		HS_TYPE(string)
+		);
 
 	HS_FUNCTION_WITH_PARAMS(vehicle_remapper_enabled, bool, "returns the remapper state before the function call", 
 			"state_name", 1,
@@ -490,6 +498,7 @@
 
 		&GET_HS_FUNCTION(structure_bsp_set_lightmap_set),
 		&GET_HS_FUNCTION(structure_bsp_set_sky_set),
+		&GET_HS_FUNCTION(structure_bsp_set_time_of_day),
 		
 		&GET_HS_FUNCTION(ai_transform_actor),
 		&GET_HS_FUNCTION(ai_transform_actors),

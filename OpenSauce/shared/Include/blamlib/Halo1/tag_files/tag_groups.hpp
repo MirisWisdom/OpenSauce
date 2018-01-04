@@ -17,6 +17,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
+			k_group_tag,
 			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
 		};
 	};
