@@ -347,6 +347,9 @@ namespace Yelo
 					byte zoom_level_yelo;
 					byte desired_zoom_level_yelo;
 				};
+				struct {
+					int16 keypress;
+				};
 			};
 		public:
 			s_unit_control_data control_data;								// 0x478
