@@ -43,7 +43,7 @@
 
 #define TAG_ARRAY(type, name, count)		type name[count]
 
-#define TAG_PAD(type, count)				Yelo::byte BOOST_JOIN(pad, __COUNTER__)[sizeof(type)*(count)]
+#define TAG_PAD(type, count)				Yelo::byte MAKE_UNIQUE(pad)[sizeof(type)*(count)]
 
 
 #if PLATFORM_IS_EDITOR

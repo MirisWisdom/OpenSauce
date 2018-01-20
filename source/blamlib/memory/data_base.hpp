@@ -34,7 +34,7 @@ namespace Yelo
 		public:
 			datum_index::salt_t GetHeader() const	{ return header; }
 			bool IsNull() const						{ return header == 0; }
-		}; BOOST_STATIC_ASSERT( sizeof(s_datum_base) == 2 );
+		}; ASSERT_SIZE(s_datum_base, 2);
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
@@ -45,6 +45,6 @@ namespace Yelo
 		{
 		private:
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_datum_base_aligned) == 4 );
+		}; ASSERT_SIZE(s_datum_base_aligned, 4);
 	};
 };

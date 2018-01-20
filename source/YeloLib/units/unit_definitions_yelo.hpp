@@ -195,7 +195,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, effect, "effe");
 			TAG_FIELD(tag_string, effect_marker);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_mounted_state_keyframe_action) == 0x60);
+		}; ASSERT_SIZE(unit_mounted_state_keyframe_action, 0x60);
 
 		struct unit_mounted_state
 		{
@@ -204,13 +204,13 @@ namespace Yelo
 			TAG_FIELD(s_unit_camera, unit_camera);
 			TAG_TBLOCK(keyframe_actions, unit_mounted_state_keyframe_action);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_mounted_state) == 0x80);
+		}; ASSERT_SIZE(unit_mounted_state, 0x80);
 
 		struct unit_extensions
 		{
 			TAG_TBLOCK(mounted_state, unit_mounted_state);
 			TAG_PAD(tag_block, 4);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_extensions) == 0x3C);
+		}; ASSERT_SIZE(unit_extensions, 0x3C);
 
 
 		struct unit_seat_keyframe_action
@@ -232,7 +232,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, effect, "effe");
 			TAG_FIELD(tag_string, effect_marker);
 			TAG_PAD(tag_block, 3);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_keyframe_action) == 0x98);
+		}; ASSERT_SIZE(unit_seat_keyframe_action, 0x98);
 
 		struct unit_seat_boarding
 		{
@@ -248,7 +248,7 @@ namespace Yelo
 			TAG_PAD(tag_block, 2);
 			TAG_TBLOCK(keyframe_actions, unit_seat_keyframe_action);
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_boarding) == 0x70);
+		}; ASSERT_SIZE(unit_seat_boarding, 0x70);
 
 		struct unit_seat_damage
 		{
@@ -264,7 +264,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, region_name);
 			TAG_FIELD(tag_reference, region_damage_effect, "jpt!");
 			TAG_PAD(tag_block, 2);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_damage) == 0x88);
+		}; ASSERT_SIZE(unit_seat_damage, 0x88);
 
 		struct unit_seat_access
 		{
@@ -279,7 +279,7 @@ namespace Yelo
 			TAG_FIELD(word_flags, permitted_ai_states);
 			PAD16;
 			TAG_PAD(tag_block, 3);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_access) == 0x7C);
+		}; ASSERT_SIZE(unit_seat_access, 0x7C);
 
 		struct unit_seat_extensions
 		{
@@ -290,6 +290,6 @@ namespace Yelo
 			TAG_TBLOCK(seat_boarding, unit_seat_boarding);
 			TAG_TBLOCK(seat_damage, unit_seat_damage);
 			TAG_PAD(tag_block, 4);
-		}; BOOST_STATIC_ASSERT(sizeof(unit_seat_extensions) == 0x64);
+		}; ASSERT_SIZE(unit_seat_extensions, 0x64);
 	};
 };

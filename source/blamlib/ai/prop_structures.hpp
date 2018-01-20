@@ -129,7 +129,7 @@ namespace Yelo
 			PAD8; // unknown field						0x137
 		};
 
-		BOOST_STATIC_ASSERT(sizeof(s_prop_datum) == 0x138);
+		ASSERT_SIZE(s_prop_datum, 0x138);
 
 		typedef Memory::DataArray<s_prop_datum, 768> prop_data_t;
 

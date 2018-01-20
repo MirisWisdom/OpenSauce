@@ -63,7 +63,7 @@ namespace Yelo
 			PAD32; PAD32; PAD32; // not used in the update...probably a real_vector3d (angular_velocity?)
 			int16 magazine_rounds_totals[Enums::k_maximum_number_of_magazines_per_weapon];
 			real age;
-		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_datum_network_data) == 0x2C );
+		}; ASSERT_SIZE(s_weapon_datum_network_data, 0x2C);
 
 		struct s_weapon_data
 		{
@@ -83,7 +83,7 @@ namespace Yelo
 				UNKNOWN_TYPE(real);					// 0x1C used in the calculation of projectile error angle
 				datum_index charging_effect_index;	// 0x20
 				PAD32; // ?
-			}; BOOST_STATIC_ASSERT( sizeof(s_trigger_state) == 0x28 );
+			}; ASSERT_SIZE(s_trigger_state, 0x28);
 			struct s_magazine_state // '?' means IDK if its actually padding or there are values there. If there are, IDK their types (could be a boolean!)
 			{
 				Enums::weapon_magazine_state state;
@@ -94,12 +94,12 @@ namespace Yelo
 				int16 rounds_left_to_recharge;		// 0xA number of rounds left to apply to rounds_loaded (based on tag's rounds_recharged)
 				UNKNOWN_TYPE(int16);				// 0xC I just know a WORD is here, may be an _enum
 				PAD16; // ?
-			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
+			}; ASSERT_SIZE(s_magazine_state, 0x10);
 			struct s_start_reload_data
 			{
 				int16 starting_total_rounds[Enums::k_maximum_number_of_magazines_per_weapon];
 				int16 starting_loaded_rounds[Enums::k_maximum_number_of_magazines_per_weapon];
-			}; BOOST_STATIC_ASSERT( sizeof(s_start_reload_data) == 0x8 );
+			}; ASSERT_SIZE(s_start_reload_data, 0x8);
 
 			// FLAG(3) - _weapon_must_be_readied_bit
 			long_flags flags;						// 0x22C
@@ -131,7 +131,7 @@ namespace Yelo
 			UNKNOWN_TYPE(bool);						// 0x310 probably delta_valid
 			PAD24;									// 0x311
 			s_weapon_datum_network_data update_delta;		// 0x314
-		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_data) == (Enums::k_object_size_weapon - Enums::k_object_size_item) );
+		}; ASSERT_SIZE(s_weapon_data, Enums::k_object_size_weapon - Enums::k_object_size_item);
 
 
 		struct s_weapon_datum : s_item_datum
@@ -139,6 +139,6 @@ namespace Yelo
 			enum { k_object_types_mask = FLAG(Enums::_object_type_weapon) };
 
 			s_weapon_data weapon;
-		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_datum) == Enums::k_object_size_weapon );
+		}; ASSERT_SIZE(s_weapon_datum, Enums::k_object_size_weapon);
 	};
 };

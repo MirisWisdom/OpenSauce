@@ -14,7 +14,7 @@ namespace Yelo
 		struct _scenery_definition
 		{
 			TAG_PAD(int32, 32);
-		}; BOOST_STATIC_ASSERT( sizeof(_scenery_definition) == 0x80 );
+		}; ASSERT_SIZE(_scenery_definition, 0x80);
 
 		struct s_scenery_definition : s_object_definition
 		{

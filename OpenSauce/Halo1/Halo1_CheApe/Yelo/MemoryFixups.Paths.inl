@@ -352,7 +352,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		"sapien_model_index.dat",
 	#endif
 #endif
-	}; BOOST_STATIC_ASSERT( NUMBEROF(k_file_path_fixup_names) == _report_type );
+	}; STATIC_ASSERT( NUMBEROF(k_file_path_fixup_names) == _report_type );
 
 	cstring k_reports_path = nullptr;
 	

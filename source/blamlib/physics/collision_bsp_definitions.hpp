@@ -31,27 +31,27 @@ namespace Yelo
 			TAG_FIELD(int32, plane);
 			TAG_FIELD(int32, back_child);
 			TAG_FIELD(int32, front_child);
-		}; BOOST_STATIC_ASSERT( sizeof(bsp3d_node) == 0xC );
+		}; ASSERT_SIZE(bsp3d_node, 0xC);
 
 		struct collision_leaf
 		{
 			TAG_FIELD(word_flags, flags);
 			TAG_FIELD(int16, reference_count);
 			TAG_FIELD(int32, first_reference, bsp2d_reference);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_leaf) == 0x8 );
+		}; ASSERT_SIZE(collision_leaf, 0x8);
 
 		struct bsp2d_reference
 		{
 			TAG_FIELD(int32, plane);
 			TAG_FIELD(int32, bsp2d_node);
-		}; BOOST_STATIC_ASSERT( sizeof(bsp2d_reference) == 0x8 );
+		}; ASSERT_SIZE(bsp2d_reference, 0x8);
 
 		struct bsp2d_node
 		{
 			TAG_FIELD(real_plane2d, plane);
 			TAG_FIELD(int32, left_child);
 			TAG_FIELD(int32, right_child);
-		}; BOOST_STATIC_ASSERT( sizeof(bsp2d_node) == 0x14 );
+		}; ASSERT_SIZE(bsp2d_node, 0x14);
 
 		struct collision_surface
 		{
@@ -60,7 +60,7 @@ namespace Yelo
 			TAG_FIELD(Flags::collision_surface_flags, flags);
 			TAG_FIELD(sbyte, breakable_surface);
 			TAG_FIELD(int16, material);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_surface) == 0xC );
+		}; ASSERT_SIZE(collision_surface, 0xC);
 
 		struct collision_edge
 		{
@@ -70,13 +70,13 @@ namespace Yelo
 			TAG_FIELD(int32, reverse_edge);
 			TAG_FIELD(int32, left_surface);
 			TAG_FIELD(int32, right_surface);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_edge) == 0x18 );
+		}; ASSERT_SIZE(collision_edge, 0x18);
 
 		struct collision_vertex
 		{
 			TAG_FIELD(real_point3d, point);
 			TAG_FIELD(int32, first_edge);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_vertex) == 0x10 );
+		}; ASSERT_SIZE(collision_vertex, 0x10);
 
 		struct collision_bsp
 		{
@@ -90,6 +90,6 @@ namespace Yelo
 			TAG_TBLOCK(surfaces, collision_surface);
 			TAG_TBLOCK(edges, collision_edge);
 			TAG_TBLOCK(vertices, collision_vertex);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_bsp) == 0x60 );
+		}; ASSERT_SIZE(collision_bsp, 0x60);
 	};
 };

@@ -40,7 +40,7 @@ namespace Yelo
 			}object_collision;
 			UNKNOWN_TYPE(real_vector3d);		// 0x218
 			UNKNOWN_TYPE(real_euler_angles2d);	// 0x224
-		}; BOOST_STATIC_ASSERT( sizeof(s_item_data) == (Enums::k_object_size_item - Enums::k_object_size_object) );
+		}; ASSERT_SIZE(s_item_data, Enums::k_object_size_item - Enums::k_object_size_object);
 
 
 		struct s_garbage_data
@@ -48,7 +48,7 @@ namespace Yelo
 			game_time_t ticks_until_gc;
 			PAD16;
 			int32 _unused[5];
-		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_data) == (Enums::k_object_size_garbage - Enums::k_object_size_item) );
+		}; ASSERT_SIZE(s_garbage_data, Enums::k_object_size_garbage - Enums::k_object_size_item);
 
 
 
@@ -58,13 +58,13 @@ namespace Yelo
 
 			s_object_data object;
 			s_item_data item;
-		}; BOOST_STATIC_ASSERT( sizeof(s_item_datum) == Enums::k_object_size_item );
+		}; ASSERT_SIZE(s_item_datum, Enums::k_object_size_item);
 
 		struct s_garbage_datum : s_item_datum
 		{
 			enum { k_object_types_mask = FLAG(Enums::_object_type_garbage) };
 
 			s_garbage_data garbage;
-		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_datum) == Enums::k_object_size_garbage );
+		}; ASSERT_SIZE(s_garbage_datum, Enums::k_object_size_garbage);
 	};
 };

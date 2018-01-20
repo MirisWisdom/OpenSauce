@@ -496,9 +496,9 @@
 	#endif
 	};
 	// Validate our definition list has the same amount as our exposed enumeration count
-	BOOST_STATIC_ASSERT( NUMBEROF(hs_yelo_functions) == Enums::k_hs_function_enumeration_count );
+	STATIC_ASSERT( NUMBEROF(hs_yelo_functions) == Enums::k_hs_function_enumeration_count );
 	// Validate we haven't gone over our limit of allowed new script functions
-	BOOST_STATIC_ASSERT( 
+	STATIC_ASSERT(
 		Enums::k_hs_function_enumeration_count <= (Enums::k_hs_script_functions_count_upgrade - Enums::k_hs_functions_count) );
 
 
@@ -530,6 +530,6 @@
 	#endif
 	};
 	// Validate our definition list has the same amount as our exposed enumeration count
-	BOOST_STATIC_ASSERT( NUMBEROF(hs_yelo_globals) == Enums::k_hs_global_enumeration_count );
+	STATIC_ASSERT( NUMBEROF(hs_yelo_globals) == Enums::k_hs_global_enumeration_count );
 
 #endif

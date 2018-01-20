@@ -460,7 +460,7 @@ namespace Yelo { namespace Scripting
 		s_hs_value_union value)
 	{
 		// can just fall through as long as this is true
-		BOOST_STATIC_ASSERT(sizeof(value.int32) == sizeof(value.tag_index));
+		ASSERT_SIZE(value.int32, sizeof(value.tag_index));
 
 		return value;
 	}

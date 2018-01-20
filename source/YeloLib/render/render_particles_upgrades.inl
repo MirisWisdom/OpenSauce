@@ -14,7 +14,7 @@ namespace render_particles_mods
 		int16 particle_datum_field_2C;
 		bool particle_datum_flags_bit5;
 		PAD8;
-	}; BOOST_STATIC_ASSERT( sizeof(s_rendered_particle) == 8 );
+	}; ASSERT_SIZE(s_rendered_particle, 8);
 	static s_rendered_particle rendered_particles[Enums::k_maximum_number_of_particles_per_map_upgrade];
 
 	//////////////////////////////////////////////////////////////////////////

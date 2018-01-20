@@ -74,7 +74,7 @@ namespace Yelo
 			int16 vertex0_index;
 			int16 vertex1_index;
 			int16 vertex2_index;
-		}; BOOST_STATIC_ASSERT(sizeof(rasterizer_triangle) == 0x6);
+		}; ASSERT_SIZE(rasterizer_triangle, 0x6);
 
 		struct rasterizer_triangle_buffer
 		{
@@ -83,7 +83,7 @@ namespace Yelo
 			int32 count;
 			void* data;
 			void* hardware_format;
-		}; BOOST_STATIC_ASSERT( sizeof(rasterizer_triangle_buffer) == 0x10 );
+		}; ASSERT_SIZE(rasterizer_triangle_buffer, 0x10);
 
 		struct rasterizer_vertex_buffer
 		{
@@ -93,7 +93,7 @@ namespace Yelo
 			int32 vertex_count;
 			void* data;
 			void* hardware_format;
-		}; BOOST_STATIC_ASSERT( sizeof(rasterizer_vertex_buffer) == 0x14 );
+		}; ASSERT_SIZE(rasterizer_vertex_buffer, 0x14);
 
 		struct environment_vertex_uncompressed
 		{

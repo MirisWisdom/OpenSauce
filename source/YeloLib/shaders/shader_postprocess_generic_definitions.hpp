@@ -125,7 +125,7 @@ namespace Yelo
 				TAG_FIELD(real_argb_color, upper_bound);
 			}color4d;
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_value_union) == s_shader_postprocess_value_union::k_sizeof );
+		}; ASSERT_SIZE(s_shader_postprocess_value_union, s_shader_postprocess_value_union::k_sizeof);
 
 		struct s_shader_postprocess_value_runtime_override
 		{
@@ -142,12 +142,12 @@ namespace Yelo
 				TAG_FLAG8(inverted);
 				TAG_FLAG8(multichannel_noise);
 				TAG_FLAG8(ignore_alpha);
-			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(byte_flags) );
+			}flags;	ASSERT_SIZE(_flags, sizeof(byte_flags));
 			PAD8;
 
 			TAG_FIELD(real, animation_duration);
 			TAG_FIELD(real, animation_rate);
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_value_animation_function) == 0xC );
+		}; ASSERT_SIZE(s_shader_postprocess_value_animation_function, 0xC);
 
 		struct s_shader_postprocess_value_base
 		{
@@ -165,7 +165,7 @@ namespace Yelo
 		{
 			TAG_PAD(byte, 12);
 			TAG_FIELD(tag_reference, bitmap, 'bitm');
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_bitmap) == 0x1C + sizeof(s_shader_postprocess_value_base) );
+		}; ASSERT_SIZE(s_shader_postprocess_bitmap, 0x1C + sizeof(s_shader_postprocess_value_base));
 
 		struct s_shader_postprocess_parameter : s_shader_postprocess_value_base
 		{
@@ -219,7 +219,7 @@ namespace Yelo
 			TAG_TBLOCK_(float3s, s_shader_postprocess_value_base);
 			TAG_TBLOCK_(float4s, s_shader_postprocess_value_base);
 			TAG_TBLOCK_(colors, s_shader_postprocess_value_base);
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_implementation) == 0x60);
+		}; ASSERT_SIZE(s_shader_postprocess_implementation, 0x60);
 
 		struct s_shader_postprocess_generic : s_shader_postprocess_definition
 		{
@@ -235,6 +235,6 @@ namespace Yelo
 #if !PLATFORM_IS_EDITOR // for externally defined shaders
 			s_shader_postprocess_generic()	{}
 #endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_generic) == 0x44 + sizeof(s_shader_postprocess_definition) + sizeof(s_shader_postprocess_implementation) );
+		}; ASSERT_SIZE(s_shader_postprocess_generic, 0x44 + sizeof(s_shader_postprocess_definition) + sizeof(s_shader_postprocess_implementation));
 	};
 };

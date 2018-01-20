@@ -43,7 +43,7 @@ namespace Yelo
 				TAG_PAD(byte, s_equipment_yelo_definition::k_max_definition_size);
 				//s_equipment_yelo_definition yelo;
 			};
-		}; BOOST_STATIC_ASSERT( sizeof(_equipment_definition) == 0xA8 );
+		}; ASSERT_SIZE(_equipment_definition, 0xA8);
 		struct s_equipment_definition : s_item_definition
 		{
 			enum { k_group_tag = 'eqip' };

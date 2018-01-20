@@ -108,11 +108,13 @@ namespace Yelo
 				TAG_FLAG16(clear_target);
 				TAG_FLAG16(copy_scene_to_target);
 				TAG_FLAG16(clear_buffer_texture);
-			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}flags;
+			ASSERT_SIZE(_flags, sizeof(word_flags) );
+
 			TAG_FIELD(_enum, render_chain);
 
 			TAG_PAD(int32, 3);
-		}; BOOST_STATIC_ASSERT( sizeof(s_pass_definition) == 0x30 );
+		}; ASSERT_SIZE(s_pass_definition, 0x30);
 
 		struct s_technique_definition
 		{
@@ -122,14 +124,15 @@ namespace Yelo
 				TAG_FLAG16(sm_1_0);
 				TAG_FLAG16(sm_2_0);
 				TAG_FLAG16(sm_3_0);
-			}shader_model;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}shader_model;
+			ASSERT_SIZE(_flags, sizeof(word_flags));
 
 			PAD16;
 
 			TAG_PAD(int32, 4);
 
 			TAG_TBLOCK_(passes, s_pass_definition);
-		}; BOOST_STATIC_ASSERT( sizeof(s_technique_definition) == 0x40);
+		}; ASSERT_SIZE(s_technique_definition, 0x40);
 
 		struct s_shader_postprocess_definition
 		{
@@ -167,7 +170,7 @@ namespace Yelo
 				struct _postprocess_flags{
 					TAG_FLAG16(valid_shader);
 					TAG_FLAG16(uses_gbuffer);
-				}flags; PAD16;	BOOST_STATIC_ASSERT( sizeof(_postprocess_flags) == sizeof(word_flags) );
+				}flags; PAD16;	ASSERT_SIZE(_postprocess_flags, sizeof(word_flags));
 
 				TAG_FIELD(LPD3DXEFFECT, dx_effect);
 				TAG_FIELD(D3DXHANDLE, postprocess_handle);
@@ -178,7 +181,7 @@ namespace Yelo
 #if !PLATFORM_IS_EDITOR // for externally defined shaders
 			s_shader_postprocess_definition()	{}
 #endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_definition) == 0xA4 );
+		}; ASSERT_SIZE(s_shader_postprocess_definition, 0xA4);
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -189,7 +192,7 @@ namespace Yelo
 			TAG_FIELD(real_bounds, y_data);
 			TAG_FIELD(real_bounds, z_data);
 			TAG_FIELD(real_bounds, w_data);
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_custom_vertex_data) == 0x20);
+		}; ASSERT_SIZE(s_effect_postprocess_custom_vertex_data, 0x20);
 
 		struct s_effect_postprocess_quad_definition
 		{
@@ -216,7 +219,7 @@ namespace Yelo
 				TAG_PAD(byte, 12);
 			}runtime;
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_definition) == 0x3C );
+		}; ASSERT_SIZE(s_effect_postprocess_definition, 0x3C);
 	};
 };
 

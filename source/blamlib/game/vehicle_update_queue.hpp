@@ -20,6 +20,6 @@ namespace Yelo
 		{
 			Memory::s_simple_circular_queue queue;
 			s_vehicle_update_queue_entry* entries;	// 0x14, #30, user_data
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_update_queue) == 0x18 );
+		}; ASSERT_SIZE(s_vehicle_update_queue, 0x18);
 	};
 };

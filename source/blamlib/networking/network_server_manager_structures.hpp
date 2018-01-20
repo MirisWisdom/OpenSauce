@@ -30,7 +30,7 @@ namespace Yelo
 		{
 			MessageDeltas::decoding_information_data* decoding_information;
 			PAD128; PAD128; PAD128; // unknown bytes
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_client_machine_message_header) == 0x34 );
+		}; ASSERT_SIZE(s_network_client_machine_message_header, 0x34);
 
 		struct s_network_client_machine_dedi
 		{
@@ -51,7 +51,7 @@ namespace Yelo
 			char ip_address[32];
 			char cdkey[74];
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_client_machine_dedi) == 0x8C );
+		}; ASSERT_SIZE(s_network_client_machine_dedi, 0x8C);
 		struct s_network_client_machine
 		{
 			s_network_connection* connection;							// 0x0
@@ -79,9 +79,9 @@ namespace Yelo
 #endif
 		};
 #if PLATFORM_IS_DEDI
-		BOOST_STATIC_ASSERT( sizeof(s_network_client_machine) == 0xEC );
+		ASSERT_SIZE(s_network_client_machine, 0xEC);
 #else
-		BOOST_STATIC_ASSERT( sizeof(s_network_client_machine) == 0x60 );
+		ASSERT_SIZE(s_network_client_machine, 0x60);
 #endif
 
 		struct s_countdown_timer
@@ -93,7 +93,7 @@ namespace Yelo
 			bool pause_countdown;
 			UNKNOWN_TYPE(bool);
 			PAD8;
-		}; BOOST_STATIC_ASSERT( sizeof(s_countdown_timer) == 0x10 );
+		}; ASSERT_SIZE(s_countdown_timer, 0x10);
 		struct s_network_game_server
 		{
 			enum {
@@ -139,7 +139,7 @@ namespace Yelo
 
 				return nullptr;
 			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_server) == (0xA50 + s_network_client_machine_dedi::k_network_game_server_client_machines_offset_amount) );
+		}; ASSERT_SIZE(s_network_game_server, 0xA50 + s_network_client_machine_dedi::k_network_game_server_client_machines_offset_amount);
 
 		// For increased player counts game states
 		struct s_network_game_server_yelo : s_network_game_server

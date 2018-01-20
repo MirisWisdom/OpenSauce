@@ -120,8 +120,8 @@ namespace Yelo
 	};
 
 	#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-	BOOST_STATIC_ASSERT(sizeof(TagData<byte>) == 0x14);
+	ASSERT_SIZE(TagData<byte>, 0x14);
 	#else
-	BOOST_STATIC_ASSERT(sizeof(TagData<byte>) == 0x8);
+	ASSERT_SIZE(TagData<byte>, 0x8);
 	#endif
 }

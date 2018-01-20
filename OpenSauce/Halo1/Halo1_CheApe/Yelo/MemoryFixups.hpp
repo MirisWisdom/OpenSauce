@@ -92,7 +92,7 @@ namespace Yelo
 			std::array<void*,3> address; // PLATFORM_TYPE - PLATFORM_EDITOR_START_ID
 			std::array<void*,3> definition; // PLATFORM_TYPE - PLATFORM_EDITOR_START_ID
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_fixup) == 0x20 );
+		}; ASSERT_SIZE(s_fixup, 0x20);
 
 		static void ProcessFixup(s_fixup* fixup);
 		static void ProcessFixups();

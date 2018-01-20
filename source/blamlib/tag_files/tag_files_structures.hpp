@@ -50,7 +50,7 @@ namespace Yelo
 			void InitializeForYeloFormat(int16 tag_version);
 		private:
 			void Initialize(int16 tag_version);
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_header) == 0x40 );
+		}; ASSERT_SIZE(s_tag_header, 0x40);
 
 
 		struct s_tag_file_globals
@@ -80,6 +80,6 @@ namespace Yelo
 			bool SingleFileOpen(tag group_tag, cstring name, bool for_writing, bool from_file_system);
 
 			bool New(tag group_tag, cstring name);
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_file_globals) == 0x250 );
+		}; ASSERT_SIZE(s_tag_file_globals, 0x250);
 	};
 };

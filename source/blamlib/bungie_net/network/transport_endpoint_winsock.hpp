@@ -32,6 +32,6 @@ namespace Yelo
 			e_transport_rejection_code::type_t rejection_code;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint) == 0x1C );
+		ASSERT_SIZE(s_transport_endpoint, 0x1C);
 	}
 }

@@ -204,7 +204,7 @@ namespace Yelo
 			Flags::buffered_key_flags flags;
 			byte state;			// how long its been pressed until 0xFF, 0 if not pressed
 			Enums::key_code key_code;
-		}; BOOST_STATIC_ASSERT( sizeof(s_buffered_key) == 0x4 );
+		}; ASSERT_SIZE(s_buffered_key, 0x4);
 	};
 
 	namespace blam

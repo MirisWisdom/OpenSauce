@@ -44,7 +44,7 @@ namespace Yelo
 			datum_index object_index;
 			s_collision_model_test_result model_test;
 			s_collision_bsp_test_surface_result surface;
-		}; BOOST_STATIC_ASSERT( sizeof(s_collision_result) == 0x50 );
+		}; ASSERT_SIZE(s_collision_result, 0x50);
 	};
 
 	namespace blam

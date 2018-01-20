@@ -91,7 +91,7 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 			"		Tag ID: 4 character identifier for the tag type type you want a\n"
 			"			definition of eg. \"bitm\"\n"
 			"	<add-boost-asserts>\n"
-			"		Switch: Controls whether to add \"BOOST_STATIC_ASSERT\" code to\n"
+			"		Switch: Controls whether to add \"ASSERT_SIZE\" code to\n"
 			"			the end of struct to ensure the struct sizes are\n"
 			"			correct\n"
 			);

@@ -60,9 +60,9 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct s_squad_definition { }; //BOOST_STATIC_ASSERT( sizeof(s_squad_definition)==0x18 );
+		struct s_squad_definition { }; //ASSERT_SIZE(s_squad_definition, 0x18);
 
-		struct s_platoon_definition { }; //BOOST_STATIC_ASSERT( sizeof(s_platoon_definition)==0x18 );
+		struct s_platoon_definition { }; //ASSERT_SIZE(s_platoon_definition, 0x18);
 
 		struct s_firing_position
 		{
@@ -73,7 +73,7 @@ namespace Yelo
 			int32 runtime_surface_index; // not valid if the encounter uses 3d firing positions
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_firing_position)==0x18 );
+		ASSERT_SIZE(s_firing_position, 0x18);
 
 		struct s_encounter_definition
 		{
@@ -92,7 +92,7 @@ namespace Yelo
 			TAG_BLOCK(starting_locations, scenario_player);
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_encounter_definition)==0xB0 );
+		ASSERT_SIZE(s_encounter_definition, 0xB0);
 
 		struct s_ai_command
 		{
@@ -111,7 +111,7 @@ namespace Yelo
 			PAD32;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_ai_command)==0x20 );
+		ASSERT_SIZE(s_ai_command, 0x20);
 
 		struct s_ai_command_point
 		{
@@ -120,7 +120,7 @@ namespace Yelo
 			PAD32;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_ai_command_point)==0x14 );
+		ASSERT_SIZE(s_ai_command_point, 0x14);
 
 		struct s_ai_command_list
 		{
@@ -135,6 +135,6 @@ namespace Yelo
 			TAG_PAD(tag_block, 2);
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_ai_command_list)==0x60 );
+		ASSERT_SIZE(s_ai_command_list, 0x60);
 	}
 }

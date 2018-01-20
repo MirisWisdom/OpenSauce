@@ -55,7 +55,7 @@ namespace Yelo
 			UNKNOWN_TYPE(int32); // count
 			PAD32; // alignment
 			UNKNOWN_TYPE(int64); // ticks
-		}; BOOST_STATIC_ASSERT( sizeof(s_profile_section) == 0x5F8 ); // 0x730
+		}; ASSERT_SIZE(s_profile_section, 0x5F8); // 0x730
 
 		class c_profile_section_scope
 		{

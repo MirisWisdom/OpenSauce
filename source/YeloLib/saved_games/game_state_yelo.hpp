@@ -33,7 +33,7 @@ namespace Yelo
 			k_game_state_allocation_maximum_size_for_yelo = 0x42970
 				- k_game_state_allocation_size_object_memory_pool_upgrade,
 		};
-		BOOST_STATIC_ASSERT( k_game_state_allocation_maximum_size_for_yelo >= 0 );
+		STATIC_ASSERT( k_game_state_allocation_maximum_size_for_yelo >= 0 );
 	};
 
 	namespace GameState
@@ -53,7 +53,7 @@ namespace Yelo
 			}version;
 			byte unit_grenade_types_count;			// 0x6
 			PAD8;
-		}; BOOST_STATIC_ASSERT( sizeof(s_yelo_header_data) <= 0x20 );
+		}; STATIC_ASSERT(sizeof(s_yelo_header_data) <= 0x20);
 
 
 		// Are OS-modified game states in effect?

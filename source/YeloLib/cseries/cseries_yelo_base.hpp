@@ -14,6 +14,8 @@
 
 #include <boost/integer/static_log2.hpp>
 
+#include <functional>
+
 //#include <errno.h>
 extern const errno_t k_errnone;
 
@@ -105,7 +107,7 @@ namespace Yelo
 		#define TStructGetImpl(type, name, offset)										\
 			type Get##name()					{ return GetData<type, offset>(); }		\
 			type Get##name() const			{ return GetData<type, offset>(); }			\
-			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
+			STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Implement a by-address getter. </summary>
 		///
@@ -116,7 +118,7 @@ namespace Yelo
 			type* Get##name()				{ return GetDataPtr<type, offset>(); }		\
 			type const* Get##name() const	{ return GetDataPtr<type, offset>(); }		\
 			/*   ^ use const here, instead of before the type, in case [type] is defined as something like "int32*" */	\
-			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
+			STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Implement a by-value getter for fake TStruct sub-classes. </summary>
@@ -281,7 +283,7 @@ namespace Yelo
 		OVERRIDE_OPERATOR_MATH_BOOL(TTypeHolder, pointer, != );
 	};
 	typedef TTypeHolder<void> TypeHolder;
-	BOOST_STATIC_ASSERT( sizeof(TypeHolder) == 0x4 );
+	ASSERT_SIZE(TypeHolder, 0x4);
 
 	extern const TypeHolder k_null_as_type_holder;  ///< nullptr represented as a TypeHolder value
 	extern const TypeHolder k_none_as_type_holder;  ///< NONE represented as TypeHolder value

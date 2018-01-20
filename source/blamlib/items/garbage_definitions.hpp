@@ -14,7 +14,7 @@ namespace Yelo
 		struct _garbage_definition
 		{
 			TAG_PAD(int32, 42);
-		}; BOOST_STATIC_ASSERT( sizeof(_garbage_definition) == 0xA8 );
+		}; ASSERT_SIZE(_garbage_definition, 0xA8);
 
 		struct s_garbage_definition : s_item_definition
 		{

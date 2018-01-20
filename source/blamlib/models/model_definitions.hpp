@@ -39,7 +39,7 @@ namespace Yelo
 			PAD8;
 			TAG_FIELD(real_point3d, translation);
 			TAG_FIELD(real_quaternion, rotation);
-		}; BOOST_STATIC_ASSERT( sizeof(model_marker_instance) == 0x20 ); // max count: 32
+		}; ASSERT_SIZE(model_marker_instance, 0x20); // max count: 32
 		struct model_markers
 		{
 			TAG_FIELD(tag_string, name);
@@ -47,7 +47,7 @@ namespace Yelo
 			PAD16;
 			TAG_PAD(int32, 4);
 			TAG_TBLOCK(instances, model_marker_instance);
-		}; BOOST_STATIC_ASSERT( sizeof(model_markers) == 0x40 ); // max count: 256
+		}; ASSERT_SIZE(model_markers, 0x40); // max count: 256
 
 		struct model_node
 		{
@@ -62,7 +62,7 @@ namespace Yelo
 			real_orientation3d orientation;
 			TAG_PAD(int32, 8);
 			real_matrix4x3 inverse_matrix;
-		}; BOOST_STATIC_ASSERT( sizeof(model_node) == 0x9C ); // max count: 64
+		}; ASSERT_SIZE(model_node, 0x9C); // max count: 64
 
 		struct model_region_permutation_marker
 		{
@@ -72,13 +72,13 @@ namespace Yelo
 			TAG_FIELD(real_quaternion, rotation);
 			TAG_FIELD(real_point3d, translation);
 			TAG_PAD(int32, 4);
-		}; BOOST_STATIC_ASSERT( sizeof(model_region_permutation_marker) == 0x50 ); // max count: 64
+		}; ASSERT_SIZE(model_region_permutation_marker, 0x50); // max count: 64
 		struct gbxmodel_region_permutation
 		{
 			struct __flags
 			{
 				TAG_FLAG(cannot_be_chosen_randomly);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(__flags, flags);
@@ -86,13 +86,13 @@ namespace Yelo
 			TAG_FIELD(int16, detail_geometry_index[Enums::k_number_of_geometry_detail_levels]);
 			PAD16;
 			TAG_TBLOCK(markers, model_region_permutation_marker);
-		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_region_permutation) == 0x58 ); // max count: 32
+		}; ASSERT_SIZE(gbxmodel_region_permutation, 0x58); // max count: 32
 		struct gbxmodel_region
 		{
 			TAG_FIELD(tag_string, name);
 			TAG_PAD(int32, 8);
 			TAG_TBLOCK(permutations, gbxmodel_region_permutation);
-		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_region) == 0x4C ); // max count: 32
+		}; ASSERT_SIZE(gbxmodel_region, 0x4C); // max count: 32
 
 
 		struct model_triangle
@@ -100,14 +100,14 @@ namespace Yelo
 			TAG_FIELD(int16, vertex0_index);
 			TAG_FIELD(int16, vertex1_index);
 			TAG_FIELD(int16, vertex2_index);
-		}; BOOST_STATIC_ASSERT( sizeof(model_triangle) == 0x6 ); // max count: 65535
+		}; ASSERT_SIZE(model_triangle, 0x6); // max count: 65535
 		struct gbxmodel_geometry_part
 		{
 			struct __flags
 			{
 				TAG_FLAG(stripped_internal);
 				TAG_FLAG(zoner);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(int16, shader_index);
@@ -130,18 +130,18 @@ namespace Yelo
 
 			sbyte node_table[Enums::k_maximum_nodes_per_model_geometry_part];
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_geometry_part) == 0x84 ); // max count: 32
+		}; ASSERT_SIZE(gbxmodel_geometry_part, 0x84); // max count: 32
 		struct gbxmodel_geometry
 		{
 			struct __flags
 			{
 				TAG_FLAG(unused);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_PAD(int32, 8);
 			TAG_TBLOCK(parts, gbxmodel_geometry_part);
-		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_geometry) == 0x30 ); // max count: 256
+		}; ASSERT_SIZE(gbxmodel_geometry, 0x30); // max count: 256
 
 		struct model_shader_reference
 		{
@@ -149,7 +149,7 @@ namespace Yelo
 			TAG_FIELD(int16, permutation);
 			PAD16;
 			TAG_PAD(int32, 3);
-		}; BOOST_STATIC_ASSERT( sizeof(model_shader_reference) == 0x20 ); // max count: 64
+		}; ASSERT_SIZE(model_shader_reference, 0x20); // max count: 64
 		struct gbxmodel_definition
 		{
 			enum { k_group_tag = 'mod2' };
@@ -159,7 +159,7 @@ namespace Yelo
 				TAG_FLAG(blend_shared_normals);
 				TAG_FLAG(parts_have_local_nodes);
 				TAG_FLAG(ignore_skinning);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(int32, node_list_checksum);
@@ -175,7 +175,7 @@ namespace Yelo
 			TAG_TBLOCK(regions, gbxmodel_region);
 			TAG_TBLOCK(geometries, gbxmodel_geometry);
 			TAG_TBLOCK(shaders, model_shader_reference);
-		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_definition) == 0xE8 ); // max count: 1
+		}; ASSERT_SIZE(gbxmodel_definition, 0xE8); // max count: 1
 
 		struct model_definition
 		{

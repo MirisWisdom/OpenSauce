@@ -61,7 +61,7 @@ namespace Yelo
 
 			TAG_FIELD(real, parallel_friction,"the fraction of the projectile's velocity parallel to the surface lost on impact");
 			TAG_FIELD(real, perpendicular_friction, "the fraction of the projectile's velocity perpendicular to the surface lost on impact");
-		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_material_response_definition) == 0xA0 );
+		}; ASSERT_SIZE(s_projectile_material_response_definition, 0xA0);
 
 		struct _projectile_definition
 		{
@@ -73,7 +73,7 @@ namespace Yelo
 				//combine initial velocity with parent velocity
 				//random attached detonation time
 				//minimum unattached detonation time
-			}flags; BOOST_STATIC_ASSERT( sizeof(_projectile_definition_flags) == sizeof(long_flags) );
+			}flags; ASSERT_SIZE(_projectile_definition_flags, sizeof(long_flags));
 
 			TAG_ENUM(detonation_timer_starts, projectile_detonation_timer_mode);
 			TAG_ENUM(impact_noise, ai_sound_volume);
@@ -110,7 +110,7 @@ namespace Yelo
 
 			TAG_TBLOCK(material_responses, s_projectile_material_response_definition);
 
-		}; BOOST_STATIC_ASSERT( sizeof(_projectile_definition) == 0xD0 );
+		}; ASSERT_SIZE(_projectile_definition, 0xD0);
 
 
 		struct s_projectile_definition : s_object_definition

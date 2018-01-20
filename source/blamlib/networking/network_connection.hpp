@@ -73,7 +73,7 @@ namespace Yelo
 			byte buffer[k_protocol_bits / BIT_COUNT(byte)]; // 0x1D
 			PAD24;
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_message_stream) == 0x534 );
+		}; ASSERT_SIZE(s_message_stream, 0x534);
 
 		struct s_connection_message // made up name, nothing to verify name with
 		{
@@ -85,15 +85,14 @@ namespace Yelo
 			int32 data_size_in_bits;
 			byte* header_buffer;
 			byte* data_buffer;
-		}; BOOST_STATIC_ASSERT( sizeof(s_connection_message) == 0x20 );
+		}; ASSERT_SIZE(s_connection_message, 0x20);
 		struct s_connection_prioritization_buffer
 		{
 			int32 numMessages;				// 0xA78
 			s_connection_message* messages;	// 0xA7C
 			UNKNOWN_TYPE(uint32);			// 0xA80, I've only seen this as 0xE0
 			DWORD time_of_last_flush;		// 0xA84, initialize by GetTickCount
-		}; BOOST_STATIC_ASSERT( sizeof(s_connection_prioritization_buffer) == 0x10 );
-
+		}; ASSERT_SIZE(s_connection_prioritization_buffer, 0x10);
 
 		struct s_network_connection
 		{
@@ -111,7 +110,7 @@ namespace Yelo
 			UNUSED_TYPE(int32);
 			s_network_server_connection* server_connection;
 			bool is_local_connection; PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_connection) == 0xA9C );
+		}; ASSERT_SIZE(s_network_connection, 0xA9C);
 		
 		struct s_network_server_connection
 		{
@@ -120,6 +119,6 @@ namespace Yelo
 			s_network_connection* client_list[Enums::k_maximum_network_machine_count];
 			UNKNOWN_TYPE(bool);
 			bool has_local_connection; PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_server_connection) == 0xAE4 );
+		}; ASSERT_SIZE(s_network_server_connection, 0xAE4);
 	};
 };

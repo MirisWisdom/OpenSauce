@@ -35,7 +35,7 @@ namespace Yelo
 			int32 game_random_seed;
 			// not always the actual path, sometimes just the name, go figure
 			char map_name[/*Enums::k_max_tag_name_length*/255+1];
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_options) == 0x10C );
+		}; ASSERT_SIZE(s_game_options, 0x10C);
 	};
 
 	namespace blam

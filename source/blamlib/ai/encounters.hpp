@@ -53,7 +53,7 @@ namespace Yelo
 			}
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_encounter_actor_iterator) == 0xC );
+		ASSERT_SIZE(s_encounter_actor_iterator, 0xC);
 
 		struct s_encounter_datum : TStructImpl(108)
 		{
@@ -129,11 +129,11 @@ namespace Yelo
 			UNKNOWN_TYPE(real); // 0x1C
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_squad_datum) == 0x20 );
+		ASSERT_SIZE(s_squad_datum, 0x20);
 
 		typedef s_squad_datum squads_data_t[k_maximum_squads_per_map];
 
-		BOOST_STATIC_ASSERT( sizeof(squads_data_t) == 0x8000 );
+		ASSERT_SIZE(squads_data_t, 0x8000);
 
 		struct s_platoon_datum
 		{
@@ -146,11 +146,11 @@ namespace Yelo
 			UNKNOWN_TYPE(real); // 0xC
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_platoon_datum) == 0x10 );
+		ASSERT_SIZE(s_platoon_datum, 0x10);
 
 		typedef s_platoon_datum platoons_data_t[k_maximum_platoons_per_map];
 
-		BOOST_STATIC_ASSERT( sizeof(platoons_data_t) == 0x1000 );
+		ASSERT_SIZE(platoons_data_t, 0x1000);
 
 		struct s_ai_pursuit_datum : Memory::s_datum_base
 		{
@@ -162,7 +162,7 @@ namespace Yelo
 			datum_index next_pursuit_index; // 0x24
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_ai_pursuit_datum) == 0x28 );
+		ASSERT_SIZE(s_ai_pursuit_datum, 0x28);
 
 		typedef Memory::DataArray<s_ai_pursuit_datum, k_maximum_examined_pursuit_positions_per_map> ai_pursuit_data_t;
 	}

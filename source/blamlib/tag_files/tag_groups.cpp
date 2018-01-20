@@ -989,6 +989,6 @@ namespace Yelo { namespace TagGroups
 		{0, "terminator X", k_terminator_byte_swap_codes},
 
 	};
-	BOOST_STATIC_ASSERT(NUMBEROF(k_tag_field_definitions) == e_field_type::k_count);
+	STATIC_ASSERT(NUMBEROF(k_tag_field_definitions) == e_field_type::k_count);
 }}
 #endif

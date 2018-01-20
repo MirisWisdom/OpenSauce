@@ -46,7 +46,7 @@ namespace Yelo
 		struct s_particle_system_physics_constants
 		{
 			TAG_FIELD(real, k, "", "The meaning of this constant depends on the selected physics creation/update function.");
-		}; BOOST_STATIC_ASSERT( sizeof(s_particle_system_physics_constants) == 0x4 ); // max count: 16
+		}; ASSERT_SIZE(s_particle_system_physics_constants, 0x4); // max count: 16
 
 		struct s_particle_system_type_states
 		{
@@ -65,7 +65,7 @@ namespace Yelo
 			TAG_ENUM(particle_creation_physics, Enums::particle_creation_physics, "This controls the placement of particles created during this state.");
 			TAG_ENUM(particle_update_physics, Enums::particle_update_physics, "This controls the motion of particles during this state.");
 			TAG_TBLOCK(physics_constants, s_particle_system_physics_constants);
-		}; BOOST_STATIC_ASSERT( sizeof(s_particle_system_type_states) == 0xC0 ); // max count: 8
+		}; ASSERT_SIZE(s_particle_system_type_states, 0xC0); // max count: 8
 
 		struct s_particle_system_type_particle_states
 		{
@@ -86,7 +86,7 @@ namespace Yelo
 			TAG_PAD(int32, 9);
 			s_shader_effect shader_effect;
 			TAG_TBLOCK(physics_constants, s_particle_system_physics_constants);
-		}; BOOST_STATIC_ASSERT( sizeof(s_particle_system_type_particle_states) == 0x178 ); // max count: 8
+		}; ASSERT_SIZE(s_particle_system_type_particle_states, 0x178); // max count: 8
 
 		struct s_particle_system_types
 		{
@@ -110,12 +110,12 @@ namespace Yelo
 				TAG_FLAG(rotation_rate_scales_with_effect);
 				TAG_FLAG(don_t_draw_in_first_person);
 				TAG_FLAG(don_t_draw_in_third_person);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			struct __physics_flags
 			{
 				TAG_FLAG(unused);
-			}; BOOST_STATIC_ASSERT( sizeof(__physics_flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__physics_flags, sizeof(long_flags));
 
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(__flags, flags);
@@ -131,7 +131,7 @@ namespace Yelo
 			TAG_TBLOCK(physics_constants, s_particle_system_physics_constants);
 			TAG_TBLOCK(states, s_particle_system_type_states);
 			TAG_TBLOCK(particle_states, s_particle_system_type_particle_states);
-		}; BOOST_STATIC_ASSERT( sizeof(s_particle_system_types) == 0x80 ); // max count: 4
+		}; ASSERT_SIZE(s_particle_system_types, 0x80); // max count: 4
 
 		struct s_particle_system_definition
 		{
@@ -140,7 +140,7 @@ namespace Yelo
 			struct __physics_flags
 			{
 				TAG_FLAG(unused);
-			}; BOOST_STATIC_ASSERT( sizeof(__physics_flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__physics_flags, sizeof(long_flags));
 
 			PAD32;
 			TAG_PAD(int32, 13);
@@ -154,6 +154,6 @@ namespace Yelo
 			TAG_FIELD(__physics_flags, physics_flags);
 			TAG_TBLOCK(physics_constants, s_particle_system_physics_constants);
 			TAG_TBLOCK(particle_types, s_particle_system_types);
-		}; BOOST_STATIC_ASSERT( sizeof(s_particle_system_definition) == 0x68 ); // max count: 1
+		}; ASSERT_SIZE(s_particle_system_definition, 0x68); // max count: 1
 	};
 };

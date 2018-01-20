@@ -56,7 +56,7 @@ namespace Yelo
 			// If we in fact do use the above unused bit, editor code will need to have their VALID_FLAGS updated to test with this
 			k_number_of_unit_control_flags_yelo,
 		};
-		BOOST_STATIC_ASSERT( k_number_of_unit_control_flags_yelo <= BIT_COUNT(word_flags) );
+		STATIC_ASSERT(k_number_of_unit_control_flags_yelo <= BIT_COUNT(word_flags));
 	};
 
 	namespace Objects
@@ -72,6 +72,6 @@ namespace Yelo
 			real_vector3d throttle;
 			real primary_trigger;
 			real_vector3d facing_vector, aiming_vector, looking_vector;
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_control_data) == 0x40 );
+		}; ASSERT_SIZE(s_unit_control_data, 0x40);
 	};
 };

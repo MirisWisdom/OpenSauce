@@ -34,7 +34,7 @@ namespace Yelo
 				uint32 bits_y; // 20
 				uint32 bits_z; // 30
 			}item_placement;
-		}; BOOST_STATIC_ASSERT( sizeof(s_message_delta_parameters) == 0x20 );
+		}; ASSERT_SIZE(s_message_delta_parameters, 0x20);
 
 		struct s_parameters_protocol_globals // made-up structure
 		{
@@ -44,6 +44,6 @@ namespace Yelo
 			int32 exposed_params_count;		// g_num_exposed_params
 			bool encoding_parameters_set;	// true when a parameters_set is being encoded and queued to be sent across the network
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_parameters_protocol_globals) == 0x10 );
+		}; ASSERT_SIZE(s_parameters_protocol_globals, 0x10);
 	};
 };

@@ -18,14 +18,14 @@ namespace Yelo
 			int32 file_names_offset;
 			int32 file_index_table_offset;
 			int32 tag_count;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_file_header) == 0x10 );
+		}; ASSERT_SIZE(s_data_file_header, 0x10);
 
 		struct s_data_file_item
 		{
 			int32 name_offset;
 			int32 size;
 			int32 data_offset;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_file_item) == 0xC );
+		}; ASSERT_SIZE(s_data_file_item, 0xC);
 
 		struct s_data_file
 		{
@@ -83,6 +83,6 @@ namespace Yelo
 			void PreprocessForSave();
 			void Save();
 #endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_file) == 0x40 );
+		}; ASSERT_SIZE(s_data_file, 0x40);
 	}
 }

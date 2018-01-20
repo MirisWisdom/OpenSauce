@@ -31,7 +31,7 @@ namespace Yelo
 			{
 				return sizeof(s_debug_memory_header) + size + sizeof(tag); // header + size + footer
 			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_debug_memory_header) == 0x20 );
+		}; ASSERT_SIZE(s_debug_memory_header, 0x20);
 
 		struct s_debug_memory_globals
 		{
@@ -48,7 +48,7 @@ namespace Yelo
 			s_debug_memory_header* last;
 			int32 next_marker;				// increments with each malloc and realloc, never decrements
 			tag footer;
-		}; BOOST_STATIC_ASSERT( sizeof(s_debug_memory_globals) == 0x20 );
+		}; ASSERT_SIZE(s_debug_memory_globals, 0x20);
 
 		void BlamMemoryManagerDispose()
 		{

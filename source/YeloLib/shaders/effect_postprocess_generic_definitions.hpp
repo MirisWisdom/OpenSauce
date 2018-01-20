@@ -20,7 +20,7 @@ namespace Yelo
 			struct _flags {
 				TAG_FLAG16(invert);
 			}flags;
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_effect_activation_control) == 0x4);
+		}; ASSERT_SIZE(s_effect_postprocess_effect_activation_control, 0x4);
 
 #if 0
 		struct s_effect_postprocess_effect_fade_control
@@ -32,7 +32,7 @@ namespace Yelo
 
 			TAG_FIELD(real_bounds, value_map);
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_effect_fade_control) == 0x10);
+		}; ASSERT_SIZE(s_effect_postprocess_effect_fade_control, 0x10);
 #endif
 
 		struct s_effect_postprocess_generic_effect_instance
@@ -51,7 +51,7 @@ namespace Yelo
 			TAG_PAD(tag_block, 1);
 #endif
 			TAG_PAD(byte, 16);
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_generic_effect_instance) == 0x74 );
+		}; ASSERT_SIZE(s_effect_postprocess_generic_effect_instance, 0x74);
 
 		struct s_effect_postprocess_generic_exposed_parameter
 		{
@@ -66,7 +66,7 @@ namespace Yelo
 			}runtime;
 
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_generic_exposed_parameter) == 0x50);
+		}; ASSERT_SIZE(s_effect_postprocess_generic_exposed_parameter, 0x50);
 
 		struct s_effect_postprocess_generic : s_effect_postprocess_definition
 		{
@@ -76,6 +76,6 @@ namespace Yelo
 			TAG_TBLOCK_(shader_indices, int32);
 			TAG_TBLOCK_(exposed_parameters, s_effect_postprocess_generic_exposed_parameter);
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_generic) == 0x24 + sizeof(s_effect_postprocess_definition));
+		}; ASSERT_SIZE(s_effect_postprocess_generic, 0x24 + sizeof(s_effect_postprocess_definition));
 	};
 };

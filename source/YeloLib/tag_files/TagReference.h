@@ -45,9 +45,9 @@ namespace Yelo
 	};
 
 	#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-	BOOST_STATIC_ASSERT(sizeof(TagReference<NONE>) == 0x10);
+	ASSERT_SIZE(TagReference<NONE>, 0x10);
 	#else
-	BOOST_STATIC_ASSERT(sizeof(TagReference<NONE>) == 0x8);
+	ASSERT_SIZE(TagReference<NONE>, 0x8);
 	#endif
 
 	template <>

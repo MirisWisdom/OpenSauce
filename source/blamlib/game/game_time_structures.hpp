@@ -28,6 +28,6 @@ namespace Yelo
 			game_ticks_t server_time;	// 0x14
 			real game_speed;			// 0x18
 			real leftover_time_sec;		// 0x1C
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_time_globals) == 0x20 );
+		}; ASSERT_SIZE(s_game_time_globals, 0x20);
 	};
 };

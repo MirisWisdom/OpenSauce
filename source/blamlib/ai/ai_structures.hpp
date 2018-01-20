@@ -22,7 +22,7 @@ namespace Yelo
 			uint32 tick;
 		};
 
-		BOOST_STATIC_ASSERT(sizeof(s_ai_spatial_effect) == 0x14);
+		ASSERT_SIZE(s_ai_spatial_effect, 0x14);
 
 		struct s_ai_vehicle_enterable_datum
 		{
@@ -35,7 +35,7 @@ namespace Yelo
 			datum_index actor_indices[6];
 		};
 
-		BOOST_STATIC_ASSERT(sizeof(s_ai_vehicle_enterable_datum) == 0x28);
+		ASSERT_SIZE(s_ai_vehicle_enterable_datum, 0x28);
 
 		struct s_ai_globals_data
 		{
@@ -67,6 +67,6 @@ namespace Yelo
 			datum_index pending_mounted_weapon_indices[8];
 		};
 
-		BOOST_STATIC_ASSERT(sizeof(s_ai_globals_data) == 0x8DC);
+		ASSERT_SIZE(s_ai_globals_data, 0x8DC);
 	}
 }

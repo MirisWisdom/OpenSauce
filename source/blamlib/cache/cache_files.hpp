@@ -46,7 +46,7 @@ namespace Yelo
 			bool* finished_flag;// NOT optional
 			void* finished_proc_params;	// optional
 			proc_finished finished_proc;// optional
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_request_params) == 0xC );
+		}; ASSERT_SIZE(s_cache_file_request_params, 0xC);
 
 		extern cstring K_MAP_FILE_EXTENSION; // ".maps"
 		extern cstring K_MAP_FILES_DIRECTORY;// "maps\"

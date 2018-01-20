@@ -166,6 +166,6 @@ namespace Yelo
 			PAD24;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_ai_communication_packet) == 0x20 );
+		ASSERT_SIZE(s_ai_communication_packet, 0x20);
 	}
 }

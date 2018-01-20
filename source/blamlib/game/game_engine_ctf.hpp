@@ -25,6 +25,6 @@ namespace Yelo
 			uint32 flag_failure_sound_timer;
 			byte team_with_flag;
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_ctf_globals) == 0x34 );
+		}; ASSERT_SIZE(s_ctf_globals, 0x34);
 	};
 };

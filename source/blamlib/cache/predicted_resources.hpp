@@ -26,7 +26,7 @@ namespace Yelo
 			_enum type;
 			int16 resource_index;
 			datum_index tag_index;
-		}; BOOST_STATIC_ASSERT( sizeof(predicted_resource) == 0x8 ); // max count: 1024
+		}; ASSERT_SIZE(predicted_resource, 0x8); // max count: 1024
 	}
 
 	namespace blam

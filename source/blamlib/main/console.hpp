@@ -28,7 +28,7 @@ namespace Yelo
 				PAD16;
 			}history;
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_console_globals) == 0x9C4 );
+		}; ASSERT_SIZE(s_console_globals, 0x9C4);
 	};
 
 	namespace blam

@@ -55,7 +55,7 @@ namespace Yelo
 			UNKNOWN_TYPE(real);
 			datum_index location_datum_indices[Enums::k_maximum_effect_locations_count];
 			byte particles_counts[Enums::k_maximum_effect_particles_per_event_count];
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_datum) == 0xFC );
+		}; ASSERT_SIZE(s_effect_datum, 0xFC);
 		typedef Memory::DataArray<	s_effect_datum, 
 									Enums::k_maximum_number_of_effects_per_map,
 									Enums::k_maximum_number_of_effects_per_map_upgrade> 
@@ -70,7 +70,7 @@ namespace Yelo
 			int16 node_index;
 			datum_index next_location_index;
 			real_matrix4x3 node_matrix;
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_location_datum) == 0x3C );
+		}; ASSERT_SIZE(s_effect_location_datum, 0x3C);
 		typedef Memory::DataArray<	s_effect_location_datum, 
 									Enums::k_maximum_number_of_effect_locations_per_map,
 									Enums::k_maximum_number_of_effect_locations_per_map_upgrade> 

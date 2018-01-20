@@ -36,7 +36,7 @@ namespace Yelo
 			cstring name;
 			bool is_original; // ie, bungie made it
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_map_list_map_info) == 0xC );
+		}; ASSERT_SIZE(s_map_list_map_info, 0xC);
 
 		// This is the engine's struct for representing maps it found in the maps\ folder.
 		// We don't define an actual ctor\dtor because of this
@@ -71,7 +71,7 @@ namespace Yelo
 
 			// Our dtor disposer for this engine struct
 			void Dispose();
-		}; BOOST_STATIC_ASSERT( sizeof(s_map_list_map) == 0x10 );
+		}; ASSERT_SIZE(s_map_list_map, 0x10);
 		typedef Memory::GbxArray<s_map_list_map> map_list_data_t;
 
 		map_list_data_t* MultiplayerMaps();

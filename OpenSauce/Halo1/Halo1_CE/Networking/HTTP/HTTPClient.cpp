@@ -118,7 +118,7 @@ namespace Yelo
 			HTTP_COMPONENT_CLIENT("MapDownloadClient", MapDownload::Initialize, MapDownload::Dispose, MapDownload::Update, MapDownload::RequestCompleted_Callback, MapDownload::RequestCancelled_Callback),
 #endif
 			HTTP_COMPONENT_CLIENT("VersionChecker", nullptr, nullptr, nullptr, Networking::VersionCheck::RequestCompleted_Callback, Networking::VersionCheck::RequestCancelled_Callback),
-		};BOOST_STATIC_ASSERT(NUMBEROF(g_http_components) == Enums::_http_client_component);
+		}; STATIC_ASSERT(NUMBEROF(g_http_components) == Enums::_http_client_component);
 
 #define K_HTTP_CLIENT_HEADER K_HTTP_CLIENT_ID "/" BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD)
 

@@ -28,13 +28,13 @@ namespace Yelo
 				PAD8;
 				int16 current_incidents;// 0xE
 				UNKNOWN_TYPE(int16);	// 0x10
-			}; BOOST_STATIC_ASSERT( sizeof(s_allegiance) == 0x12 );
+			}; ASSERT_SIZE(s_allegiance, 0x12);
 
 			int16 allegiances_count;
 			s_allegiance allegiances[8];
 			PAD16;
 			long_flags ally_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(e_game_team::k_count * e_game_team::k_count) ]; // 0x94
 			long_flags enemy_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(e_game_team::k_count * e_game_team::k_count) ]; // 0xA4
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_allegiance_globals) == 0xB4 );
+		}; ASSERT_SIZE(s_game_allegiance_globals, 0xB4);
 	};
 };

@@ -287,12 +287,12 @@ namespace Yelo
 			TAG_FIELD(real, animation_period, "seconds", "0 defaults to 1");
 			TAG_FIELD(real, animation_phase);
 			TAG_FIELD(real, animation_scale, "repeats", "0 defaults to 1");
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_animation_function) == 16 );
+		}; ASSERT_SIZE(s_shader_animation_function, 16);
 		struct s_shader_animation
 		{
 			s_shader_animation_function anim_u, anim_v, anim_rot;
 			TAG_FIELD(real_point2d, rotation_animation_center);
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_animation) == 56 );
+		}; ASSERT_SIZE(s_shader_animation, 56);
 		struct s_shader_texture_animation_function
 		{
 			////////////////////////////////////////////////////////////////
@@ -302,12 +302,12 @@ namespace Yelo
 			PAD16;
 			TAG_FIELD(real, animation_period, "seconds");
 			TAG_FIELD(real, animation_scale, "base map repeats");
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_texture_animation_function) == 12 );
+		}; ASSERT_SIZE(s_shader_texture_animation_function, 12);
 		struct s_shader_scaled_map
 		{
 			TAG_FIELD(real, scale, "", "0 defaults to 1");
 			TAG_FIELD(tag_reference, map, 'bitm');
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_scaled_map) == 20 );
+		}; ASSERT_SIZE(s_shader_scaled_map, 20);
 		struct s_shader_color_function
 		{
 			TAG_FIELD(real_rgb_color, on_color);
@@ -317,14 +317,14 @@ namespace Yelo
 			TAG_FIELD(real, animation_period, "seconds", "0 defaults to 1");
 			TAG_FIELD(real, animation_phase, "seconds");
 			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_color_function) == 60 );
+		}; ASSERT_SIZE(s_shader_color_function, 60);
 		struct s_shader_shader_framebuffer_function
 		{
 			TAG_ENUM(shader_framebuffer_blend_function, Enums::shader_framebuffer_blend_function);
 			TAG_ENUM(shader_framebuffer_fade_mode, Enums::shader_framebuffer_fade_mode);
 			TAG_ENUM(shader_framebuffer_fade_source, Enums::object_function_reference, "fade is multiplied by this external value");
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_shader_framebuffer_function) == 8 );
+		}; ASSERT_SIZE(s_shader_shader_framebuffer_function, 8);
 		struct s_shader_radiosity_properties
 		{
 			struct __flags
@@ -337,13 +337,13 @@ namespace Yelo
 				TAG_FLAG8(ignore_effect);
 				TAG_FLAG8(scale_first_map_with_distance);
 				TAG_FLAG8(numeric);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(byte_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(byte_flags));
 
 			TAG_FIELD(byte, numeric_counter_limit, "[0,255]");
 			TAG_FIELD(__flags, flags);
 			TAG_ENUM(first_map_type, Enums::first_map_type);
 			s_shader_shader_framebuffer_function shader_framebuffer_function;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_radiosity_properties) == 12 );
+		}; ASSERT_SIZE(s_shader_radiosity_properties, 12);
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_definition
 		{
@@ -357,7 +357,7 @@ namespace Yelo
 			struct __flags_1
 			{
 				TAG_FLAG16(unused);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags_1) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags_1, sizeof(word_flags));
 
 			struct {
 				////////////////////////////////////////////////////////////////
@@ -376,14 +376,14 @@ namespace Yelo
 
 			TAG_ENUM(shader_type, Enums::shader_type);
 			TAG_FIELD(_enum, extension_usage);
-		}; BOOST_STATIC_ASSERT( sizeof(_shader_definition) == 0x28 );
+		}; ASSERT_SIZE(_shader_definition, 0x28);
 		
 		struct s_shader_definition
 		{
 			enum { k_group_tag = 'shdr' };
 
 			_shader_definition shader;
-		}; BOOST_STATIC_ASSERT( sizeof(_shader_definition) == 0x28 );
+		}; ASSERT_SIZE(_shader_definition, 0x28);
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_effect_extension
 		{
@@ -402,11 +402,11 @@ namespace Yelo
 				TAG_FLAG16(sort_bias);
 				TAG_FLAG16(nonlinear_tint);
 				TAG_FLAG16(dont_overdraw_fp_weapon);
-			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(_flags, sizeof(word_flags));
 			struct _map_flags
 			{
 				TAG_FLAG16(unfiltered);
-			}; BOOST_STATIC_ASSERT( sizeof(_map_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(_map_flags, sizeof(word_flags));
 
 			TAG_FIELD(_flags, flags);
 			TAG_ENUM(blend_function, Enums::shader_framebuffer_blend_function);
@@ -424,7 +424,7 @@ namespace Yelo
 			PAD32;
 			real z_sprite_radius_scale;
 			PAD128; PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(_shader_effect_definition) == 0x8C );
+		}; ASSERT_SIZE(_shader_effect_definition, 0x8C);
 		
 		// the following tags/blocks have inline instances of this:
 		// contrail, lightning_shader_block, particle, particle_system_type_particle_states_block
@@ -434,7 +434,7 @@ namespace Yelo
 			enum { k_group_tag = 'seff' };
 
 			_shader_effect_definition effect;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
+		}; ASSERT_SIZE(s_shader_effect, 0xB4);
 
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_environment_extension
@@ -442,12 +442,12 @@ namespace Yelo
 			struct _flags
 			{
 				TAG_FLAG16(do_not_use_dlms);
-			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(_flags, sizeof(word_flags));
 
 			struct __specular_color_flags
 			{
 				TAG_FLAG16(alpha_as_exponent_mask);
-			}; BOOST_STATIC_ASSERT( sizeof(__specular_color_flags) == sizeof(word_flags) );	
+			}; ASSERT_SIZE(__specular_color_flags, sizeof(word_flags));
 
 			TAG_FIELD(_flags, flags);
 			TAG_PAD(byte, 2);
@@ -476,7 +476,7 @@ namespace Yelo
 				TAG_FLAG16(alpha_tested);
 				TAG_FLAG16(bump_map_is_specular_mask);
 				TAG_FLAG16(true_atmospheric_fog);
-			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(_flags, sizeof(word_flags));
 
 			////////////////////////////////////////////////////////////////
 			// environment shader
@@ -514,7 +514,7 @@ namespace Yelo
 				{
 					TAG_FLAG16(rescale_detail_maps);
 					TAG_FLAG16(rescale_bump_map);
-				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+				}; ASSERT_SIZE(_flags, sizeof(word_flags));
 
 				TAG_FIELD(_flags, flags);
 				PAD16;
@@ -564,7 +564,7 @@ namespace Yelo
 				struct _flags
 				{
 					TAG_FLAG16(unfiltered);
-				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+				}; ASSERT_SIZE(_flags, sizeof(word_flags));
 
 				TAG_FIELD(_flags, flags);
 				PAD16;
@@ -585,7 +585,7 @@ namespace Yelo
 					TAG_FLAG16(overbright);
 					TAG_FLAG16(extra_shiny);
 					TAG_FLAG16(lightmap_is_specular);
-				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+				}; ASSERT_SIZE(_flags, sizeof(word_flags));
 
 				TAG_FIELD(_flags, flags);
 				PAD16;
@@ -612,7 +612,7 @@ namespace Yelo
 				struct _flags
 				{
 					TAG_FLAG16(dynamic_mirror);
-				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+				}; ASSERT_SIZE(_flags, sizeof(word_flags));
 
 				TAG_FIELD(_flags, flags);
 				TAG_ENUM(type, Enums::reflection_type);
@@ -626,26 +626,26 @@ namespace Yelo
 				TAG_FIELD(tag_reference, cube_map, "bitm");
 				TAG_PAD(int32, 4);
 			}reflection;
-		}; BOOST_STATIC_ASSERT( sizeof(_shader_environment_definition) == 0x31C );
+		}; ASSERT_SIZE(_shader_environment_definition, 0x31C);
 		
 		struct s_shader_environment_definition : s_shader_definition
 		{
 			enum { k_group_tag = 'senv' };
 
 			_shader_environment_definition environment;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_environment_definition) == 0x344 ); // max count: 1
+		}; ASSERT_SIZE(s_shader_environment_definition, 0x344); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_model_extension
 		{
 			struct __specular_color_flags
 			{
 				TAG_FLAG16(alpha_as_exponent_mask);
-			}; BOOST_STATIC_ASSERT( sizeof(__specular_color_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__specular_color_flags, sizeof(word_flags));
 
 			struct __diffuse_lighting_flags
 			{
 				TAG_FLAG16(do_not_use_dlms_bsp);
-			}; BOOST_STATIC_ASSERT( sizeof(__diffuse_lighting_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__diffuse_lighting_flags, sizeof(word_flags));
 
 			struct s_map{
 				tag_reference  map;
@@ -696,12 +696,12 @@ namespace Yelo
 				TAG_FLAG16(alpha_blended_decal);
 				TAG_FLAG16(true_atmospheric_fog);
 				TAG_FLAG16(disable_two_sided_culling);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			struct __flags_1
 			{
 				TAG_FLAG16(no_random_phase);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags_1) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags_1, sizeof(word_flags));
 
 			////////////////////////////////////////////////////////////////
 			// model shader
@@ -778,19 +778,19 @@ namespace Yelo
 			PAD32;
 			TAG_PAD(int32, 4);
 			TAG_PAD(int32, 8);			
-		}; BOOST_STATIC_ASSERT( sizeof(_shader_model_definition) == 0x190 );
+		}; ASSERT_SIZE(_shader_model_definition, 0x190);
 		
 		struct s_shader_model_definition : s_shader_definition
 		{
 			enum { k_group_tag = 'soso' };
 
 			_shader_model_definition model;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_model_definition) == 0x1B8 ); // max count: 1
+		}; ASSERT_SIZE(s_shader_model_definition, 0x1B8); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_transparent_layer
 		{
 			TAG_FIELD(tag_reference, shader, 'shdr');
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_layer) == 0x10 ); // max count: 4
+		}; ASSERT_SIZE(s_shader_transparent_layer, 0x10); // max count: 4
 		struct s_shader_transparent_chicago_map
 		{
 			struct __flags
@@ -799,7 +799,7 @@ namespace Yelo
 				TAG_FLAG16(alpha_replicate);
 				TAG_FLAG16(u_clamped);
 				TAG_FLAG16(v_clamped);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			TAG_FIELD(__flags, flags);
 			PAD16;
@@ -819,14 +819,14 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////
 			// 2D texture animation
 			s_shader_animation map_animation;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_chicago_map) == 0xDC ); // max count: 4
+		}; ASSERT_SIZE(s_shader_transparent_chicago_map, 0xDC); // max count: 4
 		struct s_shader_transparent_chicago_base
 		{
 			struct __extra_flags
 			{
 				TAG_FLAG(don_t_fade_active_camouflage);
 				TAG_FLAG(numeric_countdown_timer);
-			}; BOOST_STATIC_ASSERT( sizeof(__extra_flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__extra_flags, sizeof(long_flags));
 
 			////////////////////////////////////////////////////////////////
 			// chicago shader
@@ -851,7 +851,7 @@ namespace Yelo
 			enum { k_group_tag = 'schi' };
 
 			_shader_transparent_chicago_definition transparent_chicago;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_chicago_definition) == 0x6C ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_chicago_definition, 0x6C); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_transparent_chicago_extended_definition : s_shader_transparent_chicago_base
 		{
@@ -867,7 +867,7 @@ namespace Yelo
 			enum { k_group_tag = 'scex' };
 
 			_shader_transparent_chicago_extended_definition transparent_chicago_extended;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_chicago_extended_definition) == 0x78 ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_chicago_extended_definition, 0x78); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_transparent_generic_map
 		{
@@ -876,7 +876,7 @@ namespace Yelo
 				TAG_FLAG16(unfiltered);
 				TAG_FLAG16(u_clamped);
 				TAG_FLAG16(v_clamped);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			TAG_FIELD(__flags, flags);
 			PAD16;
@@ -891,7 +891,7 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////
 			// 2D texture animation
 			s_shader_animation map_animation;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_generic_map) == 0x64 ); // max count: 4
+		}; ASSERT_SIZE(s_shader_transparent_generic_map, 0x64); // max count: 4
 		struct s_shader_transparent_generic_stage
 		{
 			struct __flags
@@ -899,7 +899,7 @@ namespace Yelo
 				TAG_FLAG16(color_mux);
 				TAG_FLAG16(alpha_mux);
 				TAG_FLAG16(a_out_controls_color0_animation);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			TAG_FIELD(__flags, flags);
 			PAD16;
@@ -944,7 +944,7 @@ namespace Yelo
 			}alpha_outputs[2];
 			TAG_ENUM(output_ab_cd_mux_sum_1, Enums::alpha_output);
 			TAG_ENUM(output_mapping_1, Enums::output_mapping);
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_generic_stage) == 0x70 ); // max count: 7
+		}; ASSERT_SIZE(s_shader_transparent_generic_stage, 0x70); // max count: 7
 		struct _shader_transparent_generic_definition
 		{
 			////////////////////////////////////////////////////////////////
@@ -965,7 +965,7 @@ namespace Yelo
 			enum { k_group_tag = 'sotr' };
 
 			_shader_transparent_generic_definition transparent_generic;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_generic_definition) == 0x6C ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_generic_definition, 0x6C); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_transparent_glass_definition
 		{
@@ -975,7 +975,7 @@ namespace Yelo
 				TAG_FLAG16(decal);
 				TAG_FLAG16(two_sided);
 				TAG_FLAG16(bump_map_is_specular_mask);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			////////////////////////////////////////////////////////////////
 			// glass shader
@@ -1025,7 +1025,7 @@ namespace Yelo
 			enum { k_group_tag = 'sgla' };
 
 			_shader_transparent_glass_definition transparent_glass;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_glass_definition) == 0x1E0 ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_glass_definition, 0x1E0); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_transparent_meter_definition
 		{				
@@ -1036,7 +1036,7 @@ namespace Yelo
 				TAG_FLAG16(flash_color_is_negative);
 				TAG_FLAG16(tint_mode_2);
 				TAG_FLAG16(unfiltered);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );	
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			////////////////////////////////////////////////////////////////
 			// meter shader
@@ -1073,7 +1073,7 @@ namespace Yelo
 			enum { k_group_tag = 'smet' };
 
 			_shader_transparent_meter_definition transparent_meter;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_meter_definition) == 0x104 ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_meter_definition, 0x104); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_transparent_plasma_definition
 		{	
@@ -1135,7 +1135,7 @@ namespace Yelo
 			enum { k_group_tag = 'spla' };
 
 			_shader_transparent_plasma_definition transparent_plasma;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_plasma_definition) == 0x14C ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_plasma_definition, 0x14C); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_transparent_water_ripple
 		{
@@ -1149,7 +1149,7 @@ namespace Yelo
 			TAG_FIELD(int16, map_repeats, "", "0 defaults to 1");
 			TAG_FIELD(int16, map_index, "", "index into ripple maps");
 			TAG_PAD(int32, 4);
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_water_ripple) == 0x4C ); // max count: 4
+		}; ASSERT_SIZE(s_shader_transparent_water_ripple, 0x4C); // max count: 4
 		struct _shader_transparent_water_definition
 		{
 			struct __flags
@@ -1158,7 +1158,7 @@ namespace Yelo
 				TAG_FLAG16(base_map_color_modulates_background);
 				TAG_FLAG16(atmospheric_fog);
 				TAG_FLAG16(draw_before_fog);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			////////////////////////////////////////////////////////////////
 			// water shader
@@ -1193,7 +1193,7 @@ namespace Yelo
 			enum { k_group_tag = 'swat' };
 
 			_shader_transparent_water_definition transparent_water;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_transparent_water_definition) == 0x140 ); // max count: 1
+		}; ASSERT_SIZE(s_shader_transparent_water_definition, 0x140); // max count: 1
 		//////////////////////////////////////////////////////////////////////////
 	};
 };

@@ -50,7 +50,7 @@ namespace Yelo
 
 
 #include <YeloLib/tag_files/string_ids.global.inl>
-		BOOST_STATIC_ASSERT( _string_id_empty_string == 0 );
+		STATIC_ASSERT( _string_id_empty_string == 0 );
 // NO CACHE STRINGS DEFINED IN CODE!
 #include <YeloLib/tag_files/string_ids.gui.inl>
 #include <YeloLib/tag_files/string_ids.gui_alert.inl>

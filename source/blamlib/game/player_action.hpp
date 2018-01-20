@@ -40,7 +40,7 @@ namespace Yelo
 			datum_index action_object_index;
 			int16 action_result;			// enum object_type
 			int16 action_seat_index;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_action_result) == 0x8 );
+		}; ASSERT_SIZE(s_player_action_result, 0x8);
 
 		struct s_player_action
 		{
@@ -51,7 +51,7 @@ namespace Yelo
 			int16 desired_weapon_index, desired_grenade_index;
 			int16 desired_zoom_index;
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_action) == 0x20 );
+		}; ASSERT_SIZE(s_player_action, 0x20);
 
 		struct s_player_set_action_result_network_data
 		{
@@ -59,6 +59,6 @@ namespace Yelo
 			long_enum action_result_type;
 			s_player_action_result action;
 			datum_index weapon_to_drop_as_result_of_swap;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_set_action_result_network_data) == 0x14 );
+		}; ASSERT_SIZE(s_player_set_action_result_network_data, 0x14);
 	};
 };

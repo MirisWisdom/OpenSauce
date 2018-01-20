@@ -34,7 +34,7 @@ namespace Yelo
 				CAST(uint32, Cache::k_physical_memory_map_allocation_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
-		BOOST_STATIC_ASSERT( k_physical_memory_map_allocation_size_upgrade >= Cache::k_physical_memory_map_allocation_size );
+		STATIC_ASSERT( k_physical_memory_map_allocation_size_upgrade >= Cache::k_physical_memory_map_allocation_size );
 	};
 
 
@@ -105,8 +105,8 @@ namespace Yelo
 			k_hs_external_globals_count_upgrade = 1024 - k_maximum_hs_globals_per_scenario,
 		};
 
-		BOOST_STATIC_ASSERT( k_maximum_hs_syntax_nodes_per_scenario_upgrade >= k_maximum_hs_syntax_nodes_per_scenario );
-		BOOST_STATIC_ASSERT( k_maximum_hs_string_data_per_scenario_upgrade >= k_maximum_hs_string_data_per_scenario );
+		STATIC_ASSERT( k_maximum_hs_syntax_nodes_per_scenario_upgrade >= k_maximum_hs_syntax_nodes_per_scenario );
+		STATIC_ASSERT( k_maximum_hs_string_data_per_scenario_upgrade >= k_maximum_hs_string_data_per_scenario );
 	};
 
 
@@ -119,7 +119,7 @@ namespace Yelo
 //				CAST(uint32, k_rasterizer_maximum_dynamic_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
-//		BOOST_STATIC_ASSERT( k_rasterizer_maximum_dynamic_triangles_upgrade >= k_rasterizer_maximum_dynamic_triangles );
+//		STATIC_ASSERT( k_rasterizer_maximum_dynamic_triangles_upgrade >= k_rasterizer_maximum_dynamic_triangles );
 	};
 
 
@@ -150,8 +150,8 @@ namespace Yelo
 				CAST(uint32, Cache::k_max_cache_vertex_y_index_buffer_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
-		BOOST_STATIC_ASSERT( k_max_cache_size_upgrade >= Cache::k_max_cache_size );
-		BOOST_STATIC_ASSERT( k_max_cache_vertex_y_index_buffer_size_upgrade >= Cache::k_max_cache_vertex_y_index_buffer_size );
+		STATIC_ASSERT( k_max_cache_size_upgrade >= Cache::k_max_cache_size );
+		STATIC_ASSERT( k_max_cache_vertex_y_index_buffer_size_upgrade >= Cache::k_max_cache_vertex_y_index_buffer_size );
 	};
 };
 

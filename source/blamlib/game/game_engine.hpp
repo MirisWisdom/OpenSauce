@@ -194,7 +194,7 @@ namespace Yelo
 
 			typedef void (PLATFORM_API* _initialize_for_reset_map)();
 			_initialize_for_reset_map initialize_for_reset_map;		// 0xAC
-		}; BOOST_STATIC_ASSERT( sizeof(game_engine_definition) == 0xB0 );
+		}; ASSERT_SIZE(game_engine_definition, 0xB0);
 	};
 
 	namespace blam

@@ -40,6 +40,6 @@ namespace Yelo
 			byte cylinders[0x28][Enums::k_maximum_collision_features_per_test];
 			// 0x24 int32 point_count
 			byte prisms[0x68][Enums::k_maximum_collision_features_per_test];
-		}; BOOST_STATIC_ASSERT( sizeof(s_collision_features) == 0xAC08 );
+		}; ASSERT_SIZE(s_collision_features, 0xAC08);
 	};
 };

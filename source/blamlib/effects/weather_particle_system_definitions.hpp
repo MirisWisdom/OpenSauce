@@ -30,7 +30,7 @@ namespace Yelo
 				TAG_FLAG(interpolate_colors_in_hsv);
 				TAG_FLAG(_along_long_hue_path);
 				TAG_FLAG(random_rotation);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(__flags, flags);
@@ -64,7 +64,7 @@ namespace Yelo
 			TAG_ENUM(render_mode, Enums::particle_orientation);
 			TAG_ENUM(render_direction_source, Enums::weather_particle_render_direction_source, "Render modes that depend on an direction will use this vector.");			
 			s_shader_effect shader_effect;
-		}; BOOST_STATIC_ASSERT( sizeof(s_weather_particle_type) == 0x25C ); // max count: 8
+		}; ASSERT_SIZE(s_weather_particle_type, 0x25C); // max count: 8
 
 		struct s_weather_particle_system_definition
 		{
@@ -73,11 +73,11 @@ namespace Yelo
 			struct __flags
 			{
 				TAG_FLAG(unused);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_PAD(int32, 8);
 			TAG_TBLOCK(particle_types, s_weather_particle_type);
-		}; BOOST_STATIC_ASSERT( sizeof(s_weather_particle_system_definition) == 0x30 ); // max count: 1
+		}; ASSERT_SIZE(s_weather_particle_system_definition, 0x30); // max count: 1
 	};
 };

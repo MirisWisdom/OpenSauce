@@ -29,6 +29,6 @@ namespace Yelo
 			real density;
 			real hf_reference;
 			PAD128;
-		}; BOOST_STATIC_ASSERT( sizeof(sound_environment) == 0x48 );
+		}; ASSERT_SIZE(sound_environment, 0x48);
 	};
 };

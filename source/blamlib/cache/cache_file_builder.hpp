@@ -36,7 +36,7 @@ namespace Yelo { namespace Cache
 			k_count
 		} type_t;
 
-		BOOST_STATIC_ASSERT(k_count <= BIT_COUNT(byte));
+		STATIC_ASSERT(k_count <= BIT_COUNT(byte));
 
 		typedef flags_type<type_t> flags_t;
 	}

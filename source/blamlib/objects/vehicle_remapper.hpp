@@ -66,7 +66,7 @@ namespace Yelo
 			unsigned custom2 : 3;
 			unsigned custom3 : 3;
 			unsigned pad : 1;
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_set) == sizeof(int32) );
+		}; ASSERT_SIZE(s_vehicle_set, sizeof(int32));
 
 		//////////////////////////////////////////////////////////////////////////
 		// This is still a WIP
@@ -84,18 +84,18 @@ namespace Yelo
 				byte_flags spawn_flags;
 				PAD16;
 			}datums[8];
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_team_remapper) == 0x50 );
+		}; ASSERT_SIZE(s_vehicle_team_remapper, 0x50);
 		//////////////////////////////////////////////////////////////////////////
 		struct s_vehicle_remapper
 		{
 			s_vehicle_team_remapper team_mappings[Enums::k_number_of_multiplayer_teams];
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_remapper) == 0xA0 );
+		}; ASSERT_SIZE(s_vehicle_remapper, 0xA0);
 		struct s_vehicle_remapper_globals
 		{
 			s_vehicle_remapper vehicle_mappings[Enums::k_number_of_vehicle_remapper_vehicles];
 
 			bool processed;
 			bool is_teamplay;
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_remapper_globals) == 0x3C2 );
+		}; ASSERT_SIZE(s_vehicle_remapper_globals, 0x3C2);
 	};
 };

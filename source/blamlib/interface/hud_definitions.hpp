@@ -133,7 +133,7 @@ namespace Yelo
 			TAG_ENUM(anchor, Enums::hud_anchor);
 			PAD16;
 			TAG_PAD(int32, 8);
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_absolute_placement) == 0x24 );
+		}; ASSERT_SIZE(s_hud_absolute_placement, 0x24);
 
 		struct s_hud_element // same size as s_hud_absolute_placement...I think this may be union'd
 		{
@@ -143,7 +143,7 @@ namespace Yelo
 			TAG_FIELD(Flags::hud_scaling_flags, scaling_flags);
 			PAD16;
 			TAG_PAD(int32, 5);
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element) == 0x24 );
+		}; ASSERT_SIZE(s_hud_element, 0x24);
 
 		struct s_hud_color_flash // aka global_hud_color
 		{
@@ -159,7 +159,7 @@ namespace Yelo
 			// only seen objective colors expose these fields
 			TAG_FIELD(int16, uptime_ticks);
 			TAG_FIELD(int16, fade_ticks);
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_color_flash) == 0x20 );
+		}; ASSERT_SIZE(s_hud_color_flash, 0x20);
 
 		struct icon_hud_element_definition
 		{
@@ -170,7 +170,7 @@ namespace Yelo
 			TAG_FIELD(sbyte, frame_rate);
 			TAG_FIELD(byte_flags, flags);
 			TAG_FIELD(int16, text_index);
-		}; BOOST_STATIC_ASSERT( sizeof(icon_hud_element_definition) == 0x10 );
+		}; ASSERT_SIZE(icon_hud_element_definition, 0x10);
 
 
 		struct hud_messaging_definition
@@ -188,7 +188,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, icon_bitmap, 'bitm');
 			TAG_FIELD(tag_reference, alternate_icon_text, 'ustr');
 			TAG_TBLOCK(button_icons, icon_hud_element_definition);
-		}; BOOST_STATIC_ASSERT( sizeof(hud_messaging_definition) == 0xD0 );
+		}; ASSERT_SIZE(hud_messaging_definition, 0xD0);
 
 		struct hud_waypoint_arrow
 		{
@@ -204,7 +204,7 @@ namespace Yelo
 			TAG_PAD(int32, 4);
 			TAG_FIELD(long_flags, flags);
 			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(hud_waypoint_arrow) == 0x68 );
+		}; ASSERT_SIZE(hud_waypoint_arrow, 0x68);
 
 		struct hud_globals_definition
 		{
@@ -258,7 +258,7 @@ namespace Yelo
 				TAG_FIELD(tag_reference, checkpoint_sound, 'snd!');
 				TAG_PAD(int32, 24);
 			}misc;
-		}; BOOST_STATIC_ASSERT( sizeof(hud_globals_definition) == 0x450 );
+		}; ASSERT_SIZE(hud_globals_definition, 0x450);
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -271,13 +271,13 @@ namespace Yelo
 			TAG_FIELD(sbyte, number_of_fractional_digits);
 			PAD8;
 			TAG_PAD(tag_block, 1);
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_number) == 0x54 );
+		}; ASSERT_SIZE(s_hud_element_number, 0x54);
 
 		struct s_hud_element_static : public s_hud_element // aka global_hud_interface_element
 		{
 			TAG_FIELD(tag_reference, interface_bitmap, 'bitm');
 			s_hud_color_flash color;
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_static) == 0x54 );
+		}; ASSERT_SIZE(s_hud_element_static, 0x54);
 
 		struct s_hud_element_meter : public s_hud_element // aka global_hud_meter
 		{
@@ -297,7 +297,7 @@ namespace Yelo
 			TAG_FIELD(argb_color, disabled_color);
 			TAG_PAD(tag_block, 1);
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_meter) == 0x68 );
+		}; ASSERT_SIZE(s_hud_element_meter, 0x68);
 
 		struct hud_screen_effect_definition
 		{
@@ -330,7 +330,7 @@ namespace Yelo
 				TAG_FIELD(real_rgb_color, tint);
 				TAG_PAD(int32, 6);
 			}desaturation;
-		}; BOOST_STATIC_ASSERT( sizeof(hud_screen_effect_definition) == 0xB8 );
+		}; ASSERT_SIZE(hud_screen_effect_definition, 0xB8);
 
 		struct sound_hud_element_definition
 		{
@@ -338,7 +338,7 @@ namespace Yelo
 			TAG_FIELD(long_flags, latched_to); // unit_hud_sound_flags, grenade_hud_sound_flags
 			TAG_FIELD(real, scale);
 			TAG_PAD(int32, 8);
-		}; BOOST_STATIC_ASSERT( sizeof(sound_hud_element_definition) == 0x38 );
+		}; ASSERT_SIZE(sound_hud_element_definition, 0x38);
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -379,7 +379,7 @@ namespace Yelo
 			TAG_FIELD(real, function_period, "seconds");
 			TAG_FIELD(real, function_phase, "seconds");
 			TAG_PAD(int32, 8);
-		}; BOOST_STATIC_ASSERT( sizeof(multitexture_overlay_hud_element_effector_definition) == 0xDC ); // max count: 30
+		}; ASSERT_SIZE(multitexture_overlay_hud_element_effector_definition, 0xDC); // max count: 30
 		struct multitexture_overlay_hud_element_definition // aka 'global_hud_multitexture_overlay_definition'
 		{
 			PAD16;
@@ -431,7 +431,7 @@ namespace Yelo
 			TAG_PAD(int32, 46);
 			TAG_TBLOCK(effectors, multitexture_overlay_hud_element_effector_definition);
 			TAG_PAD(int32, 32);
-		}; BOOST_STATIC_ASSERT( sizeof(multitexture_overlay_hud_element_definition) == 0x1E0 ); // max count: 30
+		}; ASSERT_SIZE(multitexture_overlay_hud_element_definition, 0x1E0); // max count: 30
 
 		struct s_hud_element_overlay : public s_hud_element_static
 		{
@@ -439,7 +439,7 @@ namespace Yelo
 			PAD16;
 			TAG_TBLOCK(multitex_overlay, multitexture_overlay_hud_element_definition);
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_overlay) == 0x68 );
+		}; ASSERT_SIZE(s_hud_element_overlay, 0x68);
 	};
 
 	namespace blam

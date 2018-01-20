@@ -118,7 +118,7 @@ static void InitializeProcs()
 	//////////////////////////////////////////////////////////////////////////
 	// after load
 	{
-		BOOST_STATIC_ASSERT( NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_REFS) == NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_COUNTS) );
+		STATIC_ASSERT( NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_REFS) == NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_COUNTS) );
 
 		for(int x = 0; x < NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_REFS); x++)
 		{

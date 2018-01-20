@@ -100,21 +100,21 @@
 
 #define ENGINE_DPTR(type, name, ...)												\
 	static auto** const pp##name = CAST_PTR(type**, PLATFORM_VALUE(__VA_ARGS__));	\
-	BOOST_STATIC_ASSERT( PLATFORM_VALUE(__VA_ARGS__) != NULL );
+	STATIC_ASSERT( PLATFORM_VALUE(__VA_ARGS__) != NULL );
 
 #define ENGINE_PTR(type, name, ...)						\
 	static auto* const p##name = CAST_PTR(type*, PLATFORM_VALUE(__VA_ARGS__));	\
-	BOOST_STATIC_ASSERT( PLATFORM_VALUE(__VA_ARGS__) != NULL );
+	STATIC_ASSERT( PLATFORM_VALUE(__VA_ARGS__) != NULL );
 
 #define FUNC_PTR(name, ...)									\
 	enum FUNC_PTR_##name									\
 	{ PTR_##name = PLATFORM_VALUE_HACK_((__VA_ARGS__)) };	\
-	BOOST_STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
+	STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
 
 #define DATA_PTR(name, ...)									\
 	enum DATA_PTR_##name									\
 	{ PTR_##name = PLATFORM_VALUE_HACK_((__VA_ARGS__)) };	\
-	BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );
+	STATIC_ASSERT( GET_DATA_PTR(name) != NULL );
 
 #define DUO_PTR(name) (name) , (name)
 
@@ -159,7 +159,7 @@ namespace Yelo
 			// call ds:[address]
 			_x86_opcode_jmp_abs = 0x25FF, /*FF 25*/
 		};
-		BOOST_STATIC_ASSERT( sizeof(Enums::x86_opcode_twobyte)==2 );
+		ASSERT_SIZE(Enums::x86_opcode_twobyte, 2);
 	};
 
 	namespace Memory
@@ -309,7 +309,7 @@ namespace Yelo
 
 		private:
 			void Initialize();
-		}; BOOST_STATIC_ASSERT( sizeof(s_memory_exec_change_data) == 0x14 );
+		}; ASSERT_SIZE(s_memory_exec_change_data, 0x14);
 #define DEFINE_MEMORY_EXEC_CHANGE(name, to_address, call_address, ...)	\
 	static Yelo::Memory::s_memory_exec_change_data name = {				\
 			CAST_PTR(void*, (to_address) ),								\

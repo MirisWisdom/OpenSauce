@@ -28,13 +28,13 @@ namespace Yelo
 			cstring name;
 			_enum type;
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_animation_list_entry) == 0x8 );
+		}; ASSERT_SIZE(s_animation_list_entry, 0x8);
 		struct s_animation_list
 		{
 			int16 count;
 			PAD16;
 			s_animation_list_entry* entries;
-		}; BOOST_STATIC_ASSERT( sizeof(s_animation_list) == 0x8 );
+		}; ASSERT_SIZE(s_animation_list, 0x8);
 	};
 
 	namespace Objects
@@ -43,7 +43,7 @@ namespace Yelo
 		{
 			int16 animation_index;
 			int16 frame_index;
-		}; BOOST_STATIC_ASSERT( sizeof(s_animation_state) == 0x4 );
+		}; ASSERT_SIZE(s_animation_state, 0x4);
 	};
 
 	namespace blam

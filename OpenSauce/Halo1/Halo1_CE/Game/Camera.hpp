@@ -60,7 +60,7 @@ namespace Yelo
 			byte_flags command_flags[Enums::k_number_of_director_game_modes]; // 3 in fp, 0 default
 			PAD24;
 			real commands[Enums::k_number_of_director_game_modes]; // all the same during transitions, 0.0f = command finished
-		}; BOOST_STATIC_ASSERT( sizeof(s_camera_command) == 0x68 );
+		}; ASSERT_SIZE(s_camera_command, 0x68);
 
 		struct s_observer
 		{ 
@@ -80,7 +80,7 @@ namespace Yelo
 				real_vector3d forward;			// 0x94
 				real_euler_angles3d up;			// 0xA0
 				real fov;						// 0xAC
-			}result;	BOOST_STATIC_ASSERT( sizeof(s_calculated_result) == 0x3C );
+			}result;	ASSERT_SIZE(s_calculated_result, 0x3C);
 
 			// focus. this structure isn't a real structure in the game's code (these fields are part of s_observer)
 			struct s_calculated_origin
@@ -91,7 +91,7 @@ namespace Yelo
 				real fov;				// 0xCC
 				real_vector3d forward;	// 0xD0
 				real_vector3d up;		// 0xDC
-			}origin;	BOOST_STATIC_ASSERT( sizeof(s_calculated_origin) == 0x38 );
+			}origin;	ASSERT_SIZE(s_calculated_origin, 0x38);
 
 			byte __pad[432]; // 0xE8
 
@@ -118,7 +118,7 @@ namespace Yelo
 			tag trailer_signature; // 0x298
 
 			void GetRightVector(real_vector3d& right) const					{ right = this->origin.forward ^ this->origin.up; }
-		}; BOOST_STATIC_ASSERT( sizeof(s_observer) == 0x29C );
+		}; ASSERT_SIZE(s_observer, 0x29C);
 		s_observer*		Observer();
 
 		struct s_camera_script_globals_data

@@ -68,7 +68,7 @@ namespace Yelo
 				vertices, lightmap_vertices;
 			TAG_FIELD(tag_data, uncompressed_vertices);
 			TAG_FIELD(tag_data, compressed_vertices);
-		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp_material) == 0x100 );
+		}; ASSERT_SIZE(structure_bsp_material, 0x100);
 		struct structure_bsp_lightmap
 		{
 			TAG_FIELD(int16, bitmap);
@@ -107,7 +107,7 @@ namespace Yelo
 			TAG_TBLOCK(surface_indices, int32);
 			TAG_BLOCK(mirrors, structure_mirror);
 			TAG_BLOCK(portals, int16);
-		}; BOOST_STATIC_ASSERT( sizeof(structure_cluster) == 0x68 );
+		}; ASSERT_SIZE(structure_cluster, 0x68);
 
 		struct s_structure_fog_plane
 		{
@@ -166,7 +166,7 @@ namespace Yelo
 			TagGroups::collision_bsp* collision; // initialized by postprocess proc, only valid in tags builds
 			TAG_BLOCK(leaves, map_leaf);
 			TAG_BLOCK(portals, leaf_connection);
-		}; BOOST_STATIC_ASSERT( sizeof(s_leaf_map) == 0x1C );
+		}; ASSERT_SIZE(s_leaf_map, 0x1C);
 
 		struct structure_bsp
 		{
@@ -229,7 +229,7 @@ namespace Yelo
 			PAD64; // Useless? Removed in H2
 			s_leaf_map leaf_map;
 
-		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp) == 0x288 );
+		}; ASSERT_SIZE(structure_bsp, 0x288);
 
 		struct structure_bsp_header
 		{
@@ -242,6 +242,6 @@ namespace Yelo
 			}vertex_buffer, lightmap_vertex_buffer;
 
 			tag signature;
-		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp_header) == 0x18 );
+		}; ASSERT_SIZE(structure_bsp_header, 0x18);
 	};
 };

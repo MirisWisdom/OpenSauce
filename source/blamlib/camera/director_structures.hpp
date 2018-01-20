@@ -41,7 +41,7 @@ namespace Yelo
 			PAD24; 									//	0xC1
 			PAD32; // unknown field						0xC4
 			PAD(2, sizeof(real_vector3d) * 4);		//	0xC8
-		}; BOOST_STATIC_ASSERT(sizeof(s_director_data) == 0xF8);
+		}; ASSERT_SIZE(s_director_data, 0xF8);
 
 		s_director_data*				GlobalDirector();
 	};

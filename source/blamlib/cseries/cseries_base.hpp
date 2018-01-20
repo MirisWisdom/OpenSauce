@@ -119,7 +119,7 @@ namespace Yelo
 
 			return strings[index];
 		}
-	}; BOOST_STATIC_ASSERT( sizeof(string_list) == 0x8 );
+	}; ASSERT_SIZE(string_list, 0x8);
 
 
 	// a tag group id

@@ -39,7 +39,7 @@ namespace Yelo
 			struct __flags
 			{
 				TAG_FLAG(load_if_event_handler_function_fails);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(tag_reference, widget_tag, 'DeLa');
 			TAG_FIELD(tag_string, name);
@@ -48,14 +48,14 @@ namespace Yelo
 			
 			PAD16;
 			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(ui_conditional_widget_reference) == 0x50 ); // max count: 32
+		}; ASSERT_SIZE(ui_conditional_widget_reference, 0x50); // max count: 32
 
 		struct ui_child_widget_reference
 		{
 			struct __flags
 			{
 				TAG_FLAG(use_custom_controller_index);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(tag_reference, widget_tag, 'DeLa');
 			TAG_FIELD(tag_string, name);
@@ -66,7 +66,7 @@ namespace Yelo
 			
 			PAD16;
 			TAG_PAD(int32, 5);
-		}; BOOST_STATIC_ASSERT( sizeof(ui_child_widget_reference) == 0x50 ); // max count: 32
+		}; ASSERT_SIZE(ui_child_widget_reference, 0x50); // max count: 32
 
 		struct ui_widget_definition
 		{
@@ -90,7 +90,7 @@ namespace Yelo
 				TAG_FLAG(always_use_nifty_render_fx);
 				TAG_FLAG(don_t_push_history);
 				TAG_FLAG(force_handle_mouse);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_ENUM(widget_type, ui_widget_type);
 			TAG_ENUM(controller_index, ui_controller_index);
@@ -136,7 +136,7 @@ namespace Yelo
 					TAG_FLAG(password);
 					TAG_FLAG(flashing);
 					TAG_FLAG(dont_do_that_weird_focus_test);
-				}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+				}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 				TAG_FIELD(tag_reference, label_unicode_strings_list, 'ustr');
 				TAG_FIELD(tag_reference, font, 'font');
@@ -169,7 +169,7 @@ namespace Yelo
 					TAG_FLAG(list_items_from_string_list_tag);
 					TAG_FLAG(list_items_only_one_tooltip);
 					TAG_FLAG(list_single_preview_no_scroll);
-				}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+				}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 				TAG_FIELD(__flags, flags);
 
@@ -209,7 +209,7 @@ namespace Yelo
 			// use this to attach widgets that are loaded as 'children'
 			// of this widget (children are always loaded as part of the parent widget)
 			TAG_TBLOCK(child_widgets, ui_child_widget_reference);
-		}; BOOST_STATIC_ASSERT( sizeof(ui_widget_definition) == 0x3EC );
+		}; ASSERT_SIZE(ui_widget_definition, 0x3EC);
 	};
 
 	namespace blam

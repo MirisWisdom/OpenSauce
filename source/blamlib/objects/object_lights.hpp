@@ -30,6 +30,6 @@ namespace Yelo
 			real_argb_color reflection_tint;
 			real_vector3d shadow_vector;
 			real_rgb_color shadow_color;
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_lighting) == 0x74 );
+		}; ASSERT_SIZE(s_object_lighting, 0x74);
 	};
 };

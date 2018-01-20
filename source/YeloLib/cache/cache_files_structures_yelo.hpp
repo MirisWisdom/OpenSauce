@@ -72,7 +72,7 @@ namespace Yelo
 				word_flags is_protected : 1;		// cache has protection applied
 				word_flags uses_game_state_upgrades : 1; // cache has tag data that either requires or needs OS-modified game state memory in order to (fully) function
 				word_flags has_compression_params : 1; // cache has compression parameters (for resources, tags, etc)
-			}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x2 );
+			}flags; ASSERT_SIZE(s_flags, 0x2);
 
 			struct {
 				byte project_yellow;

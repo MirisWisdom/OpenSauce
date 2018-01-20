@@ -93,7 +93,7 @@ namespace Yelo
 				TAG_FLAG(ai_driver_flying);
 				TAG_FLAG(ai_driver_can_sidestep);
 				TAG_FLAG(ai_driver_hovering);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			////////////////////////////////////////////////////////////////
 			// $$$ VEHICLE $$$
@@ -143,6 +143,6 @@ namespace Yelo
 			enum { k_group_tag = 'vehi' };
 
 			_vehicle_definition vehicle;
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_definition) == 0x3F0 );
+		}; ASSERT_SIZE(s_vehicle_definition, 0x3F0);
 	};
 };

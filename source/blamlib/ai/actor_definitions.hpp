@@ -165,7 +165,7 @@ namespace Yelo
 				TAG_FLAG(avoid_friends_line_of_fire);
 			};
 
-			BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			struct __more_flags
 			{
@@ -178,7 +178,7 @@ namespace Yelo
 				TAG_FLAG(no_corpse_shooting);
 			};
 
-			BOOST_STATIC_ASSERT( sizeof(__more_flags) == sizeof(long_flags) );
+			ASSERT_SIZE(__more_flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(__more_flags, more_flags);
@@ -411,7 +411,7 @@ namespace Yelo
 			TAG_PAD(int32, 12);
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_actor_definition) == 0x4F8 ); // max count: 1
+		ASSERT_SIZE(s_actor_definition, 0x4F8); // max count: 1
 
 		struct s_actor_variant_change_colors
 		{
@@ -420,7 +420,7 @@ namespace Yelo
 			TAG_PAD(int32, 2);
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_actor_variant_change_colors) == 0x20 ); // max count: 4
+		ASSERT_SIZE(s_actor_variant_change_colors, 0x20); // max count: 4
 
 		struct s_actor_variant_definition
 		{
@@ -438,7 +438,7 @@ namespace Yelo
 				TAG_FLAG(prefer_passenger_seat);
 			};
 
-			BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(tag_reference, actor_definition, 'actr');
@@ -615,6 +615,6 @@ namespace Yelo
 			TAG_TBLOCK(change_colors, s_actor_variant_change_colors);
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_actor_variant_definition) == 0x238 ); // max count: 1		
+		ASSERT_SIZE(s_actor_variant_definition, 0x238); // max count: 1
 	}
 }

@@ -42,7 +42,7 @@ namespace Yelo
 			{
 				Enums::blip_type type; // set to _blip_type_none when not used
 				byte_enum size;	// a la object's size (tiny, large, etc)
-			}; BOOST_STATIC_ASSERT( sizeof(s_blip) == 0x4 );
+			}; ASSERT_SIZE(s_blip, 0x4);
 			struct s_team_data
 			{
 				s_blip object_blips[Enums::k_max_custom_blips];			// objects belonging to just this team
@@ -56,12 +56,12 @@ namespace Yelo
 				UNKNOWN_TYPE(real); // related to calculations with objects and facing angle of the player
 				sbyte active_object_blips_count;
 				PAD24;
-			}; BOOST_STATIC_ASSERT( sizeof(s_team_data) == 0x84 );
+			}; ASSERT_SIZE(s_team_data, 0x84);
 			struct s_local_player
 			{
 				s_team_data nearby_team_objects[e_game_team::k_count];
 				datum_index nearby_object_indexes[Enums::k_max_custom_blips];
-			}; BOOST_STATIC_ASSERT( sizeof(s_local_player) == 0x568 );
+			}; ASSERT_SIZE(s_local_player, 0x568);
 
 
 			s_local_player local_players[Enums::k_maximum_number_of_local_players];
@@ -72,7 +72,7 @@ namespace Yelo
 				PAD8; // actually boolean, but you don't need to worry about this value!
 				PAD8;
 			}update_data;
-		}; BOOST_STATIC_ASSERT( sizeof(s_motion_sensor) == 0x570 );
+		}; ASSERT_SIZE(s_motion_sensor, 0x570);
 		s_motion_sensor*			MotionSensor();
 	};
 };

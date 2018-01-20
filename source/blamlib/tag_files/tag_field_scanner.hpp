@@ -61,7 +61,7 @@ namespace Yelo
 			void InitializeWhatNewDoesnt();
 			// DON'T TOUCH ME UNLESS YOUR NAME IS c_tag_field_scanner
 			void SetYeloScanState()		{ pad = TRUE; }
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_scan_state) == 0x64 );
+		}; ASSERT_SIZE(s_tag_field_scan_state, 0x64);
 
 
 		class c_tag_field_scanner

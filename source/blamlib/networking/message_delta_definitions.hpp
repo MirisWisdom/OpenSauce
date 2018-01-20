@@ -151,7 +151,7 @@ namespace Yelo
 				real* real;
 				int32* integer;
 			}value;
-		}; BOOST_STATIC_ASSERT( sizeof(message_delta_parameter) == 0xC );
+		}; ASSERT_SIZE(message_delta_parameter, 0xC);
 
 		// Essentially a hash table
 		struct s_index_resolution_table
@@ -161,25 +161,25 @@ namespace Yelo
 				datum_index key;// local_index
 				int32 value;	// translated_index, what we get from the network
 				s_entry* next;
-			}; BOOST_STATIC_ASSERT( sizeof(s_entry) == 0xC );
+			}; ASSERT_SIZE(s_entry, 0xC);
 
 			struct s_entry_pool
 			{
 				enum { k_entry_count = 50 };
 
 				s_entry entries[k_entry_count];
-			}; BOOST_STATIC_ASSERT( sizeof(s_entry_pool) == 0x258 );
+			}; ASSERT_SIZE(s_entry_pool, 0x258);
 			struct s_entry_pool_list
 			{
 				s_entry_pool* pool;
 				s_entry* next_entry;
-			}; BOOST_STATIC_ASSERT( sizeof(s_entry_pool_list) == 0x8 );
+			}; ASSERT_SIZE(s_entry_pool_list, 0x8);
 
 			struct s_slot
 			{
 				int32 count;
 				s_entry* first_entry;
-			}; BOOST_STATIC_ASSERT( sizeof(s_slot) == 0x8 );
+			}; ASSERT_SIZE(s_slot, 0x8);
 
 			bool is_initialized; PAD24;
 			int32 number_of_slots;
@@ -372,6 +372,6 @@ namespace Yelo
 			decoding_information_data* decoding_information;
 			bool body_field_exists[64];
 			void* custom_header_destination; // max size 0x84
-		}; BOOST_STATIC_ASSERT( sizeof(message_dependant_header) == 0x48 );
+		}; ASSERT_SIZE(message_dependant_header, 0x48);
 	};
 };

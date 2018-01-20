@@ -125,7 +125,7 @@ namespace Yelo
 
 			// Returns the reason why this header is invalid or NULL if everything appears gravy
 			cstring GetInvalidReasonString(tag engine_sig, void* base_address) const;
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
+		}; ASSERT_SIZE(s_cache_header, 0x800);
 		s_cache_header& GlobalCacheHeader();
 
 		/*!

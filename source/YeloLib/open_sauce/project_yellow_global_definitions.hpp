@@ -47,7 +47,7 @@ namespace Yelo
 		{
 			struct _flags {
 				TAG_FLAG(unused, "");
-			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(long_flags) );
+			}flags;	ASSERT_SIZE(_flags, sizeof(long_flags));
 
 			struct {
 				TAG_TBLOCK(campaign, s_yelo_preprocess_maplist_entry);		// 24

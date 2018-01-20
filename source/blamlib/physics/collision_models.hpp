@@ -19,7 +19,7 @@ namespace Yelo
 			TagGroups::collision_model_definition* definition;
 			sbyte* region_permutation_indices; // pointer to s_object_data->region_permutation_indices
 			real_matrix4x3* node_matrices;
-		}; BOOST_STATIC_ASSERT( sizeof(s_collision_model_instance) == 0x10 );
+		}; ASSERT_SIZE(s_collision_model_instance, 0x10);
 
 		struct s_collision_model_test_result
 		{
@@ -32,6 +32,6 @@ namespace Yelo
 		{
 			s_collision_model_test_result model_test;
 			s_collision_bsp_test_vector_result bsp_test;
-		}; BOOST_STATIC_ASSERT( sizeof(s_collision_model_test_vector_result) == 0x420 );
+		}; ASSERT_SIZE(s_collision_model_test_vector_result, 0x420);
 	};
 };
