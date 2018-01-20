@@ -15,9 +15,9 @@
 		Yelo::string_id key;
 		Yelo::cstring value;
 	};
-	#define STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(set_name)	BOOST_JOIN(k_string_id_kv_pairs_,set_name)
+	#define STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(set_name)	CONCATENATE(k_string_id_kv_pairs_,set_name)
 	#define STRING_ID_YELO_KV_PAIRS_ARRAY_STATIC_ASSERT_LENGTH(set_name)	\
-		STATIC_ASSERT( BOOST_JOIN(BOOST_JOIN(Yelo::_string_id::k_number_of_,set_name), _strings) == NUMBEROF( STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(set_name) )-1 ); 
+		STATIC_ASSERT( CONCATENATE(CONCATENATE(Yelo::_string_id::k_number_of_,set_name), _strings) == NUMBEROF( STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(set_name) )-1 ); 
 		// minus 1 to account for the terminator pair
 		// we use a terminator so empty sets don't generate compiler errors
 

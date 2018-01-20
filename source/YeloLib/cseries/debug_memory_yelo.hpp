@@ -52,7 +52,7 @@ public:
 };
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	// Temporarily turn off CRT debug fill
-	#define CRT_DEBUG_FILL_OFF()	c_crt_debug_fill_off BOOST_JOIN(zzz_crt_debug_fill_off, __LINE__);
+	#define CRT_DEBUG_FILL_OFF()	c_crt_debug_fill_off CONCATENATE(zzz_crt_debug_fill_off, __LINE__);
 #else
 	#define CRT_DEBUG_FILL_OFF()	__noop;
 #endif
