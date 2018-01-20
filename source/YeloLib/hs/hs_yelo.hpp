@@ -68,7 +68,7 @@ namespace Yelo
 	};
 };
 
-#define HS_TYPE(hstype) BOOST_JOIN(Yelo::Enums::_hs_type_,hstype)
+#define HS_TYPE(hstype) CONCATENATE(Yelo::Enums::_hs_type_,hstype)
 
 
 //////////////////////////////////////////////////////////////////////////

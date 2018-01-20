@@ -19,19 +19,19 @@ namespace Yelo
 // generator macros
 // Returns the current generated set's (enum) member name by value name
 #define __STRING_ID_GENERATE_VALUE_NAME(value)			\
-	BOOST_JOIN(											\
-		BOOST_JOIN(_,__STRING_ID_GENERATE_SET_NAME) ,	\
-		BOOST_JOIN(_string_, value )					\
+	CONCATENATE(											\
+		CONCATENATE(_,__STRING_ID_GENERATE_SET_NAME) ,	\
+		CONCATENATE(_string_, value )					\
 		)
 
 // Returns the name of the current generated set's base counter
-#define __STRING_ID_GENERATE_COUNTER_NAME		BOOST_JOIN(__, BOOST_JOIN(__STRING_ID_GENERATE_SET_NAME, __ENUM_COUNTER__ ))
+#define __STRING_ID_GENERATE_COUNTER_NAME		CONCATENATE(__, CONCATENATE(__STRING_ID_GENERATE_SET_NAME, __ENUM_COUNTER__ ))
 // Returns the next counter value, ie index, for the generated set
 #define __STRING_ID_GENERATE_COUNTER_NEXT		(__COUNTER__ - __STRING_ID_GENERATE_COUNTER_NAME - 1)
 // Generate a string_id by value name
 #define __STRING_ID_GENERATE(value)																			\
 	(																										\
-		(BOOST_JOIN(_set_,__STRING_ID_GENERATE_SET_NAME)&	k_id_bit_mask)		<< k_id_bit_shift		|	\
+		(CONCATENATE(_set_,__STRING_ID_GENERATE_SET_NAME)&	k_id_bit_mask)		<< k_id_bit_shift		|	\
 		(__STRING_ID_GENERATE_COUNTER_NEXT				&	k_index_bit_mask)	<< k_index_bit_shift		\
 	)
 // Generate a string_id definition by value name
@@ -42,7 +42,7 @@ namespace Yelo
 	enum { __STRING_ID_GENERATE_COUNTER_NAME = __COUNTER__,
 // End a string_id set definition, declaring/defining any needed boilerplate code
 #define __STRING_ID_SET_END()																								\
-		BOOST_JOIN(BOOST_JOIN(k_number_of_,__STRING_ID_GENERATE_SET_NAME),_strings) = __STRING_ID_GENERATE_COUNTER_NEXT,	\
+		CONCATENATE(CONCATENATE(k_number_of_,__STRING_ID_GENERATE_SET_NAME),_strings) = __STRING_ID_GENERATE_COUNTER_NEXT,	\
 	};
 // _string_id_empty_string definition hack for the 'global' set
 #define __STRING_ID_EMPTY_STRING_HACK()	_string_id_empty_string = __STRING_ID_GENERATE_COUNTER_NEXT,
