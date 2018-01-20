@@ -12,28 +12,38 @@
 #include <blamlib/game/game_globals_definitions.hpp>
 #include <blamlib/game/game_globals_structures.hpp>
 #include <blamlib/game/game_time_structures.hpp>
-#include <blamlib/main/console.hpp> // for data_array_info only
+#include <blamlib/main/console.hpp>
 #include <blamlib/main/main_structures.hpp>
-#include <blamlib/scenario/scenario.hpp>
 #include <blamlib/saved_games/game_state_structures.hpp>
+#include <blamlib/scenario/scenario.hpp>
 
-#include <YeloLib/cseries/random.hpp>
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/shell/shell_windows_command_line.hpp>
+#include <Common/DebugDump.hpp>
+#include <Common/GameSystems.hpp>
+#include <Game/AI.hpp>
+#include <Game/Effects.hpp>
+#include <Game/EngineFunctions.hpp>
 
-#include "Memory/MemoryInterface.hpp"
-#include "Common/GameSystems.hpp"
-#include "Settings/Settings.hpp"
-#include "Game/ScriptLibrary.hpp"
-#include "Game/Effects.hpp" // for data_array_info only
-#include "Game/EngineFunctions.hpp"
-#include "Game/GameBuildNumber.hpp"
-#include "Networking/GameSpyApi.hpp"
-#include "Objects/Objects.hpp" // for data_array_info only
-#include "Objects/Units.hpp"
-#include "Rasterizer/PostProcessing/PostProcessing.hpp"
+#include <Game/GameBuildNumber.hpp>
+#include <Game/GameStateRuntimeData.hpp>
+#include <Game/ScriptLibrary.hpp>
+#include <Memory/MemoryInterface.hpp>
+#include <Networking/GameSpyApi.hpp>
+#include <Networking/HTTP/c_file_downloader.hpp>
+#include <Networking/VersionCheck.hpp>
+#include <Objects/Objects.hpp>
+#include <Objects/Units.hpp>
+#include <Rasterizer/GBuffer.hpp>
+#include <Rasterizer/PostProcessing/PostProcessing.hpp>
+#include <Rasterizer/Sky.hpp>
+#include <Scenario/StructureBSP.hpp>
+#include <Settings/Settings.hpp>
+#include <TagGroups/TagGroups.hpp>
+#include <yelolib/cseries/random.hpp>
+#include <yelolib/open_sauce/blam_memory_upgrades.hpp>
+#include <yelolib/open_sauce/project_yellow_scenario.hpp>
+#include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelolib/shell/shell_windows_command_line.hpp>
+#include <Networking/HTTP/HTTPServer.hpp>
 
 namespace Yelo
 {
@@ -195,12 +205,16 @@ namespace Yelo
 
 		void Update(real delta_time)
 		{
-			Main::s_project_component* components;
-			const int32 component_count = Main::GetProjectComponents(components);
-
-			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].Update != nullptr )
-					components[x].Update(delta_time);
+			Debug::Update(delta_time);
+#if PLATFORM_IS_USER
+			DX9::c_gbuffer_system::Update(delta_time);
+			Rasterizer::PostProcessing::Update(delta_time);
+#endif
+#if PLATFORM_IS_DEDI
+			Networking::HTTP::Server::Update(delta_time);
+#endif
+			Networking::HTTP::Client::Update(delta_time);
+			Networking::VersionCheck::Update(delta_time);
 		}
 
 		static void InitializeForNewMapPrologue()
@@ -235,12 +249,17 @@ namespace Yelo
 		{
 			InitializeForNewMapPrologue();
 
-			Main::s_project_map_component* components;
-			const int32 component_count = Main::GetProjectComponents(components);
-
-			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForNewMap != nullptr )
-					components[x].InitializeForNewMap();
+			BuildNumber::InitializeForNewMap();
+			TagGroups::InitializeForNewMap();
+			RuntimeData::InitializeForNewMap();
+#if PLATFORM_IS_USER
+			Rasterizer::PostProcessing::InitializeForNewMap();
+			Render::Sky::InitializeForNewMap();
+			StructureBSP::InitializeForNewMap();
+#endif
+			AI::InitializeForNewMap();
+			Objects::InitializeForNewMap();
+			Networking::VersionCheck::InitializeForNewMap();
 
 			InitializeForNewMapEpilogue();
 		}
@@ -251,61 +270,50 @@ namespace Yelo
 		{
 			DisposeFromOldMapPrologue();
 
-			Main::s_project_map_component* components;
-			const int32 component_count = Main::GetProjectComponents(components);
-
-			for(int32 x = component_count; x >= 0; x--)
-				if( components[x].DisposeFromOldMap != nullptr )
-					components[x].DisposeFromOldMap();
+#if PLATFORM_IS_USER
+			Rasterizer::PostProcessing::DisposeFromOldMap();
+			Render::Sky::DisposeFromOldMap();
+			StructureBSP::DisposeFromOldMap();
+#endif
+			AI::DisposeFromOldMap();
+			Objects::DisposeFromOldMap();
 		}
 
 		void PLATFORM_API InitializeForNewBSP()
 		{
-			Yelo::Main::s_project_bsp_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
-
-			for(int32 x = 0; x <= component_count; x++)
-				if (components[x].InitializeForNewBSP != nullptr)
-					components[x].InitializeForNewBSP();
+#if PLATFORM_IS_USER
+			StructureBSP::InitializeForNewBSP();
+#endif
 		}
+
 		void PLATFORM_API DisposeFromOldBSP()
 		{
-			Yelo::Main::s_project_bsp_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
-
-			for(int32 x = component_count; x >= 0; x--)
-				if (components[x].DisposeFromOldBSP != nullptr)
-					components[x].DisposeFromOldBSP();
+#if PLATFORM_IS_USER
+			StructureBSP::DisposeFromOldBSP();
+#endif
 		}
 
 		void PLATFORM_API InitializeForNewGameState()
 		{
-			Main::s_project_game_state_component* components;
-			const int32 component_count = Main::GetProjectComponents(components);
-
-			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForNewGameState != nullptr )
-					components[x].InitializeForNewGameState();
+			GameState::RuntimeData::InitializeForNewGameState();
+#if PLATFORM_IS_USER
+			StructureBSP::InitializeForNewGameState();
+#endif
+			AI::InitializeForNewGameState();
 		}
+
 		void InitializeForYeloGameState(bool enabled)
 		{
-			Main::s_project_game_state_component* components;
-			const int32 component_count = Main::GetProjectComponents(components);
-
-			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForYeloGameState != nullptr )
-					components[x].InitializeForYeloGameState(enabled);
+			Objects::InitializeForYeloGameState(enabled);
 		}
 		static void HandleGameStateLifeCycle(Enums::game_state_life_cycle life_cycle)
 		{
-			YELO_ASSERT_DISPLAY( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_game_state_life_cycles), "What fucking life cycle is this shit?");
+			YELO_ASSERT_DISPLAY( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_game_state_life_cycles), "Unknown lifecycle");
 
-			Main::s_project_game_state_component* components;
-			const int32 component_count = Main::GetProjectComponents(components);
-
-			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].HandleGameStateLifeCycle != nullptr )
-					components[x].HandleGameStateLifeCycle(life_cycle);
+#if PLATFORM_IS_USER
+			StructureBSP::HandleGameStateLifeCycle(life_cycle);
+#endif
+			AI::HandleGameStateLifeCycle(life_cycle);
 		}
 		void PLATFORM_API HandleBeforeSaveLifeCycle()
 		{

@@ -1431,9 +1431,6 @@
     <ClInclude Include="Common\FileIO.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\GameSystemDefinitions.hpp">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Common\GameSystems.hpp">
       <Filter>Common</Filter>
     </ClInclude>

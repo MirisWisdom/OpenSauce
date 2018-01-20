@@ -511,7 +511,6 @@
   <ItemGroup>
     <ClInclude Include="Common\DebugDump.hpp" />
     <ClInclude Include="Common\FileIO.hpp" />
-    <ClInclude Include="Common\GameSystemDefinitions.hpp" />
     <ClInclude Include="Common\GameSystems.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
