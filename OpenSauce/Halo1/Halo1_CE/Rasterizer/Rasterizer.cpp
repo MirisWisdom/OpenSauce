@@ -20,6 +20,8 @@
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
+#include <Interface/GameUI.hpp>
+#include <Interface/OpenSauceUI.hpp>
 
 namespace Yelo
 {
@@ -234,12 +236,13 @@ namespace Yelo
 
 		// release direct3D resources before the device is destroyed
 		static void RasterizerDisposeHook()
-		{			
-			Yelo::Main::s_dx_component* components;
-			const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
-
-			for(Yelo::int32 x = 0; x < component_count; x++)
-				components[x].Release();
+		{
+			DX9::Release();
+			DX9::c_gbuffer_system::Release();
+			ShaderExtension::Release();
+			PostProcessing::Release();
+			Hud::Release();
+			Interface::OpenSauceUI::Release();
 
 			// Return the code flow back to the game
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_DISPOSE);

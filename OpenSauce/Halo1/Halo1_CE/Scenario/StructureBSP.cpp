@@ -14,7 +14,6 @@
 #include <blamlib/objects/object_structures.hpp>
 #include <YeloLib/saved_games/game_state_yelo.hpp>
 
-#include "Common/GameSystemDefinitions.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/Sky.hpp"
