@@ -90,7 +90,7 @@ namespace Yelo
 
 			k_number_of_unit_definition_flags
 		};
-		BOOST_STATIC_ASSERT(k_number_of_unit_definition_flags <= BIT_COUNT(long_flags));
+		STATIC_ASSERT(k_number_of_unit_definition_flags <= BIT_COUNT(long_flags));
 
 		enum unit_seat_definition_flags {
 			_unit_seat_invisable_bit,
@@ -121,7 +121,7 @@ namespace Yelo
 
 			k_number_of_unit_seat_definition_flags_yelo,
 		};
-		BOOST_STATIC_ASSERT(k_number_of_unit_seat_definition_flags_yelo <= BIT_COUNT(long_flags));
+		STATIC_ASSERT(k_number_of_unit_seat_definition_flags_yelo <= BIT_COUNT(long_flags));
 	};
 
 	namespace TagGroups
@@ -193,7 +193,7 @@ namespace Yelo
 		public:
 			static bool PLATFORM_API Postprocess(void* element, Enums::tag_postprocess_mode mode,
 				datum_index tag_index);
-		}; BOOST_STATIC_ASSERT( sizeof(unit_seat) == 284 );
+		}; ASSERT_SIZE(unit_seat, 284);
 		//////////////////////////////////////////////////////////////////////////
 		struct _unit_definition
 		{
@@ -272,7 +272,7 @@ namespace Yelo
 			bool Postprocess(Enums::tag_postprocess_mode mode,
 				datum_index tag_index);
 
-		}; BOOST_STATIC_ASSERT( sizeof(_unit_definition) == 0x174 );
+		}; ASSERT_SIZE(_unit_definition, 0x174);
 
 		struct s_unit_definition : s_object_definition
 		{

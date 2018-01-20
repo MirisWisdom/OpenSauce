@@ -53,7 +53,7 @@ namespace Yelo
 			bool ValidForStock() const;
 			// Is this header valid according to OS standards?
 			bool ValidForYelo() const;
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
+		}; ASSERT_SIZE(s_cache_header, 0x800);
 
 		struct s_cache_tag_instance
 		{
@@ -76,7 +76,7 @@ namespace Yelo
 			// Is this an instance of a certain tag group?
 			// If this instance a child of a certain tag group?
 			bool MatchesGroup(tag group_tag) const;
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_tag_instance) == 0x20 );
+		}; ASSERT_SIZE(s_cache_tag_instance, 0x20);
 
 		struct s_cache_tag_header
 		{
@@ -100,6 +100,6 @@ namespace Yelo
 #pragma warning(disable : 4200)
 			s_cache_tag_instance tags[];
 #pragma warning(pop)
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_tag_header) == 0x28 );
+		}; ASSERT_SIZE(s_cache_tag_header, 0x28);
 	}
 }

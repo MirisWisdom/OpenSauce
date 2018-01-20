@@ -24,7 +24,7 @@ namespace Yelo
 				real easy, normal, hard, impossible;
 			}values[Enums::k_number_of_game_difficulty_values];
 			TAG_PAD(int32, 17); // could potentially have 4 more difficulty values, with 4 bytes left over
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_difficulty_information) <= 0x284 );
+		}; STATIC_ASSERT(sizeof(s_game_globals_difficulty_information) <= 0x284 );
 
 		struct s_game_globals_grenade
 		{
@@ -34,7 +34,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, hud_interface, 'grhi');
 			TAG_FIELD(tag_reference, equipment, 'eqip');
 			TAG_FIELD(tag_reference, projectile, 'proj');
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_grenade) == 0x44 );
+		}; ASSERT_SIZE(s_game_globals_grenade, 0x44);
 
 		struct s_game_globals_tag_reference
 		{
@@ -51,7 +51,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, ball, 'item');
 			TAG_TBLOCK(sounds, s_game_globals_tag_reference); // 60
 			TAG_PAD(int32, 14);
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_multiplayer_information) == 0xA0 );
+		}; ASSERT_SIZE(s_game_globals_multiplayer_information, 0xA0);
 
 		struct s_game_globals_player_information
 		{
@@ -90,7 +90,7 @@ namespace Yelo
 			PAD_TYPE(tag_reference);
 			TAG_FIELD(tag_reference, coop_respawn_effect, 'effe'); // 0xB8
 			TAG_PAD(int32, 11);
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_player_information) == 0xF4 );
+		}; ASSERT_SIZE(s_game_globals_player_information, 0xF4);
 
 		struct s_game_globals_player_representation // game_globals_first_person_interface
 		{
@@ -105,7 +105,7 @@ namespace Yelo
 				TAG_FIELD(tag_reference, on_off_effect, 'effe');
 			}night_vision;
 			TAG_PAD(int32, 22);
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_player_representation) == 0xC0 );
+		}; ASSERT_SIZE(s_game_globals_player_representation, 0xC0);
 
 		struct s_game_globals_falling_damage
 		{
@@ -125,7 +125,7 @@ namespace Yelo
 				real maximum_falling_distance;
 				real_bounds harmful_falling_distance;
 			}runtime;
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_falling_damage) == 0x98 );
+		}; ASSERT_SIZE(s_game_globals_falling_damage, 0x98);
 
 		struct material_definition
 		{
@@ -151,7 +151,7 @@ namespace Yelo
 			}breakable_surface_params;
 			TAG_PAD(int32, 15);
 			TAG_FIELD(tag_reference, melee_hit_sound, 'snd!');
-		}; BOOST_STATIC_ASSERT( sizeof(material_definition) == 0x374 );
+		}; ASSERT_SIZE(material_definition, 0x374);
 
 		struct s_game_globals
 		{
@@ -182,6 +182,6 @@ namespace Yelo
 			TAG_TBLOCK(falling_damage, s_game_globals_falling_damage);
 			TAG_TBLOCK(materials, material_definition);
 			TAG_BLOCK(playlist_members, playlist_autogenerate_choice);
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals) == 0x1AC );
+		}; ASSERT_SIZE(s_game_globals, 0x1AC);
 	};
 };

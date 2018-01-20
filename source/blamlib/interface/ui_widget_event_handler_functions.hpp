@@ -267,7 +267,7 @@ namespace Yelo
 				TAG_FLAG(go_back_to_previous_widget);
 				TAG_FLAG(run_scenario_script);
 				TAG_FLAG(try_to_branch_on_failure);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_ENUM(event_type, Enums::ui_widget_event);
@@ -275,6 +275,6 @@ namespace Yelo
 			TAG_FIELD(tag_reference, widget_tag, 'DeLa');
 			TAG_FIELD(tag_reference, sound_effect, 'snd!');
 			TAG_FIELD(tag_string, script);
-		}; BOOST_STATIC_ASSERT( sizeof(ui_widget_event_handler_reference) == 0x48 ); // max count: 32
+		}; ASSERT_SIZE(ui_widget_event_handler_reference, 0x48); // max count: 32
 	};
 };

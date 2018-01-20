@@ -29,6 +29,6 @@ namespace Yelo
 		{
 			TAG_FIELD(tag_string, search_string);
 			TAG_ENUM(replace_function, Enums::ui_widget_replace_function);
-		}; BOOST_STATIC_ASSERT( sizeof(ui_widget_search_and_replace_reference) == 0x22 ); // max count: 32
+		}; ASSERT_SIZE(ui_widget_search_and_replace_reference, 0x22); // max count: 32
 	};
 };

@@ -83,6 +83,6 @@ namespace Yelo
 			int32 unknown;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_transport_address) == 0x18 );
+		ASSERT_SIZE(s_transport_address, 0x18);
 	}
 }

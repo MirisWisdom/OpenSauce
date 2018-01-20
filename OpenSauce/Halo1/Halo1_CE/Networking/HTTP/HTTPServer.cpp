@@ -39,7 +39,7 @@ namespace Yelo
 		static s_http_service g_http_services[] = 
 		{
 			HTTP_COMPONENT_SERVER("MapDownloadService", "map_download", Server::MapDownload::ServiceStarted, Server::MapDownload::ServerCallback),
-		};BOOST_STATIC_ASSERT(Enums::_http_service_enumeration == NUMBEROF(g_http_services));
+		}; STATIC_ASSERT(Enums::_http_service_enumeration == NUMBEROF(g_http_services));
 
 #undef HTTP_COMPONENT_SERVER
 

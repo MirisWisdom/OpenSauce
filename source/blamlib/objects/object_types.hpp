@@ -123,6 +123,6 @@ namespace Yelo
 			int32 _unused1[13]; // s_object_type_definition*.
 			s_object_type_definition* next;
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_type_definition) == 0xC8 );
+		}; ASSERT_SIZE(s_object_type_definition, 0xC8);
 	};
 };

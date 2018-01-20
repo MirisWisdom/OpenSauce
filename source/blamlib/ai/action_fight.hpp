@@ -18,6 +18,6 @@ namespace Yelo
 			PAD16;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_action_fight_state) == 0x4 );
+		ASSERT_SIZE(s_action_fight_state, 0x4);
 	}
 }

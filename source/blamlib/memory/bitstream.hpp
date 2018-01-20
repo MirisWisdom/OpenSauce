@@ -28,6 +28,6 @@ namespace Yelo
 			void* bit_in_byte;	// 0x10 bitNum in torque
 			void* last_bit;		// 0x14 last bit where we can write to
 			int32 size;			// 0x18 size of buffer
-		}; BOOST_STATIC_ASSERT( sizeof(s_bitstream) == 0x1C );
+		}; ASSERT_SIZE(s_bitstream, 0x1C);
 	};
 };

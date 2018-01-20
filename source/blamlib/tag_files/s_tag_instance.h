@@ -22,5 +22,5 @@ namespace Yelo
 		tag_block root_block; // 0x11C
 	};
 
-	BOOST_STATIC_ASSERT(sizeof(s_tag_instance) == 0x128);
+	ASSERT_SIZE(s_tag_instance, 0x128);
 }

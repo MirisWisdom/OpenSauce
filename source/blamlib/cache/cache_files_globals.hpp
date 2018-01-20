@@ -10,7 +10,7 @@
 #include <blamlib/cache/s_data_file_globals.h>
 
 #include <zlib/zlib.h>
-BOOST_STATIC_ASSERT( sizeof(z_stream) == 0x38 );
+ASSERT_SIZE(z_stream, 0x38);
 
 namespace Yelo
 {
@@ -33,7 +33,7 @@ namespace Yelo
 			Enums::cache_file_request_source source;
 			PAD24;
 			s_cache_file_request_params params;
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_request) == 0x30 );
+		}; ASSERT_SIZE(s_cache_file_request, 0x30);
 		struct s_cached_map_file
 		{
 			HANDLE file_handle;
@@ -45,7 +45,7 @@ namespace Yelo
 				CloseHandle(file_handle);
 				file_handle = INVALID_HANDLE_VALUE; // NOT: engine doesn't actually do this
 			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_cached_map_file) == 0x80C );
+		}; ASSERT_SIZE(s_cached_map_file, 0x80C);
 		struct s_cache_file_globals
 		{
 			// reversed engineered based on halo xbox code...PC code seems to have some slight differences, but it doesn't really use this anyway so who cares
@@ -93,7 +93,7 @@ namespace Yelo
 				int16 current_read_sequence_count;
 				PAD16; // more than likely an unused next_read_sequence_index
 				PAD16;
-			}; BOOST_STATIC_ASSERT( sizeof(s_decompression_state) == 0xAC8 );
+			}; ASSERT_SIZE(s_decompression_state, 0xAC8);
 
 			bool tags_loaded; PAD24;
 			s_cache_header cache_header;
@@ -138,6 +138,6 @@ namespace Yelo
 
 			// blocks the thread until all read requests have finished
 			void RequestsWaitAll();
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_globals) == 0x4418 );
+		}; ASSERT_SIZE(s_cache_file_globals, 0x4418);
 	}
 }

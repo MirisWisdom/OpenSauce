@@ -38,5 +38,5 @@ namespace Yelo
 		bool is_considered_debug_only() const;
 	};
 
-	BOOST_STATIC_ASSERT(sizeof(tag_data_definition) == 0x10);
+	ASSERT_SIZE(tag_data_definition, 0x10);
 }

@@ -168,8 +168,8 @@ namespace Yelo
 	};
 
 	#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-	BOOST_STATIC_ASSERT(sizeof(TagBlock<byte>) == 0xC);
+	ASSERT_SIZE(TagBlock<byte>, 0xC);
 	#else
-	BOOST_STATIC_ASSERT(sizeof(TagBlock<byte>) == 0x8);
+	ASSERT_SIZE(TagBlock<byte>, 0x8);
 	#endif
 }

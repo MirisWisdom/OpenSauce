@@ -35,7 +35,7 @@ namespace Yelo
 			bool cant_compile_variable_sets; // in the current context, the 'set' function can't be used
 			bool postprocessing;
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_hs_compile_globals) == 0x12C );
+		}; ASSERT_SIZE(s_hs_compile_globals, 0x12C);
 
 
 		s_hs_compile_globals* HsCompileGlobals();

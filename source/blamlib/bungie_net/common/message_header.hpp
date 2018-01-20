@@ -59,7 +59,7 @@ namespace Yelo
 			uint16 size : bitfield_size<k_maximum_message_size>::value;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_message_header) == 0x2 );
+		ASSERT_SIZE(s_message_header, 0x2);
 
 		struct s_message_lowlevel_error
 		{
@@ -67,6 +67,6 @@ namespace Yelo
 			byte error;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_message_lowlevel_error) == 0x81 );
+		ASSERT_SIZE(s_message_lowlevel_error, 0x81);
 	}
 }

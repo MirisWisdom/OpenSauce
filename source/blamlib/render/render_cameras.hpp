@@ -23,7 +23,7 @@ namespace Yelo
 			rectangle2d window_bounds;
 			real z_near ,z_far;
 			PAD32; PAD32; PAD32; PAD32; // just looks like 16 bytes of unused poop
-		}; BOOST_STATIC_ASSERT( sizeof(s_render_camera) == 0x54 );
+		}; ASSERT_SIZE(s_render_camera, 0x54);
 
 		struct s_render_frustum_matricies
 		{
@@ -64,6 +64,6 @@ namespace Yelo
 				mats.world_view = &world_to_view;
 				mats.world_view_transpose = &view_to_world;
 			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_render_frustum) == 0x18C );
+		}; ASSERT_SIZE(s_render_frustum, 0x18C);
 	};
 };

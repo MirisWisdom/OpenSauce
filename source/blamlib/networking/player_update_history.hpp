@@ -67,7 +67,7 @@ namespace Yelo
 				Objects::s_vehicle_data vehicle_data;
 			}vehicle;
 			s_player_update* next;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_update) == 0x418 );
+		}; ASSERT_SIZE(s_player_update, 0x418);
 		struct s_player_update_history
 		{
 			int32 next_update_history_id; // maximum = 64
@@ -81,6 +81,6 @@ namespace Yelo
 			PAD32; // 0x20
 			real avg_prediction_error;
 			real avg_ticks_played_back;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_update_history) == 0x2C );
+		}; ASSERT_SIZE(s_player_update_history, 0x2C);
 	};
 };

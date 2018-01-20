@@ -132,7 +132,7 @@ namespace Yelo
 			unsigned long flagD : 1;
 			unsigned long flagE : 1;
 			unsigned long flagF : 1;
-		}; BOOST_STATIC_ASSERT( sizeof(control_flags) == 0x4 );
+		}; ASSERT_SIZE(control_flags, 0x4);
 
 		typedef ascii_character	map_name[128];
 		struct					network_map
@@ -166,12 +166,12 @@ namespace Yelo
 			unsigned short flag8 : 1;
 			unsigned short flag9 : 1;
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(universal_variant_flags) == 0x4 );
+		}; ASSERT_SIZE(universal_variant_flags, 0x4);
 		struct					game_variant_flags
 		{
 			unsigned char flag1 : 1;
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(game_variant_flags) == 0x4 );
+		}; ASSERT_SIZE(game_variant_flags, 0x4);
 		typedef integer_small	game_engine_variant[56];
 		struct					universal_variant
 		{
@@ -231,7 +231,7 @@ namespace Yelo
 			unsigned char flag7 : 1;
 			unsigned char flag8 : 1;
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(damage_data_flags) == 0x4 );
+		}; ASSERT_SIZE(damage_data_flags, 0x4);
 		typedef ascii_character motd_text[255+1];
 		typedef ascii_character rcon_response[80+1];
 		typedef ascii_character rcon_password[8+1];

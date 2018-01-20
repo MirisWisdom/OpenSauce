@@ -42,7 +42,7 @@ namespace Yelo
 
 		// Make sure the user heeded our warning and didn't remove existing campaign 
 		// levels
-		BOOST_STATIC_ASSERT(_campaign_level >= k_campaign_level_base_count);
+		STATIC_ASSERT(_campaign_level >= k_campaign_level_base_count);
 	};
 
 	namespace Campaign

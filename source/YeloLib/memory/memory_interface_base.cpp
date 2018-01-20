@@ -51,7 +51,7 @@ namespace Yelo
 			struct relative_call_bytes : Opcode::s_call
 			{
 				byte End;
-			}; BOOST_STATIC_ASSERT(sizeof(relative_call_bytes) == 6);
+			}; ASSERT_SIZE(relative_call_bytes, 6);
 			// call near ....
 			// retn\nop
 			relative_call_bytes asm_bytes;

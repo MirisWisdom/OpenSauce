@@ -41,18 +41,18 @@ namespace Yelo
 				_global global;
 			};
 		};
-		struct hs_script			: hs_scenario_data_base	{}; BOOST_STATIC_ASSERT( sizeof(hs_script) == 0x5C );
-		struct hs_global_internal	: hs_scenario_data_base	{}; BOOST_STATIC_ASSERT( sizeof(hs_global_internal) == 0x5C );
+		struct hs_script			: hs_scenario_data_base	{}; ASSERT_SIZE(hs_script, 0x5C);
+		struct hs_global_internal	: hs_scenario_data_base	{}; ASSERT_SIZE(hs_global_internal, 0x5C);
 		struct hs_tag_reference
 		{
 			TAG_PAD(int32, 6); // 24
 			TAG_FIELD(tag_reference, reference);
-		}; BOOST_STATIC_ASSERT( sizeof(hs_tag_reference) == 0x28 );
+		}; ASSERT_SIZE(hs_tag_reference, 0x28);
 		struct hs_source_file
 		{
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(tag_data, source);
-		}; BOOST_STATIC_ASSERT( sizeof(hs_source_file) == 0x34 );
+		}; ASSERT_SIZE(hs_source_file, 0x34);
 	};
 
 	namespace blam

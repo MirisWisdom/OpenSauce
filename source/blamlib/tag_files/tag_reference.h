@@ -38,10 +38,10 @@ namespace Yelo
 	};
 
 	#if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-	BOOST_STATIC_ASSERT(sizeof(tag_reference) == 0x10);
+	ASSERT_SIZE(tag_reference, 0x10);
 	#define pad_tag_reference PAD32 PAD32 PAD32 PAD32
 	#else
-	BOOST_STATIC_ASSERT(sizeof(tag_reference) == 0x8);
+	ASSERT_SIZE(tag_reference, 0x8);
 	#define pad_tag_reference PAD32 PAD32
 	#endif
 }

@@ -57,10 +57,10 @@ namespace Yelo
 #endif
 	};
 #if TRUE//PLATFORM_IS_EDITOR // TODO: uncomment this when we finish 'runtime field size' support in the tag system
-	BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );
+	ASSERT_SIZE(string_id_yelo, 0x14);
 	#define pad_string_id_yelo PAD_TYPE(tag_reference); PAD_TYPE(string_id);
 #else
-	BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x4 );
+	ASSERT_SIZE(string_id_yelo, 0x4);
 	#define pad_string_id_yelo PAD_TYPE(string_id);
 #endif
 

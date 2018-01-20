@@ -20,5 +20,5 @@ namespace Yelo { namespace Cache
 		#endif
 	};
 
-	BOOST_STATIC_ASSERT(sizeof(s_data_file_globals) == 0xC0);
+	ASSERT_SIZE(s_data_file_globals, 0xC0);
 }}

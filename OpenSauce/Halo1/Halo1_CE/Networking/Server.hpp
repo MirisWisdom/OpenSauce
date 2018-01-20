@@ -124,7 +124,7 @@ namespace Yelo
 			__time32_t ban_end_time;	// 0x40
 
 			typedef Memory::DynamicArray<s_banlist_entry> array_t;
-		}; BOOST_STATIC_ASSERT( sizeof(s_banlist_entry) == 0x44 );
+		}; ASSERT_SIZE(s_banlist_entry, 0x44);
 
 		struct s_mapcycle_entry
 		{
@@ -155,7 +155,7 @@ namespace Yelo
 #endif
 		private:
 			char banlist_file[0x108];
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_sv_file_globals) == PLATFORM_VALUE(0x124, 0x25C) );
+		}; ASSERT_SIZE(s_network_sv_file_globals, PLATFORM_VALUE(0x124, 0x25C));
 
 
 		struct s_network_sv_mapcycle_entry
@@ -200,7 +200,7 @@ namespace Yelo
 				char file_name[256];
 				char text[256];
 			}motd;
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_sv_globals) == PLATFORM_VALUE(0x334,0x33C) );
+		}; ASSERT_SIZE(s_network_sv_globals, PLATFORM_VALUE(0x334,0x33C));
 
 #if PLATFORM_IS_DEDI
 		byte& EnableEventLogging(Enums::server_event_type event_type);

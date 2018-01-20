@@ -321,3 +321,10 @@
 	#define API_FUNC_NAKED_START_()
 	#define API_FUNC_NAKED_END_()
 #endif
+
+#define ASSERT_SIZE(type, size) static_assert(sizeof(type) == size, "Expected the size of " #type " to be " #size)
+#define STATIC_ASSERT(condition) static_assert(condition, #condition)
+
+#define CONCATENATE_DETAIL(x, y) x##y
+#define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
+#define MAKE_UNIQUE(x) CONCATENATE(x, __COUNTER__)

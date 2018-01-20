@@ -56,5 +56,5 @@ namespace Yelo
 		#endif
 	};
 
-	BOOST_STATIC_ASSERT(sizeof(tag_reference_definition) == 0xC);
+	ASSERT_SIZE(tag_reference_definition, 0xC);
 }

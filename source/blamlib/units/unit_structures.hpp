@@ -195,7 +195,7 @@ namespace Yelo
 			real_rectangle2d looking_bounds;			// 0x2B8
 			real_rectangle2d aiming_bounds;				// 0x2C8
 			PAD64;										// 0x2D8
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_datum_animation_data) == 0x48 );
+		}; ASSERT_SIZE(s_unit_datum_animation_data, 0x48);
 
 		struct s_unit_data
 		{
@@ -370,7 +370,7 @@ namespace Yelo
 
 			byte* GetZoomLevel();
 			byte* GetDesiredZoomLevel();
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_data) == (Enums::k_object_size_unit - Enums::k_object_size_object) );
+		}; ASSERT_SIZE(s_unit_data, Enums::k_object_size_unit - Enums::k_object_size_object);
 
 
 		struct s_unit_datum
@@ -379,7 +379,7 @@ namespace Yelo
 
 			s_object_data object;
 			s_unit_data unit;
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_datum) == Enums::k_object_size_unit );
+		}; ASSERT_SIZE(s_unit_datum, Enums::k_object_size_unit);
 	};
 
 	namespace blam

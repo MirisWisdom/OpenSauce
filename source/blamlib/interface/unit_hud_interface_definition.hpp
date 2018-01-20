@@ -51,7 +51,7 @@ namespace Yelo
 			TAG_ENUM(type, Enums::auxilary_overlay_type);
 			TAG_FIELD(Flags::hud_auxilary_overlay_flags, flags);
 			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(auxilary_overlay_definition) == 0x84 ); // max count: 16
+		}; ASSERT_SIZE(auxilary_overlay_definition, 0x84); // max count: 16
 
 		struct auxilary_meter_definition
 		{
@@ -65,7 +65,7 @@ namespace Yelo
 			TAG_FIELD(Flags::hud_auxilary_panel_flags, flags);
 			TAG_PAD(int32, 6);
 			TAG_PAD(int32, 16);
-		}; BOOST_STATIC_ASSERT( sizeof(auxilary_meter_definition) == 0x144 ); // max count: 16
+		}; ASSERT_SIZE(auxilary_meter_definition, 0x144); // max count: 16
 
 		struct unit_hud_interface_definition
 		{
@@ -122,6 +122,6 @@ namespace Yelo
 
 			TAG_PAD(int32, 89);
 			TAG_PAD(int32, 12);
-		}; BOOST_STATIC_ASSERT( sizeof(unit_hud_interface_definition) == 0x56C );
+		}; ASSERT_SIZE(unit_hud_interface_definition, 0x56C);
 	};
 };

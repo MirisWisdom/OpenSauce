@@ -78,7 +78,7 @@ namespace Yelo
 			}weapons[2];
 			TAG_FIELD(byte, grenade_counts[Enums::k_unit_grenade_types_count_yelo]);
 			TAG_PAD(int32, 5);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_starting_profile) == 0x68 );
+		}; ASSERT_SIZE(scenario_starting_profile, 0x68);
 
 		struct scenario_player
 		{
@@ -89,7 +89,7 @@ namespace Yelo
 			TAG_ENUM(game_types, Enums::scenario_netgame_type)[4];
 
 			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_player) == 0x34 );
+		}; ASSERT_SIZE(scenario_player, 0x34);
 
 		struct scenario_trigger_volume
 		{
@@ -103,7 +103,7 @@ namespace Yelo
 			TAG_FIELD(real_vector3d, up);
 			TAG_FIELD(real_point3d, position);
 			TAG_FIELD(real_vector3d, transform);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_trigger_volume) == 0x60 );
+		}; ASSERT_SIZE(scenario_trigger_volume, 0x60);
 
 		struct scenario_netpoint
 		{
@@ -113,7 +113,7 @@ namespace Yelo
 			TAG_FIELD(int16, team_index);
 			TAG_FIELD(tag_reference, weapon_group, 'itmc');
 			TAG_PAD(int32, 28);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_netpoint) == 0x94 );
+		}; ASSERT_SIZE(scenario_netpoint, 0x94);
 
 		struct scenario_netgame_equipment
 		{
@@ -127,7 +127,7 @@ namespace Yelo
 			TAG_FIELD(angle, facing_degrees);
 			TAG_FIELD(tag_reference, item_collection, 'itmc');
 			TAG_PAD(int32, 12);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_netgame_equipment) == 0x90 );
+		}; ASSERT_SIZE(scenario_netgame_equipment, 0x90);
 
 		struct scenario_starting_equipment
 		{
@@ -136,7 +136,7 @@ namespace Yelo
 			TAG_PAD(int32, 12);
 			TAG_FIELD(tag_reference, item_collections, 'itmc')[6];
 			TAG_PAD(int32, 12);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_starting_equipment) == 0xCC );
+		}; ASSERT_SIZE(scenario_starting_equipment, 0xCC);
 
 
 		struct scenario_cutscene_flag
@@ -146,7 +146,7 @@ namespace Yelo
 			TAG_FIELD(real_point3d, position);
 			TAG_FIELD(real_euler_angles2d, facing);
 			TAG_PAD(int32, 9);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_cutscene_flag) == 0x5C );
+		}; ASSERT_SIZE(scenario_cutscene_flag, 0x5C);
 
 		struct scenario_cutscene_camera_point
 		{
@@ -157,7 +157,7 @@ namespace Yelo
 			TAG_FIELD(real_euler_angles3d, orientation);
 			TAG_FIELD(angle, field_of_view);
 			TAG_PAD(int32, 9);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_cutscene_camera_point) == 0x68 );
+		}; ASSERT_SIZE(scenario_cutscene_camera_point, 0x68);
 
 		struct s_scenario_cutscene_title
 		{
@@ -176,7 +176,7 @@ namespace Yelo
 			TAG_FIELD(real, up_time);
 			TAG_FIELD(real, fade_out_time);
 			TAG_PAD(int32, 4);
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_cutscene_title) == 0x60 );
+		}; ASSERT_SIZE(s_scenario_cutscene_title, 0x60);
 
 		struct s_scenario_bsp_lightmap_set
 		{
@@ -219,7 +219,7 @@ namespace Yelo
 			structure_bsp_header* header;
 			PAD32;
 			TAG_FIELD(tag_reference, structure_bsp, 'sbsp');
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_structure_bsp_reference) == 0x20 ); // max count: 32
+		}; ASSERT_SIZE(scenario_structure_bsp_reference, 0x20); // max count: 32
 
 
 		struct scenario
@@ -342,6 +342,6 @@ namespace Yelo
 			tag_reference& GetYeloReferenceHack()				{ return _dont_use; }
 			tag_reference const& GetYeloReferenceHack() const	{ return _dont_use; }
 
-		}; BOOST_STATIC_ASSERT( sizeof(scenario) == 0x5B0 );
+		}; ASSERT_SIZE(scenario, 0x5B0);
 	};
 };

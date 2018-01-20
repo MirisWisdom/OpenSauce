@@ -20,7 +20,7 @@ namespace Yelo
 			UNKNOWN_TYPE(real_vector3d);
 			UNKNOWN_TYPE(real_rgb_color);
 			UNKNOWN_TYPE(real);
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_player_atmospheric_fog) == 0x2C );
+		}; ASSERT_SIZE(s_scenario_player_atmospheric_fog, 0x2C);
 
 		struct s_scenario_globals
 		{
@@ -31,6 +31,6 @@ namespace Yelo
 				bool copy_environment_tag; PAD24; // never seen this set to true
 				TagGroups::sound_environment environment;
 			}sound;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_globals) == 0x7C );
+		}; ASSERT_SIZE(s_scenario_globals, 0x7C);
 	};
 };

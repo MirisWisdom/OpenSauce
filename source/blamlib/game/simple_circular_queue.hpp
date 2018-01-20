@@ -17,6 +17,6 @@ namespace Yelo
 			void** user_data;		// 0x8, references to user_data structures
 			int32 start;			// 0xC
 			int32 end;				// 0x10
-		}; BOOST_STATIC_ASSERT( sizeof(s_simple_circular_queue) == 0x14 );
+		}; ASSERT_SIZE(s_simple_circular_queue, 0x14);
 	};
 };

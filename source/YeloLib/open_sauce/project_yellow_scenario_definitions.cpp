@@ -17,7 +17,7 @@
 
 namespace Yelo
 {
-	BOOST_STATIC_ASSERT(sizeof(boost::uuids::uuid) == Enums::k_uuid_buffer_size);
+	ASSERT_SIZE(boost::uuids::uuid, Enums::k_uuid_buffer_size);
 
 	namespace TagGroups
 	{

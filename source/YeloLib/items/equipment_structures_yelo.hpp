@@ -21,6 +21,6 @@ namespace Yelo
 		{
 			enum { k_max_size = 0x18 }; // size of the unknown/useless data in s_equipment_data
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_data_yelo) <= s_equipment_data_yelo::k_max_size );
+		}; STATIC_ASSERT(sizeof(s_equipment_data_yelo) <= s_equipment_data_yelo::k_max_size );
 	};
 };

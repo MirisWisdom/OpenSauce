@@ -222,7 +222,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, label);
 			TAG_PAD(int32, 4);
 			TAG_TBLOCK(animations, int16); // block index to model_animation
-		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon_type) == 0x3C ); // max count: 16
+		}; ASSERT_SIZE(animation_graph_weapon_type, 0x3C); // max count: 16
 		struct animation_graph_weapon
 		{
 			TAG_FIELD(tag_string, name);
@@ -243,7 +243,7 @@ namespace Yelo
 			TAG_TBLOCK(animations, int16); // block index to model_animation
 			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
 			TAG_TBLOCK(weapon_types, animation_graph_weapon_type);
-		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon) == 0xBC ); // max count: 16
+		}; ASSERT_SIZE(animation_graph_weapon, 0xBC); // max count: 16
 		struct animation_graph_unit_seat
 		{
 			TAG_FIELD(tag_string, label);
@@ -262,7 +262,7 @@ namespace Yelo
 			TAG_TBLOCK(animations, int16); // block index to model_animation
 			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
 			TAG_TBLOCK(weapons, animation_graph_weapon);
-		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_unit_seat) == 0x64 ); // max count: 32
+		}; ASSERT_SIZE(animation_graph_unit_seat, 0x64); // max count: 32
 		struct model_animation
 		{
 			TAG_FIELD(tag_string, name);
@@ -281,7 +281,7 @@ namespace Yelo
 				TAG_FLAG16(compressed_data);
 				TAG_FLAG16(world_relative);
 				TAG_FLAG16(_25Hz_PAL);
-			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}flags; ASSERT_SIZE(_flags, sizeof(word_flags));
 			TAG_FIELD(int16, sound);
 			TAG_FIELD(int16, sound_frame_index);
 			TAG_FIELD(sbyte, left_foot_frame_index);
@@ -304,7 +304,7 @@ namespace Yelo
 			TAG_FIELD(int32, offset_to_compressed_data);
 			TAG_FIELD(tag_data, default_data);
 			TAG_FIELD(tag_data, frame_data);
-		}; BOOST_STATIC_ASSERT( sizeof(model_animation) == 0xB4 );
+		}; ASSERT_SIZE(model_animation, 0xB4);
 		struct model_animation_graph
 		{
 			enum { k_group_tag = 'antr' };
@@ -321,10 +321,10 @@ namespace Yelo
 			struct _flags {
 				TAG_FLAG16(compress_all_animations);
 				TAG_FLAG16(force_idle_compression);
-			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			}flags; ASSERT_SIZE(_flags, sizeof(word_flags));
 			PAD16;
 			TAG_BLOCK(nodes, animation_graph_node);
 			TAG_TBLOCK(animations, model_animation);
-		}; BOOST_STATIC_ASSERT( sizeof(model_animation_graph) == 0x80 );
+		}; ASSERT_SIZE(model_animation_graph, 0x80);
 	};
 };

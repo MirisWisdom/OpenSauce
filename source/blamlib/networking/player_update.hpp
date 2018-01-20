@@ -26,7 +26,7 @@ namespace Yelo
 			datum_index player_index;
 			sbyte update_id;
 			sbyte baseline_id; // k_number_of_remote_player_action_update_baseline_ids
-		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_action_update_header) == 0x6 );
+		}; ASSERT_SIZE(s_remote_player_action_update_header, 0x6);
 
 		struct s_remote_player_action_update_network_data
 		{
@@ -34,12 +34,12 @@ namespace Yelo
 			// desired_facing angles and zoom_index not synced
 			Players::s_player_action action;
 			real_vector3d facing_vector;
-		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_action_update_network_data) == 0x30 );
+		}; ASSERT_SIZE(s_remote_player_action_update_network_data, 0x30);
 
 		struct s_remote_player_position_update_network_data
 		{
 			real_point3d position;
-		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_position_update_network_data) == 0xC );
+		}; ASSERT_SIZE(s_remote_player_position_update_network_data, 0xC);
 
 		struct s_remote_player_vehicle_update_network_data
 		{
@@ -47,6 +47,6 @@ namespace Yelo
 			real_point3d position;
 			real_vector3d translational_velocity, angular_velocity;
 			real_vector3d forward, up;
-		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_vehicle_update_network_data) == 0x40 );
+		}; ASSERT_SIZE(s_remote_player_vehicle_update_network_data, 0x40);
 	};
 };

@@ -43,7 +43,7 @@ namespace Yelo
 			byte_enum type : bitfield_enum_size<e_ai_index_type::k_count>::value;
 		};
 
-		BOOST_STATIC_ASSERT(sizeof(s_ai_index) == 4);
+		ASSERT_SIZE(s_ai_index, 4);
 
 		struct s_ai_index_actor_iterator
 		{
@@ -69,7 +69,7 @@ namespace Yelo
 			}
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_ai_index_actor_iterator) == 0x18 );
+		ASSERT_SIZE(s_ai_index_actor_iterator, 0x18);
 	}
 
 	namespace blam

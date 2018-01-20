@@ -166,7 +166,7 @@ namespace Yelo
 				int16 script_container_index = 0); // TODO: remove default parameter when containers come online
 
 			static const s_hs_script_container_datum_index k_null;
-		}; BOOST_STATIC_ASSERT( sizeof(s_hs_script_container_datum_index) == 2 );
+		}; ASSERT_SIZE(s_hs_script_container_datum_index, 2);
 
 		typedef s_hs_script_container_datum_index hs_script_index_t;
 		typedef s_hs_script_container_datum_index hs_global_index_t;
@@ -199,7 +199,7 @@ namespace Yelo
 			datum_index ToExpressionIndex() const	{ return datum; }
 			datum_index ToTagIndex() const			{ return datum; }
 			datum_index ToObjectIndex() const		{ return datum; }
-		}; BOOST_STATIC_ASSERT( sizeof(s_hs_value_union) == sizeof(void*) );
+		}; ASSERT_SIZE(s_hs_value_union, sizeof(void*));
 		extern const s_hs_value_union k_null_value_union;
 		extern const s_hs_value_union k_none_value_union;
 

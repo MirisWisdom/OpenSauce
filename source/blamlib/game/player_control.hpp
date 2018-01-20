@@ -37,7 +37,7 @@ namespace Yelo
 			PAD32;													// 0x34
 			PAD32; // unknown field									// 0x38
 			PAD32; // unknown field									// 0x3C
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_control) == 0x40 );
+		}; ASSERT_SIZE(s_player_control, 0x40);
 
 		struct s_player_control_globals_data
 		{
@@ -46,7 +46,7 @@ namespace Yelo
 			long_flags flags; // FLAG(0) = camera control
 
 			s_player_control local_players[Enums::k_maximum_number_of_local_players];
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_control_globals_data) == 0x50 );
+		}; ASSERT_SIZE(s_player_control_globals_data, 0x50);
 
 		struct s_unit_camera_info
 		{
@@ -55,7 +55,7 @@ namespace Yelo
 			PAD16;
 			const TagGroups::s_unit_camera* unit_camera_definition;
 			real_point3d position;
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_camera_info) == 0x18 );
+		}; ASSERT_SIZE(s_unit_camera_info, 0x18);
 
 		s_player_control_globals_data*	PlayerControlGlobals();
 	};

@@ -86,7 +86,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, depleted_effect, 'effe');
 			TAG_FIELD(real, destroyed_threshold);
 			TAG_FIELD(tag_reference, destroyed_effect, 'effe');
-		}; BOOST_STATIC_ASSERT( sizeof(s_body_damage_resistance) == 0xC4 );
+		}; ASSERT_SIZE(s_body_damage_resistance, 0xC4);
 		struct s_shield_damage_resistance
 		{
 			TAG_FIELD(real, maximum_vitality);
@@ -112,7 +112,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, depleted_effect, 'effe');
 
 			TAG_FIELD(tag_reference, recharging_effect, 'effe');
-		}; BOOST_STATIC_ASSERT( sizeof(s_shield_damage_resistance) == 0xEC );
+		}; ASSERT_SIZE(s_shield_damage_resistance, 0xEC);
 		struct s_damage_resistance // or s_model_damage_info
 		{
 			TAG_FIELD(long_flags, flags);
@@ -122,7 +122,7 @@ namespace Yelo
 			s_shield_damage_resistance shield_damage_resistance;
 			TAG_PAD(int32, 3);
 			TAG_PAD(int32, 28);
-		}; BOOST_STATIC_ASSERT( sizeof(s_damage_resistance) == 0x234 );
+		}; ASSERT_SIZE(s_damage_resistance, 0x234);
 
 		struct collision_model_material
 		{
@@ -138,7 +138,7 @@ namespace Yelo
 				PAD32;
 				PAD32;
 			}shield, body;
-		}; BOOST_STATIC_ASSERT( sizeof(collision_model_material) == 0x48 );
+		}; ASSERT_SIZE(collision_model_material, 0x48);
 		struct collision_model_region
 		{
 			TAG_FIELD(tag_string, name);
@@ -148,7 +148,7 @@ namespace Yelo
 			TAG_PAD(int32, 3);
 			TAG_FIELD(tag_reference, destroyed_effect, 'effe');
 			TAG_TBLOCK(permutations, tag_string);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_model_region) == 0x54 ); // aka damage region
+		}; ASSERT_SIZE(collision_model_region, 0x54); // aka damage region
 		struct collision_model_pathfinding_sphere
 		{
 			TAG_FIELD(int16, node, collision_model_node);
@@ -156,7 +156,7 @@ namespace Yelo
 			TAG_PAD(int32, 3);
 			TAG_FIELD(real_point3d, center);
 			TAG_FIELD(real, radius);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_model_pathfinding_sphere) == 0x20 );
+		}; ASSERT_SIZE(collision_model_pathfinding_sphere, 0x20);
 		struct collision_model_node
 		{
 			TAG_FIELD(tag_string, name);
@@ -166,7 +166,7 @@ namespace Yelo
 			TAG_FIELD(int16, first_child_node, collision_model_node);
 			TAG_PAD(tag_block, 1);
 			TAG_TBLOCK(bsp, collision_bsp);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_model_node) == 0x40 );
+		}; ASSERT_SIZE(collision_model_node, 0x40);
 		struct collision_model_definition
 		{
 			enum { k_group_tag = 'coll' };
@@ -187,6 +187,6 @@ namespace Yelo
 				TAG_TBLOCK(spheres, collision_model_pathfinding_sphere);
 			}pathfinding;
 			TAG_TBLOCK(nodes, collision_model_node);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_model_definition) == 0x298 );
+		}; ASSERT_SIZE(collision_model_definition, 0x298);
 	};
 };

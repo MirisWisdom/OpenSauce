@@ -37,7 +37,7 @@ namespace Yelo
 				TAG_FLAG(transition_duration_delta);
 				TAG_FLAG(width);
 				TAG_FLAG(color);
-			}; BOOST_STATIC_ASSERT( sizeof(__scale_flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__scale_flags, sizeof(long_flags));
 
 			////////////////////////////////////////////////////////////////
 			// state timing
@@ -52,7 +52,7 @@ namespace Yelo
 			TAG_FIELD(real_argb_color, color_lower_bound, "", "contrail color at this point");
 			TAG_FIELD(real_argb_color, color_upper_bound, "", "contrail color at this point");
 			TAG_FIELD(__scale_flags, scale_flags, "these flags determine which fields are scaled by the contrail density");
-		}; BOOST_STATIC_ASSERT( sizeof(s_contrail_point_states) == 0x68 ); // max count: 16
+		}; ASSERT_SIZE(s_contrail_point_states, 0x68); // max count: 16
 
 		struct s_contrail_definition
 		{
@@ -67,7 +67,7 @@ namespace Yelo
 				TAG_FLAG16(points_always_pinned_to_media);
 				TAG_FLAG16(points_always_pinned_to_ground);
 				TAG_FLAG16(edge_effect_fades_slowly);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(word_flags));
 
 			struct __scale_flags
 			{
@@ -81,7 +81,7 @@ namespace Yelo
 				TAG_FLAG16(texture_scale_v);
 				TAG_FLAG16(texture_animation_u);
 				TAG_FLAG16(texture_animation_v);
-			}; BOOST_STATIC_ASSERT( sizeof(__scale_flags) == sizeof(word_flags) );
+			}; ASSERT_SIZE(__scale_flags, sizeof(word_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(__scale_flags, scale_flags, "these flags determine which fields are scaled by the contrail density");
@@ -108,6 +108,6 @@ namespace Yelo
 			TAG_PAD(int32, 16);
 			s_shader_effect shader_effect;
 			TAG_TBLOCK(point_states, s_contrail_point_states);
-		}; BOOST_STATIC_ASSERT( sizeof(s_contrail_definition) == 0x144 ); // max count: 1
+		}; ASSERT_SIZE(s_contrail_definition, 0x144); // max count: 1
 	};
 };

@@ -66,6 +66,6 @@ namespace Yelo
 			IDirect3DVertexDeclaration9* decl;
 			long_enum format; // D3DFVF
 			long_enum processing_method; // D3DUSAGE
-		}; BOOST_STATIC_ASSERT( sizeof(s_vertex_shader_declaration) == 0xC );
+		}; ASSERT_SIZE(s_vertex_shader_declaration, 0xC);
 	};
 };

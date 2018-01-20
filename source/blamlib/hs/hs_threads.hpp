@@ -68,7 +68,7 @@ namespace Yelo
 				///
 				/// <returns>	true if it allocation parameters would cause an overflow, false if they're good. </returns>
 				bool AllocationWouldOverflow(const byte* stack_base_address, size_t size, size_t alignment) const;
-			}; BOOST_STATIC_ASSERT( sizeof(s_stack_frame) == 0x10 );
+			}; ASSERT_SIZE(s_stack_frame, 0x10);
 #include <PopPack.h>
 
 			Enums::hs_thread_type type;
@@ -146,7 +146,7 @@ namespace Yelo
 			void Main(datum_index this_thread_index, const bool& runtime_globals_enabled,
 				_Out_opt_ bool& return_delete_thread);
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_hs_thread_datum) == 0x218 );
+		}; ASSERT_SIZE(s_hs_thread_datum, 0x218);
 	};
 };
 

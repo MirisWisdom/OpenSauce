@@ -159,11 +159,11 @@ namespace Yelo
 			static void DumpToFile();
 
 			static bool Enabled();
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x1C );
+		}; ASSERT_SIZE(s_tag_field_set_runtime_data, 0x1C);
 
 		struct field_comparison_code
 		{
-			BOOST_STATIC_ASSERT(Enums::k_number_of_tag_field_comparison_code_types <= Enums::k_max_tag_field_comparison_code_types);
+			STATIC_ASSERT(Enums::k_number_of_tag_field_comparison_code_types <= Enums::k_max_tag_field_comparison_code_types);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	The number of bytes involved in bitwise comparisons, else 0 </summary>
@@ -174,7 +174,7 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	The field index in the fieldset for non-bitwise comparisons </summary>
 			signed field_index : 16;
-		}; BOOST_STATIC_ASSERT(sizeof(field_comparison_code) == 0x4);
+		}; ASSERT_SIZE(field_comparison_code, 0x4);
 
 
 		struct s_tag_allocation_header // keep aligned to 16bytes
@@ -234,7 +234,7 @@ namespace Yelo
 			///
 			/// <returns>	null if allocation headers are disabled, an invalid header is encountered, or the instance is has no data </returns>
 			static s_tag_allocation_header* Get(tag_data& instance);
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_allocation_header) == 0x10 );
+		}; ASSERT_SIZE(s_tag_allocation_header, 0x10);
 
 		class c_tag_block_allocations
 		{

@@ -23,6 +23,6 @@ namespace Yelo
 			int32 array_cursor;
 		};
 
-		BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint_set) == 0x114 );
+		ASSERT_SIZE(s_transport_endpoint_set, 0x114);
 	}
 }

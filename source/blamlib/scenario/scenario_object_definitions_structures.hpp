@@ -17,7 +17,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, name);
 			_enum object_type;
 			int16 scenario_object_index;
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_object_name) == 0x24 );
+		}; ASSERT_SIZE(scenario_object_name, 0x24);
 
 		struct scenario_device_group
 		{
@@ -25,14 +25,14 @@ namespace Yelo
 			real initial_value;
 			long_flags flags;
 			TAG_PAD(int32, 3);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_device_group) == 0x34 );
+		}; ASSERT_SIZE(scenario_device_group, 0x34);
 
 		struct scenario_object_palette_entry
 		{
 			tag_reference object_definition;
 			PAD_TYPE(tag_reference);
 			PAD_TYPE(tag_reference);
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_object_palette_entry) == 0x30 );
+		}; ASSERT_SIZE(scenario_object_palette_entry, 0x30);
 
 		//////////////////////////////////////////////////////////////////////////
 		// object
@@ -40,18 +40,18 @@ namespace Yelo
 		{
 			int16 palette_index;
 			int16 name_index;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_object_header) == 0x4 );
+		}; ASSERT_SIZE(s_scenario_object_header, 0x4);
 		struct s_scenario_object_datum
 		{
 			word_flags placement_flags;
 			int16 desired_permutation;
 			real_point3d position;
 			real_euler_angles3d rotation;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_object_datum) == 0x1C );
+		}; ASSERT_SIZE(s_scenario_object_datum, 0x1C);
 		struct s_scenario_object_permutation
 		{
 			PAD128;	PAD64;	PAD64;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_object_permutation) == 0x20 );
+		}; ASSERT_SIZE(s_scenario_object_permutation, 0x20);
 
 		struct s_scenario_scenery_datum
 		{
@@ -151,46 +151,46 @@ namespace Yelo
 		struct s_scenario_scenery : public s_scenario_object
 		{
 			s_scenario_scenery_datum scenery;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_scenery) == 0x48 );
+		}; ASSERT_SIZE(s_scenario_scenery, 0x48);
 
 		//////////////////////////////////////////////////////////////////////////
 		// units
 		struct s_scenario_biped : public s_scenario_unit
 		{
 			s_scenario_biped_datum biped;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_biped) == 0x78 );
+		}; ASSERT_SIZE(s_scenario_biped, 0x78);
 		struct s_scenario_vehicle : public s_scenario_unit
 		{
 			s_scenario_vehicle_datum vehicle;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_vehicle) == 0x78 );
+		}; ASSERT_SIZE(s_scenario_vehicle, 0x78);
 		//////////////////////////////////////////////////////////////////////////
 		// items
 		struct s_scenario_equipment : public s_scenario_object
 		{
 			s_scenario_equipment_datum equipment;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_equipment) == 0x28 );
+		}; ASSERT_SIZE(s_scenario_equipment, 0x28);
 		struct s_scenario_weapon : public s_scenario_object
 		{
 			s_scenario_weapon_datum weapon;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_weapon) == 0x5C );
+		}; ASSERT_SIZE(s_scenario_weapon, 0x5C);
 		//////////////////////////////////////////////////////////////////////////
 		// devices
 		struct s_scenario_machine : public s_scenario_device
 		{
 			s_scenario_machine_datum machine;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_machine) == 0x40 );
+		}; ASSERT_SIZE(s_scenario_machine, 0x40);
 		struct s_scenario_control : public s_scenario_device
 		{
 			s_scenario_control_datum control;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_control) == 0x40 );
+		}; ASSERT_SIZE(s_scenario_control, 0x40);
 		struct s_scenario_light_fixture : public s_scenario_device
 		{
 			s_scenario_light_fixture_datum light_fixture;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_light_fixture) == 0x58 );
+		}; ASSERT_SIZE(s_scenario_light_fixture, 0x58);
 
 		struct s_scenario_sound_scenery : public s_scenario_object
 		{
 			s_scenario_sound_scenery_datum sound_scenery;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_sound_scenery) == 0x28 );
+		}; ASSERT_SIZE(s_scenario_sound_scenery, 0x28);
 	};
 };

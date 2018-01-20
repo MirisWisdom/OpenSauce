@@ -92,7 +92,7 @@ namespace Yelo
 			UNKNOWN_TYPE(bool); // shadows related
 			UNKNOWN_TYPE(bool); // render targets related
 			PAD8; PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_globals) == 0x60 );
+		}; ASSERT_SIZE(s_rasterizer_globals, 0x60);
 		s_rasterizer_globals* RasterizerGlobals(); // defined in the project implementation
 
 
@@ -107,7 +107,7 @@ namespace Yelo
 			Render::s_render_frustum frustum;
 			Render::s_render_fog fog;
 			Players::s_player_screen_flash screen_flash;
-		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_window_parameters) == 0x258 );
+		}; ASSERT_SIZE(s_rasterizer_window_parameters, 0x258);
 
 
 		struct s_rasterizer_debug_options
@@ -201,7 +201,7 @@ namespace Yelo
 			real f3;
 			real f4;
 			real f5;
-		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_debug_options) == 0x90 );
+		}; ASSERT_SIZE(s_rasterizer_debug_options, 0x90);
 		s_rasterizer_debug_options* DebugOptions(); // defined in the project implementation
 
 		struct s_rasterizer_frame_parameters

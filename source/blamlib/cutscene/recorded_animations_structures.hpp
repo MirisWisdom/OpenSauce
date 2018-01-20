@@ -25,6 +25,6 @@ namespace Yelo
 			s_recorded_animation_controller controller;
 			_enum codec; // see Enums::e_recorded_animation_version
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_recorded_animations_datum) == 0x64 );
+		}; ASSERT_SIZE(s_recorded_animations_datum, 0x64);
 	};
 };

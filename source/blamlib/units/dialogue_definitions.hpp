@@ -280,6 +280,6 @@ namespace Yelo
 			TAG_FIELD(tag_reference, vocalizations, 'snd!')[Enums::k_number_of_dialogue_vocalizations];
 			TAG_PAD(tag_reference, 
 				Enums::k_maximum_dialogue_vocalizations - Enums::k_number_of_dialogue_vocalizations);
-		}; BOOST_STATIC_ASSERT( sizeof(s_dialogue_definition) == 0x1010 );
+		}; ASSERT_SIZE(s_dialogue_definition, 0x1010);
 	};
 };

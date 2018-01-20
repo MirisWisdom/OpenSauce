@@ -46,7 +46,7 @@ namespace Yelo
 			_project_yellow__first_runtime_bit =
 				_project_yellow_invalid_version_bit,
 		};
-		BOOST_STATIC_ASSERT(k_number_of_project_yellow_flags <= _project_yellow__first_runtime_bit);
+		STATIC_ASSERT(k_number_of_project_yellow_flags <= _project_yellow__first_runtime_bit);
 
 		enum project_yellow_gameplay_flags : long_flags
 		{
@@ -69,7 +69,8 @@ namespace Yelo
 			PAD16;
 			TAG_ENUM(build_stage, Enums::production_build_stage);
 			TAG_FIELD(uint32, revision);
-			time_t timestamp;			BOOST_STATIC_ASSERT(sizeof(time_t) == 0x8);
+			time_t timestamp;
+			ASSERT_SIZE(time_t, 0x8);
 			byte uuid_buffer[Enums::k_uuid_buffer_size];
 
 			TAG_PAD(int32, 4); // 16
@@ -137,7 +138,8 @@ namespace Yelo
 			struct {
 				struct _networking_flags {
 					TAG_FLAG(unused);
-				}flags;	BOOST_STATIC_ASSERT( sizeof(_networking_flags) == sizeof(long_flags) );
+				}flags;
+				ASSERT_SIZE(_networking_flags, sizeof(long_flags));
 
 				TAG_PAD(int32, 5); // 20
 			}networking;

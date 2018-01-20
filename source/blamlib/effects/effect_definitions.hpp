@@ -33,6 +33,6 @@ namespace Yelo
 			TAG_PAD(int32, 7);
 			TAG_BLOCK(locations, effect_location_definition);
 			TAG_BLOCK(events, effect_event_definition);
-		}; BOOST_STATIC_ASSERT( sizeof(effect_definition) == 0x40 );
+		}; ASSERT_SIZE(effect_definition, 0x40);
 	};
 };

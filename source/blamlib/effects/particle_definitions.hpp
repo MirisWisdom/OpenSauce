@@ -41,7 +41,7 @@ namespace Yelo
 				TAG_FLAG(self_illuminated, "don't cast world-lights onto this particle");
 				TAG_FLAG(random_horizontal_mirroring);
 				TAG_FLAG(random_vertical_mirroring);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(tag_reference, bitmap, 'bitm');
@@ -70,6 +70,6 @@ namespace Yelo
 			TAG_ENUM(orientation, Enums::particle_orientation);
 			PAD16;
 			s_shader_effect shader_effect;
-		}; BOOST_STATIC_ASSERT( sizeof(s_particle_definition) == 0x164 ); // max count: 1
+		}; ASSERT_SIZE(s_particle_definition, 0x164); // max count: 1
 	};
 };

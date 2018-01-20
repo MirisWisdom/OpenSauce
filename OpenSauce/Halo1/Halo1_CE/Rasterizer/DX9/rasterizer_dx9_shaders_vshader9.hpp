@@ -89,13 +89,13 @@ namespace Yelo
 		{
 			char name[127+1]; // PS_%s_ps_%d_%d, e.g., "PS_EnvironmentLightmapNormal_ps_2_0"
 			IDirect3DPixelShader9* pixel_shader;
-		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_dx9_pixel_shader) == 0x84 );
+		}; ASSERT_SIZE(s_rasterizer_dx9_pixel_shader, 0x84);
 		struct s_rasterizer_dx9_effect_shaders
 		{
 			char name[127+1]; // e.g., "environment_lightmap_normal"
 			int32 pixel_shader_count;
 			s_rasterizer_dx9_pixel_shader* pixel_shaders;
-		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_dx9_effect_shaders) == 0x88 );
+		}; ASSERT_SIZE(s_rasterizer_dx9_effect_shaders, 0x88);
 
 		struct s_rasterizer_dx9_effect_collection
 		{

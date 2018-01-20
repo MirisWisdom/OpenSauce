@@ -32,7 +32,7 @@ namespace Yelo
 
 			int16 NumberOfInvalidDatums() const;
 			int16 NumberOfValidDatums() const;
-		}; BOOST_STATIC_ASSERT(sizeof(s_data_array) == 0x38);
+		}; ASSERT_SIZE(s_data_array, 0x38);
 
 		struct s_data_iterator
 		{
@@ -50,7 +50,7 @@ namespace Yelo
 			// HACK: don't use this unless the s_data_iterator was created in the OS codebase!
 			// engine's iterator_new doesn't initialize 'finished_flag' and we use it for end() hacks
 			bool operator!=(const s_data_iterator& other) const;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
+		}; ASSERT_SIZE(s_data_iterator, 0x10);
 
 		s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_count, size_t datum_size);
 	};

@@ -302,7 +302,7 @@ namespace Yelo
 				{ nullptr },
 				//_unit_animation_state_yelo_unit_transforming
 				{ nullptr },
-			}; BOOST_STATIC_ASSERT(NUMBEROF(g_animation_state_handlers) == (Enums::_unit_animation_state_yelo - Enums::_unit_animation_state));
+			}; STATIC_ASSERT(NUMBEROF(g_animation_state_handlers) == (Enums::_unit_animation_state_yelo - Enums::_unit_animation_state));
 
 			void PLATFORM_API AnimationStateDefinedKeyframe(const datum_index unit_index, const Enums::unit_animation_state state)
 			{

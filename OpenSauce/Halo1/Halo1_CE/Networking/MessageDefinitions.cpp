@@ -168,7 +168,7 @@ namespace Yelo
 #endif
 			{} // EOL
 		};
-		BOOST_STATIC_ASSERT( 
+		STATIC_ASSERT( 
 			NUMBEROF(kYeloMessageDeltas)-1 == Enums::k_message_deltas_yelo_count &&
 			NUMBEROF(kYeloMessageDeltaDecoders)-1 == Enums::k_message_deltas_yelo_count 
 		);

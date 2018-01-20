@@ -55,12 +55,12 @@ namespace Yelo
 			word_flags active_sound_elements;
 			PAD16;
 			datum_index sound_elements[Enums::k_maximum_number_of_hud_sounds]; // sound cache index
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface_unit) == 0x58 );
+		}; ASSERT_SIZE(s_hud_unit_interface_unit, 0x58);
 		struct s_hud_unit_interface
 		{
 			s_hud_unit_interface_unit units[Enums::k_maximum_number_of_local_players]; // 0x0
 			long_flags flags; // 0x58, unit_interface_flags
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface) == 0x5C );
+		}; ASSERT_SIZE(s_hud_unit_interface, 0x5C);
 		s_hud_unit_interface*		HudUnitInterface();
 	};
 };

@@ -67,6 +67,6 @@ namespace Yelo
 		{
 			byte_enum version : bitfield_enum_size<Enums::k_recorded_animation_version>::value;
 			byte_enum event_type : BIT_COUNT(byte_enum) - bitfield_enum_size<Enums::k_recorded_animation_version>::value;
-		}; BOOST_STATIC_ASSERT( sizeof(recorded_animation_playback_header) == sizeof(byte_enum) );
+		}; ASSERT_SIZE(recorded_animation_playback_header, sizeof(byte_enum));
 	};
 };

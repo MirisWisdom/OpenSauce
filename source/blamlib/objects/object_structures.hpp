@@ -131,7 +131,7 @@ namespace Yelo
 		{
 			uint16 size;
 			uint16 offset;
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_header_block_reference) == 0x4 );
+		}; ASSERT_SIZE(s_object_header_block_reference, 0x4);
 
 		struct s_object_placement_data
 		{
@@ -149,7 +149,7 @@ namespace Yelo
 			real_vector3d up;
 			real_vector3d angular_velocity;
 			real_rgb_color change_colors[Enums::k_number_of_object_change_colors];
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_placement_data) == 0x88 );
+		}; ASSERT_SIZE(s_object_placement_data, 0x88);
 
 		struct s_object_datum_network_delta_data // should be populated during the object type's process_update_delta
 		{
@@ -169,7 +169,7 @@ namespace Yelo
 			bool valid_timestamp;					// 0x54
 			PAD24;
 			int32 timestamp;						// 0x58
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_network_delta_data) == 0x44 );
+		}; ASSERT_SIZE(s_object_datum_network_delta_data, 0x44);
 
 		struct s_object_datum_animation_data
 		{
@@ -177,7 +177,7 @@ namespace Yelo
 			s_animation_state state;		// 0xD0
 			int16 interpolation_frame_index;// 0xD4
 			int16 interpolation_frame_count;// 0xD6
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_animation_data) == 0xC );
+		}; ASSERT_SIZE(s_object_datum_animation_data, 0xC);
 
 		struct s_object_datum_damage_data
 		{
@@ -196,7 +196,7 @@ namespace Yelo
 			int32 body_damage_update_tick;		// 0x100
 			int16 stun_ticks;					// 0x104, based on ftol(s_shield_damage_resistance->stun_time * 30f)
 			word_flags flags;					// 0x106
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_damage_data) == 0x30 );
+		}; ASSERT_SIZE(s_object_datum_damage_data, 0x30);
 
 		struct s_object_datum_attachments_data
 		{
@@ -206,7 +206,7 @@ namespace Yelo
 			// then the datum_index is a contrail_data handle
 			datum_index attachment_indices[Enums::k_maximum_number_of_attachments_per_object];			// 0x14C
 			datum_index first_widget_index;																// 0x16C
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_attachments_data) == 0x2C );
+		}; ASSERT_SIZE(s_object_datum_attachments_data, 0x2C);
 
 		struct s_object_data
 		{
@@ -296,21 +296,21 @@ namespace Yelo
 
 				return GetBlock<TBlockData>(*ref);
 			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );
+		}; ASSERT_SIZE(s_object_data, Enums::k_object_size_object);
 
 		struct s_object_datum
 		{
 			enum { k_object_types_mask = Enums::_object_type_object };
 
 			s_object_data object;
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum) == Enums::k_object_size_object );
+		}; ASSERT_SIZE(s_object_datum, Enums::k_object_size_object);
 
 		//////////////////////////////////////////////////////////////////////////
 		// scenery
 		struct s_scenery_data
 		{
 			long_flags flags; // FLAG(0) - playing animation
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenery_data) == (Enums::k_object_size_scenery - Enums::k_object_size_object) );
+		}; ASSERT_SIZE(s_scenery_data, Enums::k_object_size_scenery - Enums::k_object_size_object);
 
 		struct s_scenery_datum
 		{
@@ -318,7 +318,7 @@ namespace Yelo
 
 			s_object_data object;
 			s_scenery_data scenery;
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenery_datum) == Enums::k_object_size_scenery );
+		}; ASSERT_SIZE(s_scenery_datum, Enums::k_object_size_scenery);
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -326,7 +326,7 @@ namespace Yelo
 		struct s_placeholder_data
 		{
 			PAD64;
-		}; BOOST_STATIC_ASSERT( sizeof(s_placeholder_data) == (Enums::k_object_size_placeholder - Enums::k_object_size_object) );
+		}; ASSERT_SIZE(s_placeholder_data, Enums::k_object_size_placeholder - Enums::k_object_size_object);
 
 		struct s_placeholder_datum
 		{
@@ -334,7 +334,7 @@ namespace Yelo
 
 			s_object_data object;
 			s_placeholder_data placeholder;
-		}; BOOST_STATIC_ASSERT( sizeof(s_placeholder_datum) == Enums::k_object_size_placeholder );
+		}; ASSERT_SIZE(s_placeholder_datum, Enums::k_object_size_placeholder);
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -342,7 +342,7 @@ namespace Yelo
 		struct s_sound_scenery_data
 		{
 			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_sound_scenery_data) == (Enums::k_object_size_sound_scenery - Enums::k_object_size_object) );
+		}; ASSERT_SIZE(s_sound_scenery_data, Enums::k_object_size_sound_scenery - Enums::k_object_size_object);
 
 		struct s_sound_scenery_datum
 		{
@@ -350,6 +350,6 @@ namespace Yelo
 
 			s_object_data object;
 			s_sound_scenery_data sound_scenery;
-		}; BOOST_STATIC_ASSERT( sizeof(s_sound_scenery_datum) == Enums::k_object_size_sound_scenery );
+		}; ASSERT_SIZE(s_sound_scenery_datum, Enums::k_object_size_sound_scenery);
 	};
 };

@@ -88,5 +88,5 @@ namespace Yelo
 		#endif
 	};
 
-	BOOST_STATIC_ASSERT(sizeof(tag_field) == 0xC);
+	ASSERT_SIZE(tag_field, 0xC);
 }

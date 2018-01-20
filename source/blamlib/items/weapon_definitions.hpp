@@ -36,13 +36,13 @@ namespace Yelo
 			TAG_FIELD(int16, rounds);
 			PAD16; PAD64;
 			TAG_FIELD(tag_reference, equipment);
-		}; BOOST_STATIC_ASSERT( sizeof(weapon_ammunition_object) == 0x1C); // VS2012.2's intellisense is broken http://connect.microsoft.com/VisualStudio/feedback/details/745237/invalid-byte-order-in-intellisense
+		}; ASSERT_SIZE(weapon_ammunition_object, 0x1C); // VS2012.2's intellisense is broken http://connect.microsoft.com/VisualStudio/feedback/details/745237/invalid-byte-order-in-intellisense
 		struct weapon_magazine_definition
 		{
 			struct _flags {
 				TAG_FLAG(wastes_rounds_when_reloaded);
 				TAG_FLAG(every_round_must_be_chambered);
-			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(long_flags) );
+			}flags; ASSERT_SIZE(_flags, sizeof(long_flags));
 			TAG_FIELD(int16, rounds_recharged);
 			TAG_FIELD(int16, rounds_total_initial);
 			TAG_FIELD(int16, rounds_total_maximum);
@@ -58,7 +58,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, chambering_effect);
 			TAG_PAD(tag_block, 1);
 			TAG_TBLOCK(magazines, weapon_ammunition_object);
-		}; BOOST_STATIC_ASSERT( sizeof(weapon_magazine_definition) == 0x70);
+		}; ASSERT_SIZE(weapon_magazine_definition, 0x70);
 		struct weapon_trigger_firing_effect
 		{
 			TAG_FIELD(short_bounds, shot_count);
@@ -69,7 +69,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, firing_damage);
 			TAG_FIELD(tag_reference, misfire_damage);
 			TAG_FIELD(tag_reference, empty_damage);
-		}; BOOST_STATIC_ASSERT( sizeof(weapon_trigger_firing_effect) == 0x84);
+		}; ASSERT_SIZE(weapon_trigger_firing_effect, 0x84);
 		struct weapon_trigger_definition
 		{
 			struct _flags{
@@ -87,7 +87,7 @@ namespace Yelo
 				TAG_FLAG(projectile_vector_cannot_be_adjusted);
 				TAG_FLAG(projectiles_have_identical_error);
 				TAG_FLAG(projectile_is_client_side_only); // added in HaloPC
-			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(long_flags) );
+			}flags; ASSERT_SIZE(_flags, sizeof(long_flags));
 
 			//firing
 			TAG_FIELD(real_bounds, rounds_per_second);
@@ -148,7 +148,7 @@ namespace Yelo
 				real error_deceleration_time;
 			}postprocessed;
 			TAG_TBLOCK(firing_effects, weapon_trigger_firing_effect);
-		}; BOOST_STATIC_ASSERT( sizeof(weapon_trigger_definition) == 0x114);
+		}; ASSERT_SIZE(weapon_trigger_definition, 0x114);
 		struct _weapon_definition
 		{
 			struct _flags {
@@ -169,7 +169,7 @@ namespace Yelo
 				TAG_FLAG(enables_integrated_night_vision);
 				TAG_FLAG(AIs_use_weapon_melee_damage);
 				TAG_FLAG(third_person_weapon);
-			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(long_flags) );
+			}flags; ASSERT_SIZE(_flags, sizeof(long_flags));
 			TAG_FIELD(tag_string, label);
 			TAG_ENUM(secondary_trigger_mode);
 			TAG_FIELD(int16, maximum_alternate_shots_loaded);
@@ -249,13 +249,13 @@ namespace Yelo
 			TAG_TBLOCK(predicted_resources, predicted_resource);
 			TAG_TBLOCK(magazines, weapon_magazine_definition);
 			TAG_TBLOCK(triggers, weapon_trigger_definition);
-		}; BOOST_STATIC_ASSERT( sizeof(_weapon_definition) == 0x200);
+		}; ASSERT_SIZE(_weapon_definition, 0x200);
 
 		struct s_weapon_definition : s_item_definition
 		{
 			enum { k_group_tag = 'weap' };
 
 			_weapon_definition weapon;
-		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_definition) == 0x508);
+		}; ASSERT_SIZE(s_weapon_definition, 0x508);
 	};
 };

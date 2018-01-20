@@ -73,6 +73,6 @@ namespace Yelo
 				TAG_FIELD(tag_reference, deactivate, 'effe', 'snd!');
 			}effects;
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_yelo_definition) <= s_equipment_yelo_definition::k_max_definition_size );
+		}; STATIC_ASSERT(sizeof(s_equipment_yelo_definition) <= s_equipment_yelo_definition::k_max_definition_size );
 	};
 };

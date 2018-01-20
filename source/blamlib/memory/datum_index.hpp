@@ -67,7 +67,7 @@ namespace Yelo
 	private:
 		OVERRIDE_OPERATOR_MATH_BOOL_TYPE(uint32, handle, ==);
 		OVERRIDE_OPERATOR_MATH_BOOL_TYPE(uint32, handle, !=);
-	}; BOOST_STATIC_ASSERT( sizeof(datum_index) == 0x4 );
+	}; ASSERT_SIZE(datum_index, 0x4);
 #define pad_datum_index PAD16 PAD16
 #define DATUM_INDEX_TO_IDENTIFIER(datum)		(datum & 0xFFFF0000)
 #define DATUM_INDEX_TO_ABSOLUTE_INDEX(datum)	(datum & 0x0000FFFF)

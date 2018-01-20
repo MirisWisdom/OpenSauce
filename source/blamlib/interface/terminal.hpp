@@ -47,7 +47,7 @@ namespace Yelo
 				UNKNOWN_TYPE(int16); // index in [text]
 				PAD16;
 			}edit_text;
-		}; BOOST_STATIC_ASSERT( sizeof(s_terminal_state) == 0x1C0 );
+		}; ASSERT_SIZE(s_terminal_state, 0x1C0);
 
 		struct s_terminal_globals
 		{

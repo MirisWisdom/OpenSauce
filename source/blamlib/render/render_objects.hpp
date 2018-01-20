@@ -33,7 +33,7 @@ namespace Yelo
 			Objects::s_object_lighting lighting;
 			Objects::s_object_lighting desired_lighting;
 			UNKNOWN_TYPE(real);
-		}; BOOST_STATIC_ASSERT( sizeof(s_cached_object_render_state_datum) == 0x100 );
+		}; ASSERT_SIZE(s_cached_object_render_state_datum, 0x100);
 		typedef Memory::DataArray<	s_cached_object_render_state_datum, 
 									Enums::k_maximum_rendered_objects,
 									Enums::k_maximum_rendered_objects_upgrade> 

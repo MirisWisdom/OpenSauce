@@ -67,6 +67,6 @@ namespace Yelo
 			s_collision_surface_result surface;
 			int32 stack_depth;
 			int32 stack[256]; // leaves indices
-		}; BOOST_STATIC_ASSERT( sizeof(s_collision_bsp_test_vector_result) == 0x418 );
+		}; ASSERT_SIZE(s_collision_bsp_test_vector_result, 0x418);
 	};
 };

@@ -84,7 +84,7 @@ namespace Yelo
 
 			_gamespy_qr_field,
 			k_max_gamespy_qr_registered_keys = 254,
-		}; BOOST_STATIC_ASSERT( _gamespy_qr_field <= k_max_gamespy_qr_registered_keys );
+		}; STATIC_ASSERT( _gamespy_qr_field <= k_max_gamespy_qr_registered_keys );
 
 		enum gamespy_qr_key_type : long_enum {
 			_gamespy_qr_key_type_server,
@@ -162,7 +162,7 @@ namespace Yelo
 			int32 protocolOffset;
 			UNKNOWN_TYPE(int32); // 0x40, I believe I saw some code treat this as a s_transport_endpoint* ...
 			BOOL broadcastEnabled;
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_socket) == 0x48 );
+		}; ASSERT_SIZE(s_gamespy_socket, 0x48);
 		struct s_gamespy_connection // GTI2Connection, gt\gt2Main.h
 		{
 			in_addr address;
@@ -209,7 +209,7 @@ namespace Yelo
 			PAD(7, sizeof(char)*20);
 			PAD(8, sizeof(char)*16);
 			UNKNOWN_TYPE(int32);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_connection) == 0x150 );
+		}; ASSERT_SIZE(s_gamespy_connection, 0x150);
 
 		struct s_gamespy_qr_data // (query/response) qr2_implementation_s, qr2\qr2.h
 		{
@@ -237,7 +237,7 @@ namespace Yelo
 			int32 client_msg_keys[10];
 			int32 client_msg_key_index;
 			void* user_data;
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr_data) == 0x108 );
+		}; ASSERT_SIZE(s_gamespy_qr_data, 0x108);
 
 
 		struct s_gamespy_client_node // gsnode_s, gcdkey\gcdkeys.c
@@ -261,7 +261,7 @@ namespace Yelo
 			// \auth\\pid\%d\ch\%s\resp\%s\ip\%d\skey\%dd
 			char* req_str;				// 0x48, malloc'd char*
 			uint32 req_str_length;		// 0x4C
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_client) == 0x50 );
+		}; ASSERT_SIZE(s_gamespy_client, 0x50);
 
 		struct s_gamespy_product // gsproduct_s, gcdkey\gcdkeys.c
 		{
@@ -280,7 +280,7 @@ namespace Yelo
 			int32 numkeys;
 
 			bool add(Enums::gamespy_qr_field keyid);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr2_keybuffer) == 0x104 );
+		}; ASSERT_SIZE(s_gamespy_qr2_keybuffer, 0x104);
 		struct s_gamespy_qr2_buffer // qr2_buffer_s, qr2\qr2.c
 		{
 			enum { k_max_data_size = 2048 };
@@ -290,7 +290,7 @@ namespace Yelo
 
 			bool add(cstring value);
 			bool add(int32 value);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr2_buffer) == 0x804 );
+		}; ASSERT_SIZE(s_gamespy_qr2_buffer, 0x804);
 		struct s_gamespy_qr2 // qr2_implementation_s, qr2\qr2.h
 		{
 			enum {
@@ -333,7 +333,7 @@ namespace Yelo
 			int32 client_message_keys[k_recent_client_messages_to_track];
 			int32 cur_message_key;
 			void* udata;
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr2) == 0x108 );
+		}; ASSERT_SIZE(s_gamespy_qr2, 0x108);
 
 
 		struct s_gamespy_config
@@ -375,7 +375,7 @@ namespace Yelo
 				uint32 last_state_change_heartbeat_time;
 				char temp_key_buffer[256];
 			}qr2;
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_globals) == 0x390 );
+		}; ASSERT_SIZE(s_gamespy_globals, 0x390);
 		struct s_gamespy_server_browser_globals
 		{
 			struct {
@@ -428,7 +428,7 @@ namespace Yelo
 
 			// NOTE: this structure seems to have one less DWORD in it in dedi builds. 
 			// However, this structure shouldn't even be accessed in dedi builds so I'm not researching further!
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_server_browser_globals) == 0x27C );
+		}; ASSERT_SIZE(s_gamespy_server_browser_globals, 0x27C);
 
 
 		s_gamespy_socket* GsSocket();

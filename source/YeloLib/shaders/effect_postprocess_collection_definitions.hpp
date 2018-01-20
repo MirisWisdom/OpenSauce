@@ -24,7 +24,7 @@ namespace Yelo
 
 				TAG_PAD(byte, 12);
 			}runtime;
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_collection_script_variable) == 0x50);
+		}; ASSERT_SIZE(s_effect_postprocess_collection_script_variable, 0x50);
 
 		struct s_effect_postprocess_collection_effect
 		{
@@ -32,7 +32,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, name);
 			TAG_TBLOCK_(script_variables, s_effect_postprocess_collection_script_variable);
 			TAG_PAD(byte, 12);
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_collection_effect) == 0x48);
+		}; ASSERT_SIZE(s_effect_postprocess_collection_effect, 0x48);
 
 		struct s_effect_postprocess_collection
 		{
@@ -42,6 +42,6 @@ namespace Yelo
 			TAG_TBLOCK_(shaders, tag_reference);
 			TAG_TBLOCK_(effects, s_effect_postprocess_collection_effect);
 			TAG_TBLOCK_(effect_instances, s_effect_postprocess_generic_effect_instance);
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_collection) == 0x30);
+		}; ASSERT_SIZE(s_effect_postprocess_collection, 0x30);
 	};
 };

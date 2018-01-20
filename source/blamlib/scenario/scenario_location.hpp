@@ -13,5 +13,5 @@ namespace Yelo
 		int32 leaf_index;
 		int16 cluster_index;
 		UNKNOWN_TYPE(int16);
-	}; BOOST_STATIC_ASSERT( sizeof(s_scenario_location) == 0x8 );
+	}; ASSERT_SIZE(s_scenario_location, 0x8);
 };

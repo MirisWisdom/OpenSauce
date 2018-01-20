@@ -117,7 +117,7 @@ namespace Yelo
 			PAD24;
 
 			int32							time_limit;
-		}; BOOST_STATIC_ASSERT( sizeof(s_universal_variant) == 0x48 );
+		}; ASSERT_SIZE(s_universal_variant, 0x48);
 
 		union s_game_engine_variant
 		{
@@ -136,14 +136,14 @@ namespace Yelo
 					int32 flag_type; // 1 = single
 				}flag;
 			}ctf;
-			BOOST_STATIC_ASSERT( sizeof(s_ctf) == 0x8 );
+			ASSERT_SIZE(s_ctf, 0x8);
 
 			struct s_slayer {
 				bool death_handicap; // True: killed player's speed increases in magnitudes of one
 				bool kill_handicap; // True: killer's speed decreases in magnitudes of two
 				bool kill_in_order;
 			}slayer;
-			BOOST_STATIC_ASSERT( sizeof(s_slayer) == 0x3 );
+			ASSERT_SIZE(s_slayer, 0x3);
 
 			struct s_oddball {
 				bool random_start;
@@ -155,20 +155,20 @@ namespace Yelo
 				Enums::oddball_ball_type type;
 				int32 ball_count;
 			}oddball;
-			BOOST_STATIC_ASSERT( sizeof(s_oddball) == 0x18 );
+			ASSERT_SIZE(s_oddball, 0x18);
 
 			struct s_king {
 				bool moving_hill;
 			}king;
-			BOOST_STATIC_ASSERT( sizeof(s_king) == 0x1 );
+			ASSERT_SIZE(s_king, 0x1);
 
 			struct s_race {
 				Enums::race_type race_type;
 				long_enum team_scoring;
 			}race;
-			BOOST_STATIC_ASSERT( sizeof(s_race) == 0x8 );
+			ASSERT_SIZE(s_race, 0x8);
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_engine_variant) == s_game_engine_variant::k_max_variant_size );
+		}; ASSERT_SIZE(s_game_engine_variant, s_game_engine_variant::k_max_variant_size);
 
 		struct s_game_variant
 		{
@@ -179,6 +179,6 @@ namespace Yelo
 			s_game_engine_variant game_engine_variant;	// 0x9C
 			long_flags flags;							// 0xD4
 			//uint32 crc;								// 0xD8, not actually part of the structure, only "used" when presisting to/from files
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_variant) == 0xD8/*0xDC*/ );
+		}; ASSERT_SIZE(s_game_variant, 0xD8/*0xDC*/);
 	};
 };

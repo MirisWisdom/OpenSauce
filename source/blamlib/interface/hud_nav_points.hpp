@@ -44,7 +44,7 @@ namespace Yelo
 						int16 game_goal_index;
 					};
 				}waypoint;
-			}; BOOST_STATIC_ASSERT( sizeof(s_nav_point) == 0xC );
+			}; ASSERT_SIZE(s_nav_point, 0xC);
 
 			struct s_local_player
 			{
@@ -52,7 +52,7 @@ namespace Yelo
 			};
 
 			s_local_player local_players[Enums::k_maximum_number_of_local_players];
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_nav_points) == 0x30 );
+		}; ASSERT_SIZE(s_hud_nav_points, 0x30);
 		s_hud_nav_points*			HudNavPoints();
 	};
 

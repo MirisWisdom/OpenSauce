@@ -33,7 +33,7 @@ namespace Yelo
 				UNKNOWN_TYPE(int16);						// 0xAEE
 				wchar_t password[Enums::k_network_server_password_length+1];// 0xAF0
 				char token[Enums::k_network_game_join_token_size];			// 0xB02
-			}; BOOST_STATIC_ASSERT( sizeof(s_join_parameters) == 0x24 );
+			}; ASSERT_SIZE(s_join_parameters, 0x24);
 			struct s_join_data
 			{
 				UNKNOWN_TYPE(int32);						// 0xAE0
@@ -42,7 +42,7 @@ namespace Yelo
 				UNKNOWN_TYPE(bool); PAD8;					// 0xAEC
 				s_join_parameters parameters;				// 0xAEE
 				PAD16;
-			}; BOOST_STATIC_ASSERT( sizeof(s_join_data) == 0x34 );
+			}; ASSERT_SIZE(s_join_data, 0x34);
 
 			struct s_ping_target
 			{
@@ -52,7 +52,7 @@ namespace Yelo
 				int16 ping_time;							// 0xAD4
 				UNKNOWN_TYPE(bool); PAD8;					// 0xAD6
 				s_network_client_time* tc;					// 0xAD8
-			}; BOOST_STATIC_ASSERT( sizeof(s_ping_target) == 0x10 );
+			}; ASSERT_SIZE(s_ping_target, 0x10);
 
 			int16 machine_index; PAD16;
 			s_network_advertised_game discovered_games[9];
@@ -87,7 +87,7 @@ namespace Yelo
 			s_player_update_history* update_history;		// 0xF88
 			byte_enum connection_class;						// 0xF8C Enums::network_connection_class
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_client) == 0xF90 );
+		}; ASSERT_SIZE(s_network_game_client, 0xF90);
 
 		// For increased player counts game states
 		struct s_network_game_client_yelo : s_network_game_client

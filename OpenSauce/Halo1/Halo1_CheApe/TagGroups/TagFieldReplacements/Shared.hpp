@@ -101,8 +101,8 @@ namespace Yelo
 		template<size_t kStartIndex, size_t kEndIndex, rsize_t kStringsCount>
 		static void PopulateWithReservedString(cstring (& strings)[kStringsCount])
 		{
-			BOOST_STATIC_ASSERT(kStartIndex < kStringsCount);
-			BOOST_STATIC_ASSERT(kEndIndex < kStringsCount);
+			STATIC_ASSERT(kStartIndex < kStringsCount);
+			STATIC_ASSERT(kEndIndex < kStringsCount);
 
 			for (size_t x = kStartIndex; x <= kEndIndex; x++)
 				strings[x] = k_reserved_flag_string;

@@ -27,7 +27,7 @@ namespace Yelo
 		{
 			TAG_PAD(int32, 8);
 			TAG_FIELD(tag_string, marker_name);
-		}; BOOST_STATIC_ASSERT( sizeof(s_contact_point) == 0x40 ); // max count: 2
+		}; ASSERT_SIZE(s_contact_point, 0x40); // max count: 2
 		struct _biped_definition
 		{
 			struct __flags
@@ -45,7 +45,7 @@ namespace Yelo
 				TAG_FLAG(has_no_dying_airborne);			// Halo2: unused
 				TAG_FLAG(random_speed_increase);
 				TAG_FLAG(unit_uses_old_ntsc_player_physics);// Halo2: unused or removed
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
+			}; ASSERT_SIZE(__flags, sizeof(long_flags));
 
 			////////////////////////////////////////////////////////////////
 			// $$$ BIPED $$$
@@ -116,6 +116,6 @@ namespace Yelo
 			enum { k_group_tag = 'bipd' };
 
 			_biped_definition biped;
-		}; BOOST_STATIC_ASSERT( sizeof(s_biped_definition) == 0x4F4 );
+		}; ASSERT_SIZE(s_biped_definition, 0x4F4);
 	};
 };

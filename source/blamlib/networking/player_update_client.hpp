@@ -52,7 +52,7 @@ namespace Yelo
 				real amount;
 			}biped_prediction,								// 0x1EC
 			 vehicle_prediction;							// 0x1F4
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_client_update) == 0x114 );
+		}; ASSERT_SIZE(s_player_client_update, 0x114);
 
 		struct s_action_update : TStructImpl(40)
 		{
@@ -75,7 +75,7 @@ namespace Yelo
 
 			update_client_queues_data_t* queue_data;
 			byte queue_data_buffer[0x308][128];
-		}; BOOST_STATIC_ASSERT( sizeof(s_update_client_globals) == 0x1843C );
+		}; ASSERT_SIZE(s_update_client_globals, 0x1843C);
 		s_update_client_globals* UpdateClientGlobals();
 	};
 };

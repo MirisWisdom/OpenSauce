@@ -12,6 +12,6 @@ namespace Yelo
 	{
 		struct s_slayer_globals
 		{
-		}; //BOOST_STATIC_ASSERT( sizeof(s_slayer_globals) == 0x );
+		}; //ASSERT_SIZE(s_slayer_globals, 0x );
 	};
 };

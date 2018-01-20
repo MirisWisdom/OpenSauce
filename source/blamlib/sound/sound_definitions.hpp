@@ -66,7 +66,7 @@ namespace Yelo
 
 			TAG_FIELD(tag_data, mouth_data);
 			TAG_FIELD(tag_data, subtitle_data);
-		}; BOOST_STATIC_ASSERT( sizeof(s_sound_permutation) == 0x7C );
+		}; ASSERT_SIZE(s_sound_permutation, 0x7C);
 
 		struct s_sound_pitch_range
 		{
@@ -77,7 +77,7 @@ namespace Yelo
 			PAD16;
 			TAG_PAD(tag_block, 1);
 			TAG_TBLOCK_(permutations, s_sound_permutation);
-		}; BOOST_STATIC_ASSERT( sizeof(s_sound_pitch_range) == 0x48 );
+		}; ASSERT_SIZE(s_sound_pitch_range, 0x48);
 
 		struct s_sound_definition_playback_parameters
 		{
@@ -125,7 +125,7 @@ namespace Yelo
 			{
 				return !TEST_FLAG(flags, Flags::_sound_definition_never_share_resources_yelo_bit);
 			}
-		}; BOOST_STATIC_ASSERT( sizeof(sound_definition) == 0xA4 );
+		}; ASSERT_SIZE(sound_definition, 0xA4);
 
 
 		struct looping_sound_definition
@@ -149,6 +149,6 @@ namespace Yelo
 			TAG_FIELD(tag_reference, continuous_damage_effect, "cdmg");
 			TAG_BLOCK(tracks, looping_sound_track);
 			TAG_BLOCK(detail_sounds, looping_sound_detail);
-		}; BOOST_STATIC_ASSERT( sizeof(looping_sound_definition) == 0x54 );
+		}; ASSERT_SIZE(looping_sound_definition, 0x54);
 	};
 };

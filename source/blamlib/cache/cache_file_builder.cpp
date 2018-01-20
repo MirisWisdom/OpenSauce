@@ -154,7 +154,7 @@ namespace Yelo
 		static const size_t k_cache_file_minimum_fixed_size =
 			sizeof(TagGroups::structure_bsp_header) +
 			Enums::k_tag_allocation_size_upgrade;
-		BOOST_STATIC_ASSERT(k_build_cache_file_scratch_buffer_size >= k_cache_file_minimum_fixed_size);
+		STATIC_ASSERT(k_build_cache_file_scratch_buffer_size >= k_cache_file_minimum_fixed_size);
 
 
 		// "return_stream" - the new stream pointer, positioned after the data which was written to it/"stream" before the stream operation started

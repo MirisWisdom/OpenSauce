@@ -41,7 +41,7 @@ namespace Yelo
 			real body_vitality, shield_vitality;
 			bool shield_stun_ticks_greater_than_zero;
 			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_biped_datum_network_data) == 0x10 );
+		}; ASSERT_SIZE(s_biped_datum_network_data, 0x10);
 
 		struct s_biped_data
 		{
@@ -84,7 +84,7 @@ namespace Yelo
 			UNKNOWN_TYPE(bool);								// 0x53C probably delta_valid. engine only writes to this, never reads. consider it 'unused'
 			PAD24;
 			s_biped_datum_network_data update_delta;		// 0x540
-		}; BOOST_STATIC_ASSERT( sizeof(s_biped_data) == (Enums::k_object_size_biped - Enums::k_object_size_unit) );
+		}; ASSERT_SIZE(s_biped_data, Enums::k_object_size_biped - Enums::k_object_size_unit);
 
 
 		struct s_biped_datum : s_unit_datum
@@ -92,6 +92,6 @@ namespace Yelo
 			enum { k_object_types_mask = FLAG(Enums::_object_type_biped) };
 
 			s_biped_data biped;
-		}; BOOST_STATIC_ASSERT( sizeof(s_biped_datum) == Enums::k_object_size_biped );
+		}; ASSERT_SIZE(s_biped_datum, Enums::k_object_size_biped);
 	};
 };

@@ -89,7 +89,7 @@ namespace Yelo
 				struct s_biped_datum* _biped;
 				struct s_vehicle_datum* _vehicle;
 			};
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_header_datum) == 0xC );
+		}; ASSERT_SIZE(s_object_header_datum, 0xC);
 		typedef Memory::DataArray<	s_object_header_datum, 
 									2048>
 			object_header_data_t;
@@ -122,7 +122,7 @@ namespace Yelo
 				datum_index pvs_activating_object_index;
 				int16 pvs_activating_cluster_index;
 			};
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_globals_data) == 0x98 );
+		}; ASSERT_SIZE(s_object_globals_data, 0x98);
 
 		struct s_object_name_list_data
 		{
@@ -150,7 +150,7 @@ namespace Yelo
 			PAD16;
 			real_matrix4x3 matrix;
 			real_matrix4x3 transformed_matrix;
-		}; BOOST_STATIC_ASSERT(sizeof(s_object_marker) == 0x6C);
+		}; ASSERT_SIZE(s_object_marker, 0x6C);
 
 
 		object_header_data_t&							ObjectHeader();
