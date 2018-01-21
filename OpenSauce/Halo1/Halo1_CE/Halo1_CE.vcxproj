@@ -610,6 +610,10 @@
     <ClInclude Include="Memory\1.10\Interface.Hud.hpp" />
     <ClInclude Include="Memory\1.10\Interface.Keystone.hpp" />
     <ClInclude Include="Memory\1.10\Interface.UIWidgets.hpp" />
+    <ClInclude Include="Memory\1.10\Networking.GameSpyApi.hpp" />
+    <ClInclude Include="Memory\1.10\Networking.hpp" />
+    <ClInclude Include="Memory\1.10\Networking.MessageDeltas.hpp" />
+    <ClInclude Include="Memory\1.10\Networking.Server.hpp" />
     <ClInclude Include="Memory\FunctionInterface.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />
     <ClInclude Include="Networking\GameSpyApi.hpp" />
@@ -801,7 +805,7 @@
     <None Include="Memory\1.10\Game.Scripting.hpp" />
     <None Include="Memory\1.10\Game.AI.hpp" />
     <None Include="Memory\1.10\Interface.Input.hpp" />
-    <None Include="Memory\1.10\_EngineLayout.Networking.inl" />
+    <None Include="Memory\1.10\Networking.MDP.hpp" />
     <None Include="Memory\1.10\_EngineLayout.Objects.inl" />
     <None Include="Memory\1.10\_EngineLayout.OpenSauce.inl" />
     <None Include="Memory\1.10\_EngineLayout.Rasterizer.DX9.inl" />

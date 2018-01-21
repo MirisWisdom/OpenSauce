@@ -17,6 +17,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MessageDefinitions.hpp"
 #include "Networking/Networking.hpp"
+#include <Memory/1.10/Networking.MessageDeltas.hpp>
 
 namespace Yelo
 {
@@ -29,10 +30,6 @@ namespace Yelo
 
 	namespace MessageDeltas
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
-#define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MESSAGE_DELTAS
-#include "Memory/_EngineLayout.inl"
-
 		s_message_delta_parameters* Parameters()					PTR_IMP_GET2(message_delta_parameters);
 		field_type_definition* GlobalFieldTypeList()				PTR_IMP_GET2(message_delta_global_field_type_list);
 		Enums::message_delta_encoding_class* EncodingClass()		PTR_IMP_GET2(g_message_delta_encoding_class);

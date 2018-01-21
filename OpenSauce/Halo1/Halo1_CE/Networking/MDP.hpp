@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include "Memory/MemoryInterface.hpp"
-
-#include "Networking/MessageDeltaDefinitions.hpp"
+#include <Memory/1.10/Networking.MDP.hpp>
 
 #define GET_NEW_MDP_DEFINITION(name) mdp_definition_##name
 
@@ -84,10 +82,6 @@ namespace Yelo
 #define MDP_GET_FIELD_TYPE_DEFINITION( type ) MessageDeltas::GET_PTR2( MDP_FIELD_TYPE_NAME(type) )
 
 #define MDP_GET_FIELD_SET_DEFINITION( type )  MessageDeltas::GET_PTR2( MDP_FIELD_SET_NAME(type) )
-
-#define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
-#define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MDP
-#include "Memory/_EngineLayout.inl"
 
 		/*
 			fixed_width_normal_4bit
