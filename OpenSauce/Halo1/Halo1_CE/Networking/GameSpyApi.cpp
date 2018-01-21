@@ -7,15 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Networking/GameSpyApi.hpp"
 
-#include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
+#include <Memory/1.10/Networking.GameSpyApi.hpp>
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
-#define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_GAMESPY_API
-#include "Memory/_EngineLayout.inl"
-
 	namespace Networking
 	{
 		bool s_gamespy_qr2_keybuffer::add(Enums::gamespy_qr_field keyid)

@@ -7,12 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Networking/Server.hpp"
 
+#include <Memory/1.10/Networking.Server.hpp>
+
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
-#define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_SERVER
-#include "Memory/_EngineLayout.inl"
-
 	namespace Networking
 	{
 		wcstring ServerPassword()											PTR_IMP_GET2(sv_password);

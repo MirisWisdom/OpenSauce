@@ -24,15 +24,12 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/GameSpyApi.hpp"
 #include "Networking/MessageDeltas.hpp"
+#include <Memory/1.10/Networking.hpp>
 
 namespace Yelo
 {
 	namespace Networking
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
-#define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_NETWORKING
-#include "Memory/_EngineLayout.inl"
-
 #ifdef API_DEBUG
 		cstring message_packet_to_string_table[] = {
 			"client-broadcast_game_search",

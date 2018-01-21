@@ -655,6 +655,18 @@
     <ClInclude Include="Interface\GamepadAxisState.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\1.10\Networking.GameSpyApi.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Networking.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Networking.MessageDeltas.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Networking.Server.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -2018,9 +2030,6 @@
     <None Include="Memory\1.10\_EngineLayout.TagGroups.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
-    <None Include="Memory\1.10\_EngineLayout.Networking.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
     <None Include="Memory\1.10\_EngineLayout.Objects.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
@@ -2227,6 +2236,9 @@
     </None>
     <None Include="Interface\Hud.hpp">
       <Filter>Interface</Filter>
+    </None>
+    <None Include="Memory\1.10\Networking.MDP.hpp">
+      <Filter>_Resources\1.10</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
