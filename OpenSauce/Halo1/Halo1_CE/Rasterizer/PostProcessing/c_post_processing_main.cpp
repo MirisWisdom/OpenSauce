@@ -10,9 +10,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include <blamlib/main/main_structures.hpp>
-
-#include "Settings/Settings.hpp"
-#include "Interface/GameUI.hpp"
+#include "Interface/Hud.hpp"
 #include "Game/GameState.hpp"
 #include "Game/Camera.hpp"
 #include "Game/Players.hpp"

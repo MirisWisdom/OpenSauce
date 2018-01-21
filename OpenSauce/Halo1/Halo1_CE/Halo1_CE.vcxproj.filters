@@ -88,12 +88,6 @@
     <Filter Include="TagGroups\Impl">
       <UniqueIdentifier>{36201a7b-a00c-4d8e-ba37-cc6137c11790}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Resources\1.08">
-      <UniqueIdentifier>{0144098b-caa6-4e1c-b5e4-ce1bbf753d69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Resources\1.09">
-      <UniqueIdentifier>{8ecc773f-653b-4299-8acc-d5230c2954d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rasterizer">
       <UniqueIdentifier>{942092e8-65b2-40df-b257-c248220d2a94}</UniqueIdentifier>
     </Filter>
@@ -606,6 +600,60 @@
     </ClInclude>
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.ScriptLibrary.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.BuildNumber.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Camera.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Campaign.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Console.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Effects.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Fov.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.GameEngine.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.GameState.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Lights.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Game.Players.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Interface.GameUI.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Interface.Hud.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Interface.Keystone.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Interface.UIWidgets.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\PositionState.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ControlStates.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\GamepadAxisState.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1231,6 +1279,9 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\Hud.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\external_libraries\mongoose\mongoose.h">
@@ -1835,9 +1886,6 @@
     <None Include="Game\GameStateRuntimeData.Scripting.inl">
       <Filter>Game\Impl\GameState</Filter>
     </None>
-    <None Include="Game\EngineFunctions._Misc.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
     <None Include="Game\EngineFunctions.Networking.inl">
       <Filter>Game\Impl\EngineFunctions</Filter>
     </None>
@@ -1858,9 +1906,6 @@
     </None>
     <None Include="Game\Players.Scripting.inl">
       <Filter>Game\Impl\Players</Filter>
-    </None>
-    <None Include="Interface\GameUI_Hud.inl">
-      <Filter>Interface\Impl</Filter>
     </None>
     <None Include="Memory\FunctionInterface.Client.inl">
       <Filter>Memory\Impl</Filter>
@@ -1904,84 +1949,6 @@
     <None Include="Halo1_CE.def">
       <Filter>_Resources</Filter>
     </None>
-    <None Include="Memory\1.08\_EngineLayout.Game.EngineFunctions.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Game.HS.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Game.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Interface.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Networking.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Objects.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.OpenSauce.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Rasterizer.DX9.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Rasterizer.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Rasterizer.ShaderDraw.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Rasterizer.ShaderExtension.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.Scenario.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.08\_EngineLayout.TagGroups.inl">
-      <Filter>_Resources\1.08</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Game.EngineFunctions.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Game.HS.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Game.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Interface.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Networking.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Objects.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.OpenSauce.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Rasterizer.DX9.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Rasterizer.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Rasterizer.ShaderDraw.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Rasterizer.ShaderExtension.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.Scenario.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
-    <None Include="Memory\1.09\_EngineLayout.TagGroups.inl">
-      <Filter>_Resources\1.09</Filter>
-    </None>
     <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl">
       <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
     </None>
@@ -2024,15 +1991,6 @@
     <None Include="TagGroups\CacheFiles.Settings.inl">
       <Filter>TagGroups\Impl</Filter>
     </None>
-    <None Include="Memory\1.10\_EngineLayout.Game.EngineFunctions.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Game.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Interface.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
     <None Include="Memory\1.10\_EngineLayout.OpenSauce.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
@@ -2058,9 +2016,6 @@
       <Filter>_Resources\1.10</Filter>
     </None>
     <None Include="Memory\1.10\_EngineLayout.TagGroups.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Game.HS.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
     <None Include="Memory\1.10\_EngineLayout.Networking.inl">
@@ -2196,67 +2151,82 @@
       <Filter>Objects\Impl</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\TagGroups.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_EngineFunctions.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Game_HS.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Interface.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Networking.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Objects.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\OpenSauce.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_DX9.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderDraw.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Rasterizer_ShaderExtension.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Client\Scenario.lua">
-      <Filter>_Resources\1.09\LUA\Client</Filter>
+      <Filter>_Resources\LUA\Client</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_EngineFunctions.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Game_HS.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Networking.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Objects.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\OpenSauce.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Scenario.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
     </None>
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\TagGroups.lua">
-      <Filter>_Resources\1.09\LUA\Server</Filter>
+      <Filter>_Resources\LUA\Server</Filter>
+    </None>
+    <None Include="Memory\1.10\Game.EngineFunctions.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Game.Scripting.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Game.AI.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Interface.Input.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Interface\Hud.hpp">
+      <Filter>Interface</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2297,9 +2267,6 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{77ede202-d5b6-4b79-a33a-8cc5b0510fe6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface\Impl">
-      <UniqueIdentifier>{ac39391e-f598-460c-861a-689d3670ff1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface\OpenSauceUI">
       <UniqueIdentifier>{6fbba12f-b959-4f91-b6d4-81c86cab5c10}</UniqueIdentifier>
     </Filter>
@@ -2336,13 +2303,13 @@
     <Filter Include="Game\Impl\AI">
       <UniqueIdentifier>{62fd605b-7fa9-4b74-8e6a-6cb3209d309a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Resources\1.09\LUA">
+    <Filter Include="_Resources\LUA">
       <UniqueIdentifier>{292c5546-a8f1-4c61-8b6f-e96203133b5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Resources\1.09\LUA\Client">
+    <Filter Include="_Resources\LUA\Client">
       <UniqueIdentifier>{f357d139-2aba-4c05-8b8e-219aef527ab8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Resources\1.09\LUA\Server">
+    <Filter Include="_Resources\LUA\Server">
       <UniqueIdentifier>{08f4997f-c50a-4f53-8475-4b3e72b50913}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

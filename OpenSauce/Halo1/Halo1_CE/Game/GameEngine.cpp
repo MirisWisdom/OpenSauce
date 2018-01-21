@@ -16,15 +16,12 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
+#include <Memory/1.10/Game.GameEngine.hpp>
 
 namespace Yelo
 {
 	namespace GameEngine
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_GAME_ENGINE
-#include "Memory/_EngineLayout.inl"
-
 		s_ctf_globals* CtfGlobals()							PTR_IMP_GET2(ctf_globals);
 		s_slayer_globals* SlayerGlobals()					PTR_IMP_GET2(slayer_globals);
 		s_oddball_globals* OddballGlobals()					PTR_IMP_GET2(oddball_globals);

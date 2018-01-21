@@ -17,15 +17,12 @@
 #include "Objects/Units.hpp"
 
 #include "Game/AI.Transform.inl"
+#include <Memory/1.10/Game.AI.hpp>
 
 namespace Yelo
 {
 	namespace AI
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_AI
-#include "Memory/_EngineLayout.inl"
-		
 		s_ai_globals_data* AIGlobals()								DPTR_IMP_GET(ai_globals);
 		actor_data_t& Actors()										DPTR_IMP_GET_BYREF(actors);
 		swarm_data_t& Swarms()										DPTR_IMP_GET_BYREF(swarms);

@@ -16,6 +16,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include <Memory/1.10/Game.Scripting.hpp>
 
 namespace Yelo
 {
@@ -29,10 +30,6 @@ namespace Yelo
 
 	namespace Scripting
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_SCRIPTING
-#include "Memory/_EngineLayout.inl"
-
 		static void MemoryUpgradesInitialize()
 		{
 			for(auto ptr : K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST)

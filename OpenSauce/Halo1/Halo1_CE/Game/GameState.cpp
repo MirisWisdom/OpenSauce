@@ -44,6 +44,7 @@
 #include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <yelolib/shell/shell_windows_command_line.hpp>
 #include <Networking/HTTP/HTTPServer.hpp>
+#include <Memory/1.10/Game.GameState.hpp>
 
 namespace Yelo
 {
@@ -53,11 +54,6 @@ namespace Yelo
 
 #include "Game/GameState.EventLog.inl"
 #include "Game/GameState.Scripting.inl"
-
-
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_GAME_STATE
-#include "Memory/_EngineLayout.inl"
 
 #include "Game/GameState.Procs.inl"
 #include "Game/GameState.MemoryUpgrades.inl"

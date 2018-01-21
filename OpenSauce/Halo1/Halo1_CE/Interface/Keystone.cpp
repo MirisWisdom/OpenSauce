@@ -10,15 +10,12 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"
+#include <Memory/1.10/Interface.Keystone.hpp>
 
 namespace Yelo
 {
 	namespace Keystone
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_INTERFACE
-#define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_KEYSTONE
-#include "Memory/_EngineLayout.inl"
-
 		uint32 PLATFORM_API HandleMessage(void* arg0, HANDLE window_handle, void* arg2, const MSG* message);
 
 		void OnChatAddString(wcstring string); // forward declare

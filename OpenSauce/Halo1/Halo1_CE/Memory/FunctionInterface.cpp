@@ -10,7 +10,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
-#include "Interface/GameUI.hpp"
+#include "Interface/Hud.hpp"
 
 namespace Yelo
 {

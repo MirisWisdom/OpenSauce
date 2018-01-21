@@ -12,17 +12,12 @@
 #include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-
-#include "Memory/MemoryInterface.hpp"
+#include <Memory/1.10/Interface.UIWidgets.hpp>
 
 namespace Yelo
 {
 	namespace UIWidgets
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_INTERFACE
-#define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_UI_WIDGET
-#include "Memory/_EngineLayout.inl"
-
 		void PlayAudioFeedbackSound(Enums::ui_audio_feedback_sound type)
 		{
 			// TODO: dooooooooo me

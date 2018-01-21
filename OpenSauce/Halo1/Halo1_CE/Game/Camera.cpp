@@ -20,13 +20,11 @@
 #include "Game/EngineFunctions.hpp"
 
 #include "Rasterizer/Rasterizer.hpp"
+#include <Memory/1.10/Game.Camera.hpp>
+#include <Memory/1.10/Game.Fov.hpp>
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_CAMERA
-#include "Memory/_EngineLayout.inl"
-
 	namespace Camera
 	{
 		s_observer* Observer()									PTR_IMP_GET2(observers);

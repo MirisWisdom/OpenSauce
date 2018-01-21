@@ -11,15 +11,12 @@
 
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
+#include <Memory/1.10/Game.Effects.hpp>
 
 namespace Yelo
 {
 	namespace Effects
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_EFFECTS
-#include "Memory/_EngineLayout.inl"
-
 		contrail_data_t& Contrails()									DPTR_IMP_GET_BYREF(contrails);
 		contrail_point_data_t& ContrailPoints()							DPTR_IMP_GET_BYREF(contrail_points);
 		particle_data_t& Particles()									DPTR_IMP_GET_BYREF(particles);
