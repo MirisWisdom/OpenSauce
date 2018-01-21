@@ -13,6 +13,7 @@
 
 #include "Settings/Settings.hpp"
 #include "Game/GameState.hpp"
+#include <Memory/1.10/Game.BuildNumber.hpp>
 
 namespace Yelo
 {
@@ -29,10 +30,6 @@ namespace Yelo
 
 	namespace BuildNumber
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_BUILD_NUMBER
-#include "Memory/_EngineLayout.inl"
-
 		char* GameBuildString()					PTR_IMP_GET2(game_build_version);
 		char* GamespyGameBuildString()			PTR_IMP_GET2(game_build_version_gamespy);
 

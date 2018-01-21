@@ -8,15 +8,12 @@
 #include "Game/Console.hpp"
 
 #include "Memory/MemoryInterface.hpp"
+#include <Memory/1.10/Game.Console.hpp>
 
 namespace Yelo
 {
 	namespace Console
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_CONSOLE
-#include "Memory/_EngineLayout.inl"
-
 		s_terminal_globals* TerminalGlobals()				DPTR_IMP_GET(terminal_globals);
 		s_console_globals* Globals()						PTR_IMP_GET2(console_globals);
 

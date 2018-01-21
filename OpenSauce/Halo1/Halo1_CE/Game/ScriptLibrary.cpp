@@ -28,6 +28,7 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingScripting.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
+#include <Memory/1.10/Game.ScriptLibrary.hpp>
 
 #if PLATFORM_IS_DEDI
 #include "Networking/HTTP/HTTPServer.hpp"
@@ -40,13 +41,6 @@ namespace Yelo
 	namespace Scripting
 	{
 #include "Game/ScriptLibrary.Macros.inl"
-
-
-
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_SCRIPT_LIBRARY
-#include "Memory/_EngineLayout.inl"
-
 
 #define __SCRIPTLIBRARY_INCLUDE_ID __SCRIPTLIBRARY_DEFINITIONS
 #include "Game/ScriptLibrary.inl"

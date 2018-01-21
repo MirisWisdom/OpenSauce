@@ -8,7 +8,7 @@
 #include "Rasterizer/DX9/DeviceHooks.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <Interface/GameUI.hpp>
+#include <Interface/Hud.hpp>
 #include <Interface/OpenSauceUI.hpp>
 #include <Memory/MemoryInterface.hpp>
 #include <Rasterizer/DX9/DX9.hpp>

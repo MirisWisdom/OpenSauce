@@ -10,6 +10,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Interface/OpenSauceUI.hpp"
+#include <Memory/1.10/Interface.Input.hpp>
 
 namespace Yelo
 {
@@ -24,39 +25,6 @@ namespace Yelo
 
 	namespace Input
 	{
-		struct ControlStates
-		{
-			// key states (how long its been pressed until 0xFF, 0 if not pressed)
-			byte Keys[Enums::k_number_of_keys];
-
-			PAD(0, sizeof(byte)*383);
-
-			int32 MouseAxis[Enums::_MouseAxis];
-			byte MouseButton[Enums::_MouseButton];
-
-			PAD(1, sizeof(byte)*4680);
-
-			byte GamepadButton[Enums::_GamepadButton];
-			GamepadAxisState GamepadAxis[Enums::_GamepadAxis];
-
-			PAD(2, sizeof(byte)*56);
-
-			int32 GamepadDpad[Enums::_GamepadDpad];
-		};
-		
-		struct PositionState
-		{
-			//PAD16;
-			//bool Moving; // true during mouse movement
-			//PAD8;
-			PAD32;
-			int32 Position[2]; // menu space coordinates (0,0) to (640,480)
-		};
-
-#define __EL_INCLUDE_ID			__EL_INCLUDE_INTERFACE
-#define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_CONTROLS
-#include "Memory/_EngineLayout.inl"
-
 		void Initialize()
 		{
 			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE_HOOK), Enums::_x86_opcode_ret);

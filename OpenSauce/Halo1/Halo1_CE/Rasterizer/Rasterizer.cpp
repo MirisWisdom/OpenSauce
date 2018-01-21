@@ -9,18 +9,15 @@
 #if !PLATFORM_IS_DEDI
 
 #include <blamlib/hs/hs_structures.hpp>
-#include <blamlib/interface/ui_video_screen.hpp>
 #include <blamlib/models/model_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
-#include "Game/EngineFunctions.hpp"
-#include "Common/GameSystems.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
-#include <Interface/GameUI.hpp>
+#include <Interface/Hud.hpp>
 #include <Interface/OpenSauceUI.hpp>
 
 namespace Yelo

@@ -8,6 +8,7 @@
 #include "Interface/GameUI.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include "Interface/Hud.hpp"
 #include <blamlib/game/player_structures.hpp>
 #include <blamlib/interface/first_person_weapons.hpp>
 #include <blamlib/interface/hud.hpp>
@@ -31,13 +32,10 @@
 #include "Game/Players.hpp"
 #include "Networking/MessageDeltas.hpp"
 #include "Objects/Objects.hpp"
+#include <Memory/1.10/Interface.GameUI.hpp>
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_INTERFACE
-#define __EL_INCLUDE_FILE_ID	__EL_INTERFACE_GAME_UI
-#include "Memory/_EngineLayout.inl"
-
 	namespace GameUI
 	{
 		static void HudHideInterfaceElementsUpdate()
@@ -274,8 +272,6 @@ namespace Yelo
 			}
 #endif
 		}
-	};
-};
-
-#include "Interface/GameUI_Hud.inl"
+	}
+}
 #endif

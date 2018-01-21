@@ -28,12 +28,6 @@ namespace Yelo
 			int16 Direction; // GamepadAxisDirection / GamepadDpadDirection / MouseAxisDirection
 		};
 
-		struct GamepadAxisState
-		{
-			byte Speed; // not even used
-			sbyte Direction; // -16 to 16, screen coords
-		};
-
 		bool IsInGame();
 		bool IsInMenu();
 		bool IsInChat();

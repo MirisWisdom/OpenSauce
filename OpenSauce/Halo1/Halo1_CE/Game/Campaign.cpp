@@ -47,10 +47,6 @@ namespace Yelo
 
 	namespace Campaign
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_CAMPAIGN
-#include "Memory/_EngineLayout.inl"
-
 #pragma region Scenario Paths
 #if YELO_CAMPAIGN_UPGRADES_ENABLED
 

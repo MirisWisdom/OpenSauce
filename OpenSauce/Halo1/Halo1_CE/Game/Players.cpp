@@ -25,15 +25,12 @@
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
 #include "Scenario/Scenario.hpp"
+#include <Memory/1.10/Game.Players.hpp>
 
 namespace Yelo
 {
 	namespace Players
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
-#define __EL_INCLUDE_FILE_ID	__EL_GAME_PLAYERS
-#include "Memory/_EngineLayout.inl"
-
 		players_data_t& Players()										DPTR_IMP_GET_BYREF(players);
 		teams_data_t& Teams()											DPTR_IMP_GET_BYREF(teams);
 		s_players_globals_data* PlayersGlobals()						DPTR_IMP_GET(players_globals);

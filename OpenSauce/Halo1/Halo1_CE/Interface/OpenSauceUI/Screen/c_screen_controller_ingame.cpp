@@ -13,7 +13,7 @@
 #include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 #include "Game/Camera.hpp"
 #include "Rasterizer/Rasterizer.hpp"
-#include "Interface/GameUI.hpp"
+#include "Interface/Hud.hpp"
 #include "Objects/Objects.hpp"
 
 namespace Yelo
