@@ -5,7 +5,8 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 
-#include <YeloLib/cache/data_file_yelo.hpp>
+#include <Memory/1.10/TagGroups.CacheFiles.hpp>
+#include <yelolib/cache/data_file_yelo.hpp>
 
 namespace Yelo { namespace DataFiles {
 

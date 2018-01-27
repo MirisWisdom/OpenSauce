@@ -614,6 +614,10 @@
     <ClInclude Include="Memory\1.10\Networking.hpp" />
     <ClInclude Include="Memory\1.10\Networking.MessageDeltas.hpp" />
     <ClInclude Include="Memory\1.10\Networking.Server.hpp" />
+    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Effect.hpp" />
+    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Environment.hpp" />
+    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.hpp" />
+    <ClInclude Include="Memory\1.10\TagGroups.TagGroups.hpp" />
     <ClInclude Include="Memory\FunctionInterface.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />
     <ClInclude Include="Networking\GameSpyApi.hpp" />
@@ -811,9 +815,9 @@
     <None Include="Memory\1.10\_EngineLayout.Rasterizer.DX9.inl" />
     <None Include="Memory\1.10\_EngineLayout.Rasterizer.inl" />
     <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderDraw.inl" />
-    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderExtension.inl" />
-    <None Include="Memory\1.10\_EngineLayout.Scenario.inl" />
-    <None Include="Memory\1.10\_EngineLayout.TagGroups.inl" />
+    <None Include="Memory\1.10\Rasterizer.ShaderExtension.Model.hpp" />
+    <None Include="Memory\1.10\Scenario.hpp" />
+    <None Include="Memory\1.10\TagGroups.CacheFiles.hpp" />
     <None Include="Memory\FunctionInterface.Client.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplUnits.inl" />

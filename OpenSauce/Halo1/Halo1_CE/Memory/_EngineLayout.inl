@@ -48,8 +48,6 @@
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.inl)
 #elif BOOST_PP_ITERATION() == __EL_INCLUDE_RASTERIZER_DX9
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.DX9.inl)
-#elif BOOST_PP_ITERATION() == __EL_INCLUDE_RASTERIZER_SHADEREXTENSION
-	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.ShaderExtension.inl)
 #elif BOOST_PP_ITERATION() == __EL_INCLUDE_RASTERIZER_SHADERDRAW
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.ShaderDraw.inl)
 	
@@ -62,11 +60,6 @@
 // Simulation
 #elif BOOST_PP_ITERATION() == __EL_INCLUDE_SIMULATION
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Simulation.inl)
-
-//////////////////////////////////////////////////////////////////////////
-// TagGroups
-#elif BOOST_PP_ITERATION() == __EL_INCLUDE_TAGGROUPS
-	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.TagGroups.inl)
 
 //#elif BOOST_PP_ITERATION() == 
 #else

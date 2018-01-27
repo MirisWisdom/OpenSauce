@@ -8,23 +8,19 @@
 #include "Scenario/Scenario.hpp"
 
 #include <blamlib/scenario/scenario.hpp>
+#include <Memory/1.10/Scenario.hpp>
 #include <blamlib/scenario/scenario_definitions.hpp>
 #include <blamlib/scenario/scenario_structures.hpp>
+
 // There are places which use a bit-vector for the structure-bsps
 // In the stock code, the bit-vector is a 16-bit word
 // We can only, reasonably, upgrade the code to a 32-bit word
 STATIC_ASSERT( Yelo::Enums::k_maximum_structure_bsps_per_scenario_upgrade <= 32 );
 
-#include "Memory/MemoryInterface.hpp"
-
 namespace Yelo
 {
 	namespace Scenario
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_SCENARIO
-#define __EL_INCLUDE_FILE_ID	__EL_SCENARIO_SCENARIO
-#include "Memory/_EngineLayout.inl"
-
 		s_scenario_globals* ScenarioGlobals()						DPTR_IMP_GET(scenario_globals);
 
 		TagGroups::scenario* Scenario()								PTR_IMP_GET(global_scenario);
