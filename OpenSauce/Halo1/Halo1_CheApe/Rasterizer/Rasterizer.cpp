@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #ifndef PLATFORM_NO_DX9
-
+#include <Memory/Rasterizer.hpp>
 #include <blamlib/models/model_definitions.hpp>
 
 #include "Settings/Settings.hpp"
