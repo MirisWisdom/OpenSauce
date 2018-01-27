@@ -667,6 +667,18 @@
     <ClInclude Include="Memory\1.10\Networking.Server.hpp">
       <Filter>_Resources\1.10</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\1.10\TagGroups.TagGroups.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Environment.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Effect.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -2024,12 +2036,6 @@
     <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
       <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
     </None>
-    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderExtension.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.TagGroups.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
     <None Include="Memory\1.10\_EngineLayout.Objects.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
@@ -2037,9 +2043,6 @@
       <Filter>_Resources\1.10</Filter>
     </None>
     <None Include="Memory\1.10\_EngineLayout.Rasterizer.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Scenario.inl">
       <Filter>_Resources\1.10</Filter>
     </None>
     <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.EngineFunctions.inl">
@@ -2238,6 +2241,15 @@
       <Filter>Interface</Filter>
     </None>
     <None Include="Memory\1.10\Networking.MDP.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\TagGroups.CacheFiles.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Scenario.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Rasterizer.ShaderExtension.Model.hpp">
       <Filter>_Resources\1.10</Filter>
     </None>
   </ItemGroup>

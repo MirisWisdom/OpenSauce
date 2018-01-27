@@ -6,6 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
+#include <Memory/1.10/Rasterizer.ShaderExtension.hpp>
 
 #if !PLATFORM_IS_DEDI
 
@@ -29,6 +30,9 @@
 #include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Scenario/Scenario.hpp"
+#include <Memory/1.10/Rasterizer.ShaderExtension.Model.hpp>
+#include <Memory/1.10/Rasterizer.ShaderExtension.Environment.hpp>
+#include <Memory/1.10/Rasterizer.ShaderExtension.Effect.hpp>
 
 using namespace Yelo::Configuration;
 
@@ -38,10 +42,6 @@ namespace Yelo
 	{
 		namespace ShaderExtension
 		{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADEREXTENSION
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION
-#include "Memory/_EngineLayout.inl"
-
 			enum ps_support{
 				_ps_support_legacy,
 				_ps_support_2_0,

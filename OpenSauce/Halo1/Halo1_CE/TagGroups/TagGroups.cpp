@@ -9,22 +9,14 @@
 
 #include <blamlib/cache/cache_files_globals.hpp>
 #include <blamlib/cache/cache_files_structures.hpp>
-#include <blamlib/main/console.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-
-#include "Memory/MemoryInterface.hpp"
-
-#include "TagGroups/CacheFiles.hpp"
+#include <Memory/1.10/TagGroups.TagGroups.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_TAGGROUPS
-#define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_TAG_GROUPS
-#include "Memory/_EngineLayout.inl"
-
 		Cache::s_cache_tag_header* Index()					{ return Cache::CacheFileGlobals()->tag_index; }
 		Cache::s_cache_tag_instance const* Instances()		DPTR_IMP_GET(tag_instances);
 

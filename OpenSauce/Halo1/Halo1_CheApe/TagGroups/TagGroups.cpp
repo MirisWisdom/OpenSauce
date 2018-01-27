@@ -10,28 +10,22 @@
 #include <blamlib/cseries/cseries_base.hpp>
 #include <blamlib/cseries/enum_templates.h>
 #include <blamlib/items/weapon_definitions.hpp>
-#include <blamlib/math/real_math.hpp>
 #include <blamlib/memory/datum_index.hpp>
 #include <blamlib/shaders/shader_definitions.hpp>
 #include <blamlib/tag_files/s_tag_iterator.h>
 #include <blamlib/tag_files/tag_block_definition.h>
 #include <blamlib/tag_files/tag_data_definition.h>
 #include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_files.hpp>
 #include <blamlib/tag_files/tag_files_structures.hpp>
 #include <blamlib/tag_files/tag_group.h>
 #include <blamlib/tag_files/tag_group_loading.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>
 #include <yelolib/cseries/cseries_yelo_base.hpp>
-#include <yelolib/memory/data_yelo.hpp>
 #include <yelolib/tag_files/tag_groups_markup.hpp>
+#include <yelolib/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_TAGGROUPS
-#define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_TAG_GROUPS
-#include "Memory/_EngineLayout.inl"
-
 	namespace TagGroups
 	{
 		tag_instance_data_t**	TagInstanceData()	DPTR_IMP_GET2(tag_instance_data);
