@@ -75,15 +75,12 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 #endif
 #include "Networking/HTTP/HTTPClient.hpp"
+#include <Memory/1.10/OpenSauce.GameSystems.hpp>
 
 namespace Yelo
 {
 	namespace Main
 	{
-		#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
-		#define __EL_INCLUDE_FILE_ID	__EL_COMMON_GAME_SYSTEMS
-		#include "Memory/_EngineLayout.inl"
-
 		static void PLATFORM_API InitializeOnStartup()
 		{
 			Settings::InitializeSettings();

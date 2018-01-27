@@ -8,7 +8,7 @@
 #include "Rasterizer/DX9/DX9.hpp"
 
 #ifndef PLATFORM_NO_DX9
-#include "Engine/EngineFunctions.hpp"
+#include <Memory/1.10/Rasterizer.DX9.hpp>
 
 namespace Yelo
 {

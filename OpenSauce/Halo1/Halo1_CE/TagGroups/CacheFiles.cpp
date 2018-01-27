@@ -26,13 +26,6 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 #endif
 
-namespace Yelo
-{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_TAGGROUPS
-#define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_CACHE_FILES
-#include "Memory/_EngineLayout.inl"
-};
-
 #include "TagGroups/CacheFiles.DataFiles.inl"
 
 namespace Yelo

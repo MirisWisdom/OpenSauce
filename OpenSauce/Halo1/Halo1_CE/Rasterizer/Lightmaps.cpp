@@ -9,20 +9,14 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <Memory/1.10/Rasterizer.Lightmaps.hpp>
 #include <blamlib/bitmaps/bitmap_definition.hpp>
-#include <YeloLib/render/lightmaps/c_lightmap_manager.hpp>
-
-#include "Memory/MemoryInterface.hpp"
-#include "TagGroups/TagGroups.hpp"
-#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 #include "DX9/DX9.hpp"
+#include <Rasterizer/ShaderExtension/ShaderExtension.hpp>
+#include <yelolib/render/lightmaps/c_lightmap_manager.hpp>
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_LIGHTMAPS
-#include "Memory/_EngineLayout.inl"
-
 	namespace Render { namespace Lightmaps
 	{
 		/// <summary>	Container for the lightmap globals. </summary>

@@ -6,10 +6,6 @@
 */
 namespace Effect
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADEREXTENSION
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION_EFFECT
-#include "Memory/_EngineLayout.inl"
-
 	struct s_pixel_shader_variables {
 		real m_far_clip_distance;
 		real m_near_clip_distance;

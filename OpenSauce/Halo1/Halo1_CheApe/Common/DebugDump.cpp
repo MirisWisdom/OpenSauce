@@ -17,15 +17,12 @@
 #include "Settings/SettingsTool.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Engine/EngineFunctions.hpp"
+#include <Memory/1.10/OpenSauce.DebugDump.hpp>
 
 namespace Yelo
 {
 	namespace Debug
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
-#define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
-#include "Memory/_EngineLayout.inl"
-
 		static char g_reports_path[_MAX_PATH];
 
 		static void ReportComplete(const char* report_directory)

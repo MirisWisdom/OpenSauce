@@ -6,10 +6,6 @@
 */
 namespace Environment
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADEREXTENSION
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION_ENVIRONMENT
-#include "Memory/_EngineLayout.inl"
-
 	/// <summary>	The pixel shader variables used by the custom lightmap shader. </summary>
 	struct s_pixel_shader_variables {
 		real base_normal_map_coefficient;
