@@ -17,7 +17,7 @@
 #include "Settings/SettingsTool.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Engine/EngineFunctions.hpp"
-#include <Memory/1.10/OpenSauce.DebugDump.hpp>
+#include <Memory/OpenSauce.DebugDump.hpp>
 
 namespace Yelo
 {
@@ -79,11 +79,6 @@ namespace Yelo
 			_asm	push ecx;
 			SetupExceptionHandler();
 			_asm	pop ecx;
-
-			// call the stock CWinApp::Run()
-			// not actually __stdcall, but __thiscall (first param is 'this'!)
-			// stdcall gives us the desired stack behavior, without having to explicitly pass a 'this' pointer (ecx)
-			typedef int (__stdcall* winapp_run_t)(void);
 			// preserve the return value
 			int result = CAST_PTR(winapp_run_t, GET_FUNC_VPTR(CWINAPP_RUN))();
 

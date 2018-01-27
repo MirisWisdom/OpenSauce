@@ -13,11 +13,6 @@
 namespace Yelo
 {
 	namespace Rasterizer { namespace DX9 {
-		typedef IDirect3D9* (WINAPI *D3DC9)(UINT);
-
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_DX9
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_DX9
-#include "Memory/_EngineLayout.inl"
 
 		static IDirect3D9* global_d3d;
 		static IDirect3DDevice9* global_d3d_device;

@@ -19,14 +19,12 @@
 #include <blamlib/units/unit_structures.hpp>
 #include <Engine/EngineFunctions.hpp>
 #include <yelolib/tag_files/tag_groups_base_yelo.hpp>
+#include <Memory/Objects.GrenadeTypesUpgrade.hpp>
 
 namespace Yelo
 {
 	namespace Objects
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
-#define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_GRENADE_TYPES_UPGRADE
-#include "Memory/_EngineLayout.inl"
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 	#include <YeloLib/units/units_grenade_count_upgrade.inl>
 #endif

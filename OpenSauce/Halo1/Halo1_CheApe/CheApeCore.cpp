@@ -7,20 +7,15 @@
 #include "Common/Precompile.hpp"
 #include "CheApeCore.hpp"
 
-#include <zlib/zlib.h>
-#include <Psapi.h>
-
-#include "Engine/EngineFunctions.hpp"
-#include "CheApeInterface.hpp"
-#include "TagGroups/TagGroups.hpp"
 #include <blamlib/tag_files/tag_group.h>
+#include <CheApeInterface.hpp>
+#include <Memory/OpenSauce.CheApeInterface.hpp>
+#include <Psapi.h>
+#include <TagGroups/TagGroups.hpp>
+#include <zlib/zlib.h>
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
-#define __EL_INCLUDE_FILE_ID	__EL_MEMORY_CHE_APE_INTERFACE
-#include "Memory/_EngineLayout.inl"
-
 	namespace CheApe
 	{
 		long_enum _InitError = k_error_none;

@@ -340,9 +340,6 @@
     <ClInclude Include="Rasterizer\DX9\DX9.hpp">
       <Filter>Rasterizer\DX9</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp">
-      <Filter>_Resources</Filter>
-    </ClInclude>
     <ClInclude Include="TagGroups\TagGroups.hpp">
       <Filter>TagGroups</Filter>
     </ClInclude>
@@ -483,6 +480,12 @@
     <ClInclude Include="Tool\RemoveOSTagData.hpp">
       <Filter>Tool</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Objects.GrenadeTypesUpgrade.hpp">
+      <Filter>_Resources\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\OpenSauce.CheApeInterface.hpp">
+      <Filter>_Resources\Impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -521,27 +524,6 @@
     <None Include="Rasterizer\DX9\DX9.Tool.inl">
       <Filter>Rasterizer\DX9\Impl</Filter>
     </None>
-    <None Include="Memory\_EngineLayout.inl">
-      <Filter>_Resources</Filter>
-    </None>
-    <None Include="Memory\_EngineLayout.Game.inl">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\_EngineLayout.Objects.inl">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\_EngineLayout.OpenSauce.inl">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\_EngineLayout.Rasterizer.DX9.inl">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\_EngineLayout.Rasterizer.inl">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\_EngineLayout.TagGroups.inl">
-      <Filter>_Resources\Impl</Filter>
-    </None>
     <None Include="Yelo\MemoryFixups.TagTextIO.inl">
       <Filter>Yelo\Impl</Filter>
     </None>
@@ -565,6 +547,21 @@
     </None>
     <None Include="Tool\RemoveOSTagData.inl">
       <Filter>Tool\Impl</Filter>
+    </None>
+    <None Include="Memory\Game.hpp">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\OpenSauce.DebugDump.hpp">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\Rasterizer.DX9.hpp">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\Rasterizer.hpp">
+      <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Memory\TagGroups.hpp">
+      <Filter>_Resources\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
