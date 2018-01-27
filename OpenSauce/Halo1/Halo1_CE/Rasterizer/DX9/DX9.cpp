@@ -8,18 +8,15 @@
 #include "Rasterizer/DX9/DX9.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/cseries/pc_crashreport.hpp>
 
-#include "Memory/MemoryInterface.hpp"
+#include <Memory/1.10/Rasterizer.DX9.hpp>
+#include <yelolib/cseries/pc_crashreport.hpp>
+#include <yelolib/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {
 	namespace DX9
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_DX9
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_DX9
-#include "Memory/_EngineLayout.inl"
-
 		static IDirect3D9* d3d;
 		static IDirect3DDevice9* global_d3d_device;
 

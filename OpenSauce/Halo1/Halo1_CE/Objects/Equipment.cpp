@@ -14,49 +14,54 @@
 
 namespace Yelo
 {
-	namespace Objects { namespace Equipment {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
-#define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_EQUIPMENT
-#include "Memory/_EngineLayout.inl"
-
-		void InitializeType(s_object_type_definition*);
-		void Initialize()
+	namespace Objects
+	{
+		namespace Equipment
 		{
-			if(true) return; // TODO: finish the equipment code then remove this
+			void InitializeType(
+				s_object_type_definition*);
 
-			InitializeType(ObjectTypeDefinitions()[Enums::_object_type_equipment]);
-		}
+			void Initialize()
+			{
+				if (true)
+					return; // TODO: finish the equipment code then remove this
 
-		static bool PLATFORM_API New(datum_index equipment_index)
-		{
-			s_equipment_datum* equipment = Objects::ObjectHeader()[equipment_index]->_equipment;
-			auto const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
+				InitializeType(ObjectTypeDefinitions()[Enums::_object_type_equipment]);
+			}
 
-			return true;
-		}
+			static bool PLATFORM_API New(
+				datum_index equipment_index)
+			{
+				s_equipment_datum* equipment = ObjectHeader()[equipment_index]->_equipment;
+				auto const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
 
-		static void PLATFORM_API Delete(datum_index equipment_index)
-		{
-		}
+				return true;
+			}
 
-		static bool PLATFORM_API Update(datum_index equipment_index)
-		{
-			return true;
-		}
+			static void PLATFORM_API Delete(
+				datum_index equipment_index) { }
 
-		static void PLATFORM_API ExportFunctionValues(datum_index equipment_index)
-		{
-			s_equipment_datum* equipment = Objects::ObjectHeader()[equipment_index]->_equipment;
-			auto const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
-		}
+			static bool PLATFORM_API Update(
+				datum_index equipment_index)
+			{
+				return true;
+			}
 
-		static void InitializeType(s_object_type_definition* equipment_type)
-		{
-			equipment_type->new_ = &New;
-			equipment_type->delete_ = &Delete;
-			equipment_type->update = &Update;
-			equipment_type->export_function_values = &ExportFunctionValues;
-		}
+			static void PLATFORM_API ExportFunctionValues(
+				datum_index equipment_index)
+			{
+				s_equipment_datum* equipment = ObjectHeader()[equipment_index]->_equipment;
+				auto const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
+			}
 
-	}; };
+			static void InitializeType(
+				s_object_type_definition* equipment_type)
+			{
+				equipment_type->new_ = &New;
+				equipment_type->delete_ = &Delete;
+				equipment_type->update = &Update;
+				equipment_type->export_function_values = &ExportFunctionValues;
+			}
+		};
+	};
 };

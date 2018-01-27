@@ -41,15 +41,12 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
+#include <Memory/1.10/Objects.hpp>
 
 namespace Yelo
 {
 	namespace Objects
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
-#define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_OBJECTS
-#include "Memory/_EngineLayout.inl"
-
 		class c_settings_container
 			: public Configuration::c_configuration_container
 		{

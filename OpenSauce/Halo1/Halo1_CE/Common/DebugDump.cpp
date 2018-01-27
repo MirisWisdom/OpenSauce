@@ -10,8 +10,7 @@
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
 #include <YeloLib/shell/shell_windows_command_line.hpp>
-
-#include "Memory/MemoryInterface.hpp"
+#include <Memory/1.10/OpenSauce.DebugDump.hpp>
 
 #if PLATFORM_IS_USER
 #include <blamlib/main/console.hpp>
@@ -31,12 +30,9 @@ namespace Yelo
 {
 	namespace Debug
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
-#define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
-#include "Memory/_EngineLayout.inl"
-
-#if PLATFORM_IS_USER
+		#if PLATFORM_IS_USER
 		static char g_reports_path[MAX_PATH];
+
 		struct s_freeze_dump_globals
 		{
 			std::thread m_freeze_thread;
@@ -53,7 +49,7 @@ namespace Yelo
 				real current;
 				bool elapsed;
 				PAD24;
-			}m_delay;
+			} m_delay;
 
 			struct
 			{
@@ -61,47 +57,49 @@ namespace Yelo
 				volatile real current;
 				bool elapsed;
 				PAD24;
-			}m_wait;
+			} m_wait;
 		};
+
 		static s_freeze_dump_globals g_freeze_dump_globals;
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Reports to the user that a crash report has been created. </summary>
 		///
 		/// <param name="report_directory">	Pathname of the report directory. </param>
-		static void ReportComplete(const char* report_directory)
+		static void ReportComplete(
+			const char* report_directory)
 		{
 			// writing the report was successful so tell the user
 			cstring message = "An exception has occurred.\nA crash report for this exception has been saved to your OpenSauce Reports directory (OpenSauce\\Reports\\CrashRpt).\nAttach the zip archive if you report this issue.";
 
-#if PLATFORM_IS_USER
+			#if PLATFORM_IS_USER
 			// do not display a message box if this is a freeze dump as the dialog is unusable
-			if(g_freeze_dump_globals.m_dump_initiated)
+			if (g_freeze_dump_globals.m_dump_initiated)
 			{
 				return;
 			}
 			MessageBox(nullptr, message, "Crash Report Saved", MB_OK);
-#else
+			#else
 			blam::console_response_printf(message);
-#endif
+			#endif
 		}
 
 		/// <summary>	Adds a copy of the game state to the crash report archive. </summary>
 		static void AddGameStateDump()
 		{
-			if(FileIO::PathExists(g_reports_path))
+			if (FileIO::PathExists(g_reports_path))
 			{
 				char dump_file[MAX_PATH];
-				if(FileIO::PathBuild(dump_file, false, 2, g_reports_path, "core.bin"))
+				if (FileIO::PathBuild(dump_file, false, 2, g_reports_path, "core.bin"))
 				{
 					FileIO::s_file_info dump;
-					if(Enums::_file_io_open_error_none == FileIO::OpenFile(dump, dump_file, Enums::_file_io_open_access_type_write, Enums::_file_io_open_create_option_new))
+					if (Enums::_file_io_open_error_none == FileIO::OpenFile(dump, dump_file, Enums::_file_io_open_access_type_write, Enums::_file_io_open_create_option_new))
 					{
 						// write the entire game state to file, which can be loaded again using core_load
-						FileIO::WriteToFile(dump, GameState::GameStateGlobals()->base_address, Enums::k_game_state_allocation_size);
-						FileIO::CloseFile(dump);
+						WriteToFile(dump, GameState::GameStateGlobals()->base_address, Enums::k_game_state_allocation_size);
+						CloseFile(dump);
 
-						Debug::AddFileToCrashReport(dump_file, "core.bin", "Gamestate dump");
+						AddFileToCrashReport(dump_file, "core.bin", "Gamestate dump");
 					}
 				}
 			}
@@ -110,22 +108,22 @@ namespace Yelo
 		/// <summary>	Adds a backbuffer frame dump to the report. </summary>
 		static void AddFrameDump()
 		{
-			if(FileIO::PathExists(g_reports_path))
+			if (FileIO::PathExists(g_reports_path))
 			{
 				char frame_file[MAX_PATH];
-				if(FileIO::PathBuild(frame_file, false, 2, g_reports_path, "framedump.jpg"))
+				if (FileIO::PathBuild(frame_file, false, 2, g_reports_path, "framedump.jpg"))
 				{
 					auto* device = DX9::Direct3DDevice();
 
 					c_auto_release<IDirect3DSurface9> surface(nullptr);
-					if(device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &surface) != S_OK)
+					if (device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &surface) != S_OK)
 					{
 						return;
 					}
 
-					if(D3DXSaveSurfaceToFile(frame_file, D3DXIFF_JPG, surface, nullptr, nullptr) == S_OK)
+					if (D3DXSaveSurfaceToFile(frame_file, D3DXIFF_JPG, surface, nullptr, nullptr) == S_OK)
 					{
-						Debug::AddFileToCrashReport(frame_file, "framedump.jpg", "Frame dump");
+						AddFileToCrashReport(frame_file, "framedump.jpg", "Frame dump");
 					}
 				}
 			}
@@ -139,20 +137,20 @@ namespace Yelo
 
 		static const s_cpu_feature g_cpu_extensions[] =
 		{
-			{ PF_FLOATING_POINT_PRECISION_ERRATA,	"FLOATING_POINT_PRECISION_ERRATA" },
-			{ PF_FLOATING_POINT_EMULATED,			"FLOATING_POINT_EMULATED" },
-			{ PF_COMPARE_EXCHANGE_DOUBLE,			"COMPARE_EXCHANGE" },
-			{ PF_MMX_INSTRUCTIONS_AVAILABLE,		"MMX" },
-			{ PF_XMMI_INSTRUCTIONS_AVAILABLE,		"SSE" },
-			{ PF_3DNOW_INSTRUCTIONS_AVAILABLE,		"3DNOW" },
-			{ PF_RDTSC_INSTRUCTION_AVAILABLE,		"RDTSC" },
-			{ PF_PAE_ENABLED,						"PAE" },
-			{ PF_XMMI64_INSTRUCTIONS_AVAILABLE,		"SSE2" },
-			{ PF_NX_ENABLED,						"DEP" },
-			{ PF_SSE3_INSTRUCTIONS_AVAILABLE,		"SSE3" },
-			{ PF_COMPARE_EXCHANGE128,				"COMPARE_EXCHANGE128" },
-			{ PF_COMPARE64_EXCHANGE128,				"COMPARE64_EXCHANGE128" },
-			{ PF_CHANNELS_ENABLED,					"CHANNELS" },
+			{PF_FLOATING_POINT_PRECISION_ERRATA, "FLOATING_POINT_PRECISION_ERRATA"},
+			{PF_FLOATING_POINT_EMULATED, "FLOATING_POINT_EMULATED"},
+			{PF_COMPARE_EXCHANGE_DOUBLE, "COMPARE_EXCHANGE"},
+			{PF_MMX_INSTRUCTIONS_AVAILABLE, "MMX"},
+			{PF_XMMI_INSTRUCTIONS_AVAILABLE, "SSE"},
+			{PF_3DNOW_INSTRUCTIONS_AVAILABLE, "3DNOW"},
+			{PF_RDTSC_INSTRUCTION_AVAILABLE, "RDTSC"},
+			{PF_PAE_ENABLED, "PAE"},
+			{PF_XMMI64_INSTRUCTIONS_AVAILABLE, "SSE2"},
+			{PF_NX_ENABLED, "DEP"},
+			{PF_SSE3_INSTRUCTIONS_AVAILABLE, "SSE3"},
+			{PF_COMPARE_EXCHANGE128, "COMPARE_EXCHANGE128"},
+			{PF_COMPARE64_EXCHANGE128, "COMPARE64_EXCHANGE128"},
+			{PF_CHANNELS_ENABLED, "CHANNELS"},
 		};
 
 		/// <summary>	Adds details about the users CPU to the crash report. </summary>
@@ -163,27 +161,27 @@ namespace Yelo
 			GetSystemInfo(&system_info);
 
 			char buffer[64];
-			switch(system_info.wProcessorArchitecture)
+			switch (system_info.wProcessorArchitecture)
 			{
-			case PROCESSOR_ARCHITECTURE_AMD64:
-				Debug::AddPropertyToCrashReport("CPUArchitecture", "AMD64");
-				break;
-			case PROCESSOR_ARCHITECTURE_ARM:
-				Debug::AddPropertyToCrashReport("CPUArchitecture", "ARM");
-				break;
-			case PROCESSOR_ARCHITECTURE_IA64:
-				Debug::AddPropertyToCrashReport("CPUArchitecture", "IA64");
-				break;
-			case PROCESSOR_ARCHITECTURE_INTEL:
-				Debug::AddPropertyToCrashReport("CPUArchitecture", "INTEL");
-				break;
-			case PROCESSOR_ARCHITECTURE_UNKNOWN:
-				Debug::AddPropertyToCrashReport("CPUArchitecture", "UNKNOWN");
-				break;
+				case PROCESSOR_ARCHITECTURE_AMD64:
+					AddPropertyToCrashReport("CPUArchitecture", "AMD64");
+					break;
+				case PROCESSOR_ARCHITECTURE_ARM:
+					AddPropertyToCrashReport("CPUArchitecture", "ARM");
+					break;
+				case PROCESSOR_ARCHITECTURE_IA64:
+					AddPropertyToCrashReport("CPUArchitecture", "IA64");
+					break;
+				case PROCESSOR_ARCHITECTURE_INTEL:
+					AddPropertyToCrashReport("CPUArchitecture", "INTEL");
+					break;
+				case PROCESSOR_ARCHITECTURE_UNKNOWN:
+					AddPropertyToCrashReport("CPUArchitecture", "UNKNOWN");
+					break;
 			}
 
 			sprintf_s(buffer, "%u", system_info.dwNumberOfProcessors);
-			Debug::AddPropertyToCrashReport("CPUNumberOfProcessors", buffer);
+			AddPropertyToCrashReport("CPUNumberOfProcessors", buffer);
 
 			// add processor features to the report
 			for (const auto& cpu_ext : g_cpu_extensions)
@@ -191,14 +189,18 @@ namespace Yelo
 				BOOL supported = IsProcessorFeaturePresent(cpu_ext.value);
 				sprintf_s(buffer, "CPUFeat_%s", cpu_ext.string);
 
-				Debug::AddPropertyToCrashReport(buffer, (supported ? "true" : "false"));
+				AddPropertyToCrashReport(
+					buffer,
+					(supported
+						? "true"
+						: "false"));
 			}
 		}
 
 		/// <summary>	Adds map information. </summary>
 		static void AddMapInfo()
 		{
-			Debug::AddPropertyToCrashReport("MapName", GameState::GameGlobals()->options.map_name);
+			AddPropertyToCrashReport("MapName", GameState::GameGlobals()->options.map_name);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,9 +234,11 @@ namespace Yelo
 		/// <param name="ptrs">	The exception ptrs. </param>
 		///
 		/// <returns>	Whether the exception was handled by this filter or not. </returns>
-		static int WINAPI ExceptionFilter(PEXCEPTION_POINTERS ptrs)
+		static int WINAPI ExceptionFilter(
+			PEXCEPTION_POINTERS ptrs)
 		{
-			typedef void (PLATFORM_API* proc_simple_function)(void);
+			typedef void (PLATFORM_API* proc_simple_function)(
+				void);
 
 			PreDump();
 
@@ -242,17 +246,17 @@ namespace Yelo
 			bool disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
 
 			if (
-#ifdef API_DEBUG
+				#ifdef API_DEBUG
 				IsDebuggerPresent() ||
-#endif
+				#endif
 				disable_exception_handling
-				)
+			)
 			{
 				result = EXCEPTION_CONTINUE_SEARCH;
 			}
 			else
 			{
-				result = Debug::SEHExceptionFilter(ptrs);
+				result = SEHExceptionFilter(ptrs);
 			}
 
 			Keystone::ReleaseKeystone();
@@ -285,14 +289,14 @@ namespace Yelo
 			g_freeze_dump_globals.m_delay.current = 0.0f;
 			g_freeze_dump_globals.m_wait.current = 0.0f;
 
-			while(!g_freeze_dump_globals.m_end_thread)
+			while (!g_freeze_dump_globals.m_end_thread)
 			{
 				Sleep(100);
 
 				// count until the delay time has elapsed, then wait until the wait time has elapsed before dumping
-				if(g_freeze_dump_globals.m_delay.elapsed && !g_freeze_dump_globals.m_wait.elapsed)
+				if (g_freeze_dump_globals.m_delay.elapsed && !g_freeze_dump_globals.m_wait.elapsed)
 				{
-					if(g_freeze_dump_globals.m_wait.current > g_freeze_dump_globals.m_wait.time)
+					if (g_freeze_dump_globals.m_wait.current > g_freeze_dump_globals.m_wait.time)
 					{
 						g_freeze_dump_globals.m_wait.elapsed = true;
 					}
@@ -303,7 +307,7 @@ namespace Yelo
 				}
 				else
 				{
-					if(g_freeze_dump_globals.m_delay.current > g_freeze_dump_globals.m_delay.time)
+					if (g_freeze_dump_globals.m_delay.current > g_freeze_dump_globals.m_delay.time)
 					{
 						g_freeze_dump_globals.m_delay.elapsed = true;
 					}
@@ -314,7 +318,7 @@ namespace Yelo
 				}
 
 				// once the wait time has elapsed force a crash report
-				if(g_freeze_dump_globals.m_wait.elapsed)
+				if (g_freeze_dump_globals.m_wait.elapsed)
 				{
 					g_freeze_dump_globals.m_end_thread = true;
 					g_freeze_dump_globals.m_dump_initiated = true;
@@ -326,7 +330,7 @@ namespace Yelo
 					SuspendThread(main_thread);
 
 					// force a crash dump, recording from the main thread
-					Debug::ForceCrashReport(main_thread);
+					ForceCrashReport(main_thread);
 
 					// resume the main thread and release the handle on it
 					ResumeThread(main_thread);
@@ -341,9 +345,10 @@ namespace Yelo
 		/// <summary>	Updates the crash handler to reset the freeze dump timer if needed. </summary>
 		///
 		/// <param name="delta">	The time that has passed since the last update. </param>
-		void Update(real delta)
+		void Update(
+			real delta)
 		{
-			if(!g_freeze_dump_globals.m_thread_running)
+			if (!g_freeze_dump_globals.m_thread_running)
 			{
 				return;
 			}
@@ -356,31 +361,28 @@ namespace Yelo
 		void DumpInitialize()
 		{
 			// output path
-			if(!FileIO::PathBuild(g_reports_path, false, 2, Settings::ReportsPath(), "CrashRpt"))
+			if (!FileIO::PathBuild(g_reports_path, false, 2, Settings::ReportsPath(), "CrashRpt"))
 			{
 				return;
 			}
-			else
+			// delete the reports directory
+			FileIO::DirectoryDelete(g_reports_path, true, true);
+			if (CreateDirectory(g_reports_path, nullptr) == FALSE)
 			{
-				// delete the reports directory
-				FileIO::DirectoryDelete(g_reports_path, true, true);
-				if(CreateDirectory(g_reports_path, nullptr) == FALSE)
-				{
-					return;
-				}
+				return;
 			}
 
 			// set up the freeze detection thread if requested
-			if(CMDLINE_GET_PARAM(freeze_dump).ParameterSet())
+			if (CMDLINE_GET_PARAM(freeze_dump).ParameterSet())
 			{
 				memset(&g_freeze_dump_globals, 0, sizeof(g_freeze_dump_globals));
 
 				g_freeze_dump_globals.m_wait.time = CMDLINE_GET_PARAM(freeze_dump).GetValue();
-				if(g_freeze_dump_globals.m_wait.time > 0.0f)
+				if (g_freeze_dump_globals.m_wait.time > 0.0f)
 				{
 					// if a delay has not been set, set the delay to elapsed
 					g_freeze_dump_globals.m_delay.time = CMDLINE_GET_PARAM(freeze_dump_delay).GetValue();
-					if(!(g_freeze_dump_globals.m_delay.time > 0.0f))
+					if (!(g_freeze_dump_globals.m_delay.time > 0.0f))
 					{
 						g_freeze_dump_globals.m_delay.elapsed = true;
 					}
@@ -392,10 +394,10 @@ namespace Yelo
 
 			// install the CrashRpt exception reporter
 			s_crash_report_options crashreport_options;
-			Debug::InitDefaultOptions(crashreport_options);
+			InitDefaultOptions(crashreport_options);
 
 			// save reports locally and do not show the crashrpt gui
-			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
+			if (CMDLINE_GET_PARAM(full_dump).ParameterSet())
 			{
 				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_flag);
 			}
@@ -403,22 +405,22 @@ namespace Yelo
 			crashreport_options.m_application_name = "OpenSauce Halo CE";
 			crashreport_options.m_reports_directory = g_reports_path;
 
-			if(Debug::InstallExceptionHandler(crashreport_options))
+			if (InstallExceptionHandler(crashreport_options))
 			{
 				// override the WinMain catch all exception filter
 				Memory::WriteRelativeCall(ExceptionFilter, GET_FUNC_VPTR(WINMAIN_EXCEPTION_FILTER_CALL), true);
 
 				// add custom properties to the report
-				Debug::AddPropertyToCrashReport("CommandLine", GetCommandLine());
+				AddPropertyToCrashReport("CommandLine", GetCommandLine());
 
 				// add the build date to the report
-				Debug::AddPropertyToCrashReport("BuildDate", K_OPENSAUCE_BUILD_DATE_STR);
+				AddPropertyToCrashReport("BuildDate", K_OPENSAUCE_BUILD_DATE_STR);
 
 				// add settings files to the report
 				char file_path[MAX_PATH];
-				if(Settings::GetSettingsFilePath(Settings::K_USER_FILENAME_XML, file_path))
+				if (Settings::GetSettingsFilePath(Settings::K_USER_FILENAME_XML, file_path))
 				{
-					Debug::AddFileToCrashReport(file_path, Settings::K_USER_FILENAME_XML, "User settings file");
+					AddFileToCrashReport(file_path, Settings::K_USER_FILENAME_XML, "User settings file");
 				}
 			}
 		}
@@ -426,7 +428,7 @@ namespace Yelo
 		/// <summary>	Clean up the crash handler and uninstall crasrpt. </summary>
 		void DumpDispose()
 		{
-			if(g_freeze_dump_globals.m_thread_running)
+			if (g_freeze_dump_globals.m_thread_running)
 			{
 				// stop the freeze dump thread
 				g_freeze_dump_globals.m_end_thread = true;
@@ -435,9 +437,9 @@ namespace Yelo
 			}
 
 			// uninstall the crashrpt exception handler
-			Debug::UninstallExceptionHandler();
+			UninstallExceptionHandler();
 		}
-#else
+		#else
 		static int WINAPI ExceptionFilter(PEXCEPTION_POINTERS ptrs)
 		{
 			typedef void (PLATFORM_API* proc_simple_function)(void);
@@ -446,9 +448,9 @@ namespace Yelo
 			bool disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
 
 			if (
-#ifdef API_DEBUG
+		#ifdef API_DEBUG
 				IsDebuggerPresent() ||
-#endif
+		#endif
 				disable_exception_handling
 				)
 			{
@@ -476,6 +478,6 @@ namespace Yelo
 		void DumpDispose() { }
 
 		void Update(real delta) { }
-#endif
+		#endif
 	};
 };

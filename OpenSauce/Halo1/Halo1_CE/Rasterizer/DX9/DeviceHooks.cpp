@@ -16,6 +16,7 @@
 #include <Rasterizer/PostProcessing/c_shader_include_manager.hpp>
 #include <Rasterizer/ShaderExtension/ShaderExtension.hpp>
 #include <yelolib/main/main_yelo_base.hpp>
+#include <Memory/1.10/Rasterizer.DX9.DeviceHooks.hpp>
 
 namespace Yelo
 {
@@ -23,10 +24,6 @@ namespace Yelo
 	{
 		namespace DeviceHooks
 		{
-			#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_DX9
-			#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_DEVICEHOOKS
-			#include "Memory/_EngineLayout.inl"
-
 			static bool g_corruption_hack_enabled = false;
 			static real g_corruption_hack_null_data[12264];
 

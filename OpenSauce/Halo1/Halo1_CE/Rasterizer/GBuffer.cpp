@@ -28,15 +28,12 @@
 #include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"
 #include "Objects/Objects.hpp"
+#include <Memory/1.10/Rasterizer.DX9.GBuffer.hpp>
 
 namespace Yelo
 {
 	namespace DX9
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_DX9
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_GBUFFER
-#include "Memory/_EngineLayout.inl"
-
 #pragma region Settings
 		class c_settings_container
 			: public Configuration::c_configuration_container

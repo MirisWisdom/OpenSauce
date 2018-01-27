@@ -11,15 +11,12 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Interface/Hud.hpp"
+#include <Memory/1.10/OpenSauce.MemoryFunctionInterface.hpp>
 
 namespace Yelo
 {
 	namespace Memory
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
-#define __EL_INCLUDE_FILE_ID	__EL_MEMORY_FUNCTION_INTERFACE
-#include "Memory/_EngineLayout.inl"
-
 #if !PLATFORM_IS_DEDI
 	#include "Memory/FunctionInterface.Client.inl"
 #endif

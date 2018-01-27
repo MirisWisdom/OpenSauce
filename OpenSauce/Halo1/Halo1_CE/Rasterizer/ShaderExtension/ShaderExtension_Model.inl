@@ -6,10 +6,6 @@
 */
 namespace Model
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADEREXTENSION
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION_MODEL
-#include "Memory/_EngineLayout.inl"
-
 	struct s_shader_feature_mix {
 		const _enum		feature_mask;
 		PAD16;

@@ -667,9 +667,6 @@
     <ClInclude Include="Memory\1.10\Networking.Server.hpp">
       <Filter>_Resources\1.10</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\1.10\TagGroups.TagGroups.hpp">
-      <Filter>_Resources\1.10</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.hpp">
       <Filter>_Resources\1.10</Filter>
     </ClInclude>
@@ -677,6 +674,33 @@
       <Filter>_Resources\1.10</Filter>
     </ClInclude>
     <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Effect.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\TagGroups.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.Lightmaps.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.Sky.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.DX9.DeviceHooks.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.DX9.GBuffer.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Rasterizer.DX9.VShaders.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\OpenSauce.DebugDump.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\OpenSauce.GameSystems.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\1.10\Objects.Units.hpp">
       <Filter>_Resources\1.10</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1653,9 +1677,6 @@
     <ClInclude Include="TagGroups\TagGroups.hpp">
       <Filter>TagGroups</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp">
-      <Filter>_Resources</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>_Resources</Filter>
     </ClInclude>
@@ -1967,9 +1988,6 @@
     <None Include="TagGroups\CacheFiles.YeloFiles.inl">
       <Filter>TagGroups\Impl</Filter>
     </None>
-    <None Include="Memory\_EngineLayout.inl">
-      <Filter>_Resources</Filter>
-    </None>
     <None Include="Halo1_CE.def">
       <Filter>_Resources</Filter>
     </None>
@@ -2015,12 +2033,6 @@
     <None Include="TagGroups\CacheFiles.Settings.inl">
       <Filter>TagGroups\Impl</Filter>
     </None>
-    <None Include="Memory\1.10\_EngineLayout.OpenSauce.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderDraw.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
     </None>
@@ -2035,15 +2047,6 @@
     </None>
     <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
       <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Objects.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Rasterizer.DX9.inl">
-      <Filter>_Resources\1.10</Filter>
-    </None>
-    <None Include="Memory\1.10\_EngineLayout.Rasterizer.inl">
-      <Filter>_Resources\1.10</Filter>
     </None>
     <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.EngineFunctions.inl">
       <Filter>_Resources\1.10\Pointers\Server</Filter>
@@ -2250,6 +2253,21 @@
       <Filter>_Resources\1.10</Filter>
     </None>
     <None Include="Memory\1.10\Rasterizer.ShaderExtension.Model.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Rasterizer.ShaderDraw.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Rasterizer.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Rasterizer.DX9.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\OpenSauce.MemoryFunctionInterface.hpp">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\Objects.hpp">
       <Filter>_Resources\1.10</Filter>
     </None>
   </ItemGroup>

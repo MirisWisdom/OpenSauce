@@ -10,18 +10,12 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib//shaders/shader_definitions.hpp>
 
-#include "Memory/MemoryInterface.hpp"
-
-#include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
+#include <Memory/1.10/Rasterizer.ShaderDraw.hpp>
 
 namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADERDRAW
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADERDRAW
-#include "Memory/_EngineLayout.inl"
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Environment shader lightmap draw. </summary>
 	///

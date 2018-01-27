@@ -9,19 +9,14 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <Memory/1.10/Rasterizer.Sky.hpp>
+#include <Memory/MemoryInterface.hpp>
+#include <TagGroups/TagGroups.hpp>
+#include <yelolib/render/sky/c_sky_manager.hpp>
 #include <blamlib/render/render.hpp>
-#include <YeloLib/render/sky/c_sky_manager.hpp>
-#include <blamlib/scenario/sky_definitions.hpp>
-
-#include "Memory/MemoryInterface.hpp"
-#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SKY
-#include "Memory/_EngineLayout.inl"
-
 	namespace Render { namespace Sky
 	{
 		static c_sky_manager g_sky_manager;
