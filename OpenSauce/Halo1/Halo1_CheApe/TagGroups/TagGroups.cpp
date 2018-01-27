@@ -23,54 +23,56 @@
 #include <yelolib/cseries/cseries_yelo_base.hpp>
 #include <yelolib/tag_files/tag_groups_markup.hpp>
 #include <yelolib/memory/memory_interface_base.hpp>
+#include <Memory/TagGroups.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-		tag_instance_data_t**	TagInstanceData()	DPTR_IMP_GET2(tag_instance_data);
-		tag_instance_data_t&	TagInstances()		DPTR_IMP_GET_BYREF(tag_instance_data);
+		tag_instance_data_t** TagInstanceData() DPTR_IMP_GET2(tag_instance_data);
+		tag_instance_data_t& TagInstances() DPTR_IMP_GET_BYREF(tag_instance_data);
+		s_tag_file_globals* TagFileGlobals() PTR_IMP_GET2(tag_file_globals);
 
-		s_tag_file_globals* TagFileGlobalsThreaded()			{ return TagFileGlobals() - 1; } // threaded globals actually appears in memory right before regular
-		s_tag_file_globals* TagFileGlobals()					PTR_IMP_GET2(tag_file_globals);
+		s_tag_file_globals* TagFileGlobalsThreaded()
+		{
+			return TagFileGlobals() - 1;
+		} // threaded globals actually appears in memory right before regular
 
-		Memory::s_byte_swap_definition* TagHeaderBsDefinition()	PTR_IMP_GET2(tag_header_bs_definition);
+		Memory::s_byte_swap_definition* TagHeaderBsDefinition() PTR_IMP_GET2(tag_header_bs_definition);
 
 		// Patches engine code to call our hooks or our implementations of various functions
 		static void InitializeHooks()
 		{
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/// <summary>	Glue for hooking an overloaded function. </summary>
-///
-/// <param name="blam_name">	Name of the function as it appears in the blam namespace. </param>
-/// <param name="func_name">	Name of the FUNC_PTR. </param>
-/// <param name="ret_type"> 	blam function's return type. </param>
-#define INIT_HOOK_BY_EXPLICIT_TYPE(blam_name, func_name, ret_type, ...) \
-	ret_type (PLATFORM_API* blam__##blam_name)(__VA_ARGS__) =			\
-		blam::blam_name;												\
-		Memory::WriteRelativeJmp(blam__##blam_name, GET_FUNC_VPTR(func_name), true);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Glue for hooking an overloaded function. </summary>
+			///
+			/// <param name="blam_name">	Name of the function as it appears in the blam namespace. </param>
+			/// <param name="func_name">	Name of the FUNC_PTR. </param>
+			/// <param name="ret_type"> 	blam function's return type. </param>
+			#define INIT_HOOK_BY_EXPLICIT_TYPE(blam_name, func_name, ret_type, ...) \
+				ret_type (PLATFORM_API* blam__##blam_name)(__VA_ARGS__) =			\
+					blam::blam_name;												\
+					Memory::WriteRelativeJmp(blam__##blam_name, GET_FUNC_VPTR(func_name), true);
 
 			Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
 			Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
 			Memory::WriteRelativeJmp(blam::tag_field_scan, GET_FUNC_VPTR(TAG_FIELD_SCAN), true);
 
-			INIT_HOOK_BY_EXPLICIT_TYPE(tag_iterator_new, TAG_ITERATOR_NEW,
-				void, s_tag_iterator&, tag);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_iterator_new, TAG_ITERATOR_NEW, void, s_tag_iterator&, tag);
 			Memory::WriteRelativeJmp(blam::tag_iterator_next, GET_FUNC_VPTR(TAG_ITERATOR_NEXT), true);
 
-			INIT_HOOK_BY_EXPLICIT_TYPE(tag_reference_set, TAG_REFERENCE_SET,
-				void, tag_reference&, tag, cstring);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_reference_set, TAG_REFERENCE_SET, void, tag_reference&, tag, cstring);
 
 			Memory::WriteRelativeJmp(blam::tag_data_load, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
-#if PLATFORM_TYPE != PLATFORM_TOOL
+			#if PLATFORM_TYPE != PLATFORM_TOOL
 			Memory::WriteRelativeJmp(blam::tag_data_unload, GET_FUNC_VPTR(TAG_DATA_UNLOAD), true);
-#endif
+			#endif
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_data_resize, TAG_DATA_RESIZE,
 				bool, tag_data*, int32);
 
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_delete_element, TAG_BLOCK_DELETE_ELEMENT,
 				void, tag_block*, int32);
-			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_resize, TAG_BLOCK_RESIZE, 
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_resize, TAG_BLOCK_RESIZE,
 				bool, tag_block*, int32);
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_add_element, TAG_BLOCK_ADD_ELEMENT,
 				int32, tag_block*);
@@ -85,15 +87,16 @@ namespace Yelo
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_reload, TAG_RELOAD,
 				datum_index, tag, cstring);
 
-#undef INIT_HOOK_BY_EXPLICIT_TYPE
+			#undef INIT_HOOK_BY_EXPLICIT_TYPE
 		}
+
 		API_FUNC_NAKED void Initialize()
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILES_OPEN);
 
 			__asm {
-				call	InitializeHooks
-				call	FUNCTION
+				call InitializeHooks
+				call FUNCTION
 				retn
 			}
 		}
@@ -105,16 +108,17 @@ namespace Yelo
 			cstring* type_names = type_names_list->strings;
 
 			// If this fails, something was fixed, or an address is wrong
-			YELO_ASSERT(type_names_list->count == Enums::k_number_of_shader_types && 
+			YELO_ASSERT(type_names_list->count == Enums::k_number_of_shader_types &&
 				type_names[Enums::k_number_of_shader_types-1]==nullptr && type_names[Enums::k_number_of_shader_types-2]==nullptr );
 
 			// chicago types were inserted after the 'generic' type, so we have to move everything up by two
-			for(_enum x = Enums::k_number_of_shader_types-1; x > Enums::_shader_type_transparent_chicago_extended; x--)
-				type_names[x] = type_names[x-2];
+			for (_enum x = Enums::k_number_of_shader_types - 1; x > Enums::_shader_type_transparent_chicago_extended; x--)
+				type_names[x] = type_names[x - 2];
 
 			type_names[Enums::_shader_type_transparent_chicago] = "transparent chicago";
 			type_names[Enums::_shader_type_transparent_chicago_extended] = "transparent chicago extended";
 		}
+
 		// weapon->magazines->objects errornously references the weapon->magazines format element proc (objects block can have more elements than magazines, which cases an assert in format)
 		// This fixes the supposed typo and instead uses the equipment field to be the block's name
 		static void InitializeFixesForWeaponGroup()
@@ -123,13 +127,13 @@ namespace Yelo
 
 			// field the weapon's magazines field
 			int32 field_index = weapon_group->header_block_definition->find_field_index(e_field_type::block, "magazines");
-			if(field_index != NONE)
+			if (field_index != NONE)
 			{
 				auto* magazines_block = weapon_group->header_block_definition->fields[field_index].get_definition<tag_block_definition>();
 
 				// find the magazine's magazine-objects field
 				field_index = magazines_block->find_field_index(e_field_type::block, "magazines");
-				if(field_index != NONE)
+				if (field_index != NONE)
 				{
 					tag_field& magazine_objects_field = magazines_block->fields[field_index];
 					magazine_objects_field.name = "magazine objects"; // give the field a more descriptive name
@@ -139,7 +143,7 @@ namespace Yelo
 
 					// find the magazine-object's equipment reference field
 					field_index = magazine_objects_block->find_field_index(e_field_type::tag_reference, "equipment");
-					if(field_index != NONE)
+					if (field_index != NONE)
 					{
 						tag_field& equipment_reference_field = magazine_objects_block->fields[field_index];
 						equipment_reference_field.name = "equipment^"; // set the name to include markup for 'block name' (since we zapped the, incorrect, format function for this block)
@@ -147,6 +151,7 @@ namespace Yelo
 				}
 			}
 		}
+
 		// unicode_string_list_string_reference_block's [unused1] references the unicode byteswap proc (which doesn't actually byteswap anything, code appears to be conditionally compiled out)
 		// However, the string tag_data_definition doesn't define a byteswap proc
 		// I'm going to assume this is a typo in the group definitions
@@ -157,12 +162,12 @@ namespace Yelo
 			tag_group* group = blam::tag_group_get('ustr');
 
 			int32 field_index = group->header_block_definition->find_field_index(e_field_type::block, "string reference");
-			if(field_index != NONE)
+			if (field_index != NONE)
 			{
 				auto* reference_block = group->header_block_definition->fields[field_index].get_definition<tag_block_definition>();
 
 				field_index = reference_block->find_field_index(e_field_type::data, "string");
-				if(field_index != NONE)
+				if (field_index != NONE)
 				{
 					tag_field& string_field = reference_block->fields[field_index];
 					auto* definition = string_field.get_definition<tag_data_definition>();
@@ -173,6 +178,7 @@ namespace Yelo
 				reference_block->unused1 = nullptr; // (erroneously?) references the unicode byte swap procedure
 			}
 		}
+
 		// NOTE: this is called from our implementation of tag_groups_initialize
 		void InitializeFixes()
 		{
@@ -187,14 +193,15 @@ namespace Yelo
 		}
 
 
-		API_FUNC_NAKED void tag_groups_set_model_upgrade_hack(BOOL hack_enabled)
+		API_FUNC_NAKED void tag_groups_set_model_upgrade_hack(
+			BOOL hack_enabled)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUPS_SET_MODEL_UPGRADE_HACK);
 
 			API_FUNC_NAKED_START()
-				push	hack_enabled
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1);
+				push hack_enabled
+				call FUNCTION
+				API_FUNC_NAKED_END_CDECL(1);
 		}
 	};
 
@@ -206,208 +213,272 @@ namespace Yelo
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILES_FLUSH);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			bool* is_readonly, uint32* crc, bool from_file_system)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_file_open(
+			tag group_tag,
+			cstring filename,
+			bool* is_readonly,
+			uint32* crc,
+			bool from_file_system)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_OPEN);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_file_read(int32 file_position, size_t buffer_size, void *buffer)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_file_read(
+			int32 file_position,
+			size_t buffer_size,
+			void* buffer)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_READ);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_file_read_only(tag group_tag, cstring name)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_file_read_only(
+			tag group_tag,
+			cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_READ_ONLY);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_file_exists(tag group_tag, cstring name)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_file_exists(
+			tag group_tag,
+			cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_EXISTS);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_file_get_file_reference(s_file_reference& reference,
-			tag group_tag, cstring name)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_file_get_file_reference(
+			s_file_reference& reference,
+			tag group_tag,
+			cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_EXISTS);
 
 			API_FUNC_NAKED_START()
-				push	esi
+				push esi
 
-				mov		esi, name
-				push	group_tag
-				push	reference
-				call	FUNCTION
-				add		esp, 4 * 2
+				mov esi, name
+				push group_tag
+				push reference
+				call FUNCTION
+				add esp, 4 * 2
 
-				pop		esi
+				pop esi
 			API_FUNC_NAKED_END(0)
 		}
+
 		//////////////////////////////////////////////////////////////////////////
 		// tag_files/tag_groups
-		char* tag_group_loading_error_string =			CAST_PTR(char*,  GET_DATA_PTR(TAG_LOAD_ERROR_STRING));
-		char** tag_group_loading_error_string_cursor =	CAST_PTR(char**, GET_DATA_PTR(TAG_LOAD_ERROR_STRING_CURSOR));
+		char* tag_group_loading_error_string = CAST_PTR(char*, GET_DATA_PTR(TAG_LOAD_ERROR_STRING));
+		char** tag_group_loading_error_string_cursor = CAST_PTR(char**, GET_DATA_PTR(TAG_LOAD_ERROR_STRING_CURSOR));
 
-		API_FUNC_NAKED tag PLATFORM_API tag_get_group_tag(datum_index tag_index)
+		API_FUNC_NAKED tag PLATFORM_API tag_get_group_tag(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_GROUP_TAG);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED tag_block* PLATFORM_API tag_get_root_block(datum_index tag_index)
+
+		API_FUNC_NAKED tag_block* PLATFORM_API tag_get_root_block(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_ROOT_BLOCK);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED cstring PLATFORM_API tag_get_name(datum_index tag_index)
+
+		API_FUNC_NAKED cstring PLATFORM_API tag_get_name(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_NAME);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED void PLATFORM_API tag_orphan(datum_index tag_index)
+
+		API_FUNC_NAKED void PLATFORM_API tag_orphan(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ORPHAN);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED datum_index PLATFORM_API tag_loaded(tag group_tag, cstring name)
+
+		API_FUNC_NAKED datum_index PLATFORM_API tag_loaded(
+			tag group_tag,
+			cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOADED);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
 
-		API_FUNC_NAKED TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
-			const tag_field* fields, void* fields_address)
+		API_FUNC_NAKED TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(
+			TagGroups::s_tag_field_scan_state& state,
+			const tag_field* fields,
+			void* fields_address)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN_STATE_NEW);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED void PLATFORM_API tag_field_scan_state_add_field_type(TagGroups::s_tag_field_scan_state& state, 
+
+		API_FUNC_NAKED void PLATFORM_API tag_field_scan_state_add_field_type(
+			TagGroups::s_tag_field_scan_state& state,
 			e_field_type::type_t field_type)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN_STATE_ADD_FIELD_TYPE);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_read_only(datum_index tag_index)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_read_only(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_READ_ONLY);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
 
 
-		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get_next(const tag_group* group)
+		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get_next(
+			const tag_group* group)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET_NEXT);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get(tag group_tag)
+
+		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get(
+			tag group_tag)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED void PLATFORM_API tag_rename(datum_index tag_index, cstring new_name)
+
+		API_FUNC_NAKED void PLATFORM_API tag_rename(
+			datum_index tag_index,
+			cstring new_name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RENAME);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED tag_block* PLATFORM_API tag_block_index_resolve(datum_index tag_index, tag_field* block_index_field, int32 index)
+
+		API_FUNC_NAKED tag_block* PLATFORM_API tag_block_index_resolve(
+			datum_index tag_index,
+			tag_field* block_index_field,
+			int32 index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INDEX_RESOLVE);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED uint32 PLATFORM_API tag_size(datum_index tag_index)
+
+		API_FUNC_NAKED uint32 PLATFORM_API tag_size(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_SIZE);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
+
 		API_FUNC_NAKED void PLATFORM_API tag_groups_dump_memory()
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUPS_DUMP_MEMORY);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
 
-		API_FUNC_NAKED uint32 PLATFORM_API tag_block_size(tag_block* block)
+		API_FUNC_NAKED uint32 PLATFORM_API tag_block_size(
+			tag_block* block)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_SIZE);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED void* PLATFORM_API tag_block_get_element(tag_block* block, int32 element_index)
+
+		API_FUNC_NAKED void* PLATFORM_API tag_block_get_element(
+			tag_block* block,
+			int32 element_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED const void* PLATFORM_API tag_block_get_element(const tag_block* block, int32 element_index)
+
+		API_FUNC_NAKED const void* PLATFORM_API tag_block_get_element(
+			const tag_block* block,
+			int32 element_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_save(datum_index tag_index)
+
+		API_FUNC_NAKED bool PLATFORM_API tag_save(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_SAVE);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED int32 PLATFORM_API tag_block_insert_element(tag_block* block, int32 index)
+
+		API_FUNC_NAKED int32 PLATFORM_API tag_block_insert_element(
+			tag_block* block,
+			int32 index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INSERT_ELEMENT);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
-		API_FUNC_NAKED int32 PLATFORM_API tag_block_duplicate_element(tag_block* block, int32 element_index)
+
+		API_FUNC_NAKED int32 PLATFORM_API tag_block_duplicate_element(
+			tag_block* block,
+			int32 element_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DUPLICATE_ELEMENT);
 
 			API_FUNC_NAKED_START()
-				push	esi
-			
-				push	block
-				call	tag_block_add_element
-				add		esp, 4 * 1
-				mov		esi, eax
-				cmp		esi, NULL_HANDLE
-				jz		fail
+				push esi
 
-				push	esi
-				push	block
-				push	element_index
-				push	block
-				call	FUNCTION
-				add		esp, 4 * 4
+				push block
+				call tag_block_add_element
+				add esp, 4 * 1
+				mov esi, eax
+				cmp esi, NULL_HANDLE
+				jz fail
 
-	fail:
-				mov		eax, esi
+				push esi
+				push block
+				push element_index
+				push block
+				call FUNCTION
+				add esp, 4 * 4
 
-				pop		esi
+				fail:
+				mov eax, esi
+
+				pop esi
 			API_FUNC_NAKED_END_()//(2);
 		}
 
-		API_FUNC_NAKED void PLATFORM_API tag_load_children(datum_index tag_index)
+		API_FUNC_NAKED void PLATFORM_API tag_load_children(
+			datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD_CHILDREN);
 
-			__asm	jmp	FUNCTION
+			__asm jmp FUNCTION
 		}
 	};
 };

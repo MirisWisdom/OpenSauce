@@ -9,7 +9,6 @@
 #if !PLATFORM_IS_DEDI
 #include "Memory/1.10/Pointers/HaloCE_110_Runtime.Rasterizer.ShaderExtension.inl"
 #include "Memory/1.10/Pointers/HaloCE_110_Runtime_Manual.Rasterizer.ShaderExtension.inl"
-#endif
 
 #include <YeloLib/memory/memory_interface_base.hpp>
 #include <Memory/MemoryInterface.hpp>
@@ -37,3 +36,4 @@ namespace Yelo
 		}
 	}
 }
+#endif

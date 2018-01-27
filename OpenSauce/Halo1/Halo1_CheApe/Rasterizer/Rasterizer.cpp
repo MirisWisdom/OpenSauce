@@ -14,10 +14,6 @@
 
 namespace Yelo
 {
-#define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER
-#define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_RASTERIZER
-#include "Memory/_EngineLayout.inl"
-
 	namespace Render
 	{
 #if PLATFORM_TYPE == PLATFORM_SAPIEN

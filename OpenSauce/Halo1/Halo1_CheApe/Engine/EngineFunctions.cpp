@@ -29,6 +29,7 @@
 #include <YeloLib/saved_games/game_state_yelo.hpp>
 
 #include "Engine/Objects.hpp"
+#include <Memory/Game.hpp>
 
 namespace Yelo
 {

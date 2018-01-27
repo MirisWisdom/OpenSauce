@@ -10,6 +10,8 @@
 namespace Yelo
 {
 	namespace Rasterizer { namespace DX9 {
+		typedef IDirect3D9* (WINAPI *D3DC9)(UINT);
+
 		void Initialize();
 		void Dispose();
 
