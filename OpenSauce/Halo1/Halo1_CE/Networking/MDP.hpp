@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <Memory/1.10/Networking.MDP.hpp>
+#include <Pointers/Networking.MDP.hpp>
 
 #define GET_NEW_MDP_DEFINITION(name) mdp_definition_##name
 

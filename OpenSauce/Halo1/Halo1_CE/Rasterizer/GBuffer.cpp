@@ -28,7 +28,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"
 #include "Objects/Objects.hpp"
-#include <Memory/1.10/Rasterizer.DX9.GBuffer.hpp>
+#include <Pointers/Rasterizer.DX9.GBuffer.hpp>
 
 namespace Yelo
 {

@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Networking/Server.hpp"
 
-#include <Memory/1.10/Networking.Server.hpp>
+#include <Pointers/Networking.Server.hpp>
 
 namespace Yelo
 {

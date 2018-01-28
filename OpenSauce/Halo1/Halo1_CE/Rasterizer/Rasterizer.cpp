@@ -19,7 +19,7 @@
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 #include <Interface/Hud.hpp>
 #include <Interface/OpenSauceUI.hpp>
-#include <Memory/1.10/Rasterizer.hpp>
+#include <Pointers/Rasterizer.hpp>
 
 namespace Yelo
 {

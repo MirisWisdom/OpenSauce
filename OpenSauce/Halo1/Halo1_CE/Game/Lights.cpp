@@ -8,7 +8,7 @@
 #include "Game/Lights.hpp"
 
 #include "Memory/MemoryInterface.hpp"
-#include <Memory/1.10/Game.Lights.hpp>
+#include <Pointers/Game.Lights.hpp>
 
 namespace Yelo
 {

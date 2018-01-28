@@ -10,7 +10,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"
-#include <Memory/1.10/Interface.Keystone.hpp>
+#include <Pointers/Interface.Keystone.hpp>
 
 namespace Yelo
 {

@@ -9,7 +9,7 @@
 
 #ifndef PLATFORM_NO_DX9
 #include <blamlib/cseries/errors.hpp>
-#include <Memory/Rasterizer.DX9.hpp>
+#include <Pointers/Rasterizer.DX9.hpp>
 
 namespace Yelo
 {

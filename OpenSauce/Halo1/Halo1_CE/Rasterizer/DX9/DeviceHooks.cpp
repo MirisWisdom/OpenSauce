@@ -16,7 +16,7 @@
 #include <Rasterizer/PostProcessing/c_shader_include_manager.hpp>
 #include <Rasterizer/ShaderExtension/ShaderExtension.hpp>
 #include <yelolib/main/main_yelo_base.hpp>
-#include <Memory/1.10/Rasterizer.DX9.DeviceHooks.hpp>
+#include <Pointers/Rasterizer.DX9.DeviceHooks.hpp>
 
 namespace Yelo
 {

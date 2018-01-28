@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="_Resources">
-      <UniqueIdentifier>{9eeca5d4-3206-4fc6-bd01-2477b3eda08f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{d92ff3dc-b126-4179-8569-6c088cd6cfe8}</UniqueIdentifier>
     </Filter>
@@ -36,9 +33,6 @@
     </Filter>
     <Filter Include="Rasterizer\DX9\Impl">
       <UniqueIdentifier>{0807e74c-2d8c-4e32-a400-56473b4ab073}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Resources\Impl">
-      <UniqueIdentifier>{5ab94466-27b4-4dbe-a323-f7d0e58894d8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{76969aab-4c97-46f4-860a-0b1ed7f2c231}</UniqueIdentifier>
@@ -78,6 +72,9 @@
     </Filter>
     <Filter Include="TagGroups\TagFieldReplacements">
       <UniqueIdentifier>{c8e3064a-4333-4552-9af6-6bbe60baaa50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pointers">
+      <UniqueIdentifier>{d43ddf9f-c794-46d2-874b-fd9f13517a89}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -480,11 +477,26 @@
     <ClInclude Include="Tool\RemoveOSTagData.hpp">
       <Filter>Tool</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\Objects.GrenadeTypesUpgrade.hpp">
-      <Filter>_Resources\Impl</Filter>
+    <ClInclude Include="Pointers\OpenSauce.CheApeInterface.hpp">
+      <Filter>Pointers</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\OpenSauce.CheApeInterface.hpp">
-      <Filter>_Resources\Impl</Filter>
+    <ClInclude Include="Pointers\OpenSauce.DebugDump.hpp">
+      <Filter>Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointers\Rasterizer.DX9.hpp">
+      <Filter>Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointers\Rasterizer.hpp">
+      <Filter>Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointers\TagGroups.hpp">
+      <Filter>Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointers\Game.hpp">
+      <Filter>Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointers\Objects.GrenadeTypesUpgrade.hpp">
+      <Filter>Pointers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -547,21 +559,6 @@
     </None>
     <None Include="Tool\RemoveOSTagData.inl">
       <Filter>Tool\Impl</Filter>
-    </None>
-    <None Include="Memory\Game.hpp">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\OpenSauce.DebugDump.hpp">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\Rasterizer.DX9.hpp">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\Rasterizer.hpp">
-      <Filter>_Resources\Impl</Filter>
-    </None>
-    <None Include="Memory\TagGroups.hpp">
-      <Filter>_Resources\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

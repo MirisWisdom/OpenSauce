@@ -9,7 +9,7 @@
 
 #include <blamlib/tag_files/tag_group.h>
 #include <CheApeInterface.hpp>
-#include <Memory/OpenSauce.CheApeInterface.hpp>
+#include <Pointers/OpenSauce.CheApeInterface.hpp>
 #include <Psapi.h>
 #include <TagGroups/TagGroups.hpp>
 #include <zlib/zlib.h>

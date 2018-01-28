@@ -16,7 +16,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
-#include <Memory/1.10/Game.GameEngine.hpp>
+#include <Pointers/Game.GameEngine.hpp>
 
 namespace Yelo
 {

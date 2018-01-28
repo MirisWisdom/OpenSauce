@@ -16,7 +16,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
-#include <Memory/1.10/Game.Scripting.hpp>
+#include <Pointers/Game.Scripting.hpp>
 
 namespace Yelo
 {

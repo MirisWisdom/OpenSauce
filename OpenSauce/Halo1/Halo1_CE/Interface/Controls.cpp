@@ -10,7 +10,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Interface/OpenSauceUI.hpp"
-#include <Memory/1.10/Interface.Input.hpp>
+#include <Pointers/Interface.Input.hpp>
 
 namespace Yelo
 {

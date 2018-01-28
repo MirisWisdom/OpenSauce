@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Memory/1.10/Rasterizer.Sky.hpp>
+#include <Pointers/Rasterizer.Sky.hpp>
 #include <Memory/MemoryInterface.hpp>
 #include <TagGroups/TagGroups.hpp>
 #include <yelolib/render/sky/c_sky_manager.hpp>

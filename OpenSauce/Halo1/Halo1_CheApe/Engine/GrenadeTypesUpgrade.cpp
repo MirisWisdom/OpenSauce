@@ -19,7 +19,7 @@
 #include <blamlib/units/unit_structures.hpp>
 #include <Engine/EngineFunctions.hpp>
 #include <yelolib/tag_files/tag_groups_base_yelo.hpp>
-#include <Memory/Objects.GrenadeTypesUpgrade.hpp>
+#include <Pointers/Objects.GrenadeTypesUpgrade.hpp>
 
 namespace Yelo
 {

@@ -29,7 +29,7 @@
 #include "Memory/MemoryInterface.hpp"
 
 #include "Objects/Objects.hpp"
-#include <Memory/1.10/Objects.Units.hpp>
+#include <Pointers/Objects.Units.hpp>
 
 #include "Objects/Units.SeatBoarding.inl"
 #include "Objects/Units.SeatDamage.inl"

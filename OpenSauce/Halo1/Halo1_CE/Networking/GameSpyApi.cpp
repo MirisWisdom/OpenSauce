@@ -8,7 +8,7 @@
 #include "Networking/GameSpyApi.hpp"
 
 #include "Game/GameState.hpp"
-#include <Memory/1.10/Networking.GameSpyApi.hpp>
+#include <Pointers/Networking.GameSpyApi.hpp>
 
 namespace Yelo
 {

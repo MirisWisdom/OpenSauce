@@ -76,6 +76,14 @@
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
     <ClCompile>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='DebugGuerilla|Win32'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='DebugSapien|Win32'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='DebugTool|Win32'">true</MultiProcessorCompilation>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</MinimalRebuild>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='DebugGuerilla|Win32'">false</MinimalRebuild>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='DebugSapien|Win32'">false</MinimalRebuild>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='DebugTool|Win32'">false</MinimalRebuild>
     </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
@@ -168,8 +176,13 @@
     <ClInclude Include="Guerilla\guerilla_application_extensions.hpp" />
     <ClInclude Include="Guerilla\string_dialog_extensions.hpp" />
     <ClInclude Include="Guerilla\tag_reference_dialog_extensions.hpp" />
-    <ClInclude Include="Memory\Objects.GrenadeTypesUpgrade.hpp" />
-    <ClInclude Include="Memory\OpenSauce.CheApeInterface.hpp" />
+    <ClInclude Include="Pointers\Game.hpp" />
+    <ClInclude Include="Pointers\Objects.GrenadeTypesUpgrade.hpp" />
+    <ClInclude Include="Pointers\OpenSauce.CheApeInterface.hpp" />
+    <ClInclude Include="Pointers\OpenSauce.DebugDump.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.DX9.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.hpp" />
+    <ClInclude Include="Pointers\TagGroups.hpp" />
     <ClInclude Include="Settings\SettingsSapien.hpp" />
     <ClInclude Include="Settings\SettingsTool.hpp" />
     <ClInclude Include="Settings\Settings.hpp" />
@@ -252,11 +265,6 @@
     <None Include="Tool\BuildCacheFile\TagPreprocess_PostProcessing.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_ShaderExtension.inl" />
     <None Include="Rasterizer\DX9\DX9.Tool.inl" />
-    <None Include="Memory\Game.hpp" />
-    <None Include="Memory\OpenSauce.DebugDump.hpp" />
-    <None Include="Memory\Rasterizer.DX9.hpp" />
-    <None Include="Memory\Rasterizer.hpp" />
-    <None Include="Memory\TagGroups.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CheApe_Readme.txt" />

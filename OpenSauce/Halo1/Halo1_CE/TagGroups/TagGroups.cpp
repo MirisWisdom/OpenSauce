@@ -11,7 +11,7 @@
 #include <blamlib/cache/cache_files_structures.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <Memory/1.10/TagGroups.hpp>
+#include <Pointers/TagGroups.hpp>
 
 namespace Yelo
 {

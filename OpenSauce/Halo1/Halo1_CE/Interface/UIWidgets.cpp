@@ -12,7 +12,7 @@
 #include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <Memory/1.10/Interface.UIWidgets.hpp>
+#include <Pointers/Interface.UIWidgets.hpp>
 
 namespace Yelo
 {

@@ -44,7 +44,7 @@
 #include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <yelolib/shell/shell_windows_command_line.hpp>
 #include <Networking/HTTP/HTTPServer.hpp>
-#include <Memory/1.10/Game.GameState.hpp>
+#include <Pointers/Game.GameState.hpp>
 
 namespace Yelo
 {

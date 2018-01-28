@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Memory/1.10/Rasterizer.DX9.hpp>
+#include <Pointers/Rasterizer.DX9.hpp>
 #include <yelolib/cseries/pc_crashreport.hpp>
 #include <yelolib/memory/memory_interface_base.hpp>
 

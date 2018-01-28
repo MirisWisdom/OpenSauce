@@ -17,7 +17,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MessageDefinitions.hpp"
 #include "Networking/Networking.hpp"
-#include <Memory/1.10/Networking.MessageDeltas.hpp>
+#include <Pointers/Networking.MessageDeltas.hpp>
 
 namespace Yelo
 {

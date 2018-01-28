@@ -24,7 +24,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/GameSpyApi.hpp"
 #include "Networking/MessageDeltas.hpp"
-#include <Memory/1.10/Networking.hpp>
+#include <Pointers/Networking.hpp>
 
 namespace Yelo
 {

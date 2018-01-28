@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
-#include <Memory/1.10/Rasterizer.ShaderExtension.hpp>
+#include <Pointers/Rasterizer.ShaderExtension.hpp>
 
 #if !PLATFORM_IS_DEDI
 
@@ -30,9 +30,9 @@
 #include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Scenario/Scenario.hpp"
-#include <Memory/1.10/Rasterizer.ShaderExtension.Model.hpp>
-#include <Memory/1.10/Rasterizer.ShaderExtension.Environment.hpp>
-#include <Memory/1.10/Rasterizer.ShaderExtension.Effect.hpp>
+#include <Pointers/Rasterizer.ShaderExtension.Model.hpp>
+#include <Pointers/Rasterizer.ShaderExtension.Environment.hpp>
+#include <Pointers/Rasterizer.ShaderExtension.Effect.hpp>
 
 using namespace Yelo::Configuration;
 

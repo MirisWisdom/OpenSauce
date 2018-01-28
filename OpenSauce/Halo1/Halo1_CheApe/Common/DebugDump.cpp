@@ -17,7 +17,7 @@
 #include "Settings/SettingsTool.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Engine/EngineFunctions.hpp"
-#include <Memory/OpenSauce.DebugDump.hpp>
+#include <Pointers/OpenSauce.DebugDump.hpp>
 
 namespace Yelo
 {
