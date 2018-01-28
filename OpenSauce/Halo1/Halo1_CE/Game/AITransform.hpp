@@ -18,18 +18,18 @@ namespace Yelo
 		namespace Transform
 		{
 			void UnitUpdate(
-				const datum_index unit_index);
+				datum_index unit_index);
 
 			void UnitDamaged(
-				const datum_index unit_index,
-				const Objects::s_damage_data*const damage_data);
+				datum_index unit_index,
+				const Objects::s_damage_data* damage_data);
 
 			void Initialize();
 			void InitializeForNewGameState();
 			void InitializeForNewMap();
 			void DisposeFromOldMap();
 			void HandleGameStateLifeCycle(
-				const _enum life_state);
+				_enum life_state);
 
 			bool& TransformsEnabled();
 

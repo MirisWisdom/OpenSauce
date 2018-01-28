@@ -23,10 +23,8 @@ namespace Yelo
 		squads_data_t& Squads();
 		platoons_data_t& Platoons();
 		ai_pursuit_data_t& Pursuits();
-
-		//ai_communication_dialogue_events_t*	AICommunicationDialogue();
-		ai_communication_reply_events_t& AICommunicationReplies();
-		ai_conversation_data_t& AIConversations();
+		ai_communication_reply_events_t& CommunicationReplies();
+		ai_conversation_data_t& Conversations();
 
 		void Initialize();
 		void Dispose();
@@ -43,7 +41,7 @@ namespace Yelo
 
 		void ObjectsUpdate();
 		void UnitDamageAftermath(
-			const datum_index object_index,
-			const Objects::s_damage_data* const damage_data);
+			datum_index object_index,
+			const Objects::s_damage_data* damage_data);
 	};
 };

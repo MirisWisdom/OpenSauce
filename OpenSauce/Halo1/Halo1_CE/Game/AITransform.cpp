@@ -35,14 +35,15 @@ namespace Yelo
 
 			void Initialize()
 			{
-				Objects::Units::Animations::SetAnimationStateKeyframeHandler(
-					Enums::_unit_animation_state_yelo_unit_transforming,
-					[](
+				const auto handler = [](
 					const datum_index unit_index,
 					const Enums::unit_animation_keyframe keyframe)
-					{
-						g_actor_variant_transform_manager.TriggerUnitTransformKeyframe(unit_index, keyframe);
-					});
+				{
+					g_actor_variant_transform_manager.TriggerUnitTransformKeyframe(unit_index, keyframe);
+				};
+				Objects::Units::Animations::SetAnimationStateKeyframeHandler(
+					Enums::_unit_animation_state_yelo_unit_transforming,
+					handler);
 			}
 
 			void InitializeForNewGameState()
@@ -87,7 +88,10 @@ namespace Yelo
 
 				TypeHolder result;
 
-				result.boolean = g_actor_variant_transform_manager.TransformActor(args->unit_index, args->transform_name, args->target_name);
+				result.boolean = g_actor_variant_transform_manager.TransformActor(
+					args->unit_index,
+					args->transform_name,
+					args->target_name);
 
 				return result.pointer;
 			}
@@ -104,7 +108,10 @@ namespace Yelo
 
 				TypeHolder result;
 
-				result.boolean = g_actor_variant_transform_manager.TransformActors(args->unit_list_index, args->transform_name, args->target_name);
+				result.boolean = g_actor_variant_transform_manager.TransformActors(
+					args->unit_list_index,
+					args->transform_name,
+					args->target_name);
 
 				return result.pointer;
 			}
@@ -122,7 +129,11 @@ namespace Yelo
 
 				TypeHolder result;
 
-				result.boolean = g_actor_variant_transform_manager.TransformActorsByType(args->unit_list_index, args->tag_index, args->transform_name, args->target_name);
+				result.boolean = g_actor_variant_transform_manager.TransformActorsByType(
+					args->unit_list_index,
+					args->tag_index,
+					args->transform_name,
+					args->target_name);
 
 				return result.pointer;
 			}
@@ -137,7 +148,8 @@ namespace Yelo
 
 				TypeHolder result;
 
-				result.boolean = g_actor_variant_transform_manager.ActorIsTransforming(args->unit_index);
+				result.boolean = g_actor_variant_transform_manager.ActorIsTransforming(
+					args->unit_index);
 
 				return result.pointer;
 			}

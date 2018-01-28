@@ -26,11 +26,9 @@ namespace Yelo
 		encounter_data_t& Encounters() DPTR_IMP_GET_BYREF(encounters);
 		squads_data_t& Squads() DPTR_IMP_GET_BYREF(squads);
 		platoons_data_t& Platoons() DPTR_IMP_GET_BYREF(platoons);
-		ai_pursuit_data_t& AIPursuits() DPTR_IMP_GET_BYREF(ai_pursuits);
-
-		//ai_communication_dialogue_events_t
-		ai_communication_reply_events_t& AICommunicationReplies() DPTR_IMP_GET_BYREF(ai_communication_replies);
-		ai_conversation_data_t& AIConversations() DPTR_IMP_GET_BYREF(ai_conversations);
+		ai_pursuit_data_t& Pursuits() DPTR_IMP_GET_BYREF(ai_pursuits);
+		ai_communication_reply_events_t& CommunicationReplies() DPTR_IMP_GET_BYREF(ai_communication_replies);
+		ai_conversation_data_t& Conversations() DPTR_IMP_GET_BYREF(ai_conversations);
 
 		API_FUNC_NAKED void ActorActionHandleVehicleExitHook()
 		{
@@ -103,9 +101,6 @@ namespace Yelo
 
 		void Initialize()
 		{
-			#if !PLATFORM_DISABLE_UNUSED_CODE
-			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
-			#endif
 			Memory::WriteRelativeJmp(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
 			Memory::WriteRelativeJmp(&PropStatusRefreshHook, GET_FUNC_VPTR(PROP_STATUS_REFRESH_HOOK), true);
 			Memory::WriteRelativeJmp(&ActorInputUpdateHook, GET_FUNC_VPTR(ACTOR_INPUT_UPDATE_HOOK), true);
@@ -142,7 +137,7 @@ namespace Yelo
 		{
 			Objects::c_object_iterator iter(Enums::_object_type_mask_unit);
 
-			for (auto object_index : iter)
+			for (const auto& object_index : iter)
 			{
 				Transform::UnitUpdate(object_index.index);
 			}
