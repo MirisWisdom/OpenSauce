@@ -12,7 +12,7 @@
 
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
-#include <Memory/1.10/Rasterizer.ShaderDraw.hpp>
+#include <Pointers/Rasterizer.ShaderDraw.hpp>
 
 namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 {

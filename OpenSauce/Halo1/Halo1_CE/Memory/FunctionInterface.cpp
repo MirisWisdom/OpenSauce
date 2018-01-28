@@ -11,7 +11,7 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Interface/Hud.hpp"
-#include <Memory/1.10/OpenSauce.MemoryFunctionInterface.hpp>
+#include <Pointers/OpenSauce.MemoryFunctionInterface.hpp>
 
 namespace Yelo
 {

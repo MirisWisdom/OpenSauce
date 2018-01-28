@@ -8,7 +8,7 @@
 #include "Scenario/Scenario.hpp"
 
 #include <blamlib/scenario/scenario.hpp>
-#include <Memory/1.10/Scenario.hpp>
+#include <Pointers/Scenario.hpp>
 #include <blamlib/scenario/scenario_definitions.hpp>
 #include <blamlib/scenario/scenario_structures.hpp>
 

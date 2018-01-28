@@ -13,7 +13,7 @@
 
 #include "Settings/Settings.hpp"
 #include "Game/GameState.hpp"
-#include <Memory/1.10/Game.BuildNumber.hpp>
+#include <Pointers/Game.BuildNumber.hpp>
 
 namespace Yelo
 {

@@ -23,7 +23,7 @@
 #include <yelolib/cseries/cseries_yelo_base.hpp>
 #include <yelolib/tag_files/tag_groups_markup.hpp>
 #include <yelolib/memory/memory_interface_base.hpp>
-#include <Memory/TagGroups.hpp>
+#include <Pointers/TagGroups.hpp>
 
 namespace Yelo
 {

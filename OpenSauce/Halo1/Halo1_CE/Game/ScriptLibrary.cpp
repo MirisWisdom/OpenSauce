@@ -28,7 +28,7 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingScripting.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
-#include <Memory/1.10/Game.ScriptLibrary.hpp>
+#include <Pointers/Game.ScriptLibrary.hpp>
 
 #if PLATFORM_IS_DEDI
 #include "Networking/HTTP/HTTPServer.hpp"

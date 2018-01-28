@@ -75,7 +75,7 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 #endif
 #include "Networking/HTTP/HTTPClient.hpp"
-#include <Memory/1.10/OpenSauce.GameSystems.hpp>
+#include <Pointers/OpenSauce.GameSystems.hpp>
 
 namespace Yelo
 {

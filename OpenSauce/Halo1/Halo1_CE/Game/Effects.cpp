@@ -11,7 +11,7 @@
 
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
-#include <Memory/1.10/Game.Effects.hpp>
+#include <Pointers/Game.Effects.hpp>
 
 namespace Yelo
 {

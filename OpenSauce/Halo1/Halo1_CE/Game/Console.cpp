@@ -8,7 +8,7 @@
 #include "Game/Console.hpp"
 
 #include "Memory/MemoryInterface.hpp"
-#include <Memory/1.10/Game.Console.hpp>
+#include <Pointers/Game.Console.hpp>
 
 namespace Yelo
 {

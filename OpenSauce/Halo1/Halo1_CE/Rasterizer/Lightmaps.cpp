@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <Memory/1.10/Rasterizer.Lightmaps.hpp>
+#include <Pointers/Rasterizer.Lightmaps.hpp>
 #include <blamlib/bitmaps/bitmap_definition.hpp>
 #include "DX9/DX9.hpp"
 #include <Rasterizer/ShaderExtension/ShaderExtension.hpp>

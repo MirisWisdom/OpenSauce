@@ -32,7 +32,7 @@
 #include "Game/Players.hpp"
 #include "Networking/MessageDeltas.hpp"
 #include "Objects/Objects.hpp"
-#include <Memory/1.10/Interface.GameUI.hpp>
+#include <Pointers/Interface.GameUI.hpp>
 
 namespace Yelo
 {

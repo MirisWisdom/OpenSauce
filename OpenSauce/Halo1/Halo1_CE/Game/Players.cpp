@@ -25,7 +25,7 @@
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
 #include "Scenario/Scenario.hpp"
-#include <Memory/1.10/Game.Players.hpp>
+#include <Pointers/Game.Players.hpp>
 
 namespace Yelo
 {

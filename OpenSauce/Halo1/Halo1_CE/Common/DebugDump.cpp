@@ -10,7 +10,7 @@
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
 #include <YeloLib/shell/shell_windows_command_line.hpp>
-#include <Memory/1.10/OpenSauce.DebugDump.hpp>
+#include <Pointers/OpenSauce.DebugDump.hpp>
 
 #if PLATFORM_IS_USER
 #include <blamlib/main/console.hpp>

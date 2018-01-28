@@ -17,7 +17,7 @@
 #include "Objects/Units.hpp"
 
 #include "Game/AI.Transform.inl"
-#include <Memory/1.10/Game.AI.hpp>
+#include <Pointers/Game.AI.hpp>
 
 namespace Yelo
 {

@@ -63,11 +63,15 @@
     <ClCompile>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='DebugDedi|Win32'">true</MultiProcessorCompilation>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='DebugDedi|Win32'">false</MinimalRebuild>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Client' ">
     <ClCompile>
       <PreprocessorDefinitions>DX_WRAPPER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</MultiProcessorCompilation>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</MinimalRebuild>
     </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Client' ">
@@ -595,37 +599,6 @@
     <ClInclude Include="Interface\OpenSauceUI\Screen\screen_ids.hpp" />
     <ClInclude Include="Interface\PositionState.h" />
     <ClInclude Include="Interface\UIWidgets.hpp" />
-    <ClInclude Include="Memory\1.10\Game.BuildNumber.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Camera.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Campaign.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Console.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Effects.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Fov.hpp" />
-    <ClInclude Include="Memory\1.10\Game.GameEngine.hpp" />
-    <ClInclude Include="Memory\1.10\Game.GameState.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Lights.hpp" />
-    <ClInclude Include="Memory\1.10\Game.Players.hpp" />
-    <ClInclude Include="Memory\1.10\Game.ScriptLibrary.hpp" />
-    <ClInclude Include="Memory\1.10\Interface.GameUI.hpp" />
-    <ClInclude Include="Memory\1.10\Interface.Hud.hpp" />
-    <ClInclude Include="Memory\1.10\Interface.Keystone.hpp" />
-    <ClInclude Include="Memory\1.10\Interface.UIWidgets.hpp" />
-    <ClInclude Include="Memory\1.10\Networking.GameSpyApi.hpp" />
-    <ClInclude Include="Memory\1.10\Networking.hpp" />
-    <ClInclude Include="Memory\1.10\Networking.MessageDeltas.hpp" />
-    <ClInclude Include="Memory\1.10\Networking.Server.hpp" />
-    <ClInclude Include="Memory\1.10\Objects.Units.hpp" />
-    <ClInclude Include="Memory\1.10\OpenSauce.DebugDump.hpp" />
-    <ClInclude Include="Memory\1.10\OpenSauce.GameSystems.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.DX9.VShaders.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.DX9.DeviceHooks.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.DX9.GBuffer.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.Lightmaps.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Effect.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.Environment.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.ShaderExtension.hpp" />
-    <ClInclude Include="Memory\1.10\Rasterizer.Sky.hpp" />
-    <ClInclude Include="Memory\1.10\TagGroups.hpp" />
     <ClInclude Include="Memory\FunctionInterface.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />
     <ClInclude Include="Networking\GameSpyApi.hpp" />
@@ -652,6 +625,50 @@
     <ClInclude Include="Objects\Objects.hpp" />
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
+    <ClInclude Include="Pointers\Game.AI.hpp" />
+    <ClInclude Include="Pointers\Game.BuildNumber.hpp" />
+    <ClInclude Include="Pointers\Game.Camera.hpp" />
+    <ClInclude Include="Pointers\Game.Campaign.hpp" />
+    <ClInclude Include="Pointers\Game.Console.hpp" />
+    <ClInclude Include="Pointers\Game.Effects.hpp" />
+    <ClInclude Include="Pointers\Game.EngineFunctions.hpp" />
+    <ClInclude Include="Pointers\Game.Fov.hpp" />
+    <ClInclude Include="Pointers\Game.GameEngine.hpp" />
+    <ClInclude Include="Pointers\Game.GameState.hpp" />
+    <ClInclude Include="Pointers\Game.Lights.hpp" />
+    <ClInclude Include="Pointers\Game.Players.hpp" />
+    <ClInclude Include="Pointers\Game.Scripting.hpp" />
+    <ClInclude Include="Pointers\Game.ScriptLibrary.hpp" />
+    <ClInclude Include="Pointers\Interface.GameUI.hpp" />
+    <ClInclude Include="Pointers\Interface.Hud.hpp" />
+    <ClInclude Include="Pointers\Interface.Input.hpp" />
+    <ClInclude Include="Pointers\Interface.Keystone.hpp" />
+    <ClInclude Include="Pointers\Interface.UIWidgets.hpp" />
+    <ClInclude Include="Pointers\Networking.GameSpyApi.hpp" />
+    <ClInclude Include="Pointers\Networking.hpp" />
+    <ClInclude Include="Pointers\Networking.MDP.hpp" />
+    <ClInclude Include="Pointers\Networking.MessageDeltas.hpp" />
+    <ClInclude Include="Pointers\Networking.Server.hpp" />
+    <ClInclude Include="Pointers\Objects.hpp" />
+    <ClInclude Include="Pointers\Objects.Units.hpp" />
+    <ClInclude Include="Pointers\OpenSauce.DebugDump.hpp" />
+    <ClInclude Include="Pointers\OpenSauce.GameSystems.hpp" />
+    <ClInclude Include="Pointers\OpenSauce.MemoryFunctionInterface.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.DX9.DeviceHooks.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.DX9.GBuffer.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.DX9.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.DX9.VShaders.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.Lightmaps.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.ShaderDraw.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.ShaderExtension.Effect.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.ShaderExtension.Environment.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.ShaderExtension.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.ShaderExtension.Model.hpp" />
+    <ClInclude Include="Pointers\Rasterizer.Sky.hpp" />
+    <ClInclude Include="Pointers\Scenario.hpp" />
+    <ClInclude Include="Pointers\TagGroups.CacheFiles.hpp" />
+    <ClInclude Include="Pointers\TagGroups.hpp" />
     <ClInclude Include="Rasterizer\Lightmaps.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
     <ClInclude Include="Rasterizer\Sky.hpp" />
@@ -776,55 +793,6 @@
     <None Include="Game\Players.NetworkPlayerUnit.inl" />
     <None Include="Game\Players.Scripting.inl" />
     <None Include="Interface\Hud.hpp" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.EngineFunctions.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.HS.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Game.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Networking.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Objects.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.OpenSauce.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.Scenario.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi.TagGroups.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Game.HS.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Game.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.Networking.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.EngineFunctions.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.HS.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Game.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Interface.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Networking.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Objects.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.OpenSauce.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.DX9.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.ShaderDraw.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Rasterizer.ShaderExtension.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.Scenario.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime.TagGroups.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Dedi_Manual.TagGroups.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.EngineFunctions.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.HS.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Game.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Interface.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Networking.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Objects.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.OpenSauce.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.DX9.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.Rasterizer.ShaderExtension.inl" />
-    <None Include="Memory\1.10\Pointers\HaloCE_110_Runtime_Manual.TagGroups.inl" />
-    <None Include="Memory\1.10\Game.EngineFunctions.hpp" />
-    <None Include="Memory\1.10\Game.Scripting.hpp" />
-    <None Include="Memory\1.10\Game.AI.hpp" />
-    <None Include="Memory\1.10\Interface.Input.hpp" />
-    <None Include="Memory\1.10\Networking.MDP.hpp" />
-    <None Include="Memory\1.10\Objects.hpp" />
-    <None Include="Memory\1.10\OpenSauce.MemoryFunctionInterface.hpp" />
-    <None Include="Memory\1.10\Rasterizer.DX9.hpp" />
-    <None Include="Memory\1.10\Rasterizer.hpp" />
-    <None Include="Memory\1.10\Rasterizer.ShaderDraw.hpp" />
-    <None Include="Memory\1.10\Rasterizer.ShaderExtension.Model.hpp" />
-    <None Include="Memory\1.10\Scenario.hpp" />
-    <None Include="Memory\1.10\TagGroups.CacheFiles.hpp" />
     <None Include="Memory\FunctionInterface.Client.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplUnits.inl" />
@@ -838,6 +806,42 @@
     <None Include="Objects\Units.SeatDamage.inl" />
     <None Include="Objects\Units.SeatBoarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.Game.EngineFunctions.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.Game.HS.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.Game.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.Networking.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.Objects.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.OpenSauce.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.Scenario.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi.TagGroups.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi_Manual.Game.HS.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi_Manual.Game.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi_Manual.Networking.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Dedi_Manual.TagGroups.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Game.EngineFunctions.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Game.HS.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Game.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Interface.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Networking.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Objects.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.OpenSauce.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Rasterizer.DX9.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Rasterizer.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Rasterizer.ShaderDraw.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Rasterizer.ShaderExtension.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.Scenario.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime.TagGroups.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Game.EngineFunctions.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Game.HS.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Game.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Interface.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Networking.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Objects.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.OpenSauce.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Rasterizer.DX9.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Rasterizer.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.Rasterizer.ShaderExtension.inl" />
+    <None Include="Pointers\1.10\HaloCE_110_Runtime_Manual.TagGroups.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Effect.inl" />
     <None Include="Resources\OpenSauceUI\InGameDefinition.json" />
     <None Include="Resources\OpenSauceUI\MainMenuDefinition.json">

@@ -41,7 +41,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
-#include <Memory/1.10/Objects.hpp>
+#include <Pointers/Objects.hpp>
 
 namespace Yelo
 {

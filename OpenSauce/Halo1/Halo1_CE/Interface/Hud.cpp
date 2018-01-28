@@ -8,7 +8,7 @@
 #include <Interface/Hud.hpp>
 
 #if !PLATFORM_IS_DEDI
-#include <Memory/1.10/Interface.Hud.hpp>
+#include <Pointers/Interface.Hud.hpp>
 #include <blamlib/interface/hud_definitions.hpp>
 #include <blamlib/interface/ui_widget_group.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>

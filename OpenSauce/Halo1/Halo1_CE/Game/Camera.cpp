@@ -20,8 +20,8 @@
 #include "Game/EngineFunctions.hpp"
 
 #include "Rasterizer/Rasterizer.hpp"
-#include <Memory/1.10/Game.Camera.hpp>
-#include <Memory/1.10/Game.Fov.hpp>
+#include <Pointers/Game.Camera.hpp>
+#include <Pointers/Game.Fov.hpp>
 
 namespace Yelo
 {
