@@ -1895,12 +1895,6 @@
     <Text Include="Halo1_CE_Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\CameraFov.inl">
-      <Filter>Game\Impl</Filter>
-    </None>
-    <None Include="Game\Campaign.inl">
-      <Filter>Game\Impl</Filter>
-    </None>
     <None Include="Game\ScriptLibrary.Definitions.HTTPServer.inl">
       <Filter>Game\Impl\ScriptLibrary</Filter>
     </None>
