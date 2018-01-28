@@ -52,15 +52,6 @@
     <Filter Include="Game\Impl\ScriptLibrary">
       <UniqueIdentifier>{ba00f068-d435-4ad8-abab-99d2edbfa003}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Impl\GameState">
-      <UniqueIdentifier>{1ff4b9b0-1231-4965-8933-786bc3574caf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Impl\EngineFunctions">
-      <UniqueIdentifier>{796891fd-79b7-46cd-9f40-cb4d49dd4641}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Impl\Players">
-      <UniqueIdentifier>{0cc43331-4a53-4fc0-a3a1-45dc674cb346}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{26087e13-8dec-42bd-8e6c-a56580bcd9bc}</UniqueIdentifier>
     </Filter>
@@ -1945,45 +1936,6 @@
     </None>
     <None Include="Game\ScriptLibrary.MiscScriptingFunctions.inl">
       <Filter>Game\Impl\ScriptLibrary</Filter>
-    </None>
-    <None Include="Game\GameState.EventLog.inl">
-      <Filter>Game\Impl\GameState</Filter>
-    </None>
-    <None Include="Game\GameState.MemoryUpgrades.inl">
-      <Filter>Game\Impl\GameState</Filter>
-    </None>
-    <None Include="Game\GameState.Procs.inl">
-      <Filter>Game\Impl\GameState</Filter>
-    </None>
-    <None Include="Game\GameState.Scripting.inl">
-      <Filter>Game\Impl\GameState</Filter>
-    </None>
-    <None Include="Game\GameState.ServerList.inl">
-      <Filter>Game\Impl\GameState</Filter>
-    </None>
-    <None Include="Game\GameStateRuntimeData.Scripting.inl">
-      <Filter>Game\Impl\GameState</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Networking.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Objects.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Players.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\Players.ActionResults.inl">
-      <Filter>Game\Impl\Players</Filter>
-    </None>
-    <None Include="Game\Players.NearbyObjects.inl">
-      <Filter>Game\Impl\Players</Filter>
-    </None>
-    <None Include="Game\Players.NetworkPlayerUnit.inl">
-      <Filter>Game\Impl\Players</Filter>
-    </None>
-    <None Include="Game\Players.Scripting.inl">
-      <Filter>Game\Impl\Players</Filter>
     </None>
     <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl">
       <Filter>Objects\Impl</Filter>
