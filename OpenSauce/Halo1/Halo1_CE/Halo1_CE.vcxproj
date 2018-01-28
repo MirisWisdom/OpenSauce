@@ -369,6 +369,7 @@
     <ClCompile Include="Common\FileIO.cpp" />
     <ClCompile Include="Common\GameSystems.cpp" />
     <ClCompile Include="Game\AI.cpp" />
+    <ClCompile Include="Game\AITransform.cpp" />
     <ClCompile Include="Game\Camera.cpp" />
     <ClCompile Include="Game\Campaign.cpp" />
     <ClCompile Include="Game\Console.cpp" />
@@ -520,6 +521,7 @@
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Game\AI.hpp" />
+    <ClInclude Include="Game\AITransform.hpp" />
     <ClInclude Include="Game\Camera.hpp" />
     <ClInclude Include="Game\Campaign.hpp" />
     <ClInclude Include="Game\Console.hpp" />
@@ -764,7 +766,6 @@
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\OpenSauce.lua" />
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Scenario.lua" />
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\TagGroups.lua" />
-    <None Include="Game\AI.Transform.inl" />
     <None Include="Game\CameraFov.inl" />
     <None Include="Game\Campaign.inl" />
     <None Include="Game\ScriptLibrary.Definitions.HTTPServer.inl" />
@@ -793,7 +794,6 @@
     <None Include="Game\Players.NetworkPlayerUnit.inl" />
     <None Include="Game\Players.Scripting.inl" />
     <None Include="Interface\Hud.hpp" />
-    <None Include="Memory\FunctionInterface.Client.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplUnits.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplWeapon.inl" />

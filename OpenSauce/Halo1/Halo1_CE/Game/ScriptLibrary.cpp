@@ -15,6 +15,7 @@
 #include "Settings/Settings.hpp"
 #include "Game/Camera.hpp"
 #include "Game/AI.hpp"
+#include "Game/AITransform.hpp"
 #include "Networking/MessageDefinitions.hpp"
 
 // Includes for MiscScriptingFunctions.inl

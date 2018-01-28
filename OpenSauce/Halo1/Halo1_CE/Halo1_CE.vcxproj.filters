@@ -64,9 +64,6 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{26087e13-8dec-42bd-8e6c-a56580bcd9bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Memory\Impl">
-      <UniqueIdentifier>{c97dfd88-72d2-410c-b2c4-011e0aa342b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Networking">
       <UniqueIdentifier>{086b2a14-5832-4c3e-ba54-5e776ad03b45}</UniqueIdentifier>
     </Filter>
@@ -733,6 +730,9 @@
     <ClInclude Include="Pointers\Game.GameState.hpp">
       <Filter>Pointers</Filter>
     </ClInclude>
+    <ClInclude Include="Game\AITransform.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -1360,6 +1360,9 @@
     <ClCompile Include="Interface\Hud.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
+    <ClCompile Include="Game\AITransform.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\external_libraries\mongoose\mongoose.h">
@@ -1982,9 +1985,6 @@
     <None Include="Game\Players.Scripting.inl">
       <Filter>Game\Impl\Players</Filter>
     </None>
-    <None Include="Memory\FunctionInterface.Client.inl">
-      <Filter>Memory\Impl</Filter>
-    </None>
     <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl">
       <Filter>Objects\Impl</Filter>
     </None>
@@ -2077,9 +2077,6 @@
     </None>
     <None Include="Resources\OpenSauceUI\MapDownloadDefinition.json">
       <Filter>Interface\OpenSauceUI\ScreenDefinitions</Filter>
-    </None>
-    <None Include="Game\AI.Transform.inl">
-      <Filter>Game\Impl\AI</Filter>
     </None>
     <None Include="Objects\Units.SeatDamage.inl">
       <Filter>Objects\Impl</Filter>
@@ -2323,9 +2320,6 @@
     </Filter>
     <Filter Include="Interface\OpenSauceUI\ScreenDefinitions">
       <UniqueIdentifier>{dc17517c-5dcb-4061-9bb0-3a41ed40d7b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Impl\AI">
-      <UniqueIdentifier>{62fd605b-7fa9-4b74-8e6a-6cb3209d309a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pointers">
       <UniqueIdentifier>{65d3ffb4-50db-4143-8de3-d0a01cc15714}</UniqueIdentifier>
