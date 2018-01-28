@@ -371,7 +371,7 @@
     <ClCompile Include="Game\AI.cpp" />
     <ClCompile Include="Game\AITransform.cpp" />
     <ClCompile Include="Game\Camera.cpp" />
-    <ClCompile Include="Game\Campaign.cpp" />
+    <ClCompile Include="Game\CameraFov.cpp" />
     <ClCompile Include="Game\Console.cpp" />
     <ClCompile Include="Game\Effects.cpp" />
     <ClCompile Include="Game\EngineFunctions.cpp" />
@@ -523,7 +523,7 @@
     <ClInclude Include="Game\AI.hpp" />
     <ClInclude Include="Game\AITransform.hpp" />
     <ClInclude Include="Game\Camera.hpp" />
-    <ClInclude Include="Game\Campaign.hpp" />
+    <ClInclude Include="Game\CameraFov.hpp" />
     <ClInclude Include="Game\Console.hpp" />
     <ClInclude Include="Game\Effects.hpp" />
     <ClInclude Include="Game\EngineFunctions.hpp" />

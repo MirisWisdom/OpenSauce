@@ -724,6 +724,9 @@
     <ClInclude Include="Game\AITransform.hpp">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\CameraFov.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -742,9 +745,6 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Camera.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Campaign.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Console.cpp">
@@ -1354,6 +1354,9 @@
     <ClCompile Include="Game\AITransform.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\CameraFov.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\external_libraries\mongoose\mongoose.h">
@@ -1567,9 +1570,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Camera.hpp">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Campaign.hpp">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Console.hpp">

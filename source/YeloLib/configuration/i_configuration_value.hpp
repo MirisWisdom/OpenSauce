@@ -15,6 +15,7 @@ namespace Yelo
 		class i_configuration_value
 		{
 		public:
+			virtual ~i_configuration_value() = default;
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Get's the nodes name. </summary>
 			///

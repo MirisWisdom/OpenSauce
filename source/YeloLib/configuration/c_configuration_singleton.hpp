@@ -24,6 +24,8 @@ namespace Yelo
 			static std::unique_ptr<SingletonType> g_instance;
 			
 		public:
+			virtual ~c_configuration_singleton() = default;
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the static instance of the singleton. </summary>
 			///

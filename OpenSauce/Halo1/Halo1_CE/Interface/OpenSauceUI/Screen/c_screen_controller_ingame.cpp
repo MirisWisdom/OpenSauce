@@ -9,12 +9,11 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
-#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
-#include "Game/Camera.hpp"
-#include "Rasterizer/Rasterizer.hpp"
-#include "Interface/Hud.hpp"
-#include "Objects/Objects.hpp"
+#include <Game/CameraFov.hpp>
+#include <Interface/Hud.hpp>
+#include <Interface/OpenSauceUI/Control/control_event_ids.hpp>
+#include <Interface/OpenSauceUI/Control/control_property_ids.hpp>
+#include <Objects/Objects.hpp>
 
 namespace Yelo
 {

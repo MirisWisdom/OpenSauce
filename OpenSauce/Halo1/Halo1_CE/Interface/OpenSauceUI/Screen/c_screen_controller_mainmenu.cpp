@@ -9,23 +9,20 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/files/files.hpp>
-
-#include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
-#include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
-
-#include "Rasterizer/DX9/DX9.hpp"
-#include "Rasterizer/GBuffer.hpp"
-#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
-#include "Rasterizer/PostProcessing/MotionBlur/c_system_motionblur.hpp"
-#include "Rasterizer/PostProcessing/Bloom/c_system_bloom.hpp"
-#include "Rasterizer/PostProcessing/FXAA/c_system_fxaa.hpp"
-#include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
-#include "Rasterizer/PostProcessing/Generic/External/c_system_external.hpp"
-#include "Networking/HTTP/MapDownloadClient.hpp"
-#include "Networking/GameSpyApi.hpp"
-#include "TagGroups/CacheFiles.hpp"
-#include "Game/Camera.hpp"
+#include <Game/Camera.hpp>
+#include <Game/CameraFov.hpp>
+#include <Interface/OpenSauceUI/Control/control_event_ids.hpp>
+#include <Interface/OpenSauceUI/Control/control_property_ids.hpp>
+#include <Networking/GameSpyApi.hpp>
+#include <Networking/HTTP/MapDownloadClient.hpp>
+#include <Rasterizer/GBuffer.hpp>
+#include <Rasterizer/PostProcessing/Bloom/c_system_bloom.hpp>
+#include <Rasterizer/PostProcessing/FXAA/c_system_fxaa.hpp>
+#include <Rasterizer/PostProcessing/Generic/External/c_system_external.hpp>
+#include <Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp>
+#include <Rasterizer/PostProcessing/MotionBlur/c_system_motionblur.hpp>
+#include <Rasterizer/ShaderExtension/ShaderExtension.hpp>
+#include <TagGroups/CacheFiles.hpp>
 
 namespace Yelo
 {
