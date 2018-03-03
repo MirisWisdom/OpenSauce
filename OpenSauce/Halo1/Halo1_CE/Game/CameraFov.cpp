@@ -7,6 +7,8 @@
 #include <Common/Precompile.hpp>
 #include <Game/CameraFov.hpp>
 
+#if PLATFORM_IS_USER
+
 #include <blamlib/cache/cache_files_globals.hpp>
 #include <blamlib/game/player_control.hpp>
 #include <Game/Camera.hpp>
@@ -109,3 +111,4 @@ namespace Yelo
 		}
 	}
 }
+#endif
