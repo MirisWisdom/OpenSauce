@@ -15,6 +15,7 @@ glob:test_results/
 bin\
 lib\
 obj\
+objects\
 external\
 packages\
 *_ReSharper.Caches*
@@ -30,3 +31,5 @@ packages\
 
 *.psd
 *.map
+scripts/CakeScripts/tools
+scripts/tools

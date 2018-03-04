@@ -1,0 +1,60 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blamlib", "blamlib.vcxproj", "{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blamlib_test", "blamlib_test.vcxproj", "{11081BA7-72F2-62FA-7BD7-F5070E6B529E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F} = {67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Guerilla|Win32 = Debug Guerilla|Win32
+		Debug Halo|Win32 = Debug Halo|Win32
+		Debug Sapien|Win32 = Debug Sapien|Win32
+		Debug Tool|Win32 = Debug Tool|Win32
+		Release Guerilla|Win32 = Release Guerilla|Win32
+		Release Halo|Win32 = Release Halo|Win32
+		Release Sapien|Win32 = Release Sapien|Win32
+		Release Tool|Win32 = Release Tool|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Guerilla|Win32.ActiveCfg = Debug Guerilla|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Guerilla|Win32.Build.0 = Debug Guerilla|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Halo|Win32.ActiveCfg = Debug Halo|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Halo|Win32.Build.0 = Debug Halo|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Sapien|Win32.ActiveCfg = Debug Sapien|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Sapien|Win32.Build.0 = Debug Sapien|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Tool|Win32.ActiveCfg = Debug Tool|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Debug Tool|Win32.Build.0 = Debug Tool|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Guerilla|Win32.ActiveCfg = Release Guerilla|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Guerilla|Win32.Build.0 = Release Guerilla|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Halo|Win32.ActiveCfg = Release Halo|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Halo|Win32.Build.0 = Release Halo|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Sapien|Win32.ActiveCfg = Release Sapien|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Sapien|Win32.Build.0 = Release Sapien|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Tool|Win32.ActiveCfg = Release Tool|Win32
+		{67DA6BA0-23AD-14BC-5C90-60B0C1EC869F}.Release Tool|Win32.Build.0 = Release Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Guerilla|Win32.ActiveCfg = Debug Guerilla|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Guerilla|Win32.Build.0 = Debug Guerilla|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Halo|Win32.ActiveCfg = Debug Halo|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Halo|Win32.Build.0 = Debug Halo|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Sapien|Win32.ActiveCfg = Debug Sapien|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Sapien|Win32.Build.0 = Debug Sapien|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Tool|Win32.ActiveCfg = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Debug Tool|Win32.Build.0 = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Guerilla|Win32.ActiveCfg = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Guerilla|Win32.Build.0 = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Halo|Win32.ActiveCfg = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Halo|Win32.Build.0 = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Sapien|Win32.ActiveCfg = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Sapien|Win32.Build.0 = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Tool|Win32.ActiveCfg = Debug Tool|Win32
+		{11081BA7-72F2-62FA-7BD7-F5070E6B529E}.Release Tool|Win32.Build.0 = Debug Tool|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
