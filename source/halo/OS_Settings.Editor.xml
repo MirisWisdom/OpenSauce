@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSauce>
+	<Profiles/>
+	<Tool>
+		<DisableExceptionHandling>false</DisableExceptionHandling>
+		<DoFullCrashdump>false</DoFullCrashdump>
+	</Tool>
+	<Sapien>
+		<AffinityMask>1</AffinityMask>
+	</Sapien>
+</OpenSauce>

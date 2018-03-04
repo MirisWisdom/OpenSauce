@@ -15,7 +15,8 @@ glob:test_results/
 bin\
 lib\
 obj\
-external_libraries\
+external\
+packages\
 *_ReSharper.Caches*
 *.vs*
 
