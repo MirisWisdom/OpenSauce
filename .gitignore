@@ -27,6 +27,8 @@ test_results/
 external_libraries/
 *_ReSharper.Caches*
 [Ll]ib/
+external\
+packages\
 
 *.psd
 *.map

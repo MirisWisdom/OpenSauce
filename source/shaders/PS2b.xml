@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<OpenSauce>
+	<ShaderCollection>
+		<Name>EffectCollection_ps_2_b</Name>
+		<SourceDirectory>ps</SourceDirectory>
+		<ShaderType>PixelShader</ShaderType>
+		<CompilationTarget>ps_2_b</CompilationTarget>
+	</ShaderCollection>
+</OpenSauce>
