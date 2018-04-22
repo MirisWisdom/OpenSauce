@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/objects/objects.hpp>
+#include <blam/blam.h>
+#include <blam/objects/objects.hpp>
 
-#include <blamlib/game/game_allegiance.hpp>
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/scenario/scenario.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blam/game/game_allegiance.hpp>
+#include <blam/objects/object_structures.hpp>
+#include <blam/scenario/scenario.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
 
 namespace Yelo
 {

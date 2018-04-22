@@ -4,16 +4,16 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/Players.hpp"
 
-#include <blamlib/game/player_structures.hpp>
-#include <blamlib/scenario/scenario.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/units/unit_structures.hpp>
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blam/game/player_structures.hpp>
+#include <blam/scenario/scenario.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/units/unit_structures.hpp>
+#include <yelo/open_sauce/project_yellow_global_definitions.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/GameEngine.hpp"
 #include "Game/Scripting.hpp"

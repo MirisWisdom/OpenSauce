@@ -4,12 +4,12 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/Rasterizer.hpp"
 #if !PLATFORM_IS_DEDI
 
-#include <blamlib/hs/hs_structures.hpp>
-#include <blamlib/models/model_definitions.hpp>
+#include <blam/hs/hs_structures.hpp>
+#include <blam/models/model_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -25,7 +25,7 @@ namespace Yelo
 {
 	namespace Rasterizer
 	{
-#include <YeloLib/rasterizer/rasterizer_upgrades.inl>
+#include <yelo/rasterizer/rasterizer_upgrades.inl>
 
 		s_rasterizer_config* RasterizerConfig()			PTR_IMP_GET2(rasterizer_config);
 		s_rasterizer_globals* RasterizerGlobals()		PTR_IMP_GET2(rasterizer_globals);

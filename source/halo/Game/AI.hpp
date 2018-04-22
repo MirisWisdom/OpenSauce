@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/ai/actions.hpp>
-#include <blamlib/ai/ai_communication.hpp>
-#include <blamlib/ai/encounters.hpp>
+#include <blam/ai/actions.hpp>
+#include <blam/ai/ai_communication.hpp>
+#include <blam/ai/encounters.hpp>
 
 namespace Yelo
 {

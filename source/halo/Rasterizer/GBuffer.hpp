@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/files/packed_file.hpp>
+#include <yelo/files/packed_file.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"

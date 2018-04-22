@@ -3,12 +3,12 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cache/sound_cache.hpp>
+#include <blam/blam.h>
+#include <blam/cache/sound_cache.hpp>
 
-#include <blamlib/cache/pc_sound_cache.hpp>
-#include <blamlib/cache/physical_memory_map.hpp>
-#include <blamlib/sound/sound_definitions.hpp>
+#include <blam/cache/pc_sound_cache.hpp>
+#include <blam/cache/physical_memory_map.hpp>
+#include <blam/sound/sound_definitions.hpp>
 
 namespace Yelo
 {

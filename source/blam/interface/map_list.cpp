@@ -3,14 +3,14 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/interface/map_list.hpp>
+#include <blam/blam.h>
+#include <blam/interface/map_list.hpp>
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/cache/cache_files_structures.hpp>
-#include <YeloLib/cache/cache_files_yelo.hpp>
-#include <YeloLib/files/files.hpp>
-#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/cache/cache_files_structures.hpp>
+#include <yelo/cache/cache_files_yelo.hpp>
+#include <yelo/files/files.hpp>
+#include <yelo/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {

@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/game/player_action.hpp>
+#include <blam/game/player_action.hpp>
 
 namespace Yelo
 {

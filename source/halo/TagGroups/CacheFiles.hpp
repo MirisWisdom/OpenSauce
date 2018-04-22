@@ -6,14 +6,14 @@
 */
 #pragma once
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/structures/structure_bsp_definitions.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/structures/structure_bsp_definitions.hpp>
 
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {

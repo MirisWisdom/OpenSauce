@@ -4,31 +4,31 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Objects/Objects.hpp"
 
-#include <blamlib/effects/damage_effect_definitions.hpp>
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/game/game_globals_definitions.hpp>
+#include <blam/effects/damage_effect_definitions.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/game/game_globals_definitions.hpp>
 
-#include <blamlib/main/console.hpp>
-#include <blamlib/models/model_animation_definitions.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blam/main/console.hpp>
+#include <blam/models/model_animation_definitions.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
 
-#include <blamlib/items/projectiles.hpp>
-#include <blamlib/devices/device_structures.hpp>
-#include <blamlib/items/item_structures.hpp>
-#include <blamlib/units/unit_structures.hpp>
-#include <blamlib/items/weapon_structures.hpp>
+#include <blam/items/projectiles.hpp>
+#include <blam/devices/device_structures.hpp>
+#include <blam/items/item_structures.hpp>
+#include <blam/units/unit_structures.hpp>
+#include <blam/items/weapon_structures.hpp>
 
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/shell/shell_windows_command_line.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-#include <YeloLib/units/units_yelo.hpp>
+#include <yelo/open_sauce/project_yellow_global_definitions.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelo/shell/shell_windows_command_line.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
+#include <yelo/units/units_yelo.hpp>
 
 #include "Objects/ObjectFieldDefinitions.hpp"
 #include "Objects/Equipment.hpp"
@@ -77,7 +77,7 @@ namespace Yelo
 	};
 };
 
-#include <YeloLib/objects/object_damage_upgrades.inl>
+#include <yelo/objects/object_damage_upgrades.inl>
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
 
@@ -114,7 +114,7 @@ namespace Yelo
 		cluster_noncollideable_object_reference_data_t& ClusterNoncollideableObjectReference()	DPTR_IMP_GET_BYREF(cluster_noncollideable_object_reference);
 		noncollideable_object_cluster_reference_data_t& NoncollideableObjectClusterReference()	DPTR_IMP_GET_BYREF(noncollideable_object_cluster_reference);
 		
-#include <YeloLib/render/render_objects_upgrades.inl>
+#include <yelo/render/render_objects_upgrades.inl>
 
 		static void InitializeScripting()
 		{

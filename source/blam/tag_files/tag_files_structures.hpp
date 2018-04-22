@@ -5,9 +5,9 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <blamlib/tag_files/files.hpp>
+#include <blam/memory/data_base.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <blam/tag_files/files.hpp>
 
 namespace Yelo
 {

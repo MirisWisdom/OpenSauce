@@ -14,9 +14,9 @@
 #endif
 
 #include <Objects/Objects.hpp>
-#include <blamlib/objects/widgets/widgets.hpp>
+#include <blam/objects/widgets/widgets.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

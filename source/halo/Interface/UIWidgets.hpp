@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/interface/ui_widget.hpp>
+#include <blam/interface/ui_widget.hpp>
 
 namespace Yelo
 {

@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/hs/object_lists.hpp>
+#include <blam/hs/object_lists.hpp>
 
 namespace Yelo
 {

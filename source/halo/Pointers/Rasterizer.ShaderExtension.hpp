@@ -10,7 +10,7 @@
 #include "Pointers/1.10/HaloCE_110_Runtime.Rasterizer.ShaderExtension.inl"
 #include "Pointers/1.10/HaloCE_110_Runtime_Manual.Rasterizer.ShaderExtension.inl"
 
-#include <YeloLib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 #include <Memory/MemoryInterface.hpp>
 
 namespace Yelo

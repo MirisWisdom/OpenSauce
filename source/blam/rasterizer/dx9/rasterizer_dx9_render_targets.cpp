@@ -4,9 +4,9 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <blam/blam.h>
 #if !PLATFORM_IS_EDITOR
-#include <blamlib/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
+#include <blam/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
 
 namespace Yelo
 {

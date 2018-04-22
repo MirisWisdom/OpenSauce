@@ -6,11 +6,11 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
+#include <blam/memory/data.hpp>
 
-#include <blamlib/effects/effects_constants.hpp>
-#include <blamlib/effects/effect_definitions.hpp>
-#include <YeloLib/effects/effects_constants_yelo.hpp>
+#include <blam/effects/effects_constants.hpp>
+#include <blam/effects/effect_definitions.hpp>
+#include <yelo/effects/effects_constants_yelo.hpp>
 
 namespace Yelo
 {

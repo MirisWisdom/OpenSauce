@@ -6,7 +6,7 @@ See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
 
-#include <blamlib/game/game_allegiance.hpp>
+#include <blam/game/game_allegiance.hpp>
 
 namespace Yelo
 {

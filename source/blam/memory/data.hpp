@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
+#include <blam/memory/data_base.hpp>
 
 namespace Yelo
 {
@@ -99,4 +99,4 @@ namespace Yelo
 	};
 };
 
-#include <YeloLib/memory/data_yelo.hpp>
+#include <yelo/memory/data_yelo.hpp>

@@ -11,11 +11,11 @@ See license\OpenSauce\Halo1_CE for specific license information
 #include "Pointers/1.10/HaloCE_110_Runtime_Manual.Rasterizer.inl"
 #endif
 
-#include <blamlib/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
-#include <blamlib/rasterizer/rasterizer.hpp>
-#include <blamlib/render/render.hpp>
+#include <blam/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
+#include <blam/rasterizer/rasterizer.hpp>
+#include <blam/render/render.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

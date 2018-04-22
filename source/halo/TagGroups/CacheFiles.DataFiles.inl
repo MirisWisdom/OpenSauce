@@ -6,7 +6,7 @@
 */
 
 #include <Pointers/TagGroups.CacheFiles.hpp>
-#include <yelolib/cache/data_file_yelo.hpp>
+#include <yelo/cache/data_file_yelo.hpp>
 
 namespace Yelo { namespace DataFiles {
 
@@ -31,7 +31,7 @@ namespace Yelo { namespace DataFiles {
 			return Cache::DataFilesOpen(bitmaps_path.c_str(), sounds_path.c_str(), loc_path.c_str());
 		}
 
-		struct hasher : std::unary_function<s_mod_set_info, size_t>
+		struct hasher : std::function<size_t(const s_mod_set_info&)>
 		{
 			size_t operator()(const s_mod_set_info& info) const
 			{
@@ -40,7 +40,7 @@ namespace Yelo { namespace DataFiles {
 				return hasher(info.mod_name);
 			}
 		};
-		struct equal_to : std::binary_function<s_mod_set_info, s_mod_set_info, bool>
+		struct equal_to : std::function<bool (const s_mod_set_info&, const s_mod_set_info&)>
 		{
 			bool operator()(const s_mod_set_info& x, const s_mod_set_info& y) const
 			{

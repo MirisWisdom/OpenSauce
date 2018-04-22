@@ -44,6 +44,7 @@ namespace BuildUtilities.VisualStudio
 			var project = new Project(projectFile);
 			SetRunCodeAnalysis(project);
 			project.Save(projectFile);
+			ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
 		}
 
 		public static void SetRunCodeAnalysis(Project project)
@@ -56,6 +57,7 @@ namespace BuildUtilities.VisualStudio
 			var project = new Project(filtersFile);
 			TrimPathFromFilters(project, pathToRemove);
 			project.Save(filtersFile);
+			ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
 		}
 
 		public static void TrimPathFromFilters(Project project, string pathToRemove)

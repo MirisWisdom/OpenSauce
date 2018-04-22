@@ -14,13 +14,13 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Game.inl"
 #endif
 
-#include <blamlib/ai/actor_structures.hpp>
-#include <blamlib/ai/ai_communication.hpp>
-#include <blamlib/ai/ai_structures.hpp>
-#include <blamlib/ai/encounters.hpp>
-#include <blamlib/ai/prop_structures.hpp>
+#include <blam/ai/actor_structures.hpp>
+#include <blam/ai/ai_communication.hpp>
+#include <blam/ai/ai_structures.hpp>
+#include <blam/ai/encounters.hpp>
+#include <blam/ai/prop_structures.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

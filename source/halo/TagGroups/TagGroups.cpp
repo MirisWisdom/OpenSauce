@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "TagGroups/TagGroups.hpp"
 
-#include <blamlib/cache/cache_files_globals.hpp>
-#include <blamlib/cache/cache_files_structures.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blam/cache/cache_files_globals.hpp>
+#include <blam/cache/cache_files_structures.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <Pointers/TagGroups.hpp>
 
 namespace Yelo

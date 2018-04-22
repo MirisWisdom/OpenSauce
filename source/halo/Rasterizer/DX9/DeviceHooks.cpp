@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/DX9/DeviceHooks.hpp"
 
 #if !PLATFORM_IS_DEDI
@@ -15,7 +15,7 @@
 #include <Rasterizer/GBuffer.hpp>
 #include <Rasterizer/PostProcessing/c_shader_include_manager.hpp>
 #include <Rasterizer/ShaderExtension/ShaderExtension.hpp>
-#include <yelolib/main/main_yelo_base.hpp>
+#include <yelo/main/main_yelo_base.hpp>
 #include <Pointers/Rasterizer.DX9.DeviceHooks.hpp>
 
 namespace Yelo

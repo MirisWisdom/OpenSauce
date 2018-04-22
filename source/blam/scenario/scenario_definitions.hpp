@@ -6,14 +6,14 @@
 */
 #pragma once
 
-#include <blamlib/ai/ai_scenario_definitions.hpp>
-#include <blamlib/cutscene/recorded_animation_definitions.hpp>
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/hs/hs_scenario_definitions.hpp>
-#include <blamlib/scenario/scenario.hpp>
-#include <blamlib/scenario/scenario_object_definitions_structures.hpp>
+#include <blam/ai/ai_scenario_definitions.hpp>
+#include <blam/cutscene/recorded_animation_definitions.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/hs/hs_scenario_definitions.hpp>
+#include <blam/scenario/scenario.hpp>
+#include <blam/scenario/scenario_object_definitions_structures.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

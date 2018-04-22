@@ -4,20 +4,20 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/HTTP/MapDownloadClient.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/main/main.hpp>
-#include <blamlib/networking/network_client_manager_structures.hpp>
-#include <blamlib/interface/map_list.hpp>
+#include <blam/main/main.hpp>
+#include <blam/networking/network_client_manager_structures.hpp>
+#include <blam/interface/map_list.hpp>
 
-#include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/memory/compression/7zip_codec.hpp>
-#include <YeloLib/memory/compression/zip_codec.hpp>
-#include <YeloLib/memory/security/xxtea.hpp>
-#include <YeloLib/cache/cache_files_yelo.hpp>
-#include <YeloLib/cseries/value_conversion.hpp>
+#include <yelo/memory/linked_list.hpp>
+#include <yelo/memory/compression/7zip_codec.hpp>
+#include <yelo/memory/compression/zip_codec.hpp>
+#include <yelo/memory/security/xxtea.hpp>
+#include <yelo/cache/cache_files_yelo.hpp>
+#include <yelo/cseries/value_conversion.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/Settings.hpp"

@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/physics/point_physics.hpp>
+#include <blam/physics/point_physics.hpp>
 
 namespace Yelo
 {

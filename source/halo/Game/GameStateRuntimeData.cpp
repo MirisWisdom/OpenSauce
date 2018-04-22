@@ -4,10 +4,10 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/GameStateRuntimeData.hpp"
 
-#include <YeloLib/saved_games/game_state_yelo.hpp>
+#include <yelo/saved_games/game_state_yelo.hpp>
 
 #include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"

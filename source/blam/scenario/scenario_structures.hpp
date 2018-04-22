@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/game/players.hpp>
-#include <blamlib/sound/sound_environment_definitions.hpp>
+#include <blam/game/players.hpp>
+#include <blam/sound/sound_environment_definitions.hpp>
 
 namespace Yelo
 {

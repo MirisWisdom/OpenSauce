@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
+#include <blam/memory/data_base.hpp>
 
 namespace Yelo
 {

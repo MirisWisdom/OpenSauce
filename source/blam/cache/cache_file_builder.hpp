@@ -6,13 +6,13 @@
 #pragma once
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/cache/cache_files_structures.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/cache/s_data_file_globals.h>
+#include <blam/cache/cache_files_structures.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/cache/s_data_file_globals.h>
 
 namespace Yelo { namespace Cache
 {

@@ -4,15 +4,15 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include <blamlib/interface/first_person_weapons.hpp>
-#include <blamlib/interface/hud.hpp>
+#include <blam/interface/first_person_weapons.hpp>
+#include <blam/interface/hud.hpp>
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_value_list.hpp>
-#include <YeloLib/configuration/c_configuration_container_list.hpp>
-#include <YeloLib/configuration/type_containers/c_real_vector3d_container.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/configuration/c_configuration_value_list.hpp>
+#include <yelo/configuration/c_configuration_container_list.hpp>
+#include <yelo/configuration/type_containers/c_real_vector3d_container.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"

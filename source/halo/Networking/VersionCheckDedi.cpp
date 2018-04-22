@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/VersionCheckDedi.hpp"
 
 #if PLATFORM_IS_DEDI && defined(YELO_VERSION_CHECK_ENABLE)
-#include <blamlib/main/console.hpp>
+#include <blam/main/console.hpp>
 
 namespace Yelo
 {

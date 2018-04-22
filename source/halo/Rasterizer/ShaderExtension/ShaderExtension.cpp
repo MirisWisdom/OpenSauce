@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 #include <Pointers/Rasterizer.ShaderExtension.hpp>
 
@@ -12,14 +12,14 @@
 
 #include <sys/stat.h>
 
-#include <blamlib/bitmaps/bitmap_definition.hpp>
-#include <blamlib/rasterizer/dx9/rasterizer_dx9.hpp>
-#include <blamlib/shaders/shader_definitions.hpp>
-#include <blamlib/render/render.hpp>
-#include <YeloLib/shell/shell_windows_command_line.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <blam/bitmaps/bitmap_definition.hpp>
+#include <blam/rasterizer/dx9/rasterizer_dx9.hpp>
+#include <blam/shaders/shader_definitions.hpp>
+#include <blam/render/render.hpp>
+#include <yelo/shell/shell_windows_command_line.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Common/FileIO.hpp"

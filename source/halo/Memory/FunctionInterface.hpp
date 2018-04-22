@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <YeloLib/memory/function_interface.hpp>
+#include <yelo/memory/function_interface.hpp>
 
 namespace Yelo
 {

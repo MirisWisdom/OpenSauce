@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/saved_games/saved_game_constants.hpp>
+#include <blam/saved_games/saved_game_constants.hpp>
 
 namespace Yelo
 {

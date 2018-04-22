@@ -5,8 +5,8 @@
 */
 #pragma once
 
-#include <blamlib/hs/hs.hpp>
-#include <blamlib/ai/ai_script.hpp>
+#include <blam/hs/hs.hpp>
+#include <blam/ai/ai_script.hpp>
 
 namespace Yelo
 {

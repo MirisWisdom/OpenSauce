@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/shaders/shader_definitions.hpp>
-#include <blamlib/effects/particle_definitions.hpp>
+#include <blam/shaders/shader_definitions.hpp>
+#include <blam/effects/particle_definitions.hpp>
 
 namespace Yelo
 {

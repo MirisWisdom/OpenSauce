@@ -4,21 +4,21 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Common/DebugDump.hpp"
 
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
-#include <YeloLib/shell/shell_windows_command_line.hpp>
+#include <yelo/shell/shell_windows_command_line.hpp>
 #include <Pointers/OpenSauce.DebugDump.hpp>
 
 #if PLATFORM_IS_USER
-#include <blamlib/main/console.hpp>
-#include <blamlib/saved_games/game_state_structures.hpp>
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/game/game_globals_structures.hpp>
+#include <blam/main/console.hpp>
+#include <blam/saved_games/game_state_structures.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/game/game_globals_structures.hpp>
 
-#include <YeloLib/cseries/pc_crashreport.hpp>
+#include <yelo/cseries/pc_crashreport.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/Settings.hpp"

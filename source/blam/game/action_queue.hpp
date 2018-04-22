@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/game/simple_circular_queue.hpp>
-#include <blamlib/game/player_action.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/game/simple_circular_queue.hpp>
+#include <blam/game/player_action.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

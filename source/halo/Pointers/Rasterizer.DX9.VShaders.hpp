@@ -13,7 +13,7 @@
 
 #include <Memory/MemoryInterface.hpp>
 #include <Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

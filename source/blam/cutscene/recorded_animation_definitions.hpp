@@ -5,11 +5,11 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
-#include <blamlib/cutscene/recorded_animation_playback_v1.hpp>
-#include <blamlib/cutscene/recorded_animation_playback.hpp>
-#include <blamlib/tag_files/tag_data.h>
+#include <blam/cutscene/recorded_animation_playback_v1.hpp>
+#include <blam/cutscene/recorded_animation_playback.hpp>
+#include <blam/tag_files/tag_data.h>
 
 namespace Yelo
 {

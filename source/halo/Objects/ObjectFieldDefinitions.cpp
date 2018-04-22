@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Objects/ObjectFieldDefinitions.hpp"
 
-#include <blamlib/items/weapon_structures.hpp>
-#include <blamlib/main/main.hpp>
-#include <blamlib/tag_files/s_tag_instance.h>
-#include <blamlib/units/unit_structures.hpp>
+#include <blam/items/weapon_structures.hpp>
+#include <blam/main/main.hpp>
+#include <blam/tag_files/s_tag_instance.h>
+#include <blam/units/unit_structures.hpp>
 #include <Game/EngineFunctions.hpp>
 #include <Game/Scripting.hpp>
 #include <Game/ScriptLibrary.hpp>

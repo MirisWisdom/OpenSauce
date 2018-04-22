@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/objects/object_structures.hpp>
+#include <blam/objects/object_structures.hpp>
 
 namespace Yelo
 {

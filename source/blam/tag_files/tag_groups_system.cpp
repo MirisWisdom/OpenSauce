@@ -4,21 +4,21 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
-#include "Common/Precompile.hpp"
+#include <blam/blam.h>
 
 #if PLATFORM_IS_EDITOR
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/memory/byte_swapping.hpp>
-#include <blamlib/tag_files/tag_block_definition.h>
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_group.h>
-#include <blamlib/tag_files/tag_group_verification.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <yelolib/cseries/cseries_yelo_base.hpp>
-#include <yelolib/memory/data_yelo.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/memory/byte_swapping.hpp>
+#include <blam/tag_files/tag_block_definition.h>
+#include <blam/tag_files/tag_field_scanner.hpp>
+#include <blam/tag_files/tag_group.h>
+#include <blam/tag_files/tag_group_verification.hpp>
+#include <blam/tag_files/tag_groups.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/memory/data_yelo.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

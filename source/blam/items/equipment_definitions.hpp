@@ -5,11 +5,11 @@
 */
 #pragma once
 
-#include <blamlib/items/item_definitions.hpp>
+#include <blam/items/item_definitions.hpp>
 
-#include <YeloLib/items/equipment_definitions_yelo.hpp>
+#include <yelo/items/equipment_definitions_yelo.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

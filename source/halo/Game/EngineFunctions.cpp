@@ -4,30 +4,30 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/EngineFunctions.hpp"
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/camera/director.hpp>
-#include <blamlib/interface/hud_draw.hpp>
-#include <blamlib/main/console.hpp>
-#include <blamlib/main/main_structures.hpp>
-#include <blamlib/math/periodic_functions.hpp>
-#include <blamlib/memory/data.hpp>
-#include <blamlib/models/model_animation_definitions.hpp>
-#include <blamlib/objects/damage.hpp>
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
-#include <blamlib/ai/actor_structures.hpp>
-#include <blamlib/units/unit_structures.hpp>
-#include <blamlib/units/unit_script.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/camera/director.hpp>
+#include <blam/interface/hud_draw.hpp>
+#include <blam/main/console.hpp>
+#include <blam/main/main_structures.hpp>
+#include <blam/math/periodic_functions.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/models/model_animation_definitions.hpp>
+#include <blam/objects/damage.hpp>
+#include <blam/objects/objects.hpp>
+#include <blam/tag_files/tag_groups.hpp>
+#include <blam/ai/actor_structures.hpp>
+#include <blam/units/unit_structures.hpp>
+#include <blam/units/unit_script.hpp>
 
 #include "Game/Console.hpp"
 #include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Networking/MDP.hpp"
 #include "Objects/Objects.hpp"
-#include <blamlib/tag_files/s_tag_iterator.h>
+#include <blam/tag_files/s_tag_iterator.h>
 #include <Pointers/Game.EngineFunctions.hpp>
 
 // comment the following to just use the parameters as-is 

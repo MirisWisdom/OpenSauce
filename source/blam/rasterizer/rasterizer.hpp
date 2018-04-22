@@ -6,15 +6,15 @@
 */
 #pragma once
 
-#include <blamlib/effects/player_effects.hpp>
-#include <blamlib/render/render.hpp>
-#include <blamlib/render/render_cameras.hpp>
+#include <blam/effects/player_effects.hpp>
+#include <blam/render/render.hpp>
+#include <blam/render/render_cameras.hpp>
 
 #if PLATFORM_TARGET == PLATFORM_TARGET_XBOX
 	// TODO
 #else
 	#include <d3d9.h>
-	#include <blamlib/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
+	#include <blam/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
 #endif
 
 namespace Yelo

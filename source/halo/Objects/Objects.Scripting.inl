@@ -8,8 +8,8 @@
 #include "Game/GameStateRuntimeData.hpp"
 #include "Objects/Objects.hpp"
 
-#include <YeloLib/cseries/value_conversion.hpp>
-#include <YeloLib/objects/objects_yelo.hpp>
+#include <yelo/cseries/value_conversion.hpp>
+#include <yelo/objects/objects_yelo.hpp>
 
 namespace Yelo
 {

@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"
 
 #include <Pointers/Rasterizer.DX9.VShaders.hpp>

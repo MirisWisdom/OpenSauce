@@ -3,10 +3,10 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/hs/object_lists.hpp>
+#include <blam/blam.h>
+#include <blam/hs/object_lists.hpp>
 
-#include <blamlib/hs/object_lists_structures.hpp>
+#include <blam/hs/object_lists_structures.hpp>
 
 namespace Yelo
 {

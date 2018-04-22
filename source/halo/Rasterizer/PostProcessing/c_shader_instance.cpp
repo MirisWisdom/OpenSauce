@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/c_shader_instance.hpp"
 
 #if !PLATFORM_IS_DEDI

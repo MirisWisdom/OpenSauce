@@ -1,7 +1,7 @@
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <cseries/MacrosCpp.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <yelo/cseries/MacrosCpp.hpp>
 
 namespace Yelo
 {

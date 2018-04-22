@@ -4,14 +4,14 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Interface/UIWidgets.hpp"
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelo/open_sauce/project_yellow_global_definitions.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <Pointers/Interface.UIWidgets.hpp>
 
 namespace Yelo

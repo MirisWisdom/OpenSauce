@@ -6,12 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/math/real_math.hpp>
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_data.h>
-#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
-#include <yelolib/tag_files/tag_groups_markup.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/math/real_math.hpp>
+#include <blam/tag_files/tag_block.h>
+#include <blam/tag_files/tag_data.h>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {

@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/main/main.hpp>
-#include <blamlib/networking/network_messages.hpp>
+#include <blam/main/main.hpp>
+#include <blam/networking/network_messages.hpp>
 
 namespace Yelo
 {

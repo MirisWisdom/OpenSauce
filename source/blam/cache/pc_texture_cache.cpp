@@ -3,12 +3,12 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cache/texture_cache.hpp>
+#include <blam/blam.h>
+#include <blam/cache/texture_cache.hpp>
 
-#include <blamlib/bitmaps/bitmap_definition.hpp>
-#include <blamlib/cache/pc_texture_cache.hpp>
-#include <blamlib/cache/physical_memory_map.hpp>
+#include <blam/bitmaps/bitmap_definition.hpp>
+#include <blam/cache/pc_texture_cache.hpp>
+#include <blam/cache/physical_memory_map.hpp>
 
 namespace Yelo
 {

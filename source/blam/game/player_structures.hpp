@@ -6,12 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/game/player_action.hpp>
-#include <blamlib/networking/network_game_manager.hpp>
-#include <blamlib/networking/player_update_client.hpp>
-#include <blamlib/networking/player_update_server.hpp>
-#include <blamlib/game/players.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/game/player_action.hpp>
+#include <blam/networking/network_game_manager.hpp>
+#include <blam/networking/player_update_client.hpp>
+#include <blam/networking/player_update_server.hpp>
+#include <blam/game/players.hpp>
 
 namespace Yelo
 {

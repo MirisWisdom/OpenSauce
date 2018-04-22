@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/cache/cache_files_base.hpp>
-#include <blamlib/cache/cache_constants.hpp>
-#include <blamlib/cache/cache_files.hpp>
-#include <YeloLib/cache/cache_files_structures_yelo.hpp>
+#include <blam/cache/cache_files_base.hpp>
+#include <blam/cache/cache_constants.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <yelo/cache/cache_files_structures_yelo.hpp>
 
 namespace Yelo
 {

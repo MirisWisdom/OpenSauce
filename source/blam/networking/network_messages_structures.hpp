@@ -6,12 +6,12 @@
 */
 #pragma once
 
-//#include <blamlib/bungie_net/common/message_header.hpp>
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/game/player_action.hpp>
-#include <blamlib/game/players.hpp>
-#include <blamlib/networking/network_game_globals.hpp>
-#include <blamlib/networking/network_game_manager.hpp>
+//#include <blam/bungie_net/common/message_header.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/game/player_action.hpp>
+#include <blam/game/players.hpp>
+#include <blam/networking/network_game_globals.hpp>
+#include <blam/networking/network_game_manager.hpp>
 
 namespace Yelo
 {

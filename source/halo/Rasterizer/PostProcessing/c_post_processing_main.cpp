@@ -4,12 +4,12 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
-#include <blamlib/tag_files/s_tag_iterator.h>
+#include <blam/tag_files/s_tag_iterator.h>
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/main/main_structures.hpp>
+#include <blam/main/main_structures.hpp>
 #include "Interface/Hud.hpp"
 #include "Game/GameState.hpp"
 #include "Game/Camera.hpp"

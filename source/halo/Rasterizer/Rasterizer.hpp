@@ -8,10 +8,10 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/rasterizer/rasterizer.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <yelo/rasterizer/rasterizer.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {

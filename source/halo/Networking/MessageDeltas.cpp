@@ -4,14 +4,14 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/MessageDeltas.hpp"
 
-#include <blamlib/networking/network_client_manager.hpp>
-#include <blamlib/networking/network_client_manager_structures.hpp>
-#include <blamlib/networking/network_game_globals.hpp>
-#include <blamlib/networking/network_game_manager_structures.hpp>
-#include <blamlib/networking/network_server_manager.hpp>
+#include <blam/networking/network_client_manager.hpp>
+#include <blam/networking/network_client_manager_structures.hpp>
+#include <blam/networking/network_game_globals.hpp>
+#include <blam/networking/network_game_manager_structures.hpp>
+#include <blam/networking/network_server_manager.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"

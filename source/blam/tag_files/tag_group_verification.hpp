@@ -6,7 +6,7 @@
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #pragma once
 
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

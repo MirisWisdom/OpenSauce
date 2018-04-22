@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/cutscene/recorded_animations.hpp>
-#include <blamlib/hs/hs.hpp>
-#include <blamlib/hs/hs_runtime.hpp>
-#include <blamlib/hs/object_lists.hpp>
+#include <blam/cutscene/recorded_animations.hpp>
+#include <blam/hs/hs.hpp>
+#include <blam/hs/hs_runtime.hpp>
+#include <blam/hs/object_lists.hpp>
 
 namespace Yelo
 {

@@ -8,8 +8,8 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
 
 #include "Interface/OpenSauceUI/Definitions/c_control_definition.hpp"
 

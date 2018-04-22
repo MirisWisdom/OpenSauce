@@ -4,16 +4,16 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/Lightmaps.hpp"
 
 #if !PLATFORM_IS_DEDI
 
 #include <Pointers/Rasterizer.Lightmaps.hpp>
-#include <blamlib/bitmaps/bitmap_definition.hpp>
+#include <blam/bitmaps/bitmap_definition.hpp>
 #include "DX9/DX9.hpp"
 #include <Rasterizer/ShaderExtension/ShaderExtension.hpp>
-#include <yelolib/render/lightmaps/c_lightmap_manager.hpp>
+#include <yelo/render/lightmaps/c_lightmap_manager.hpp>
 
 namespace Yelo
 {

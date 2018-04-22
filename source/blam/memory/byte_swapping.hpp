@@ -4,7 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
-#include <blamlib/memory/byte_swapping_base.hpp>
+#include <blam/memory/byte_swapping_base.hpp>
 
 namespace Yelo
 {

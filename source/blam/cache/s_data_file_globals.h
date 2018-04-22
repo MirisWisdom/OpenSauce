@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blamlib/cache/data_file_structures.hpp>
+#include <blam/cache/data_file_structures.hpp>
 
 namespace Yelo { namespace Cache
 {

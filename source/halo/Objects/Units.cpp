@@ -4,23 +4,23 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Objects/Units.hpp"
 
-#include <blamlib/objects/damage.hpp>
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/game/game_globals_definitions.hpp>
-#include <blamlib/saved_games/game_state_structures.hpp>
-#include <blamlib/units/unit_definitions.hpp>
-#include <blamlib/items/weapons.hpp>
+#include <blam/objects/damage.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/game/game_globals_definitions.hpp>
+#include <blam/saved_games/game_state_structures.hpp>
+#include <blam/units/unit_definitions.hpp>
+#include <blam/items/weapons.hpp>
 
-#include <blamlib/units/biped_structures.hpp>
-#include <blamlib/units/vehicle_structures.hpp>
-#include <blamlib/units/unit_structures.hpp>
+#include <blam/units/biped_structures.hpp>
+#include <blam/units/vehicle_structures.hpp>
+#include <blam/units/unit_structures.hpp>
 
-#include <YeloLib/units/units_yelo.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelo/units/units_yelo.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <blamlib/memory/byte_swapping.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/memory/byte_swapping.hpp>
+#include <blam/cseries/cseries_base.hpp>
 
 namespace Yelo
 {

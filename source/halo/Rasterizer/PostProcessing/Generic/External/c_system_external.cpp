@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/Generic/External/c_system_external.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/math/periodic_functions.hpp>
+#include <blam/math/periodic_functions.hpp>
 
 #include "Rasterizer/PostProcessing/Generic/External/c_settings_external.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
@@ -16,12 +16,12 @@
 #include "Rasterizer/PostProcessing/c_shader_include_manager.hpp"
 #include "Game/Console.hpp"
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_container_list.hpp>
-#include <YeloLib/configuration/c_configuration_value_list.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/type_containers/c_point2d_container.hpp>
-#include <YeloLib/configuration/type_containers/c_real_bounds_container.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_container_list.hpp>
+#include <yelo/configuration/c_configuration_value_list.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/configuration/type_containers/c_point2d_container.hpp>
+#include <yelo/configuration/type_containers/c_real_bounds_container.hpp>
 
 // TODO: finish reimplementing for loops with ranged for loops, where applicable
 

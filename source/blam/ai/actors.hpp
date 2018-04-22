@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/ai/actions.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/ai/actions.hpp>
 
 namespace Yelo
 {

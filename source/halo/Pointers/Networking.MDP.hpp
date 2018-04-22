@@ -14,9 +14,9 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Networking.inl"
 #endif
 
-#include <blamlib/networking/message_delta_definitions.hpp>
+#include <blam/networking/message_delta_definitions.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

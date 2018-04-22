@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/input/input_abstraction.hpp>
+#include <blam/input/input_abstraction.hpp>
 
 namespace Yelo
 {

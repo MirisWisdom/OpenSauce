@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/cutscene/recorded_animation_playback.hpp>
-#include <blamlib/memory/data.hpp>
-#include <blamlib/units/unit_control.hpp>
+#include <blam/cutscene/recorded_animation_playback.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/units/unit_control.hpp>
 
 namespace Yelo
 {

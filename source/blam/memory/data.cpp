@@ -3,8 +3,8 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/memory/data.hpp>
+#include <blam/blam.h>
+#include <blam/memory/data.hpp>
 
 static const Yelo::datum_index::salt_t k_datum_index_salt_msb = 
 	1U << 

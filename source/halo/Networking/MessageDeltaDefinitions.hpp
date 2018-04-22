@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/networking/message_delta_definitions.hpp>
+#include <blam/networking/message_delta_definitions.hpp>
 
 namespace Yelo
 {

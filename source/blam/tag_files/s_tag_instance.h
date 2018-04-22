@@ -1,10 +1,10 @@
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/memory/data_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/memory/data_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/tag_files/tag_block.h>
+#include <blam/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
 {

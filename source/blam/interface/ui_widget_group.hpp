@@ -6,11 +6,11 @@
 */
 #pragma once
 
-#include <blamlib/interface/ui_widget_event_handler_functions.hpp>
-#include <blamlib/interface/ui_widget_game_data_input_functions.hpp>
-#include <blamlib/interface/ui_widget_text_search_and_replace_functions.hpp>
+#include <blam/interface/ui_widget_event_handler_functions.hpp>
+#include <blam/interface/ui_widget_game_data_input_functions.hpp>
+#include <blam/interface/ui_widget_text_search_and_replace_functions.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

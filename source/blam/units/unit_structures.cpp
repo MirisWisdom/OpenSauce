@@ -4,10 +4,10 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/units/unit_structures.hpp>
+#include <blam/blam.h>
+#include <blam/units/unit_structures.hpp>
 
-#include <blamlib/saved_games/game_state_structures.hpp>
+#include <blam/saved_games/game_state_structures.hpp>
 
 namespace Yelo
 {

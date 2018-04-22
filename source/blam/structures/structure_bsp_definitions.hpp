@@ -6,17 +6,17 @@
 */
 #pragma once
 
-#include <blamlib/cache/predicted_resources.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/math/real_math.hpp>
-#include <blamlib/objects/object_lights.hpp>
-#include <blamlib/physics/collision_bsp_definitions.hpp>
-#include <blamlib/rasterizer/rasterizer_geometry.hpp>
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_data.h>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <blamlib/tag_files/tag_reference.h>
-#include <yelolib/tag_files/tag_groups_markup.hpp>
+#include <blam/cache/predicted_resources.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/math/real_math.hpp>
+#include <blam/objects/object_lights.hpp>
+#include <blam/physics/collision_bsp_definitions.hpp>
+#include <blam/rasterizer/rasterizer_geometry.hpp>
+#include <blam/tag_files/tag_block.h>
+#include <blam/tag_files/tag_data.h>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <blam/tag_files/tag_reference.h>
+#include <yelo/tag_files/tag_groups_markup.hpp>
 
 namespace Yelo
 {

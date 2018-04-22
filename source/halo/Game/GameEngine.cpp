@@ -4,15 +4,15 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/GameEngine.hpp"
 
-#include <blamlib/game/game_engine_ctf.hpp>
-#include <blamlib/game/game_engine_king.hpp>
-#include <blamlib/game/game_engine_oddball.hpp>
-#include <blamlib/game/game_engine_race.hpp>
-#include <blamlib/game/game_engine_slayer.hpp>
-#include <blamlib/game/game_globals_structures.hpp>
+#include <blam/game/game_engine_ctf.hpp>
+#include <blam/game/game_engine_king.hpp>
+#include <blam/game/game_engine_oddball.hpp>
+#include <blam/game/game_engine_race.hpp>
+#include <blam/game/game_engine_slayer.hpp>
+#include <blam/game/game_globals_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"

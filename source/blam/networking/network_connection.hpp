@@ -6,12 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/bungie_net/network/transport_address.hpp>
-#include <blamlib/bungie_net/network/transport_endpoint_winsock.hpp>
-#include <blamlib/bungie_net/network/transport_endpoint_set_winsock.hpp>
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/memory/bitstream.hpp>
-#include <blamlib/memory/circular_queue.hpp>
+#include <blam/bungie_net/network/transport_address.hpp>
+#include <blam/bungie_net/network/transport_endpoint_winsock.hpp>
+#include <blam/bungie_net/network/transport_endpoint_set_winsock.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/memory/bitstream.hpp>
+#include <blam/memory/circular_queue.hpp>
 
 namespace Yelo
 {

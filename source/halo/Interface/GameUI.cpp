@@ -4,27 +4,27 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Interface/GameUI.hpp"
 
 #if !PLATFORM_IS_DEDI
 #include "Interface/Hud.hpp"
-#include <blamlib/game/player_structures.hpp>
-#include <blamlib/interface/first_person_weapons.hpp>
-#include <blamlib/interface/hud.hpp>
-#include <blamlib/interface/hud_chat.hpp>
-#include <blamlib/interface/hud_messaging.hpp>
-#include <blamlib/interface/hud_unit.hpp>
-#include <blamlib/interface/hud_nav_points.hpp>
-#include <blamlib/interface/hud_weapon.hpp>
-#include <blamlib/interface/interface.hpp>
-#include <blamlib/interface/motion_sensor.hpp>
-#include <blamlib/items/weapon_definitions.hpp>
-#include <blamlib/models/model_animations.hpp>
-#include <blamlib/text/draw_string.hpp>
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario.hpp>
-#include <YeloLib/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blam/game/player_structures.hpp>
+#include <blam/interface/first_person_weapons.hpp>
+#include <blam/interface/hud.hpp>
+#include <blam/interface/hud_chat.hpp>
+#include <blam/interface/hud_messaging.hpp>
+#include <blam/interface/hud_unit.hpp>
+#include <blam/interface/hud_nav_points.hpp>
+#include <blam/interface/hud_weapon.hpp>
+#include <blam/interface/interface.hpp>
+#include <blam/interface/motion_sensor.hpp>
+#include <blam/items/weapon_definitions.hpp>
+#include <blam/models/model_animations.hpp>
+#include <blam/text/draw_string.hpp>
+#include <yelo/open_sauce/project_yellow_global_definitions.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"

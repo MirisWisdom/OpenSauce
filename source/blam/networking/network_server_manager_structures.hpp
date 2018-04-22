@@ -6,13 +6,13 @@
 */
 #pragma once
 
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/game/players.hpp>
-#include <blamlib/networking/network_game_globals.hpp>
-#include <blamlib/networking/network_game_manager_structures.hpp>
-#include <blamlib/networking/network_server_manager.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/game/players.hpp>
+#include <blam/networking/network_game_globals.hpp>
+#include <blam/networking/network_game_manager_structures.hpp>
+#include <blam/networking/network_server_manager.hpp>
 
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
 
 namespace Yelo
 {

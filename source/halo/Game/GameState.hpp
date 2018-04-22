@@ -8,14 +8,14 @@
 
 #include "Memory/MemoryInterface.hpp" // for CRC
 
-#include <blamlib/cache/physical_memory_map.hpp>
-#include <blamlib/game/game_allegiance.hpp>
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/game/game_time.hpp>
-#include <blamlib/main/main.hpp>
-#include <blamlib/physics/physics.hpp>
-#include <blamlib/physics/point_physics.hpp>
-#include <blamlib/saved_games/game_state.hpp>
+#include <blam/cache/physical_memory_map.hpp>
+#include <blam/game/game_allegiance.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/game/game_time.hpp>
+#include <blam/main/main.hpp>
+#include <blam/physics/physics.hpp>
+#include <blam/physics/point_physics.hpp>
+#include <blam/saved_games/game_state.hpp>
 
 namespace Yelo
 {

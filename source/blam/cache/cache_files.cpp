@@ -3,26 +3,26 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cache/cache_files.hpp>
+#include <blam/blam.h>
+#include <blam/cache/cache_files.hpp>
 
-#include <blamlib/bitmaps/bitmap_definition.hpp>
-#include <blamlib/cache/cache_files_globals.hpp>
-#include <blamlib/cache/cache_files_structures.hpp>
-#include <blamlib/cache/data_file_structures.hpp>
-#include <blamlib/cache/physical_memory_map.hpp>
-#include <blamlib/interface/hud_messaging_definitions.hpp>
-#include <blamlib/memory/data.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/sound/sound_definitions.hpp>
-#include <blamlib/structures/structure_bsp_definitions.hpp>
-#include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
-#include <YeloLib/cache/cache_files_yelo.hpp>
-#include <blamlib/tag_files/c_tag_iterator.h>
+#include <blam/bitmaps/bitmap_definition.hpp>
+#include <blam/cache/cache_files_globals.hpp>
+#include <blam/cache/cache_files_structures.hpp>
+#include <blam/cache/data_file_structures.hpp>
+#include <blam/cache/physical_memory_map.hpp>
+#include <blam/interface/hud_messaging_definitions.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/sound/sound_definitions.hpp>
+#include <blam/structures/structure_bsp_definitions.hpp>
+#include <blam/tag_files/tag_files.hpp>
+#include <blam/tag_files/tag_groups.hpp>
+#include <yelo/cache/cache_files_yelo.hpp>
+#include <blam/tag_files/c_tag_iterator.h>
 
 #if PLATFORM_IS_EDITOR
-#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
+#include <yelo/open_sauce/settings/c_settings_cheape.hpp>
 #endif
 
 namespace Yelo

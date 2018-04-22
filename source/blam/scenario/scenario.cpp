@@ -3,19 +3,19 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/scenario/scenario.hpp>
+#include <blam/blam.h>
+#include <blam/scenario/scenario.hpp>
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/cache/sound_cache.hpp>
-#include <blamlib/cache/texture_cache.hpp>
-#include <blamlib/game/game_globals_definitions.hpp>
-#include <blamlib/interface/ui_widget_group.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/scenario/scenario_structures.hpp>
-#include <blamlib/tag_files/tag_group_loading.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
-#include <Yelolib/open_sauce/project_yellow_scenario.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/cache/sound_cache.hpp>
+#include <blam/cache/texture_cache.hpp>
+#include <blam/game/game_globals_definitions.hpp>
+#include <blam/interface/ui_widget_group.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/scenario/scenario_structures.hpp>
+#include <blam/tag_files/tag_group_loading.hpp>
+#include <blam/tag_files/tag_groups.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
 
 namespace Yelo
 {

@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/Sky.hpp"
 
 #if !PLATFORM_IS_DEDI
@@ -12,8 +12,8 @@
 #include <Pointers/Rasterizer.Sky.hpp>
 #include <Memory/MemoryInterface.hpp>
 #include <TagGroups/TagGroups.hpp>
-#include <yelolib/render/sky/c_sky_manager.hpp>
-#include <blamlib/render/render.hpp>
+#include <yelo/render/sky/c_sky_manager.hpp>
+#include <blam/render/render.hpp>
 
 namespace Yelo
 {

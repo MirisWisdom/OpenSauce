@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/models/model_definitions.hpp>
-#include <blamlib/physics/collision_bsp_definitions.hpp>
+#include <blam/models/model_definitions.hpp>
+#include <blam/physics/collision_bsp_definitions.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

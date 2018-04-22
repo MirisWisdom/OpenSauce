@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/scenario/scenario.hpp>
+#include <blam/scenario/scenario.hpp>
 
 // Terminology:
 // maps_path: The system directory path to a "maps\" folder. 

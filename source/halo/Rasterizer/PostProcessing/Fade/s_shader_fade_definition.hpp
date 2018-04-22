@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <yelo/shaders/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {

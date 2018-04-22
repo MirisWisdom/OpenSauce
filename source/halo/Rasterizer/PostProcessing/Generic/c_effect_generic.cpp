@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/Generic/c_effect_generic.hpp"
 #include "Rasterizer/PostProcessing/Generic/c_shader_instance_generic.hpp"
 

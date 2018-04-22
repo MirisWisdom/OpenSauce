@@ -3,7 +3,7 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <blam/blam.h>
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	#define MATH_FLOAT_FUNC(func) (real)func

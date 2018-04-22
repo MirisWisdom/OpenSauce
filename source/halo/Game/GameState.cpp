@@ -4,19 +4,19 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/GameState.hpp"
 
 #include <Pointers/Game.GameState.hpp>
-#include <blamlib/cache/physical_memory_map_structures.hpp>
-#include <blamlib/game/game_allegiance_structures.hpp>
-#include <blamlib/game/game_globals_definitions.hpp>
-#include <blamlib/game/game_globals_structures.hpp>
-#include <blamlib/game/game_time_structures.hpp>
-#include <blamlib/main/console.hpp>
-#include <blamlib/main/main_structures.hpp>
-#include <blamlib/saved_games/game_state_structures.hpp>
-#include <blamlib/scenario/scenario.hpp>
+#include <blam/cache/physical_memory_map_structures.hpp>
+#include <blam/game/game_allegiance_structures.hpp>
+#include <blam/game/game_globals_definitions.hpp>
+#include <blam/game/game_globals_structures.hpp>
+#include <blam/game/game_time_structures.hpp>
+#include <blam/main/console.hpp>
+#include <blam/main/main_structures.hpp>
+#include <blam/saved_games/game_state_structures.hpp>
+#include <blam/scenario/scenario.hpp>
 #include <Common/DebugDump.hpp>
 #include <Game/AI.hpp>
 #include <Game/Effects.hpp>
@@ -34,11 +34,11 @@
 #include <Scenario/StructureBSP.hpp>
 #include <Settings/Settings.hpp>
 #include <TagGroups/TagGroups.hpp>
-#include <yelolib/cseries/random.hpp>
-#include <yelolib/open_sauce/blam_memory_upgrades.hpp>
-#include <yelolib/open_sauce/project_yellow_scenario.hpp>
-#include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <yelolib/shell/shell_windows_command_line.hpp>
+#include <yelo/cseries/random.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
+#include <yelo/open_sauce/project_yellow_scenario.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelo/shell/shell_windows_command_line.hpp>
 
 namespace Yelo
 {

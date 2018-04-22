@@ -4,9 +4,9 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
-#include <blamlib/tag_files/s_tag_iterator.h>
+#include <blam/tag_files/s_tag_iterator.h>
 
 #if !PLATFORM_IS_DEDI
 #include "Rasterizer/PostProcessing/Generic/Internal/c_settings_internal.hpp"

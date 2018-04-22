@@ -5,8 +5,8 @@
 */
 #pragma once
 
-#include <blamlib/cache/cache_constants.hpp>
-#include <blamlib/memory/data.hpp>
+#include <blam/cache/cache_constants.hpp>
+#include <blam/memory/data.hpp>
 
 namespace Yelo
 {

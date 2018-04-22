@@ -3,10 +3,10 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/game/game_time.hpp>
+#include <blam/blam.h>
+#include <blam/game/game_time.hpp>
 
-#include <blamlib/game/game_time_structures.hpp>
+#include <blam/game/game_time_structures.hpp>
 
 namespace Yelo
 {

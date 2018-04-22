@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/tag_files/tag_data.h>
+#include <blam/tag_files/tag_data.h>
 
 namespace Yelo
 {

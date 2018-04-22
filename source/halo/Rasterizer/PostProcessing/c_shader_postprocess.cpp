@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/cache/predicted_resources.hpp>
+#include <blam/cache/predicted_resources.hpp>
 
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"

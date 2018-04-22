@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
 
 namespace Yelo
 {
@@ -50,7 +50,7 @@ namespace Yelo
 		static datum_index Create(index_t index, const void* header);
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
-		struct std_hash : public std::unary_function<datum_index, size_t>
+		struct std_hash : std::function<size_t(const datum_index&)>
 		{
 			// logic copied and pasted from xstddef's _Bitwise_hash
 			size_t operator()(const datum_index& _Keyval) const

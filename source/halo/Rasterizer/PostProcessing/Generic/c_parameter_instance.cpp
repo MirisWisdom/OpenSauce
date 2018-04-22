@@ -5,13 +5,13 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/Generic/c_parameter_instance.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/time/interpolation/interpolation.hpp>
-#include <YeloLib/time/interpolation/c_interp_linear.hpp>
-#include <blamlib/units/unit_structures.hpp>
+#include <yelo/time/interpolation/interpolation.hpp>
+#include <yelo/time/interpolation/c_interp_linear.hpp>
+#include <blam/units/unit_structures.hpp>
 
 #include "Rasterizer/PostProcessing/Interpolation/c_interp_function_pp_anim.hpp"
 

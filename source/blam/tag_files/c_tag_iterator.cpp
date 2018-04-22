@@ -1,7 +1,7 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/tag_files/c_tag_iterator.h>
+#include <blam/blam.h>
+#include <blam/tag_files/c_tag_iterator.h>
 
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
 namespace Yelo { namespace TagGroups
 {

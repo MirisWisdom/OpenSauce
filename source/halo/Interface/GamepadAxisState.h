@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
 
 namespace Yelo
 {

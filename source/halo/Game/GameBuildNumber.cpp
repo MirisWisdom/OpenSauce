@@ -4,10 +4,10 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/GameBuildNumber.hpp"
 
-#include <blamlib/saved_games/game_state_structures.hpp>
+#include <blam/saved_games/game_state_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

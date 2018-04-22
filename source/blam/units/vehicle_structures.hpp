@@ -5,9 +5,9 @@
 */
 #pragma once
 
-#include <blamlib/units/unit_structures.hpp>
-#include <blamlib/units/vehicle_definitions.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/units/unit_structures.hpp>
+#include <blam/units/vehicle_definitions.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

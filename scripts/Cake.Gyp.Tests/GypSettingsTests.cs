@@ -50,6 +50,15 @@ namespace Cake.Gyp.Tests
 			{
 				new GypSettings
 				{
+					OutputPlatform = GypOutputPlatform.VisualStudio2017,
+					OutputDirectory = sOutputDirectory
+				},
+				"-f msvs -G msvs_version=2017 --generator-output=\"anyDirectory\""
+			},
+			new object[]
+			{
+				new GypSettings
+				{
 					OutputPlatform = GypOutputPlatform.Ninja,
 					OutputDirectory = sOutputDirectory
 				},

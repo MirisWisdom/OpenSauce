@@ -4,14 +4,14 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/DX9/DX9.hpp"
 
 #if !PLATFORM_IS_DEDI
 
 #include <Pointers/Rasterizer.DX9.hpp>
-#include <yelolib/cseries/pc_crashreport.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/cseries/pc_crashreport.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

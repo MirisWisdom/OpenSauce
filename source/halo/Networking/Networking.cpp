@@ -4,22 +4,22 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/Networking.hpp"
 
-#include <blamlib/bungie_net/network/transport_address.hpp> // for Enums::transport_rejection_code
-#include <blamlib/main/console.hpp>
-#include <blamlib/main/main.hpp>
-#include <blamlib/networking/network_client_manager.hpp>
-#include <blamlib/networking/network_client_manager_structures.hpp>
-#include <blamlib/networking/network_game_globals.hpp>
-#include <blamlib/networking/network_game_manager.hpp>
-#include <blamlib/networking/network_game_manager_structures.hpp>
-#include <blamlib/networking/network_messages_structures.hpp>
-#include <blamlib/networking/network_server_manager.hpp>
-#include <blamlib/networking/network_server_manager_structures.hpp>
-#include <blamlib/networking/player_update_client.hpp>
-#include <blamlib/networking/player_update_server.hpp>
+#include <blam/bungie_net/network/transport_address.hpp> // for Enums::transport_rejection_code
+#include <blam/main/console.hpp>
+#include <blam/main/main.hpp>
+#include <blam/networking/network_client_manager.hpp>
+#include <blam/networking/network_client_manager_structures.hpp>
+#include <blam/networking/network_game_globals.hpp>
+#include <blam/networking/network_game_manager.hpp>
+#include <blam/networking/network_game_manager_structures.hpp>
+#include <blam/networking/network_messages_structures.hpp>
+#include <blam/networking/network_server_manager.hpp>
+#include <blam/networking/network_server_manager_structures.hpp>
+#include <blam/networking/player_update_client.hpp>
+#include <blam/networking/player_update_server.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/GameSpyApi.hpp"

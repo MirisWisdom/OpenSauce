@@ -7,8 +7,8 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/files/packed_file.hpp>
-#include <YeloLib/shaders/shader_postprocess_globals_definitions.hpp>
+#include <yelo/files/packed_file.hpp>
+#include <yelo/shaders/shader_postprocess_globals_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"

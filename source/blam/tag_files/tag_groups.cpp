@@ -3,28 +3,28 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_groups.hpp>
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/math/color_math.hpp>
-#include <blamlib/math/real_math.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/models/model_definitions.hpp>
-#include <blamlib/tag_files/s_tag_iterator.h>
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_data.h>
-#include <blamlib/tag_files/tag_block_definition.h>
-#include <blamlib/tag_files/tag_data_definition.h>
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_group.h>
-#include <blamlib/tag_files/tag_group_loading.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <yelolib/cseries/cseries_yelo_base.hpp>
-#include <yelolib/memory/data_yelo.hpp>
-#include <yelolib/tag_files/string_id_yelo.hpp>
-#include <yelolib/tag_files/tag_group_memory.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/math/color_math.hpp>
+#include <blam/math/real_math.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/models/model_definitions.hpp>
+#include <blam/tag_files/s_tag_iterator.h>
+#include <blam/tag_files/tag_block.h>
+#include <blam/tag_files/tag_data.h>
+#include <blam/tag_files/tag_block_definition.h>
+#include <blam/tag_files/tag_data_definition.h>
+#include <blam/tag_files/tag_field_scanner.hpp>
+#include <blam/tag_files/tag_group.h>
+#include <blam/tag_files/tag_group_loading.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/memory/data_yelo.hpp>
+#include <yelo/tag_files/string_id_yelo.hpp>
+#include <yelo/tag_files/tag_group_memory.hpp>
 
 namespace Yelo { namespace TagGroups
 {

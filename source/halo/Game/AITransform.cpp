@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include <Common/Precompile.hpp>
+#include <halo/halo.h>
 #include <Game/AITransform.hpp>
 
-#include <blamlib/units/unit_structures.hpp>
-#include <yelolib/ai/c_actor_variant_transform_manager.hpp>
-#include <yelolib/saved_games/game_state_yelo.hpp>
-#include <yelolib/units/units_yelo.hpp>
+#include <blam/units/unit_structures.hpp>
+#include <yelo/ai/c_actor_variant_transform_manager.hpp>
+#include <yelo/saved_games/game_state_yelo.hpp>
+#include <yelo/units/units_yelo.hpp>
 
 namespace Yelo
 {

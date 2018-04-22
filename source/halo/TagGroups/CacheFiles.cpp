@@ -4,17 +4,17 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "TagGroups/CacheFiles.hpp"
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/cache/cache_files_globals.hpp>
-#include <blamlib/interface/map_list.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/cache/cache_files_globals.hpp>
+#include <blam/interface/map_list.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
 
-#include <YeloLib/cache/cache_files_yelo.hpp>
-#include <YeloLib/cache/data_file_yelo.hpp>
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <yelo/cache/cache_files_yelo.hpp>
+#include <yelo/cache/data_file_yelo.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/FileIO.hpp"

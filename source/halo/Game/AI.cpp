@@ -4,15 +4,15 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include <Common/Precompile.hpp>
+#include <halo/halo.h>
 #include <Game/AI.hpp>
 
 #include <Pointers/Game.AI.hpp>
-#include <blamlib/ai/actor_structures.hpp>
-#include <blamlib/ai/prop_structures.hpp>
+#include <blam/ai/actor_structures.hpp>
+#include <blam/ai/prop_structures.hpp>
 #include <Game/AITransform.hpp>
 #include <Objects/Objects.hpp>
-#include <yelolib/ai/ai_yelo.hpp>
+#include <yelo/ai/ai_yelo.hpp>
 
 namespace Yelo
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blamlib/hs/c_hs_type_value_abi.h>
+#include <blam/hs/c_hs_type_value_abi.h>
 
 namespace Yelo { namespace Scripting
 {

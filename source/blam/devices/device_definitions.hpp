@@ -5,9 +5,9 @@
 */
 #pragma once
 
-#include <blamlib/objects/object_definitions.hpp>
+#include <blam/objects/object_definitions.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/cseries/enum_templates.h>
 
 namespace Yelo
 {

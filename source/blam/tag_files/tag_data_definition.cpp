@@ -1,5 +1,5 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/tag_files/tag_data_definition.h>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_data_definition.h>
 
 namespace Yelo
 {

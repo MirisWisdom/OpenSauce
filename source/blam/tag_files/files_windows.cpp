@@ -3,10 +3,10 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/tag_files/files.hpp>
+#include <blam/blam.h>
+#include <blam/tag_files/files.hpp>
 
-#include <blamlib/cseries/errors.hpp>
+#include <blam/cseries/errors.hpp>
 #include <intrin.h>
 
 namespace Yelo

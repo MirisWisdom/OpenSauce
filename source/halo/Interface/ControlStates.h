@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/input/input_windows.hpp>
+#include <blam/input/input_windows.hpp>
 #include <Interface/ControlTypes.hpp>
 #include <Interface/GamepadAxisState.h>
 

@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
+#include <blam/memory/data.hpp>
 
 struct IDirect3DVertexDeclaration9;
 

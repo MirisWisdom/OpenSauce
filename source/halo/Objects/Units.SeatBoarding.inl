@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <YeloLib/units/c_unit_seat_boarding_manager.hpp>
+#include <yelo/units/c_unit_seat_boarding_manager.hpp>
 
 namespace Yelo
 {

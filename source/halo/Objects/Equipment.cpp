@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Objects/Equipment.hpp"
 
-#include <blamlib/items/equipment_definitions.hpp>
-#include <blamlib/items/equipment_structures.hpp>
+#include <blam/items/equipment_definitions.hpp>
+#include <blam/items/equipment_structures.hpp>
 
 #include "Objects/Objects.hpp"
 

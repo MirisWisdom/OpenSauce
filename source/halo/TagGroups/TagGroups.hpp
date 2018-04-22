@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

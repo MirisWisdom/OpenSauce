@@ -1,5 +1,5 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/cache/s_data_file_globals.h>
+#include <blam/blam.h>
+#include <blam/cache/s_data_file_globals.h>
 
 namespace Yelo { namespace Cache
 {

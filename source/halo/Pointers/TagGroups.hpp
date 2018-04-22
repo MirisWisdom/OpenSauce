@@ -14,9 +14,9 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.TagGroups.inl"
 #endif
 
-#include <blamlib/cache/cache_files_structures.hpp>
+#include <blam/cache/cache_files_structures.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

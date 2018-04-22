@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/bungie_net/network/transport_endpoint_winsock.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/bungie_net/network/transport_endpoint_winsock.hpp>
+#include <blam/cseries/cseries_base.hpp>
 
 namespace Yelo
 {

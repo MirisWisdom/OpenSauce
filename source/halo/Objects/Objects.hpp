@@ -6,16 +6,16 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
-#include <blamlib/devices/devices.hpp>
-#include <blamlib/objects/object_definitions.hpp>
-#include <blamlib/objects/object_lights.hpp>
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/objects/widgets/widgets.hpp>
-#include <blamlib/render/render_objects.hpp>
-#include <blamlib/units/units.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/devices/devices.hpp>
+#include <blam/objects/object_definitions.hpp>
+#include <blam/objects/object_lights.hpp>
+#include <blam/objects/object_structures.hpp>
+#include <blam/objects/objects.hpp>
+#include <blam/objects/widgets/widgets.hpp>
+#include <blam/render/render_objects.hpp>
+#include <blam/units/units.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

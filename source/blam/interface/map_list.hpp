@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/memory/array.hpp>
+#include <blam/memory/array.hpp>
 
 namespace Yelo
 {

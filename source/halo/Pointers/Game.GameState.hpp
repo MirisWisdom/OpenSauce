@@ -14,16 +14,16 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Game.inl"
 #endif
 
-#include <blamlib/cache/physical_memory_map_structures.hpp>
-#include <blamlib/game/game_allegiance_structures.hpp>
-#include <blamlib/game/game_globals_definitions.hpp>
-#include <blamlib/game/game_globals_structures.hpp>
-#include <blamlib/game/game_time_structures.hpp>
-#include <blamlib/main/main_structures.hpp>
-#include <blamlib/physics/physics.hpp>
-#include <blamlib/saved_games/game_state_structures.hpp>
+#include <blam/cache/physical_memory_map_structures.hpp>
+#include <blam/game/game_allegiance_structures.hpp>
+#include <blam/game/game_globals_definitions.hpp>
+#include <blam/game/game_globals_structures.hpp>
+#include <blam/game/game_time_structures.hpp>
+#include <blam/main/main_structures.hpp>
+#include <blam/physics/physics.hpp>
+#include <blam/saved_games/game_state_structures.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

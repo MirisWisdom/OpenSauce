@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/ai/ai_communication.hpp>
+#include <blam/ai/ai_communication.hpp>
 
 namespace Yelo
 {

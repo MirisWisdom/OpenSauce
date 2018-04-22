@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/game/game_allegiance.hpp>
-#include <blamlib/models/model_animations.hpp>
-#include <blamlib/objects/object_definitions.hpp>
+#include <blam/game/game_allegiance.hpp>
+#include <blam/models/model_animations.hpp>
+#include <blam/objects/object_definitions.hpp>
 
 namespace Yelo
 {

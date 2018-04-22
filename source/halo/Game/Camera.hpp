@@ -8,10 +8,10 @@
 
 #if PLATFORM_IS_USER
 
-#include <blamlib/camera/director.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <blam/camera/director.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {

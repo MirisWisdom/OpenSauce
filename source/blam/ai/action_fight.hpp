@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
 
 namespace Yelo
 {

@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/memory/array.hpp>
-#include <blamlib/networking/network_game_globals.hpp>
-#include <blamlib/saved_games/game_variant.hpp>
+#include <blam/memory/array.hpp>
+#include <blam/networking/network_game_globals.hpp>
+#include <blam/saved_games/game_variant.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

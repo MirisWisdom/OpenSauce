@@ -8,10 +8,10 @@
 
 #if PLATFORM_IS_USER
 
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
 #include <vector>
-#include <yelolib/configuration/c_configuration_value.hpp>
-#include <yelolib/open_sauce/settings/c_settings_singleton.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {

@@ -14,10 +14,10 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Game.inl"
 #endif
 
-#include <blamlib/interface/terminal.hpp>
-#include <blamlib/main/console.hpp>
+#include <blam/interface/terminal.hpp>
+#include <blam/main/console.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

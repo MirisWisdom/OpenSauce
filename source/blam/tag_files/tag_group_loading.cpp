@@ -3,28 +3,28 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_data.h>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_data.h>
 
 #if PLATFORM_IS_EDITOR
-#include <blamlib/tag_files/tag_group_loading.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/memory/byte_swapping.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/models/model_definitions.hpp>
-#include <blamlib/tag_files/tag_block.h>
-#include <blamlib/tag_files/tag_block_definition.h>
-#include <blamlib/tag_files/tag_data_definition.h>
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_group.h>
-#include <blamlib/tag_files/tag_groups.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <blamlib/tag_files/tag_reference_definition.h>
-#include <yelolib/cseries/cseries_yelo_base.hpp>
-#include <yelolib/memory/data_yelo.hpp>
-#include <yelolib/tag_files/tag_group_memory.hpp>
+#include <blam/tag_files/tag_group_loading.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/memory/byte_swapping.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/models/model_definitions.hpp>
+#include <blam/tag_files/tag_block.h>
+#include <blam/tag_files/tag_block_definition.h>
+#include <blam/tag_files/tag_data_definition.h>
+#include <blam/tag_files/tag_field_scanner.hpp>
+#include <blam/tag_files/tag_files.hpp>
+#include <blam/tag_files/tag_group.h>
+#include <blam/tag_files/tag_groups.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <blam/tag_files/tag_reference_definition.h>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/memory/data_yelo.hpp>
+#include <yelo/tag_files/tag_group_memory.hpp>
 
 
 /* TODO:

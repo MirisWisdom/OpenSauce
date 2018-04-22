@@ -7,8 +7,8 @@
 #pragma once
 
 // See this header for more "Engine pointer markup system" documentation
-#include <YeloLib/memory/memory_interface_base.hpp>
-#include <YeloLib/memory/naked_func_writer.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
+#include <yelo/memory/naked_func_writer.hpp>
 
 //////////////////////////////////////////////////////////////////////////
 // Value markup system

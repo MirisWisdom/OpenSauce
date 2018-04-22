@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/hs/hs.hpp>
+#include <blam/hs/hs.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

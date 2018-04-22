@@ -3,8 +3,8 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cseries/profile.hpp>
+#include <blam/blam.h>
+#include <blam/cseries/profile.hpp>
 
 namespace Yelo
 {

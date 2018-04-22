@@ -6,15 +6,15 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/ai/actions.hpp>
-#include <blamlib/ai/actors.hpp>
-#include <blamlib/game/game_allegiance.hpp>
-#include <blamlib/memory/data.hpp>
-#include <blamlib/math/real_math.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
-#include <YeloLib/memory/data_yelo.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/ai/actions.hpp>
+#include <blam/ai/actors.hpp>
+#include <blam/game/game_allegiance.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/math/real_math.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/memory/data_yelo.hpp>
 
 namespace Yelo
 {

@@ -5,10 +5,10 @@
 */
 #pragma once
 
-#include <blamlib/game/game_allegiance.hpp>
-#include <blamlib/hs/hs_scenario_definitions.hpp>
-#include <blamlib/ai/actors.hpp>
-#include <blamlib/ai/actor_types.hpp>
+#include <blam/game/game_allegiance.hpp>
+#include <blam/hs/hs_scenario_definitions.hpp>
+#include <blam/ai/actors.hpp>
+#include <blam/ai/actor_types.hpp>
 
 namespace Yelo
 {
@@ -249,4 +249,4 @@ namespace Yelo
 	};
 };
 
-#include <YeloLib/hs/hs_yelo.hpp>
+#include <yelo/hs/hs_yelo.hpp>

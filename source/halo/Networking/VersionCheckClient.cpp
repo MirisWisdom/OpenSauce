@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/VersionCheckClient.hpp"
 
 #if PLATFORM_IS_USER && defined(YELO_VERSION_CHECK_ENABLE)
-#include <blamlib/main/main_structures.hpp>
+#include <blam/main/main_structures.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
 #include "Game/GameState.hpp"

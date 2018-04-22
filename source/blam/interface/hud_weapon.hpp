@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/interface/weapon_hud_interface_definition.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/interface/weapon_hud_interface_definition.hpp>
 
 namespace Yelo
 {

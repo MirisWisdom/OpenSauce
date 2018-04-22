@@ -1,11 +1,11 @@
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/memory/byte_swapping_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/tag_files/c_tag_iterator.h>
-#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/memory/byte_swapping_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/tag_files/c_tag_iterator.h>
+#include <blam/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
 {

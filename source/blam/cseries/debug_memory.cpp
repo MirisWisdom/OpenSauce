@@ -3,8 +3,8 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cseries/debug_memory.hpp>
+#include <blam/blam.h>
+#include <blam/cseries/debug_memory.hpp>
 
 namespace Yelo
 {

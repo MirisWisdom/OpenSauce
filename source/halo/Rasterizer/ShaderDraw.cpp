@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/ShaderDraw.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib//shaders/shader_definitions.hpp>
+#include <blam//shaders/shader_definitions.hpp>
 
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"

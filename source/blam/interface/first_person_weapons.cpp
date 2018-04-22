@@ -4,8 +4,8 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/interface/first_person_weapons.hpp>
+#include <blam/blam.h>
+#include <blam/interface/first_person_weapons.hpp>
 
 namespace Yelo
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blamlib/hs/hs_types.hpp>
+#include <blam/hs/hs_types.hpp>
 
 namespace Yelo { namespace Scripting
 {

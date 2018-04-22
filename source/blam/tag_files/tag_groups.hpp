@@ -5,13 +5,13 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/tag_files/s_tag_field_definition.h>
-#include <blamlib/tag_files/s_tag_instance.h>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <yelolib/memory/data_yelo.hpp>
-#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/tag_files/s_tag_field_definition.h>
+#include <blam/tag_files/s_tag_instance.h>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <yelo/memory/data_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

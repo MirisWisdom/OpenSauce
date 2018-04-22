@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/hs/hs.hpp>
+#include <blam/hs/hs.hpp>
 
 namespace Yelo
 {

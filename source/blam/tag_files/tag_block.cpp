@@ -1,9 +1,9 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/tag_files/tag_block.h>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_block.h>
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/tag_files/tag_block_definition.h>
-#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/tag_files/tag_block_definition.h>
+#include <blam/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
 {

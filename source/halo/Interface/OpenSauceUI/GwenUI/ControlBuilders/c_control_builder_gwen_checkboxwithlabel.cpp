@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Interface/OpenSauceUI/GwenUI/ControlBuilders/c_control_builder_gwen_checkboxwithlabel.hpp"
 
 #if !PLATFORM_IS_DEDI
 
 #include <Gwen/Controls/CheckBox.h>
-#include <YeloLib/cseries/value_conversion.hpp>
+#include <yelo/cseries/value_conversion.hpp>
 
 #include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/control_event_ids.hpp"

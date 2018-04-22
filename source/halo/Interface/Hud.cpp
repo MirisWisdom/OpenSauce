@@ -4,17 +4,17 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include <Interface/Hud.hpp>
 
 #if !PLATFORM_IS_DEDI
 #include <Pointers/Interface.Hud.hpp>
-#include <blamlib/interface/hud_definitions.hpp>
-#include <blamlib/interface/ui_widget_group.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blam/interface/hud_definitions.hpp>
+#include <blam/interface/ui_widget_group.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
 #include <Memory/FunctionInterface.hpp>
-#include <yelolib/configuration/type_containers/c_real_point2d_container.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/configuration/type_containers/c_real_point2d_container.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

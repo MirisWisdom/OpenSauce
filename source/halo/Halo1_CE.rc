@@ -1,7 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
-#include "../../../source/YeloLib/open_sauce/yelo_version.hpp"
+#include "../../source/yelo/open_sauce/yelo_version.hpp"
 #include <boost/preprocessor/stringize.hpp>
 
 #define APSTUDIO_READONLY_SYMBOLS

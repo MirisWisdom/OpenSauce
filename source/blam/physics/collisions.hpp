@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/physics/collision_bsp.hpp>
-#include <blamlib/physics/collision_models.hpp>
+#include <blam/physics/collision_bsp.hpp>
+#include <blam/physics/collision_models.hpp>
 
 namespace Yelo
 {

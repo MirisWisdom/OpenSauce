@@ -6,12 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/ai/ai_scenario_definitions.hpp>
-#include <blamlib/memory/data_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
-#include <YeloLib/memory/data_yelo.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/ai/ai_scenario_definitions.hpp>
+#include <blam/memory/data_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/memory/data_yelo.hpp>
 
 namespace Yelo
 {

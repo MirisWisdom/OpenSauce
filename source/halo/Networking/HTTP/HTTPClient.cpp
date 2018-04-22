@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/HTTP/HTTPClient.hpp"
 
 #if defined(YELO_USE_GAMESPY_OPEN)

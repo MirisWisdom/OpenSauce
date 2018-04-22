@@ -21,7 +21,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include <blamlib/shaders/shader_definitions.hpp>
+#include <blam/shaders/shader_definitions.hpp>
 
 namespace Yelo
 {

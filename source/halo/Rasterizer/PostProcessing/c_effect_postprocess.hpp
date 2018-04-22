@@ -7,14 +7,14 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <yelo/memory/linked_list.hpp>
+#include <yelo/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 #include "Rasterizer/PostProcessing/c_shader_instance.hpp"
 #include "Rasterizer/PostProcessing/c_quad_manager.hpp"
-#include <YeloLib/time/interpolation/c_interp_linear.hpp>
+#include <yelo/time/interpolation/c_interp_linear.hpp>
 
 namespace Yelo
 {

@@ -5,12 +5,12 @@
 */
 #pragma once
 
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/items/item_structures.hpp>
+#include <blam/objects/object_structures.hpp>
+#include <blam/items/item_structures.hpp>
 
-#include <blamlib/items/equipment_definitions.hpp>
+#include <blam/items/equipment_definitions.hpp>
 
-#include <YeloLib/items/equipment_structures_yelo.hpp>
+#include <yelo/items/equipment_structures_yelo.hpp>
 
 namespace Yelo
 {

@@ -3,27 +3,27 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include <Common/Precompile.hpp>
-#include <blamlib/hs/hs_types.hpp>
+#include <blam/blam.h>
+#include <blam/hs/hs_types.hpp>
 
-#include <blamlib/ai/actor_definitions.hpp>					// for k_hs_tag_reference_type_group_tags
-#include <blamlib/ai/actor_structures.hpp>
-#include <blamlib/ai/actor_types.hpp>						// for g_actor_type_names
-#include <blamlib/ai/actors.hpp>							// for g_ai_default_state_names
-#include <blamlib/effects/damage_effect_definitions.hpp>	// for k_hs_tag_reference_type_group_tags
-#include <blamlib/effects/effect_definitions.hpp>			// for k_hs_tag_reference_type_group_tags
-#include <blamlib/game/game.hpp>							// for g_game_difficulty_level_names
-#include <blamlib/game/game_allegiance.hpp>					// for g_game_team_names
-#include <blamlib/hs/hs_types_traits.hpp>
-#include <blamlib/hs/object_lists.hpp>
-#include <blamlib/interface/hud_definitions.hpp>			// for g_hud_anchor_names
-#include <blamlib/models/model_animation_definitions.hpp>	// for k_hs_tag_reference_type_group_tags
-#include <blamlib/objects/object_definitions.hpp>			// for k_hs_tag_reference_type_group_tags
-#include <blamlib/objects/object_types.hpp>
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/sound/sound_definitions.hpp>				// for k_hs_tag_reference_type_group_tags
-#include <blamlib/units/unit_structures.hpp>
+#include <blam/ai/actor_definitions.hpp>					// for k_hs_tag_reference_type_group_tags
+#include <blam/ai/actor_structures.hpp>
+#include <blam/ai/actor_types.hpp>						// for g_actor_type_names
+#include <blam/ai/actors.hpp>							// for g_ai_default_state_names
+#include <blam/effects/damage_effect_definitions.hpp>	// for k_hs_tag_reference_type_group_tags
+#include <blam/effects/effect_definitions.hpp>			// for k_hs_tag_reference_type_group_tags
+#include <blam/game/game.hpp>							// for g_game_difficulty_level_names
+#include <blam/game/game_allegiance.hpp>					// for g_game_team_names
+#include <blam/hs/hs_types_traits.hpp>
+#include <blam/hs/object_lists.hpp>
+#include <blam/interface/hud_definitions.hpp>			// for g_hud_anchor_names
+#include <blam/models/model_animation_definitions.hpp>	// for k_hs_tag_reference_type_group_tags
+#include <blam/objects/object_definitions.hpp>			// for k_hs_tag_reference_type_group_tags
+#include <blam/objects/object_types.hpp>
+#include <blam/objects/objects.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/sound/sound_definitions.hpp>				// for k_hs_tag_reference_type_group_tags
+#include <blam/units/unit_structures.hpp>
 
 namespace Yelo { namespace Scripting
 {

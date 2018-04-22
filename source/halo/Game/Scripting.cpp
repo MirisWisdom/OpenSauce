@@ -4,14 +4,14 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/Scripting.hpp"
 
-#include <blamlib/cutscene/recorded_animations_structures.hpp>
-#include <blamlib/hs/hs_runtime_structures.hpp>
-#include <blamlib/hs/hs_structures.hpp>
-#include <blamlib/hs/object_lists_structures.hpp>
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <blam/cutscene/recorded_animations_structures.hpp>
+#include <blam/hs/hs_runtime_structures.hpp>
+#include <blam/hs/hs_structures.hpp>
+#include <blam/hs/object_lists_structures.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"

@@ -4,15 +4,15 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Common/FileIO.hpp"
 
-#include <YeloLib/files/files.hpp>
-#include <YeloLib/main/main_yelo_base.hpp>
-#include <YeloLib/configuration/c_configuration_file_factory.hpp>
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_container_list.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <yelo/files/files.hpp>
+#include <yelo/main/main_yelo_base.hpp>
+#include <yelo/configuration/c_configuration_file_factory.hpp>
+#include <yelo/configuration/c_configuration_container.hpp>
+#include <yelo/configuration/c_configuration_container_list.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"

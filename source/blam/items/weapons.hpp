@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/models/model_animation_definitions.hpp>
+#include <blam/models/model_animation_definitions.hpp>
 
 namespace Yelo
 {

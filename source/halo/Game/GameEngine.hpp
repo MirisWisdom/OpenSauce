@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/game/game_engine.hpp>
-#include <blamlib/objects/vehicle_remapper.hpp>
-#include <blamlib/saved_games/game_variant.hpp>
+#include <blam/game/game_engine.hpp>
+#include <blam/objects/vehicle_remapper.hpp>
+#include <blam/saved_games/game_variant.hpp>
 
 namespace Yelo
 {

@@ -6,11 +6,11 @@
 */
 #pragma once
 
-#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <yelo/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
 
-#include <YeloLib/time/interpolation/c_interp_function.hpp>
+#include <yelo/time/interpolation/c_interp_function.hpp>
 
 namespace Yelo
 {

@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/interface/hud_definitions.hpp>
-#include <blamlib/interface/hud_unit.hpp>
+#include <blam/interface/hud_definitions.hpp>
+#include <blam/interface/hud_unit.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

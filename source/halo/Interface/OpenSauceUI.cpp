@@ -4,17 +4,17 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Interface/OpenSauceUI.hpp"
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/configuration/c_configuration_file_factory.hpp>
-#include <YeloLib/cache/shared_cache_files.hpp>
-#include <BlamLib/game/game_globals.hpp>
-#include <BlamLib/game/game_globals_structures.hpp>
-#include <BlamLib/cache/cache_files.hpp>
-#include <BlamLib/cache/cache_files_globals.hpp>
+#include <yelo/configuration/c_configuration_file_factory.hpp>
+#include <yelo/cache/shared_cache_files.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/game/game_globals_structures.hpp>
+#include <blam/cache/cache_files.hpp>
+#include <blam/cache/cache_files_globals.hpp>
 
 #include "Game/GameState.hpp"
 #include "Common/FileIO.hpp"

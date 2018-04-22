@@ -14,11 +14,11 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Game.inl"
 #endif
 
-#include <blamlib/effects/player_effects.hpp>
-#include <blamlib/game/game_engine_oddball.hpp>
-#include <blamlib/game/player_control.hpp>
+#include <blam/effects/player_effects.hpp>
+#include <blam/game/game_engine_oddball.hpp>
+#include <blam/game/player_control.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

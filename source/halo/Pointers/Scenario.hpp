@@ -12,8 +12,8 @@
 #include "Pointers/1.10/HaloCE_110_Dedi.Scenario.inl"
 #endif
 
-#include <YeloLib/memory/memory_interface_base.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
 #include <Memory/MemoryInterface.hpp>
 
 namespace Yelo

@@ -6,12 +6,12 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
+#include <blam/memory/data.hpp>
 
-#include <blamlib/effects/effects_constants.hpp>
-#include <YeloLib/effects/effects_constants_yelo.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/effects/effects_constants.hpp>
+#include <yelo/effects/effects_constants_yelo.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

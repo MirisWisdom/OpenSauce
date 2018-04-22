@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <blamlib/items/item_definitions.hpp>
+#include <blam/items/item_definitions.hpp>
 
 namespace Yelo
 {

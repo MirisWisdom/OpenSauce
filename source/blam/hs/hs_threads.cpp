@@ -3,15 +3,15 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/hs/hs_threads.hpp>
+#include <blam/blam.h>
+#include <blam/hs/hs_threads.hpp>
 
-#include <blamlib/game/game_time.hpp>
-#include <blamlib/hs/hs_library_internal.hpp>
-#include <blamlib/hs/hs_structures.hpp>
-#include <blamlib/hs/hs_runtime_structures.hpp>
-#include <blamlib/scenario/scenario.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
+#include <blam/game/game_time.hpp>
+#include <blam/hs/hs_library_internal.hpp>
+#include <blam/hs/hs_structures.hpp>
+#include <blam/hs/hs_runtime_structures.hpp>
+#include <blam/scenario/scenario.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
 
 namespace Yelo
 {

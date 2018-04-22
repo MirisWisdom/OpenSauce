@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
-#include <blamlib/effects/effects_constants.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/effects/effects_constants.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

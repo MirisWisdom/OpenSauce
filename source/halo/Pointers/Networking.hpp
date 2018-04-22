@@ -14,13 +14,13 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Networking.inl"
 #endif
 
-#include <blamlib/networking/network_client_manager_structures.hpp>
-#include <blamlib/networking/network_game_globals.hpp>
-#include <blamlib/networking/network_server_manager_structures.hpp>
-#include <blamlib/networking/player_update_client.hpp>
-#include <blamlib/networking/player_update_server.hpp>
+#include <blam/networking/network_client_manager_structures.hpp>
+#include <blam/networking/network_game_globals.hpp>
+#include <blam/networking/network_server_manager_structures.hpp>
+#include <blam/networking/player_update_client.hpp>
+#include <blam/networking/player_update_server.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

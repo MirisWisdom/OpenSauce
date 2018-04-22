@@ -1,5 +1,5 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/hs/c_hs_type_void_abi.h>
+#include <blam/blam.h>
+#include <blam/hs/c_hs_type_void_abi.h>
 
 namespace Yelo { namespace Scripting
 {

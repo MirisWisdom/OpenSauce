@@ -4,12 +4,12 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/Textures/c_packed_texture_loader.hpp"
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/files/packed_file.hpp>
+#include <yelo/files/packed_file.hpp>
 
 #include "Rasterizer/DX9/DX9.hpp"
 

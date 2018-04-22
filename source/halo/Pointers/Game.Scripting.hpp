@@ -14,11 +14,11 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Game.HS.inl"
 #endif
 
-#include <blamlib/cutscene/recorded_animations.hpp>
-#include <blamlib/hs/hs_types_traits.hpp>
-#include <blamlib/hs/object_lists.hpp>
+#include <blam/cutscene/recorded_animations.hpp>
+#include <blam/hs/hs_types_traits.hpp>
+#include <blam/hs/object_lists.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

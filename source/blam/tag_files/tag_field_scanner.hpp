@@ -6,8 +6,8 @@
 #pragma once
 #if PLATFORM_IS_EDITOR
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/tag_files/tag_field.h>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/tag_files/tag_field.h>
 
 //#define __TAG_FIELD_SCAN_USE_BLAM_DATA
 

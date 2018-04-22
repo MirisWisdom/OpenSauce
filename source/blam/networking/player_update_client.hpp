@@ -6,11 +6,11 @@
 */
 #pragma once
 
-#include <blamlib/game/action_queue.hpp>
-#include <blamlib/game/position_queue.hpp>
-#include <blamlib/game/vehicle_update_queue.hpp>
-#include <blamlib/networking/player_update.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/game/action_queue.hpp>
+#include <blam/game/position_queue.hpp>
+#include <blam/game/vehicle_update_queue.hpp>
+#include <blam/networking/player_update.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

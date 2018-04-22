@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/game/game_allegiance.hpp> // for game teams
-#include <blamlib/game/game_configuration.hpp>
+#include <blam/game/game_allegiance.hpp> // for game teams
+#include <blam/game/game_configuration.hpp>
 
 namespace Yelo
 {

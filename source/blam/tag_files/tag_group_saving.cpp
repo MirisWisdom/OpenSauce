@@ -3,15 +3,15 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <blam/blam.h>
 #if PLATFORM_IS_EDITOR
-#include <blamlib/tag_files/tag_group_saving.hpp>
+#include <blam/tag_files/tag_group_saving.hpp>
 
-#include <blamlib/memory/byte_swapping.hpp>
-#include <blamlib/memory/data.hpp>
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/memory/byte_swapping.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/tag_files/tag_field_scanner.hpp>
+#include <blam/tag_files/tag_files.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

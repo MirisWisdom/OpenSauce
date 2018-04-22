@@ -11,17 +11,17 @@
 #include "Pointers/1.10/HaloCE_110_Runtime_Manual.Interface.inl"
 #endif
 
-#include <blamlib/interface/first_person_weapons.hpp>
-#include <blamlib/interface/hud.hpp>
-#include <blamlib/interface/hud_chat.hpp>
-#include <blamlib/interface/hud_messaging.hpp>
-#include <blamlib/interface/hud_nav_points.hpp>
-#include <blamlib/interface/hud_unit.hpp>
-#include <blamlib/interface/hud_weapon.hpp>
-#include <blamlib/interface/motion_sensor.hpp>
-#include <blamlib/text/draw_string.hpp>
+#include <blam/interface/first_person_weapons.hpp>
+#include <blam/interface/hud.hpp>
+#include <blam/interface/hud_chat.hpp>
+#include <blam/interface/hud_messaging.hpp>
+#include <blam/interface/hud_nav_points.hpp>
+#include <blam/interface/hud_unit.hpp>
+#include <blam/interface/hud_weapon.hpp>
+#include <blam/interface/motion_sensor.hpp>
+#include <blam/text/draw_string.hpp>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

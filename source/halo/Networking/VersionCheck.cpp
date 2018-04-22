@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/VersionCheck.hpp"
 
 #ifdef YELO_VERSION_CHECK_ENABLE
@@ -12,11 +12,11 @@
 #include <time.h>
 #include <ctime>
 
-#include <YeloLib/open_sauce/yelo_version.hpp>
+#include <yelo/open_sauce/yelo_version.hpp>
 
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_value_list.hpp>
-#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
+#include <yelo/configuration/c_configuration_value.hpp>
+#include <yelo/configuration/c_configuration_value_list.hpp>
+#include <yelo/open_sauce/settings/c_settings_singleton.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
 #if PLATFORM_IS_USER

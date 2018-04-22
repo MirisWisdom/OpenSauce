@@ -5,9 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-#include <blamlib/models/collision_model_definitions.hpp>
-#include <blamlib/objects/damage.hpp>
-#include <blamlib/objects/object_structures.hpp>
+#include <blam/models/collision_model_definitions.hpp>
+#include <blam/objects/damage.hpp>
+#include <blam/objects/object_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 

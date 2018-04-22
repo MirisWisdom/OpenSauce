@@ -1,8 +1,8 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/tag_files/tag_field.h>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_field.h>
 
-#include <YeloLib/tag_files/string_id_yelo.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <yelo/tag_files/string_id_yelo.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

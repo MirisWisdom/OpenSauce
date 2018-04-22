@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Interface/OpenSauceUI/Screen/c_screen_controller_mainmenubottombar.hpp"
 
 #if !PLATFORM_IS_DEDI
@@ -34,7 +34,7 @@ namespace Yelo
 			auto& version_checker = Networking::VersionCheck::c_version_check_manager_base::VersionChecker();
 			auto& version = version_checker.CurrentVersion();
 
-			char version_string[36];
+			char version_string[128];
 			sprintf_s(version_string, "OpenSauce v%i.%i.%i (%s)",
 				version.m_major,
 				version.m_minor,

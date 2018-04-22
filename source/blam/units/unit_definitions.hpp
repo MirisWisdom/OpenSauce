@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/objects/object_definitions.hpp>
-#include <blamlib/units/unit_camera.hpp>
+#include <blam/objects/object_definitions.hpp>
+#include <blam/units/unit_camera.hpp>
 
-#include <YeloLib/units/unit_definitions_yelo.hpp>
+#include <yelo/units/unit_definitions_yelo.hpp>
 
 namespace Yelo
 {

@@ -13,7 +13,7 @@
 #include "Pointers/1.10/HaloCE_110_Dedi.Game.EngineFunctions.inl"
 #endif
 
-#include <YeloLib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 #include <Memory/MemoryInterface.hpp>
 
 namespace Yelo

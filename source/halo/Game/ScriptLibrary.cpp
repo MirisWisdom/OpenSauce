@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/ScriptLibrary.hpp"
 
-#include <blamlib/hs/hs_structures.hpp>
-#include <blamlib/networking/network_server_manager_structures.hpp>
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
-#include <YeloLib/open_sauce/project_yellow_global_definitions.hpp>
+#include <blam/hs/hs_structures.hpp>
+#include <blam/networking/network_server_manager_structures.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
+#include <yelo/open_sauce/project_yellow_global_definitions.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Game/Camera.hpp"

@@ -5,8 +5,8 @@
 */
 #pragma once
 
-#include <blamlib/cache/predicted_resources.hpp>
-#include <blamlib/items/item_definitions.hpp>
+#include <blam/cache/predicted_resources.hpp>
+#include <blam/items/item_definitions.hpp>
 
 namespace Yelo
 {

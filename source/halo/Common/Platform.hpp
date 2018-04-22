@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <YeloLib/shell/platform_yelo.hpp>
+#include <yelo/shell/platform_yelo.hpp>
 
 #if !defined(PLATFORM_VERSION)
 	//#define PLATFORM_VERSION 0x1080 // 1.08 is no longer actively supported, use at your own risk

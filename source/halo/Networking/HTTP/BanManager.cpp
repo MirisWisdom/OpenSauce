@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Networking/HTTP/BanManager.hpp"
 
 #if PLATFORM_IS_DEDI
-#include <blamlib/main/console.hpp>
-#include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <blam/main/console.hpp>
+#include <yelo/memory/linked_list.hpp>
+#include <yelo/open_sauce/settings/yelo_shared_settings.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Networking/HTTP/HTTP.hpp"

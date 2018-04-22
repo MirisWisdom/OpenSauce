@@ -14,12 +14,12 @@
 #include "Pointers/1.10/HaloCE_110_Dedi_Manual.Networking.inl"
 #endif
 
-#include <blamlib/networking/message_delta_definitions.hpp>
-#include <blamlib/networking/message_delta_parameters_protocol.hpp>
-#include <blamlib/networking/network_server_manager_structures.hpp>
+#include <blam/networking/message_delta_definitions.hpp>
+#include <blam/networking/message_delta_parameters_protocol.hpp>
+#include <blam/networking/network_server_manager_structures.hpp>
 #include <Memory/MemoryInterface.hpp>
 #include <Networking/MessageDefinitions.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

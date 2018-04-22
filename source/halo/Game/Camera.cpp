@@ -4,21 +4,21 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Game/Camera.hpp"
 #include <Game/CameraFov.hpp>
 
 #if PLATFORM_IS_USER
 
 #include <Pointers/Game.Camera.hpp>
-#include <blamlib/cache/cache_files_globals.hpp>
-#include <blamlib/camera/director_structures.hpp>
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/units/unit_structures.hpp>
+#include <blam/cache/cache_files_globals.hpp>
+#include <blam/camera/director_structures.hpp>
+#include <blam/objects/objects.hpp>
+#include <blam/units/unit_structures.hpp>
 #include <Rasterizer/Rasterizer.hpp>
 #include <Settings/Settings.hpp>
 #include <TagGroups/CacheFiles.hpp>
-#include <yelolib/units/units_yelo.hpp>
+#include <yelo/units/units_yelo.hpp>
 
 namespace Yelo
 {

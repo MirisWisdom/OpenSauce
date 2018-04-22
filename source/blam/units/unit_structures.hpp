@@ -5,12 +5,12 @@
 */
 #pragma once
 
-#include <blamlib/game/game_globals.hpp>
-#include <blamlib/models/model_animations.hpp>
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/units/unit_control.hpp>
-#include <blamlib/units/unit_definitions.hpp>
-#include <blamlib/units/unit_dialogue.hpp>
+#include <blam/game/game_globals.hpp>
+#include <blam/models/model_animations.hpp>
+#include <blam/objects/object_structures.hpp>
+#include <blam/units/unit_control.hpp>
+#include <blam/units/unit_definitions.hpp>
+#include <blam/units/unit_dialogue.hpp>
 
 namespace Yelo
 {

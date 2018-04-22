@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/shell/shell_windows_command_line.hpp>
+#include <yelo/shell/shell_windows_command_line.hpp>
 
 #include "Settings/Settings.hpp"
 

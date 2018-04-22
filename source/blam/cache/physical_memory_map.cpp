@@ -3,10 +3,10 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cache/physical_memory_map.hpp>
+#include <blam/blam.h>
+#include <blam/cache/physical_memory_map.hpp>
 
-#include <blamlib/cache/physical_memory_map_structures.hpp>
+#include <blam/cache/physical_memory_map_structures.hpp>
 
 namespace Yelo
 {

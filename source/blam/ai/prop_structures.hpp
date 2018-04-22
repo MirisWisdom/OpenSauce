@@ -6,13 +6,13 @@
 */
 #pragma once
 
-#include <blamlib/ai/actor_perception.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/math/real_math.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/scenario/scenario_location.hpp>
-#include <blamlib/ai/actor_types.hpp>
-#include <YeloLib/memory/data_yelo.hpp>
+#include <blam/ai/actor_perception.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/math/real_math.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/scenario/scenario_location.hpp>
+#include <blam/ai/actor_types.hpp>
+#include <yelo/memory/data_yelo.hpp>
 
 namespace Yelo
 {

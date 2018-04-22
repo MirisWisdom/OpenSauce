@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/scenario/scenario_structures.hpp>
-#include <blamlib/structures/structure_bsp_definitions.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/scenario/scenario_structures.hpp>
+#include <blam/structures/structure_bsp_definitions.hpp>
 
 namespace Yelo
 {

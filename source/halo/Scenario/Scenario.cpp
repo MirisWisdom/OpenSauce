@@ -4,13 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Scenario/Scenario.hpp"
 
-#include <blamlib/scenario/scenario.hpp>
+#include <blam/scenario/scenario.hpp>
 #include <Pointers/Scenario.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/scenario/scenario_structures.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/scenario/scenario_structures.hpp>
 
 // There are places which use a bit-vector for the structure-bsps
 // In the stock code, the bit-vector is a 16-bit word

@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/input/input_windows.hpp>
-#include <blamlib/memory/data.hpp>
+#include <blam/input/input_windows.hpp>
+#include <blam/memory/data.hpp>
 
 namespace Yelo
 {

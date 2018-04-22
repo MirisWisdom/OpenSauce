@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Settings/Settings.hpp"
 
-#include <YeloLib/shell/shell_windows_command_line.hpp>
-#include <YeloLib/open_sauce/settings/yelo_shared_settings.hpp>
+#include <yelo/shell/shell_windows_command_line.hpp>
+#include <yelo/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {

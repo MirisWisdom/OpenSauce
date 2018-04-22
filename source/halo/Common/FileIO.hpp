@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include <YeloLib/files/files.hpp>
+#include <yelo/files/files.hpp>
 
 #define FILE_IO_DO_MD5_CHECK
 

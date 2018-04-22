@@ -18,4 +18,4 @@ namespace Yelo
 	};
 };
 
-#include <YeloLib/memory/array_yelo.hpp>
+#include <yelo/memory/array_yelo.hpp>

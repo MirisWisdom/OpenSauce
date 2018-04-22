@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/game/players.hpp>
-#include <blamlib/objects/vehicle_remapper.hpp>
+#include <blam/game/players.hpp>
+#include <blam/objects/vehicle_remapper.hpp>
 
 namespace Yelo
 {

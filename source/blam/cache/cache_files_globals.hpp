@@ -5,9 +5,9 @@
 */
 #pragma once
 
-#include <blamlib/cache/cache_files.hpp>
-#include <blamlib/cache/cache_files_structures.hpp>
-#include <blamlib/cache/s_data_file_globals.h>
+#include <blam/cache/cache_files.hpp>
+#include <blam/cache/cache_files_structures.hpp>
+#include <blam/cache/s_data_file_globals.h>
 
 #include <zlib/zlib.h>
 ASSERT_SIZE(z_stream, 0x38);

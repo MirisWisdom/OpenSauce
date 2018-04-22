@@ -3,10 +3,10 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/memory/data_base.hpp>
+#include <blam/blam.h>
+#include <blam/memory/data_base.hpp>
 
-#include <blamlib/memory/datum_index.hpp>
+#include <blam/memory/datum_index.hpp>
 
 namespace Yelo
 {

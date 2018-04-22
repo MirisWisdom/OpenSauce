@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/ai/encounters.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/ai/encounters.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

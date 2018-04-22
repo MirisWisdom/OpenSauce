@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/models/model_animations.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/models/model_animations.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

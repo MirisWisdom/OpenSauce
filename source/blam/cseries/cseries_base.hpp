@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <cseries/MacrosCpp.hpp>
+#include <yelo/cseries/MacrosCpp.hpp>
 
 namespace Yelo
 {
@@ -154,9 +154,9 @@ namespace Yelo
 #define pad_longlong_flags PAD64
 };
 
-#include <blamlib/math/integer_math.hpp>
-#include <blamlib/math/real_math.hpp>
-#include <blamlib/math/color_math.hpp>
-#include <blamlib/math/matrix_math.hpp>
+#include <blam/math/integer_math.hpp>
+#include <blam/math/real_math.hpp>
+#include <blam/math/color_math.hpp>
+#include <blam/math/matrix_math.hpp>
 
-#include <blamlib/memory/datum_index.hpp>
+#include <blam/memory/datum_index.hpp>

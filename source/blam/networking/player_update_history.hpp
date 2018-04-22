@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/units/unit_structures.hpp>
-#include <blamlib/units/biped_structures.hpp>
-#include <blamlib/units/vehicle_structures.hpp>
+#include <blam/objects/object_structures.hpp>
+#include <blam/units/unit_structures.hpp>
+#include <blam/units/biped_structures.hpp>
+#include <blam/units/vehicle_structures.hpp>
 
 namespace Yelo
 {

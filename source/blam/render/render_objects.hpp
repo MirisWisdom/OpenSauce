@@ -6,11 +6,11 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
+#include <blam/memory/data.hpp>
 
-#include <blamlib/objects/object_lights.hpp>
-#include <blamlib/render/render_constants.hpp>
-#include <YeloLib/render/render_constants_yelo.hpp>
+#include <blam/objects/object_lights.hpp>
+#include <blam/render/render_constants.hpp>
+#include <yelo/render/render_constants_yelo.hpp>
 
 namespace Yelo
 {

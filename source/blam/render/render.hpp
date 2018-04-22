@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/render/render_cameras.hpp>
+#include <blam/render/render_cameras.hpp>
 
 namespace Yelo
 {

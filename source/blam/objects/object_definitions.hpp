@@ -5,12 +5,12 @@
 */
 #pragma once
 
-#include <blamlib/cache/predicted_resources.hpp>
-#include <blamlib/models/model_definitions.hpp>
-#include <blamlib/objects/object_types.hpp>
+#include <blam/cache/predicted_resources.hpp>
+#include <blam/models/model_definitions.hpp>
+#include <blam/objects/object_types.hpp>
 
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
-#include <blamlib/tag_files/tag_block.h>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
+#include <blam/tag_files/tag_block.h>
 
 namespace Yelo
 {

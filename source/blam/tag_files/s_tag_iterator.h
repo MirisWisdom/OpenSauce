@@ -1,7 +1,7 @@
 #pragma once
 
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/memory/data.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/memory/data.hpp>
 
 namespace Yelo { namespace TagGroups
 {

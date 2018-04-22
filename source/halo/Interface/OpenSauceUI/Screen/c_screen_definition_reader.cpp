@@ -4,12 +4,12 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Interface/OpenSauceUI/Screen/c_screen_definition_reader.hpp"
 
 #if !PLATFORM_IS_DEDI
 
-#include <YeloLib/configuration/c_configuration_file_factory.hpp>
+#include <yelo/configuration/c_configuration_file_factory.hpp>
 
 namespace Yelo
 {

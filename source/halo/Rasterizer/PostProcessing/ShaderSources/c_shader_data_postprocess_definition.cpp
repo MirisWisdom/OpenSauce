@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_postprocess_definition.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/shaders/shader_postprocess_definitions.hpp>
+#include <yelo/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_base.hpp"
 

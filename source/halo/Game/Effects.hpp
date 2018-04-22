@@ -6,15 +6,15 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
-#include <blamlib/memory/lruv_cache.hpp>
+#include <blam/memory/data.hpp>
+#include <blam/memory/lruv_cache.hpp>
 
-#include <blamlib/effects/contrails.hpp>
-#include <blamlib/effects/effects.hpp>
-#include <blamlib/effects/particle_systems.hpp>
-#include <blamlib/effects/particles.hpp>
-#include <blamlib/effects/weather_particle_systems.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/effects/contrails.hpp>
+#include <blam/effects/effects.hpp>
+#include <blam/effects/particle_systems.hpp>
+#include <blam/effects/particles.hpp>
+#include <blam/effects/weather_particle_systems.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

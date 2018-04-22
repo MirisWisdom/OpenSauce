@@ -7,7 +7,7 @@
 #pragma once
 
 #ifdef YELO_VERSION_CHECK_ENABLE
-#include <YeloLib/memory/linked_list.hpp>
+#include <yelo/memory/linked_list.hpp>
 
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPClient.hpp"

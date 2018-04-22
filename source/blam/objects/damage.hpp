@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/effects/material_effect_definitions.hpp>
-#include <blamlib/game/game_allegiance.hpp>
+#include <blam/effects/material_effect_definitions.hpp>
+#include <blam/game/game_allegiance.hpp>
 
 namespace Yelo
 {

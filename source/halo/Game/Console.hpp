@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/interface/terminal.hpp>
-#include <blamlib/main/console.hpp>
-#include <blamlib/memory/data.hpp>
+#include <blam/interface/terminal.hpp>
+#include <blam/main/console.hpp>
+#include <blam/memory/data.hpp>
 
 namespace Yelo
 {

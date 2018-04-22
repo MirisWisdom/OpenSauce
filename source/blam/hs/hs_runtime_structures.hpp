@@ -5,10 +5,10 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
-#include <blamlib/game/game_configuration.hpp>
-#include <blamlib/hs/hs_runtime.hpp>
-#include <blamlib/hs/hs_threads.hpp>
+#include <blam/memory/data_base.hpp>
+#include <blam/game/game_configuration.hpp>
+#include <blam/hs/hs_runtime.hpp>
+#include <blam/hs/hs_threads.hpp>
 
 namespace Yelo
 {

@@ -3,21 +3,21 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/hs/hs_runtime.hpp>
+#include <blam/blam.h>
+#include <blam/hs/hs_runtime.hpp>
 
-#include <blamlib/game/game_time.hpp>
-#include <blamlib/hs/hs_library_internal.hpp>
-#include <blamlib/hs/hs_structures.hpp>
-#include <blamlib/hs/hs_runtime_structures.hpp>
-#include <blamlib/hs/hs_threads.hpp>
-#include <blamlib/hs/hs_types.hpp>
-#include <blamlib/hs/object_lists.hpp>
-#include <blamlib/main/editor.hpp>
-#include <blamlib/objects/objects.hpp>
-#include <blamlib/scenario/scenario.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <YeloLib/hs/hs_library_definitions_yelo.hpp>
+#include <blam/game/game_time.hpp>
+#include <blam/hs/hs_library_internal.hpp>
+#include <blam/hs/hs_structures.hpp>
+#include <blam/hs/hs_runtime_structures.hpp>
+#include <blam/hs/hs_threads.hpp>
+#include <blam/hs/hs_types.hpp>
+#include <blam/hs/object_lists.hpp>
+#include <blam/main/editor.hpp>
+#include <blam/objects/objects.hpp>
+#include <blam/scenario/scenario.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <yelo/hs/hs_library_definitions_yelo.hpp>
 
 namespace Yelo
 {

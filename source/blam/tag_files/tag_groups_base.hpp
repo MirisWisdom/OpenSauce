@@ -5,12 +5,12 @@
 */
 #pragma once
 
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/game/game_globals_definitions.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/game/game_globals_definitions.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

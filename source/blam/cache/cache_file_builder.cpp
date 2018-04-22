@@ -3,38 +3,38 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/cache/cache_file_builder.hpp>
+#include <blam/blam.h>
+#include <blam/cache/cache_file_builder.hpp>
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <blamlib/bitmaps/bitmap_definition.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
-#include <blamlib/cseries/enum_templates.h>
-#include <blamlib/game/game_globals_definitions.hpp>
-#include <blamlib/hs/hs_scenario_definitions.hpp>
-#include <blamlib/interface/hud_messaging_definitions.hpp>
-#include <blamlib/main/levels.hpp>
-#include <blamlib/memory/datum_index.hpp>
-#include <blamlib/scenario/scenario.hpp>
-#include <blamlib/scenario/scenario_definitions.hpp>
-#include <blamlib/sound/sound_definitions.hpp>
-#include <blamlib/structures/structure_bsp_definitions.hpp>
-#include <blamlib/tag_files/c_tag_iterator.h>
-#include <blamlib/tag_files/tag_block_definition.h>
-#include <blamlib/tag_files/tag_data_definition.h>
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_group.h>
-#include <blamlib/tag_files/tag_groups.hpp>
-#include <blamlib/tag_files/tag_groups_base.hpp>
+#include <blam/bitmaps/bitmap_definition.hpp>
+#include <blam/cseries/cseries_base.hpp>
+#include <blam/cseries/enum_templates.h>
+#include <blam/game/game_globals_definitions.hpp>
+#include <blam/hs/hs_scenario_definitions.hpp>
+#include <blam/interface/hud_messaging_definitions.hpp>
+#include <blam/main/levels.hpp>
+#include <blam/memory/datum_index.hpp>
+#include <blam/scenario/scenario.hpp>
+#include <blam/scenario/scenario_definitions.hpp>
+#include <blam/sound/sound_definitions.hpp>
+#include <blam/structures/structure_bsp_definitions.hpp>
+#include <blam/tag_files/c_tag_iterator.h>
+#include <blam/tag_files/tag_block_definition.h>
+#include <blam/tag_files/tag_data_definition.h>
+#include <blam/tag_files/tag_field_scanner.hpp>
+#include <blam/tag_files/tag_files.hpp>
+#include <blam/tag_files/tag_group.h>
+#include <blam/tag_files/tag_groups.hpp>
+#include <blam/tag_files/tag_groups_base.hpp>
 #include <direct.h>
-#include <yelolib/cache/cache_file_builder_yelo.hpp>
-#include <yelolib/cseries/cseries_yelo_base.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
-#include <yelolib/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <yelolib/tag_files/string_id_yelo.hpp>
-#include <yelolib/tag_files/tag_group_memory.hpp>
-#include <yelolib/tag_files/tag_groups_base_yelo.hpp>
+#include <yelo/cache/cache_file_builder_yelo.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
+#include <yelo/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <yelo/tag_files/string_id_yelo.hpp>
+#include <yelo/tag_files/tag_group_memory.hpp>
+#include <yelo/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

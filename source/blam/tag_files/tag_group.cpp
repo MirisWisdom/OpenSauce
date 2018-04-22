@@ -1,7 +1,7 @@
-#include <Common/Precompile.hpp>
-#include <blamlib/tag_files/tag_group.h>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_group.h>
 
-#include <blamlib/tag_files/tag_block_definition.h>
+#include <blam/tag_files/tag_block_definition.h>
 
 namespace Yelo
 {

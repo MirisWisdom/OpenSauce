@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/main/console.hpp>
+#include <blam/main/console.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Game/GameState.hpp"

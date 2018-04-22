@@ -8,8 +8,9 @@ namespace Cake.Gyp
 	public enum GypOutputPlatform
 	{
 		VisualStudio2013,
-		VisualStudio2015,
-		Make,
+	    VisualStudio2015,
+	    VisualStudio2017,
+        Make,
 		XCode,
 		Ninja
 	}
@@ -32,6 +33,10 @@ namespace Cake.Gyp
 				case GypOutputPlatform.VisualStudio2015:
 					argumentBuilder.AppendSwitch("-f", "msvs");
 					argumentBuilder.AppendSwitch("-G", "msvs_version=2015");
+					break;
+				case GypOutputPlatform.VisualStudio2017:
+					argumentBuilder.AppendSwitch("-f", "msvs");
+					argumentBuilder.AppendSwitch("-G", "msvs_version=2017");
 					break;
 				case GypOutputPlatform.Make:
 					argumentBuilder.AppendSwitch("-f", "make");

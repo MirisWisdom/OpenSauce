@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
-#include <YeloLib/cseries/cseries_yelo_base.hpp>
+#include <blam/memory/data.hpp>
+#include <yelo/cseries/cseries_yelo_base.hpp>
 
 namespace Yelo
 {

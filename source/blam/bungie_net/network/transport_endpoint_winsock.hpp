@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/bungie_net/network/transport_address.hpp>
-#include <blamlib/memory/circular_queue.hpp>
-#include <blamlib/cseries/cseries_base.hpp>
+#include <blam/bungie_net/network/transport_address.hpp>
+#include <blam/memory/circular_queue.hpp>
+#include <blam/cseries/cseries_base.hpp>
 
 namespace Yelo
 {

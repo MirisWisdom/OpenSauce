@@ -14,7 +14,7 @@
 #include <Interface/ControlStates.h>
 #include <Interface/PositionState.h>
 #include <Memory/MemoryInterface.hpp>
-#include <yelolib/memory/memory_interface_base.hpp>
+#include <yelo/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

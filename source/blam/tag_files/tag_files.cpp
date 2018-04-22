@@ -3,17 +3,17 @@
 
 	See license\OpenSauce\OpenSauce for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/tag_files/tag_files.hpp>
-#include <blamlib/tag_files/tag_group.h>
+#include <blam/blam.h>
+#include <blam/tag_files/tag_files.hpp>
+#include <blam/tag_files/tag_group.h>
 
 #if PLATFORM_IS_EDITOR
-#include <blamlib/memory/byte_swapping.hpp>
-#include <blamlib/tag_files/files.hpp>
-#include <blamlib/tag_files/tag_files_structures.hpp>
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/memory/byte_swapping.hpp>
+#include <blam/tag_files/files.hpp>
+#include <blam/tag_files/tag_files_structures.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
-#include <YeloLib/open_sauce/settings/c_settings_cheape.hpp>
+#include <yelo/open_sauce/settings/c_settings_cheape.hpp>
 #endif
 
 namespace Yelo

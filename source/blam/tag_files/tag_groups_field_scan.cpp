@@ -4,12 +4,12 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
-#include "Common/Precompile.hpp"
+#include <blam/blam.h>
 #if PLATFORM_IS_EDITOR
-#include <blamlib/tag_files/tag_groups.hpp>
+#include <blam/tag_files/tag_groups.hpp>
 
-#include <blamlib/tag_files/tag_field_scanner.hpp>
-#include <YeloLib/tag_files/string_id_yelo.hpp>
+#include <blam/tag_files/tag_field_scanner.hpp>
+#include <yelo/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {

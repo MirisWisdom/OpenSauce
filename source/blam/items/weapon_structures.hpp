@@ -5,10 +5,10 @@
 */
 #pragma once
 
-#include <blamlib/objects/object_structures.hpp>
-#include <blamlib/items/item_structures.hpp>
+#include <blam/objects/object_structures.hpp>
+#include <blam/items/item_structures.hpp>
 
-#include <blamlib/items/weapon_definitions.hpp>
+#include <blam/items/weapon_definitions.hpp>
 
 namespace Yelo
 {

@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/Bloom/c_shader_instance_bloom.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/time/interpolation/interpolation.hpp>
+#include <yelo/time/interpolation/interpolation.hpp>
 
 namespace Yelo
 {

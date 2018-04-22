@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/saved_games/game_state.hpp>
-#include <blamlib/saved_games/saved_game_constants.hpp>
-#include <YeloLib/saved_games/game_state_yelo.hpp>
+#include <blam/saved_games/game_state.hpp>
+#include <blam/saved_games/saved_game_constants.hpp>
+#include <yelo/saved_games/game_state_yelo.hpp>
 
 namespace Yelo
 {

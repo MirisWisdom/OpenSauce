@@ -4,11 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
+#include <halo/halo.h>
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/time/interpolation/i_interpolator.hpp>
+#include <yelo/time/interpolation/i_interpolator.hpp>
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 

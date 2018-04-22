@@ -4,8 +4,8 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common/Precompile.hpp"
-#include <blamlib/objects/object_structures.hpp>
+#include <blam/blam.h>
+#include <blam/objects/object_structures.hpp>
 
 namespace Yelo
 {

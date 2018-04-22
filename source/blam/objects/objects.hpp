@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/memory/data.hpp>
-#include <blamlib/memory/memory_pool.hpp>
-#include <blamlib/objects/object_types.hpp>
-#include <blamlib/scenario/scenario.hpp> // for object names
+#include <blam/memory/data.hpp>
+#include <blam/memory/memory_pool.hpp>
+#include <blam/objects/object_types.hpp>
+#include <blam/scenario/scenario.hpp> // for object names
 
 namespace Yelo
 {

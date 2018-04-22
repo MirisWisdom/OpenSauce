@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include <blamlib/game/players.hpp>
-#include <blamlib/saved_games/game_variant.hpp>
+#include <blam/game/players.hpp>
+#include <blam/saved_games/game_variant.hpp>
 
 namespace Yelo
 {

@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include <blamlib/networking/network_game_manager.hpp>
-#include <blamlib/saved_games/game_variant.hpp>
+#include <blam/networking/network_game_manager.hpp>
+#include <blam/saved_games/game_variant.hpp>
 
-#include <YeloLib/open_sauce/blam_memory_upgrades.hpp>
+#include <yelo/open_sauce/blam_memory_upgrades.hpp>
 
 namespace Yelo
 {
