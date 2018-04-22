@@ -33,3 +33,8 @@ packages\
 *.map
 scripts/CakeScripts/tools
 scripts/tools
+*.generated.gypi
+build/*/*.sln
+build/*/*.vcxproj
+build/*/*.vcxproj.filters
+LastCoverageResults.log
