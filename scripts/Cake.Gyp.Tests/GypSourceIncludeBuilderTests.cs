@@ -56,7 +56,7 @@ namespace Cake.Gyp.Tests
 					? null
 					: DirectoryPath.FromString("anyDirectory"));
 
-			constructAction.ShouldThrow<ArgumentException>();
+			constructAction.Should().Throw<ArgumentException>();
 		}
 
 		[Fact]

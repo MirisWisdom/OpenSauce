@@ -1,4 +1,5 @@
-﻿using Cake.Core.IO;
+﻿using System.Collections.Generic;
+using Cake.Core.IO;
 using FluentAssertions;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace Cake.Gyp.Tests
 	{
 		private static readonly DirectoryPath sOutputDirectory = DirectoryPath.FromString("anyDirectory");
 
-		public static object[] TestSettings => new object[]
+		public static IEnumerable<object[]> TestSettings => new []
 		{
 			new object[]
 			{

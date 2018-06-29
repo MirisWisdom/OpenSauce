@@ -4,11 +4,23 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+using Microsoft.Build.Locator;
 
 namespace BuildUtilities.VisualStudio
 {
 	public static class ProjectUtilities
 	{
+		private static bool _msBuildLocationInitialised;
+
+		public static void InitialiseMSBuildLocations()
+		{
+			if (_msBuildLocationInitialised == false)
+			{
+				MSBuildLocator.RegisterDefaults();
+				_msBuildLocationInitialised = true;
+			}
+		}
+
 		// NOTE: There is no obvious way to disable build configurations using Gyp these allow us to remove project entries from a solution file
 
 		public static Guid GetProjectGuidByName(string solutionPath, string projectName)

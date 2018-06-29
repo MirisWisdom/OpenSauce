@@ -45,7 +45,7 @@ namespace Cake.Gyp.Tests
 						: DirectoryPath.FromString("anyRoot"));
 			};
 
-			constructAction.ShouldThrow<ArgumentNullException>();
+			constructAction.Should().Throw<ArgumentNullException>();
 		}
 
 		[Fact]
@@ -55,7 +55,7 @@ namespace Cake.Gyp.Tests
 				.WithGypRoot("nonExistingDirectory")
 				.Build();
 
-			constructAction.ShouldThrow<FileNotFoundException>();
+			constructAction.Should().Throw<FileNotFoundException>();
 		}
 
 		[Fact]
@@ -68,7 +68,7 @@ namespace Cake.Gyp.Tests
 
 			Action runAction = () => runner.Run(FilePath.FromString("any Directory/anyFilePath.gyp"), null);
 
-			runAction.ShouldThrow<ArgumentNullException>();
+			runAction.Should().Throw<ArgumentNullException>();
 		}
 
 		[Fact]
@@ -83,7 +83,7 @@ namespace Cake.Gyp.Tests
 
 			Action runAction = () => runner.Run(gypDefinition, new GypSettings());
 
-			runAction.ShouldThrow<CakeException>();
+			runAction.Should().Throw<CakeException>();
 		}
 
 		[Fact]

@@ -8,6 +8,12 @@ using System.Xml;
 using System.IO;
 using BuildUtilities.VisualStudio;
 
+Task("InitialiseMSBuildLocation")
+	.Does(() =>
+	{
+		ProjectUtilities.InitialiseMSBuildLocations();
+	});
+
 Task("PullNuGetDependencies")
 	.Does (() =>
 	{
@@ -167,6 +173,7 @@ Task("CleanupProjects")
 	});
 
 Task("GenerateProjectsVS")
+	.IsDependentOn("InitialiseMSBuildLocation")
 	.IsDependentOn("CleanupProjects");
 
 RunTarget("GenerateProjectsVS");

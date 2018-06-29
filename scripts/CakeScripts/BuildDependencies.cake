@@ -19,7 +19,7 @@ Task("BuildScripts")
 
 		var solutionPath = GetRootedPath("scripts/Scripts.sln");
 		NuGetRestore(solutionPath);
-		DotNetBuild(solutionPath, settings => 
+		MSBuild(solutionPath, settings => 
 		{
 			settings.SetConfiguration("Debug Windows");
 		});

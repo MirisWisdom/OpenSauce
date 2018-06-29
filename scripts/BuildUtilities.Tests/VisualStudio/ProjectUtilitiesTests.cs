@@ -23,6 +23,11 @@ namespace BuildUtilities.Tests.VisualStudio
 			}
 		}
 
+		public ProjectUtilitiesTests()
+		{
+			ProjectUtilities.InitialiseMSBuildLocations();
+		}
+
 		[Fact]
 		public void DisableProjectInConfig_WithSolutionText_RemovesBuildEntriesForDebugConfigsInRelease()
 		{
