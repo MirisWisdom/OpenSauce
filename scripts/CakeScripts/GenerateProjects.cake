@@ -94,6 +94,14 @@ Task("CollectSourceFiles")
 			GetRootedPath("build/7zip.generated.gypi"),
 			"sevenZipSourceFiles");
 
+		Information("Collecting Zlib source files");
+		GenerateSourceInclude(projectRoot,
+			"external/Zlib",
+			"build",
+			filePatterns,
+			GetRootedPath("build/Zlib.generated.gypi"),
+			"zlibSourceFiles");
+
 		Information("Collecting TinyXml source files");
 		GenerateSourceInclude(projectRoot,
 			"external/TinyXml",

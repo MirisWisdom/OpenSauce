@@ -157,19 +157,19 @@ Task("CleanupProjects")
 	.IsDependentOn("GenerateProjectOpenSauce")
 	.Does(()=>
 	{
-		ProjectUtilities.SetRunCodeAnalysis(GetRootedPath("build/msvs2017_generated/blam.vcxproj"));
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/msvs2017_generated/blam.vcxproj.filters"), "../source/blam");
-		ProjectUtilities.SetRunCodeAnalysis(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"));
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/msvs2017_generated/yelo.vcxproj.filters"), "../source/yelo");
-		ProjectUtilities.SetRunCodeAnalysis(GetRootedPath("build/msvs2017_generated/halo.vcxproj"));
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/msvs2017_generated/halo.vcxproj.filters"), "../source/halo");
+		ProjectUtilities.SetRunCodeAnalysisInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj"));
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj.filters"), "../source/blam");
+		ProjectUtilities.SetRunCodeAnalysisInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"));
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj.filters"), "../source/yelo");
+		ProjectUtilities.SetRunCodeAnalysisInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj"));
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj.filters"), "../source/halo");
 
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/7zip/7zip.vcxproj.filters"), "../external/7zip");
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/TinyXml/TinyXml.vcxproj.filters"), "../external/TinyXml");
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/GameSpyOpen/GameSpyOpen.vcxproj.filters"), "../external/GameSpyOpen");
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/GWEN/GWEN.vcxproj.filters"), "../external/GWEN");
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/Mongoose/Mongoose.vcxproj.filters"), "../external/Mongoose");
-		ProjectUtilities.TrimPathFromFilters(GetRootedPath("build/Zlib/Zlib.vcxproj.filters"), "../external/Zlib");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/7zip/7zip.vcxproj.filters"), "../external/7zip");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/TinyXml/TinyXml.vcxproj.filters"), "../external/TinyXml");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/GameSpyOpen/GameSpyOpen.vcxproj.filters"), "../external/GameSpyOpen");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/GWEN/GWEN.vcxproj.filters"), "../external/GWEN");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/Mongoose/Mongoose.vcxproj.filters"), "../external/Mongoose");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/Zlib/Zlib.vcxproj.filters"), "../external/Zlib");
 	});
 
 Task("GenerateProjectsVS")

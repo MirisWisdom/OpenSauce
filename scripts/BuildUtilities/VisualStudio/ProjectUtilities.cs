@@ -51,7 +51,7 @@ namespace BuildUtilities.VisualStudio
 
 		// NOTE: There is no obvious way to set run code analysis using Gyp so this is used to set it in the generated project
 
-		public static void SetRunCodeAnalysis(string projectFile)
+		public static void SetRunCodeAnalysisInFile(string projectFile)
 		{
 			var project = new Project(projectFile);
 			SetRunCodeAnalysis(project);
@@ -64,7 +64,7 @@ namespace BuildUtilities.VisualStudio
 			project.SetProperty("RunCodeAnalysis", "true");
 		}
 
-		public static void TrimPathFromFilters(string filtersFile, string pathToRemove)
+		public static void TrimPathFromFiltersInFile(string filtersFile, string pathToRemove)
 		{
 			var project = new Project(filtersFile);
 			TrimPathFromFilters(project, pathToRemove);
