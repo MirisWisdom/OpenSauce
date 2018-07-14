@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,30 +18,31 @@ namespace Cake.Gyp
 
 		public GypSourceIncludeBuilder(IFileSystem fileSystem, DirectoryPath rootDirectory)
 		{
-			if (fileSystem == null)
-			{
-				throw new ArgumentNullException(nameof(fileSystem));
-			}
-			if (rootDirectory == null)
-			{
-				throw new ArgumentNullException(nameof(rootDirectory));
-			}
-			mFileSystem = fileSystem;
-			mRootDirectory = rootDirectory;
+			mFileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+			mRootDirectory = rootDirectory ?? throw new ArgumentNullException(nameof(rootDirectory));
 		}
 
-		public void GenerateSourceInclude(DirectoryPath sourceDirectory, DirectoryPath relativeToDirectory, IEnumerable<string> filePatterns, FilePath outputFile, string outputVariable)
+		public void GenerateSourceInclude(
+			DirectoryPath sourceDirectory,
+			DirectoryPath relativeToDirectory,
+			IEnumerable<string> filePatterns,
+			FilePath outputFile,
+			string outputVariable)
 		{
-			var paths = GetSourceFiles(sourceDirectory, relativeToDirectory, filePatterns);
+			IEnumerable<string> paths = GetSourceFiles(sourceDirectory, relativeToDirectory, filePatterns);
 			WriteGypInclude(outputFile, CreateIncludeObject(outputVariable, paths.ToArray()));
 		}
 
-		private IEnumerable<string> GetSourceFiles(DirectoryPath sourceDirectory, DirectoryPath relativeToDirectory, IEnumerable<string> filePatterns)
+		private IEnumerable<string> GetSourceFiles(
+			DirectoryPath sourceDirectory,
+			DirectoryPath relativeToDirectory,
+			IEnumerable<string>
+				filePatterns)
 		{
-			var searchPath = mRootDirectory.Combine(sourceDirectory);
-			var relativePath = mRootDirectory.Combine(relativeToDirectory);
+			DirectoryPath searchPath = mRootDirectory.Combine(sourceDirectory);
+			DirectoryPath relativePath = mRootDirectory.Combine(relativeToDirectory);
 
-			var sourceFiles = GetFilesMatchingPatterns(filePatterns, searchPath);
+			IEnumerable<FilePath> sourceFiles = GetFilesMatchingPatterns(filePatterns, searchPath);
 			return GetRelativeFilePaths(sourceFiles, searchPath, relativePath);
 		}
 
@@ -52,17 +54,22 @@ namespace Cake.Gyp
 		private IEnumerable<FilePath> GetFilesMatchingPattern(DirectoryPath searchPath, string pattern)
 		{
 			return mFileSystem.GetDirectory(searchPath)
-			                  .GetFiles(pattern, SearchScope.Recursive)
-			                  .Select(entry => entry.Path);
+				.GetFiles(pattern, SearchScope.Recursive)
+				.Select(entry => entry.Path);
 		}
 
-		private static IEnumerable<string> GetRelativeFilePaths(IEnumerable<FilePath> sourceFiles, DirectoryPath sourcePath, DirectoryPath targetPath)
+		private static IEnumerable<string> GetRelativeFilePaths(
+			IEnumerable<FilePath> sourceFiles,
+			DirectoryPath sourcePath,
+			DirectoryPath targetPath)
 		{
-			var targetRelativePath = targetPath.GetRelativePath(sourcePath);
-			return sourceFiles.Select(entry => targetRelativePath.CombineWithFilePath(entry.ToString()
-			                                                                               .Replace(sourcePath.FullPath, string.Empty)
-			                                                                               .TrimStart('/')))
-			                  .Select(entry => entry.ToString());
+			DirectoryPath targetRelativePath = targetPath.GetRelativePath(sourcePath);
+			return sourceFiles.Select(
+					entry => targetRelativePath.CombineWithFilePath(
+						entry.ToString()
+							.Replace(sourcePath.FullPath, string.Empty)
+							.TrimStart('/')))
+				.Select(entry => entry.ToString());
 		}
 
 		private void WriteGypInclude(FilePath outputFile, object includeData)
@@ -73,7 +80,7 @@ namespace Cake.Gyp
 			}
 		}
 
-		private static object CreateIncludeObject(string outputVariable, string[] paths)
+		private static object CreateIncludeObject(string outputVariable, IEnumerable paths)
 		{
 			return new
 			{

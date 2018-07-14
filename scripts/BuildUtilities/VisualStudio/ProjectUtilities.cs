@@ -10,14 +10,14 @@ namespace BuildUtilities.VisualStudio
 {
 	public static class ProjectUtilities
 	{
-		private static bool _msBuildLocationInitialised;
+		private static bool sBuildLocationInitialised;
 
 		public static void InitialiseMSBuildLocations()
 		{
-			if (_msBuildLocationInitialised == false)
+			if (sBuildLocationInitialised == false)
 			{
 				MSBuildLocator.RegisterDefaults();
-				_msBuildLocationInitialised = true;
+				sBuildLocationInitialised = true;
 			}
 		}
 
@@ -25,7 +25,9 @@ namespace BuildUtilities.VisualStudio
 
 		public static Guid GetProjectGuidByName(string solutionPath, string projectName)
 		{
-			var project = SolutionFile.Parse(solutionPath).ProjectsInOrder.FirstOrDefault(entry => entry.ProjectName == projectName);
+			ProjectInSolution project = SolutionFile.Parse(solutionPath)
+				.ProjectsInOrder
+				.FirstOrDefault(entry => entry.ProjectName == projectName);
 			if (project == null)
 			{
 				throw new ArgumentException($"Project not found in solution: {projectName}", nameof(projectName));
@@ -34,19 +36,28 @@ namespace BuildUtilities.VisualStudio
 			return Guid.Parse(project.ProjectGuid);
 		}
 
-		public static void DisableProjectInConfigInSolutionFile(string solutionPath, string configurationRegex, Guid projectGuid)
+		public static void DisableProjectInConfigInSolutionFile(
+			string solutionPath,
+			string configurationRegex,
+			Guid projectGuid)
 		{
-			var solutionString = File.ReadAllText(solutionPath);
+			string solutionString = File.ReadAllText(solutionPath);
 			File.WriteAllText(solutionPath, DisableProjectInConfig(solutionString, configurationRegex, projectGuid));
 		}
 
 		public static string DisableProjectInConfig(string solutionString, string configurationRegex, Guid projectGuid)
 		{
-			var lines = solutionString.Replace("\r", string.Empty)
-			                          .Replace("\n", Environment.NewLine)
-			                          .Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-			var guidString = projectGuid.ToString("B").ToUpper();
-			return string.Join(Environment.NewLine,
+			string[] lines = solutionString.Replace("\r", string.Empty)
+				.Replace("\n", Environment.NewLine)
+				.Split(
+					new[]
+					{
+						Environment.NewLine
+					},
+					StringSplitOptions.None);
+			string guidString = projectGuid.ToString("B").ToUpper();
+			return string.Join(
+				Environment.NewLine,
 				lines.Where(line => !Regex.IsMatch(line, $"\t\t{guidString}.{configurationRegex}.* = .*")));
 		}
 
@@ -60,22 +71,21 @@ namespace BuildUtilities.VisualStudio
 
 		public static void TrimPathFromFilters(Project project, string pathToRemove)
 		{
-			var formattedPath = pathToRemove.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+			string formattedPath = pathToRemove.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 			RemoveMatchingFilterItems(project, formattedPath);
 			RemovePathFromFilterItems(project, formattedPath);
 			RemovePathFromItemMetadata(project, formattedPath);
 		}
 
 		// NOTE: Gyp generates source paths relative to the supplied gyp definition which doesnt suit our needs
-
 		// and results in broken filters. These functions remove bad filter entries and rebase source locations.
 
 		private static void RemoveMatchingFilterItems(Project project, string path)
 		{
-			var directories = path.Split(Path.DirectorySeparatorChar);
+			string[] directories = path.Split(Path.DirectorySeparatorChar);
 
-			var currentPath = string.Empty;
-			foreach (var directory in directories)
+			string currentPath = string.Empty;
+			foreach (string directory in directories)
 			{
 				currentPath = Path.Combine(currentPath, directory);
 				project.RemoveItems(project.GetItemsByEvaluatedInclude(currentPath));
@@ -84,7 +94,7 @@ namespace BuildUtilities.VisualStudio
 
 		private static void RemovePathFromFilterItems(Project project, string path)
 		{
-			foreach (var item in project.Items.Where(entry => entry.ItemType == "Filter"))
+			foreach (ProjectItem item in project.Items.Where(entry => entry.ItemType == "Filter"))
 			{
 				item.UnevaluatedInclude = item.UnevaluatedInclude == path
 					? string.Empty
@@ -94,13 +104,14 @@ namespace BuildUtilities.VisualStudio
 
 		private static void RemovePathFromItemMetadata(Project project, string path)
 		{
-			foreach (var item in project.Items)
+			foreach (ProjectItem item in project.Items)
 			{
-				var metadata = item.GetMetadata("Filter");
+				ProjectMetadata metadata = item.GetMetadata("Filter");
 				if (metadata == null)
 				{
 					continue;
 				}
+
 				if (metadata.UnevaluatedValue == path)
 				{
 					item.RemoveMetadata("Filter");
@@ -116,14 +127,22 @@ namespace BuildUtilities.VisualStudio
 
 		// NOTE: There is no obvious way to set properties using Gyp so this is used to set them manually
 
-        public static void SetProperty(Project project, string property, string value)
+		public static void SetProperty(Project project, string property, string value)
 		{
-			if (project == null) throw new ArgumentNullException(nameof(project));
+			if (project == null)
+			{
+				throw new ArgumentNullException(nameof(project));
+			}
 
 			if (string.IsNullOrWhiteSpace(property))
+			{
 				throw new ArgumentException("Value cannot be null or whitespace.", nameof(property));
+			}
 
-			if (value == null) throw new ArgumentNullException(nameof(value));
+			if (value == null)
+			{
+				throw new ArgumentNullException(nameof(value));
+			}
 
 			project.SetProperty(property, value);
 		}

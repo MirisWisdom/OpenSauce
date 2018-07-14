@@ -11,13 +11,19 @@ namespace Cake.Gyp
 	{
 		private readonly FilePath mGypFilePath;
 
-		public GypRunner(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner, IToolLocator tools, DirectoryPath gypRoot)
+		public GypRunner(
+			IFileSystem fileSystem,
+			ICakeEnvironment environment,
+			IProcessRunner processRunner,
+			IToolLocator tools,
+			DirectoryPath gypRoot)
 			: base(fileSystem, environment, processRunner, tools)
 		{
 			if (tools == null)
 			{
 				throw new ArgumentNullException(nameof(tools));
 			}
+
 			if (gypRoot == null)
 			{
 				throw new ArgumentNullException(nameof(gypRoot));
@@ -38,7 +44,7 @@ namespace Cake.Gyp
 		protected override IEnumerable<string> GetToolExecutableNames()
 		{
 			return new[]
-			{ 
+			{
 				"python.exe",
 				"python"
 			};
@@ -54,7 +60,7 @@ namespace Cake.Gyp
 			Run(settings, BuildGypArguments(gypDefinition, settings));
 		}
 
-		private ProcessArgumentBuilder BuildGypArguments(FilePath gypDefinition, GypSettings settings)
+		private ProcessArgumentBuilder BuildGypArguments(Core.IO.Path gypDefinition, GypSettings settings)
 		{
 			var arguments = new ProcessArgumentBuilder();
 			arguments.AppendQuoted(mGypFilePath.FullPath);

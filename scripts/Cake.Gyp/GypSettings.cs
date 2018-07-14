@@ -8,17 +8,17 @@ namespace Cake.Gyp
 	public enum GypOutputPlatform
 	{
 		VisualStudio2013,
-	    VisualStudio2015,
-	    VisualStudio2017,
-        Make,
+		VisualStudio2015,
+		VisualStudio2017,
+		Make,
 		XCode,
 		Ninja
 	}
 
 	public sealed class GypSettings : ToolSettings
 	{
-		public GypOutputPlatform OutputPlatform;
 		public DirectoryPath OutputDirectory;
+		public GypOutputPlatform OutputPlatform;
 
 		public ProcessArgumentBuilder GetArguments()
 		{

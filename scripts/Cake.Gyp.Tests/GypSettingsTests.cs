@@ -9,68 +9,70 @@ namespace Cake.Gyp.Tests
 	{
 		private static readonly DirectoryPath sOutputDirectory = DirectoryPath.FromString("anyDirectory");
 
-		public static IEnumerable<object[]> TestSettings => new []
-		{
-			new object[]
+		public static IEnumerable<object[]> TestSettings =>
+			new[]
 			{
-				new GypSettings
+				new object[]
 				{
-					OutputPlatform = GypOutputPlatform.Make,
-					OutputDirectory = sOutputDirectory
+					new GypSettings
+					{
+						OutputPlatform = GypOutputPlatform.Make,
+						OutputDirectory = sOutputDirectory
+					},
+					"-f make --generator-output=\"anyDirectory\""
 				},
-				"-f make --generator-output=\"anyDirectory\""
-			},
-			new object[]
-			{
-				new GypSettings
+				new object[]
 				{
-					OutputPlatform = GypOutputPlatform.XCode,
-					OutputDirectory = sOutputDirectory
+					new GypSettings
+					{
+						OutputPlatform = GypOutputPlatform.XCode,
+						OutputDirectory = sOutputDirectory
+					},
+					"-f xcode --generator-output=\"anyDirectory\""
 				},
-				"-f xcode --generator-output=\"anyDirectory\""
-			},
-			new object[]
-			{
-				new GypSettings
+				new object[]
 				{
-					OutputPlatform = GypOutputPlatform.VisualStudio2013,
-					OutputDirectory = sOutputDirectory
+					new GypSettings
+					{
+						OutputPlatform = GypOutputPlatform.VisualStudio2013,
+						OutputDirectory = sOutputDirectory
+					},
+					"-f msvs -G msvs_version=2013 --generator-output=\"anyDirectory\""
 				},
-				"-f msvs -G msvs_version=2013 --generator-output=\"anyDirectory\""
-			},
-			new object[]
-			{
-				new GypSettings
+				new object[]
 				{
-					OutputPlatform = GypOutputPlatform.VisualStudio2015,
-					OutputDirectory = sOutputDirectory
+					new GypSettings
+					{
+						OutputPlatform = GypOutputPlatform.VisualStudio2015,
+						OutputDirectory = sOutputDirectory
+					},
+					"-f msvs -G msvs_version=2015 --generator-output=\"anyDirectory\""
 				},
-				"-f msvs -G msvs_version=2015 --generator-output=\"anyDirectory\""
-			},
-			new object[]
-			{
-				new GypSettings
+				new object[]
 				{
-					OutputPlatform = GypOutputPlatform.VisualStudio2017,
-					OutputDirectory = sOutputDirectory
+					new GypSettings
+					{
+						OutputPlatform = GypOutputPlatform.VisualStudio2017,
+						OutputDirectory = sOutputDirectory
+					},
+					"-f msvs -G msvs_version=2017 --generator-output=\"anyDirectory\""
 				},
-				"-f msvs -G msvs_version=2017 --generator-output=\"anyDirectory\""
-			},
-			new object[]
-			{
-				new GypSettings
+				new object[]
 				{
-					OutputPlatform = GypOutputPlatform.Ninja,
-					OutputDirectory = sOutputDirectory
-				},
-				"-f ninja --generator-output=\"anyDirectory\""
-			}
-		};
+					new GypSettings
+					{
+						OutputPlatform = GypOutputPlatform.Ninja,
+						OutputDirectory = sOutputDirectory
+					},
+					"-f ninja --generator-output=\"anyDirectory\""
+				}
+			};
 
-		[Theory, MemberData(nameof(TestSettings))]
+		[Theory]
+		[MemberData(nameof(TestSettings))]
 		public void GetArguments_WithParameterSet_ReturnsArguments(GypSettings settings, string expected)
 		{
-			var result = settings.GetArguments();
+			ProcessArgumentBuilder result = settings.GetArguments();
 
 			result.Render().Should().Be(expected);
 		}

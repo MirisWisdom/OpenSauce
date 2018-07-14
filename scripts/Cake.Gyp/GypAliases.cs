@@ -15,7 +15,8 @@ namespace Cake.Gyp
 		}
 
 		[CakeMethodAlias]
-		public static void GenerateSourceInclude(this ICakeContext context,
+		public static void GenerateSourceInclude(
+			this ICakeContext context,
 			DirectoryPath projectRoot,
 			DirectoryPath fromDirectory,
 			DirectoryPath relativeTo,

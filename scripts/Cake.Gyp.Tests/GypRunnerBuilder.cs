@@ -11,8 +11,8 @@ namespace Cake.Gyp.Tests
 		private readonly FakeEnvironment mEnvironment;
 		private readonly FakeFileSystem mFileSystem;
 		private readonly IToolLocator mToolLocator;
-		private IProcessRunner mProcessRunner;
 		private DirectoryPath mGypDirectory;
+		private IProcessRunner mProcessRunner;
 
 		public GypRunnerBuilder()
 		{
