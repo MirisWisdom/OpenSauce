@@ -46,22 +46,8 @@ namespace BuildUtilities.VisualStudio
 			                          .Replace("\n", Environment.NewLine)
 			                          .Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 			var guidString = projectGuid.ToString("B").ToUpper();
-			return string.Join(Environment.NewLine, lines.Where(line => !Regex.IsMatch(line, $"\t\t{guidString}.{configurationRegex}.* = .*")));
-		}
-
-		// NOTE: There is no obvious way to set run code analysis using Gyp so this is used to set it in the generated project
-
-		public static void SetRunCodeAnalysisInFile(string projectFile)
-		{
-			var project = new Project(projectFile);
-			SetRunCodeAnalysis(project);
-			project.Save(projectFile);
-			ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
-		}
-
-		public static void SetRunCodeAnalysis(Project project)
-		{
-			project.SetProperty("RunCodeAnalysis", "true");
+			return string.Join(Environment.NewLine,
+				lines.Where(line => !Regex.IsMatch(line, $"\t\t{guidString}.{configurationRegex}.* = .*")));
 		}
 
 		public static void TrimPathFromFiltersInFile(string filtersFile, string pathToRemove)
@@ -126,6 +112,28 @@ namespace BuildUtilities.VisualStudio
 						: metadata.UnevaluatedValue.Replace(path + Path.DirectorySeparatorChar, string.Empty);
 				}
 			}
+		}
+
+		// NOTE: There is no obvious way to set properties using Gyp so this is used to set them manually
+
+        public static void SetProperty(Project project, string property, string value)
+		{
+			if (project == null) throw new ArgumentNullException(nameof(project));
+
+			if (string.IsNullOrWhiteSpace(property))
+				throw new ArgumentException("Value cannot be null or whitespace.", nameof(property));
+
+			if (value == null) throw new ArgumentNullException(nameof(value));
+
+			project.SetProperty(property, value);
+		}
+
+		public static void SetPropertyInFile(string projectFile, string property, string value)
+		{
+			var project = new Project(projectFile);
+			SetProperty(project, property, value);
+			project.Save(projectFile);
+			ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
 		}
 	}
 }

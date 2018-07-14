@@ -11,6 +11,11 @@ namespace BuildUtilities.Tests.VisualStudio
 {
 	public class ProjectUtilitiesTests
 	{
+		public ProjectUtilitiesTests()
+		{
+			ProjectUtilities.InitialiseMSBuildLocations();
+		}
+
 		private const string mPathToRemove = @"any\Path";
 
 		private static string GetResourceAsString(string resource)
@@ -23,9 +28,15 @@ namespace BuildUtilities.Tests.VisualStudio
 			}
 		}
 
-		public ProjectUtilitiesTests()
+		[Theory]
+		[InlineData(null)]
+		[InlineData("")]
+		[InlineData("\t")]
+		public void SetProperty_NullOrWhitespaceName_Throws(string value)
 		{
-			ProjectUtilities.InitialiseMSBuildLocations();
+			Action setProperty = () => ProjectUtilities.SetProperty(new Project(), value, "anyValue");
+
+			setProperty.Should().Throw<ArgumentException>();
 		}
 
 		[Fact]
@@ -40,13 +51,42 @@ namespace BuildUtilities.Tests.VisualStudio
 		}
 
 		[Fact]
-		public void SetRunCodeAnalysis_WithProject_SetsCodeAnalysisOption()
+		public void SetProperty_AnyPropertyAndNullValue_Throws()
 		{
 			var project = new Project();
 
-			ProjectUtilities.SetRunCodeAnalysis(project);
+			Action setProperty = () => ProjectUtilities.SetProperty(project, "anyProperty", null);
 
-			project.GetPropertyValue("RunCodeAnalysis").Should().Be("true");
+			setProperty.Should().Throw<ArgumentNullException>();
+		}
+
+		[Fact]
+		public void SetProperty_AnyPropertyAndValue_SetsProperty()
+		{
+			var project = new Project();
+
+			ProjectUtilities.SetProperty(project, "anyProperty", "anyValue");
+
+			project.GetPropertyValue("anyProperty").Should().Be("anyValue");
+		}
+
+		[Fact]
+		public void SetProperty_MultipleCalls_ChangesValue()
+		{
+			var project = new Project();
+
+			ProjectUtilities.SetProperty(project, "anyProperty", "anyValue");
+			ProjectUtilities.SetProperty(project, "anyProperty", "anyOtherValue");
+
+			project.GetPropertyValue("anyProperty").Should().Be("anyOtherValue");
+		}
+
+		[Fact]
+		public void SetProperty_NullProject_Throws()
+		{
+			Action setProperty = () => ProjectUtilities.SetProperty(null, "anyProperty", "anyValue");
+
+			setProperty.Should().Throw<ArgumentNullException>();
 		}
 
 		[Fact]

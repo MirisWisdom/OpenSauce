@@ -146,6 +146,13 @@ Task("GenerateProjectOpenSauce")
 		);
 	});
 
+Task("SetProperties")
+	.Does(()=>
+	{
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj"), "OpenSauceBuildDate", "$([System.DateTime]::Now.ToString(\"yyyy.MM.dd\"))");
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"), "OpenSauceBuildDate", "$([System.DateTime]::Now.ToString(\"yyyy.MM.dd\"))");
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj"), "OpenSauceBuildDate", "$([System.DateTime]::Now.ToString(\"yyyy.MM.dd\"))");
+	});
 
 Task("CleanupProjects")
 	.IsDependentOn("GenerateProjectTinyXml")
@@ -155,13 +162,14 @@ Task("CleanupProjects")
 	.IsDependentOn("GenerateProject7zip")
 	.IsDependentOn("GenerateProjectZlib")
 	.IsDependentOn("GenerateProjectOpenSauce")
+	.IsDependentOn("SetProperties")
 	.Does(()=>
 	{
-		ProjectUtilities.SetRunCodeAnalysisInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj"));
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj"), "RunCodeAnalysis", "true");
 		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj.filters"), "../source/blam");
-		ProjectUtilities.SetRunCodeAnalysisInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"));
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"), "RunCodeAnalysis", "true");
 		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj.filters"), "../source/yelo");
-		ProjectUtilities.SetRunCodeAnalysisInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj"));
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj"), "RunCodeAnalysis", "true");
 		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj.filters"), "../source/halo");
 
 		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/7zip/7zip.vcxproj.filters"), "../external/7zip");

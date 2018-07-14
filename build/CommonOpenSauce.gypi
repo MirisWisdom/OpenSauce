@@ -11,7 +11,10 @@
         "WarningLevel": "Level3",
         "StructMemberAlignment": "1Byte",
         "AdditionalOptions": "/J /Zc:trigraphs",
-        "CallingConvention": "StdCall"
+        "CallingConvention": "StdCall",
+        "PreprocessorDefinitions": [
+          "OPENSAUCE_BUILD_DATE=$(OpenSauceBuildDate)"
+        ] 
       },
       "Link": {
         "AdditionalLibraryDirectories": [
