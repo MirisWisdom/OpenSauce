@@ -76,6 +76,16 @@ Task("UpgradeVisualStudio2017")
 		ChocolateyUpgrade("visualstudio2017community", GetInstallSettings());
 	});
 
+Task("UpgradeVisualStudio2017Workflows")
+	.IsDependentOn("InstallChocolatey")
+	.IsDependentOn("UpgradeVisualStudio2017")
+	.Does(() =>
+	{
+		ChocolateyUpgrade("visualstudio2017-workload-manageddesktop", GetInstallSettings());
+		ChocolateyUpgrade("visualstudio2017-workload-nativedesktop", GetInstallSettings());
+		ChocolateyUpgrade("visualstudio2017-workload-nativegame", GetInstallSettings());
+	});
+
 Task("UpgradeDotNET")
 	.IsDependentOn("InstallChocolatey")
 	.Does(() =>
@@ -120,7 +130,8 @@ Task("Engineer")
 	.IsDependentOn("UpgradeWindowsSDK")
 	.IsDependentOn("UpgradeCppCheck")
 	.IsDependentOn("UpgradeOpenCppCoverage")
-	.IsDependentOn("UpgradeVisualStudio2017");
+	.IsDependentOn("UpgradeVisualStudio2017")
+	.IsDependentOn("UpgradeVisualStudio2017Workflows");
 
 Task("ContentCreator")
 	.IsDependentOn("UpgradeChocolatey")
@@ -136,6 +147,7 @@ Task("BuildAgent")
 	.IsDependentOn("UpgradeWindowsSDK")
 	.IsDependentOn("UpgradeCppCheck")
 	.IsDependentOn("UpgradeOpenCppCoverage")
-	.IsDependentOn("UpgradeVisualStudio2017");
+	.IsDependentOn("UpgradeVisualStudio2017")
+	.IsDependentOn("UpgradeVisualStudio2017Workflows");
 
 RunTarget(Argument("DeveloperType", "Engineer"));
