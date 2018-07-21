@@ -81,7 +81,7 @@
       },
       "default_configuration": "Debug Client",
       "sources": [
-        "<@(yeloSourceFiles)"
+        "<@(sourceFilesYelo)"
       ],
       "msvs_precompiled_header": "../source/yelo/yelo.h",
       "msvs_precompiled_source": "../source/yelo/yelo.cpp"
@@ -152,7 +152,7 @@
       },
       "default_configuration": "Debug Client",
       "sources": [
-        "<@(blamSourceFiles)"
+        "<@(sourceFilesBlam)"
       ],
       "msvs_precompiled_header": "../source/blam/blam.h",
       "msvs_precompiled_source": "../source/blam/blam.cpp"
@@ -259,7 +259,7 @@
       },
       "default_configuration": "Debug Client",
       "sources": [
-        "<@(haloSourceFiles)"
+        "<@(sourceFilesHalo)"
       ],
       "msvs_precompiled_header": "../source/halo/halo.h",
       "msvs_precompiled_source": "../source/halo/halo.cpp"

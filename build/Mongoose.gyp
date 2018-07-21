@@ -31,7 +31,7 @@
       },
       "default_configuration": "Debug",
       "sources": [
-        "<@(mongooseSourceFiles)",
+        "<@(sourceFilesMongoose)",
       ]
     }
   ]

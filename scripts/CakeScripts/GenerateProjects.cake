@@ -1,125 +1,107 @@
-#addin nuget:?package=Cake.Git
-#reference "../../bin/Cake.Gyp/Debug/Cake.Gyp.dll"
 #load "Common/Common.cake"
+#load "Common/Build.cake"
+#load "Common/Gyp.cake"
+#reference "../../bin/BuildUtilities/Debug/BuildUtilities.dll"
+#reference "../../bin/Cake.Gyp/Debug/Cake.Gyp.dll"
 
-Task("CloneGyp")
-	.WithCriteria(() => !DirectoryExists(GetRootedPath("external/gyp")))
-	.Does(()=>
+using System.Xml.Linq;
+using System.Xml.XPath;
+using System.Xml;
+using System.IO;
+using BuildUtilities.VisualStudio;
+
+Task("InitialiseMSBuildLocation")
+	.Does(() =>
 	{
-		EnsureDirectoryExists(GetRootedPath("external"));
-		Information("Cloning Gyp to external/gyp");
-
-		GitClone("https://chromium.googlesource.com/external/gyp", GetRootedPath("external/gyp"));
+		ProjectUtilities.InitialiseMSBuildLocations();
 	});
 
 Task("CollectSourceFiles")
 	.IsDependentOn("CloneGyp")
 	.Does(()=>
 	{
-		var filePatterns = new []
-		{
-			"*.cpp",
-			"*.c",
-			"*.h",
-			"*.hpp",
-			"*.inl",
-			"*.txt",
-			"*.def",
-			"*.rc",
-			"*.xml"
-		};
 		var projectRoot = GetRootedPath(string.Empty);
 
 		Information("Collecting Blam source files");
 		GenerateSourceInclude(projectRoot,
 			"source/blam",
 			"build",
-			filePatterns,
+			BuildFilePatterns,
 			GetRootedPath("build/Blam.generated.gypi"),
-			"blamSourceFiles");
+			"sourceFilesBlam");
 
 		Information("Collecting Yelo source files");
 		GenerateSourceInclude(projectRoot,
 			"source/yelo",
 			"build",
-			filePatterns,
+			BuildFilePatterns,
 			GetRootedPath("build/Yelo.generated.gypi"),
-			"yeloSourceFiles");
+			"sourceFilesYelo");
 
 		Information("Collecting CheApe source files");
 		GenerateSourceInclude(projectRoot,
 			"source/cheape",
 			"build",
-			filePatterns,
+			BuildFilePatterns,
 			GetRootedPath("build/CheApe.generated.gypi"),
-			"cheapeSourceFiles");
+			"sourceFilesCheApe");
 
 		Information("Collecting Halo source files");
 		GenerateSourceInclude(projectRoot,
 			"source/halo",
 			"build",
-			filePatterns,
+			BuildFilePatterns,
 			GetRootedPath("build/Halo.generated.gypi"),
-			"haloSourceFiles");
-
-		Information("Collecting GWEN source files");
-		GenerateSourceInclude(projectRoot,
-			"external/GWEN",
-			"build",
-			filePatterns,
-			GetRootedPath("build/GWEN.generated.gypi"),
-			"gwenSourceFiles");
-
-		Information("Collecting GameSpyOpen source files");
-		GenerateSourceInclude(projectRoot,
-			"external/GameSpyOpen",
-			"build",
-			filePatterns,
-			GetRootedPath("build/GameSpyOpen.generated.gypi"),
-			"gameSpyOpenSourceFiles");
-
-		Information("Collecting Mongoose source files");
-		GenerateSourceInclude(projectRoot,
-			"external/Mongoose",
-			"build",
-			filePatterns,
-			GetRootedPath("build/Mongoose.generated.gypi"),
-			"mongooseSourceFiles");
-
-		Information("Collecting 7zip source files");
-		GenerateSourceInclude(projectRoot,
-			"external/7zip",
-			"build",
-			filePatterns,
-			GetRootedPath("build/7zip.generated.gypi"),
-			"sevenZipSourceFiles");
-
-		Information("Collecting Zlib source files");
-		GenerateSourceInclude(projectRoot,
-			"external/Zlib",
-			"build",
-			filePatterns,
-			GetRootedPath("build/Zlib.generated.gypi"),
-			"zlibSourceFiles");
-
-		Information("Collecting TinyXml source files");
-		GenerateSourceInclude(projectRoot,
-			"external/TinyXml",
-			"build",
-			filePatterns,
-			GetRootedPath("build/TinyXml.generated.gypi"),
-			"tinyXmlSourceFiles");
+			"sourceFilesHalo");
 	});
 
-Task("GenerateProjectsVS")
-	.WithCriteria(IsRunningOnWindows)
+Task("GenerateProjectOpenSauce")
 	.IsDependentOn("CollectSourceFiles")
-	.Does(() =>
+	.Does(()=>
 	{
-		CakeExecuteScript("GenerateProjectsVS.cake", CreateCakeSettings());
+		Information("Building OpenSauce project");
+
+		GenerateProject(
+			GetRootedPath("external/gyp"),
+			"OpenSauce.gyp",
+			new GypSettings
+			{
+				WorkingDirectory = GetRootedPath("build"),
+				OutputPlatform = GypOutputPlatform.VisualStudio2017,
+				OutputDirectory = GetRootedPath("build/msvs2017_generated"),
+			}
+		);
+	});
+
+Task("SetProperties")
+	.IsDependentOn("InitialiseMSBuildLocation")
+	.Does(()=>
+	{
+		var buildDateValue = "$([System.DateTime]::Now.ToString(\"yyyy.MM.dd\"))";
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj"), "OpenSauceBuildDate", buildDateValue);
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"), "OpenSauceBuildDate", buildDateValue);
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj"), "OpenSauceBuildDate", buildDateValue);
 	});
 
 Task("GenerateProjects")
-	.IsDependentOn("GenerateProjectsVS");
+	.IsDependentOn("InitialiseMSBuildLocation")
+	.IsDependentOn("GenerateProjectOpenSauce")
+	.IsDependentOn("SetProperties")
+	.Does(()=>
+	{
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj"), "RunCodeAnalysis", "true");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/blam.vcxproj.filters"), "../source/blam");
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj"), "RunCodeAnalysis", "true");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/yelo.vcxproj.filters"), "../source/yelo");
+		ProjectUtilities.SetPropertyInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj"), "RunCodeAnalysis", "true");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/msvs2017_generated/halo.vcxproj.filters"), "../source/halo");
+
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/7zip/7zip.vcxproj.filters"), "../external/7zip");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/TinyXml/TinyXml.vcxproj.filters"), "../external/TinyXml");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/GameSpyOpen/GameSpyOpen.vcxproj.filters"), "../external/GameSpyOpen");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/GWEN/GWEN.vcxproj.filters"), "../external/GWEN");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/Mongoose/Mongoose.vcxproj.filters"), "../external/Mongoose");
+		ProjectUtilities.TrimPathFromFiltersInFile(GetRootedPath("build/Zlib/Zlib.vcxproj.filters"), "../external/Zlib");
+	});
 
 RunTarget("GenerateProjects");

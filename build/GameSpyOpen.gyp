@@ -40,7 +40,7 @@
       },
       "default_configuration": "Debug",
       "sources": [
-        "<@(gameSpyOpenSourceFiles)",
+        "<@(sourceFilesGameSpyOpen)",
       ]
     }
   ]

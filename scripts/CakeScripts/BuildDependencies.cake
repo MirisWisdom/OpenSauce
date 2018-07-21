@@ -1,5 +1,4 @@
 #load "Common/Common.cake"
-#addin nuget:?package=Cake.Git
 
 var cleanDirectories = new []
 {
@@ -38,7 +37,61 @@ Task("TestScripts")
 		CakeExecuteScript("Test/TestXUnit.cake", xunitCakeSettings);
 	});
 
+Task("Build7zip")
+	.Does(() =>
+	{
+		var buildSettings = CreateCakeSettings();
+		buildSettings.Arguments.Add("Library", "7zip");
+		CakeExecuteScript("Build/BuildLibrary.cake", buildSettings);
+	});
+
+Task("BuildGameSpyOpen")
+	.Does(() =>
+	{
+		var buildSettings = CreateCakeSettings();
+		buildSettings.Arguments.Add("Library", "GameSpyOpen");
+		CakeExecuteScript("Build/BuildLibrary.cake", buildSettings);
+	});
+
+Task("BuildGWEN")
+	.Does(() =>
+	{
+		var buildSettings = CreateCakeSettings();
+		buildSettings.Arguments.Add("Library", "GWEN");
+		CakeExecuteScript("Build/BuildLibrary.cake", buildSettings);
+	});
+
+Task("BuildMongoose")
+	.Does(() =>
+	{
+		var buildSettings = CreateCakeSettings();
+		buildSettings.Arguments.Add("Library", "Mongoose");
+		CakeExecuteScript("Build/BuildLibrary.cake", buildSettings);
+	});
+
+Task("BuildTinyXml")
+	.Does(() =>
+	{
+		var buildSettings = CreateCakeSettings();
+		buildSettings.Arguments.Add("Library", "TinyXml");
+		CakeExecuteScript("Build/BuildLibrary.cake", buildSettings);
+	});
+
+Task("BuildZlib")
+	.Does(() =>
+	{
+		var buildSettings = CreateCakeSettings();
+		buildSettings.Arguments.Add("Library", "Zlib");
+		CakeExecuteScript("Build/BuildLibrary.cake", buildSettings);
+	});
+
 Task("BuildDependencies")
-	.IsDependentOn("TestScripts");
+	.IsDependentOn("TestScripts")
+	.IsDependentOn("Build7zip")
+	.IsDependentOn("BuildGameSpyOpen")
+	.IsDependentOn("BuildGWEN")
+	.IsDependentOn("BuildMongoose")
+	.IsDependentOn("BuildTinyXml")
+	.IsDependentOn("BuildZlib");
 
 RunTarget("BuildDependencies");

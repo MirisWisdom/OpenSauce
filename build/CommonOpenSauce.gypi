@@ -3,9 +3,6 @@
     "Common.gypi"
   ],
   "target_defaults": {
-    "variables": {
-      "haloce_installation": "D:/Program Files (x86)/Microsoft Games/Halo Custom Edition"
-    },
     "msbuild_settings": {
       "ClCompile": {
         "WarningLevel": "Level3",

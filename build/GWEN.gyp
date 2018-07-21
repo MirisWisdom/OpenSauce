@@ -35,7 +35,7 @@
       },
       "default_configuration": "Debug",
       "sources": [
-        "<@(gwenSourceFiles)",
+        "<@(sourceFilesGWEN)",
       ]
     }
   ]

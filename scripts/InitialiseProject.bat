@@ -2,4 +2,3 @@ cd /d %~dp0
 set ProjectRoot=%~dp0..
 powershell -ExecutionPolicy Bypass -File cake.ps1 -Script CakeScripts/BuildDependencies.cake
 powershell -ExecutionPolicy Bypass -File cake.ps1 -Script CakeScripts/GenerateProjects.cake
-powershell -ExecutionPolicy Bypass -File cake.ps1 -Script CakeScripts/BuildProjects.cake
