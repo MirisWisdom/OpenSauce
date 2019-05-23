@@ -1,0 +1,23 @@
+OPENSAUCE
+=========
+
+This repository serves as a Git mirror to the original OpenSauce Release
+repository, which is currently found here:
+
+    https://bitbucket.org/KornnerStudios/opensauce-release
+
+BRANCHES
+--------
+
+Two main branches are available in this repository:
+
+  Branch   Description
+  -------- ------------------------------------------------------------------
+  master   mirror of the default (main) branch from the original repository
+  wiki     mirror of the wiki documentation from the original repository
+
+COPYRIGHT
+---------
+
+Review the license directory for copyright information on the respective
+sections of this repository.
