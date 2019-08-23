@@ -22,17 +22,23 @@ FORKS
 Mirrors of relevant forks are also available as branches in this
 repository:
 
-  --------------------------------------------------------------------------------------------------------------
-  Branch   Description                               Upstream
-  -------- ----------------------------------------- -----------------------------------------------------------
-  os_ex    guardian2433's fork of Open Sauce V4.0    https://bitbucket.org/guardian2433/opensauce-experimental
-           containing experimental code they         
-           implement.                                
+  ------------------------------------------------------------------------
+  Branch          Description        Upstream
+  --------------- ------------------ -------------------------------------
+  experimental    guardian2433's     guardian2433/opensauce-experimental
+                  fork of Open Sauce 
+                  V4.0 containing    
+                  experimental code  
+                  they implement.    
 
-  os_v5    BipolarAurora's fork of CorpenEldorito's  https://github.com/BipolarAurora/H-CE-Opensauce-V5.git
-           version of Open-Sauce V5 for personal use 
-           and potential fixes.                      
-  --------------------------------------------------------------------------------------------------------------
+  opensauce\_v5   BipolarAurora's    BipolarAurora/H-CE-Opensauce-V5.git
+                  fork of            
+                  CorpenEldorito's   
+                  version of         
+                  Open-Sauce V5 for  
+                  personal use and   
+                  potential fixes.   
+  ------------------------------------------------------------------------
 
 COPYRIGHT
 ---------
