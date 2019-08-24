@@ -9,12 +9,13 @@ repository, which is currently found here:
 BRANCHES
 --------
 
-Two main branches are available in this repository:
+The main source code is available in the master branch. Forks are stored
+in dedicated branches, all prefixed with "fork/".
 
-  Branch   Description
-  -------- ------------------------------------------------------------------
-  master   mirror of the default (main) branch from the original repository
-  wiki     mirror of the wiki documentation from the original repository
+The wiki branch was previously used to contain the OpenSauce
+documentation; however, the docs are now publicly located here:
+
+    https://github.com/yumiris/OpenSauce/wiki
 
 FORKS
 -----
@@ -22,9 +23,9 @@ FORKS
 Mirrors of relevant forks are also available as branches in this
 repository:
 
-  ----------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   Branch          Description
-  --------------- ------------------------------------------------------------
+  --------------- ------------------------------------------------------
   experimental    guardian2433's fork of Open Sauce V4.0 containing
                   experimental code they implement.
 
@@ -33,7 +34,7 @@ repository:
 
   sprinkle        Fork by sprinkle131313 which focuses on refactoring,
                   improvements and documentation.
-  ----------------------------------------------------------------------------
+  ----------------------------------------------------------------------
 
 COPYRIGHT
 ---------
