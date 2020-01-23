@@ -1,14 +1,16 @@
-BlamLib/LowLevel/Compression/LZMA/
-OpenSauce/shared/Include/GameSpyOpen/
-OpenSauce/shared/Include/7zip/
-OpenSauce/shared/Include/mongoose/
+syntax: glob
 
-shared/Resources/Halo1_CE/HCE_CommonData/
-shared/Resources/Halo1_CE/HCE_InstallDir/
-shared/Resources/Halo1_CE/HCE_UserPath/OpenSauce/shaders/
-shared/Resources/Halo1_CheApe/HEK_InstallDir/tags/
-shared/Resources/Installer/dxredist/
-test_results/
+glob:BlamLib/LowLevel/Compression/LZMA/
+glob:OpenSauce/shared/Include/GameSpyOpen/
+glob:OpenSauce/shared/Include/7zip/
+glob:OpenSauce/shared/Include/mongoose/
+
+glob:shared/Resources/Halo1_CE/HCE_CommonData/
+glob:shared/Resources/Halo1_CE/HCE_InstallDir/
+glob:shared/Resources/Halo1_CE/HCE_UserPath/OpenSauce/shaders/
+glob:shared/Resources/Halo1_CheApe/HEK_InstallDir/tags/
+glob:shared/Resources/Installer/dxredist/
+glob:test_results/
 
 bin\
 lib\

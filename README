@@ -1,0 +1,43 @@
+OPENSAUCE
+=========
+
+This repository serves as a Git mirror to the original OpenSauce Release
+repository, which is currently found here:
+
+    https://bitbucket.org/KornnerStudios/opensauce-release
+
+BRANCHES
+--------
+
+The main source code is available in the master branch. Forks are stored
+in dedicated branches, all prefixed with "fork/".
+
+The wiki branch was previously used to contain the OpenSauce
+documentation; however, the docs are now publicly located here:
+
+    https://github.com/yumiris/OpenSauce/wiki
+
+FORKS
+-----
+
+Mirrors of relevant forks are also available as branches in this
+repository:
+
+  ----------------------------------------------------------------------
+  Branch          Description
+  --------------- ------------------------------------------------------
+  experimental    guardian2433's fork of Open Sauce V4.0 containing
+                  experimental code they implement.
+
+  opensauce_v5    BipolarAurora's fork of CorpenEldorito's version of
+                  Open-Sauce V5 for personal use and potential fixes.
+
+  sprinkle        Fork by sprinkle131313 which focuses on refactoring,
+                  improvements and documentation.
+  ----------------------------------------------------------------------
+
+COPYRIGHT
+---------
+
+Review the license directory for copyright information on the respective
+sections of this repository.
