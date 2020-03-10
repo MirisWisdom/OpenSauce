@@ -27,7 +27,7 @@
 
 
 	<!-- Halo 2 PC -->
-	<!--Get the installation path of Halo1, depending on the build-->
+	<!--Get the installation path of Halo2, depending on the build-->
 	<LocalHalo2PcGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@GameInstallDir)</LocalHalo2PcGameDir> <!--There's also ServerInstallDir-->
 	<LocalHalo2PcEditDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir)</LocalHalo2PcEditDir>
 	<LocalHalo2PcDir		Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHalo2PcGameDir)</LocalHalo2PcDir>
@@ -86,7 +86,7 @@
   <Target Name="OSVerifyVLD" Condition=" '$(OSRequiresVLD)' != 'true' " />
   <Target Name="OSVerifyVLD" Condition=" '$(OSRequiresVLD)' == 'true' ">
     <Error			Condition="!Exists('$(ProgramFiles)\Visual Leak Detector')"
-		Text="Project requires Visual Leak Detector, but it's installation directory wasn't found" />
+		Text="Project requires Visual Leak Detector, but its installation directory wasn't found" />
   </Target>
 
   <!-- Halo Custom Edition -->
