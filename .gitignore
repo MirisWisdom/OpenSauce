@@ -26,4 +26,9 @@ obj\
 
 *.psd
 *.map
-/.vs
+
+# Visual Studio 2015 cache/options directory
+/.vs/*
+/OpenSauce/.vs/*
+/OpenSauce/Halo1/Halo1_CE/.vs/*
+
