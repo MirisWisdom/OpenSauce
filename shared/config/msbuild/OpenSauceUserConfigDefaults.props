@@ -11,8 +11,13 @@
 
 	<!-- Halo Custom Edition -->
 	<!--Get the installation path of Halo1, depending on the build-->
+
 	<LocalHaloCustomEdGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo CE@EXE Path)</LocalHaloCustomEdGameDir>
+    <!--Pseudo code to implement later-->
+    <!--If(platform-x64=true)[<LocalHaloCustomEdGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo CE@EXE Path)</LocalHaloCustomEdGameDir>]-->
 	<LocalHaloCustomEdEditDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo HEK@EXE Path)</LocalHaloCustomEdEditDir>
+    <!--Pseudo code to implement later-->
+    <!--If(platform-x64=true)[<LocalHaloCustomEdGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo HEK@EXE Path)</LocalHaloCustomEdGameDir>]-->
 	<LocalHaloCustomEdDir	Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHaloCustomEdGameDir)</LocalHaloCustomEdDir>
 	<LocalHaloCustomEdDir	Condition=" '$(OSPlatformIsEditor)' == 'true' ">$(LocalHaloCustomEdEditDir)</LocalHaloCustomEdDir>
 
@@ -22,14 +27,21 @@
 
 	<!-- Stubbs PC -->
 	<LocalStubbsPcDir		Condition=" '$(LocalStubbsPcDir)' == '' ">$(ProgramFiles)\Stubbs the Zombie\</LocalStubbsPcDir>
-	<!--TODO: I forget if this is the defualt install dir-->
+	<!--TODO: I forget if this is the default install dir-->
+  <!--Prompt the user to choose the game's path; It's not always at the default location.-->
 	<LocalStubbsPcDir		Condition="!Exists('$(LocalStubbsPcDir)')">$(ProgramFiles)\Aspyr Media Inc\Stubbs The Zombie - Rebel Without A Pulse\</LocalStubbsPcDir>
 
 
 	<!-- Halo 2 PC -->
 	<!--Get the installation path of Halo2, depending on the build-->
 	<LocalHalo2PcGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@GameInstallDir)</LocalHalo2PcGameDir> <!--There's also ServerInstallDir-->
+    <!--Pseudo code to implement later-->
+    <!--If(platform-x64=true)[registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@GameInstallDir]-->
+      <!--Note:Project Cartographer sets this path. No need to make a special case for P.C.-->
+    <!--If(platform-x64=true)[registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@ServerInstallDir]-->
 	<LocalHalo2PcEditDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir)</LocalHalo2PcEditDir>
+    <!--Pseudo code to implement later-->
+    <!--If(platform-x64=true)[registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir]-->
 	<LocalHalo2PcDir		Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHalo2PcGameDir)</LocalHalo2PcDir>
 	<LocalHalo2PcDir		Condition=" '$(OSPlatformIsEditor)' == 'true' ">$(LocalHalo2PcEditDir)</LocalHalo2PcDir>
 
