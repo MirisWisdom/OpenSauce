@@ -27,8 +27,10 @@ obj\
 *.psd
 *.map
 
-# Visual Studio 2015 cache/options directory
+# Visual Studio cache/options directory
 /.vs/*
-/OpenSauce/.vs/*
-/OpenSauce/Halo1/Halo1_CE/.vs/*
+*/.vs/*
+**/.vs/
+***/.vs/*
 
+CppProperties.json
