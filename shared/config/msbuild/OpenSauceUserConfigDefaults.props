@@ -1,115 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LocalDirectXDir		Condition=" '$(LocalDirectXDir)' == '' ">$(DXSDK_DIR)</LocalDirectXDir>
+    <LocalDirectXDir		  Condition=" '$(LocalDirectXDir)' == '' ">$(DXSDK_DIR)</LocalDirectXDir>
     <LocalXenonLibBinVer	Condition=" '$(LocalXenonLibBinVer)' == '' ">vs2010</LocalXenonLibBinVer>
-    <LocalXenonLibDir		Condition=" '$(LocalXenonLibBinVer)' == '' ">$(XEDK)\lib\$(Platform)\$(LocalXenonLibBinVer)\</LocalXenonLibDir>
+    <LocalXenonLibDir		  Condition=" '$(LocalXenonLibBinVer)' == '' ">$(XEDK)\lib\$(Platform)\$(LocalXenonLibBinVer)\</LocalXenonLibDir>
     <LocalUserBoostVer		Condition=" '$(LocalUserBoostVer)' == '' ">boost_1_55_0</LocalUserBoostVer>
     <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(ProgramFiles)\boost\$(LocalUserBoostVer)\</LocalUserBoostDir>
-	<LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
-	<LocalRakNetDir			Condition=" '$(LocalRakNetDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\RakNet</LocalRakNetDir>
+	  <LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
+  	<LocalRakNetDir			  Condition=" '$(LocalRakNetDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\RakNet</LocalRakNetDir>
+
+  <!-- Determine build platform's bitness to know where to look for executables-->
+  <!--On 64-Bit Windows, the ProgramW6432 environment variable returns "C:\Program Files\"-->
+  <!--However, it returns an empty value on 32-bit Windows.-->
+  <!--If ProgramW6432 returns an empty value, the operating system is 32-bit-->
+  <!--and ProgramFiles will return the correct path for the executables-->
+  <!--If ProgramW6432 returns a non-empty string, the OS is 64-bit. "Program Files (x86)" and WOW6432 paths must be used.-->
+
 
 	<!-- Halo Custom Edition -->
 	<!--Get the installation path of Halo1, depending on the build-->
 
 	<LocalHaloCustomEdGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo CE@EXE Path)</LocalHaloCustomEdGameDir>
-    <!--Pseudo code to implement later-->
-    <!--If(platform-x64=true)[<LocalHaloCustomEdGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo CE@EXE Path)</LocalHaloCustomEdGameDir>]-->
+  <LocalHaloCustomEdGameDir Condition="!Exists('$(LocalHaloCustomEdGameDir)')">$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo CE@EXE Path)</LocalHaloCustomEdGameDir>
 	<LocalHaloCustomEdEditDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo HEK@EXE Path)</LocalHaloCustomEdEditDir>
-    <!--Pseudo code to implement later-->
-    <!--If(platform-x64=true)[<LocalHaloCustomEdGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo HEK@EXE Path)</LocalHaloCustomEdGameDir>]-->
-	<LocalHaloCustomEdDir	Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHaloCustomEdGameDir)</LocalHaloCustomEdDir>
-	<LocalHaloCustomEdDir	Condition=" '$(OSPlatformIsEditor)' == 'true' ">$(LocalHaloCustomEdEditDir)</LocalHaloCustomEdDir>
+  <LocalHaloCustomEdEditDir Condition="!Exists('$(LocalHaloCustomEdEditDir)')">$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo HEK@EXE Path)</LocalHaloCustomEdEditDir>
+	<LocalHaloCustomEdDir	    Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHaloCustomEdGameDir)</LocalHaloCustomEdDir>
+	<LocalHaloCustomEdDir	    Condition=" '$(OSPlatformIsEditor)' == 'true' ">$(LocalHaloCustomEdEditDir)</LocalHaloCustomEdDir>
 
 	<!--Looks like someone's installer didn't work right. Fall back to the assumed installation path-->
-	<LocalHaloCustomEdDir	Condition="!Exists('$(LocalHaloCustomEdDir)')">$(ProgramFiles)\Microsoft Games\Halo Custom Edition\</LocalHaloCustomEdDir>
+	<LocalHaloCustomEdDir	    Condition="!Exists('$(LocalHaloCustomEdDir)')">$(ProgramFiles)\Microsoft Games\Halo Custom Edition\</LocalHaloCustomEdDir>
+  <LocalHaloCustomEdDir	    Condition="!Exists('$(LocalHaloCustomEdDir)')">$(ProgramW6432)\Microsoft Games\Halo Custom Edition\</LocalHaloCustomEdDir>
 
 
 	<!-- Stubbs PC -->
-	<LocalStubbsPcDir		Condition=" '$(LocalStubbsPcDir)' == '' ">$(ProgramFiles)\Stubbs the Zombie\</LocalStubbsPcDir>
+	<LocalStubbsPcDir>$(ProgramFiles)\Stubbs the Zombie\</LocalStubbsPcDir>
+  <LocalStubbsPcDir	Condition="!Exists('$(LocalStubbsPcDir)')">$(ProgramW6432)\Stubbs the Zombie\</LocalStubbsPcDir>
 	<!--TODO: I forget if this is the default install dir-->
-  <!--Prompt the user to choose the game's path; It's not always at the default location.-->
-	<LocalStubbsPcDir		Condition="!Exists('$(LocalStubbsPcDir)')">$(ProgramFiles)\Aspyr Media Inc\Stubbs The Zombie - Rebel Without A Pulse\</LocalStubbsPcDir>
+	<LocalStubbsPcDir	Condition="!Exists('$(LocalStubbsPcDir)')">$(ProgramFiles)\Aspyr Media Inc\Stubbs The Zombie - Rebel Without A Pulse\</LocalStubbsPcDir>
+  <LocalStubbsPcDir	Condition="!Exists('$(LocalStubbsPcDir)')">$(ProgramW6432)\Aspyr Media Inc\Stubbs The Zombie - Rebel Without A Pulse\</LocalStubbsPcDir>
 
 
-	<!-- Halo 2 PC -->
+
+  <!-- Halo 2 PC -->
 	<!--Get the installation path of Halo2, depending on the build-->
 	<LocalHalo2PcGameDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@GameInstallDir)</LocalHalo2PcGameDir> <!--There's also ServerInstallDir-->
-    <!--Pseudo code to implement later-->
-    <!--If(platform-x64=true)[registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@GameInstallDir]-->
-      <!--Note:Project Cartographer sets this path. No need to make a special case for P.C.-->
-    <!--If(platform-x64=true)[registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@ServerInstallDir]-->
-	<LocalHalo2PcEditDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir)</LocalHalo2PcEditDir>
-    <!--Pseudo code to implement later-->
-    <!--If(platform-x64=true)[registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir]-->
-	<LocalHalo2PcDir		Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHalo2PcGameDir)</LocalHalo2PcDir>
-	<LocalHalo2PcDir		Condition=" '$(OSPlatformIsEditor)' == 'true' ">$(LocalHalo2PcEditDir)</LocalHalo2PcDir>
+  <LocalHalo2PcGameDir Condition="!Exists('$(LocalHalo2PcGameDir)')">$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@GameInstallDir)"</LocalHalo2PcGameDir>
+  <!--Note:Project Cartographer uses the same GameInstall registry key. In other words, this wasn't changed to be different than Vista.-->
+  <LocalHalo2PcEditDir>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir)</LocalHalo2PcEditDir>
+  <LocalHalo2PcEditDir Condition="!Exists('$(LocalHalo2PcEditDir)')">$(registry:HKEY_LOCAL_MACHINE\Software\WOW6432\Microsoft\Microsoft Games\Halo 2\1.0@ToolsInstallDir)</LocalHalo2PcEditDir>
+	<LocalHalo2PcDir	   Condition=" '$(OSPlatformIsEditor)' != 'true' ">$(LocalHalo2PcGameDir)</LocalHalo2PcDir>
+	<LocalHalo2PcDir	   Condition=" '$(OSPlatformIsEditor)' == 'true' ">$(LocalHalo2PcEditDir)</LocalHalo2PcDir>
 
 
-    <!-- Ensure user defined paths have a trailing slash, so they can be concatenated -->
-	<LocalDirectXDir		Condition=" !HasTrailingSlash('$(LocalDirectXDir)') ">$(LocalDirectXDir)\</LocalDirectXDir>
-	<LocalXenonLibDir		Condition=" !HasTrailingSlash('$(LocalXenonLibDir)') ">$(LocalXenonLibDir)\</LocalXenonLibDir>
+  <!-- Ensure user defined paths have a trailing slash, so they can be concatenated -->
+	<LocalDirectXDir		  Condition=" !HasTrailingSlash('$(LocalDirectXDir)') ">$(LocalDirectXDir)\</LocalDirectXDir>
+	<LocalXenonLibDir		  Condition=" !HasTrailingSlash('$(LocalXenonLibDir)') ">$(LocalXenonLibDir)\</LocalXenonLibDir>
 	<LocalUserBoostDir		Condition=" !HasTrailingSlash('$(LocalUserBoostDir)') ">$(LocalUserBoostDir)\</LocalUserBoostDir>
 	<LocalGameSpyOpenDir	Condition=" !HasTrailingSlash('$(LocalGameSpyOpenDir)') ">$(LocalGameSpyOpenDir)\</LocalGameSpyOpenDir>
-	<LocalRakNetDir			Condition=" !HasTrailingSlash('$(LocalRakNetDir)') ">$(LocalRakNetDir)\</LocalRakNetDir>
+	<LocalRakNetDir			  Condition=" !HasTrailingSlash('$(LocalRakNetDir)') ">$(LocalRakNetDir)\</LocalRakNetDir>
 	<LocalHaloCustomEdDir	Condition=" !HasTrailingSlash('$(LocalHaloCustomEdDir)') ">$(LocalHaloCustomEdDir)\</LocalHaloCustomEdDir>
-	<LocalStubbsPcDir		Condition=" !HasTrailingSlash('$(LocalStubbsPcDir)') ">$(LocalStubbsPcDir)\</LocalStubbsPcDir>
-	<LocalHalo2PcDir		Condition=" !HasTrailingSlash('$(LocalHalo2PcDir)') ">$(LocalHalo2PcDir)\</LocalHalo2PcDir>
+	<LocalStubbsPcDir	  	Condition=" !HasTrailingSlash('$(LocalStubbsPcDir)') ">$(LocalStubbsPcDir)\</LocalStubbsPcDir>
+	<LocalHalo2PcDir	  	Condition=" !HasTrailingSlash('$(LocalHalo2PcDir)') ">$(LocalHalo2PcDir)\</LocalHalo2PcDir>
   </PropertyGroup>
 
   <!-- DirectX -->
   <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' != 'true' " />
   <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' == 'true' ">
-    <Error			Condition="!Exists('$(LocalDirectXDir)')"
+    <Error Condition="!Exists('$(LocalDirectXDir)')"
 		Text="Project requires DXSDK, but LocalDirectXDir wasn't found" />
   </Target>
 
   <!-- Xbox360 -->
   <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' != 'true' "/>
   <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' == 'true' ">
-    <Error					Condition="!Exists('$(XEDK)')"
+    <Error Condition="!Exists('$(XEDK)')"
 		  Text="Project requires Xbox360 SDK, but XEDK wasn't found" />
-    <Error					Condition="!Exists('$(LocalXenonLibBinVer)')"
+    <Error Condition="!Exists('$(LocalXenonLibBinVer)')"
 		  Text="Project requires Xbox360 SDK, but LocalXenonLibBinVer wasn't found" />
   </Target>
 
   <!-- C++ boost -->
   <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' != 'true' " />
   <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' == 'true' ">
-    <Error				Condition="!Exists('$(LocalUserBoostDir)')"
+    <Error Condition="!Exists('$(LocalUserBoostDir)')"
 		Text="Project requires C++ Boost, but LocalUserBoostDir wasn't found: $(LocalUserBoostDir)" />
   </Target>
 
   <!-- GameSpyOpen -->
   <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' != 'true' " />
   <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' == 'true' ">
-    <Error				  Condition="!Exists('$(LocalGameSpyOpenDir)')"
+    <Error Condition="!Exists('$(LocalGameSpyOpenDir)')"
 		Text="Project requires GameSpyOpen, but LocalGameSpyOpenDir wasn't found" />
   </Target>
 
   <!-- RakNet -->
   <Target Name="OSVerifyRakNet" Condition=" '$(OSRequiresRakNet)' != 'true' " />
   <Target Name="OSVerifyRakNet" Condition=" '$(OSRequiresRakNet)' == 'true' ">
-    <Error			 Condition="!Exists('$(LocalRakNetDir)')"
+    <Error Condition="!Exists('$(LocalRakNetDir)')"
 		Text="Project requires RakNet, but LocalRakNetDir wasn't found" />
   </Target>
-  
+
   <!-- Visual Leak Detector -->
   <Target Name="OSVerifyVLD" Condition=" '$(OSRequiresVLD)' != 'true' " />
   <Target Name="OSVerifyVLD" Condition=" '$(OSRequiresVLD)' == 'true' ">
-    <Error			Condition="!Exists('$(ProgramFiles)\Visual Leak Detector')"
+    <Error Condition="!Exists('$(ProgramFiles)\Visual Leak Detector')"
 		Text="Project requires Visual Leak Detector, but its installation directory wasn't found" />
   </Target>
 
   <!-- Halo Custom Edition -->
   <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == 'true' ">
-    <Error				  Condition="!Exists('$(LocalHaloCustomEdDir)')"
+    <Error Condition="!Exists('$(LocalHaloCustomEdDir)')"
 		Text="Project wants Custom Edition, but LocalHaloCustomEdDir wasn't found" />
   </Target>
   <Target Name="OSCopyExeToHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSCopyExeToHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == 'true' ">
-    <Copy				  Condition="Exists('$(TargetPath)')"
+    <Copy Condition="Exists('$(TargetPath)')"
 		SourceFiles="$(TargetPath)"
 		DestinationFolder="$(LocalHaloCustomEdDir)"
 		SkipUnchangedFiles="true" />
@@ -118,7 +124,7 @@
   <!-- Stubbs PC -->
   <Target Name="OSVerifyStubbsPc" Condition=" '$(OSRequiresStubbsPc)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSVerifyStubbsPc" Condition=" '$(OSRequiresStubbsPc)' == 'true' ">
-    <Error			   Condition="!Exists('$(LocalStubbsPcDir)')"
+    <Error Condition="!Exists('$(LocalStubbsPcDir)')"
 		Text="Project wants Stubbs (PC), but LocalStubbsPcDir wasn't found" />
   </Target>
   <Target Name="OSCopyExeToStubbsPc" Condition=" '$(OSRequiresStubbsPc)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
