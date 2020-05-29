@@ -5,8 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static bool WeaponTagDataFieldTriggerSetReal(const s_object_field_definition& field, TagGroups::weapon_trigger_definition& trigger, 
-											 TypeHolder& result, cstring subdata_name)
+static bool WeaponTagDataFieldTriggerSetReal(const s_object_field_definition& field,
+																									 TagGroups::weapon_trigger_definition& trigger, 
+																									 TypeHolder& result, cstring subdata_name)
 {
 	using namespace Enums;
 
@@ -16,7 +17,7 @@ static bool WeaponTagDataFieldTriggerSetReal(const s_object_field_definition& fi
 		result.ptr.real = &trigger.spew_time;
 		break;
 	case _weapon_tag_field_real_trigger_rounds_per_second:
-			 if( !strcmp(subdata_name,"lower") ) result.ptr.real = &trigger.rounds_per_second.lower;
+				 if( !strcmp(subdata_name,"lower") ) result.ptr.real = &trigger.rounds_per_second.lower;
 		else if( !strcmp(subdata_name,"upper") ) result.ptr.real = &trigger.rounds_per_second.upper;
 		break;
 
@@ -33,8 +34,8 @@ static bool WeaponDataFieldGetReal(const s_object_field_definition& field, s_wea
 
 	switch(field.definition_index)
 	{
-	case _weapon_field_real_heat:		result.ptr.real = &weapon.heat; break;
-	case _weapon_field_real_age:		result.ptr.real = &weapon.age; break;
+	case _weapon_field_real_heat:				result.ptr.real = &weapon.heat; break;
+	case _weapon_field_real_age:		  	result.ptr.real = &weapon.age; break;
 	case _weapon_field_real_light_power:result.ptr.real = &weapon.integrated_light_power; break;
 	
 	default: result.ptr.real = nullptr;  break;
@@ -43,8 +44,9 @@ static bool WeaponDataFieldGetReal(const s_object_field_definition& field, s_wea
 	return result.ptr.real != nullptr;
 }
 
-static void* WeaponDataFieldMagazineGetIntegerImpl(const s_object_field_definition& field, Objects::s_weapon_data::s_magazine_state& magazine, 
-											 TypeHolder& result, cstring subdata_name)
+static void* WeaponDataFieldMagazineGetIntegerImpl(const s_object_field_definition& field,
+																									 Objects::s_weapon_data::s_magazine_state& magazine, 
+																									 TypeHolder& result, cstring subdata_name)
 {
 	using namespace Enums;
 
@@ -65,8 +67,9 @@ static void* WeaponDataFieldMagazineGetIntegerImpl(const s_object_field_definiti
 	}
 }
 
-static bool WeaponDataFieldMagazineGetInteger(const s_object_field_definition& field, Objects::s_weapon_data::s_magazine_state& magazine, 
-											 TypeHolder& result, cstring subdata_name)
+static bool WeaponDataFieldMagazineGetInteger(const s_object_field_definition& field,
+																										Objects::s_weapon_data::s_magazine_state& magazine, 
+																										TypeHolder& result, cstring subdata_name)
 {
 	result.pointer = WeaponDataFieldMagazineGetIntegerImpl(field, magazine, 
 		result, subdata_name);

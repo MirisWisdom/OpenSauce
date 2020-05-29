@@ -22,7 +22,7 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	// actor_died
 	{
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::actor_died__unit_grenade_count_word,
-														unit_grenade_counts_mods::actor_died__unit_grenade_count_dword>
+																										unit_grenade_counts_mods::actor_died__unit_grenade_count_dword>
 			code_writer;
 
 		void* code_addr = GET_FUNC_VPTR(ACTOR_DIED_UNIT_GRENADE_COUNT_MOD);
@@ -34,7 +34,7 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	// player_add_equipment
 	{
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::player_add_equipment__unit_grenade_count_word,
-														unit_grenade_counts_mods::player_add_equipment__unit_grenade_count_dword>
+																										unit_grenade_counts_mods::player_add_equipment__unit_grenade_count_dword>
 			code_writer;
 
 		void* code_addr = GET_FUNC_VPTR(PLAYER_ADD_EQUIPMENT_UNIT_GRENADE_COUNT_MOD);
@@ -46,7 +46,7 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	// biped_new_from_network
 	{
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_new_from_network__unit_grenade_count_word,
-														unit_grenade_counts_mods::biped_new_from_network__unit_grenade_count_dword>
+																										unit_grenade_counts_mods::biped_new_from_network__unit_grenade_count_dword>
 			code_writer;
 
 		void* code_addr = GET_FUNC_VPTR(BIPED_NEW_FROM_NETWORK_UNIT_GRENADE_COUNT_MOD);
@@ -58,10 +58,10 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	// biped_update_baseline
 	{
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_word1,
-														unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_dword1>
+																										unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_dword1>
 			code_writer1;
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_word2,
-														unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_dword2>
+																										unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_dword2>
 			code_writer2;
 
 		void* code_addr = GET_FUNC_VPTR(BIPED_UPDATE_BASELINE_UNIT_GRENADE_COUNT_MOD1);
@@ -78,10 +78,10 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	// biped_build_update_delta
 	{
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_word1,
-														unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_dword1>
+																										unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_dword1>
 			code_writer1;
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_word2,
-														unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_dword2>
+																										unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_dword2>
 			code_writer2;
 
 		void* code_addr = GET_FUNC_VPTR(BIPED_BUILD_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD1);
@@ -98,7 +98,7 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	// biped_process_update_delta
 	{
 		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_process_update_delta__unit_grenade_count_word,
-														unit_grenade_counts_mods::biped_process_update_delta__unit_grenade_count_dword>
+																										unit_grenade_counts_mods::biped_process_update_delta__unit_grenade_count_dword>
 			code_writer;
 
 		void* code_addr = GET_FUNC_VPTR(BIPED_PROCESS_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD);

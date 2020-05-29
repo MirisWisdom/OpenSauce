@@ -205,8 +205,8 @@ namespace Yelo
 			bool enabled = count > Enums::k_unit_grenade_types_count;
 			// HACK: if the grenade count changes are already in place, don't repeat or undo them
 			// There was a problem with clients getting disconnected from the server during a join attempt.
-			// It puts you back at the mainmenu, but when you try to join again, this would executed again
-			// without the changes from last time being undo'd, resulting in a ASSERT() failing on code bytes mismatch
+			// It puts you back at the mainmenu, but when you try to join again, this would be executed again
+			// without the changes from last time being undone, resulting in a ASSERT() failing on code bytes mismatch
 			if (enabled != g_already_enabled)
 			{
 				InitializeGrenadeCounts_UnitZoomLevelRefs(enabled);

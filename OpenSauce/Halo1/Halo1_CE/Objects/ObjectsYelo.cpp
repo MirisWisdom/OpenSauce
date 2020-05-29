@@ -91,20 +91,20 @@ namespace Yelo
 		s_object_type_definition** ObjectTypeDefinitions()							PTR_IMP_GET(object_type_definitions);
 		s_widget_type_definition*  WidgetTypeDefinitions()							PTR_IMP_GET(widget_type_definitions);
 
-		widget_data_t& Widgets()													DPTR_IMP_GET_BYREF(widgets);
-		flag_data_t& Flags()														DPTR_IMP_GET_BYREF(flags);
-		antenna_data_t& Antennas()													DPTR_IMP_GET_BYREF(antennas);
-		glow_data_t& Glow()															DPTR_IMP_GET_BYREF(glow);
-		glow_particles_data_t& GlowParticles()										DPTR_IMP_GET_BYREF(glow_particles);
-		light_volumes_data_t& LightVolumes()										DPTR_IMP_GET_BYREF(light_volumes);
-		lightnings_data_t& Lightnings()												DPTR_IMP_GET_BYREF(lightnings);
+		widget_data_t& Widgets()																				DPTR_IMP_GET_BYREF(widgets);
+		flag_data_t& Flags()																						DPTR_IMP_GET_BYREF(flags);
+		antenna_data_t& Antennas()																			DPTR_IMP_GET_BYREF(antennas);
+		glow_data_t& Glow()																							DPTR_IMP_GET_BYREF(glow);
+		glow_particles_data_t& GlowParticles()													DPTR_IMP_GET_BYREF(glow_particles);
+		light_volumes_data_t& LightVolumes()														DPTR_IMP_GET_BYREF(light_volumes);
+		lightnings_data_t& Lightnings()																	DPTR_IMP_GET_BYREF(lightnings);
 
 
 		Render::cached_object_render_states_data_t* CachedObjectRenderStates()		DPTR_IMP_GET(cached_object_render_states);
-		s_unit_globals_data* UnitGlobals()											DPTR_IMP_GET(unit_globals);
-		device_groups_data_t& DeviceGroups()										DPTR_IMP_GET_BYREF(device_groups);
-		object_header_data_t& ObjectHeader()										DPTR_IMP_GET_BYREF(object_header);
-		s_objects_pool_data* ObjectsPool()											DPTR_IMP_GET(objects_pool);
+		s_unit_globals_data* UnitGlobals()												DPTR_IMP_GET(unit_globals);
+		device_groups_data_t& DeviceGroups()											DPTR_IMP_GET_BYREF(device_groups);
+		object_header_data_t& ObjectHeader()											DPTR_IMP_GET_BYREF(object_header);
+		s_objects_pool_data* ObjectsPool()												DPTR_IMP_GET(objects_pool);
 		s_object_globals_data* ObjectGlobals()										DPTR_IMP_GET(object_globals);
 		s_object_name_list_data* ObjectNameList()									DPTR_IMP_GET(object_name_list);
 
@@ -113,7 +113,7 @@ namespace Yelo
 		cluster_collideable_object_reference_data_t& ClusterCollideableObjectReference()		DPTR_IMP_GET_BYREF(cluster_collideable_object_reference);
 		collideable_object_cluster_reference_data_t& CollideableObjectClusterReference()		DPTR_IMP_GET_BYREF(collideable_object_cluster_reference);
 
-		noncollideable_object_data* NoncollideableObject()							DPTR_IMP_GET(noncollideable_object);
+		noncollideable_object_data* NoncollideableObject()					DPTR_IMP_GET(noncollideable_object);
 		cluster_noncollideable_object_reference_data_t& ClusterNoncollideableObjectReference()	DPTR_IMP_GET_BYREF(cluster_noncollideable_object_reference);
 		noncollideable_object_cluster_reference_data_t& NoncollideableObjectClusterReference()	DPTR_IMP_GET_BYREF(noncollideable_object_cluster_reference);
 		
@@ -125,36 +125,36 @@ namespace Yelo
 				scripting_objects_distance_to_object_evaluate);
 
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_get_real, 
-				scripting_object_data_get_real_evaluate);
+																														scripting_object_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_set_real, 
-				scripting_object_data_set_real_evaluate);
+																														scripting_object_data_set_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_set_vector, 
-				scripting_object_data_set_vector_evaluate);
+																														scripting_object_data_set_vector_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_save_vector, 
-				scripting_object_data_save_vector_evaluate);
+																														scripting_object_data_save_vector_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_get_real, 
-				scripting_weapon_data_get_real_evaluate);
+																														scripting_weapon_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_set_real, 
-				scripting_weapon_data_set_real_evaluate);
+																														scripting_weapon_data_set_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_magazine_get_integer, 
-				scripting_weapon_data_magazine_get_integer_evaluate);
+																														scripting_weapon_data_magazine_get_integer_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_magazine_set_integer, 
-				scripting_weapon_data_magazine_set_integer_evaluate);
+																														scripting_weapon_data_magazine_set_integer_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_trigger_set_real, 
-				scripting_weapon_data_trigger_set_real_evaluate);
+																														scripting_weapon_data_trigger_set_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_object, 
-				scripting_unit_data_get_object_evaluate);
+																														scripting_unit_data_get_object_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_integer, 
-				scripting_unit_data_get_integer_evaluate);
+																														scripting_unit_data_get_integer_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_integer, 
-				scripting_unit_data_set_integer_evaluate);
+																														scripting_unit_data_set_integer_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_real, 
-				scripting_unit_data_get_real_evaluate);
+																														scripting_unit_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_real, 
-				scripting_unit_data_set_real_evaluate);
+																														scripting_unit_data_set_real_evaluate);
 
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_vehicle_remapper_enabled, 
-				scripting_vehicle_remapper_enabled_evaluate);
+																														scripting_vehicle_remapper_enabled_evaluate);
 		}
 		
 		bool PLATFORM_API ShouldKillChildObject(const s_object_datum* object_datum)
@@ -164,7 +164,8 @@ namespace Yelo
 				auto& unit_datum = *CAST_PTR(const s_unit_datum*, object_datum);
 				if(unit_datum.unit.vehicle_seat_index != NONE)
 				{
-					auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum.object.parent_object_index, unit_datum.unit.vehicle_seat_index);
+					auto* seat_extension_definition = GetSeatExtensionDefinition(unit_datum.object.parent_object_index,
+																																			 unit_datum.unit.vehicle_seat_index);
 					if(seat_extension_definition)
 					{
 						return !TEST_FLAG(seat_extension_definition->flags, Flags::_unit_seat_extensions_flags_prevent_death_when_unit_dies);

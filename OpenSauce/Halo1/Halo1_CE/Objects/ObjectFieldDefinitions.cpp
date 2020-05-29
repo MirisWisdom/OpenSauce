@@ -58,13 +58,32 @@ namespace Yelo
 				return Bsearch(name, list, _SizeOfArray, bsearch_proc);
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_field_definition) == 0x10 );
+
+
 #define FIELD_INDEX_NAME(object_type, field_type, field_name)		\
 		_##object_type##_field_##field_type##_##field_name
 
+
 #define FIELD_ENTRY(object_type, hs_type, field_type, name, ...)	\
-		{#name, _countof( #name )-1,		HS_TYPE(hs_type), Enums::FIELD_INDEX_NAME(object_type, field_type, name), __VA_ARGS__}
+		{
+			#name,
+			_countof( #name )-1,
+			HS_TYPE(hs_type),
+			Enums::FIELD_INDEX_NAME(object_type, field_type, name),
+			__VA_ARGS__
+		}
+
+
 #define FIELD_ENTRY2(object_type, hs_type, field_type, name, str_name, ...)	\
-		{str_name, _countof( str_name )-1,	HS_TYPE(hs_type), Enums::FIELD_INDEX_NAME(object_type, field_type, name), __VA_ARGS__}
+		{	
+			str_name,
+			_countof( str_name )-1,
+			HS_TYPE(hs_type),
+			Enums::FIELD_INDEX_NAME(object_type, field_type, name),
+				__VA_ARGS__
+		}
+
+
 
 #include "Objects/ObjectFieldDefinitions.inl"
 

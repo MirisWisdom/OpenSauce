@@ -243,7 +243,7 @@ namespace Yelo
 				}
 				else
 				{
-					// If no preset is available but their is an offset, add a new preset for the current weapon
+					// If no preset is available but there is an offset, add a new preset for the current weapon
 					if(position.Magnitude() > 0.0f)
 					{
 						preset = g_weapon_globals.AddPreset(weapon_name);
