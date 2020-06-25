@@ -36,14 +36,14 @@ namespace Yelo
 				PAD16;
 			}leaves;
 			s_scenario_location location;
-			UNKNOWN_TYPE(real);
+			real percent;
 			real_point3d point;
 			real_plane3d plane;
 			_enum material_type;
 			PAD16;
 			datum_index object_index;
 			s_collision_model_test_result model_test;
-			s_collision_bsp_test_surface_result surface;
+			s_collision_surface_result surface;
 		}; BOOST_STATIC_ASSERT( sizeof(s_collision_result) == 0x50 );
 	};
 
