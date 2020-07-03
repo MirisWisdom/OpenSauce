@@ -11,14 +11,17 @@
 
 namespace Yelo
 {
-	namespace Configuration { namespace PropertyTree
-	{
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Print a property tree to the debug output. </summary>
-		///
-		/// <param name="tree"> 	The tree to print. </param>
-		/// <param name="depth">	The current recursion depth. Do not use. </param>
-		void PrintPropertyTree(const boost::property_tree::ptree& tree, const int depth = 0);
-	};};
+    namespace Configuration
+    {
+        namespace PropertyTree
+        {
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
+            /// <summary>	Print a property tree to the debug output. </summary>
+            ///
+            /// <param name="tree"> 	The tree to print. </param>
+            /// <param name="depth">	The current recursion depth. Do not use. </param>
+            void PrintPropertyTree(const boost::property_tree::ptree& tree, const int depth = 0);
+        };
+    };
 };
 #endif

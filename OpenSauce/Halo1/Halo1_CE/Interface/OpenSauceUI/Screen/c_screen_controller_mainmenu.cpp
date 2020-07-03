@@ -14,6 +14,7 @@
 #include "Interface/OpenSauceUI/Control/control_property_ids.hpp"
 #include "Interface/OpenSauceUI/Control/control_event_ids.hpp"
 
+#include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
@@ -167,7 +168,7 @@ namespace Yelo
 			AddDynamicProperty(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_PROPERTY_CHECKED_ID,
 				[](Control::i_control& control, Control::i_property_interface& property)
 				{
-					property.Set(control, Control::s_interface_value(DX9::c_gbuffer_system::g_system_enabled));
+					property.Set(control, Control::s_interface_value(Rasterizer::GBuffer::Enabled()));
 				});
 
 
@@ -329,7 +330,7 @@ namespace Yelo
 			AttachEvent(K_CHK_GENERAL_GBUFFER_ENABLED_ID, K_EVENT_CHECKCHANGED_ID, K_CHK_GENERAL_GBUFFER_TOGGLE_EVENT_ID, nullptr,
 				[](const Control::s_interface_value& event_data, void* userdata)
 				{
-					DX9::c_gbuffer_system::g_system_enabled = event_data.m_bool;
+					Rasterizer::GBuffer::Enabled() = event_data.m_bool;
 
 					if(!event_data.m_bool)
 					{
@@ -410,7 +411,7 @@ namespace Yelo
 
 					if(event_data.m_bool)
 					{
-						DX9::c_gbuffer_system::g_system_enabled = true;
+					    Rasterizer::GBuffer::Enabled() = true;
 					}
 				});
 
@@ -448,7 +449,7 @@ namespace Yelo
 					
 					if(event_data.m_bool)
 					{
-						DX9::c_gbuffer_system::g_system_enabled = true;
+						Rasterizer::GBuffer::Enabled() = true;
 					}
 
 					if(event_data.m_bool && (motionblur_instance.BlurAmount() == 0.0f))
@@ -476,7 +477,7 @@ namespace Yelo
 					else
 					{
 						motionblur_instance.Enabled() = true;
-						DX9::c_gbuffer_system::g_system_enabled = true;
+						Rasterizer::GBuffer::Enabled() = true;
 					}
 				});
 

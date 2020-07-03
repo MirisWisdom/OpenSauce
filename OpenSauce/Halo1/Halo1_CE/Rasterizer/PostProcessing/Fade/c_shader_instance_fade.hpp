@@ -7,54 +7,45 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
-#include "Rasterizer/PostProcessing/Fade/s_shader_fade_definition.hpp"
-#include "Rasterizer/PostProcessing/Fade/c_shader_fade.hpp"
+
+#include <Rasterizer/PostProcessing/c_shader_instance.hpp>
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Fade
-	{
-		class c_shader_instance_fade : public c_shader_instance
-		{
-			/////////////////////////////////////////////////
-			// members
-		protected:
-			struct
-			{
-				c_shader_fade* definition;
+    namespace Render
+    {
+        class c_quad_instance;
+    }
 
-				real fade_amount;
-			}m_members_fade;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Fade
+            {
+                class c_shader_fade;
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			void SetShader(c_shader_postprocess* definition);
+                class c_shader_instance_fade : public c_shader_instance
+                {
+                protected:
+                    struct
+                    {
+                        c_shader_fade* definition;
 
-			/////////////////////////////////////////////////
-			// initializers
-		public:
-			void Ctor()
-			{
-				c_shader_instance::Ctor();
+                        real fade_amount;
+                    } m_members_fade;
 
-				m_members_fade.definition = NULL;
-			}
+                public:
+                    void SetShader(c_shader_postprocess* definition) override;
 
-			void Dtor()
-			{
-				c_shader_instance::Dtor();
+                    void Ctor() override;
+                    void Dtor() override;
 
-				m_members_fade.definition = NULL;
-			}
-
-			/////////////////////////////////////////////////
-			// shader instance application
-		public:
-			void SetShaderInstanceVariables();
-			HRESULT Render(IDirect3DDevice9* render_device, c_quad_instance* quad_instance, real fade_amount);
-		};
-	}; }; };
-};
+                    void SetShaderInstanceVariables() override;
+                    HRESULT Render(IDirect3DDevice9* render_device, Render::c_quad_instance* quad_instance, real fade_amount);
+                };
+            }
+        }
+    }
+}
 #endif

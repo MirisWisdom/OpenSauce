@@ -140,3 +140,8 @@
 #include <YeloLib/Halo1/cseries/memory_yelo.hpp>
 
 #include "Settings/Settings.hpp"
+
+#ifdef API_DEBUG
+#include <YeloLib/logging/logging_macros.hpp>
+#include <YeloLib/automation/automation_macros.hpp>
+#endif

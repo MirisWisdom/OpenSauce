@@ -8,6 +8,10 @@
 CMDLINE_DEFINE_SWITCH(full_dump)
 CMDLINE_DEFINE_SWITCH(disable_exception_handling)
 
+#ifdef API_DEBUG
+CMDLINE_DEFINE_ARG(run_tests, cstring)
+#endif
+
 #if (PLATFORM_TYPE == PLATFORM_SAPIEN) || (!PLATFORM_IS_EDITOR)
 	CMDLINE_DEFINE_SWITCH(no_os_gamestate)
 #endif

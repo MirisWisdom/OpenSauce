@@ -26,8 +26,11 @@
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/GBuffer/c_gbuffer.hpp"
 #include "Rasterizer/Lightmaps.hpp"
+#include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
+#include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"
 #include "Scenario/Scenario.hpp"
 
 using namespace Yelo::Configuration;

@@ -127,9 +127,6 @@
     <Filter Include="Rasterizer\PostProcessing\Generic\External">
       <UniqueIdentifier>{f94e76e4-8be8-4fa6-8105-4126e6d6468a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rasterizer\PostProcessing\Generic\Impl">
-      <UniqueIdentifier>{92af7d3e-3fce-4edb-9431-5df421b5c9aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rasterizer\PostProcessing\Interpolation">
       <UniqueIdentifier>{f11da961-318a-453c-8211-152245753d01}</UniqueIdentifier>
     </Filter>
@@ -610,6 +607,30 @@
     <ClInclude Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.hpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
     </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer\c_gbuffer_settings.hpp">
+      <Filter>Rasterizer\GBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.hpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_debug_effect.hpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_effect_factory.hpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.hpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\GBuffer\c_gbuffer.hpp">
+      <Filter>Rasterizer\GBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\c_render_device.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\c_quad_collection.hpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -787,9 +808,6 @@
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer\PostProcessing\c_post_processing_main.cpp">
-      <Filter>Rasterizer\PostProcessing</Filter>
-    </ClCompile>
-    <ClCompile Include="Rasterizer\PostProcessing\c_quad_manager.cpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_include_manager.cpp">
@@ -1234,6 +1252,33 @@
     <ClCompile Include="Interface\OpenSauceUI\GwenUI\c_event_handler_gwen.cpp">
       <Filter>Interface\OpenSauceUI\GwenUI</Filter>
     </ClCompile>
+    <ClCompile Include="Render\c_render_device.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer\c_gbuffer_settings.cpp">
+      <Filter>Rasterizer\GBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_debug_effect.cpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.cpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_effect_factory.cpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.cpp">
+      <Filter>Rasterizer\GBuffer\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\GBuffer\c_gbuffer.cpp">
+      <Filter>Rasterizer\GBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\c_quad_collection.cpp">
+      <Filter>Rasterizer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.cpp">
+      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
@@ -1624,9 +1669,6 @@
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\c_post_processing_main.hpp">
-      <Filter>Rasterizer\PostProcessing</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\c_quad_manager.hpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_include_manager.hpp">
@@ -2027,29 +2069,8 @@
     <None Include="Memory\1.09\_EngineLayout.TagGroups.inl">
       <Filter>_Resources\1.09</Filter>
     </None>
-    <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl">
-      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\Bloom\BloomDefinitions.inl">
-      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl">
-      <Filter>Rasterizer\PostProcessing\Generic\Impl</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\Fade\FadeDefinitions.inl">
-      <Filter>Rasterizer\PostProcessing\Fade</Filter>
-    </None>
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl">
       <Filter>Rasterizer\PostProcessing\Impl</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\PostProcessing_RenderStates.inl">
-      <Filter>Rasterizer\PostProcessing\Impl</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\PostProcessing_Systems.inl">
-      <Filter>Rasterizer\PostProcessing\Impl</Filter>
-    </None>
-    <None Include="Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl">
-      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
     </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
@@ -2390,6 +2411,15 @@
     </Filter>
     <Filter Include="_Resources\1.09\LUA\Server">
       <UniqueIdentifier>{08f4997f-c50a-4f53-8475-4b3e72b50913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\GBuffer">
+      <UniqueIdentifier>{5c352e98-322a-46f4-b837-1f54a9fa4ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rasterizer\GBuffer\Effects">
+      <UniqueIdentifier>{c8c5cff5-e75f-4991-b187-4b6294ec9ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{e8cf408e-581c-4d8d-be3c-7eae251b69df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
