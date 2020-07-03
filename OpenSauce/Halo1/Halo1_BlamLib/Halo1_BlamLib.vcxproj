@@ -81,6 +81,11 @@
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
     <ClCompile>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugDedi|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugGuerilla|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugSapien|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugTool|Win32'">Async</ExceptionHandling>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -316,6 +321,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_cameras.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_constants.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_objects.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_transparent.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp" />
@@ -328,6 +334,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\shaders\shader_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\shell\shell.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_environment_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\cluster_partitions.hpp" />

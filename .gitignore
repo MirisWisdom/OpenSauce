@@ -15,6 +15,7 @@ glob:test_results/
 bin\
 lib\
 obj\
+/out/build/
 
 *.user
 *.ncb

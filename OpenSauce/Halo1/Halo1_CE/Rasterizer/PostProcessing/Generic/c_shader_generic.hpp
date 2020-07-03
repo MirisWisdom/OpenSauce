@@ -7,79 +7,63 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
-#include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_postprocess_definition.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Generic
-	{
-		enum { 
-			k_max_shader_count = 32, 
-			k_max_effect_count = 32,
-			k_variable_count = 16,
-			k_bitmap_count = 4,
-		};
+    namespace TagGroups
+    {
+        struct s_shader_postprocess_parameter;
+        struct s_shader_postprocess_generic;
+    }
 
-		/*!
-		 * \brief
-		 * Generic shader class for managing a s_shader_postprocess_generic.
-		 * 
-		 * Generic shader class for managing a s_shader_postprocess_generic.
-		 */
-		class c_shader_generic
-			abstract : public c_shader_postprocess
-		{
-			/////////////////////////////////////////////////
-			// members
-		protected:
-			struct
-			{
-				TagGroups::s_shader_postprocess_generic* definition;
-			}m_members_generic;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Generic
+            {
+                enum
+                {
+                    k_max_shader_count = 32,
+                    k_max_effect_count = 32,
+                    k_variable_count = 16,
+                    k_bitmap_count = 4,
+                };
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			void SetShaderDefinition(TagGroups::s_shader_postprocess_definition* definition);
-			TagGroups::s_shader_postprocess_generic* GetShader();
+                class c_shader_generic : public c_shader_postprocess
+                {
+                protected:
+                    struct
+                    {
+                        TagGroups::s_shader_postprocess_generic* definition;
+                    } m_members_generic;
 
-			/////////////////////////////////////////////////
-			// initializers
-		public:
-			void Ctor()
-			{
-				c_shader_postprocess::Ctor();
+                public:
+                    void SetShaderDefinition(TagGroups::s_shader_postprocess_definition* definition) override;
+                    TagGroups::s_shader_postprocess_generic* GetShader();
 
-				m_members_generic.definition = NULL;
-			}
-			void Dtor()
-			{
-				c_shader_postprocess::Dtor();
+                    void Ctor() override;
+                    void Dtor() override;
 
-				m_members_generic.definition = NULL;
-			}
+                    HRESULT LoadBitmaps(IDirect3DDevice9* render_device);
+                    void UnloadBitmaps();
+                    void SetupShader() override;
+                protected:
+                    void GetHandles() override;
+                    void ClearHandles() override;
+                    bool ValidateImpl() override;
+                private:
+                    void GetParameterHandle(LPD3DXEFFECT effect, TagGroups::s_shader_postprocess_parameter& parameter);
+                    void ClearParameterHandle(TagGroups::s_shader_postprocess_parameter& parameter);
+                    void SetParameterVariable(LPD3DXEFFECT effect, TagGroups::s_shader_postprocess_parameter& parameter);
 
-			/////////////////////////////////////////////////
-			// shader setup
-		public:
-			HRESULT	LoadBitmaps(IDirect3DDevice9* render_device);
-			void	UnloadBitmaps();
-			void	SetupShader();
-		protected:
-			void	GetHandles();
-			void	ClearHandles();
-			bool	ValidateImpl();
-		private:
-			void	GetParameterHandle(LPD3DXEFFECT effect, TagGroups::s_shader_postprocess_parameter& parameter);
-			void	ClearParameterHandle(TagGroups::s_shader_postprocess_parameter& parameter);
-			void	SetParameterVariable(LPD3DXEFFECT effect, TagGroups::s_shader_postprocess_parameter& parameter);
-
-			/////////////////////////////////////////////////
-			// shader application
-		public:
-			void	SetVariables();
-		};
-	};};};
-};
+                public:
+                    void SetVariables() override;
+                };
+            }
+        }
+    }
+}
 #endif

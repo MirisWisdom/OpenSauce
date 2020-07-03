@@ -63,11 +63,13 @@
     <ClCompile>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugDedi|Win32'">Async</ExceptionHandling>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Client' ">
     <ClCompile>
       <PreprocessorDefinitions>DX_WRAPPER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Async</ExceptionHandling>
     </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Client' ">
@@ -448,7 +450,14 @@
     <ClCompile Include="Objects\ObjectFieldDefinitions.cpp" />
     <ClCompile Include="Objects\ObjectsYelo.cpp" />
     <ClCompile Include="Objects\Units.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\c_gbuffer_settings.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\c_gbuffer.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_debug_effect.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_effect_factory.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.cpp" />
+    <ClCompile Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.cpp" />
     <ClCompile Include="Rasterizer\Lightmaps.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.cpp" />
     <ClCompile Include="Rasterizer\Sky.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp" />
@@ -456,6 +465,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp" />
     <ClCompile Include="Rasterizer\Textures\c_packed_texture_loader.cpp" />
+    <ClCompile Include="Render\c_render_device.cpp" />
     <ClCompile Include="Settings\Settings.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
@@ -471,7 +481,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\c_effect_postprocess.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_effect_render_set.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_post_processing_main.cpp" />
-    <ClCompile Include="Rasterizer\PostProcessing\c_quad_manager.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\c_quad_collection.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_include_manager.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_instance.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\c_shader_postprocess.cpp" />
@@ -618,6 +628,12 @@
     <ClInclude Include="Objects\Objects.hpp" />
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\c_gbuffer_settings.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\c_gbuffer.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_debug_effect.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_effect_factory.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_fullscreen_effect.hpp" />
+    <ClInclude Include="Rasterizer\GBuffer\Effects\c_gbuffer_rtclear_effect.hpp" />
     <ClInclude Include="Rasterizer\Lightmaps.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
     <ClInclude Include="Rasterizer\Sky.hpp" />
@@ -627,6 +643,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp" />
     <ClInclude Include="Rasterizer\Textures\c_packed_texture_loader.hpp" />
+    <ClInclude Include="Render\c_render_device.hpp" />
     <ClInclude Include="Settings\Settings.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />
@@ -644,7 +661,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\c_effect_postprocess.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_effect_render_set.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_post_processing_main.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\c_quad_manager.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\c_quad_collection.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_include_manager.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_instance.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\c_shader_postprocess.hpp" />
@@ -862,14 +879,7 @@
     <None Include="Memory\1.09\_EngineLayout.Rasterizer.ShaderExtension.inl" />
     <None Include="Memory\1.09\_EngineLayout.Scenario.inl" />
     <None Include="Memory\1.09\_EngineLayout.TagGroups.inl" />
-    <None Include="Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl" />
-    <None Include="Rasterizer\PostProcessing\Bloom\BloomDefinitions.inl" />
-    <None Include="Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl" />
-    <None Include="Rasterizer\PostProcessing\Fade\FadeDefinitions.inl" />
     <None Include="Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl" />
-    <None Include="Rasterizer\PostProcessing\PostProcessing_RenderStates.inl" />
-    <None Include="Rasterizer\PostProcessing\PostProcessing_Systems.inl" />
-    <None Include="Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl" />
   </ItemGroup>

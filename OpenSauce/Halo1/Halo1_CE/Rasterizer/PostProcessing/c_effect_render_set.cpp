@@ -8,39 +8,58 @@
 #include "Rasterizer/PostProcessing/c_effect_render_set.hpp"
 
 #if !PLATFORM_IS_DEDI
+
+#include "Rasterizer/PostProcessing/c_effect_instance.hpp"
+
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		void c_effect_render_set::SetCount(uint32 effect_count)
-		{
-			if(effect_count == 0)
-				return;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            void c_effect_render_set::Ctor()
+            {
+                m_effect_list = nullptr;
+            }
 
-			// +1 because a null pointer is used to indicate the end of the list
-			m_effect_list = new c_effect_instance*[effect_count + 1];
+            void c_effect_render_set::Dtor()
+            {
+                delete [] m_effect_list;
+                m_effect_list = nullptr;
+            }
 
-			ZeroMemory(m_effect_list, sizeof(c_effect_instance*) * (effect_count + 1));
-		}
+            void c_effect_render_set::SetCount(uint32 effect_count)
+            {
+                if (effect_count == 0)
+                {
+                    return;
+                }
 
-		void c_effect_render_set::SetEffectInstance(uint32 index, c_effect_instance* effect)
-		{
-			m_effect_list[index] = effect;
-		}
+                // +1 because a null pointer is used to indicate the end of the list
+                m_effect_list = new c_effect_instance*[effect_count + 1];
 
-		bool c_effect_render_set::RenderSet(IDirect3DDevice9* render_device)
-		{
-			c_effect_instance** current = m_effect_list;
+                ZeroMemory(m_effect_list, sizeof(c_effect_instance*) * (effect_count + 1));
+            }
 
-			HRESULT success = S_OK;
-			while(current && (*current))
-			{
-				success &= (*current)->Render(render_device);
-				current++;
-			}
+            void c_effect_render_set::SetEffectInstance(uint32 index, c_effect_instance* effect)
+            {
+                m_effect_list[index] = effect;
+            }
 
-			return SUCCEEDED(success);
-		}
-	};};
-};
+            bool c_effect_render_set::RenderSet(IDirect3DDevice9* render_device)
+            {
+                auto current = m_effect_list;
+
+                auto success = S_OK;
+                while (current && (*current))
+                {
+                    success &= (*current)->Render(render_device);
+                    current++;
+                }
+
+                return SUCCEEDED(success);
+            }
+        }
+    }
+}
 #endif

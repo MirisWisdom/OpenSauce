@@ -48,12 +48,14 @@ namespace Yelo
 
 		void clear();
 
+#if PLATFORM_IS_EDITOR
 		void set(tag group_tag, cstring name);
 		template<typename T>
 		void set(cstring name)
 		{
 			this->set(T::k_group_tag, name);
 		}
+#endif
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(tag_reference) == 0x10 );
@@ -107,7 +109,8 @@ namespace Yelo
 		// Just makes coding a little more cleaner
 		template<typename T>
 		T* Elements() { return CAST_PTR(T*, address); }
-
+        
+#if PLATFORM_IS_EDITOR
 		void* get_element(int32 element_index);
 		void delete_element(int32 element_index);
 		int32 add_element();
@@ -115,7 +118,6 @@ namespace Yelo
 
 		void* add_and_get_element();
 
-#if PLATFORM_IS_EDITOR
 		size_t get_element_size() const;
 
 		struct s_iterator_result
@@ -178,7 +180,9 @@ namespace Yelo
 		// Delete the block element at [element_index]
 		void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index);
 
+#if PLATFORM_IS_EDITOR
 		void* tag_block_add_and_get_element(tag_block* block);
+#endif
 	};
 
 

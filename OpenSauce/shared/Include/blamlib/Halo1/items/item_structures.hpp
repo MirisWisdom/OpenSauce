@@ -18,6 +18,7 @@ namespace Yelo
 			_item_collided_with_bsp_bit,
 			_item_collided_with_object_bit,
 			_item_at_reset_bit, // see _object_at_reset_bit
+			_item_unknown6_bit,
 		};
 	};
 

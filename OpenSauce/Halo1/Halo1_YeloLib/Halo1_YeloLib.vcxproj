@@ -81,9 +81,60 @@
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
     <ClCompile>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugGuerilla|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugDedi|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugSapien|Win32'">Async</ExceptionHandling>
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='DebugTool|Win32'">Async</ExceptionHandling>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared\Include\snowhouse\assert.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\assertionexception.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\assertmacro.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\constraints.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\containsconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\endswithconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\equalsconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\equalscontainerconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\equalswithdeltaconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\andexpression.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\expression.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\expression_fwd.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\notexpression.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\expressions\orexpression.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\fulfillsconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\haslengthconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\isgreaterthanconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\isgreaterthanorequaltoconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\islessthanconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\islessthanorequaltoconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\constraints\startswithconstraint.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\exceptions.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\constraintadapter.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\constraintlist.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\expressionbuilder.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\fluent.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\andoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\alloperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\atleastoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\atmostoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\collectionconstraintevaluator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\collectionoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\exactlyoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\collections\noneoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\constraintoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\invalidexpressionexception.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\notoperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\fluent\operators\oroperator.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\snowhouse.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\stringize.h" />
+    <ClInclude Include="..\..\shared\Include\snowhouse\stringizers.h" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\automation_macros.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\automation\i_automated_test.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container_list.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.hpp" />
@@ -111,6 +162,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\c_singleton.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\handle_abi.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\random.hpp" />
@@ -136,8 +188,19 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_transform_definition.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_file_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\i_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\logging_macros.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_log_collection.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\logging\c_logger_base.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\i_render_device.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\c_quad_builder.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\c_quad_instance.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\render\quad\s_quad.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\targetver.h" />
@@ -281,6 +344,9 @@
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp" />
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\c_automation_runner.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_results_container.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\automation\input_output\c_test_run_logger.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.cpp" />
@@ -309,8 +375,15 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_damage_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\c_unit_seat_boarding_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_debug_output_logger.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_file_logger.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_logger_base.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_log_collection.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\logging\c_memory_logger.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\render\quad\c_quad_builder.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\render\quad\c_quad_instance.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
       <PrecompiledHeader />
     </ClCompile>

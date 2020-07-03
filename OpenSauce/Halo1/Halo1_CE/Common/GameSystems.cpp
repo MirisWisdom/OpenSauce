@@ -35,8 +35,11 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Debug only includes
-	#ifdef API_DEBUG
-
+#ifdef API_DEBUG
+    #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+    #include <YeloLib/automation/c_automation_runner.hpp>
+    #include <YeloLib/logging/c_debug_output_logger.hpp>
+    #include <YeloLib/logging/c_file_logger.hpp>
 #endif
 	// this is for debugging but it needs to be in the release build too
 	#include "Common/DebugDump.hpp"
@@ -204,6 +207,18 @@ namespace Yelo
 				components[x].Initialize();
 			
 			Settings::Load();
+
+#ifdef API_DEBUG
+            static Logging::c_debug_output_logger debug_output_logger(Logging::LogVerbosity::Verbose);
+            static Logging::c_file_logger file_logger("HaloCE.log", Logging::LogVerbosity::Verbose);
+		    Logging::c_log_singleton::Get().AddLogger(&debug_output_logger);
+		    Logging::c_log_singleton::Get().AddLogger(&file_logger);
+
+            if(CMDLINE_GET_PARAM(run_tests).ParameterSet())
+            {
+                Automation::c_automation_runner_singleton::Get().Run(CMDLINE_GET_PARAM(run_tests).GetValue());
+            }
+#endif
 		}
 
 		static void PLATFORM_API DisposeOnExit()

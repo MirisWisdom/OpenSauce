@@ -7,60 +7,55 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include "Rasterizer/PostProcessing/c_effect_instance.hpp"
+
+#include <Rasterizer/PostProcessing/c_effect_instance.hpp>
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Generic
-	{
-		class c_effect_instance_generic : public c_effect_instance
-		{
-			/////////////////////////////////////////////////
-			// members
-		protected:
-			struct
-			{
-				TagGroups::s_effect_postprocess_generic_effect_instance* definition;
-			}m_members_generic;
+    namespace Enums
+    {
+        enum effect_activation_state : _enum;
+        enum postprocess_render_stage : _enum;
+    }
 
-			/////////////////////////////////////////////////
-			// member accessors
-		public:
-			void SetEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition);
-			const char* GetName();
-			Enums::postprocess_render_stage GetRenderStage();
+    namespace TagGroups
+    {
+        struct s_effect_postprocess_effect_activation_control;
+        struct s_effect_postprocess_generic_effect_instance;
+    };
 
-			/////////////////////////////////////////////////
-			// initializers
-		public:
-			void Ctor()
-			{
-				c_effect_instance::Ctor();
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            namespace Generic
+            {
+                class c_effect_instance_generic : public c_effect_instance
+                {
+                protected:
+                    struct
+                    {
+                        TagGroups::s_effect_postprocess_generic_effect_instance* definition;
+                    } m_members_generic;
 
-				m_members_generic.definition = NULL;
-			}
+                public:
+                    void SetEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition);
+                    const char* GetName();
+                    Enums::postprocess_render_stage GetRenderStage();
 
-			void Dtor()
-			{
-				c_effect_instance::Dtor();
+                    void Ctor() override;
+                    void Dtor() override;
 
-				m_members_generic.definition = NULL;
-			}
+                    void SetupEffectInstance() override;
+                    bool GetInitiallyActive();
 
-			/////////////////////////////////////////////////
-			// effect instance setup
-		public:
-			void SetupEffectInstance();
-			bool GetInitiallyActive();
-
-			/////////////////////////////////////////////////
-			// shader instance application
-			bool IsActive();
-			TagGroups::s_effect_postprocess_effect_activation_control*
-				FindActivationControl(Enums::effect_activation_state state);
-			bool EvaluateActivationControls();
-			bool GetActivationValue(TagGroups::s_effect_postprocess_effect_activation_control& control);
-		};
-	};};}
+                    bool IsActive() override;
+                    TagGroups::s_effect_postprocess_effect_activation_control* FindActivationControl(Enums::effect_activation_state state);
+                    bool EvaluateActivationControls();
+                    bool GetActivationValue(TagGroups::s_effect_postprocess_effect_activation_control& control);
+                };
+            };
+        };
+    }
 };
 #endif

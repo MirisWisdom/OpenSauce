@@ -7,52 +7,39 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include "Rasterizer/DX9/DX9.hpp"
+
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_base.hpp"
-#include "Common/FileIO.hpp"
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
-	{
-		class c_shader_data_external : public c_shader_data_base
-		{
-			char* m_file_data;
-			const char* m_file_path;
-			const char* m_include_path;
+    namespace Rasterizer
+    {
+        namespace PostProcessing
+        {
+            class c_shader_data_external : public c_shader_data_base
+            {
+                char* m_file_data;
+                const char* m_file_path;
+                const char* m_include_path;
 
-			D3DXMACRO m_macros[2];
+                D3DXMACRO m_macros[2];
 
-		public:
-			void SetFilePath(const char* file_path, const char* include_path);
+            public:
+                void SetFilePath(const char* file_path, const char* include_path);
 
-			void Ctor()
-			{
-				m_file_data = NULL;
-				m_file_path = NULL;
-				m_include_path = NULL;
+                void Ctor() override;
+                void Dtor() override;
 
-				m_macros[0].Name = "SHADER_EXTERNAL";
-				m_macros[0].Definition = NULL;
-				m_macros[1].Name = NULL;
-				m_macros[1].Definition = NULL;
-			}
-			void Dtor()
-			{
-				m_file_path = NULL;
-				m_include_path = NULL;
+                const char* DataSourceID() override;
+                const void* GetData(uint32& data_size) override;
+                void Dispose() override;
 
-				delete [] m_file_data;
-				m_file_data = NULL;
-			}
+                const bool IsBinary() override;
 
-			const char* DataSourceID();
-			const void* GetData(uint32& data_size);
-			void Dispose();
-			const bool IsBinary() { return false; }
-			const char* GetIncludePath();
-			const D3DXMACRO* GetMacros();
-		};
-	};};
-};
+                const char* GetIncludePath() override;
+                const D3DXMACRO* GetMacros() override;
+            };
+        }
+    }
+}
 #endif

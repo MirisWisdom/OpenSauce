@@ -18,24 +18,74 @@ namespace Yelo
 			TStructGetPtrImpl(bool, IsVisible, 0x0);
 			TStructGetPtrImpl(datum_index, UnitIndex, 0x4);
 			TStructGetPtrImpl(datum_index, WeaponIndex, 0x8);
-			// 1 = o-h-enter, 3 = overheated, 4 = charging, 5 = posing, 6 = firing1, 10 = meleeing, 
-			// 13 = reload empty, 14 = reload full, 19 = switching/ready, 22 = o-h-exit, 23 = firing2
+
+			////////////////////////////////////////////////
+			// this enum is used for changing animation state
+			// 0  - fire 1
+			// 1  - fire 2
+			// 2  - misfire 1
+			// 3  - misfire 2
+			// 4  - melee
+			// 5  - light off
+			// 6  - light on
+			// 7  - (unused ?)
+			// 8  - (unused ?)
+			// 9  - reload empty
+			// 10 - reload full
+			// 11 - put away
+			// 12 - ready
+			// 13 -  (sets weapon index to NONE) ?
+			// 14 - overcharged
+			// 15 - overheating
+			// 16 - overheat exit
+			// 17 - throw grenade
+
+			////////////////////////////////////////////////
+			// animation state
+			// 0  - idle
+			// 1  - overheating
+			// 2  - overheating again
+			// 3  - overheated
+			// 4  - overcharged
+			// 5  - posing
+			// 6  - fire 1
+			// 7  - fire 2
+			// 8  - misfire 1
+			// 9  - misfire 2
+			// 10 - melee
+			// 11 - light off
+			// 12 - light on
+			// 13 - reload empty
+			// 14 - reload full
+			// 15 - enter
+			// 16 - exit empty
+			// 17 - exit full
+			// 18 - put away
+			// 19 - ready
+			// 20 - throw grenade
+			// 21 - throw overheated
+			// 22 - overheat enter
+			// 23 - overheat exit
 			TStructGetPtrImpl(_enum, AnimationState, 0xC);
 			// 0xE = unknown 2 bytes
 			TStructGetPtrImpl(game_time_t, IdleTime, 0x10);
-			TStructGetPtrImpl(Objects::s_animation_state, CurrentBaseAnimation, 0x12); // frame index of current base animation (idle or moving)
+			// 0x12?
+			// 0x14 = overlay animation index (doesnt seem to be used, though it is set)
 			TStructGetPtrImpl(Objects::s_animation_state, CurrentAnimation, 0x16);
 			TStructGetPtrImpl(Objects::s_animation_state, CurrentMovingOverlayAnimation, 0x1A);
+			
 			//TStructGetPtrImpl(Objects::s_animation_state, , 0x1E);
+			//TStructGetPtrImpl(Objects::s_animation_state, OverchargedJitterAnimation, 0x20);
+			//TStructGetPtrImpl(real, , 0x24); // jitter frame as real ?
 
-			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim state
-			//TStructGetPtrImpl(real, , 0x2C);
-			// 0x30?
-			//TStructGetPtrImpl(real, , 0x34);
+			//TStructGetPtrImpl(real, , 0x28); // firing overlay
+			//TStructGetPtrImpl(real, , 0x2C); // adds 0.05f when entering firing state ?
+			//TStructGetPtrImpl(real, , 0x30)  // move forward/backward overlay
+			//TStructGetPtrImpl(real, , 0x34); // move left/right overlay
 			// 0x38?
 			// 0x3C?
-			//TStructGetPtrImpl(real, , 0x40);
-			//TStructGetPtrImpl(real, , 0x44);
+			//TStructGetPtrImpl(real, , 0x40); // look left/right overlay
+			//TStructGetPtrImpl(real, , 0x44); // look up/down overlay
 			// 0x48?
 			// 0x4C?
 			// 0x50 bool
@@ -45,8 +95,8 @@ namespace Yelo
 			// 0x70 real_point3d
 			// 0x7C real_point3d?
 			//////////////////////////////////////////////////////////////////////////
-			// 0x88 int16 frame index
-			// 0x8A int16 frame count
+			// 0x88 int16 interpolation frame index
+			// 0x8A int16 interpolation frame count
 			// 0x8C real_orientation3d node orientations[128]
 			// 0x108C real_matrix4x3 node matrices[64]
 			//////////////////////////////////////////////////////////////////////////

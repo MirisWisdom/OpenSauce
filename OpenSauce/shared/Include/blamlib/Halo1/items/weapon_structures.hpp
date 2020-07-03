@@ -47,10 +47,34 @@ namespace Yelo
 		enum weapon_magazine_state : _enum
 		{
 			_weapon_magazine_state_idle,
+			_weapon_magazine_state_reloading,
 			_weapon_magazine_state_chambering_start,
-			_weapon_magazine_state_chambering_finish,
 			_weapon_magazine_state_chambering,
 			_weapon_magazine_state,
+		};
+	};
+
+	namespace Flags
+	{
+		enum
+		{
+
+			// --- 0x22C
+
+			_weapon_overheated_bit,
+			_weapon_recovering_bit,
+			_weapon_charge_fired_bit, // only used if weapon type == plasma pistol
+			_weapon_reload_bit,
+
+			// --- 0x230
+
+			_weapon_owner_light_bit = 0,
+			_weapon_owner_primary_trigger_bit,
+			_weapon_owner_secondary_trigger_bit,
+			_weapon_owner_reload_bit,
+			_weapon_owner_occupied_bit,			// used to prevent interrupting certain unit interactions (like meleeing)
+			_weapon_owner_unk5_bit,				// only bit set when unit's next weapon is not its' current one
+			_weapon_owner_zoomed_bit,
 		};
 	};
 
@@ -73,9 +97,9 @@ namespace Yelo
 				Enums::weapon_trigger_state state;
 				int16 time;
 				UNKNOWN_TYPE(long_flags);			// 0x4
-				UNKNOWN_TYPE(int16);				// 0x8 firing effect related
-				UNKNOWN_TYPE(int16);				// 0xA firing effect related
-				UNKNOWN_TYPE(int16);				// 0xC firing effect related
+				UNKNOWN_TYPE(int16);				// 0x8 firing effect related (bits, set if firing effect was used)
+				UNKNOWN_TYPE(int16);				// 0xA firing effect related (firing effect index ?)
+				UNKNOWN_TYPE(int16);				// 0xC firing effect related (shot count ?)
 				int16 rounds_since_last_tracer;
 				real rate_of_fire;					// 0x10
 				real ejection_port_recovery_time;	// 0x14
@@ -92,8 +116,7 @@ namespace Yelo
 				int16 rounds_unloaded;				// 0x6
 				int16 rounds_loaded;				// 0x8
 				int16 rounds_left_to_recharge;		// 0xA number of rounds left to apply to rounds_loaded (based on tag's rounds_recharged)
-				UNKNOWN_TYPE(int16);				// 0xC I just know a WORD is here, may be an _enum
-				PAD16; // ?
+				datum_index overheat_effect_index;	// 0xC only used by magazine[1] it seems ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
 			struct s_start_reload_data
 			{

@@ -61,7 +61,7 @@ namespace Yelo
 			TStructSubGetPtrImpl(real_point3d,					HoveringPosition, 0x4FC);
 			// 0x508, real_vector3d
 			// 0x514, real_vector3d
-			// 0x520, DWORD
+			// 0x520, DWORD // mass points hit bits
 			//////////////////////////////////////////////////////////////////////////
 			// Added in HaloPC
 			TStructSubGetPtrImpl(bool,							NetworkTimeValid, 0x524);
