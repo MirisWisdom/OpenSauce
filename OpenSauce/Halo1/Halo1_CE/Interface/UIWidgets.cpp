@@ -46,11 +46,11 @@ namespace Yelo
 		}
 
 		static const TagGroups::s_project_yellow_scripted_ui_widget* FindWidget(cstring widget_name,
-			const TAG_TBLOCK(& widgets, TagGroups::s_project_yellow_scripted_ui_widget))
+			const TAG_TBLOCK(&widgets, TagGroups::s_project_yellow_scripted_ui_widget))
 		{
-			for(const auto& widget : widgets)
+			for (const auto& widget : widgets)
 			{
-				if(strcmp(widget.name, widget_name) == 0 && !widget.definition.tag_index.IsNull())
+				if (strcmp(widget.name, widget_name) == 0 && !widget.definition.tag_index.IsNull())
 					return &widget;
 			}
 
@@ -59,7 +59,7 @@ namespace Yelo
 		bool DisplayScriptedWidget(cstring name)
 		{
 			const TagGroups::s_project_yellow_scripted_ui_widget* widget = nullptr;
-
+			
 			if (!Scenario::GetYelo()->IsNull())
 				widget = FindWidget(name, Scenario::GetYelo()->ui.scripted_widgets);
 			// If it's not found in the scenario's yelo, search the yelo globals

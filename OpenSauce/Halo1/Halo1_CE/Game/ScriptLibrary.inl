@@ -43,6 +43,7 @@
 		_hs_function_player_data_get_real,
 		_hs_function_player_data_set_real,
 		_hs_function_player_local_get,
+		_hs_function_player_sprint,
 
 		_hs_function_objects_distance_to_object,
 		_hs_function_object_data_get_real,
@@ -129,11 +130,17 @@
 		
 		_hs_function_structure_bsp_set_lightmap_set,
 		_hs_function_structure_bsp_set_sky_set,
+		_hs_function_structure_bsp_set_time_of_day,
 		
 		_hs_function_ai_transform_actor,
 		_hs_function_ai_transform_actors,
 		_hs_function_ai_transform_actors_by_type,
 		_hs_function_ai_actor_is_transforming,
+		_hs_function_unit_is_key_down,
+		_hs_function_unit_camera_fov_set,
+		_hs_function_unit_weapon_set_position,
+		_hs_function_camera_fov_get,
+		_hs_function_switch_unit,
 
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
@@ -161,7 +168,6 @@
 		_hs_function_sv_mapdownload_reload_map_part_definitions,
 
 		_hs_function_data_array_info,
-
 	// debug functions
 	#ifdef API_DEBUG
 		_hs_function_dump_view_state,
@@ -279,6 +285,13 @@
 		HS_TYPE(string)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(structure_bsp_set_time_of_day, bool, "Sets a bsp's lightmap set and sky set",
+		"<bsp-index> <lightmap-set-name> <sky-set-name>", 3,
+		HS_TYPE(short),
+		HS_TYPE(string),
+		HS_TYPE(string)
+		);
+
 	HS_FUNCTION_WITH_PARAMS(vehicle_remapper_enabled, bool, "returns the remapper state before the function call", 
 			"state_name", 1,
 		HS_TYPE(string)
@@ -315,6 +328,31 @@
 			"<object>", 1,
 		HS_TYPE(object)
 	);
+
+	HS_FUNCTION_WITH_PARAMS(unit_is_key_down, bool, "Returns true if the specified key is pressed and that keypress matches its DEC value.",
+		"<unit> <keypress", 2,
+		HS_TYPE(unit),
+		HS_TYPE(short)
+		);
+	HS_FUNCTION_WITH_PARAMS(unit_camera_fov_set, bool, "Sets the camera's field-of-view value using a real value.  70.0 is camera default.",
+		"<unit> <camera-fov>", 2,
+		HS_TYPE(unit),
+		HS_TYPE(real)
+		);
+	HS_FUNCTION_WITH_PARAMS(unit_weapon_set_position, bool, "Sets the weapon's FP position via three real values.",
+		"<unit> <weapon-position-x> <weapon-position-y> <weapon-position-z>", 4,
+		HS_TYPE(unit),
+		HS_TYPE(real),
+		HS_TYPE(real),
+		HS_TYPE(real)
+		);
+	HS_FUNCTION(camera_fov_get, real, "returns the camera's field-of-view value as a real value.");
+	HS_FUNCTION_WITH_PARAMS(switch_unit, bool, "Switches unit (or object).",
+		"<unit> <tag-path>", 2,
+		HS_TYPE(unit),
+		HS_TYPE(string)
+
+		);
 
 	// debug functions
 	#ifdef API_DEBUG
@@ -373,6 +411,7 @@
 		&GET_HS_FUNCTION(player_data_get_real),
 		&GET_HS_FUNCTION(player_data_set_real),
 		&GET_HS_FUNCTION(player_local_get),
+		&GET_HS_FUNCTION(player_sprint),
 
 		&GET_HS_FUNCTION(objects_distance_to_object),
 		&GET_HS_FUNCTION(object_data_get_real),
@@ -459,11 +498,17 @@
 
 		&GET_HS_FUNCTION(structure_bsp_set_lightmap_set),
 		&GET_HS_FUNCTION(structure_bsp_set_sky_set),
+		&GET_HS_FUNCTION(structure_bsp_set_time_of_day),
 		
 		&GET_HS_FUNCTION(ai_transform_actor),
 		&GET_HS_FUNCTION(ai_transform_actors),
 		&GET_HS_FUNCTION(ai_transform_actors_by_type),
 		&GET_HS_FUNCTION(ai_actor_is_transforming),
+		&GET_HS_FUNCTION(unit_is_key_down),
+		&GET_HS_FUNCTION(unit_camera_fov_set),
+		&GET_HS_FUNCTION(unit_weapon_set_position),
+		&GET_HS_FUNCTION(camera_fov_get),
+		&GET_HS_FUNCTION(switch_unit),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

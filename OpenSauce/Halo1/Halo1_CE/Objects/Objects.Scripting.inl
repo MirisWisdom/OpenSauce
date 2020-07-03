@@ -5,16 +5,44 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include "Game/Camera.hpp"
 #include "Game/GameStateRuntimeData.hpp"
 #include "Objects/Objects.hpp"
-
+#include "Objects/Objects.WeaponSettings.hpp"
 #include <YeloLib/cseries/value_conversion.hpp>
 #include <YeloLib/Halo1/objects/objects_yelo.hpp>
+#include <TagGroups\TagGroups.hpp>
+#include <Interface/UIWidgets.hpp>
 
 namespace Yelo
 {
 	namespace Objects
 	{
+		static const TagGroups::s_network_game_player_unit* FindUnit(cstring unit_name, const TAG_TBLOCK(&units, TagGroups::s_network_game_player_unit))
+		{
+			for (const auto& unit_to_swap : units)
+			{
+				if (StrCmp(unit_to_swap.name, unit_name) == 0 && unit_to_swap.definition.tag_index.IsNull())
+					return &unit_to_swap;
+			}
+
+			return nullptr;
+		}
+		bool SwitchUnit(s_unit_datum* unit, cstring name)
+		{
+			const TagGroups::s_network_game_player_unit* unit_to_swap = nullptr;
+	
+			if (unit_to_swap == nullptr)
+				unit_to_swap = FindUnit(name, Scenario::GetYeloGlobals()->networking.player_units);
+
+			if (unit_to_swap != nullptr)
+			{
+				return true;
+			}
+
+			return false;
+		};
+
 
 static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 {
@@ -390,5 +418,142 @@ static void* scripting_vehicle_remapper_enabled_evaluate(void** arguments)
 	return result.pointer;
 }
 
+static void* scripting_unit_is_key_down_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		short keypress;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		cstring keypress;
+		keypress = "keypress";
+		int16 keystroke;
+		keystroke = args->keypress;
+		if (GetAsyncKeyState(args->keypress) & 0x8000)
+		{
+			UnitDataSetIntegerByName(unit, keypress, keystroke);
+			UnitDataGetIntegerByName(unit, keypress, result);
+			result.boolean = true;
+		}
+	}
+	return result.pointer;
+}
+
+static void* scripting_unit_camera_fov_set_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		real fov;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		if (args->fov)
+		{
+			Fov::GetFieldOfView();
+			Fov::SetFieldOfView(args->fov);
+			result.boolean = true;
+		}
+	}
+	return result.pointer;
+}
+
+static void* scripting_unit_weapon_set_position_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		real weapon_pos_x;
+		real weapon_pos_y;
+		real weapon_pos_z;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		if (args->weapon_pos_x && args->weapon_pos_y && args->weapon_pos_z, NONE)
+		{
+			real_vector3d weapon_position{ args->weapon_pos_x, args->weapon_pos_y, args->weapon_pos_z };
+			Weapon::Initialize();
+			Weapon::GetWeaponPosition();
+			Weapon::SetWeaponPosition(weapon_position / 100);
+			Weapon::Dispose();
+			result.boolean = true;
+		}
+	}
+	return result.pointer;
+}
+
+static void* scripting_camera_fov_get_evaluate()
+{
+	TypeHolder result; result.pointer = nullptr;
+	result.real = Fov::GetFieldOfView();
+	return result.pointer;
+}
+
+static void* scripting_switch_unit_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring tag_name;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		result.boolean = SwitchUnit(unit, args->tag_name);
+	}
+	return result.pointer;;
+}
+
+static void* scripting_switch_weapon_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		int32 weapon_index;
+		datum_index name_index;
+		datum_index item_index;
+	}*args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = nullptr;
+	result.boolean = false;
+
+	if (!args->unit_index.IsNull())
+	{
+		auto* unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(args->unit_index);
+		if (!unit)
+		{
+			return result.pointer;
+		}
+		result.boolean = true;
+	}
+	return result.pointer;
+}
 	};
 };

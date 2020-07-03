@@ -731,6 +731,7 @@
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\OpenSauce.lua" />
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\Scenario.lua" />
     <None Include="..\..\..\shared\bin\mmbbq_3.0.2\HaloCE\1_09_Server\TagGroups.lua" />
+    <None Include="ClassDiagram.cd" />
     <None Include="Common\GameSystemComponent.Definitions.inl" />
     <None Include="Common\GameSystemComponent.IterationRoundBegin.inl" />
     <None Include="Common\GameSystemComponent.IterationRoundEnd.inl" />

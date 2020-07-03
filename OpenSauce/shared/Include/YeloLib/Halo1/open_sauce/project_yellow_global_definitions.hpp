@@ -8,6 +8,8 @@
 
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
@@ -72,10 +74,11 @@ namespace Yelo
 
 
 		/* !-- Netgame --! */
+
 		struct s_network_game_player_unit
 		{
 			TAG_FIELD(tag_string, name, "", "name of this block definition");
-			TAG_FIELD(tag_reference, definition, "unit", "unit definition for this player's biped");
+			TAG_FIELD(tag_reference, definition, "unit", "unit definition for this player's biped" 'unit');
 			TAG_PAD(int32, 8); // 32
 		};
 		/* !-- Netgame --! */
