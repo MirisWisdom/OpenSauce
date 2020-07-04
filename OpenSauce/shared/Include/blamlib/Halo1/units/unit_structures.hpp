@@ -339,7 +339,7 @@ namespace Yelo
 			UNKNOWN_TYPE(bool);												// 0x474 networking related. engine only writes to this, never reads. consider it 'unused'
 			UNKNOWN_TYPE(bool);												// 0x475 networking related. engine only writes to this, never reads. consider it 'unused'
 		private:
-			union {															// 0x476
+			union {
 				PAD16;
 
 				//////////////////////////////////////////////////////////////////////////
@@ -347,6 +347,9 @@ namespace Yelo
 				struct {
 					byte zoom_level_yelo;
 					byte desired_zoom_level_yelo;
+				};
+				struct {
+					int16 keypress;
 				};
 			};
 		public:
@@ -365,7 +368,6 @@ namespace Yelo
 
 			static const size_t k_offset_zoom_level_yelo;
 			static const size_t k_offset_desired_zoom_level_yelo;
-
 			byte* GetYeloGrenade2Count();
 			byte* GetYeloGrenade3Count();
 

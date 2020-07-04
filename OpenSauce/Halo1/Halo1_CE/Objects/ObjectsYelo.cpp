@@ -155,6 +155,16 @@ namespace Yelo
 
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_vehicle_remapper_enabled, 
 				scripting_vehicle_remapper_enabled_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_camera_fov_set,
+				scripting_unit_camera_fov_set_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_weapon_set_position,
+				scripting_unit_weapon_set_position_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_is_key_down,
+				scripting_unit_is_key_down_evaluate);
+			Scripting::InitializeScriptFunction(Enums::_hs_function_camera_fov_get,
+				scripting_camera_fov_get_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_switch_unit,
+				scripting_switch_unit_evaluate);
 		}
 		
 		bool PLATFORM_API ShouldKillChildObject(const s_object_datum* object_datum)

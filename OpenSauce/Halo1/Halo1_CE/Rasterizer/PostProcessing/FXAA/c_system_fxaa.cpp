@@ -94,8 +94,8 @@ namespace Yelo
                     g_shader_fxaa_definition.techniques.Address = &g_shader_techniques[0];
 
                     // initialise the effect definition
-                    g_effect_fxaa_definition.quad_definition.tessellation.x = 4;
-                    g_effect_fxaa_definition.quad_definition.tessellation.y = 4;
+                    g_effect_fxaa_definition.quad_definition.tessellation.x = 8;
+                    g_effect_fxaa_definition.quad_definition.tessellation.y = 8;
                     g_effect_fxaa_definition.quad_definition.x_bounds.lower = 0;
                     g_effect_fxaa_definition.quad_definition.x_bounds.upper = 1;
                     g_effect_fxaa_definition.quad_definition.y_bounds.lower = 0;

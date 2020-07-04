@@ -234,6 +234,8 @@ namespace Yelo
 
 			return result.pointer;
 		}
+
+
 #pragma endregion
 
 #pragma region Sky Scripting
@@ -289,6 +291,22 @@ namespace Yelo
 
 			return result.pointer;
 		}
+
+		static void* API_FUNC scripting_structure_bsp_set_time_of_day_evaluate(void** arguments)
+		{
+			struct s_arguments {
+				int16 bsp_index;
+				PAD16;
+				cstring lightmap_set_name;
+				cstring sky_set_name;
+			}*args = CAST_PTR(s_arguments*, arguments);
+			TypeHolder result; result.pointer = nullptr;
+
+			result.boolean = SetLightmapSetByName((sbyte)args->bsp_index, args->lightmap_set_name), SetSkySetByName((sbyte)args->bsp_index, args->sky_set_name);
+
+			return result.pointer;
+		}
+
 #pragma endregion
 
 #pragma region BSP Modifier State
@@ -350,6 +368,8 @@ namespace Yelo
 				scripting_structure_bsp_set_lightmap_set_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_structure_bsp_set_sky_set, 
 				scripting_structure_bsp_set_sky_set_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_structure_bsp_set_time_of_day,
+				scripting_structure_bsp_set_time_of_day_evaluate);
 		}
 #pragma endregion
 

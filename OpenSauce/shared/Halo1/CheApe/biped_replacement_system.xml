@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+
+	<flags>
+		<Flag name="biped_replacement_flags">
+			<field>Inhherit previous biped traits#when enabled, units can retain what they had before the switch, as though it never happened and yet did.  Only biped raw settings will adjust.</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="bipeds_block" maxElements="64" >
+			<field type="LongFlags" name="flags" definition="biped_replacement_flags" />
+			<field type=Reference" name="name" definition="" />
+			<field type="TagReference" name="biped" definition="unit_reference" blockname="true" />
+			<field type="Pad" definition="32" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="biped_replacement_system" groupTag="bipr" version="2" >
+			<field type="ShortInteger" name="version" definition="2" locked="true" />
+			<field type="Explanation" name="Biped Replacement System" definition="Here, bipeds can be set up to be replaced on-the-fly via a script command, found in the console of Halo Custom Edition, as well as via this tag.  Simply select a biped to replace, then select it down below and specify a new biped tag, and presto!  Once the command is activated, the biped will switch automatically with a new one in its place where you were.  There will be no need for respawns.  Note that if you select the flag to inherit biped traits, your ammunition and other settings, such as weapons on-hand and weapon count, will be migrated to the new biped." />
+			<field type="Block" name="Bipeds" definition="bipeds_block" />
+			<field type="Pad" definition="80" />
+		</TagGroup>
+	</groups>
+</definitions>

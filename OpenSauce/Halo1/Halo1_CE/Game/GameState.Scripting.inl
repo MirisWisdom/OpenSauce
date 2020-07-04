@@ -4,6 +4,8 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+#pragma once
+
 
 static void* scripting_data_array_info_evaluate(void** arguments)
 {
