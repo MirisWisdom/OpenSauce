@@ -64,7 +64,7 @@ repository:
 |blamsauce               | Dwood's archived, interim fork. Used to separate Open Sauce's YeloLib into a more manageable project. 
 |experimental            | guardian2433's fork of Open Sauce V4.0 containing experimental code they implement.
 |experimental_cleaned_git| Identical to the previous fork, but the git log is easier to read.
-|opensauce_v5            | BipolarAurora's fork of CorpenEldorito's version of Open-Sauce V5 for personal use and potential fixes.
+|opensauce_v5            | BipolarAurora's fork of CorpenEldorito's version of Open-Sauce V5 for personal use and potential fixes. All fixes are limited to GameSpyOpen. No OpenSauce code was touched.
 |sprinkle                | Fork by sprinkle131313 which focuses on refactoring, improvements, and documentation.
 
 FORK/TEMPERA
