@@ -1,0 +1,87 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4BB71178-8B8D-4B5F-962C-62C6DD0C9081}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		changelog.txt = changelog.txt
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atlasLib", "atlasLib\atlasLib.vcproj", "{07E88E03-4C14-42AC-9925-14D9878E349D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atlasReportingSample", "atlasReportingSample\atlasReportingSample.vcproj", "{4615C51D-78D4-49CE-BC34-C83F82FBA70A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{07E88E03-4C14-42AC-9925-14D9878E349D} = {07E88E03-4C14-42AC-9925-14D9878E349D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atlasQuerySample", "atlasQuerySample\atlasQuerySample.vcproj", "{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{07E88E03-4C14-42AC-9925-14D9878E349D} = {07E88E03-4C14-42AC-9925-14D9878E349D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.ign.com:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = atlasLib\\atlasLib.vcproj
+		SccProjectName1 = atlasLib
+		SccLocalPath1 = atlasLib
+		SccProjectUniqueName2 = atlasReportingSample\\atlasReportingSample.vcproj
+		SccProjectName2 = atlasReportingSample
+		SccLocalPath2 = atlasReportingSample
+		SccProjectUniqueName3 = atlasQuerySample\\atlasQuerySample.vcproj
+		SccProjectName3 = atlasQuerySample
+		SccLocalPath3 = atlasQuerySample
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Debug|Win32.Build.0 = Debug|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Release|Win32.ActiveCfg = Release|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Release|Win32.Build.0 = Release|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{07E88E03-4C14-42AC-9925-14D9878E349D}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Debug|Win32.Build.0 = Debug|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Release|Win32.ActiveCfg = Release|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Release|Win32.Build.0 = Release|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{4615C51D-78D4-49CE-BC34-C83F82FBA70A}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Debug|Win32.Build.0 = Debug|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Release|Win32.ActiveCfg = Release|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Release|Win32.Build.0 = Release|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{F25DA3B9-3A32-4AC2-B8EB-912934D9FE9A}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
