@@ -24,6 +24,8 @@ shared/Resources/Halo1_CheApe/HEK_InstallDir/tags/
 shared/Resources/Installer/dxredist/
 test_results/
 
+external_libraries/
+*_ReSharper.Caches*
 [Ll]ib/
 
 *.psd

@@ -25,10 +25,10 @@ SET "osRepoDir=%BatDir%..\..\"
 SET MissingReqs=0
 SET MissingOpts=0
 
-REM Required: We're currently using VS2008
-SET VsVersionStr=2008
+REM Required: We're currently using VS2019
+SET VsVersionStr=2019
 REM Easiest way to check if 2008 is installed
-IF "%VS90COMNTOOLS%"=="" (
+IF NOT EXIST "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2019\" (
 	ECHO ERROR: VisualStudio [%VsVersionStr%] is either not installed or an unsupported version is used
 	SET MissingReqs=1
 )
@@ -36,9 +36,14 @@ IF "%VS90COMNTOOLS%"=="" (
 
 
 REM Required: Check for the C++ boost libraries
-IF NOT EXIST "%ProgFilesDir86%\boost\" (
-	ECHO ERROR: Couldn't find the C++ boost framework. Did you install it to a non-default location?
-	SET MissingReqs=1
+REM We check three possible locations.
+IF NOT EXIST "%osRepoDir%external_libraries\boost*\" (
+	IF NOT EXIST "%ProgFilesDir86%\boost\" (
+		IF NOT EXIST "C:\local\boost_*\" (
+			ECHO ERROR: Couldn't find the C++ boost framework. Did you install it to a non-default location?
+			SET MissingReqs=1
+		)
+	)
 )
 :FINISHED_CHECK_BOOST
 
@@ -75,8 +80,10 @@ IF "%XEDK%"=="" (
 
 REM Optional: Check for the GameSpyOpen SDK
 IF NOT EXIST "%osRepoDir%OpenSauce\shared\Include\GameSpyOpen\darray.h" (
-	ECHO WARNING: GameSpyOpen SDK not detected
-	SET MissingOpts=1
+	IF NOT EXIST "%osRepoDir%OpenSauce\external_libraries\GameSpyOpen\darray.h" (
+		ECHO WARNING: GameSpyOpen SDK not detected
+		SET MissingOpts=1
+	)
 )
 :FINISHED_CHECK_GAMESPYOPEN
 
