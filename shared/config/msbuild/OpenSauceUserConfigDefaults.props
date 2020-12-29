@@ -7,6 +7,7 @@
     <LocalUserBoostVer		Condition=" '$(LocalUserBoostVer)' == '' ">boost_1_55_0</LocalUserBoostVer>
     <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(ProgramFiles)\boost\$(LocalUserBoostVer)\</LocalUserBoostDir>
 	  <LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
+    <LocalGameSpyOpenDir  Condition="!Exists('$(LocalGameSpyOpenDir)')">$(OSRootDir)external_libraries\GameSpyOpen</LocalGameSpyOpenDir>
   	<LocalRakNetDir			  Condition=" '$(LocalRakNetDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\RakNet</LocalRakNetDir>
 
   <!-- Determine build platform's bitness to know where to look for executables-->
