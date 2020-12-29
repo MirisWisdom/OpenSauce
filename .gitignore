@@ -13,9 +13,9 @@ glob:shared/Resources/Installer/dxredist/
 glob:test_results/
 
 BlamLib/LowLevel/Compression/LZMA/
-OpenSauce/shared/Include/GameSpyOpen/
-OpenSauce/shared/Include/7zip/
-OpenSauce/shared/Include/mongoose/
+OpenSauce/shared/[Ii]nclude/GameSpyOpen/
+OpenSauce/shared/[Ii]nclude/7zip/
+OpenSauce/shared/[Ii]nclude/mongoose/
 
 shared/Resources/Halo1_CE/HCE_CommonData/
 shared/Resources/Halo1_CE/HCE_InstallDir/
