@@ -142,18 +142,18 @@
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\targetver.h" />
     <ClInclude Include="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp" />
-    <ClInclude Include="..\..\shared\Include\7zip\7z.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\7zAlloc.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\7zBuf.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\7zCrc.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\7zFile.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\7zVersion.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\Bcj2.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\Bra.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\CpuArch.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\Lzma2Dec.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\LzmaDec.h" />
-    <ClInclude Include="..\..\shared\Include\7zip\Types.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7z.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7zAlloc.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7zBuf.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7zCrc.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7zFile.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7zVersion.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\Bcj2.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\Bra.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\CpuArch.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\Lzma2Dec.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\LzmaDec.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\C\7zTypes.h" />
     <ClInclude Include="..\..\shared\Include\CrashRpt\CrashRpt.h" />
     <ClInclude Include="..\..\shared\Include\TinyXml\tinystr.hpp" />
     <ClInclude Include="..\..\shared\Include\TinyXml\tinyxml.hpp" />
@@ -235,46 +235,46 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\shared\Include\7zip\7zAlloc.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zAlloc.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zBuf.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zBuf.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zCrc.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zCrc.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zCrcOpt.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zCrcOpt.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zDec.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zDec.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zFile.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zFile.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zIn.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zArcIn.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\7zStream.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\7zStream.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\Bcj2.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\Bcj2.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\Bra.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\Bra.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\Bra86.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\Bra86.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\CpuArch.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\CpuArch.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\Lzma2Dec.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\Lzma2Dec.c">
       <PrecompiledHeader />
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\7zip\LzmaDec.c">
+    <ClCompile Include="..\..\shared\Include\7zip\C\LzmaDec.c">
       <PrecompiledHeader />
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\TinyXml\tinystr.cpp" />

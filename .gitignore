@@ -12,10 +12,13 @@ glob:shared/Resources/Halo1_CheApe/HEK_InstallDir/tags/
 glob:shared/Resources/Installer/dxredist/
 glob:test_results/
 
+glob:external_libraries/
+glob:lib/
+
 BlamLib/LowLevel/Compression/LZMA/
-OpenSauce/shared/Include/GameSpyOpen/
-OpenSauce/shared/Include/7zip/
-OpenSauce/shared/Include/mongoose/
+OpenSauce/shared/[Ii]nclude/GameSpyOpen/
+OpenSauce/shared/[Ii]nclude/7zip/
+OpenSauce/shared/[Ii]nclude/mongoose/
 
 shared/Resources/Halo1_CE/HCE_CommonData/
 shared/Resources/Halo1_CE/HCE_InstallDir/
@@ -25,8 +28,8 @@ shared/Resources/Installer/dxredist/
 test_results/
 
 external_libraries/
-*_ReSharper.Caches*
 [Ll]ib/
+*_ReSharper.Caches*
 
 *.psd
 *.map

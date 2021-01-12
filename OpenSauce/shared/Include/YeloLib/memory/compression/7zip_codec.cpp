@@ -7,24 +7,27 @@
 #include <YeloLib/memory/compression/7zip_codec.hpp>
 
 #ifndef API_NO_7ZIP_CODEC
-#include <7zip/7z.h>
-#include <7zip/7zAlloc.h>
-#include <7zip/7zCrc.h>
-#include <7zip/7zFile.h>
-#include <7zip/7zVersion.h>
+#include <7zip/C/7z.h>
+#include <7zip/C/7zAlloc.h>
+#include <7zip/C/7zCrc.h>
+#include <7zip/C/7zFile.h>
+#include <7zip/C/7zTypes.h>
+#include <7zip/C/7zVersion.h>
 
 namespace Yelo
 {
 	namespace Compression { namespace SevenZip
 	{
-		static void* AllocFunc(void* p, size_t size)
+		#define kInputBufSize ((size_t)1 << 18)
+
+		static void* AllocFunc(ISzAllocPtr p, size_t size)
 		{
 			if(size == 0)
 				return nullptr;
 			return new char[size];
 		}
 
-		static void FreeFunc(void* p, void* address)
+		static void FreeFunc(ISzAllocPtr p, void* address)
 		{
 			delete [] address;
 		}
@@ -58,7 +61,7 @@ namespace Yelo
 		 */
 		static SRes Decompress(CFileInStream& archive_stream,
 			CSzArEx& archive_desc,
-			CLookToRead& look_stream,
+			CLookToRead2& look_stream,
 			uint32 file_index,
 			byte*& uncompressed_data,
 			size_t& uncompressed_data_size)
@@ -75,7 +78,7 @@ namespace Yelo
 			size_t out_size_processed = 0;
 
 			// decompress the requested file, saving the uncompressed data into memory
-			result = SzArEx_Extract(&archive_desc, &look_stream.s, file_index,
+			result = SzArEx_Extract(&archive_desc, &look_stream.vt, file_index,
 				&block_index, &uncompressed_data, &uncompressed_data_size,
 				&offset, &out_size_processed,
 				&alloc_imp, &alloc_imp);
@@ -118,11 +121,15 @@ namespace Yelo
 			byte*& uncompressed_data,
 			size_t& uncompressed_data_size)
 		{
+			ISzAlloc alloc_imp;
+			ISzAlloc alloc_temp_imp;
+
 			CFileInStream archive_stream;
-			CLookToRead look_stream;
+			CLookToRead2 look_stream;
 			CSzArEx archive_desc;
 			SRes result;
-			ISzAlloc alloc_imp;
+			UInt16 *temp = NULL;
+			size_t temp_size = 0;
 			wchar_t wide_file_name[MAX_PATH] = L"";
 
 			// open the archive for reading
@@ -138,23 +145,31 @@ namespace Yelo
 			alloc_imp.Free = FreeFunc;
 
 			FileInStream_CreateVTable(&archive_stream);
-			LookToRead_CreateVTable(&look_stream, False);
+			LookToRead2_CreateVTable(&look_stream, False);
+			look_stream.buf = NULL;
 
-			look_stream.realStream = &archive_stream.s;
-			LookToRead_Init(&look_stream);
+			result = SZ_OK;
+
+			look_stream.bufSize = kInputBufSize;
+			look_stream.realStream = &archive_stream.vt;
+			LookToRead2_Init(&look_stream);
 
 			CrcGenerateTable();
 
 			SzArEx_Init(&archive_desc);
-			result = SzArEx_Open(&archive_desc, &look_stream.s, &alloc_imp, &alloc_imp);
+
+			if (result == SZ_OK)
+			{
+				result = SzArEx_Open(&archive_desc, &look_stream.vt, &alloc_imp, &alloc_temp_imp);
+			}
 
 			if(result == SZ_OK)
 			{
 				int index = -1;
 				// search for the file in the archive
-				for (uint32 i = 0; (index == -1) && (i < archive_desc.db.NumFiles); i++)
+				for (uint32 i = 0; (index == -1) && (i < archive_desc.NumFiles); i++)
 				{
-					if(archive_desc.db.Files[i].IsDir)
+					if (SzArEx_IsDir(&archive_desc, i))
 						continue;
 
 					// get the name of the file in the archive
