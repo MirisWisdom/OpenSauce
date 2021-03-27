@@ -78,40 +78,19 @@
 
 
 //////////////////////////////////////////////////////////////////////////
-// GameSpy includes & definitions
+// UniSpy includes & definitions
 
 // Comment out this if you don't have access to the Open SDK
 // You'll also need to remove the code file references from the project
 // TODO: use msbuild to define this since we can now detect the presence of required libraries?
-#define YELO_USE_GAMESPY_OPEN
+#define YELO_USE_UNISPYSDK
 
-#if defined(YELO_USE_GAMESPY_OPEN)
-
-	/*
-		GameSpy SDK bug fix:
-		There is a bug in GHTTP that causes HTTP redirects to fail if both
-		the 'Content-Location' and 'Location' headers are returned by the server.
-
-		Use the following on line 1695 in ghttpProcess.c to fix this:
-
-			// Find the new location.
-            /////////////////////////
-            location = strstr(headers, "\r\nLocation:");// YELO: UPDATE THIS LINE
-            if(location)
-            {
-                char * end;
-
-                // Find the start of the URL.
-                /////////////////////////////
-                location += 11;							// YELO: UPDATE THIS LINE
-
-	*/
-//	BOOST_STATIC_ASSERT(false); // comment this out once the fix is applied
+#if defined(YELO_USE_UNISPYSDK)
 
 	// Just to make sure we're always using ASCII
 	#undef GSI_UNICODE
 
-	#include <GameSpyOpen/ghttp/ghttp.h>
+	#include <UniSpySDK/ghttp/ghttp.h>
 	
 	#define YELO_VERSION_CHECK_ENABLE
 

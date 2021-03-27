@@ -395,10 +395,10 @@ namespace Yelo
 					return false;
 
 				// generate the server password hash
-				GSMD5_CTX md5_context;
-				GSMD5Init(&md5_context);
-				GSMD5Update(&md5_context, CAST_PTR(byte*, &m_mp_password[0]), strlen(m_mp_password));
-				GSMD5Final(m_mp_password_key, &md5_context);
+				MD5_CTX md5_context;
+				MD5Init(&md5_context);
+				MD5Update(&md5_context, CAST_PTR(byte*, &m_mp_password[0]), strlen(m_mp_password));
+				MD5Final(m_mp_password_key, &md5_context);
 
 				if(!SetServerAddresses())
 					return false;

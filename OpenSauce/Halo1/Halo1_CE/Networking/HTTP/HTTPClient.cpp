@@ -7,8 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Networking/HTTP/HTTPClient.hpp"
 
-#if defined(YELO_USE_GAMESPY_OPEN)
-#include <GameSpyOpen/md5.h>
+#if defined(YELO_USE_UNISPYSDK)
+#include <UniSpySDK/common/md5.h>
 
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPServer.hpp"

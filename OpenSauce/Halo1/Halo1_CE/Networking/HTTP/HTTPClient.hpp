@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#if defined(YELO_USE_GAMESPY_OPEN)
+#if defined(YELO_USE_UNISPYSDK)
 
 namespace Yelo
 {

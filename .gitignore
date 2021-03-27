@@ -1,7 +1,7 @@
 syntax: glob
 
 glob:BlamLib/LowLevel/Compression/LZMA/
-glob:OpenSauce/shared/Include/GameSpyOpen/
+glob:OpenSauce/shared/Include/UniSpySDK/
 glob:OpenSauce/shared/Include/7zip/
 glob:OpenSauce/shared/Include/mongoose/
 
@@ -16,7 +16,7 @@ glob:external_libraries/
 glob:lib/
 
 BlamLib/LowLevel/Compression/LZMA/
-OpenSauce/shared/[Ii]nclude/GameSpyOpen/
+OpenSauce/shared/[Ii]nclude/UniSpySDK/
 OpenSauce/shared/[Ii]nclude/7zip/
 OpenSauce/shared/[Ii]nclude/mongoose/
 

@@ -2,7 +2,7 @@
 :: Checks this machine for the prerequisites needed to build the various parts of the OpenSauce codebase
 :: Obviously, this is for developers only...
 REM There are some things we just can't (reliably) check for:
-REM 	GameSpyOpen (we do try checking for stuff in OpenSauce\shared\Include\GameSpyOpen\ tho)
+REM 	UniSpySDK (we do try checking for stuff in OpenSauce\shared\Include\UniSpySDK\ tho)
 REM 	SlimDX
 REM See http://code.google.com/p/open-sauce/wiki/UsingTheCode
 
@@ -27,7 +27,7 @@ SET MissingOpts=0
 
 REM Required: We're currently using VS2019
 SET VsVersionStr=2019
-REM Easiest way to check if 2008 is installed
+REM Easiest way to check if 2019 is installed
 IF NOT EXIST "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2019\" (
 	ECHO ERROR: VisualStudio [%VsVersionStr%] is either not installed or an unsupported version is used
 	SET MissingReqs=1
@@ -78,14 +78,14 @@ IF "%XEDK%"=="" (
 :FINISHED_CHECK_XEDK
 
 
-REM Optional: Check for the GameSpyOpen SDK
-IF NOT EXIST "%osRepoDir%OpenSauce\shared\Include\GameSpyOpen\darray.h" (
-	IF NOT EXIST "%osRepoDir%OpenSauce\external_libraries\GameSpyOpen\darray.h" (
-		ECHO WARNING: GameSpyOpen SDK not detected
+REM Optional: Check for the UniSpySDK SDK
+IF NOT EXIST "%osRepoDir%OpenSauce\shared\Include\UniSpySDK\darray.h" (
+	IF NOT EXIST "%osRepoDir%OpenSauce\external_libraries\UniSpySDK\darray.h" (
+		ECHO WARNING: UniSpySDK SDK not detected
 		SET MissingOpts=1
 	)
 )
-:FINISHED_CHECK_GAMESPYOPEN
+:FINISHED_CHECK_UniSpySDK
 
 
 :FINISHED_CHECKS
