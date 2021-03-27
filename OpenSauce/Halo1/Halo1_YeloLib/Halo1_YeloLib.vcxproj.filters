@@ -591,103 +591,103 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\random.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttp.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttp.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\darray.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\darray.h">
       <Filter>.UniSpySDK\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\hashtable.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\hashtable.h">
       <Filter>.UniSpySDK\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\md5.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\md5.h">
       <Filter>.UniSpySDK\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpProcess.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsAssert.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsAvailable.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsCommon.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsCore.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsCrypt.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsDebug.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsLargeInt.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsMemory.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatform.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatformSocket.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatformThread.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatformUtil.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsRC4.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsResultCodes.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsSHA1.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsSoap.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsSSL.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsStringUtil.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\gsXML.h">
+      <Filter>.UniSpySDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpASCII.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsAssert.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsAvailable.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsCommon.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsCore.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsCrypt.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsDebug.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsLargeInt.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsMemory.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsPlatform.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsPlatformSocket.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsPlatformThread.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsPlatformUtil.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsRC4.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsResultCodes.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsSHA1.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsSoap.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsSSL.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsStringUtil.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\gsXML.h">
-      <Filter>.UniSpySDK\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpASCII.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpBuffer.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpBuffer.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpCallbacks.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpCallbacks.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpCommon.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpCommon.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpConnection.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpConnection.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpEncryption.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpEncryption.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpMain.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpMain.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpPost.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpPost.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpProcess.h">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\UniSpySDK\common\nonport.h">
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\common\nonport.h">
       <Filter>.UniSpySDK\common</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1001,91 +1001,91 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\cseries\random.cpp">
       <Filter>cseries</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpProcess.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpProcess.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\darray.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\darray.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsAssert.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsAssert.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsAvailable.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsAvailable.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsCore.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsCore.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsCrypt.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsCrypt.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsDebug.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsDebug.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsLargeInt.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsLargeInt.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsMemory.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsMemory.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsPlatform.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatform.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsPlatformSocket.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatformSocket.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsPlatformThread.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatformThread.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsPlatformUtil.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsPlatformUtil.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsRC4.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsRC4.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsResultCodes.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsResultCodes.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsSHA1.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsSHA1.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsSoap.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsSoap.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsSSL.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsSSL.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsStringUtil.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsStringUtil.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\gsXML.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\gsXML.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\hashtable.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\hashtable.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\common\md5c.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\common\md5c.c">
       <Filter>.UniSpySDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpBuffer.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpBuffer.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpCallbacks.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpCallbacks.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpCommon.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpCommon.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpConnection.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpConnection.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpEncryption.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpEncryption.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpMain.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpMain.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\UniSpySDK\ghttp\ghttpPost.c">
+    <ClCompile Include="..\..\..\external_libraries\UniSpySDK\ghttp\ghttpPost.c">
       <Filter>.UniSpySDK\ghttp</Filter>
     </ClCompile>
   </ItemGroup>
