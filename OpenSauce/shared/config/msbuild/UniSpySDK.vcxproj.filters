@@ -12,9 +12,8 @@
     </Filter>
   </ItemGroup>
 
-  <ItemGroup
-    >
-	<ClInclude Include="..\..\..\external_libraries\UniSpySDK\darray.h">
+  <ItemGroup>
+    <ClInclude Include="..\..\..\external_libraries\UniSpySDK\darray.h">
       <Filter>Common\Shared\UniSpySDK</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\external_libraries\UniSpySDK\hashtable.h">
